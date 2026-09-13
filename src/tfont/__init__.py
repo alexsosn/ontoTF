@@ -21,6 +21,12 @@ from .parent_identity import (
     parent_manifest_projection,
     tf_payload_digest,
 )
+from .production_bundles import (
+    PRODUCTION_NOUN_CORPORA,
+    ProductionBundleError,
+    load_production_noun_bundle,
+    load_production_noun_bundles,
+)
 from .runtime_prerequisites import (
     OBSERVATION_FINGERPRINT_ALGORITHM,
     RUNTIME_EVALUATION_CONTRACT,
@@ -148,8 +154,10 @@ __all__ = [
     "OntologyBundleRequirementIR",
     "OntologyDeclarationIR",
     "OntologyLockFingerprint",
+    "PRODUCTION_NOUN_CORPORA",
     "PROFILE_RELEASE_FINGERPRINT_ALGORITHM",
     "PROJECTION_SEMANTIC_ALGORITHM",
+    "ProductionBundleError",
     "ProfileReleaseKey",
     "ProfileReleaseSignature",
     "RUNTIME_EVALUATION_CONTRACT",
@@ -185,6 +193,8 @@ __all__ = [
     "execute_exact_semantic",
     "file_component_digest",
     "load_and_validate",
+    "load_production_noun_bundle",
+    "load_production_noun_bundles",
     "load_source",
     "loads_source",
     "mapping_semantic_digest",
