@@ -4,7 +4,9 @@ import importlib
 import importlib.util
 import json
 import unittest
+from importlib.resources import files
 
+from tfont.digests import evidence_payload_digest
 from tfont.semantic_ir import SemanticKey, compile_semantic_ir
 from tfont.semantic_validation import validate_semantic_bundle
 
@@ -20,6 +22,7 @@ EXPECTED_COMPONENT_DIGESTS = {
     "extrabiblical": "sha256:d0ca9bdf90bfdefe19861c2c68e91071650ed511b8a79270490238b30274aee0",
 }
 OLIA_DIGEST = "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd"
+OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 
 
 def noun_key() -> SemanticKey:
@@ -81,7 +84,17 @@ class I009ProductionBundleTests(unittest.TestCase):
         self.assertEqual(lock["content_digest"], OLIA_DIGEST)
         self.assertEqual(lock["license"], "CC-BY-3.0")
         self.assertEqual(lock["terms_used"], [OLIA_NOUN])
-        self.assertEqual(lock["source_revision"], "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6")
+        self.assertEqual(lock["source_revision"], OLIA_REVISION)
+
+    def test_shipped_olia_snapshot_bytes_match_researched_digest(self):
+        snapshot = files("tfont").joinpath(
+            "resources",
+            "ontologies",
+            "olia",
+            OLIA_REVISION,
+            "olia.owl",
+        )
+        self.assertEqual(evidence_payload_digest(snapshot.read_bytes()), OLIA_DIGEST)
 
     def test_compiled_noun_bindings_preserve_corpus_specific_execution_shapes(self):
         module, bundles = self._bundles()
