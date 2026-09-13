@@ -82,6 +82,26 @@ class I009ProductionProvenanceTests(unittest.TestCase):
                 self.assertTrue(required <= mapping_ids)
                 self.assertTrue(required <= projection_ids)
 
+    def test_semantic_runtime_dependencies_bind_evidence_for_value_meanings(self):
+        module, bundles = self._bundles()
+        required = {
+            "bhsa": {"evidence:bhsa:word-sp-noun-codes"},
+            "syriac": {"evidence:syriac:word-sp-substantive"},
+            "extrabiblical": {
+                "evidence:extrabiblical:word-sp-enum",
+                "evidence:extrabiblical:feature-authority",
+                "evidence:bhsa:word-sp-noun-codes",
+            },
+        }
+        for corpus_id, bundle in zip(module.PRODUCTION_NOUN_CORPORA, bundles, strict=True):
+            for dependency in bundle.profile.data["dependencies"]:
+                evidence_ids = {row["evidence_id"] for row in dependency.get("evidence", [])}
+                with self.subTest(corpus_id=corpus_id, dependency=dependency["dependency_id"]):
+                    self.assertTrue(
+                        required[corpus_id] <= evidence_ids,
+                        f"semantic dependency lacks meaning evidence: {sorted(required[corpus_id] - evidence_ids)}",
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()
