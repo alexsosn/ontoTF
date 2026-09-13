@@ -1,0 +1,80 @@
+{
+  "capabilities": [
+    "linguistic.part-of-speech"
+  ],
+  "dependencies": [
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "nmpr",
+        "value_semantics": "semantic"
+      },
+      "component_id": "extrabiblical-tf",
+      "dependency_id": "dep:extrabiblical:word-sp:nmpr",
+      "evidence": [
+        {
+          "content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24",
+          "evidence_id": "evidence:extrabiblical:word-sp-enum"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "subs",
+        "value_semantics": "semantic"
+      },
+      "component_id": "extrabiblical-tf",
+      "dependency_id": "dep:extrabiblical:word-sp:subs",
+      "evidence": [
+        {
+          "content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24",
+          "evidence_id": "evidence:extrabiblical:word-sp-enum"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        }
+      ],
+      "kind": "native-value-present"
+    }
+  ],
+  "dependency_contract_version": 1,
+  "license": "MIT",
+  "mapping_sources": [
+    "mappings/noun.json"
+  ],
+  "minimum_tfont_runtime": "0.1.0",
+  "ontology_locks": [
+    "olia-reference-model"
+  ],
+  "parent_component_manifest": "parent/expected-components.json",
+  "profile_catalog_version": 1,
+  "profile_id": "tfont-extrabiblical",
+  "profile_version": "0.1.0",
+  "profiles": [
+    "linguistic"
+  ],
+  "required_components": [
+    "extrabiblical-tf"
+  ],
+  "schema_version": 2,
+  "semantic_domains": [
+    "linguistic"
+  ]
+}

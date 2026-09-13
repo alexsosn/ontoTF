@@ -1,0 +1,13 @@
+{
+  "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:extrabiblical:feature-authority",
+  "kind": "corpus-provenance",
+  "reviewed_content": {
+    "conversion": "Conversion of some extra-biblical writings from ETCBC-encoded texts",
+    "feature_documentation": "BHSA core data and feature documentation",
+    "resource_family": "ETCBC/BHSA"
+  },
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/extrabiblical/9a56288e6777bad6328856acf055c780e65dd5d9/README.md"
+}

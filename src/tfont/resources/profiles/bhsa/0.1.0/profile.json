@@ -1,0 +1,64 @@
+{
+  "capabilities": [
+    "linguistic.part-of-speech"
+  ],
+  "dependencies": [
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "nmpr",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:nmpr",
+      "evidence": [
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "subs",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:subs",
+      "evidence": [
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        }
+      ],
+      "kind": "native-value-present"
+    }
+  ],
+  "dependency_contract_version": 1,
+  "license": "MIT",
+  "mapping_sources": [
+    "mappings/noun.json"
+  ],
+  "minimum_tfont_runtime": "0.1.0",
+  "ontology_locks": [
+    "olia-reference-model"
+  ],
+  "parent_component_manifest": "parent/expected-components.json",
+  "profile_catalog_version": 1,
+  "profile_id": "tfont-bhsa",
+  "profile_version": "0.1.0",
+  "profiles": [
+    "linguistic"
+  ],
+  "required_components": [
+    "bhsa-tf"
+  ],
+  "schema_version": 2,
+  "semantic_domains": [
+    "linguistic"
+  ]
+}

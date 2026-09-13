@@ -1,0 +1,17 @@
+{
+  "content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:extrabiblical:word-sp-enum",
+  "kind": "corpus-source-enumeration",
+  "reviewed_content": {
+    "feature": "sp",
+    "node_type": "word",
+    "source_type": "part_of_speech_t",
+    "values": {
+      "nmpr": 3,
+      "subs": 2
+    }
+  },
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/extrabiblical/9a56288e6777bad6328856acf055c780e65dd5d9/source/0.2/extraBiblical.mql.bz2"
+}

@@ -1,0 +1,47 @@
+{
+  "capabilities": [
+    "linguistic.part-of-speech"
+  ],
+  "dependencies": [
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "subs",
+        "value_semantics": "semantic"
+      },
+      "component_id": "syriac-tf",
+      "dependency_id": "dep:syriac:word-sp:subs",
+      "evidence": [
+        {
+          "content_digest": "sha256:2851e7403ec641ca47f6cd7b2d59f6e58af27f5336f5376b5e6af5a078d0bc3f",
+          "evidence_id": "evidence:syriac:word-sp-substantive"
+        }
+      ],
+      "kind": "native-value-present"
+    }
+  ],
+  "dependency_contract_version": 1,
+  "license": "MIT",
+  "mapping_sources": [
+    "mappings/noun.json"
+  ],
+  "minimum_tfont_runtime": "0.1.0",
+  "ontology_locks": [
+    "olia-reference-model"
+  ],
+  "parent_component_manifest": "parent/expected-components.json",
+  "profile_catalog_version": 1,
+  "profile_id": "tfont-syriac",
+  "profile_version": "0.1.0",
+  "profiles": [
+    "linguistic"
+  ],
+  "required_components": [
+    "syriac-tf"
+  ],
+  "schema_version": 2,
+  "semantic_domains": [
+    "linguistic"
+  ]
+}

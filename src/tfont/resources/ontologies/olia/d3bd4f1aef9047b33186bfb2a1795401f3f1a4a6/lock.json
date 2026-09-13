@@ -1,0 +1,17 @@
+{
+  "content_digest": "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd",
+  "license": "CC-BY-3.0",
+  "lock_id": "olia-reference-model",
+  "ontology_id": "olia",
+  "redistribution_policy": "redistributable-with-attribution",
+  "release": "snapshot-d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "snapshot_artifact": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/olia.owl",
+  "source_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "source_uri": "https://raw.githubusercontent.com/acoli-repo/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/owl/core/olia.owl",
+  "support_tier": "supported-profile",
+  "term_namespace": "http://purl.org/olia/olia.owl#",
+  "terms_used": [
+    "http://purl.org/olia/olia.owl#Noun"
+  ],
+  "upstream_release_status": "git-snapshot"
+}

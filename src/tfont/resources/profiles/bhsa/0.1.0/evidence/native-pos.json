@@ -1,0 +1,27 @@
+{
+  "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:bhsa:word-sp-noun-codes",
+  "kind": "corpus-feature-definition",
+  "reviewed_content": {
+    "documented_node_types": [
+      "word",
+      "lex"
+    ],
+    "feature": "sp",
+    "feature_semantics": "part-of-speech",
+    "production_scope": {
+      "node_type": "word",
+      "selected_values": [
+        "nmpr",
+        "subs"
+      ]
+    },
+    "values": {
+      "nmpr": "proper noun",
+      "subs": "noun"
+    }
+  },
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/sp.md"
+}

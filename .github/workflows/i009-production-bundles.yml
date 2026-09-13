@@ -1,0 +1,65 @@
+name: I-009 production Noun bundles
+
+on:
+  push:
+    branches:
+      - impl/i009-production-noun-bundles
+    paths:
+      - 'tests/i009/**'
+      - 'src/tfont/production_bundles.py'
+      - 'src/tfont/resources/**'
+      - 'src/tfont/__init__.py'
+      - 'pyproject.toml'
+      - '.github/workflows/i009-production-bundles.yml'
+  pull_request:
+    paths:
+      - 'tests/i009/**'
+      - 'src/tfont/production_bundles.py'
+      - 'src/tfont/resources/**'
+      - 'src/tfont/__init__.py'
+      - 'pyproject.toml'
+      - '.github/workflows/i009-production-bundles.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  focused:
+    name: focused (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e . pytest
+      - run: python -m pytest tests/i009 -q
+
+  regressions:
+    name: I-004 through I-010 regressions
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e . pytest
+      - run: python -m pytest tests/i004 tests/i005 tests/i006 tests/i007 tests/i008 tests/i010 -q
+
+  wheel:
+    name: isolated wheel resources
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e . pytest build
+      - name: Build, inspect and load installed wheel outside checkout
+        env:
+          I009_WHEEL_TEST: '1'
+        run: python -m pytest tests/i009/test_wheel_install_red.py -q
