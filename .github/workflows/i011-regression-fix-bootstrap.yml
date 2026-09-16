@@ -1,0 +1,70 @@
+name: I-011 temporary regression patch
+on:
+  push:
+    branches:
+      - impl/i011-parent-compatibility-authority
+    paths:
+      - '.github/workflows/i011-regression-fix-bootstrap.yml'
+permissions:
+  contents: write
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/impl/i011-parent-compatibility-authority'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Migrate I-006 explicit opt-in fixtures and diagnostic precedence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          def replace_exact(path, old, new):
+              file = Path(path)
+              text = file.read_text(encoding='utf-8')
+              count = text.count(old)
+              assert count == 1, f'{path} expected one anchor, got {count}: {old!r}'
+              file.write_text(text.replace(old, new), encoding='utf-8')
+
+          replace_exact('src/tfont/semantic_resolver.py',
+              '    if state.parent_state == "verified-compatible" and variant.release_signature.parent_compatibility != "dependency-verified":\n        return "parent_incompatible"\n\n    expected_parent = variant.key.expected_parent_manifest_digest',
+              '    expected_parent = variant.key.expected_parent_manifest_digest')
+          replace_exact('src/tfont/semantic_resolver.py',
+              '    if (\n        state.parent_state == "verified-compatible"\n        and state.observed_parent_manifest_digest == expected_parent\n    ):\n        return "invalid_prerequisite"\n\n    try:',
+              '    if (\n        state.parent_state == "verified-compatible"\n        and state.observed_parent_manifest_digest == expected_parent\n    ):\n        return "invalid_prerequisite"\n    if state.parent_state == "verified-compatible" and variant.release_signature.parent_compatibility != "dependency-verified":\n        return "parent_incompatible"\n\n    try:')
+
+          path = 'tests/i006/test_semantic_resolver_contract.py'
+          replace_exact(path,
+              'from tests.i005._fixtures import AUTHORITY_NOUN, validated_noun_bundle',
+              'from tests.i005._fixtures import AUTHORITY_NOUN, validated_noun_bundle, noun_sources, source_bundle, validate_structural_sources')
+          replace_exact(path,
+              'from tfont.semantic_ir import SemanticKey, compile_semantic_ir, native_binding_identity',
+              'from tfont.semantic_ir import SemanticKey, compile_semantic_ir, native_binding_identity\nfrom tfont.semantic_validation import validate_semantic_bundle')
+          replace_exact(path,
+              '    # Public and happy-path contract.\n',
+              '    def compatible_ir(self):\n'
+              '        sources = noun_sources("bhsa", parent_char="a")\n'
+              '        sources["profile"]["parent_compatibility"] = "dependency-verified"\n'
+              '        validate_structural_sources(sources)\n'
+              '        return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))\n\n'
+              '    # Public and happy-path contract.\n')
+          replace_exact(path,
+              '    def test_verified_compatible_requires_changed_parent_and_can_resolve(self):\n        state = prerequisite_for(\n            self.module,\n            variant_for(self.ir, "bhsa"),',
+              '    def test_verified_compatible_requires_changed_parent_and_can_resolve(self):\n        compatible_ir = self.compatible_ir()\n        state = prerequisite_for(\n            self.module,\n            variant_for(compatible_ir, "bhsa"),')
+          replace_exact(path,
+              '        result = self.resolve(("bhsa",), prerequisites=(state,))\n        self.assertEqual(result.plans[0].parent_state, "verified-compatible")',
+              '        result = self.resolve(("bhsa",), ir=compatible_ir, prerequisites=(state,))\n        self.assertEqual(result.plans[0].parent_state, "verified-compatible")')
+          replace_exact(path,
+              '    def test_observed_parent_change_changes_runtime_plan_and_resolution_identity(self):\n        variant = variant_for(self.ir, "bhsa")',
+              '    def test_observed_parent_change_changes_runtime_plan_and_resolution_identity(self):\n        compatible_ir = self.compatible_ir()\n        variant = variant_for(compatible_ir, "bhsa")')
+          replace_exact(path,
+              '        first = self.resolve(("bhsa",), prerequisites=(exact,))\n        second = self.resolve(("bhsa",), prerequisites=(compatible,))',
+              '        first = self.resolve(("bhsa",), ir=compatible_ir, prerequisites=(exact,))\n        second = self.resolve(("bhsa",), ir=compatible_ir, prerequisites=(compatible,))')
+          print('I-006 opt-in fixture migrations and malformed-state precedence applied')
+          PY
+      - name: Commit and push patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/tfont/semantic_resolver.py tests/i006/test_semantic_resolver_contract.py
+          git diff --cached --check
+          git commit -m 'I-011 GREEN regression: explicit compatible I-006 fixtures and diagnostic ordering'
+          git push origin HEAD:impl/i011-parent-compatibility-authority
