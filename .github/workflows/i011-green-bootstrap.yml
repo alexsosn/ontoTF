@@ -1,0 +1,95 @@
+name: I-011 temporary GREEN patch
+
+on:
+  push:
+    branches:
+      - impl/i011-parent-compatibility-authority
+    paths:
+      - '.github/workflows/i011-green-bootstrap.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/impl/i011-parent-compatibility-authority'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - name: Apply minimal exact-anchor production patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def change(path, old, new):
+              file = Path(path)
+              text = file.read_text(encoding='utf-8')
+              assert text.count(old) == 1, f'{path}: expected exactly one anchor, got {text.count(old)}: {old!r}'
+              file.write_text(text.replace(old, new), encoding='utf-8')
+
+          change('src/tfont/schemas/profile.schema.json',
+              '    "parent_component_manifest": {"type": "string", "minLength": 1},',
+              '    "parent_compatibility": {"enum": ["exact-only", "dependency-verified"]},\n'
+              '    "parent_component_manifest": {"type": "string", "minLength": 1},')
+
+          change('src/tfont/semantic_ir.py',
+              '    projection_reviews: tuple[tuple[str, str, ReviewFingerprint], ...]\n\n\n@dataclass(frozen=True)\nclass BundleVariantIR:',
+              '    projection_reviews: tuple[tuple[str, str, ReviewFingerprint], ...]\n'
+              '    parent_compatibility: str = "exact-only"\n\n\n@dataclass(frozen=True)\nclass BundleVariantIR:')
+          change('src/tfont/semantic_ir.py',
+              '        projection_reviews=tuple(projection_reviews),\n    )\n    variant_ir = BundleVariantIR(',
+              '        projection_reviews=tuple(projection_reviews),\n'
+              '        parent_compatibility=profile.get("parent_compatibility", "exact-only"),\n'
+              '    )\n    variant_ir = BundleVariantIR(')
+
+          change('src/tfont/semantic_resolver.py',
+              'def _validate_release_signature_rows(signature: ProfileReleaseSignature) -> None:\n    vocabulary_specs = (',
+              'def _validate_release_signature_rows(signature: ProfileReleaseSignature) -> None:\n'
+              '    if type(signature.parent_compatibility) is not str or signature.parent_compatibility not in {"exact-only", "dependency-verified"}:\n'
+              '        _fail("invalid_compiled_ir", "release parent compatibility policy is invalid")\n'
+              '    vocabulary_specs = (')
+          change('src/tfont/semantic_resolver.py',
+              '        "minimum_tfont_runtime": signature.minimum_tfont_runtime,',
+              '        "minimum_tfont_runtime": signature.minimum_tfont_runtime,\n'
+              '        "parent_compatibility": signature.parent_compatibility,')
+          change('src/tfont/semantic_resolver.py',
+              '    if state.parent_state == "incompatible":\n        return "parent_incompatible"\n\n    expected_parent = variant.key.expected_parent_manifest_digest',
+              '    if state.parent_state == "incompatible":\n        return "parent_incompatible"\n'
+              '    if state.parent_state == "verified-compatible" and variant.release_signature.parent_compatibility != "dependency-verified":\n'
+              '        return "parent_incompatible"\n\n'
+              '    expected_parent = variant.key.expected_parent_manifest_digest')
+
+          change('src/tfont/runtime_prerequisites.py',
+              '    elif parent_digest == variant.key.expected_parent_manifest_digest:\n        compatibility_state = "verified-exact"\n    else:\n        compatibility_state = "verified-compatible"',
+              '    elif parent_digest == variant.key.expected_parent_manifest_digest:\n        compatibility_state = "verified-exact"\n'
+              '    elif variant.release_signature.parent_compatibility == "dependency-verified":\n'
+              '        compatibility_state = "verified-compatible"\n'
+              '    else:\n'
+              '        compatibility_state = "incompatible"')
+
+          change('tests/i007/test_runtime_prerequisite_contract.py',
+              'from tests.i006._fixtures import compiled_noun_ir, with_bundle_digest',
+              'from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources\n'
+              'from tests.i006._fixtures import compiled_noun_ir, with_bundle_digest\n'
+              'from tfont.semantic_ir import compile_semantic_ir\n'
+              'from tfont.semantic_validation import validate_semantic_bundle')
+          change('tests/i007/test_runtime_prerequisite_contract.py',
+              '    def test_changed_parent_and_complete_passing_closure_yields_verified_compatible(self):\n        variant = self._variant()\n        report = self._evaluate(variant, FakeObservation("sha256:" + "9" * 64))',
+              '    def test_changed_parent_and_complete_passing_closure_yields_verified_compatible(self):\n'
+              '        sources = noun_sources("bhsa", parent_char="a")\n'
+              '        sources["profile"]["parent_compatibility"] = "dependency-verified"\n'
+              '        validate_structural_sources(sources)\n'
+              '        variant = compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),)).variants[0]\n'
+              '        report = self._evaluate(variant, FakeObservation("sha256:" + "9" * 64))')
+          print('I-011 exact-anchor patch applied successfully')
+          PY
+      - name: Commit changes on implementation branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/tfont/schemas/profile.schema.json src/tfont/semantic_ir.py src/tfont/semantic_resolver.py src/tfont/runtime_prerequisites.py tests/i007/test_runtime_prerequisite_contract.py
+          git diff --cached --check
+          git commit -m 'I-011 GREEN: enforce explicit parent-compatibility release authority'
+          git push origin HEAD:impl/i011-parent-compatibility-authority
