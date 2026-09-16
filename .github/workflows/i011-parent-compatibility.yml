@@ -1,0 +1,53 @@
+name: I-011 parent compatibility authority
+
+on:
+  push:
+    branches:
+      - impl/i011-parent-compatibility-authority
+    paths:
+      - 'tests/i011/**'
+      - 'tests/i007/**'
+      - 'src/tfont/schemas/profile.schema.json'
+      - 'src/tfont/semantic_ir.py'
+      - 'src/tfont/semantic_resolver.py'
+      - 'src/tfont/runtime_prerequisites.py'
+      - '.github/workflows/i011-parent-compatibility.yml'
+  pull_request:
+    paths:
+      - 'tests/i011/**'
+      - 'tests/i007/**'
+      - 'src/tfont/schemas/profile.schema.json'
+      - 'src/tfont/semantic_ir.py'
+      - 'src/tfont/semantic_resolver.py'
+      - 'src/tfont/runtime_prerequisites.py'
+      - '.github/workflows/i011-parent-compatibility.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  focused:
+    name: policy focused (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e . pytest
+      - run: python -m pytest tests/i011 -q
+
+  regressions:
+    name: existing I-004 through I-010
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e . pytest
+      - run: python -m pytest tests/i004 tests/i005 tests/i006 tests/i007 tests/i008 tests/i010 -q
