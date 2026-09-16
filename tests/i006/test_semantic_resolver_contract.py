@@ -6,7 +6,7 @@ import unittest
 from dataclasses import replace
 from unittest import mock
 
-from tests.i005._fixtures import AUTHORITY_NOUN, validated_noun_bundle
+from tests.i005._fixtures import AUTHORITY_NOUN, validated_noun_bundle, noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import (
     OLIA_NOUN,
     TEST_SOURCE_CONTRACT,
@@ -18,6 +18,7 @@ from tests.i006._fixtures import (
     with_bundle_digest,
 )
 from tfont.semantic_ir import SemanticKey, compile_semantic_ir, native_binding_identity
+from tfont.semantic_validation import validate_semantic_bundle
 
 
 try:
@@ -117,6 +118,12 @@ class I006SemanticResolverContractTests(unittest.TestCase):
             request_for(self.module, corpora, key=key, semantic_mode=mode),
             selected_prerequisites,
         )
+
+    def compatible_ir(self):
+        sources = noun_sources("bhsa", parent_char="a")
+        sources["profile"]["parent_compatibility"] = "dependency-verified"
+        validate_structural_sources(sources)
+        return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
 
     # Public and happy-path contract.
     def test_public_constants_are_versioned(self):
@@ -306,13 +313,14 @@ class I006SemanticResolverContractTests(unittest.TestCase):
         assert_problem(self, "parent_incompatible", self.resolve, ("bhsa",), prerequisites=(state,))
 
     def test_verified_compatible_requires_changed_parent_and_can_resolve(self):
+        compatible_ir = self.compatible_ir()
         state = prerequisite_for(
             self.module,
-            variant_for(self.ir, "bhsa"),
+            variant_for(compatible_ir, "bhsa"),
             parent_state="verified-compatible",
             observed_parent="sha256:" + "8" * 64,
         )
-        result = self.resolve(("bhsa",), prerequisites=(state,))
+        result = self.resolve(("bhsa",), ir=compatible_ir, prerequisites=(state,))
         self.assertEqual(result.plans[0].parent_state, "verified-compatible")
 
     def test_verified_compatible_equal_parent_is_invalid(self):
@@ -748,7 +756,8 @@ class I006SemanticResolverContractTests(unittest.TestCase):
         self.assertEqual(plan.prerequisite_source_contract, "  Test Contract  ")
 
     def test_observed_parent_change_changes_runtime_plan_and_resolution_identity(self):
-        variant = variant_for(self.ir, "bhsa")
+        compatible_ir = self.compatible_ir()
+        variant = variant_for(compatible_ir, "bhsa")
         exact = prerequisite_for(self.module, variant)
         compatible = prerequisite_for(
             self.module,
@@ -756,8 +765,8 @@ class I006SemanticResolverContractTests(unittest.TestCase):
             parent_state="verified-compatible",
             observed_parent="sha256:" + "1" * 64,
         )
-        first = self.resolve(("bhsa",), prerequisites=(exact,))
-        second = self.resolve(("bhsa",), prerequisites=(compatible,))
+        first = self.resolve(("bhsa",), ir=compatible_ir, prerequisites=(exact,))
+        second = self.resolve(("bhsa",), ir=compatible_ir, prerequisites=(compatible,))
         self.assertNotEqual(
             self.module.runtime_prerequisite_fingerprint(exact),
             self.module.runtime_prerequisite_fingerprint(compatible),

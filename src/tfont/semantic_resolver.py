@@ -943,9 +943,6 @@ def _prerequisite_problem(
         return "parent_unverified"
     if state.parent_state == "incompatible":
         return "parent_incompatible"
-    if state.parent_state == "verified-compatible" and variant.release_signature.parent_compatibility != "dependency-verified":
-        return "parent_incompatible"
-
     expected_parent = variant.key.expected_parent_manifest_digest
     if (
         state.parent_state == "verified-exact"
@@ -957,6 +954,8 @@ def _prerequisite_problem(
         and state.observed_parent_manifest_digest == expected_parent
     ):
         return "invalid_prerequisite"
+    if state.parent_state == "verified-compatible" and variant.release_signature.parent_compatibility != "dependency-verified":
+        return "parent_incompatible"
 
     try:
         dependencies = _canonical_dependency_results(state.dependency_results)
