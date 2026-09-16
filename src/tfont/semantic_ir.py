@@ -132,6 +132,7 @@ class ProfileReleaseSignature:
     projection_semantic_algorithm: str
     mapping_reviews: tuple[tuple[str, ReviewFingerprint], ...]
     projection_reviews: tuple[tuple[str, str, ReviewFingerprint], ...]
+    parent_compatibility: str = "exact-only"
 
 
 @dataclass(frozen=True)
@@ -625,6 +626,7 @@ def _bundle_context(
         projection_semantic_algorithm=PROJECTION_SEMANTIC_ALGORITHM,
         mapping_reviews=tuple(mapping_reviews),
         projection_reviews=tuple(projection_reviews),
+        parent_compatibility=profile.get("parent_compatibility", "exact-only"),
     )
     variant_ir = BundleVariantIR(
         key=variant,
