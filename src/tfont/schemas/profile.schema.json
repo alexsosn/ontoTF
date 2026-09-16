@@ -239,6 +239,7 @@
         ]
       }
     },
+    "parent_compatibility": {"enum": ["exact-only", "dependency-verified"]},
     "parent_component_manifest": {"type": "string", "minLength": 1},
     "required_components": {
       "type": "array",

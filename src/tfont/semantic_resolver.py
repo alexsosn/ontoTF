@@ -224,6 +224,8 @@ def _evidence_projection(value: EvidenceFingerprint) -> dict[str, str]:
 
 
 def _validate_release_signature_rows(signature: ProfileReleaseSignature) -> None:
+    if type(signature.parent_compatibility) is not str or signature.parent_compatibility not in {"exact-only", "dependency-verified"}:
+        _fail("invalid_compiled_ir", "release parent compatibility policy is invalid")
     vocabulary_specs = (
         ("profiles", signature.profiles, PROFILE_IDS),
         ("capabilities", signature.capabilities, CAPABILITY_IDS),
@@ -274,6 +276,7 @@ def _profile_release_projection(signature: ProfileReleaseSignature) -> dict[str,
         "dependency_contract_version": signature.dependency_contract_version,
         "mapping_schema_version": signature.mapping_schema_version,
         "minimum_tfont_runtime": signature.minimum_tfont_runtime,
+        "parent_compatibility": signature.parent_compatibility,
         "profiles": list(signature.profiles),
         "capabilities": list(signature.capabilities),
         "dependency_records": [list(item) for item in signature.dependency_records],
@@ -939,6 +942,8 @@ def _prerequisite_problem(
     if state.parent_state == "unverified":
         return "parent_unverified"
     if state.parent_state == "incompatible":
+        return "parent_incompatible"
+    if state.parent_state == "verified-compatible" and variant.release_signature.parent_compatibility != "dependency-verified":
         return "parent_incompatible"
 
     expected_parent = variant.key.expected_parent_manifest_digest
