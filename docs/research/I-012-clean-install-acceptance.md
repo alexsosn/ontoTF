@@ -51,7 +51,23 @@ Ordinary release CI should not download or bundle BHSA, Syriac or ExtraBiblical 
 - `F.sp.s(value)` -> selected nodes;
 - `F.otype.v(node)` -> node type.
 
-This double is transport/execution stimulus, not semantic authority. Production parent/component identities should be taken from the loaded production bundles/compiled variants wherever practical rather than copied from test fixtures. The synthetic node/value rows may be fixed, obvious acceptance data chosen to exercise `subs`, `nmpr`, nonmatching values, overlap/node-type filtering and deterministic ordering.
+This double is transport/execution stimulus, not semantic authority. The synthetic node/value rows may be fixed, obvious acceptance data chosen to exercise `subs`, `nmpr`, nonmatching values, overlap/node-type filtering and deterministic ordering.
+
+### Acceptance identities must be independent oracles
+
+The acceptance runner must **not** derive all expected release authority from the wheel it is testing. A self-consistent but accidentally changed profile could otherwise supply both the value under test and its own expected value.
+
+Freeze the reviewed I-009 release identities independently in the acceptance artifact and compare the installed wheel against them:
+
+| corpus | parent manifest digest | component digest | mapping semantic digest | projection semantic digest |
+| --- | --- | --- | --- | --- |
+| BHSA | `sha256:cc2c65cd79b2cb7faf1a34b94feb3cc2d3291e7064cbec942c53b0e05f1b0837` | `sha256:5178414e293a743fc98768abcab5b9cb268e14ad56fd2cfbac544ae2869d2e6f` | `sha256:1584b737cc14b14c6178a651d96e4d14c21414bcd55c216b4dbf45133ab02729` | `sha256:60b78e009d3ca5797ad090c9fb82a2a928c2b44a0a9f23c90b95f86238388c41` |
+| Syriac | `sha256:afb5a826b9ebe10cdd4ca23d96e00ee7bf677d06496cfcfcee6bb37d2ecff6c4` | `sha256:54a2596d5525f3afb34db0a89d5511e6b8471ce4a93fae4825b22f0945ab62ef` | `sha256:ae7fe7e2bff7d43524b78f68afc548cdde51e20bc32ecf2d082aec2f390043a1` | `sha256:7aab23f738faa2c4fde2909a280618863284ddf8ec63c6a0e237ecb111a5d1a2` |
+| ExtraBiblical | `sha256:d39fe3f4848cadb14ae5ef453a5150ea6281b2874728566198d7de10d72bec4a` | `sha256:d0ca9bdf90bfdefe19861c2c68e91071650ed511b8a79270490238b30274aee0` | `sha256:5ccd4e2648595c439c374b383e6e3f5abe747aa3997fe863918e733c5ddb0c2c` | `sha256:8827054ce6355fd05172b2dc7ed58030240637c0ba93092e518f11b9b3a24907` |
+
+Also freeze the OLiA revision `d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6`, Noun IRI `http://purl.org/olia/olia.owl#Noun`, and exact-only release policy. These constants are deliberate release acceptance duplication, not test-fixture authority: changing them requires an explicit reviewed release decision.
+
+The API contexts should use these frozen parent/component identities. The compiled wheel must independently report the same expected parent and semantic digests. That makes accidental resource drift a test failure rather than a self-fulfilling input.
 
 A real Context-Fabric smoke remains useful lower-layer coverage in I-008, but replacing this release gate with full corpus acquisition would add network, storage and upstream-availability failure modes unrelated to the v0.1 package contract.
 
@@ -64,8 +80,8 @@ Recommended release gate:
 3. install exactly that wheel into the venv;
 4. copy/run a repository acceptance runner from an outside-checkout working directory with isolated Python;
 5. runner imports only installed `tfont` and uses shipped production resources;
-6. validate/compile all three bundles;
-7. create three minimal already-loaded API contexts using the production identities and local API doubles;
+6. validate/compile all three bundles and compare their release identities to the frozen reviewed constants above;
+7. create three minimal already-loaded API contexts using the frozen release identities and local API doubles;
 8. execute one exact OLiA Noun request;
 9. assert nodes and the explanation/provenance chain;
 10. repeat with one parent digest drifted and assert fail-closed before any selector call.
@@ -89,14 +105,15 @@ This preserves the requested RED/GREEN discipline without inventing product surf
 The successful run should prove, through public installed-wheel objects:
 
 1. exactly the three production corpora participate;
-2. one OLiA Noun request yields deterministic corpus ordering and expected acceptance node tuples;
-3. BHSA and ExtraBiblical plans are finite `value-set-predicate` bindings over canonical `{nmpr, subs}` and Syriac is scalar `value-predicate` over `subs`;
-4. every plan target/key remains the requested OLiA Noun semantic tuple;
-5. each plan exposes mapping ID, projection ID, mapping/projection review fingerprints and native-binding identity;
-6. each corpus row exposes a fresh runtime report whose expected/observed parent is exact and whose dependency closure passed;
-7. release/profile fingerprints and plan/resolution fingerprints are nonempty and consistent with the returned resolution;
-8. no API double reports an autoload call;
-9. changing one loaded parent digest produces `parent_incompatible` before any corpus selector is called.
+2. installed parent/component, mapping/projection semantic, OLiA and exact-only policy identities equal the independently frozen reviewed v0.1 constants;
+3. one OLiA Noun request yields deterministic corpus ordering and expected acceptance node tuples;
+4. BHSA and ExtraBiblical plans are finite `value-set-predicate` bindings over canonical `{nmpr, subs}` and Syriac is scalar `value-predicate` over `subs`;
+5. every plan target/key remains the requested OLiA Noun semantic tuple;
+6. each plan exposes the expected mapping ID, projection ID, mapping/projection semantic digests, mapping/projection review fingerprints and native-binding identity;
+7. each corpus row exposes a fresh runtime report whose expected/observed parent is exact and whose complete dependency closure passed;
+8. release/profile fingerprints and plan/resolution fingerprints are nonempty and consistent with the returned resolution;
+9. no API double reports an autoload call;
+10. changing one loaded parent digest produces `parent_incompatible` before any corpus selector is called.
 
 The negative run must check all selector counters, not only the drifted corpus, because execution establishes prerequisites for all requested corpora before `semantic_resolve()` and should not begin native execution if the multi-corpus request is unauthorized.
 
@@ -120,13 +137,14 @@ Do not put a user-facing tutorial here; the release-polish ticket owns README/fi
 
 - false clean-install test caused by source checkout leaking onto `sys.path`;
 - runner importing `tests.i008._fixtures` or other non-wheel code;
-- copied hardcoded parent/component identities silently diverging from shipped profiles;
+- self-derived parent/component/mapping identities making accidental release drift pass tautologically;
+- frozen acceptance constants being changed casually instead of through an explicit reviewed release decision;
 - asserting only result nodes while failing to prove provenance/review/runtime identity;
 - negative parent test calling selectors before authorization failure;
-- accidental corpus/network loading hidden in the runner;
+- accidental corpus/ontology network loading hidden in the runner;
 - treating API doubles as evidence that the actual corpus encoding is correct (that authority remains I-009 evidence/review);
 - turning a release acceptance script into a new supported query/CLI API without research.
 
 ## Conclusion
 
-The smallest correct I-012 is a **clean-wheel acceptance runner and CI gate over the existing public API**, not another TFont feature. It should compose the two I-009 boundaries, assert the existing explanation/provenance envelope, and fail closed on parent drift. If this runner passes without `src/tfont` changes, that is the desired result: the remaining blocker was release-level integration evidence, not missing runtime functionality.
+The smallest correct I-012 is a **clean-wheel acceptance runner and CI gate over the existing public API**, not another TFont feature. It should compose the two I-009 boundaries, compare the installed release against independently frozen reviewed identities, assert the existing explanation/provenance envelope, and fail closed on parent drift. If this runner passes without `src/tfont` changes, that is the desired result: the remaining blocker was release-level integration evidence, not missing runtime functionality.
