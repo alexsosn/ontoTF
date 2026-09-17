@@ -3,7 +3,10 @@ from __future__ import annotations
 import importlib
 import unittest
 
+from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import compiled_noun_ir, with_bundle_digest
+from tfont.semantic_ir import compile_semantic_ir
+from tfont.semantic_validation import validate_semantic_bundle
 
 
 class FakeObservation:
@@ -71,7 +74,10 @@ class I007RuntimePrerequisiteContractTests(unittest.TestCase):
         self.assertIsNone(prerequisite.active_ontology_bundle_digest)
 
     def test_changed_parent_and_complete_passing_closure_yields_verified_compatible(self):
-        variant = self._variant()
+        sources = noun_sources("bhsa", parent_char="a")
+        sources["profile"]["parent_compatibility"] = "dependency-verified"
+        validate_structural_sources(sources)
+        variant = compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),)).variants[0]
         report = self._evaluate(variant, FakeObservation("sha256:" + "9" * 64))
         self.assertEqual(report.compatibility_state, "verified-compatible")
         self.assertEqual(report.to_prerequisite().parent_state, "verified-compatible")

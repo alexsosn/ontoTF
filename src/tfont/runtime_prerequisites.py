@@ -772,8 +772,10 @@ def evaluate_runtime_prerequisites(
         compatibility_state = "unverified"
     elif parent_digest == variant.key.expected_parent_manifest_digest:
         compatibility_state = "verified-exact"
-    else:
+    elif variant.release_signature.parent_compatibility == "dependency-verified":
         compatibility_state = "verified-compatible"
+    else:
+        compatibility_state = "incompatible"
 
     active_digest, ontology_bundle_state = _bundle_state(
         variant,
