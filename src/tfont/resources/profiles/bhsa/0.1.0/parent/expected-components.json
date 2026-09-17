@@ -1,0 +1,11 @@
+{
+  "algorithm": "tfont-parent-components-sha256-v1",
+  "components": [
+    {
+      "component_id": "bhsa-tf",
+      "content_digest": "sha256:5178414e293a743fc98768abcab5b9cb268e14ad56fd2cfbac544ae2869d2e6f",
+      "identity_algorithm": "tfont-tf-files-sha256-v1",
+      "kind": "tf-payload"
+    }
+  ]
+}

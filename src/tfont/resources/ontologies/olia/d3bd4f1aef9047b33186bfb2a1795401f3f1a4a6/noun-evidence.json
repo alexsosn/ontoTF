@@ -1,0 +1,18 @@
+{
+  "content_digest": "sha256:9fc34c387992787a17120348c7368cadf8056f8e17373f108976d045aa568538",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:olia:noun-hierarchy",
+  "kind": "ontology-definition",
+  "license_ref": "https://creativecommons.org/licenses/by/3.0/",
+  "reviewed_content": {
+    "direct_subclasses_include": [
+      "http://purl.org/olia/olia.owl#CommonNoun",
+      "http://purl.org/olia/olia.owl#ProperNoun"
+    ],
+    "license_uri": "https://creativecommons.org/licenses/by/3.0/",
+    "snapshot_digest": "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd",
+    "target": "http://purl.org/olia/olia.owl#Noun"
+  },
+  "source_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "source_uri": "https://raw.githubusercontent.com/acoli-repo/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/owl/core/olia.owl"
+}

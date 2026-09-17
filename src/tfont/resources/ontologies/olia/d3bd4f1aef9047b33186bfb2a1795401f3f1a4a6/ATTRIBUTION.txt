@@ -1,0 +1,7 @@
+OLiA – Ontologies of Linguistic Annotation
+Reference Model snapshot: owl/core/olia.owl
+Source: https://github.com/acoli-repo/olia
+Revision: d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+License URI: https://creativecommons.org/licenses/by/3.0/
+The bundled olia.owl and LICENSE.data are third-party OLiA data. ontoTF-authored mappings and metadata remain under the repository MIT license.

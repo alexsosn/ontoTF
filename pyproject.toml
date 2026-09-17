@@ -21,4 +21,14 @@ dependencies = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-tfont = ["schemas/*.json"]
+tfont = [
+  "schemas/*.json",
+  "resources/profiles/*/*/*.json",
+  "resources/profiles/*/*/parent/*.json",
+  "resources/profiles/*/*/mappings/*.json",
+  "resources/profiles/*/*/evidence/*.json",
+  "resources/ontologies/*/*/*.json",
+  "resources/ontologies/*/*/*.owl",
+  "resources/ontologies/*/*/*.txt",
+  "resources/ontologies/*/*/*.data",
+]

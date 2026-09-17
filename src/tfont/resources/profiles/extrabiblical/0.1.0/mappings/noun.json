@@ -1,0 +1,65 @@
+{
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": ["linguistic.part-of-speech"],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {"content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24", "evidence_id": "evidence:extrabiblical:word-sp-enum"},
+        {"content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0", "evidence_id": "evidence:extrabiblical:feature-authority"},
+        {"content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17", "evidence_id": "evidence:bhsa:word-sp-noun-codes"},
+        {"content_digest": "sha256:9fc34c387992787a17120348c7368cadf8056f8e17373f108976d045aa568538", "evidence_id": "evidence:olia:noun-hierarchy"}
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-noun",
+      "mapping_semantic_digest": "sha256:5ccd4e2648595c439c374b383e6e3f5abe747aa3997fe863918e733c5ddb0c2c",
+      "native_binding": {"component_id": "extrabiblical-tf", "execution_shape": "value-set-predicate", "feature": "sp", "node_type": "word", "values": ["nmpr", "subs"]},
+      "native_dependencies": ["dep:extrabiblical:word-sp:nmpr", "dep:extrabiblical:word-sp:subs"],
+      "native_state": "positive",
+      "profiles": ["linguistic"],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {"content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24", "evidence_id": "evidence:extrabiblical:word-sp-enum"},
+            {"content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0", "evidence_id": "evidence:extrabiblical:feature-authority"},
+            {"content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17", "evidence_id": "evidence:bhsa:word-sp-noun-codes"},
+            {"content_digest": "sha256:9fc34c387992787a17120348c7368cadf8056f8e17373f108976d045aa568538", "evidence_id": "evidence:olia:noun-hierarchy"}
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {"component_id": "extrabiblical-tf", "execution_shape": "value-set-predicate", "feature": "sp", "node_type": "word", "values": ["nmpr", "subs"]},
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-noun",
+          "projection_semantic_digest": "sha256:8827054ce6355fd05172b2dc7ed58030240637c0ba93092e518f11b9b3a24907",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-noun:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:8827054ce6355fd05172b2dc7ed58030240637c0ba93092e518f11b9b3a24907",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-12T15:29:25Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/156#issuecomment-5646831801",
+            "review_method": "logically-independent semantic/evidence review against pinned I-009 research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Noun"
+        }
+      ],
+      "rationale": "Candidate production projection for the v0.1 OLiA Noun semantic slice; see I-009 research and implementation PR #156.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-noun:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:5ccd4e2648595c439c374b383e6e3f5abe747aa3997fe863918e733c5ddb0c2c",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-12T15:29:25Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/156#issuecomment-5646831801",
+        "review_method": "logically-independent semantic/evidence review against pinned I-009 research evidence"
+      }
+    }
+  ],
+  "schema_version": 2
+}

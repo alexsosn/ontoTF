@@ -1,0 +1,14 @@
+{
+  "content_digest": "sha256:c237ccac53cb3061caca6b3f8d93360ec97a57ed41dab1f73790203c01d31468",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:syriac:proper-inside-subs",
+  "kind": "corpus-lexicon-encoding",
+  "reviewed_content": {
+    "encoding": "sp=subs:ls=prop",
+    "lexical_semantics": "proper noun",
+    "lexical_semantics_value": "prop",
+    "part_of_speech_value": "subs"
+  },
+  "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/linksyr/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/lexicon"
+}
