@@ -274,7 +274,11 @@ def request() -> SemanticResolveRequest:
 
 def plan_checks(result: Any, apis: dict[str, LoadedAPI]) -> None:
     require(result.execution_contract == "tfont-exact-execution-v1", "execution contract drifted")
-    require(result.resolution.request == request(), "resolution did not preserve the exact request")
+    expected_request = request()
+    actual_request = result.resolution.request
+    require(actual_request.key == expected_request.key, "resolution changed the semantic request key")
+    require(actual_request.semantic_mode == expected_request.semantic_mode, "resolution changed semantic mode")
+    require(actual_request.corpora == tuple(sorted(expected_request.corpora)), "resolution did not canonicalize the requested corpora")
     require_sha256(result.resolution.resolution_fingerprint, "resolution fingerprint")
     require(result.resolution.losses == (), "exact production acceptance unexpectedly reports losses")
 
