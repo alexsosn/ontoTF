@@ -1,184 +1,111 @@
 # TFont
 
-TFont is an experimental semantic interoperability layer for Text-Fabric / Context-Fabric corpora. It projects corpus-native node types, features, edge relations, and controlled values toward shared open semantic standards while keeping the native corpus and its scholarly analysis authoritative.
+TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. Its first release, **v0.1.0**, executes one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
 
-## Current status
+## What is shipped
 
-TFont is an active proof-of-concept implementation. The foundational research and accepted architecture are merged, together with four production foundations on `main`:
+One exact shared target: [OLiA Noun](http://purl.org/olia/olia.owl#Noun). Reviewed production profiles exist for:
 
-- structural source validation;
-- deterministic canonicalization and digest primitives;
-- parent/component identity for files, directories, Text-Fabric payloads, and expected-parent manifests;
-- cross-artifact semantic validation for authored semantic source bundles.
+| Corpus | Pinned upstream source | Native Noun selector |
+| --- | --- | --- |
+| [ETCBC BHSA](https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da) | revision `4db00e2…`, TF `2021` | `word.sp in {nmpr,subs}` |
+| [ETCBC Syriac](https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919) | revision `bb0eaa7…`, TF `0.9` | `word.sp=subs` |
+| [ETCBC ExtraBiblical](https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9) | revision `9a56288…`, TF `0.2` | `word.sp in {nmpr,subs}` |
 
-The common ontology semantic-adapter is now accepted architecture: reviewed corpus-native semantic records can carry typed semantic-pivot or authority-value projections while identity, catalogue, provenance, and locator references remain separate. Ambiguous, native-only, and unsupported states remain explicit and fail closed rather than being guessed into shared targets.
+The differences are intentional: the reviewed Syriac encoding keeps proper nouns under `sp=subs`; BHSA and ExtraBiblical distinguish `nmpr` from `subs`. This is one selected feature value or finite set per corpus, **not** generic Boolean composition.
 
-Cross-artifact semantic validation is implemented on `main`. Compatibility evaluation, semantic IR/compiler and runtime resolution, and corpus-specific mappings are not yet shipped capabilities. The validator checks authored semantic artifacts and their cross-artifact closure; it does not by itself execute native corpus queries or declare a materialized corpus compatible.
+Public library APIs include source and cross-artifact validation (`validate_semantic_bundle`), deterministic parent/component and semantic digests, compilation (`compile_semantic_ir`), capability discovery, fresh runtime prerequisite evaluation, exact semantic resolution and execution (`execute_exact_semantic`). `load_production_noun_bundle` and `load_production_noun_bundles` expose installed production resources. Each executed corpus result contains node IDs, the exact mapping and projection, their reviews and evidence, expected/observed parent identity, prerequisite report and deterministic fingerprints.
 
-## Implemented capabilities
+**Trust boundary:** a production profile is authorized only for its exact reviewed parent manifest. The executor uses a current compiled IR, evaluates dependencies from the already-loaded TF API and resolves the request afresh before native selection; a caller-supplied plan or public hash cannot authorize execution on its own. Mismatched or unverified corpus data fail closed.
 
-### Structural source validation
+## Installation
 
-TFont currently provides:
-
-- strict UTF-8 YAML and JSON loading;
-- duplicate-key rejection and conversion to a plain JSON-compatible value model;
-- rejection of non-JSON values such as non-finite numbers or non-string mapping keys;
-- local JSON Schema Draft 2020-12 structural contracts;
-- stable `SourceValidationError` diagnostics for decode, source-model, schema, and structural-validation failures.
-
-This layer performs structural validation only. Cross-artifact references, ontology terms, evidence bindings, review bindings, and compatibility state are not validated by the structural loader.
-
-### Canonicalization and digests
-
-TFont also provides deterministic identity primitives for:
-
-- RFC 8785/JCS canonical JSON bytes;
-- normalized source-file and source-bundle digests;
-- exact evidence-payload and normalized evidence-record digests;
-- mapping semantic digests, including the mapping-v2 semantic projection;
-- projection semantic digests;
-- profile semantic digests for an already assembled semantic projection;
-- stable `DigestError` diagnostics for canonicalization and projection failures.
-
-These helpers compute deterministic projections and digests; they do not resolve or verify cross-artifact semantic relationships by themselves.
-
-### Parent/component identity
-
-TFont can compute stable identities for the materialized corpus components that semantic metadata is expected to describe:
-
-- exact file content identity;
-- recursive directory file-set identity with symlinks and unsupported entries rejected;
-- Text-Fabric payload identity;
-- deterministic expected-parent manifest projections and digests;
-- stable `IdentityError` diagnostics for invalid paths, filesystem failures, and unsupported filesystem objects.
-
-These functions establish what corpus material a profile or mapping is meant to apply to. They do not by themselves declare that the parent is semantically compatible with a profile or ontology mapping.
-
-### Cross-artifact semantic validation
-
-TFont can validate an assembled `SemanticSourceBundle` after its individual source artifacts have passed structural validation. `validate_semantic_bundle()` checks the authored semantic contract across the bundle, including:
-
-- supported profile, mapping, dependency, and catalogue contract versions;
-- duplicate IDs, required-component authority, dependency closure, and mapping/profile scope;
-- controlled semantic vocabularies and native record-state legality;
-- projection, candidate, ambiguity, target-routing, and ontology-lock legality;
-- ontology-bundle and bridge closure requirements;
-- evidence bindings, review bindings, and mapping-v2 semantic-digest freshness;
-- explicit native value/domain/extent semantics and publication/approximation policy constraints.
-
-Review-binding checks validate authored review data when present; semantic validation success is not execution authorization.
-
-Successful validation returns a `ValidatedSemanticBundle` with deterministic parent, mapping, bundle, and index information. Failures use `SemanticValidationError` with artifact/source/path provenance.
-
-This is validation of explicit semantic source artifacts, not compatibility evaluation against a live corpus. It does not compile semantic IR, resolve live ontology resources, or execute native/cross-corpus queries.
-
-## Accepted semantic architecture
-
-The accepted common ontology semantic-adapter architecture keeps native Text-Fabric / Context-Fabric semantics authoritative and adds reviewed, explicit interoperability metadata around them.
-
-In that model:
-
-- one native semantic record may have zero or more approved typed target-bearing projections;
-- shared semantic-pivot targets and authority-value targets are routed separately;
-- entity identity, catalogue identifiers, provenance sources, and locators are typed external references rather than semantic targets;
-- ambiguous candidates are recorded but are not approved or executable;
-- native-only and unsupported records remain legitimate reviewed no-target states;
-- ontology locks, bundle/bridge closure, evidence/review binding, and approximation policy are explicit prerequisites for later semantic execution;
-- TFont does not silently infer mappings from feature names, URI spelling, observed values, or ontology labels.
-
-The cross-artifact validator now enforces these authored semantic contracts. Compatibility evaluation, semantic IR/compiler, runtime resolution, and corpus-specific mapping releases remain later stages.
-
-## Development install
-
-TFont currently targets Python 3.10 or newer. From a repository checkout:
+Python 3.10 or newer. Download `tfont-0.1.0-py3-none-any.whl` from the [GitHub v0.1.0 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.0), then install the **downloaded local wheel**:
 
 ```bash
-python -m pip install -e .
+python -m pip install ./tfont-0.1.0-py3-none-any.whl
 ```
 
-The project does not currently document a published package release as the supported installation path.
+For the local-corpus example below, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). A development checkout may instead use `python -m pip install -e .`. This GitHub wheel is the v0.1 distribution; `pip install tfont` is **not** a supported PyPI installation claim.
 
-## Minimal usage
+Corpus files are **not bundled**. TFont does not download, load or update BHSA, Syriac or ExtraBiblical; you must obtain source corpora independently and respect their licenses. The separately bundled pinned OLiA ontology is CC BY 3.0 with its `ATTRIBUTION.txt` and `LICENSE.data`; ontoTF-authored code and mapping/profile metadata are MIT. BHSA corpus data have distinct CC BY-NC 4.0 terms.
 
-Strict source parsing:
+## First success with real BHSA data
 
-```python
-from tfont import loads_source
+Prerequisite: obtain the `.tf` files in the `tf/2021` directory from the **pinned** [ETCBC BHSA revision `4db00e2157915495e1a4d3d57e41223df24775da`](https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/tf/2021). Set `BHSA_TF_DIR` to the local directory *containing `otype.tf`, `sp.tf`, and the other original `.tf` files*, not its parent. Do not edit these files. This workflow uses the local `tf.fabric.Fabric` API and does not ask Text-Fabric to download an app or corpus.
 
-data = loads_source("a: [1, true, null, text]\n", format="yaml")
-```
-
-Load and structurally validate a caller-owned profile source:
-
-```python
-from tfont import load_and_validate
-
-profile = load_and_validate("path/to/profile.yaml", "profile")
-```
-
-Canonicalization and source digests:
-
-```python
-from tfont import canonical_json_bytes, source_file_digest
-
-canonical = canonical_json_bytes({"b": 2, "a": 1})
-digest = source_file_digest(b"a: 1\r\n")
-```
-
-Parent/component identity:
-
-```python
-from tfont import directory_component_digest, parent_manifest_digest
-
-directory_digest = directory_component_digest("path/to/materialized-corpus")
-manifest_digest = parent_manifest_digest({
-    "algorithm": "tfont-parent-components-sha256-v1",
-    "components": [
-        {
-            "component_id": "corpus",
-            "kind": "directory",
-            "identity_algorithm": "tfont-directory-files-sha256-v1",
-            "content_digest": directory_digest,
-        }
-    ],
-})
-```
-
-Cross-artifact semantic validation uses explicit public bundle types. The following shows the assembly shape; the dictionaries are assumed to have been structurally validated already, and mappings may require additional ontology-lock/evidence artifacts:
-
-```python
-from tfont import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
-
-bundle = SemanticSourceBundle(
-    profile=SemanticArtifact("profile", "profile.yaml", profile_data),
-    expected_parent_manifest=SemanticArtifact(
-        "parent-component-manifest", "expected-parent.json", parent_data
-    ),
-    mappings=SemanticArtifact("mapping", "mappings.yaml", mappings_data),
-    ontology_locks=ontology_lock_artifacts,
-    evidences=evidence_artifacts,
+```bash
+export BHSA_TF_DIR=/absolute/path/to/bhsa/tf/2021
+python - <<'PY'
+import os
+from pathlib import Path
+from tf.fabric import Fabric
+from tfont import (
+    LoadedComponentContext, LoadedCorpusContext,
+    SemanticKey, SemanticResolveRequest,
+    load_production_noun_bundle, validate_semantic_bundle,
+    compile_semantic_ir, execute_exact_semantic,
+    tf_payload_digest, parent_manifest_digest,
 )
+
+# Observe actual local TF bytes; never pass the expected digest as an observation.
+tf_dir = Path(os.environ["BHSA_TF_DIR"]).expanduser()
+observed_component = tf_payload_digest(tf_dir)
+bundle = load_production_noun_bundle("bhsa")
 validated = validate_semantic_bundle(bundle)
+expected_component = bundle.expected_parent_manifest.data["components"][0]
+if observed_component != expected_component["content_digest"]:
+    raise SystemExit("BHSA TF payload is not the pinned 2021 release; check BHSA_TF_DIR and revision")
+observed_manifest = {
+    "algorithm": "tfont-parent-components-sha256-v1",
+    "components": [{
+        "component_id": "bhsa-tf",
+        "kind": "tf-payload",
+        "identity_algorithm": "tfont-tf-files-sha256-v1",
+        "content_digest": observed_component,
+    }],
+}
+observed_parent = parent_manifest_digest(observed_manifest)
+if observed_parent != validated.expected_parent_manifest_digest:
+    raise SystemExit("BHSA parent identity differs from the reviewed production profile")
+
+TF = Fabric(locations=str(tf_dir), silent="deep")
+api = TF.load("sp")  # otype is a standard loaded TF feature
+if api is None or api is False:
+    raise SystemExit("Text-Fabric could not load the local BHSA sp feature")
+component = LoadedComponentContext(
+    component_id="bhsa-tf", content_digest=observed_component, api=api,
+)
+context = LoadedCorpusContext(
+    corpus_id="bhsa", parent_manifest_digest=observed_parent,
+    components=(component,),
+)
+ir = compile_semantic_ir((validated,))
+request = SemanticResolveRequest(
+    key=SemanticKey(
+        profile_id="linguistic", capability_id="linguistic.part-of-speech",
+        target="http://purl.org/olia/olia.owl#Noun",
+        formal_kind="class", semantic_role="annotation-value",
+    ),
+    corpora=("bhsa",),
+)
+result = execute_exact_semantic(ir, request, (context,))
+row = result.corpora[0]
+print("BHSA noun nodes:", len(row.nodes), "first five:", row.nodes[:5])
+print("Native mapping:", row.plan.mapping_id, "projection:", row.plan.projection_id)
+print("Reviews:", row.plan.mapping_review.review_id, row.plan.projection_review.review_id)
+print("Parent state:", row.plan.parent_state, "resolution:", result.resolution.resolution_fingerprint)
+PY
 ```
 
-## Interoperability targets
+To query all three corpora, load the other two **pinned** local TF APIs, separately hash their actual payloads and parent manifests, call `load_production_noun_bundles()`, validate/compile all three, then supply three `LoadedCorpusContext` objects and `corpora=("bhsa", "syriac", "extrabiblical")`. The installed profiles determine each corpus's native selector; the caller does not translate `Noun` into `sp` values manually.
 
-Initial interoperability targets include:
+## Supported boundaries and verification
 
-- ETCBC BHSA;
-- DT-UCPH CUC;
-- ETCBC Syriac corpora, including `syriac`, `peshitta`, and `syrnt` where applicable;
-- ETCBC `extrabiblical`;
-- TLHdig-TF.
+This release supports the exact OLiA Noun slice only. It does **not** implement approximate alignment, a broad POS ontology, same-corpus multi-binding composition, generic query-language planning, MCP, remote ontology dereferencing, corpus acquisition or universal cross-corpus compatibility. Different corpus revisions require independently reviewed profiles, not an override flag.
 
-These are target corpora for the interoperability work, not a claim that finished TFont profiles or mappings already exist for each corpus.
+The [clean-wheel acceptance runner](scripts/acceptance/v01_noun.py) tests the complete public three-corpus path and provenance using **API doubles** (not actual downloaded corpora) under Python 3.10/3.12. A separate Context-Fabric integration smoke uses a small genuine loaded CF corpus. Native corpus semantics are based on independently reviewed pinned source evidence; CI is not a claim of live real-three-corpus execution. See [v0.1 release notes](docs/releases/v0.1.0.md) and [release tracker](https://github.com/alexsosn/ontoTF/issues/142).
 
-## Project contracts and contributing
+## Development and architecture
 
-- [`AGENTS.md`](AGENTS.md) defines the automated research/design/TDD/review development loop.
-- [`docs/plans/P-001-foundation-poc-design.md`](docs/plans/P-001-foundation-poc-design.md) is the accepted foundation POC design.
-- [`docs/plans/P-003-common-ontology-semantic-adapter.md`](docs/plans/P-003-common-ontology-semantic-adapter.md) defines the accepted common ontology semantic-adapter architecture.
-- [`docs/research/`](docs/research/) contains the research record.
-- [`docs/plans/`](docs/plans/) contains accepted and active implementation plans.
-- [GitHub Issues](https://github.com/alexsosn/TFont/issues) tracks implementation and follow-up work.
+The foundation also provides strict JSON/YAML source loading, JSON Schema contracts, RFC 8785/JCS canonicalization, semantic/evidence/review digest validation, and exact parent identity for files, directories and `.tf` payloads. Common ontology mapping authority is explicitly reviewed rather than inferred from labels. [AGENTS.md](AGENTS.md) defines the research/plan/TDD/adversarial-review loop; [P-003 architecture](docs/plans/P-003-common-ontology-semantic-adapter.md) documents the broader design. [GitHub Issues](https://github.com/alexsosn/ontoTF/issues) tracks remaining work.
