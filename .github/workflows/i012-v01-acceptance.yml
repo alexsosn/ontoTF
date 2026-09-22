@@ -62,4 +62,6 @@ jobs:
           assert row["contract"] == "tfont-v01-noun-acceptance-v1"
           assert row["status"] == "pass"
           assert row["corpora"] == {"bhsa": [1, 2], "extrabiblical": [21, 22], "syriac": [11, 12]}
+          fingerprint = row["resolution_fingerprint"]
+          assert isinstance(fingerprint, str) and fingerprint.startswith("sha256:") and len(fingerprint) == 71
           ' "$FINAL"
