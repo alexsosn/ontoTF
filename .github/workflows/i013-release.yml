@@ -1,0 +1,148 @@
+name: I-013 v0.1 verified release
+
+on:
+  pull_request:
+    paths:
+      - 'pyproject.toml'
+      - 'README.md'
+      - 'docs/releases/v0.1.0.md'
+      - 'tests/i013/**'
+      - 'tests/docs/**'
+      - '.github/workflows/i013-release.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/releases/v0.1.0.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tfont-v010-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  full-suite:
+    name: candidate full-suite (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Validate candidate and all regression tests
+        run: |
+          python -m pip install -e .
+          python -m unittest discover -s tests -v
+
+  wheel-acceptance:
+    name: candidate clean wheel (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Build one versioned distribution
+        run: |
+          python -m pip install build
+          mkdir -p "$RUNNER_TEMP/i013-dist"
+          python -m build --wheel --outdir "$RUNNER_TEMP/i013-dist"
+          test "$(find "$RUNNER_TEMP/i013-dist" -name '*.whl' -type f | wc -l)" -eq 1
+          test -f "$RUNNER_TEMP/i013-dist/tfont-0.1.0-py3-none-any.whl"
+      - name: Inspect version, data, root license and separate OLiA license
+        run: |
+          I013_WHEEL="$RUNNER_TEMP/i013-dist/tfont-0.1.0-py3-none-any.whl" python - <<'PY'
+          import os
+          import zipfile
+          wheel = os.environ['I013_WHEEL']
+          root = 'tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/'
+          with zipfile.ZipFile(wheel) as archive:
+              names = set(archive.namelist())
+              metadata = archive.read('tfont-0.1.0.dist-info/METADATA').decode('utf-8')
+              assert 'Version: 0.1.0\n' in metadata
+              required = {
+                  'tfont-0.1.0.dist-info/licenses/LICENSE',
+                  'tfont/resources/profiles/bhsa/0.1.0/profile.json',
+                  'tfont/resources/profiles/syriac/0.1.0/profile.json',
+                  'tfont/resources/profiles/extrabiblical/0.1.0/profile.json',
+                  root + 'lock.json', root + 'olia.owl',
+                  root + 'LICENSE.data', root + 'ATTRIBUTION.txt',
+              }
+              assert required <= names, f'missing release resources: {required - names}'
+              assert not any(name.endswith(('.tf', '.mql', '.mql.gz', '.mql.bz2')) for name in names)
+          PY
+      - name: Fresh-install and execute I-012 acceptance outside checkout
+        run: |
+          python -m venv "$RUNNER_TEMP/i013-venv"
+          "$RUNNER_TEMP/i013-venv/bin/python" -m pip install "$RUNNER_TEMP/i013-dist/tfont-0.1.0-py3-none-any.whl"
+          test "$("$RUNNER_TEMP/i013-venv/bin/python" -I -c 'from importlib.metadata import version; print(version("tfont"))')" = '0.1.0'
+          mkdir -p "$RUNNER_TEMP/i013-outside"
+          cp "$GITHUB_WORKSPACE/scripts/acceptance/v01_noun.py" "$RUNNER_TEMP/i013-outside/v01_noun.py"
+          cd "$RUNNER_TEMP/i013-outside"
+          unset PYTHONPATH PYTHONHOME
+          TFONT_ACCEPTANCE_FORBID_ROOT="$GITHUB_WORKSPACE" "$RUNNER_TEMP/i013-venv/bin/python" -I v01_noun.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-tfont-wheel-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/i013-dist/tfont-0.1.0-py3-none-any.whl
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: publish v0.1.0 from validated main only
+    needs: [full-suite, wheel-acceptance]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-tfont-wheel-3.12
+          path: dist
+      - name: Publish once, without moving pre-existing tags or replacing assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          grep -Eq '^version = "0[.]1[.]0"$' pyproject.toml
+          test -s docs/releases/v0.1.0.md
+          test -f dist/tfont-0.1.0-py3-none-any.whl
+          if gh release view v0.1.0 >/dev/null 2>&1; then
+            existing_target="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.0" --jq '.target_commitish')"
+            test "$existing_target" = "$GITHUB_SHA" || { echo 'Existing v0.1.0 release targets a different commit; refusing mutation' >&2; exit 1; }
+            gh release view v0.1.0 --json assets --jq '.assets[].name' | grep -Fx 'tfont-0.1.0-py3-none-any.whl'
+            echo 'Exact v0.1.0 release already published; leaving tag/assets unchanged'
+            exit 0
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.0" --jq '.object.sha' >/dev/null 2>&1; then
+            echo 'Existing tag without corresponding release: do not overwrite or retag' >&2
+            exit 1
+          fi
+          gh release create v0.1.0 dist/tfont-0.1.0-py3-none-any.whl --target "$GITHUB_SHA" --title 'TFont v0.1.0' --notes-file docs/releases/v0.1.0.md
+          target="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.0" --jq '.target_commitish')"
+          test "$target" = "$GITHUB_SHA"
+          gh release view v0.1.0 --json isDraft --jq '.isDraft' | grep -Fx false
+          gh release view v0.1.0 --json assets --jq '.assets[].name' | grep -Fx 'tfont-0.1.0-py3-none-any.whl'
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.0" --jq '.object.sha' | grep -Fx "$GITHUB_SHA"
+          echo "Verified published GitHub release v0.1.0 at $GITHUB_SHA"
