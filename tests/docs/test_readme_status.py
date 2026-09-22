@@ -13,85 +13,69 @@ class ReadmeStatusContractTests(unittest.TestCase):
         cls.readme = README.read_text(encoding="utf-8")
         cls.lowered = cls.readme.lower()
 
-    def test_bootstrap_research_only_status_is_retired(self):
-        self.assertNotIn("first project phase is **research only**", self.lowered)
-
-    def test_merged_capability_sections_are_named(self):
-        self.assertIn("Structural source validation", self.readme)
-        self.assertIn("Canonicalization and digests", self.readme)
-        self.assertIn("Parent/component identity", self.readme)
-        self.assertIn("### Cross-artifact semantic validation", self.readme)
-
-    def test_parent_identity_is_not_described_as_future_work(self):
-        self.assertNotIn("parent-component identity, cross-artifact semantic validation", self.lowered)
-
-    def test_semantic_validation_is_documented_as_shipped_without_runtime_overclaim(self):
-        self.assertIn("common ontology semantic-adapter", self.lowered)
-        self.assertIn("accepted architecture", self.lowered)
-        self.assertIn("semanticsourcebundle", self.lowered)
-        self.assertIn("validate_semantic_bundle", self.readme)
+    def test_bootstrap_and_old_validation_only_status_are_retired(self):
         for stale in (
+            "first project phase is **research only**",
+            "compatibility evaluation, semantic ir/compiler and runtime resolution, and corpus-specific mappings are not yet shipped capabilities",
+            "compatibility evaluation, semantic ir/compiler, runtime resolution, and corpus-specific mapping releases remain later stages",
             "cross-artifact semantic validation, compatibility evaluation",
-            "not yet shipped cross-artifact semantic validation",
-            "validator or resolver is already implemented on `main`",
         ):
             with self.subTest(stale=stale):
                 self.assertNotIn(stale, self.lowered)
 
-    def test_validation_does_not_claim_every_record_is_reviewed(self):
+    def test_foundation_capabilities_are_still_described(self):
+        for shipped in (
+            "source and cross-artifact validation",
+            "deterministic parent/component and semantic digests",
+            "strict json/yaml source loading",
+            "canonicalization",
+            "parent identity for files",
+        ):
+            with self.subTest(shipped=shipped):
+                self.assertIn(shipped, self.lowered)
+
+    def test_shipped_exact_slice_and_public_execution_are_described(self):
+        for shipped in (
+            "olia noun", "bhsa", "syriac", "extrabiblical",
+            "load_production_noun_bundle", "validate_semantic_bundle",
+            "compile_semantic_ir", "execute_exact_semantic",
+            "exact reviewed parent manifest", "fail closed",
+        ):
+            with self.subTest(shipped=shipped):
+                self.assertIn(shipped, self.lowered)
+        self.assertIn("mapping and projection", self.lowered)
+        self.assertIn("reviews", self.lowered)
+
+    def test_review_validation_is_not_misrepresented_as_automatic_scholarly_review(self):
         for overclaim in (
-            "reviewed semantic source bundles",
+            "all semantic source bundles are reviewed",
+            "every corpus version is compatible",
             "reviewed native record states",
         ):
             with self.subTest(overclaim=overclaim):
                 self.assertNotIn(overclaim, self.lowered)
-        self.assertIn("review bindings", self.lowered)
+        self.assertIn("explicitly reviewed", self.lowered)
 
-    def test_future_semantic_stages_remain_explicit(self):
-        for future_surface in (
-            "compatibility evaluation",
-            "semantic ir/compiler",
-            "runtime resolution",
-            "corpus-specific mappings",
-        ):
-            with self.subTest(future_surface=future_surface):
-                self.assertIn(future_surface, self.lowered)
+    def test_real_corpora_and_pypi_are_not_falsely_claimed(self):
+        self.assertIn("api doubles", self.lowered)
+        self.assertIn("not actual downloaded corpora", self.lowered)
+        self.assertIn("not bundled", self.lowered)
+        self.assertIn("not** a supported pypi installation claim", self.lowered)
+        self.assertNotIn("tests.i008._fixtures", self.readme)
+        self.assertNotIn("FakeLoadedApi", self.readme)
 
-    def test_source_checkout_install_is_documented(self):
+    def test_exact_only_drift_is_not_bypassed_by_forged_hash(self):
+        self.assertIn("tf_payload_digest(tf_dir)", self.readme)
+        self.assertIn("parent_manifest_digest(observed_manifest)", self.readme)
+        self.assertIn("observed_component != expected_component", self.readme)
+        self.assertIn("observed_parent != validated.expected_parent_manifest_digest", self.readme)
+        self.assertIn("caller-supplied plan or public hash cannot authorize", self.lowered)
+
+    def test_current_install_and_maintainer_links(self):
         self.assertIn("python -m pip install -e .", self.readme)
-
-    def test_examples_use_current_public_api_names(self):
-        for public_name in (
-            "load_and_validate",
-            "canonical_json_bytes",
-            "directory_component_digest",
-            "parent_manifest_digest",
-            "SemanticSourceBundle",
-            "validate_semantic_bundle",
-        ):
-            with self.subTest(public_name=public_name):
-                self.assertIn(public_name, self.readme)
-
-    def test_semantic_bundle_example_uses_canonical_artifact_kinds(self):
-        self.assertRegex(
-            self.readme,
-            r'SemanticArtifact\(\s*"parent-component-manifest"\s*,',
-        )
-        self.assertRegex(self.readme, r'SemanticArtifact\(\s*"mapping"\s*,')
-        self.assertNotRegex(
-            self.readme,
-            r'SemanticArtifact\(\s*"expected-parent-manifest"\s*,',
-        )
-        self.assertNotRegex(self.readme, r'SemanticArtifact\(\s*"mappings"\s*,')
-
-    def test_unmerged_surfaces_are_not_claimed_as_implemented(self):
-        for claim in (
-            "semantic_search is implemented",
-            "verified-compatible is implemented",
-            "runtime resolution is implemented",
-        ):
-            with self.subTest(claim=claim):
-                self.assertNotIn(claim, self.lowered)
+        self.assertIn("python -m pip install ./tfont-0.1.0-py3-none-any.whl", self.readme)
+        self.assertIn("https://github.com/alexsosn/ontoTF/issues", self.readme)
+        self.assertNotIn("https://github.com/alexsosn/TFont/issues", self.readme)
 
 
 if __name__ == "__main__":
