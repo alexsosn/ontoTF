@@ -116,6 +116,9 @@ jobs:
           if gh release view v0.1.0 >/dev/null 2>&1; then
             existing_target="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.0" --jq '.target_commitish')"
             test "$existing_target" = "$GITHUB_SHA" || { echo 'Existing v0.1.0 release targets a different commit; refusing mutation' >&2; exit 1; }
+            existing_tag="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.0" --jq '.object.sha')"
+            test "$existing_tag" = "$GITHUB_SHA" || { echo 'Existing v0.1.0 tag targets a different commit; refusing mutation' >&2; exit 1; }
+            gh release view v0.1.0 --json isDraft --jq '.isDraft' | grep -Fx false
             gh release view v0.1.0 --json assets --jq '.assets[].name' | grep -Fx 'tfont-0.1.0-py3-none-any.whl'
             echo 'Exact v0.1.0 release already published; leaving tag/assets unchanged'
             exit 0
