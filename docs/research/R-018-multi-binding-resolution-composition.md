@@ -238,8 +238,8 @@ Do not freeze `single | any-of | all-of` as a production enum yet.
 
 - `single` is already the ordinary resolver path, not composition.
 - finite OR over one feature is already `value-set-predicate`;
-- no reviewed corpus case currently requires heterogeneous `any-of`;
-- no reviewed corpus case currently requires `all-of`;
+- no reviewed same-semantic-key multi-binding case currently requires heterogeneous `any-of`;
+- no reviewed same-semantic-key multi-binding case currently requires `all-of`; R-016's conjunctions are conjunctions of separately required semantic atoms and do not authorize same-key binding composition;
 - conditional/applicability dispatch is not equivalent to either plain OR or AND.
 
 When the first genuine case arrives, introduce the smallest typed operator that expresses that case and explicitly exclude a generic boolean query language.
@@ -323,7 +323,7 @@ No current production code change is authorized by this research. Before enablin
 6. add a typed composed plan/result shape and versioned fingerprint projection;
 7. implement only the corpus-justified operator(s) in loaded execution;
 8. revalidate composed plans under the same trusted current-IR/current-prerequisite boundary as ordinary plans;
-9. define composition-level approximation behavior separately before any non-exact member is executable;
+9. reuse R-016 for a reviewed conjunctive composition, and define separate operator-specific approximation/loss behavior before any non-conjunctive composition with non-exact members is executable;
 10. add RED/GREEN tests for missing authority, stale/extra/missing members, order invariance, conflicting composition records, provenance preservation, prerequisite failure, and executor semantics.
 
 Until then, `multiple_exact_bindings` is the intended safe behavior.
