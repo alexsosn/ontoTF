@@ -139,9 +139,9 @@ At the pinned snapshot:
 
 - word `epos` has 33 observed effective/contextual POS values;
 - mixed/lexical `pos` has 35 observed values;
-- frequent nominal/name-like codes include `N`, `PN`, `DN`, `GN`, `SN`, `RN`, `EN`, `TN`, and `WN`.
+- observed codes that require explicit semantic mapping research include `N`, `PN`, `DN`, `GN`, `SN`, `RN`, `EN`, `TN`, and `WN`; this research does not infer their ontology semantics from code names.
 
-A future reviewed broad nominal target may therefore select several ORACC POS values. If those selected values belong to one feature, one node type, one component, one review, and one dependency closure, the existing `value-set-predicate` is the correct primitive. R-018 should not turn that into a list of independent exact plans.
+If separate mapping evidence establishes that one semantic target selects several ORACC values of one feature, one node type, one component, one review, and one dependency closure, the existing `value-set-predicate` is the correct primitive. R-018 should not turn that into a list of independent exact plans.
 
 The existence of both lexical `pos` and contextual `epos` could eventually create a genuine heterogeneous case, but no reviewed ontoTF mapping currently states that the two must be unioned, intersected, prioritized, or conditionally dispatched for one semantic target. Their names alone are not composition authority.
 
@@ -293,11 +293,15 @@ Do not hash only the resulting Context-Fabric selector/result; doing so would er
 
 ## 9. Approximate resolution
 
-Do not infer approximate composition by aggregating member assessments or losses.
+R-016 remains authoritative for approximation of already-authorized semantic atoms and for conjunctions of required atoms: every atom must be independently executable, and a conjunction records the conservative union of their reviewed loss-direction tokens.
 
-R-016 defines loss/authorization at mapping level. A composed approximate plan can have interactions that are not the simple union of member losses: union and intersection can change both overcoverage and undercoverage.
+R-018 owns an earlier question: whether multiple bindings under one semantic key are authorized to compose at all, and by which operator. R-016 does not infer that composition authority.
 
-Therefore future approximate multi-binding execution requires its own reviewed composition-level approximation/loss contract. Mixed exact/non-exact members do not become executable merely because every member is individually eligible.
+Consequences:
+
+- if a future reviewed R-018 composition is an actual conjunction/intersection of required atoms, reuse R-016's all-atoms-required rule and conservative loss union after every member passes its own approximation-eligibility and caller-loss gate;
+- a union/disjunction or conditional/applicability composition is not covered by R-016's conjunction rule, so its loss behavior needs a separately reviewed operator-specific contract;
+- mixed exact/non-exact members never become executable solely because the member rows coexist.
 
 R-018 does not alter the current exact-only I-006 path.
 
@@ -336,7 +340,7 @@ Until then, `multiple_exact_bindings` is the intended safe behavior.
 - [x] Preserves per-binding assessment/review/evidence/provenance.
 - [x] Defines required schema/IR/resolver/executor work before composition can become executable.
 - [x] Keeps Context-Fabric execution typed and avoids a generic boolean query language.
-- [x] Keeps approximate composition separately review-gated.
+- [x] Reuses R-016 conjunction loss composition where applicable and keeps non-conjunctive composition operator-specific and review-gated.
 
 ## 13. Review targets
 
