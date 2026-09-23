@@ -3,6 +3,7 @@ name: I-157 PEP 639 mixed-license packaging
 on:
   push:
     branches:
+      - main
       - impl/157-pep639-license
     paths:
       - 'pyproject.toml'
