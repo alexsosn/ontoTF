@@ -77,7 +77,7 @@ class Pep639BuiltDistributionTests(unittest.TestCase):
             self.assertEqual(build.returncode, 0, combined_output)
 
             for warning_fragment in (
-                "project.license as a TOML table is deprecated",
+                "`project.license` as a TOML table is deprecated",
                 "License classifiers are deprecated",
             ):
                 with self.subTest(warning_fragment=warning_fragment):
