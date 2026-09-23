@@ -145,7 +145,7 @@ If separate mapping evidence establishes that one semantic target selects severa
 
 The existence of both lexical `pos` and contextual `epos` could eventually create a genuine heterogeneous case, but no reviewed ontoTF mapping currently states that the two must be unioned, intersected, prioritized, or conditionally dispatched for one semantic target. Their names alone are not composition authority.
 
-**R-018 classification:** concrete future multi-value case; possible future heterogeneous multi-binding case, but no reviewed composition semantics today.
+**R-018 classification:** concrete multi-valued native vocabulary and a possible future value-set mapping, pending semantic evidence; also a possible future heterogeneous multi-binding case, but no reviewed composition semantics today.
 
 ### 3.7 TLHdig-TF
 
@@ -221,7 +221,7 @@ SemanticComposition
   variant/release scope
   SemanticKey
   operator
-  exact member projection identities
+  exact member identities (mapping_id + projection_id + native-binding/semantic identity)
   applicability/domain contract, if required
   evidence
   review
@@ -262,8 +262,8 @@ After a future composition contract exists, step 7 may proceed only if exactly o
 
 - the selected variant;
 - the full semantic key;
-- the complete surviving exact member set;
-- current member semantic/review identities;
+- the complete surviving exact member set, identified by mapping + projection + native-binding/semantic identity;
+- current member review identities;
 - any required applicability state.
 
 Anything else remains `multiple_exact_bindings` or a more specific stale/invalid-composition diagnostic.
