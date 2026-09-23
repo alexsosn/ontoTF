@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=75", "wheel"]
+requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,9 +7,11 @@ name = "tfont"
 version = "0.1.0"
 description = "Ontological layer for Text-Fabric corpora"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
-classifiers = [
-  "License :: OSI Approved :: MIT License",
+license = "MIT AND CC-BY-3.0"
+license-files = [
+  "LICENSE",
+  "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
+  "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
 ]
 dependencies = [
   "jsonschema>=4.26,<5",
