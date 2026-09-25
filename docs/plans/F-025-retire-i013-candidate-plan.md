@@ -13,27 +13,24 @@ Remove the obsolete automatic I-013 release-candidate workflow while preserving 
 
 Expected behavioral diff:
 
-1. add `tests/ci/test_historical_release_workflows.py`;
+1. extend `tests/ci/test_full_suite_workflow_contract.py` with one historical-release-workflow policy regression;
 2. delete `.github/workflows/i013-release-candidate.yml`.
 
 No other workflow, test, source, package metadata, documentation, release note, semantic resource, or release artifact changes.
 
 ## RED contract
 
-Add only `tests/ci/test_historical_release_workflows.py`.
+Extend only `tests/ci/test_full_suite_workflow_contract.py`.
 
-The test must establish the post-maintenance policy:
+That file already freezes the authoritative full-suite command, Python 3.10/3.12 matrix, exact-head checkout and `workflow_dispatch`. Add one new test that establishes only the missing post-maintenance policy:
 
-- obsolete `.github/workflows/i013-release-candidate.yml` does not exist;
-- `tests/i013` exists and contains test files;
-- `tests/i009` exists and contains test files;
-- `.github/workflows/full-suite.yml` exists;
-- full suite exposes `workflow_dispatch:`;
-- full suite runs `python -m unittest discover -s tests -v`;
-- full suite includes Python 3.10 and 3.12;
+- obsolete `.github/workflows/i013-release-candidate.yml` is absent from the workflow inventory;
+- `tests/i013` and `tests/i009` still contain test files;
 - `.github/workflows/i013-release.yml` still exists;
-- historical I-013 publication workflow still targets only `docs/releases/v0.1.0.md` on main;
+- historical I-013 publication workflow still has no `pull_request:` trigger and retains exact main path `docs/releases/v0.1.0.md`;
 - `.github/workflows/i014-v011-release.yml` still exists.
+
+Do not duplicate the full-suite matrix/dispatch assertions already present in the same test module.
 
 RED exact head should fail only because the obsolete candidate workflow still exists. All preservation assertions must pass.
 
@@ -55,7 +52,7 @@ Expected automatic CI:
 
 ## Test design constraints
 
-The policy regression protects capabilities rather than copying complete YAML:
+The policy regression extends the existing workflow-policy suite and protects capabilities rather than copying complete YAML:
 
 - assert only required trigger/job command fragments;
 - do not snapshot whole workflows;
