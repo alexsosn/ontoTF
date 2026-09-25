@@ -114,12 +114,15 @@ Implementation should be limited to:
 1. `pyproject.toml` — package version `0.1.1`; keep #157 PEP 639 metadata and dependencies/resources unchanged.
 2. `README.md` — installation points to v0.1.1 wheel/release and explains v0.1.1 is metadata-only; semantic capability remains the v0.1 slice.
 3. `docs/releases/v0.1.1.md` — short patch notes, exact reason, unchanged semantic/runtime scope, license metadata, supported installation channel.
-4. `tests/i014/test_v011_release.py` — cheap source/docs contract.
-5. `.github/workflows/i014-v011-release.yml` — exact build/install/metadata/publication/readback gate.
+4. `tests/i014/test_v011_release.py` — cheap current-version/source/docs contract.
+5. `tests/i013/test_release_red.py` — retire the obsolete assertion that the **current** package version is permanently 0.1.0; retain historical v0.1.0 release-note/content checks.
+6. `tests/docs/test_readme_status.py` — advance the current installation assertion from the v0.1.0 wheel to v0.1.1.
+7. `.github/workflows/i013-release.yml` — retire its generic PR-candidate trigger so future version bumps are not judged against hard-coded v0.1.0 wheel/version expectations. Preserve only the historical v0.1.0 main-push guard for edits to `docs/releases/v0.1.0.md`.
+8. `.github/workflows/i014-v011-release.yml` — exact build/install/metadata/publication/readback gate for the new patch.
 
-Do not rewrite the historical v0.1.0 notes or I-013 workflow. They describe the release that actually happened.
+Do not rewrite the historical v0.1.0 release notes. They describe the release that actually happened.
 
-Existing v0.1.0-oriented tests under `tests/i013` need a narrow update only if they are intended to assert the *current package version*. Prefer leaving historical release-contract assertions intact only if the authoritative full suite can distinguish historical artifact checks from current package-version checks. If they currently assert `pyproject.toml == 0.1.0`, the plan must explicitly migrate that assertion to I-014 rather than weakening it.
+The existing I-013 workflow is not purely historical today: its PR trigger watches `pyproject.toml`, `README.md`, `tests/i013/**`, and docs, while its wheel job hard-codes `tfont-0.1.0`. Leaving it untouched would make every future version bump fail an obsolete candidate gate. The patch must therefore retire that PR trigger deliberately rather than weakening the v0.1.0 publication safeguards.
 
 ## 7. TDD contract
 
@@ -181,7 +184,7 @@ Research review should challenge:
 4. whether a one-off path-trigger workflow is safer than generic dispatch/autopublish here;
 5. whether main publication can accidentally run from a PR or unrelated commit;
 6. whether exact artifact digest is preserved through Actions upload/download and GitHub release upload;
-7. whether old I-013 tests create a false current-version gate;
+7. whether old I-013 tests/workflow and docs tests create false current-version gates, and whether retiring the I-013 PR trigger leaves a safe historical v0.1.0 guard;
 8. whether README/release notes accidentally imply new semantic functionality or PyPI availability.
 
 ## Exit decision
