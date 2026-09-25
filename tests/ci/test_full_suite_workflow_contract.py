@@ -48,6 +48,29 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, text)
 
+    def test_obsolete_i013_candidate_is_retired_with_release_guards_preserved(self):
+        texts = self.workflow_texts()
+        with self.subTest("legacy candidate absent"):
+            self.assertNotIn("i013-release-candidate.yml", texts)
+
+        for suite in ("i013", "i009"):
+            with self.subTest(test_suite=suite):
+                self.assertTrue(
+                    any((ROOT / "tests" / suite).glob("test_*.py")),
+                    f"tests/{suite} regressions must remain present",
+                )
+
+        with self.subTest("historical v0.1.0 guard"):
+            self.assertIn("i013-release.yml", texts)
+            historical = texts["i013-release.yml"]
+            self.assertNotIn("pull_request:", historical)
+            self.assertIn("- main", historical)
+            self.assertIn("'docs/releases/v0.1.0.md'", historical)
+
+        with self.subTest("current v0.1.1 guard"):
+            self.assertIn("i014-v011-release.yml", texts)
+
+
     def test_focused_f007_contract_checks_exact_source_head(self):
         text = (WORKFLOW_DIR / "f007-ci-full-suite-dedup.yml").read_text(encoding="utf-8")
         self.assertIn(EXACT_HEAD, text)
