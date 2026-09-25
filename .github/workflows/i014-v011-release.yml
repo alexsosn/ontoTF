@@ -1,0 +1,50 @@
+name: I-014 v0.1.1 release candidate
+
+on:
+  push:
+    branches:
+      - impl/i014-v011-license-patch
+    paths:
+      - 'tests/i014/**'
+      - 'pyproject.toml'
+      - 'README.md'
+      - 'docs/releases/v0.1.1.md'
+      - 'tests/i013/**'
+      - 'tests/docs/**'
+      - '.github/workflows/i013-release.yml'
+      - '.github/workflows/i014-v011-release.yml'
+  pull_request:
+    paths:
+      - 'tests/i014/**'
+      - 'pyproject.toml'
+      - 'README.md'
+      - 'docs/releases/v0.1.1.md'
+      - 'tests/i013/**'
+      - 'tests/docs/**'
+      - '.github/workflows/i013-release.yml'
+      - '.github/workflows/i014-v011-release.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  red-contract:
+    name: v0.1.1 source/docs contract (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install editable package
+        run: python -m pip install -e .
+      - name: Run I-014 contract
+        run: python -m unittest tests.i014.test_v011_release -v
+      - name: Preserve existing PEP 639 source contract
+        run: python -m unittest tests.packaging.test_pep639_mixed_license.Pep639MetadataContractTests -v
