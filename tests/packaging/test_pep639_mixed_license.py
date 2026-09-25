@@ -25,6 +25,17 @@ PACKAGE_OLIA_PREFIX = f"tfont/resources/ontologies/olia/{OLIA_REVISION}"
 LEGACY_CLASSIFIER = "License :: OSI Approved :: MIT License"
 
 
+def _project_version() -> str:
+    for line in (ROOT / "pyproject.toml").read_text(encoding="utf-8").splitlines():
+        prefix = 'version = "'
+        if line.startswith(prefix) and line.endswith('"'):
+            return line[len(prefix):-1]
+    raise AssertionError("project.version is absent")
+
+
+PROJECT_VERSION = _project_version()
+
+
 class Pep639MetadataContractTests(unittest.TestCase):
     def test_pyproject_uses_reviewed_pep639_contract(self):
         text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
@@ -94,7 +105,7 @@ class Pep639BuiltDistributionTests(unittest.TestCase):
 
     def _assert_metadata(self, metadata_bytes: bytes, source: str):
         message = BytesParser(policy=email.policy.default).parsebytes(metadata_bytes)
-        self.assertEqual(message.get("Version"), "0.1.0", source)
+        self.assertEqual(message.get("Version"), PROJECT_VERSION, source)
         self.assertEqual(
             message.get("License-Expression"),
             "MIT AND CC-BY-3.0",

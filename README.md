@@ -1,6 +1,6 @@
 # TFont
 
-TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. Its first release, **v0.1.0**, executes one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
+TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
 
 ## What is shipped
 
@@ -20,13 +20,13 @@ Public library APIs include source and cross-artifact validation (`validate_sema
 
 ## Installation
 
-Python 3.10 or newer. Download `tfont-0.1.0-py3-none-any.whl` from the [GitHub v0.1.0 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.0), then install the **downloaded local wheel**:
+Python 3.10 or newer. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
 
 ```bash
-python -m pip install ./tfont-0.1.0-py3-none-any.whl
+python -m pip install ./tfont-0.1.1-py3-none-any.whl
 ```
 
-For the local-corpus example below, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). A development checkout may instead use `python -m pip install -e .`. This GitHub wheel is the v0.1 distribution; `pip install tfont` is **not** a supported PyPI installation claim.
+For the local-corpus example below, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). A development checkout may instead use `python -m pip install -e .`. v0.1.1 changes package license metadata only; it does not expand the v0.1 semantic/runtime scope. This GitHub wheel is the current v0.1 distribution; `pip install tfont` is **not** a supported PyPI installation claim.
 
 Corpus files are **not bundled**. TFont does not download, load or update BHSA, Syriac or ExtraBiblical; you must obtain source corpora independently and respect their licenses. The separately bundled pinned OLiA ontology is CC BY 3.0 with its `ATTRIBUTION.txt` and `LICENSE.data`; ontoTF-authored code and mapping/profile metadata are MIT. BHSA corpus data have distinct CC BY-NC 4.0 terms.
 
@@ -104,7 +104,7 @@ To query all three corpora, load the other two **pinned** local TF APIs, separat
 
 This release supports the exact OLiA Noun slice only. It does **not** implement approximate alignment, a broad POS ontology, same-corpus multi-binding composition, generic query-language planning, MCP, remote ontology dereferencing, corpus acquisition or universal cross-corpus compatibility. Different corpus revisions require independently reviewed profiles, not an override flag.
 
-The [clean-wheel acceptance runner](scripts/acceptance/v01_noun.py) tests the complete public three-corpus path and provenance using **API doubles** (not actual downloaded corpora) under Python 3.10/3.12. A separate Context-Fabric integration smoke uses a small genuine loaded CF corpus. Native corpus semantics are based on independently reviewed pinned source evidence; CI is not a claim of live real-three-corpus execution. See [v0.1 release notes](docs/releases/v0.1.0.md) and [release tracker](https://github.com/alexsosn/ontoTF/issues/142).
+The [clean-wheel acceptance runner](scripts/acceptance/v01_noun.py) tests the complete public three-corpus path and provenance using **API doubles** (not actual downloaded corpora) under Python 3.10/3.12. A separate Context-Fabric integration smoke uses a small genuine loaded CF corpus. Native corpus semantics are based on independently reviewed pinned source evidence; CI is not a claim of live real-three-corpus execution. See [v0.1.1 patch notes](docs/releases/v0.1.1.md), the historical [v0.1.0 release notes](docs/releases/v0.1.0.md), and [release tracker](https://github.com/alexsosn/ontoTF/issues/142).
 
 ## Development and architecture
 

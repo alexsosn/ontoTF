@@ -1,0 +1,173 @@
+name: I-014 v0.1.1 verified release
+
+on:
+  pull_request:
+    paths:
+      - 'tests/i014/**'
+      - 'tests/i013/**'
+      - 'tests/docs/**'
+      - 'tests/packaging/test_pep639_mixed_license.py'
+      - 'pyproject.toml'
+      - 'README.md'
+      - 'docs/releases/v0.1.1.md'
+      - '.github/workflows/i013-release.yml'
+      - '.github/workflows/i014-v011-release.yml'
+      - '.github/workflows/full-suite.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/releases/v0.1.1.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tfont-v011-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  full-suite:
+    uses: ./.github/workflows/full-suite.yml
+
+  candidate:
+    name: v0.1.1 candidate (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install candidate and build frontend
+        run: python -m pip install -e . build
+      - name: Source and documentation contract
+        run: python -m unittest tests.i014.test_v011_release -v
+      - name: PEP 639 wheel and sdist regression
+        env:
+          I157_PACKAGING_TEST: '1'
+        run: python -m unittest tests.packaging.test_pep639_mixed_license -v
+      - name: Build exact v0.1.1 candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/i014-dist"
+          mkdir -p "$RUNNER_TEMP/i014-dist"
+          python -m build --wheel --sdist --outdir "$RUNNER_TEMP/i014-dist"
+          test "$(find "$RUNNER_TEMP/i014-dist" -maxdepth 1 -name '*.whl' -type f | wc -l)" -eq 1
+          test "$(find "$RUNNER_TEMP/i014-dist" -maxdepth 1 -name '*.tar.gz' -type f | wc -l)" -eq 1
+          test -f "$RUNNER_TEMP/i014-dist/tfont-0.1.1-py3-none-any.whl"
+      - name: Inspect exact wheel metadata and payload boundary
+        env:
+          I014_WHEEL: ${{ runner.temp }}/i014-dist/tfont-0.1.1-py3-none-any.whl
+        run: |
+          python - <<'PY'
+          import email.policy
+          import os
+          import zipfile
+          from email.parser import BytesParser
+
+          wheel = os.environ['I014_WHEEL']
+          with zipfile.ZipFile(wheel) as archive:
+              names = set(archive.namelist())
+              metadata_names = [n for n in names if n.endswith('.dist-info/METADATA')]
+              assert len(metadata_names) == 1, metadata_names
+              message = BytesParser(policy=email.policy.default).parsebytes(archive.read(metadata_names[0]))
+              assert message['Version'] == '0.1.1'
+              assert message['License-Expression'] == 'MIT AND CC-BY-3.0'
+              assert 'License :: OSI Approved :: MIT License' not in message.get_all('Classifier', [])
+              assert not any(n.endswith(('.tf', '.mql', '.mql.gz', '.mql.bz2')) for n in names)
+          PY
+      - name: Fresh-install and execute v0.1 semantic acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          wheel="$RUNNER_TEMP/i014-dist/tfont-0.1.1-py3-none-any.whl"
+          python -m venv "$RUNNER_TEMP/i014-venv"
+          "$RUNNER_TEMP/i014-venv/bin/python" -m pip install "$wheel"
+          test "$("$RUNNER_TEMP/i014-venv/bin/python" -I -c 'from importlib.metadata import version; print(version("tfont"))')" = '0.1.1'
+          mkdir -p "$RUNNER_TEMP/i014-outside"
+          cp "$GITHUB_WORKSPACE/scripts/acceptance/v01_noun.py" "$RUNNER_TEMP/i014-outside/v01_noun.py"
+          cd "$RUNNER_TEMP/i014-outside"
+          unset PYTHONPATH PYTHONHOME
+          TFONT_ACCEPTANCE_FORBID_ROOT="$GITHUB_WORKSPACE" "$RUNNER_TEMP/i014-venv/bin/python" -I v01_noun.py
+      - name: Record exact wheel digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/i014-dist"
+          sha256sum tfont-0.1.1-py3-none-any.whl | awk '{print $1}' > tfont-0.1.1-py3-none-any.whl.sha256
+          test "$(wc -c < tfont-0.1.1-py3-none-any.whl.sha256)" -eq 65
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-tfont-v011-${{ matrix.python-version }}
+          path: |
+            ${{ runner.temp }}/i014-dist/tfont-0.1.1-py3-none-any.whl
+            ${{ runner.temp }}/i014-dist/tfont-0.1.1-py3-none-any.whl.sha256
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: publish v0.1.1 from validated main only
+    needs: [full-suite, candidate]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-tfont-v011-3.12
+          path: dist
+      - name: Verify transported artifact and publish once
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          grep -Eq '^version = "0[.]1[.]1"$' pyproject.toml
+          test -s docs/releases/v0.1.1.md
+          wheel='dist/tfont-0.1.1-py3-none-any.whl'
+          digest_file='dist/tfont-0.1.1-py3-none-any.whl.sha256'
+          test -f "$wheel"
+          test -f "$digest_file"
+          expected_digest="$(tr -d '[:space:]' < "$digest_file")"
+          actual_digest="$(sha256sum "$wheel" | awk '{print $1}')"
+          test "$actual_digest" = "$expected_digest"
+          asset_digest="sha256:$actual_digest"
+
+          if gh release view v0.1.1 >/dev/null 2>&1; then
+            existing_target="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.1" --jq '.target_commitish')"
+            test "$existing_target" = "$GITHUB_SHA" || { echo 'Existing v0.1.1 release targets a different commit; refusing mutation' >&2; exit 1; }
+            existing_tag="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.1" --jq '.object.sha')"
+            test "$existing_tag" = "$GITHUB_SHA" || { echo 'Existing v0.1.1 tag targets a different commit; refusing mutation' >&2; exit 1; }
+            gh release view v0.1.1 --json isDraft --jq '.isDraft' | grep -Fx false
+            remote_digest="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.1" --jq '[.assets[] | select(.name == "tfont-0.1.1-py3-none-any.whl")][0].digest')"
+            test "$remote_digest" = "$asset_digest" || { echo 'Existing v0.1.1 wheel digest differs; refusing mutation' >&2; exit 1; }
+            echo 'Exact v0.1.1 release already published; leaving tag/assets unchanged'
+            exit 0
+          fi
+
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.1" --jq '.object.sha' >/dev/null 2>&1; then
+            echo 'Existing v0.1.1 tag without corresponding release: do not overwrite or retag' >&2
+            exit 1
+          fi
+
+          gh release create v0.1.1 "$wheel" --target "$GITHUB_SHA" --title 'TFont v0.1.1' --notes-file docs/releases/v0.1.1.md
+          target="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.1" --jq '.target_commitish')"
+          test "$target" = "$GITHUB_SHA"
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.1" --jq '.object.sha' | grep -Fx "$GITHUB_SHA"
+          gh release view v0.1.1 --json isDraft --jq '.isDraft' | grep -Fx false
+          remote_digest="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v0.1.1" --jq '[.assets[] | select(.name == "tfont-0.1.1-py3-none-any.whl")][0].digest')"
+          test "$remote_digest" = "$asset_digest"
+          echo "Verified published GitHub release v0.1.1 at $GITHUB_SHA with $asset_digest"

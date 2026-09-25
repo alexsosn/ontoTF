@@ -73,7 +73,7 @@ class ReadmeStatusContractTests(unittest.TestCase):
 
     def test_current_install_and_maintainer_links(self):
         self.assertIn("python -m pip install -e .", self.readme)
-        self.assertIn("python -m pip install ./tfont-0.1.0-py3-none-any.whl", self.readme)
+        self.assertIn("python -m pip install ./tfont-0.1.1-py3-none-any.whl", self.readme)
         self.assertIn("https://github.com/alexsosn/ontoTF/issues", self.readme)
         self.assertNotIn("https://github.com/alexsosn/TFont/issues", self.readme)
 
