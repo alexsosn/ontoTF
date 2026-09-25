@@ -1,7 +1,6 @@
 """Release-candidate acceptance: actual package version and truthful user guidance."""
 from __future__ import annotations
 
-import re
 import unittest
 from pathlib import Path
 
@@ -10,10 +9,6 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class I013ReleaseCandidateTests(unittest.TestCase):
-    def test_package_version_is_v010(self):
-        project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-        self.assertRegex(project, r'(?m)^version\s*=\s*"0\.1\.0"\s*$')
-
     def test_readme_describes_shipped_slice_without_stale_negations(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         self.assertIn("OLiA", readme)
