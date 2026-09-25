@@ -1,15 +1,6 @@
 name: I-013 v0.1 verified release
 
 on:
-  pull_request:
-    paths:
-      - 'pyproject.toml'
-      - 'README.md'
-      - 'docs/releases/v0.1.0.md'
-      - 'tests/i013/**'
-      - 'tests/docs/**'
-      - '.github/workflows/i013-release.yml'
-      - '.github/workflows/full-suite.yml'
   push:
     branches:
       - main
