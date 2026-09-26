@@ -85,7 +85,7 @@ class ReadmeStatusContractTests(unittest.TestCase):
         self.assertTrue(notes.is_file(), "published v0.1.0 release notes are absent")
         raw = notes.read_bytes()
         git_blob = hashlib.sha1(
-            b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+            b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
         ).hexdigest()
         self.assertEqual(
             git_blob,
