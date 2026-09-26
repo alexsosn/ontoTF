@@ -71,6 +71,34 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
             self.assertIn("i014-v011-release.yml", texts)
 
 
+    def test_redundant_d001_readme_workflow_is_retired_with_d003_coverage_preserved(self):
+        texts = self.workflow_texts()
+        with self.subTest("D-001 absent"):
+            self.assertNotIn("d001-readme-status.yml", texts)
+
+        with self.subTest("D-003 present"):
+            self.assertIn("d003-readme-i004-status.yml", texts)
+            d003 = texts["d003-readme-i004-status.yml"]
+
+        with self.subTest("README docs test preserved"):
+            self.assertTrue((ROOT / "tests" / "docs" / "test_readme_status.py").is_file())
+
+        required_tokens = (
+            "pull_request:",
+            "workflow_dispatch:",
+            "README.md",
+            "tests/docs/**",
+            EXACT_HEAD,
+            "python-version:",
+            "3.10",
+            "3.12",
+            "python -m unittest discover -s tests/docs -v",
+        )
+        for token in required_tokens:
+            with self.subTest(d003_token=token):
+                self.assertIn(token, d003)
+
+
     def test_focused_f007_contract_checks_exact_source_head(self):
         text = (WORKFLOW_DIR / "f007-ci-full-suite-dedup.yml").read_text(encoding="utf-8")
         self.assertIn(EXACT_HEAD, text)
