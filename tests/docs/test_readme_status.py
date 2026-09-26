@@ -80,6 +80,32 @@ class ReadmeStatusContractTests(unittest.TestCase):
         self.assertIn("https://github.com/alexsosn/ontoTF/issues", self.readme)
         self.assertNotIn("https://github.com/alexsosn/TFont/issues", self.readme)
 
+    def test_published_v010_release_notes_are_locked_and_truthful(self):
+        notes = ROOT / "docs" / "releases" / "v0.1.0.md"
+        self.assertTrue(notes.is_file(), "published v0.1.0 release notes are absent")
+        raw = notes.read_bytes()
+        git_blob = hashlib.sha1(
+            b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+        ).hexdigest()
+        self.assertEqual(
+            git_blob,
+            "2dbd212d7f69081d21770aaa3736d8647fee6996",
+            "checked-in v0.1.0 notes drifted from the reviewed published release record",
+        )
+        text = raw.decode("utf-8")
+        for marker in (
+            "0.1.0",
+            "Noun",
+            "BHSA",
+            "Syriac",
+            "ExtraBiblical",
+            "CC BY 3.0",
+            "MIT",
+            "API doubles",
+        ):
+            with self.subTest(v010_release_note_marker=marker):
+                self.assertIn(marker, text)
+
     def test_published_v011_release_notes_are_locked_and_truthful(self):
         notes = ROOT / "docs" / "releases" / "v0.1.1.md"
         self.assertTrue(notes.is_file(), "published v0.1.1 release notes are absent")
