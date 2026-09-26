@@ -208,6 +208,15 @@ Fresh reviewer must verify:
 
 Any final-head change invalidates review.
 
-## Merge
+## Merge and post-merge readback
 
-Merge with expected head SHA after exact-head CI and adversarial PASS. Close #188 through implementation PR.
+Merge with expected head SHA after exact-head CI and adversarial PASS.
+
+After merge, independently read GitHub API state and require:
+
+- release `v0.1.1` still targets `d53824c2f5d4f9e209dc685159ba6c56d267aba7`;
+- tag `refs/tags/v0.1.1` still points to that commit;
+- asset `tfont-0.1.1-py3-none-any.whl` still reports digest `sha256:a2a63562aba2d8fec25dfe65ee5c807db4f40991377d0d81989d5ab8ed6e6c3d`;
+- release remains non-draft.
+
+Only then treat #188 as operationally complete.
