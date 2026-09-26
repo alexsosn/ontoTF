@@ -14,6 +14,7 @@ on:
     paths:
       - README.md
       - tests/docs/**
+      - docs/releases/v0.1.0.md
       - docs/releases/v0.1.1.md
       - docs/research/D-003-i004-readme-status.md
       - docs/plans/D-003-i004-readme-status-plan.md

@@ -60,12 +60,21 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
                     f"tests/{suite} regressions must remain present",
                 )
 
-        with self.subTest("historical v0.1.0 guard"):
-            self.assertIn("i013-release.yml", texts)
-            historical = texts["i013-release.yml"]
-            self.assertNotIn("pull_request:", historical)
-            self.assertIn("- main", historical)
-            self.assertIn("'docs/releases/v0.1.0.md'", historical)
+        with self.subTest("historical v0.1.0 publisher retired"):
+            self.assertNotIn("i013-release.yml", texts)
+
+        with self.subTest("I-013 regression preserved"):
+            self.assertTrue((ROOT / "tests" / "i013" / "test_release_red.py").is_file())
+
+        with self.subTest("generic package owners preserved"):
+            self.assertIn("i012-v01-acceptance.yml", texts)
+            self.assertIn("i157-pep639-license.yml", texts)
+
+        with self.subTest("historical release docs owned by D-003"):
+            self.assertIn("d003-readme-i004-status.yml", texts)
+            d003 = texts["d003-readme-i004-status.yml"]
+            self.assertIn("docs/releases/v0.1.0.md", d003)
+            self.assertIn("docs/releases/v0.1.1.md", d003)
 
         with self.subTest("published v0.1.1 publisher retired"):
             self.assertNotIn("i014-v011-release.yml", texts)
