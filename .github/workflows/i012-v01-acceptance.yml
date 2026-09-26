@@ -10,6 +10,7 @@ on:
   pull_request:
     paths:
       - 'scripts/acceptance/v01_noun.py'
+      - 'pyproject.toml'
       - '.github/workflows/i012-v01-acceptance.yml'
 
 permissions:
@@ -25,6 +26,8 @@ jobs:
         python-version: ['3.10', '3.12']
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}

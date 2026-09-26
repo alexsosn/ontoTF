@@ -67,8 +67,51 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
             self.assertIn("- main", historical)
             self.assertIn("'docs/releases/v0.1.0.md'", historical)
 
-        with self.subTest("current v0.1.1 guard"):
-            self.assertIn("i014-v011-release.yml", texts)
+        with self.subTest("published v0.1.1 publisher retired"):
+            self.assertNotIn("i014-v011-release.yml", texts)
+
+
+    def test_post_release_v011_contracts_have_generic_owners(self):
+        texts = self.workflow_texts()
+
+        with self.subTest("stale I-014 tests retired"):
+            self.assertFalse((ROOT / "tests" / "i014" / "test_v011_release.py").exists())
+            self.assertFalse((ROOT / "tests" / "i014" / "__init__.py").exists())
+
+        with self.subTest("PEP 639 owner preserved"):
+            self.assertIn("i157-pep639-license.yml", texts)
+
+        with self.subTest("I-012 packaging acceptance owner"):
+            self.assertIn("i012-v01-acceptance.yml", texts)
+            i012 = texts["i012-v01-acceptance.yml"]
+            for token in (
+                "pull_request:",
+                "pyproject.toml",
+                EXACT_HEAD,
+                "python-version:",
+                "3.10",
+                "3.12",
+                "python -m build --wheel",
+                "scripts/acceptance/v01_noun.py",
+            ):
+                with self.subTest(i012_token=token):
+                    self.assertIn(token, i012)
+
+        with self.subTest("D-003 release docs owner"):
+            self.assertIn("d003-readme-i004-status.yml", texts)
+            d003 = texts["d003-readme-i004-status.yml"]
+            for token in (
+                "README.md",
+                "tests/docs/**",
+                "docs/releases/v0.1.1.md",
+                EXACT_HEAD,
+                "python-version:",
+                "3.10",
+                "3.12",
+                "python -m unittest discover -s tests/docs -v",
+            ):
+                with self.subTest(d003_token=token):
+                    self.assertIn(token, d003)
 
 
     def test_redundant_d001_readme_workflow_is_retired_with_d003_coverage_preserved(self):
