@@ -57,6 +57,8 @@ technical_exclusions[]:
   item_id
   kind
   reason
+  authority = research | production
+  source_ids[]
 
 denominator_digest
 optional generated_at
@@ -73,7 +75,8 @@ JSON Schema alone is insufficient for:
 - accounting invariants;
 - denominator digest verification;
 - controlled profile/capability membership consistency;
-- source/target revision freshness derivation.
+- source/target revision freshness derivation;
+- technical-exclusion review authority.
 
 Add a coverage-specific validator in a new module rather than weakening generic I-001 validation.
 
@@ -94,7 +97,7 @@ Add:
 - scope quality;
 - denominator basis;
 - canonical semantic item identities/kinds;
-- canonical technical exclusions.
+- canonical technical exclusions, including their reason and review authority/source IDs.
 
 It excludes:
 
@@ -272,7 +275,8 @@ Definitions:
 `corpus_wide_completion_claim_eligible`:
 - scope quality = machine-exhaustive;
 - freshness = current;
-- bounded scope complete.
+- bounded scope complete;
+- every technical exclusion, if any, has production authority.
 
 Initial baseline must report all seven as corpus-wide ineligible because no corpus has full production review yet.
 
@@ -320,7 +324,9 @@ Add tests for:
 
 - duplicate semantic item ID;
 - semantic/technical overlap;
-- missing/invalid exact revision;
+- technical exclusion without review authority/source identity;
+- research-only technical exclusion cannot support corpus-wide completion;
+- missing/invalid exact 40-hex revision;
 - digest mismatch;
 - semantic item mutation changes denominator digest;
 - accounting-only mutation does **not** change denominator digest;
@@ -369,6 +375,7 @@ Final adversarial review must challenge:
 - exact I-015 item projection;
 - stale/current derivation;
 - curated-scope claim boundary;
+- technical-exclusion production authority;
 - digest projection independence from accounting/timestamps;
 - denominator mutation sensitivity;
 - generated-resource reproducibility;
