@@ -1,0 +1,68 @@
+name: I-016 coverage manifests
+
+on:
+  pull_request:
+    paths:
+      - "src/tfont/coverage.py"
+      - "src/tfont/__init__.py"
+      - "src/tfont/source_validation.py"
+      - "src/tfont/schemas/coverage-manifest.schema.json"
+      - "src/tfont/resources/coverage/**"
+      - "scripts/coverage/**"
+      - "tests/i016/**"
+      - "tests/i001/test_source_validation.py"
+      - "pyproject.toml"
+      - "docs/research/I-016-seven-corpus-coverage-accounting.md"
+      - "docs/plans/I-016-*.md"
+      - ".github/workflows/i016-coverage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i016:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - run: python -m unittest discover -s tests/i016 -p 'test*.py'
+      - run: python scripts/coverage/build_p004_r011_baseline.py --check
+      - run: python -m pip install build
+      - run: python -m build --wheel --outdir dist
+      - name: Verify coverage resources in wheel
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          wheel = next(Path("dist").glob("tfont-*.whl"))
+          prefix = "tfont/resources/coverage/p004-r011-baseline-v1/"
+          expected = {
+              prefix + name
+              for name in (
+                  "bhsa.json",
+                  "cuc.json",
+                  "extrabiblical.json",
+                  "oracc.json",
+                  "pseudepigrapha.json",
+                  "syriac.json",
+                  "tlhdig.json",
+              )
+          }
+          with ZipFile(wheel) as archive:
+              found = {name for name in archive.namelist() if name.startswith(prefix)}
+          if found != expected:
+              raise SystemExit(
+                  f"coverage wheel resources mismatch: expected={sorted(expected)} found={sorted(found)}"
+              )
+          PY
