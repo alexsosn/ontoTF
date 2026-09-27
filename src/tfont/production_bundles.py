@@ -69,11 +69,15 @@ def _mapping_artifact(root: str, profile: SemanticArtifact) -> SemanticArtifact:
     sources = profile.data.get("mapping_sources")
     if type(sources) is not list or not sources:
         raise ProductionBundleError(profile.data.get("profile_id"))
-    rows: list[dict[str, Any]] = []
+    artifacts: list[SemanticArtifact] = []
     for relative in sources:
         if type(relative) is not str or not relative:
             raise ProductionBundleError(profile.data.get("profile_id"))
-        artifact = _artifact("mapping", "mapping", f"{root}/{relative}")
+        artifacts.append(_artifact("mapping", "mapping", f"{root}/{relative}"))
+    if len(artifacts) == 1:
+        return artifacts[0]
+    rows: list[dict[str, Any]] = []
+    for artifact in artifacts:
         rows.extend(cast(list[dict[str, Any]], artifact.data["mappings"]))
     combined = {"schema_version": 2, "mappings": rows}
     validate_source(combined, "mapping", source_name=f"{root}/mappings/combined")
