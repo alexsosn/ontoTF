@@ -261,6 +261,73 @@
         }
       },
       "additionalProperties": false
+    },
+    "accountingGap": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "kind",
+        "authority",
+        "reason",
+        "assessments",
+        "common_target",
+        "source_ids"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/itemKind"
+        },
+        "authority": {
+          "enum": [
+            "research",
+            "production"
+          ]
+        },
+        "reason": {
+          "const": "outside-denominator"
+        },
+        "assessments": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/assessment"
+          }
+        },
+        "common_target": {
+          "type": "boolean"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/profile"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "type": "object",
@@ -275,6 +342,7 @@
     "denominator_basis",
     "semantic_items",
     "technical_exclusions",
+    "accounting_gaps",
     "denominator_digest"
   ],
   "properties": {
@@ -333,6 +401,12 @@
     "generated_at": {
       "type": "string",
       "minLength": 1
+    },
+    "accounting_gaps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/accountingGap"
+      }
     }
   },
   "additionalProperties": false
