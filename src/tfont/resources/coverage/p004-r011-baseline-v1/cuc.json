@@ -10,7 +10,7 @@
     "kind": "generated-r005-inventory",
     "source": "docs/research/data/generated/r005/cuc.json"
   },
-  "denominator_digest": "sha256:36bf70c9f980b17c5295c111d85960b72d9d4fc39eea4bbfe525c79c06a0ecee",
+  "denominator_digest": "sha256:5d441baeb913e3d696b293bdc5fd2c71a3b354f561fd8654f9b2dbd9a7157fec",
   "denominator_source_revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
   "manifest_id": "coverage:p004-r011-baseline-v1:cuc",
   "repository": "DT-UCPH/cuc",
