@@ -206,12 +206,14 @@ def _binding_items(binding: dict[str, Any]) -> list[str]:
 def production_accounting(
     corpus_id: str,
     available: set[str],
-) -> dict[str, dict[str, Any]]:
+) -> tuple[dict[str, dict[str, Any]], list[dict[str, Any]]]:
     paths = PRODUCTION_MAPPING_FILES.get(corpus_id)
     if paths is None:
-        return {}
+        return {}, []
 
-    accumulated: dict[str, dict[str, set[str] | bool]] = {}
+    inside: dict[str, dict[str, set[str] | bool]] = {}
+    outside: dict[str, dict[str, set[str] | bool]] = {}
+
     for path in paths:
         data = load_json(path)
         for mapping in data["mappings"]:
@@ -227,11 +229,8 @@ def production_accounting(
                         f"{mapping['mapping_id']}={assessment}"
                     )
                 for item_id in _binding_items(projection["native_execution_binding"]):
-                    if item_id not in available:
-                        raise ValueError(
-                            f"{corpus_id}: production item absent from denominator: {item_id}"
-                        )
-                    row = accumulated.setdefault(
+                    bucket = inside if item_id in available else outside
+                    row = bucket.setdefault(
                         item_id,
                         {
                             "assessments": set(),
@@ -248,7 +247,7 @@ def production_accounting(
                     row["common_target"] = True
 
     result: dict[str, dict[str, Any]] = {}
-    for item_id, row in accumulated.items():
+    for item_id, row in inside.items():
         result[item_id] = {
             "assessments": sorted(row["assessments"]),  # type: ignore[arg-type]
             "common_target": bool(row["common_target"]),
@@ -256,8 +255,23 @@ def production_accounting(
             "profiles": sorted(row["profiles"]),  # type: ignore[arg-type]
             "capabilities": sorted(row["capabilities"]),  # type: ignore[arg-type]
         }
-    return result
 
+    gaps: list[dict[str, Any]] = []
+    for item_id, row in sorted(outside.items()):
+        gaps.append(
+            {
+                "item_id": item_id,
+                "kind": item_kind(item_id),
+                "authority": "production",
+                "reason": "outside-denominator",
+                "assessments": sorted(row["assessments"]),  # type: ignore[arg-type]
+                "common_target": bool(row["common_target"]),
+                "source_ids": sorted(row["source_ids"]),  # type: ignore[arg-type]
+                "profiles": sorted(row["profiles"]),  # type: ignore[arg-type]
+                "capabilities": sorted(row["capabilities"]),  # type: ignore[arg-type]
+            }
+        )
+    return result, gaps
 
 def build_manifests() -> dict[str, dict[str, Any]]:
     pilots = load_json(PILOTS)
@@ -286,7 +300,7 @@ def build_manifests() -> dict[str, dict[str, Any]]:
             value_families,
             available,
         )
-        production = production_accounting(corpus_id, available)
+        production, accounting_gaps = production_accounting(corpus_id, available)
 
         semantic_items = []
         for item_id in sorted(available):
@@ -321,6 +335,7 @@ def build_manifests() -> dict[str, dict[str, Any]]:
             },
             "semantic_items": semantic_items,
             "technical_exclusions": [],
+            "accounting_gaps": accounting_gaps,
         }
         if meta.get("tf_version"):
             manifest["tf_version"] = meta["tf_version"]
