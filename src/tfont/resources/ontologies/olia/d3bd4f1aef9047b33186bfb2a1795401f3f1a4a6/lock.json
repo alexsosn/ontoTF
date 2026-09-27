@@ -11,7 +11,13 @@
   "support_tier": "supported-profile",
   "term_namespace": "http://purl.org/olia/olia.owl#",
   "terms_used": [
-    "http://purl.org/olia/olia.owl#Noun"
+    "http://purl.org/olia/olia.owl#Dual",
+    "http://purl.org/olia/olia.owl#Feminine",
+    "http://purl.org/olia/olia.owl#Masculine",
+    "http://purl.org/olia/olia.owl#Noun",
+    "http://purl.org/olia/olia.owl#Plural",
+    "http://purl.org/olia/olia.owl#ProperNoun",
+    "http://purl.org/olia/olia.owl#Singular"
   ],
   "upstream_release_status": "git-snapshot"
 }

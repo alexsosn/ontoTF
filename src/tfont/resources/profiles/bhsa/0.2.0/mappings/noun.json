@@ -1,0 +1,61 @@
+{
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": ["linguistic.part-of-speech"],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {"content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17", "evidence_id": "evidence:bhsa:word-sp-noun-codes"},
+        {"content_digest": "sha256:9fc34c387992787a17120348c7368cadf8056f8e17373f108976d045aa568538", "evidence_id": "evidence:olia:noun-hierarchy"}
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-noun",
+      "mapping_semantic_digest": "sha256:1584b737cc14b14c6178a651d96e4d14c21414bcd55c216b4dbf45133ab02729",
+      "native_binding": {"component_id": "bhsa-tf", "execution_shape": "value-set-predicate", "feature": "sp", "node_type": "word", "values": ["nmpr", "subs"]},
+      "native_dependencies": ["dep:bhsa:word-sp:nmpr", "dep:bhsa:word-sp:subs"],
+      "native_state": "positive",
+      "profiles": ["linguistic"],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {"content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17", "evidence_id": "evidence:bhsa:word-sp-noun-codes"},
+            {"content_digest": "sha256:9fc34c387992787a17120348c7368cadf8056f8e17373f108976d045aa568538", "evidence_id": "evidence:olia:noun-hierarchy"}
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {"component_id": "bhsa-tf", "execution_shape": "value-set-predicate", "feature": "sp", "node_type": "word", "values": ["nmpr", "subs"]},
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-noun",
+          "projection_semantic_digest": "sha256:60b78e009d3ca5797ad090c9fb82a2a928c2b44a0a9f23c90b95f86238388c41",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:bhsa:olia-noun:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:60b78e009d3ca5797ad090c9fb82a2a928c2b44a0a9f23c90b95f86238388c41",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-12T15:29:25Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/156#issuecomment-5646831801",
+            "review_method": "logically-independent semantic/evidence review against pinned I-009 research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Noun"
+        }
+      ],
+      "rationale": "Candidate production projection for the v0.1 OLiA Noun semantic slice; see I-009 research and implementation PR #156.",
+      "review": {
+        "review_id": "review:bhsa:olia-noun:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:1584b737cc14b14c6178a651d96e4d14c21414bcd55c216b4dbf45133ab02729",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-12T15:29:25Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/156#issuecomment-5646831801",
+        "review_method": "logically-independent semantic/evidence review against pinned I-009 research evidence"
+      }
+    }
+  ],
+  "schema_version": 2
+}
