@@ -1,0 +1,17 @@
+{
+  "content_digest": "sha256:119571ea2a08e31c3ed910879264c3ab484979c5be40e2c87df6fe6699bb36c7",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:extrabiblical:word-gn-observed",
+  "kind": "corpus-tf-observation",
+  "reviewed_content": {
+    "feature": "gn",
+    "node_type": "word",
+    "observed_values": [
+      "f",
+      "m"
+    ],
+    "semantic_authority": "evidence:extrabiblical:feature-authority"
+  },
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/extrabiblical/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2/gn.tf"
+}

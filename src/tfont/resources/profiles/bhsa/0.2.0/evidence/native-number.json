@@ -1,0 +1,18 @@
+{
+  "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:bhsa:word-nu-values",
+  "kind": "corpus-feature-definition",
+  "reviewed_content": {
+    "feature": "nu",
+    "feature_semantics": "grammatical number",
+    "node_type": "word",
+    "values": {
+      "du": "dual",
+      "pl": "plural",
+      "sg": "singular"
+    }
+  },
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/nu.md"
+}

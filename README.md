@@ -18,6 +18,18 @@ Public library APIs include source and cross-artifact validation (`validate_sema
 
 **Trust boundary:** a production profile is authorized only for its exact reviewed parent manifest. The executor uses a current compiled IR, evaluates dependencies from the already-loaded TF API and resolves the request afresh before native selection; a caller-supplied plan or public hash cannot authorize execution on its own. Mismatched or unverified corpus data fail closed.
 
+
+## Development source after v0.1.1
+
+The published **v0.1.1** wheel remains the historical exact OLiA Noun slice described above. The current development source adds separately versioned **0.2.0 linguistic profiles** for the same pinned BHSA, Syriac, and ExtraBiblical corpus revisions. These development capabilities are **not part of the published v0.1.1 wheel**.
+
+The expanded exact semantic atoms are OLiA `ProperNoun`, `Masculine`, `Feminine`, `Singular`, `Plural`, and `Dual`, while retaining broad `Noun`. Load them with `load_production_linguistic_bundles()` (or the singular-corpus loader) rather than the compatibility `load_production_noun_bundle(s)` APIs, which intentionally remain bound to profile 0.1.0.
+
+Development source also exposes `SemanticConjunctionRequest` and `execute_exact_conjunction` for exact AND queries over independently reviewed semantic atoms. For example, `Noun AND Plural AND Feminine` is resolved separately for every atom and corpus, then intersected on the shared reviewed word-node domain; `ProperNoun AND Feminine` uses `sp=nmpr` in BHSA/ExtraBiblical but `ls=prop` in Syriac. Every atom retains its own mapping, projection, evidence, review, prerequisite, and plan fingerprints. Conjunction fails closed if an atom cannot resolve exactly or if the participating plans do not share one component and node type in that corpus.
+
+This is intentionally bounded: it does not add `CommonNoun`, nominal state, verbal stems, approximate execution, negation/OR, or a generic boolean query language.
+
+
 ## Installation
 
 Python 3.10 or newer. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:

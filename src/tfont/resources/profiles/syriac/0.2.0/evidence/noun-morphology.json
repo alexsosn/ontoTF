@@ -1,0 +1,34 @@
+{
+  "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:syriac:word-noun-morphology",
+  "kind": "corpus-grammar-definition",
+  "reviewed_content": {
+    "features": {
+      "gn": {
+        "feature_semantics": "gender",
+        "values": {
+          "f": "feminine",
+          "m": "masculine"
+        }
+      },
+      "ls": {
+        "feature_semantics": "lexical set",
+        "values": {
+          "prop": "proper noun"
+        }
+      },
+      "nu": {
+        "feature_semantics": "number",
+        "values": {
+          "du": "dual",
+          "pl": "plural",
+          "sg": "singular"
+        }
+      }
+    },
+    "node_type": "word"
+  },
+  "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/linksyr/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/word_grammar"
+}

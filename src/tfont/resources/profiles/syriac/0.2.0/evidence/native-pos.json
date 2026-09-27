@@ -1,0 +1,14 @@
+{
+  "content_digest": "sha256:2851e7403ec641ca47f6cd7b2d59f6e58af27f5336f5376b5e6af5a078d0bc3f",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:syriac:word-sp-substantive",
+  "kind": "corpus-grammar-definition",
+  "reviewed_content": {
+    "feature": "sp",
+    "feature_semantics": "part of speech",
+    "value": "subs",
+    "value_semantics": "substantive"
+  },
+  "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/linksyr/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/word_grammar"
+}

@@ -1,0 +1,18 @@
+{
+  "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:extrabiblical:word-nu-observed",
+  "kind": "corpus-tf-observation",
+  "reviewed_content": {
+    "feature": "nu",
+    "node_type": "word",
+    "observed_values": [
+      "du",
+      "pl",
+      "sg"
+    ],
+    "semantic_authority": "evidence:extrabiblical:feature-authority"
+  },
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/extrabiblical/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2/nu.tf"
+}

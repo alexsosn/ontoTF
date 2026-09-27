@@ -1,0 +1,17 @@
+{
+  "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:bhsa:word-gn-values",
+  "kind": "corpus-feature-definition",
+  "reviewed_content": {
+    "feature": "gn",
+    "feature_semantics": "grammatical gender",
+    "node_type": "word",
+    "values": {
+      "f": "feminine",
+      "m": "masculine"
+    }
+  },
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/gn.md"
+}
