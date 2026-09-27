@@ -669,6 +669,40 @@ def _execute_exact_plan_in_context(
     return _execute_value_set_predicate(plan, component)
 
 
+def _validate_conjunction_node_domains(
+    resolution: SemanticConjunctionResolutionResult,
+) -> None:
+    domains: dict[str, set[tuple[str, str]]] = {
+        corpus_id: set() for corpus_id in resolution.request.corpora
+    }
+    for constituent in resolution.resolutions:
+        for plan in constituent.plans:
+            binding = plan.native_execution_binding
+            if (
+                type(binding) is not NativeBindingIR
+                or not _nonempty_string(binding.component_id)
+                or not _nonempty_string(binding.node_type)
+            ):
+                _fail(
+                    "unsupported_native_binding",
+                    "conjunction plan has no explicit component/node-type domain",
+                    corpus_id=plan.corpus_id,
+                    component_id=getattr(binding, "component_id", None),
+                )
+            domains.setdefault(plan.corpus_id, set()).add(
+                (binding.component_id, binding.node_type)
+            )
+
+    for corpus_id in resolution.request.corpora:
+        corpus_domains = domains.get(corpus_id, set())
+        if len(corpus_domains) != 1:
+            _fail(
+                "incompatible_conjunction_node_domain",
+                "exact conjunction requires one shared component and node type per corpus",
+                corpus_id=corpus_id,
+            )
+
+
 def execute_exact_conjunction(
     ir: CompiledSemanticIR,
     request: SemanticConjunctionRequest,
@@ -712,6 +746,7 @@ def execute_exact_conjunction(
         prerequisites.append(report.to_prerequisite())
 
     resolution = semantic_resolve_conjunction(ir, request, tuple(prerequisites))
+    _validate_conjunction_node_domains(resolution)
     by_corpus: dict[str, list[tuple[ExactNativePlan, tuple[int, ...]]]] = {
         corpus_id: [] for corpus_id in resolution.request.corpora
     }
