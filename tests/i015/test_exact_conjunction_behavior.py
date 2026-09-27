@@ -3,7 +3,7 @@ from __future__ import annotations
 import importlib
 import unittest
 
-from tfont.production_bundles import load_production_noun_bundles
+from tfont.production_bundles import load_production_linguistic_bundles
 from tfont.semantic_execution import LoadedComponentContext, LoadedCorpusContext
 from tfont.semantic_ir import SemanticKey, compile_semantic_ir
 from tfont.semantic_validation import validate_semantic_bundle
@@ -74,7 +74,7 @@ class _API:
 
 
 def compiled_and_contexts():
-    bundles = load_production_noun_bundles()
+    bundles = load_production_linguistic_bundles()
     validated = tuple(validate_semantic_bundle(bundle) for bundle in bundles)
     ir = compile_semantic_ir(validated)
     contexts = []

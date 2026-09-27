@@ -6,12 +6,26 @@ from typing import Any, cast
 from .semantic_validation import SemanticArtifact, SemanticSourceBundle
 from .source_validation import loads_source, validate_source
 
-PRODUCTION_LINGUISTIC_CORPORA = ("bhsa", "syriac", "extrabiblical")
-PRODUCTION_NOUN_CORPORA = PRODUCTION_LINGUISTIC_CORPORA
-_PROFILE_VERSION = "0.2.0"
+PRODUCTION_NOUN_CORPORA = ("bhsa", "syriac", "extrabiblical")
+PRODUCTION_LINGUISTIC_CORPORA = PRODUCTION_NOUN_CORPORA
+_NOUN_PROFILE_VERSION = "0.1.0"
+_LINGUISTIC_PROFILE_VERSION = "0.2.0"
 _OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 _OLIA_ROOT = f"resources/ontologies/olia/{_OLIA_REVISION}"
-_CORPUS_EVIDENCE = {
+
+_NOUN_EVIDENCE = {
+    "bhsa": ("resources/profiles/bhsa/0.1.0/evidence/native-pos.json",),
+    "syriac": (
+        "resources/profiles/syriac/0.1.0/evidence/native-pos.json",
+        "resources/profiles/syriac/0.1.0/evidence/proper-noun-encoding.json",
+    ),
+    "extrabiblical": (
+        "resources/profiles/extrabiblical/0.1.0/evidence/native-pos-enum.json",
+        "resources/profiles/extrabiblical/0.1.0/evidence/feature-authority.json",
+        "resources/profiles/bhsa/0.1.0/evidence/native-pos.json",
+    ),
+}
+_LINGUISTIC_EVIDENCE = {
     "bhsa": (
         "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
         "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
@@ -66,18 +80,25 @@ def _mapping_artifact(root: str, profile: SemanticArtifact) -> SemanticArtifact:
     return SemanticArtifact("mapping", f"{root}/mappings/combined", combined)
 
 
-def load_production_linguistic_bundle(corpus_id: str) -> SemanticSourceBundle:
-    if type(corpus_id) is not str or corpus_id not in PRODUCTION_LINGUISTIC_CORPORA:
+def _load_bundle(
+    corpus_id: str,
+    *,
+    corpora: tuple[str, ...],
+    profile_version: str,
+    evidence_sources: dict[str, tuple[str, ...]],
+    lock_name: str,
+    include_morphology_evidence: bool,
+) -> SemanticSourceBundle:
+    if type(corpus_id) is not str or corpus_id not in corpora:
         raise ProductionBundleError(corpus_id)
-    root = f"resources/profiles/{corpus_id}/{_PROFILE_VERSION}"
+    root = f"resources/profiles/{corpus_id}/{profile_version}"
     profile = _artifact("profile", "profile", f"{root}/profile.json")
+    ontology_evidence = [f"{_OLIA_ROOT}/noun-evidence.json"]
+    if include_morphology_evidence:
+        ontology_evidence.append(f"{_OLIA_ROOT}/noun-morphology-evidence.json")
     evidences = tuple(
         _artifact("evidence", "evidence", source_name)
-        for source_name in (
-            *_CORPUS_EVIDENCE[corpus_id],
-            f"{_OLIA_ROOT}/noun-evidence.json",
-            f"{_OLIA_ROOT}/noun-morphology-evidence.json",
-        )
+        for source_name in (*evidence_sources[corpus_id], *ontology_evidence)
     )
     return SemanticSourceBundle(
         profile=profile,
@@ -88,9 +109,35 @@ def load_production_linguistic_bundle(corpus_id: str) -> SemanticSourceBundle:
         ),
         mappings=_mapping_artifact(root, profile),
         ontology_locks=(
-            _artifact("ontology-lock", "ontology-lock", f"{_OLIA_ROOT}/lock.json"),
+            _artifact("ontology-lock", "ontology-lock", f"{_OLIA_ROOT}/{lock_name}"),
         ),
         evidences=evidences,
+    )
+
+
+def load_production_noun_bundle(corpus_id: str) -> SemanticSourceBundle:
+    return _load_bundle(
+        corpus_id,
+        corpora=PRODUCTION_NOUN_CORPORA,
+        profile_version=_NOUN_PROFILE_VERSION,
+        evidence_sources=_NOUN_EVIDENCE,
+        lock_name="lock.json",
+        include_morphology_evidence=False,
+    )
+
+
+def load_production_noun_bundles() -> tuple[SemanticSourceBundle, ...]:
+    return tuple(load_production_noun_bundle(corpus_id) for corpus_id in PRODUCTION_NOUN_CORPORA)
+
+
+def load_production_linguistic_bundle(corpus_id: str) -> SemanticSourceBundle:
+    return _load_bundle(
+        corpus_id,
+        corpora=PRODUCTION_LINGUISTIC_CORPORA,
+        profile_version=_LINGUISTIC_PROFILE_VERSION,
+        evidence_sources=_LINGUISTIC_EVIDENCE,
+        lock_name="lock-linguistic-0.2.0.json",
+        include_morphology_evidence=True,
     )
 
 
@@ -99,14 +146,6 @@ def load_production_linguistic_bundles() -> tuple[SemanticSourceBundle, ...]:
         load_production_linguistic_bundle(corpus_id)
         for corpus_id in PRODUCTION_LINGUISTIC_CORPORA
     )
-
-
-def load_production_noun_bundle(corpus_id: str) -> SemanticSourceBundle:
-    return load_production_linguistic_bundle(corpus_id)
-
-
-def load_production_noun_bundles() -> tuple[SemanticSourceBundle, ...]:
-    return load_production_linguistic_bundles()
 
 
 __all__ = [

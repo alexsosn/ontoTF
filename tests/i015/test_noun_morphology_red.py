@@ -31,7 +31,7 @@ class I015ProductionNounMorphologyRedTests(unittest.TestCase):
         )
 
     def test_profiles_expose_morphology_capability(self):
-        bundles = self.module.load_production_noun_bundles()
+        bundles = getattr(self.module, "load_production_linguistic_bundles", self.module.load_production_noun_bundles)()
         for bundle in bundles:
             with self.subTest(profile=bundle.profile.data["profile_id"]):
                 self.assertIn(
@@ -65,7 +65,7 @@ class I015ProductionNounMorphologyRedTests(unittest.TestCase):
                 )
 
     def test_olia_lock_declares_all_used_terms(self):
-        bundle = self.module.load_production_noun_bundle("bhsa")
+        bundle = getattr(self.module, "load_production_linguistic_bundle", self.module.load_production_noun_bundle)("bhsa")
         self.assertEqual(set(bundle.ontology_locks[0].data["terms_used"]), EXPECTED_TARGETS)
 
 
