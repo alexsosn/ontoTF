@@ -30,9 +30,19 @@ EXPECTED_RESEARCH = {
 
 EXPECTED_PRODUCTION = {
     "bhsa": 7,
-    "syriac": 7,
+    "syriac": 6,
     "extrabiblical": 7,
     "cuc": 0,
+    "tlhdig": 0,
+    "pseudepigrapha": 0,
+    "oracc": 0,
+}
+
+EXPECTED_OUTSIDE = {
+    "bhsa": 0,
+    "cuc": 0,
+    "syriac": 1,
+    "extrabiblical": 0,
     "tlhdig": 0,
     "pseudepigrapha": 0,
     "oracc": 0,
@@ -104,7 +114,8 @@ class I016CoverageManifestRedTests(unittest.TestCase):
         self.assertEqual(sum(row.semantic_items for row in reports.values()), 685)
         self.assertEqual(sum(row.research_reviewed_items for row in reports.values()), 99)
         self.assertEqual(sum(row.research_common_target_items for row in reports.values()), 26)
-        self.assertEqual(sum(row.production_reviewed_items for row in reports.values()), 21)
+        self.assertEqual(sum(row.production_reviewed_items for row in reports.values()), 20)
+        self.assertEqual(sum(row.production_outside_denominator_items for row in reports.values()), 1)
 
         for corpus, report in reports.items():
             with self.subTest(corpus=corpus):
@@ -114,8 +125,13 @@ class I016CoverageManifestRedTests(unittest.TestCase):
                     EXPECTED_RESEARCH[corpus],
                 )
                 self.assertEqual(report.production_reviewed_items, EXPECTED_PRODUCTION[corpus])
+                self.assertEqual(report.production_outside_denominator_items, EXPECTED_OUTSIDE[corpus])
                 self.assertEqual(report.freshness, EXPECTED_FRESHNESS[corpus])
                 self.assertEqual(report.scope_quality, EXPECTED_SCOPE[corpus])
+                if corpus == "syriac":
+                    self.assertEqual(report.production_outside_denominator_item_ids, (\'node_value:ls="prop"\',))
+                else:
+                    self.assertEqual(report.production_outside_denominator_item_ids, ())
                 self.assertFalse(report.corpus_wide_completion_claim_eligible)
 
     def test_baseline_manifest_digests_validate(self):
