@@ -22,8 +22,11 @@ from .parent_identity import (
     tf_payload_digest,
 )
 from .production_bundles import (
+    PRODUCTION_LINGUISTIC_CORPORA,
     PRODUCTION_NOUN_CORPORA,
     ProductionBundleError,
+    load_production_linguistic_bundle,
+    load_production_linguistic_bundles,
     load_production_noun_bundle,
     load_production_noun_bundles,
 )
@@ -38,14 +41,18 @@ from .runtime_prerequisites import (
     evaluate_runtime_prerequisites,
 )
 from .semantic_execution import (
+    EXACT_CONJUNCTION_EXECUTION_CONTRACT,
     EXACT_EXECUTION_CONTRACT,
     EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT,
+    ExactConjunctionCorpusExecution,
+    ExactConjunctionExecutionResult,
     ExactCorpusExecution,
     ExactExecutionError,
     ExactExecutionProblem,
     ExactExecutionResult,
     LoadedComponentContext,
     LoadedCorpusContext,
+    execute_exact_conjunction,
     execute_exact_semantic,
 )
 from .semantic_ir import (
@@ -80,6 +87,8 @@ from .semantic_ir import (
     native_binding_identity,
 )
 from .semantic_resolver import (
+    EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM,
+    EXACT_CONJUNCTION_RESOLVER_CONTRACT,
     EXACT_PLAN_FINGERPRINT_ALGORITHM,
     EXACT_RESOLUTION_FINGERPRINT_ALGORITHM,
     EXACT_RESOLVER_CONTRACT,
@@ -89,6 +98,8 @@ from .semantic_resolver import (
     ExactNativePlan,
     RuntimePrerequisiteState,
     SemanticCapabilityView,
+    SemanticConjunctionRequest,
+    SemanticConjunctionResolutionResult,
     SemanticResolutionError,
     SemanticResolutionProblem,
     SemanticResolutionResult,
@@ -97,6 +108,7 @@ from .semantic_resolver import (
     runtime_prerequisite_fingerprint,
     semantic_capabilities,
     semantic_resolve,
+    semantic_resolve_conjunction,
 )
 from .semantic_validation import (
     SemanticArtifact,
@@ -116,6 +128,18 @@ from .source_validation import (
 )
 
 __all__ = [
+    "semantic_resolve_conjunction",
+    "load_production_linguistic_bundles",
+    "load_production_linguistic_bundle",
+    "execute_exact_conjunction",
+    "SemanticConjunctionResolutionResult",
+    "SemanticConjunctionRequest",
+    "PRODUCTION_LINGUISTIC_CORPORA",
+    "ExactConjunctionExecutionResult",
+    "ExactConjunctionCorpusExecution",
+    "EXACT_CONJUNCTION_RESOLVER_CONTRACT",
+    "EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM",
+    "EXACT_CONJUNCTION_EXECUTION_CONTRACT",
     "ApproximationIR",
     "AuthorityKey",
     "BundleVariantIR",

@@ -14,9 +14,12 @@ from .runtime_prerequisites import (
 from .semantic_ir import BundleVariantIR, BundleVariantKey, CompiledSemanticIR, NativeBindingIR
 from .semantic_resolver import (
     ExactNativePlan,
+    SemanticConjunctionRequest,
+    SemanticConjunctionResolutionResult,
     SemanticResolutionResult,
     SemanticResolveRequest,
     semantic_resolve,
+    semantic_resolve_conjunction,
 )
 
 EXACT_EXECUTION_CONTRACT = "tfont-exact-execution-v1"
@@ -607,6 +610,148 @@ def execute_exact_semantic(
     executions.sort(key=lambda row: _utf16(row.corpus_id))
     return ExactExecutionResult(
         execution_contract=EXACT_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(executions),
+    )
+
+
+EXACT_CONJUNCTION_EXECUTION_CONTRACT = "tfont-exact-semantic-conjunction-execution-v1"
+
+
+@dataclass(frozen=True)
+class ExactConjunctionCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plans: tuple[ExactNativePlan, ...]
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class ExactConjunctionExecutionResult:
+    execution_contract: str
+    resolution: SemanticConjunctionResolutionResult
+    corpora: tuple[ExactConjunctionCorpusExecution, ...]
+
+
+def _execute_exact_plan_in_context(
+    plan: ExactNativePlan,
+    context: LoadedCorpusContext,
+) -> tuple[int, ...]:
+    binding = plan.native_execution_binding
+    if type(binding) is not NativeBindingIR:
+        _fail(
+            "unsupported_native_binding",
+            "fresh resolver plan has an invalid native binding",
+            corpus_id=plan.corpus_id,
+        )
+    if binding.execution_shape == "value-predicate":
+        binding = _validate_value_predicate(plan)
+    elif binding.execution_shape == "value-set-predicate":
+        binding = _validate_value_set_predicate(plan)
+    else:
+        _fail(
+            "unsupported_native_binding",
+            "exact conjunction supports only scalar or finite-set feature predicates",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+
+    component = _components(context).get(binding.component_id or "")
+    if component is None:
+        _fail(
+            "missing_execution_component",
+            "fresh resolver plan references a component outside the execution context",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+    if binding.execution_shape == "value-predicate":
+        return _execute_value_predicate(plan, component)
+    return _execute_value_set_predicate(plan, component)
+
+
+def execute_exact_conjunction(
+    ir: CompiledSemanticIR,
+    request: SemanticConjunctionRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ExactConjunctionExecutionResult:
+    if type(request) is not SemanticConjunctionRequest:
+        raise TypeError("request must be SemanticConjunctionRequest")
+    if type(request.corpora) is not tuple or not request.corpora:
+        _fail(
+            "invalid_execution_context",
+            "request corpora must be a non-empty tuple",
+        )
+    if any(not _nonempty_string(corpus_id) for corpus_id in request.corpora):
+        _fail(
+            "invalid_execution_context",
+            "request corpus IDs must be non-empty strings",
+        )
+
+    requested = tuple(sorted(set(request.corpora), key=_utf16))
+    normalized_contexts = _normalize_contexts(contexts)
+    for corpus_id in requested:
+        if corpus_id not in normalized_contexts:
+            _fail(
+                "missing_execution_context",
+                "requested corpus has no loaded execution context",
+                corpus_id=corpus_id,
+            )
+
+    variants = _select_variants(ir, requested)
+    reports: dict[str, RuntimeEvaluationReport] = {}
+    prerequisites = []
+    for corpus_id in requested:
+        context = normalized_contexts[corpus_id]
+        report = evaluate_runtime_prerequisites(
+            variants[corpus_id],
+            _observation(context),
+            source_contract=EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT,
+            active_ontology_bundle_digest=context.active_ontology_bundle_digest,
+        )
+        reports[corpus_id] = report
+        prerequisites.append(report.to_prerequisite())
+
+    resolution = semantic_resolve_conjunction(ir, request, tuple(prerequisites))
+    by_corpus: dict[str, list[tuple[ExactNativePlan, tuple[int, ...]]]] = {
+        corpus_id: [] for corpus_id in resolution.request.corpora
+    }
+    for constituent in resolution.resolutions:
+        for plan in constituent.plans:
+            context = normalized_contexts.get(plan.corpus_id)
+            if context is None or plan.corpus_id not in reports:
+                _fail(
+                    "plan_context_mismatch",
+                    "conjunction plan has no authorized runtime context",
+                    corpus_id=plan.corpus_id,
+                )
+            nodes = _execute_exact_plan_in_context(plan, context)
+            by_corpus.setdefault(plan.corpus_id, []).append((plan, nodes))
+
+    executions: list[ExactConjunctionCorpusExecution] = []
+    expected_plan_count = len(resolution.request.keys)
+    for corpus_id in resolution.request.corpora:
+        rows = by_corpus.get(corpus_id, [])
+        if len(rows) != expected_plan_count:
+            _fail(
+                "plan_context_mismatch",
+                "conjunction did not produce one exact plan per requested atom",
+                corpus_id=corpus_id,
+            )
+        intersection = set(rows[0][1])
+        for _plan, nodes in rows[1:]:
+            intersection.intersection_update(nodes)
+        executions.append(
+            ExactConjunctionCorpusExecution(
+                corpus_id=corpus_id,
+                nodes=tuple(sorted(intersection)),
+                plans=tuple(plan for plan, _nodes in rows),
+                runtime_report=reports[corpus_id],
+            )
+        )
+
+    executions.sort(key=lambda row: _utf16(row.corpus_id))
+    return ExactConjunctionExecutionResult(
+        execution_contract=EXACT_CONJUNCTION_EXECUTION_CONTRACT,
         resolution=resolution,
         corpora=tuple(executions),
     )

@@ -1475,3 +1475,116 @@ def semantic_resolve(
         losses=(),
         resolution_fingerprint=_hash(result_projection),
     )
+
+
+EXACT_CONJUNCTION_RESOLVER_CONTRACT = "tfont-exact-semantic-conjunction-resolver-v1"
+EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-conjunction-resolution-jcs-sha256-v1"
+
+
+@dataclass(frozen=True)
+class SemanticConjunctionRequest:
+    keys: tuple[SemanticKey, ...]
+    corpora: tuple[str, ...]
+    semantic_mode: str = "exact"
+
+
+@dataclass(frozen=True)
+class SemanticConjunctionResolutionResult:
+    resolver_contract: str
+    request: SemanticConjunctionRequest
+    resolutions: tuple[SemanticResolutionResult, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    resolution_fingerprint: str
+
+
+def _validate_conjunction_request(
+    request: SemanticConjunctionRequest,
+) -> SemanticConjunctionRequest:
+    if type(request) is not SemanticConjunctionRequest:
+        raise TypeError("request must be SemanticConjunctionRequest")
+    if type(request.keys) is not tuple or len(request.keys) < 2:
+        _fail(
+            "invalid_semantic_conjunction",
+            "exact conjunction requires at least two SemanticKey atoms",
+        )
+    if any(type(key) is not SemanticKey for key in request.keys):
+        _fail(
+            "invalid_semantic_conjunction",
+            "conjunction atoms must be SemanticKey values",
+        )
+    if len(set(request.keys)) != len(request.keys):
+        _fail(
+            "invalid_semantic_conjunction",
+            "conjunction atoms must be unique",
+        )
+
+    validated = tuple(
+        _validate_request(
+            SemanticResolveRequest(
+                key=key,
+                corpora=request.corpora,
+                semantic_mode=request.semantic_mode,
+            )
+        )
+        for key in request.keys
+    )
+    keys = tuple(
+        sorted(
+            (row.key for row in validated),
+            key=lambda key: canonical_json_bytes(_semantic_key_projection(key)),
+        )
+    )
+    return SemanticConjunctionRequest(
+        keys=keys,
+        corpora=validated[0].corpora,
+        semantic_mode="exact",
+    )
+
+
+def semantic_resolve_conjunction(
+    ir: CompiledSemanticIR,
+    request: SemanticConjunctionRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> SemanticConjunctionResolutionResult:
+    canonical_request = _validate_conjunction_request(request)
+    if type(ir) is not CompiledSemanticIR:
+        raise TypeError("ir must be CompiledSemanticIR")
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+
+    resolutions = tuple(
+        semantic_resolve(
+            ir,
+            SemanticResolveRequest(
+                key=key,
+                corpora=canonical_request.corpora,
+                semantic_mode="exact",
+            ),
+            prerequisite_rows,
+        )
+        for key in canonical_request.keys
+    )
+    projection = {
+        "algorithm": EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": EXACT_CONJUNCTION_RESOLVER_CONTRACT,
+        "request": {
+            "keys": [
+                _semantic_key_projection(key) for key in canonical_request.keys
+            ],
+            "corpora": list(canonical_request.corpora),
+            "semantic_mode": "exact",
+        },
+        "comparison_state": "exactly-comparable",
+        "losses": [],
+        "constituent_resolution_fingerprints": [
+            row.resolution_fingerprint for row in resolutions
+        ],
+    }
+    return SemanticConjunctionResolutionResult(
+        resolver_contract=EXACT_CONJUNCTION_RESOLVER_CONTRACT,
+        request=canonical_request,
+        resolutions=resolutions,
+        comparison_state="exactly-comparable",
+        losses=(),
+        resolution_fingerprint=_hash(projection),
+    )
