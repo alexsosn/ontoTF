@@ -41,7 +41,7 @@ class I015ProductionNounMorphologyRedTests(unittest.TestCase):
                 )
 
     def test_all_seven_noun_layer_targets_compile_for_all_three_corpora(self):
-        bundles = self.module.load_production_noun_bundles()
+        bundles = self.module.load_production_linguistic_bundles()
         ir = compile_semantic_ir(tuple(validate_semantic_bundle(bundle) for bundle in bundles))
         semantic_index = dict(ir.semantic_index)
         for target in sorted(EXPECTED_TARGETS):
