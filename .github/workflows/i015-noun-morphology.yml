@@ -1,0 +1,31 @@
+name: I-015 noun morphology
+
+on:
+  pull_request:
+    paths:
+      - "src/tfont/**"
+      - "tests/i015/**"
+      - "docs/research/I-015-noun-morphology-expansion.md"
+      - "docs/plans/I-015-noun-morphology-expansion-plan.md"
+      - ".github/workflows/i015-noun-morphology.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i015:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - run: python -m unittest tests.i015.test_noun_morphology_red tests.i015.test_exact_conjunction_red
