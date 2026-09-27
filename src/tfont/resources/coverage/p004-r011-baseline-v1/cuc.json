@@ -1,0 +1,392 @@
+{
+  "accounting_gaps": [],
+  "corpus_id": "cuc",
+  "denominator_basis": {
+    "bounded_node_features": [
+      "cert",
+      "emen",
+      "side"
+    ],
+    "kind": "generated-r005-inventory",
+    "source": "docs/research/data/generated/r005/cuc.json"
+  },
+  "denominator_digest": "sha256:36bf70c9f980b17c5295c111d85960b72d9d4fc39eea4bbfe525c79c06a0ecee",
+  "denominator_source_revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+  "manifest_id": "coverage:p004-r011-baseline-v1:cuc",
+  "repository": "DT-UCPH/cuc",
+  "schema_version": 1,
+  "scope_quality": "machine-exhaustive",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:alt",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "cuc-certainty"
+          ]
+        }
+      },
+      "item_id": "node_feature:cert",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:column",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:cont",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:emen",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_cons",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:line",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:side",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sign",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:tablet",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:tablet_info",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:trailer",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "cuc-editorial-restoration"
+          ]
+        }
+      },
+      "item_id": "node_feature:trailer_emen",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "cuc-usign"
+          ]
+        }
+      },
+      "item_id": "node_feature:usign",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:utrailer",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "cuc-column"
+          ]
+        }
+      },
+      "item_id": "node_type:column",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "cuc-line"
+          ]
+        }
+      },
+      "item_id": "node_type:line",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "ambiguous"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "cuc-sign"
+          ]
+        }
+      },
+      "item_id": "node_type:sign",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "cuc-tablet"
+          ]
+        }
+      },
+      "item_id": "node_type:tablet",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "cuc-certainty"
+          ]
+        }
+      },
+      "item_id": "node_value:cert=\"False\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "cuc-certainty"
+          ]
+        }
+      },
+      "item_id": "node_value:cert=\"True\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:emen=\"excised\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:emen=\"missing\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:emen=\"redundant\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:emen=\"remark\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:emen=\"restored\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"le.e.\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"low.e.\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"low.e. \"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"obv.\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"rev. \"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"rev.\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"rev.?\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"rev.\\t\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:side=\"up.e.\"",
+      "kind": "node_value"
+    }
+  ],
+  "target_corpus_revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+  "technical_exclusions": [],
+  "tf_version": "0.2.8"
+}
