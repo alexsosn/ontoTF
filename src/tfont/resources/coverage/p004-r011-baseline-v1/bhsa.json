@@ -18,7 +18,7 @@
     "kind": "generated-r005-inventory",
     "source": "docs/research/data/generated/r005/bhsa.json"
   },
-  "denominator_digest": "sha256:5b39add9a6b5cf28b989eedcc9790983f2dd4c742ad1ee79b6f645ac692d44e2",
+  "denominator_digest": "sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03",
   "denominator_source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
   "manifest_id": "coverage:p004-r011-baseline-v1:bhsa",
   "repository": "ETCBC/bhsa",
