@@ -165,5 +165,55 @@ class I015ExactConjunctionBehaviorTests(unittest.TestCase):
                 self.assertTrue(plan.plan_fingerprint)
 
 
+    def test_conjunction_refuses_unproven_node_domain_intersection(self):
+        from dataclasses import replace
+        from unittest.mock import patch
+
+        ir, contexts = compiled_and_contexts()
+        request = self.request("Noun", "Plural", corpora=("bhsa",))
+        baseline = EXECUTION.execute_exact_conjunction(ir, request, contexts)
+        resolution = baseline.resolution
+        first, second = resolution.resolutions
+        original_plan = second.plans[0]
+
+        for field, value in (
+            ("component_id", "foreign-component"),
+            ("node_type", "lex"),
+        ):
+            with self.subTest(field=field):
+                altered_binding = replace(
+                    original_plan.native_execution_binding,
+                    **{field: value},
+                )
+                altered_plan = replace(
+                    original_plan,
+                    native_execution_binding=altered_binding,
+                )
+                altered_second = replace(second, plans=(altered_plan,))
+                altered_resolution = replace(
+                    resolution,
+                    resolutions=(first, altered_second),
+                )
+                with (
+                    patch.object(
+                        EXECUTION,
+                        "semantic_resolve_conjunction",
+                        return_value=altered_resolution,
+                    ),
+                    patch.object(
+                        EXECUTION,
+                        "_execute_exact_plan_in_context",
+                        side_effect=[(1, 2), (2, 3)],
+                    ),
+                ):
+                    with self.assertRaises(EXECUTION.ExactExecutionError) as raised:
+                        EXECUTION.execute_exact_conjunction(ir, request, contexts)
+                self.assertEqual(
+                    raised.exception.problem.category,
+                    "incompatible_conjunction_node_domain",
+                )
+
+
+
 if __name__ == "__main__":
     unittest.main()
