@@ -129,7 +129,7 @@ class I016CoverageManifestRedTests(unittest.TestCase):
                 self.assertEqual(report.freshness, EXPECTED_FRESHNESS[corpus])
                 self.assertEqual(report.scope_quality, EXPECTED_SCOPE[corpus])
                 if corpus == "syriac":
-                    self.assertEqual(report.production_outside_denominator_item_ids, (\'node_value:ls="prop"\',))
+                    self.assertEqual(report.production_outside_denominator_item_ids, ('node_value:ls="prop"',))
                 else:
                     self.assertEqual(report.production_outside_denominator_item_ids, ())
                 self.assertFalse(report.corpus_wide_completion_claim_eligible)
