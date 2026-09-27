@@ -25,6 +25,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 tfont = [
   "schemas/*.json",
+  "resources/coverage/*/*.json",
   "resources/profiles/*/*/*.json",
   "resources/profiles/*/*/parent/*.json",
   "resources/profiles/*/*/mappings/*.json",
