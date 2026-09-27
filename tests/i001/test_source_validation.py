@@ -169,7 +169,7 @@ def minimal_valid_instances() -> dict[str, dict]:
 
 
 class SchemaContractTests(unittest.TestCase):
-    def test_registry_and_all_seven_schema_files_exist(self):
+    def test_registry_and_all_registered_schema_files_exist(self):
         expected = {
             "profile",
             "parent-component-manifest",
@@ -178,6 +178,7 @@ class SchemaContractTests(unittest.TestCase):
             "review",
             "mapping",
             "compatibility-report",
+            "coverage-manifest",
         }
         self.assertEqual(set(SCHEMA_FILES), expected)
         for schema_name, filename in SCHEMA_FILES.items():
