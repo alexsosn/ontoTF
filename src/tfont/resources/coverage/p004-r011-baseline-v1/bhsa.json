@@ -1,0 +1,2155 @@
+{
+  "accounting_gaps": [],
+  "corpus_id": "bhsa",
+  "denominator_basis": {
+    "bounded_node_features": [
+      "gn",
+      "nu",
+      "pdp",
+      "prs_gn",
+      "prs_nu",
+      "prs_ps",
+      "ps",
+      "sp",
+      "st",
+      "vs",
+      "vt"
+    ],
+    "kind": "generated-r005-inventory",
+    "source": "docs/research/data/generated/r005/bhsa.json"
+  },
+  "denominator_digest": "sha256:5b39add9a6b5cf28b989eedcc9790983f2dd4c742ad1ee79b6f645ac692d44e2",
+  "denominator_source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "manifest_id": "coverage:p004-r011-baseline-v1:bhsa",
+  "repository": "ETCBC/bhsa",
+  "schema_version": 1,
+  "scope_quality": "machine-exhaustive",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:distributional_parent",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:functional_parent",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:mother",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:omap@2017-2021",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:omap@c-2021",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@am",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@ar",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@bn",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@da",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@de",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@el",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@en",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@es",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@fa",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@fr",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@he",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@hi",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@ja",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@ko",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@la",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@nl",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@pa",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@pt",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@ru",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@sw",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@syc",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@tr",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@ua",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@ur",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@yo",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book@zh",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:chapter",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:code",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:det",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:dist",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:dist_unit",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:domain",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:freq_lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:freq_occ",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:function",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_cons",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_cons_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_lex_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_nme",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_nme_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_pfm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_pfm_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_prs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_prs_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_uvf",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_uvf_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_vbe",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_vbe_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_vbs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_vbs_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_word",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_word_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-gloss"
+          ]
+        }
+      },
+      "item_id": "node_feature:gloss",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gn",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:instruction",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_root",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:kind",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:kq_hybrid",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:kq_hybrid_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:label",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:languageISO",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lex0",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lex_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lexeme_count",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ls",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:mother_object_type",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:nametype",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:nme",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:nu",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:number",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pargr",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pdp",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pfm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:prs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:prs_gn",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:prs_nu",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:prs_ps",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ps",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:qere",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:qere_trailer",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:qere_trailer_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:qere_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:rank_lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:rank_occ",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:rela",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:root",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sp",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:st",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:suffix_gender",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:suffix_number",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:suffix_person",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:tab",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:trailer",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:trailer_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:txt",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:typ",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:uvf",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vbe",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vbs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:verse",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:voc_lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:voc_lex_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_feature:vs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vt",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:book",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:chapter",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:clause",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:clause_atom",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:half_verse",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "bhsa-lex-entry"
+          ]
+        }
+      },
+      "item_id": "node_type:lex",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:phrase",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:phrase_atom",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:sentence",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:sentence_atom",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:subphrase",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:verse",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:gn=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-feminine"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:gn=\"f\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-masculine"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "bhsa-gender-m"
+          ]
+        }
+      },
+      "item_id": "node_value:gn=\"m\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:gn=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:nu=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-dual"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:nu=\"du\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-plural"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "bhsa-number-plural"
+          ]
+        }
+      },
+      "item_id": "node_value:nu=\"pl\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-singular"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:nu=\"sg\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:nu=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"adjv\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"advb\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"art\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"conj\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"inrg\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"intj\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"nega\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"nmpr\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"prde\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"prep\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"prin\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"prps\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"subs\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:pdp=\"verb\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_gn=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_gn=\"f\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_gn=\"m\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_gn=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_nu=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_nu=\"pl\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_nu=\"sg\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_ps=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_ps=\"p1\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_ps=\"p2\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:prs_ps=\"p3\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "bhsa-person-first"
+          ]
+        }
+      },
+      "item_id": "node_value:ps=\"p1\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"p2\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"p3\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"adjv\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"advb\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"art\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"conj\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"inrg\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"intj\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"nega\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.part-of-speech"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-noun",
+            "mapping:bhsa:olia-proper-noun"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:sp=\"nmpr\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"prde\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"prep\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"prin\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"prps\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.part-of-speech"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:bhsa:olia-noun"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "bhsa-pos-noun"
+          ]
+        }
+      },
+      "item_id": "node_value:sp=\"subs\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "bhsa-pos-verb"
+          ]
+        }
+      },
+      "item_id": "node_value:sp=\"verb\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"a\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"c\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"e\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"afel\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"etpa\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"etpe\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"haf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"hif\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"hit\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"hof\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"hotp\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"hsht\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"htpa\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"htpe\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"htpo\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"nif\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"nit\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"pael\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"pasq\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"peal\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"peil\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"piel\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"poal\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"poel\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"pual\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"qal\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"shaf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "bhsa-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"tif\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"NA\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"impf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"impv\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"infa\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"infc\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"perf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"ptca\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"ptcp\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"wayq\"",
+      "kind": "node_value"
+    }
+  ],
+  "target_corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "technical_exclusions": [],
+  "tf_version": "2021"
+}
