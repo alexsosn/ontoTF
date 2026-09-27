@@ -1,3 +1,17 @@
+from .coverage import (
+    COVERAGE_DENOMINATOR_ALGORITHM,
+    P004_R011_BASELINE_CORPORA,
+    P004_R011_BASELINE_RESOURCE,
+    CoverageError,
+    CoverageProblem,
+    CoverageReport,
+    coverage_denominator_digest,
+    coverage_denominator_projection,
+    coverage_report,
+    load_coverage_manifest,
+    load_p004_r011_baseline_manifests,
+    validate_coverage_manifest,
+)
 from .digests import (
     DigestError,
     MAPPING_SEMANTIC_ALGORITHM_V2,
@@ -128,6 +142,18 @@ from .source_validation import (
 )
 
 __all__ = [
+    "COVERAGE_DENOMINATOR_ALGORITHM",
+    "P004_R011_BASELINE_CORPORA",
+    "P004_R011_BASELINE_RESOURCE",
+    "CoverageError",
+    "CoverageProblem",
+    "CoverageReport",
+    "coverage_denominator_digest",
+    "coverage_denominator_projection",
+    "coverage_report",
+    "load_coverage_manifest",
+    "load_p004_r011_baseline_manifests",
+    "validate_coverage_manifest",
     "semantic_resolve_conjunction",
     "load_production_linguistic_bundles",
     "load_production_linguistic_bundle",
