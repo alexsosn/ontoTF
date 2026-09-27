@@ -64,6 +64,8 @@ class CoverageReport:
     production_reviewed_items: int
     production_unreviewed_items: int
     production_common_target_items: int
+    production_outside_denominator_items: int
+    production_outside_denominator_item_ids: tuple[str, ...]
     production_assessment_counts: tuple[tuple[str, int], ...]
     scope_quality: str
     freshness: str
@@ -335,6 +337,49 @@ def validate_coverage_manifest(manifest: dict[str, Any]) -> None:
         technical_ids.add(item_id)
         _canonical_strings(row["source_ids"], path=("technical_exclusions", index, "source_ids"))
 
+    gap_ids: set[str] = set()
+    for index, gap_value in enumerate(source["accounting_gaps"]):
+        gap = _exact_dict(gap_value, path=("accounting_gaps", index))
+        item_id = gap["item_id"]
+        kind = gap["kind"]
+        if not item_id.startswith(f"{kind}:"):
+            _fail(
+                "item_identity_mismatch",
+                "accounting-gap item_id prefix must match item kind",
+                path=("accounting_gaps", index, "item_id"),
+                corpus_id=corpus_id,
+            )
+        if item_id in gap_ids:
+            _fail(
+                "duplicate_id",
+                f"duplicate accounting gap ID: {item_id}",
+                path=("accounting_gaps", index, "item_id"),
+                corpus_id=corpus_id,
+            )
+        if item_id in semantic_ids or item_id in technical_ids:
+            _fail(
+                "denominator_overlap",
+                "accounting gap must remain outside semantic and technical denominator sets",
+                path=("accounting_gaps", index, "item_id"),
+                corpus_id=corpus_id,
+            )
+        gap_ids.add(item_id)
+        layer = {
+            "assessments": gap["assessments"],
+            "common_target": gap["common_target"],
+            "source_ids": gap["source_ids"],
+        }
+        if "profiles" in gap:
+            layer["profiles"] = gap["profiles"]
+        if "capabilities" in gap:
+            layer["capabilities"] = gap["capabilities"]
+        _validate_accounting_layer(
+            layer,
+            authority=gap["authority"],
+            path=("accounting_gaps", index),
+            corpus_id=corpus_id,
+        )
+
     expected = coverage_denominator_digest(source)
     if source["denominator_digest"] != expected:
         _fail(
@@ -411,12 +456,22 @@ def coverage_report(manifest: dict[str, Any]) -> CoverageReport:
 
     semantic_count = len(items)
     production_unreviewed = semantic_count - production_reviewed
+    production_gap_ids = tuple(
+        sorted(
+            (
+                row["item_id"]
+                for row in manifest["accounting_gaps"]
+                if row["authority"] == "production"
+            ),
+            key=_utf16,
+        )
+    )
     freshness = (
         "current"
         if manifest["denominator_source_revision"] == manifest["target_corpus_revision"]
         else "stale"
     )
-    bounded_scope_complete = production_unreviewed == 0
+    bounded_scope_complete = production_unreviewed == 0 and not production_gap_ids
     technical_authority_complete = all(
         row["authority"] == "production" for row in manifest["technical_exclusions"]
     )
@@ -437,6 +492,8 @@ def coverage_report(manifest: dict[str, Any]) -> CoverageReport:
         production_reviewed_items=production_reviewed,
         production_unreviewed_items=production_unreviewed,
         production_common_target_items=production_common,
+        production_outside_denominator_items=len(production_gap_ids),
+        production_outside_denominator_item_ids=production_gap_ids,
         production_assessment_counts=tuple(sorted(assessment_counts.items(), key=lambda item: _utf16(item[0]))),
         scope_quality=manifest["scope_quality"],
         freshness=freshness,
