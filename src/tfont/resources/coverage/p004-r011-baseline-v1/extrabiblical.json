@@ -14,7 +14,7 @@
     "kind": "generated-r005-inventory",
     "source": "docs/research/data/generated/r005/extrabiblical.json"
   },
-  "denominator_digest": "sha256:4281e03b953d569acf4db7de95161ec7b3c0e023c4e4d1256c6740e1a73d9a10",
+  "denominator_digest": "sha256:58bdadddd54cc1848eddf0b5918137e37e85bbea52022cc2a40386ad46f1b46e",
   "denominator_source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
   "manifest_id": "coverage:p004-r011-baseline-v1:extrabiblical",
   "repository": "ETCBC/extrabiblical",
