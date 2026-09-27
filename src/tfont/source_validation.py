@@ -25,6 +25,7 @@ SCHEMA_FILES = {
     "review": "review.schema.json",
     "mapping": "mapping.schema.json",
     "compatibility-report": "compatibility-report.schema.json",
+    "coverage-manifest": "coverage-manifest.schema.json",
 }
 
 
