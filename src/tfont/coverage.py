@@ -64,6 +64,8 @@ class CoverageReport:
     production_reviewed_items: int
     production_unreviewed_items: int
     production_common_target_items: int
+    research_outside_denominator_items: int
+    research_outside_denominator_item_ids: tuple[str, ...]
     production_outside_denominator_items: int
     production_outside_denominator_item_ids: tuple[str, ...]
     production_assessment_counts: tuple[tuple[str, int], ...]
@@ -456,6 +458,16 @@ def coverage_report(manifest: dict[str, Any]) -> CoverageReport:
 
     semantic_count = len(items)
     production_unreviewed = semantic_count - production_reviewed
+    research_gap_ids = tuple(
+        sorted(
+            (
+                row["item_id"]
+                for row in manifest["accounting_gaps"]
+                if row["authority"] == "research"
+            ),
+            key=_utf16,
+        )
+    )
     production_gap_ids = tuple(
         sorted(
             (
@@ -471,7 +483,7 @@ def coverage_report(manifest: dict[str, Any]) -> CoverageReport:
         if manifest["denominator_source_revision"] == manifest["target_corpus_revision"]
         else "stale"
     )
-    bounded_scope_complete = production_unreviewed == 0 and not production_gap_ids
+    bounded_scope_complete = production_unreviewed == 0 and not manifest["accounting_gaps"]
     technical_authority_complete = all(
         row["authority"] == "production" for row in manifest["technical_exclusions"]
     )
@@ -492,6 +504,8 @@ def coverage_report(manifest: dict[str, Any]) -> CoverageReport:
         production_reviewed_items=production_reviewed,
         production_unreviewed_items=production_unreviewed,
         production_common_target_items=production_common,
+        research_outside_denominator_items=len(research_gap_ids),
+        research_outside_denominator_item_ids=research_gap_ids,
         production_outside_denominator_items=len(production_gap_ids),
         production_outside_denominator_item_ids=production_gap_ids,
         production_assessment_counts=tuple(sorted(assessment_counts.items(), key=lambda item: _utf16(item[0]))),
