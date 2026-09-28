@@ -203,6 +203,41 @@ class I016CoverageAdversarialTests(unittest.TestCase):
             validate_coverage_manifest(manifest)
         self.assertEqual(raised.exception.problem.category, "denominator_overlap")
 
+    def test_technical_exclusion_without_source_identity_is_rejected(self):
+        manifest = _baseline()
+        manifest["technical_exclusions"].append(
+            {
+                "item_id": "node_feature:technical-without-source",
+                "kind": "node_feature",
+                "reason": "missing review provenance",
+                "authority": "production",
+                "source_ids": [],
+            }
+        )
+        manifest["denominator_digest"] = coverage_denominator_digest(manifest)
+        with self.assertRaises(SourceValidationError):
+            validate_coverage_manifest(manifest)
+
+    def test_invalid_assessment_is_rejected(self):
+        manifest = _baseline()
+        item = manifest["semantic_items"][0]
+        item["accounting"]["production"] = {
+            "assessments": ["definitely-exact"],
+            "common_target": True,
+            "source_ids": ["review:test"],
+        }
+        with self.assertRaises(SourceValidationError):
+            validate_coverage_manifest(manifest)
+
+    def test_unreviewed_items_never_count_as_production_reviewed(self):
+        manifest = _baseline("bhsa")
+        report = coverage_report(manifest)
+        self.assertEqual(
+            report.production_unreviewed_items,
+            report.semantic_items - report.production_reviewed_items,
+        )
+        self.assertGreater(report.production_unreviewed_items, 0)
+
     def test_common_target_must_match_assessment_strength(self):
         manifest = _baseline()
         item = manifest["semantic_items"][0]
