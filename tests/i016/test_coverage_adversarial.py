@@ -162,6 +162,29 @@ class I016CoverageAdversarialTests(unittest.TestCase):
         self.assertEqual(report.production_outside_denominator_items, 1)
         self.assertFalse(report.bounded_scope_complete)
 
+    def test_research_accounting_gap_is_reported_and_blocks_completion(self):
+        manifest = _baseline("bhsa")
+        _fill_production(manifest)
+        manifest["accounting_gaps"] = [
+            {
+                "item_id": "node_feature:research-outside",
+                "kind": "node_feature",
+                "authority": "research",
+                "reason": "outside-denominator",
+                "assessments": ["native-only"],
+                "common_target": False,
+                "source_ids": ["research:test"],
+            }
+        ]
+        report = coverage_report(manifest)
+        self.assertEqual(report.research_outside_denominator_items, 1)
+        self.assertEqual(
+            report.research_outside_denominator_item_ids,
+            ("node_feature:research-outside",),
+        )
+        self.assertFalse(report.bounded_scope_complete)
+        self.assertFalse(report.corpus_wide_completion_claim_eligible)
+
     def test_accounting_gap_cannot_overlap_denominator(self):
         manifest = _baseline()
         item = manifest["semantic_items"][0]
