@@ -1,0 +1,411 @@
+{
+  "accounting_gaps": [],
+  "corpus_id": "oracc",
+  "denominator_basis": {
+    "bounded_node_features": [],
+    "kind": "curated-r011-baseline",
+    "source": "docs/research/data/r-011/raw-schema-policy.json"
+  },
+  "denominator_digest": "sha256:019d19e1248a19238fc3eadc1fd6e05ae0d1c0f596f0a6ef991a93c09bd65685",
+  "denominator_source_revision": "e8f2b160912e0adaa37b24e68384ac551077a440",
+  "manifest_id": "coverage:p004-r011-baseline-v1:oracc",
+  "repository": "alexsosn/ORACC-TF",
+  "schema_version": 1,
+  "scope_quality": "bounded-curated",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:cdli_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:cf",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:collection",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:damage",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:designation",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:det",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:discourse",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:epos",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:exemplars",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:genre",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:grapheme",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "oracc-guide-word"
+          ]
+        }
+      },
+      "item_id": "node_feature:gw",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lang",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lnno",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "oracc-material"
+          ]
+        }
+      },
+      "item_id": "node_feature:material",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:missing",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:norm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:object_type",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "oracc-period"
+          ]
+        }
+      },
+      "item_id": "node_feature:period",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pleiades_coord",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pleiades_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pos",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:primary_publication",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:provenience",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:readingu",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ruler",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:script",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sense",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sig",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:subgenre",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:supergenre",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:chunk",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:column",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "oracc-document"
+          ]
+        }
+      },
+      "item_id": "node_type:document",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:face",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "oracc-lex-entry"
+          ]
+        }
+      },
+      "item_id": "node_type:lex",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "oracc-line"
+          ]
+        }
+      },
+      "item_id": "node_type:line",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:phrase",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "ambiguous"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "oracc-sign"
+          ]
+        }
+      },
+      "item_id": "node_type:sign",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    }
+  ],
+  "target_corpus_revision": "85d2f131202882d40b05b65bfb4c83e8b1238426",
+  "technical_exclusions": []
+}

@@ -1,0 +1,403 @@
+{
+  "accounting_gaps": [],
+  "corpus_id": "pseudepigrapha",
+  "denominator_basis": {
+    "bounded_node_features": [],
+    "kind": "curated-r011-baseline",
+    "source": "docs/research/data/r-011/raw-schema-policy.json"
+  },
+  "denominator_digest": "sha256:d45c83f4afb51cae81405205b2111f7329ed65d5d85b5268719717fb64286746",
+  "denominator_source_revision": "d098845043897957efee7a42ae4854deddd5a1bd",
+  "manifest_id": "coverage:p004-r011-baseline-v1:pseudepigrapha",
+  "repository": "alexsosn/Pseudepigrapha-TF",
+  "schema_version": 1,
+  "scope_quality": "bounded-curated",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:manuscript_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:parent",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-reading-of"
+          ]
+        }
+      },
+      "item_id": "edge_feature:reading_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:resource_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:variant_word_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-witness"
+          ]
+        }
+      },
+      "item_id": "edge_feature:witness",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:author",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_gap",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-omission"
+          ]
+        }
+      },
+      "item_id": "node_feature:is_omission",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_primary",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:morph",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_abbrev",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_name",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_show",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading_option",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-omission"
+          ]
+        }
+      },
+      "item_id": "node_feature:reading_text",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading_xml",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_ref",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_ref_parts",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:style",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:undefined_manuscript",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "pseudo-version"
+          ]
+        }
+      },
+      "item_id": "node_feature:version_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:version_title",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:w_lang",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:book",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:chapter",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:div",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:ellipsis",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-manuscript"
+          ]
+        }
+      },
+      "item_id": "node_type:manuscript",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:orphan_reading",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-reading"
+          ]
+        }
+      },
+      "item_id": "node_type:reading",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:resource",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "pseudo-unit"
+          ]
+        }
+      },
+      "item_id": "node_type:unit",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:variant_word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:verse",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:version_metadata",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    }
+  ],
+  "target_corpus_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+  "technical_exclusions": []
+}

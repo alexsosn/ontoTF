@@ -1,0 +1,413 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tfont.dev/schema/v1/coverage-manifest.schema.json",
+  "$defs": {
+    "assessment": {
+      "enum": [
+        "exact",
+        "close",
+        "broader",
+        "narrower",
+        "related",
+        "ambiguous",
+        "native-only",
+        "unsupported"
+      ]
+    },
+    "itemKind": {
+      "enum": [
+        "node_type",
+        "node_feature",
+        "node_value",
+        "edge_feature",
+        "edge_value",
+        "external_reference",
+        "assertion_shape"
+      ]
+    },
+    "profile": {
+      "enum": [
+        "structural",
+        "linguistic",
+        "lexical",
+        "written-text",
+        "textology",
+        "heritage",
+        "scholarly-inference",
+        "archaeology",
+        "scientific-analysis",
+        "lexicography"
+      ]
+    },
+    "capability": {
+      "enum": [
+        "structural.entity-kind",
+        "structural.slot-coverage",
+        "structural.edge-traversal",
+        "structural.section-navigation",
+        "linguistic.part-of-speech",
+        "linguistic.morphology",
+        "linguistic.syntax",
+        "linguistic.discourse",
+        "lexical.entry",
+        "lexical.form",
+        "lexical.sense",
+        "lexical.concept",
+        "lexical.relation",
+        "written-text.segment",
+        "written-text.sign",
+        "written-text.writing-system",
+        "written-text.transcription-recognition",
+        "textology.textual-version",
+        "textology.witness",
+        "textology.fragment-transmission",
+        "textology.apparatus-reading",
+        "textology.witness-attestation",
+        "textology.explicit-omission",
+        "heritage.physical-object",
+        "heritage.physical-part",
+        "heritage.identifier",
+        "heritage.material",
+        "heritage.place-provenance",
+        "heritage.custody-location",
+        "scholarly-inference.claim",
+        "scholarly-inference.inference",
+        "scholarly-inference.meaning-comprehension",
+        "scholarly-inference.provenance-assessment"
+      ]
+    },
+    "accountingLayer": {
+      "type": "object",
+      "required": [
+        "assessments",
+        "common_target",
+        "source_ids"
+      ],
+      "properties": {
+        "assessments": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/assessment"
+          }
+        },
+        "common_target": {
+          "type": "boolean"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/profile"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "accounting": {
+      "type": "object",
+      "required": [
+        "research",
+        "production"
+      ],
+      "properties": {
+        "research": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/accountingLayer"
+                },
+                {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "profiles"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "capabilities"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "production": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/accountingLayer"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "semanticItem": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "kind",
+        "accounting"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/itemKind"
+        },
+        "accounting": {
+          "$ref": "#/$defs/accounting"
+        }
+      },
+      "additionalProperties": false
+    },
+    "technicalExclusion": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "kind",
+        "reason",
+        "authority",
+        "source_ids"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/itemKind"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "enum": [
+            "research",
+            "production"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "denominatorBasis": {
+      "type": "object",
+      "required": [
+        "kind",
+        "source",
+        "bounded_node_features"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "generated-r005-inventory",
+            "curated-r011-baseline"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bounded_node_features": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "accountingGap": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "kind",
+        "authority",
+        "reason",
+        "assessments",
+        "common_target",
+        "source_ids"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/itemKind"
+        },
+        "authority": {
+          "enum": [
+            "research",
+            "production"
+          ]
+        },
+        "reason": {
+          "const": "outside-denominator"
+        },
+        "assessments": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/assessment"
+          }
+        },
+        "common_target": {
+          "type": "boolean"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/profile"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "corpus_id",
+    "repository",
+    "denominator_source_revision",
+    "target_corpus_revision",
+    "scope_quality",
+    "denominator_basis",
+    "semantic_items",
+    "technical_exclusions",
+    "accounting_gaps",
+    "denominator_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "corpus_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "denominator_source_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "target_corpus_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "tf_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope_quality": {
+      "enum": [
+        "machine-exhaustive",
+        "bounded-curated"
+      ]
+    },
+    "denominator_basis": {
+      "$ref": "#/$defs/denominatorBasis"
+    },
+    "semantic_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/semanticItem"
+      }
+    },
+    "technical_exclusions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/technicalExclusion"
+      }
+    },
+    "denominator_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accounting_gaps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/accountingGap"
+      }
+    }
+  },
+  "additionalProperties": false
+}
