@@ -3,7 +3,7 @@ name: I-017 Pseudepigrapha release inventory research
 on:
   pull_request:
     paths:
-      - "scripts/research/i017_pseudepigrapha_release_inventory.py"
+      - "scripts/research/r005_inventory.py"
       - "docs/research/I-017-pseudepigrapha-current-denominator.md"
       - ".github/workflows/i017-pseudepigrapha-research.yml"
   workflow_dispatch:
@@ -22,16 +22,27 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install Text-Fabric
-        run: python -m pip install "text-fabric>=13.1,<14"
-      - name: Download exact published native corpus archive
+        run: python -m pip install "text-fabric==13.1.0"
+      - name: Download and verify exact published native corpus archive
         run: |
+          set -euo pipefail
           curl --fail --location --retry 3 \
             --output /tmp/tf-1.0.zip \
             https://github.com/alexsosn/Pseudepigrapha-TF/releases/download/v1.0.0/tf-1.0.zip
-      - name: Inventory exact release artifact
+          echo "d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a  /tmp/tf-1.0.zip" \
+            | sha256sum --check -
+          mkdir /tmp/pseudepigrapha-tf-1.0
+          unzip -q /tmp/tf-1.0.zip -d /tmp/pseudepigrapha-tf-1.0
+      - name: Run established R-005 exhaustive TF inventory
         run: |
-          python scripts/research/i017_pseudepigrapha_release_inventory.py \
-            /tmp/tf-1.0.zip \
-            --expected-sha256 d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a \
-            --release-tag v1.0.0 \
-            --release-commit 7c4b757bb543a110ae9a252d1281835859136852
+          set -euo pipefail
+          python scripts/research/r005_inventory.py \
+            /tmp/pseudepigrapha-tf-1.0 \
+            --corpus-id pseudepigrapha \
+            --repository alexsosn/Pseudepigrapha-TF \
+            --revision 7c4b757bb543a110ae9a252d1281835859136852 \
+            --tf-version 1.0 \
+            --output /tmp/i017-pseudepigrapha-r005.json
+          echo I017_R005_INVENTORY_BEGIN
+          cat /tmp/i017-pseudepigrapha-r005.json
+          echo I017_R005_INVENTORY_END
