@@ -109,12 +109,17 @@ def main() -> int:
 
         feature_files = []
         for path in tf_paths:
+            kind = tf_feature_kind(path)
+            feature = api.TF.features.get(path.stem)
+            data = getattr(feature, "data", None) if feature is not None else None
+            entries = len(data) if hasattr(data, "__len__") else None
             feature_files.append(
                 {
                     "name": path.stem,
                     "file": path.name,
-                    "kind": tf_feature_kind(path),
+                    "kind": kind,
                     "bytes": path.stat().st_size,
+                    "entries": entries,
                 }
             )
 
