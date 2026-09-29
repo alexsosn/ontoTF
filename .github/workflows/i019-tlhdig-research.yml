@@ -82,7 +82,12 @@ jobs:
 
       - name: Inventory shipped TF schema without loadAll
         run: |
-          python scripts/research/i019_tlhdig_inventory.py             _tlhdig/tf/0.4.0             --repository alexsosn/TLHdig-TF             --containing-revision bc4a206690c1856d3cfde8b291f626c45a712640             --output /tmp/i019-tlhdig-0.4.0.json
+          python scripts/research/i019_tlhdig_inventory.py \
+            _tlhdig/tf/0.4.0 \
+            --provenance-dir _tlhdig/tf-provenance/0.4.0 \
+            --repository alexsosn/TLHdig-TF \
+            --revision bc4a206690c1856d3cfde8b291f626c45a712640 \
+            --output /tmp/i019-tlhdig-0.4.0.json
 
       - name: Show compact research summary
         run: |
