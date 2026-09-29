@@ -89,6 +89,37 @@ jobs:
             --revision bc4a206690c1856d3cfde8b291f626c45a712640 \
             --output /tmp/i019-tlhdig-0.4.0.json
 
+      - name: Verify committed schema evidence matches regenerated artifact
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          raw = json.loads(Path("/tmp/i019-tlhdig-0.4.0.json").read_text(encoding="utf-8"))
+          committed_path = Path("docs/research/data/generated/i019/tlhdig-0.4.0.json")
+          committed = json.loads(committed_path.read_text(encoding="utf-8"))
+          projection = {
+              "schema_version": 1,
+              "evidence_kind": "shipped_tf_artifact_schema_projection",
+              "corpus_id": "tlhdig",
+              "artifact": raw["artifact"],
+              "slot_type": raw["slot_type"],
+              "node_types": raw["node_types"],
+              "core_node_features": sorted(raw["node_features"]),
+              "optional_provenance_node_features": sorted(raw["optional_provenance_node_features"]),
+              "edge_features": {
+                  name: {"valued": raw["edge_features"][name]["valued"]}
+                  for name in sorted(raw["edge_features"])
+              },
+              "excluded_warp_features": raw["excluded_warp_features"],
+              "config_features": sorted(raw["config_features"]),
+              "counts": raw["counts"],
+              "domain_policy": raw["domain_policy"],
+          }
+          if projection != committed:
+              raise SystemExit("committed I-019 schema evidence differs from regenerated shipped artifact")
+          PY
+
       - name: Show compact research summary
         run: |
           python - <<'PY'
