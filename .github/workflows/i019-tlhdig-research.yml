@@ -100,7 +100,8 @@ jobs:
           print("I019_COUNTS=" + json.dumps(data["counts"], sort_keys=True))
           print("I019_NODE_TYPES=" + json.dumps(data["node_types"], sort_keys=True))
           print("I019_EDGES=" + json.dumps(sorted(data["edge_features"])))
-          print("I019_PROVENANCE_FEATURES=" + json.dumps(sorted(data["optional_provenance_node_features"])))\n          PY
+          print("I019_PROVENANCE_FEATURES=" + json.dumps(sorted(data["optional_provenance_node_features"])))
+          PY
 
       - name: Upload exact compact inventory
         uses: actions/upload-artifact@v4
