@@ -206,6 +206,11 @@ The policy records exactly:
 The generated manifest's `bounded_edge_features` is exactly those two names
 in canonical order.
 
+Value item identity uses the same canonical JSON scalar encoding for node and
+edge values. Examples: `node_value:parse_ok=0` and
+`edge_value:joined="direct"`. Strings therefore retain JSON quotes in the
+item ID; integers do not.
+
 `selected` is a valued edge but remains open and must not produce
 `edge_value` denominator items.
 
