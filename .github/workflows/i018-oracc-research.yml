@@ -58,8 +58,8 @@ jobs:
       - name: Download and verify pinned official RIAO TEI archive
         run: |
           set -euo pipefail
-          curl --fail --location --retry 3             --output /tmp/riao-teiCorpus-20241202.zip             https://oracc.museum.upenn.edu/riao/downloads/riao-teiCorpus-20241202.zip
-          echo "b793d8920db58908e3a044b7f2d1a204c1ba0784e880007e0cd7941333e841bd  /tmp/riao-teiCorpus-20241202.zip"             | sha256sum --check -
+          cd _oracc
+          RUNNER_TEMP="$RUNNER_TEMP" scripts/download_m9_tei.sh /tmp/riao-teiCorpus-20241202.zip
 
       - name: Build exact registered ORACC candidate
         run: |
@@ -67,7 +67,6 @@ jobs:
           from dataclasses import asdict
           import json
           from pathlib import Path
-
           from oracc_tf import publishing
 
           root, report = publishing.build_registered_tf(
@@ -97,7 +96,7 @@ jobs:
               relative = path.relative_to(root).as_posix()
               payload = path.read_bytes()
               digest.update(relative.encode("utf-8"))
-              digest.update(b"\0")
+              digest.update(bytes([0]))
               digest.update(len(payload).to_bytes(8, "big"))
               digest.update(payload)
               files.append({"path": relative, "bytes": len(payload)})
@@ -109,7 +108,7 @@ jobs:
         run: |
           set -euo pipefail
           ROOT="$(cat /tmp/i018-root.txt)"
-          python scripts/research/r005_inventory.py             "$ROOT"             --corpus-id oracc             --repository alexsosn/ORACC-TF             --revision f6f189bbd99d72bfdc7044555bd3113aa7b54232             --tf-version 0.4.0             --output /tmp/i018-oracc-r005.json
+          python scripts/research/r005_inventory.py "$ROOT" --corpus-id oracc --repository alexsosn/ORACC-TF --revision f6f189bbd99d72bfdc7044555bd3113aa7b54232 --tf-version 0.4.0 --output /tmp/i018-oracc-r005.json
           echo I018_R005_INVENTORY_BEGIN
           cat /tmp/i018-oracc-r005.json
           echo I018_R005_INVENTORY_END
