@@ -1,0 +1,279 @@
+# I-018 research — current ORACC semantic denominator
+
+Issue: #207  
+Parent: P-004 #202, Workstream A  
+Status: research complete; ready for independently reviewed plan
+
+## Question
+
+What is the authoritative current ORACC-TF semantic denominator, given that the
+historical R-011 denominator contains only 42 curated items and ORACC-TF has not
+yet published its planned 1.0 standalone release?
+
+The current denominator can be made machine-exhaustive for the exact
+materialized Text-Fabric schema of a reproducible registered-build candidate.
+It must not be described as an ORACC-TF 1.0 release denominator because no such
+release exists yet.
+
+## Authoritative current candidate
+
+The production builder boundary is ORACC-TF commit
+`f6f189bbd99d72bfdc7044555bd3113aa7b54232`.
+
+At that commit:
+
+- Python package version: `0.1.0`;
+- TF schema version: `0.4.0`;
+- registered dataset: `assyrian-royal-inscriptions`;
+- RIAO source tree:
+  `b03bf0544f4c83710dc6ea88b26b6389e9b85645`;
+- RINAP source tree:
+  `96ddf1d4e6bbf37b6ec4a3e37f42e8fae899593c`;
+- `datasets.toml` blob:
+  `584d4671959b4f5d35535bc796521299eb6e040e`.
+
+The dataset configuration selects RIAO 1–5, RINAP 1–5 plus RINAP 5 Part 1,
+and the RIAO TEI translation corpus.
+
+The registered builder requires the official pinned translation archive:
+
+- `riao-teiCorpus-20241202.zip`;
+- SHA-256
+  `b793d8920db58908e3a044b7f2d1a204c1ba0784e880007e0cd7941333e841bd`.
+
+The ORACC endpoint has a certificate-chain quirk on a stock GitHub Actions
+runner. I-018 reuses ORACC-TF's own release/test download route, which pins and
+verifies the intermediate CA fingerprint, verifies that CA against the runner
+root bundle, uses that verified CA bundle for HTTPS, and then verifies the
+archive SHA-256. The research job never disables TLS verification.
+
+## Reproducible candidate identity
+
+Building the registered dataset from the exact source/config trees plus the
+pinned TEI archive produces:
+
+- candidate root:
+  `assyrian-royal-inscriptions/tf/0.4.0`;
+- complete candidate-tree SHA-256:
+  `cbcc8299c1f5d02bc082ded824452fe3fb0a7857656a0556039a31667c48af1b`;
+- deterministic TF-feature-file SHA-256:
+  `5d23f56eaa9461d7a6f42dc11a8c2f5d7307ba9820f49869400c5ac9af8bf34f`.
+
+The complete candidate-tree digest includes the non-TF
+`translation-gaps.json` sidecar. The TF digest covers the materialized
+`*.tf` feature set only.
+
+The compact evidence is committed at
+`docs/research/data/generated/i018/oracc-0.4.0.json`.
+
+## Build census
+
+The exact candidate build reports:
+
+- 2,081 source members;
+- 2,078 readable documents;
+- 3 unreadable source members;
+- 1,845 populated documents;
+- 233 stubs;
+- 320,975 words;
+- 792,651 semantic/source signs;
+- 689 synthetic empty sign slots;
+- 793,340 total TF slots;
+- 56,226 lines;
+- 8,025 lexemes;
+- 6,792 materialized translation units;
+- 2,509 translation gaps represented in the sidecar rather than as TF nodes.
+
+Those source/TF cardinalities agree with the current source-grounded ORACC-TF
+1.0 audit work. I-018 nevertheless derives its schema denominator directly
+from the materialized candidate, not from that audit or from an older release.
+
+## Materialized TF schema
+
+The candidate contains 10 node types:
+
+- `chunk`;
+- `column`;
+- `document`;
+- `face`;
+- `lex`;
+- `line`;
+- `phrase`;
+- `sign` (the slot type);
+- `translation_unit`;
+- `word`.
+
+There are 75 materialized non-warp node features and 8 materialized non-warp
+edge features.
+
+The eight semantic edges are:
+
+- `column_face`;
+- `face_document`;
+- `line_column`;
+- `line_face`;
+- `translation_document`;
+- `translation_line`;
+- `word_lex`;
+- `word_line`.
+
+The current candidate does **not** materialize `translation_note`,
+`translation_note_id`, `translation_note_text`, or
+`translation_note_unit`, even though the converter documents support for
+them. They therefore do not belong to this denominator.
+
+## Historical R-011 mismatch
+
+The immutable historical ORACC manifest remains useful as historical research
+evidence, but its 42-item curated denominator is not the current schema.
+
+Among other differences, it includes historical feature identities such as
+`damage`, `det`, `discourse`, `grapheme`, `missing`, and `reading`
+that are not materialized by the current registered candidate. It also predates
+the materialized translation layer entirely.
+
+I-018 must therefore publish a new immutable manifest; it must not edit or
+reinterpret the historical 42-item resource in place.
+
+## Technical boundary
+
+Six materialized/support identities are technical rather than semantic
+denominator items:
+
+1. `node_feature:otype` — Text-Fabric warp node typing. Semantic node kinds
+   are represented directly as `node_type:...` items.
+2. `edge_feature:oslots` — Text-Fabric warp/support anchoring.
+3. `node_feature:cuneiform_trailer` — explicitly presentation-only ASCII
+   word separation generated by ORACC-TF.
+4. `node_feature:readingu` — compatibility alias of the semantic `utf8`
+   feature.
+5. `node_feature:lnno` — compatibility alias for the source line label,
+   whose underlying value remains represented through the ordinary section
+   label/line schema.
+6. `node_feature:synthetic` — converter/warp provenance marking generated
+   section recovery nodes and technical empty sign anchors. The source model
+   represented through those anchored nodes remains semantic; the marker itself
+   records converter scaffolding.
+
+The `sign` node type remains semantic even though Text-Fabric's single slot
+type means 689 technical empty anchors also have otype `sign`. The technical
+anchors are explicitly distinguishable by `synthetic` and carry no fabricated
+cuneiform content.
+
+All other materialized identity, structure, catalogue, GDL, lexical,
+translation and provenance node features remain semantic/native denominator
+items even where they have no shared ontology target.
+
+## Closed value families
+
+A small observed value set is not sufficient evidence of a closed vocabulary.
+
+Four semantic feature families are explicitly closed by production converter
+semantics:
+
+- `catalogue_present` = `0 | 1`;
+- `populated` = `0 | 1`;
+- `lemmaknown` = `0 | 1`;
+- `chunk_type` =
+  `discourse | phrase | sentence | text`.
+
+The first three are emitted from boolean state through integer conversion.
+For `chunk_type`, production code defines exactly those four
+`CHUNK_TYPES` and fails closed on an unknown source chunk type.
+
+This contributes 10 `node_value` items.
+
+No value expansion is justified for observed-small domains such as
+`chunk_subtype`, `implicit`, `lang`, `language`, `pos`, `epos`,
+`period`, `script`, `translation_rows`, or `translation_subtype`.
+
+The singleton `translation_source_*` provenance values are likewise not
+expanded as categorical vocabularies. Their exact source identity is already
+bound by the candidate/TEI artifact identity; treating a release-specific
+filename, URL, digest, or licence string as a reusable semantic enumeration
+would conflate provenance constants with controlled vocabularies.
+
+## Proposed current denominator
+
+For the exact registered ORACC-TF 0.4.0 candidate:
+
+- node types: 10;
+- semantic node features: 71 (= 75 non-warp materialized features minus 4
+  technical non-warp features);
+- semantic edge features: 8;
+- explicitly closed semantic node values: 10;
+- **semantic denominator: 99 items**;
+- **technical exclusions: 6 items**.
+
+The denominator is eligible for `scope_quality=machine-exhaustive` within the
+declared materialized-TF-schema scope.
+
+Here `machine-exhaustive` means exhaustive over the exact built TF schema plus
+the four source-proven/code-closed semantic value families. It does not mean
+that ontoTF has mapped every ORACC source concept, every possible future
+converter feature, every observed open-vocabulary value, or every record in a
+non-TF sidecar.
+
+## Translation gaps and artifact identity
+
+`translation-gaps.json` contains 2,509 TEI units that the converter does not
+materialize as TF translation nodes because they have no resolvable source-line
+anchor (or their source document is absent/unreadable).
+
+Those gap records are not TF schema items and must not be invented as
+`translation_unit` nodes merely to enlarge the denominator.
+
+However, the sidecar is part of the registered candidate artifact. The new
+coverage manifest should therefore bind:
+
+- a locator describing the registered build candidate;
+- complete candidate-tree digest
+  `cbcc8299c1f5d02bc082ded824452fe3fb0a7857656a0556039a31667c48af1b`;
+- TF-only digest
+  `5d23f56eaa9461d7a6f42dc11a8c2f5d7307ba9820f49869400c5ac9af8bf34f`.
+
+This makes sidecar drift change artifact identity without pretending the sidecar
+is part of the TF semantic denominator.
+
+## Reproducibility rule
+
+The I-018 research workflow:
+
+1. checks out the exact ORACC-TF builder/data revision;
+2. records the exact RIAO/RINAP/config Git identities;
+3. securely acquires and SHA-verifies the pinned TEI archive;
+4. builds only through the production registered-dataset API;
+5. hashes the complete candidate tree;
+6. runs the established R-005 inventory over the resulting TF graph;
+7. compares the regenerated compact projection against the committed I-018
+   evidence.
+
+TFont runtime remains network-free and does not build/acquire ORACC.
+
+## Plan handoff
+
+The implementation plan should create a new immutable ORACC coverage resource
+alongside, not over, `p004-r011-baseline-v1/oracc.json`.
+
+Required properties:
+
+- pin ORACC-TF builder commit, TF version, RIAO/RINAP/config Git identities,
+  TEI digest, complete candidate-tree digest and TF-only digest;
+- use the committed generated R-005 inventory as denominator basis;
+- emit exactly 99 semantic items and 6 technical exclusions;
+- expand only the 10 values in the four reviewed closed families above;
+- keep all 99 current semantic items production-unreviewed unless a separate
+  current-revision ontology review provides authority;
+- do not copy historical R-011 mapping authority by spelling alone;
+- keep the historical 42-item ORACC manifest immutable;
+- deterministically regenerate/check the new manifest offline from committed
+  evidence plus a reviewed denominator policy;
+- prove that documented-but-unmaterialized translation-note schema does not
+  leak into the denominator;
+- prove that the 2,509 translation gaps affect artifact identity only through
+  the candidate sidecar/tree, not by becoming fabricated TF nodes;
+- prove that observed singleton/small open domains do not become node-value
+  denominator items.
+
+The plan must choose the immutable resource/version name and the registered
+build locator syntax.

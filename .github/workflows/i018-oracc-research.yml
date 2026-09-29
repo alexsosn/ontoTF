@@ -1,0 +1,227 @@
+name: I-018 ORACC registered-build inventory research
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/I-018-oracc-current-denominator.md"
+      - "docs/research/data/generated/i018/oracc-0.4.0.json"
+      - ".github/workflows/i018-oracc-research.yml"
+      - "scripts/research/r005_inventory.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out ontoTF exact head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Check out exact ORACC-TF registered builder/source snapshot
+        uses: actions/checkout@v5
+        with:
+          repository: alexsosn/ORACC-TF
+          ref: f6f189bbd99d72bfdc7044555bd3113aa7b54232
+          path: _oracc
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            programs/
+            datasets.toml
+            pyproject.toml
+            .github/certs/
+            scripts/download_m9_tei.sh
+            data/riao/
+            data/rinap/
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Record exact Git source identities
+        run: |
+          set -euo pipefail
+          {
+            echo "oracc_commit=$(git -C _oracc rev-parse HEAD)"
+            echo "riao_tree=$(git -C _oracc rev-parse HEAD:data/riao)"
+            echo "rinap_tree=$(git -C _oracc rev-parse HEAD:data/rinap)"
+            echo "datasets_blob=$(git -C _oracc rev-parse HEAD:datasets.toml)"
+          } > /tmp/i018-git-identities.env
+          cat /tmp/i018-git-identities.env
+
+      - name: Install exact research/build dependencies
+        run: |
+          python -m pip install "text-fabric==13.1.0" "pyyaml>=6"
+          python -m pip install --no-deps -e ./_oracc
+
+      - name: Download and verify pinned official RIAO TEI archive
+        run: |
+          set -euo pipefail
+          cd _oracc
+          RUNNER_TEMP="$RUNNER_TEMP" scripts/download_m9_tei.sh /tmp/riao-teiCorpus-20241202.zip
+
+      - name: Build exact registered ORACC candidate
+        run: |
+          python - <<'PY'
+          from dataclasses import asdict
+          import json
+          from pathlib import Path
+          from oracc_tf import publishing
+
+          root, report = publishing.build_registered_tf(
+              Path("/tmp/i018-build"),
+              "assyrian-royal-inscriptions",
+              data=Path("_oracc/data"),
+              translations_archive=Path("/tmp/riao-teiCorpus-20241202.zip"),
+          )
+          Path("/tmp/i018-root.txt").write_text(str(root), encoding="utf-8")
+          Path("/tmp/i018-build-report.json").write_text(
+              json.dumps(asdict(report), sort_keys=True, default=str),
+              encoding="utf-8",
+          )
+          print("I018_BUILD_ROOT=" + str(root))
+          print("I018_BUILD_REPORT_BEGIN")
+          print(Path("/tmp/i018-build-report.json").read_text(encoding="utf-8"))
+          print("I018_BUILD_REPORT_END")
+          PY
+
+      - name: Record complete candidate tree identity
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+
+          root = Path(Path("/tmp/i018-root.txt").read_text(encoding="utf-8"))
+          digest = sha256()
+          files = []
+          for path in sorted(p for p in root.rglob("*") if p.is_file()):
+              relative = path.relative_to(root).as_posix()
+              payload = path.read_bytes()
+              digest.update(relative.encode("utf-8"))
+              digest.update(bytes([0]))
+              digest.update(len(payload).to_bytes(8, "big"))
+              digest.update(payload)
+              files.append({"path": relative, "bytes": len(payload)})
+          result = {"sha256": digest.hexdigest(), "files": files}
+          Path("/tmp/i018-candidate-tree.json").write_text(
+              json.dumps(result, sort_keys=True),
+              encoding="utf-8",
+          )
+          print("I018_CANDIDATE_TREE_SHA256=" + result["sha256"])
+          print("I018_CANDIDATE_FILES=" + json.dumps(files, sort_keys=True))
+          PY
+
+      - name: Inventory materialized Text-Fabric schema
+        run: |
+          set -euo pipefail
+          ROOT="$(cat /tmp/i018-root.txt)"
+          python scripts/research/r005_inventory.py "$ROOT" --corpus-id oracc --repository alexsosn/ORACC-TF --revision f6f189bbd99d72bfdc7044555bd3113aa7b54232 --tf-version 0.4.0 --output /tmp/i018-oracc-r005.json
+          echo I018_R005_INVENTORY_BEGIN
+          cat /tmp/i018-oracc-r005.json
+          echo I018_R005_INVENTORY_END
+
+      - name: Verify committed compact I-018 evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          committed = json.loads(
+              Path("docs/research/data/generated/i018/oracc-0.4.0.json").read_text(encoding="utf-8")
+          )
+          raw = json.loads(Path("/tmp/i018-oracc-r005.json").read_text(encoding="utf-8"))
+          build = json.loads(Path("/tmp/i018-build-report.json").read_text(encoding="utf-8"))
+          tree = json.loads(Path("/tmp/i018-candidate-tree.json").read_text(encoding="utf-8"))
+
+          identities = {}
+          for line in Path("/tmp/i018-git-identities.env").read_text(encoding="utf-8").splitlines():
+              key, value = line.split("=", 1)
+              identities[key] = value
+
+          expected_candidate = {
+              "repository": "alexsosn/ORACC-TF",
+              "builder_commit": identities["oracc_commit"],
+              "dataset": "assyrian-royal-inscriptions",
+              "tf_version": "0.4.0",
+              "riao_tree": identities["riao_tree"],
+              "rinap_tree": identities["rinap_tree"],
+              "datasets_blob": identities["datasets_blob"],
+              "tei_archive": "riao-teiCorpus-20241202.zip",
+              "tei_sha256": "b793d8920db58908e3a044b7f2d1a204c1ba0784e880007e0cd7941333e841bd",
+              "candidate_tree_sha256": tree["sha256"],
+              "tf_files_sha256": raw["tf_files_sha256"],
+          }
+          if committed["candidate"] != expected_candidate:
+              raise SystemExit("candidate identity differs from committed I-018 evidence")
+
+          expected_build = {
+              "source_members": build["source_members"],
+              "readable_source_members": build["readable_source_members"],
+              "unreadable_source_members": build["unreadable_source_members"],
+              "documents": build["documents"],
+              "populated_documents": build["populated_documents"],
+              "stub_documents": build["stub_documents"],
+              "words": build["words"],
+              "semantic_signs": build["signs"],
+              "synthetic_slots": build["synthetic_slots"],
+              "tf_slots": build["tf_slots"],
+              "lines": build["lines"],
+              "lexemes": build["lexemes"],
+              "translation_units": build["translation_units"],
+              "translation_gaps": build["translation_gaps"],
+          }
+          if committed["build"] != expected_build:
+              raise SystemExit("build census differs from committed I-018 evidence")
+
+          expected_sidecars = [
+              item for item in tree["files"] if not item["path"].endswith(".tf")
+          ]
+          if committed["sidecars"] != expected_sidecars:
+              raise SystemExit("candidate sidecar set differs from committed I-018 evidence")
+
+          for key in ("slot_type", "node_types", "excluded_warp_features", "domain_policy"):
+              if committed[key] != raw[key]:
+                  raise SystemExit(f"{key} differs from regenerated I-018 inventory")
+
+          keep_values = {
+              "catalogue_present",
+              "lemmaknown",
+              "populated",
+              "synthetic",
+              "chunk_type",
+              "cuneiform_trailer",
+          }
+          expected_nodes = {}
+          for name, source in raw["node_features"].items():
+              item = {
+                  "description": source["metadata"]["description"],
+                  "value_type": source["metadata"]["valueType"],
+                  "applies_to": source["applies_to"],
+                  "nodes_with_value": source["nodes_with_value"],
+                  "observed_unique_count": source["observed_unique_count"],
+                  "domain_observation": source["domain_observation"],
+              }
+              if name in keep_values and "observed_values" in source:
+                  item["observed_values"] = source["observed_values"]
+              expected_nodes[name] = item
+          if committed["node_features"] != expected_nodes:
+              raise SystemExit("node-feature evidence differs from regenerated I-018 inventory")
+
+          expected_edges = {}
+          for name, source in raw["edge_features"].items():
+              expected_edges[name] = {
+                  "description": source["metadata"]["description"],
+                  "source_types": source["source_types"],
+                  "target_types": source["target_types"],
+                  "edge_count": source["edge_count"],
+                  "valued": source["valued"],
+              }
+          if committed["edge_features"] != expected_edges:
+              raise SystemExit("edge-feature evidence differs from regenerated I-018 inventory")
+          PY
