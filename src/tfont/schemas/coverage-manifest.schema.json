@@ -258,6 +258,9 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "artifact_identity": {
+          "$ref": "#/$defs/artifactIdentity"
         }
       },
       "additionalProperties": false
@@ -325,6 +328,29 @@
           "items": {
             "$ref": "#/$defs/capability"
           }
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifactIdentity": {
+      "type": "object",
+      "required": [
+        "locator",
+        "sha256",
+        "materialized_sha256"
+      ],
+      "properties": {
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "materialized_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         }
       },
       "additionalProperties": false
