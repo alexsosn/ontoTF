@@ -217,6 +217,7 @@ def build_inventory(
             "valued": valued,
             "value_type": metadata.get("valueType"),
             "description": metadata.get("description"),
+            "version": metadata.get("version"),
             "bytes": path.stat().st_size,
             "sha256": sha256_file(path),
         }
@@ -261,7 +262,7 @@ def build_inventory(
         "artifact": {
             "repository": repository,
             "containing_revision": containing_revision,
-            "tf_version": features["otype"]["value_type"] and features["otype"].get("version"),
+            "tf_version": features["otype"].get("version"),
             "build_manifest_sha256": sha256_file(manifest_path),
             "code_commit": manifest.get("codeCommit"),
             "code_algorithm": manifest.get("code", {}).get("algorithm"),
