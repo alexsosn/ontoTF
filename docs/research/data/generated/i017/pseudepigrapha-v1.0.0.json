@@ -1,0 +1,1199 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "published_tf_release_r005_inventory",
+  "release": {
+    "repository": "alexsosn/Pseudepigrapha-TF",
+    "tag": "v1.0.0",
+    "commit": "7c4b757bb543a110ae9a252d1281835859136852",
+    "asset": "tf-1.0.zip",
+    "asset_sha256": "d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a",
+    "tf_version": "1.0",
+    "converter_version": "1.0.0",
+    "upstream_commit": "c939dcbacad78c5d18d2c4282cad23c47e19ac07",
+    "tf_files_sha256": "9b708add5b9f8ddbfdafa7dd61507956f7987ca6a70b2b9164342bd49003ec61"
+  },
+  "slot_type": "word",
+  "node_types": {
+    "book": 348,
+    "chapter": 3018,
+    "div": 46684,
+    "document_metadata": 32,
+    "ellipsis": 1,
+    "manuscript": 483,
+    "orphan_reading": 9,
+    "reading": 87811,
+    "unit": 81275,
+    "variant_word": 7701,
+    "verse": 43366,
+    "version_metadata": 1,
+    "word": 922922
+  },
+  "node_features": {
+    "author": {
+      "description": "upstream author or editor attribution for the OCP version",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 330,
+      "observed_unique_count": 16,
+      "domain_observation": "observed_small_domain"
+    },
+    "bibliography": {
+      "description": "JSON array of plain-text bibliography entries declared for an OCP manuscript",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 454,
+      "observed_unique_count": 210,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "bibliography_xml": {
+      "description": "JSON array preserving the mixed-XML bibliography entries declared for an OCP manuscript",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 454,
+      "observed_unique_count": 211,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "book": {
+      "description": "BHSA-compatible book section identifier; one OCP version is one TF book",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 348,
+      "observed_unique_count": 348,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "boundary_utf8": {
+      "description": "deterministic separator inserted between OCP units",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 80966,
+      "observed_unique_count": 3,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        "\n",
+        "\n\n",
+        " "
+      ]
+    },
+    "chapter": {
+      "description": "BHSA-compatible chapter label; compound parent path for deep OCP references",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "chapter"
+      ],
+      "nodes_with_value": 3018,
+      "observed_unique_count": 179,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "chapter_index": {
+      "description": "1-based chapter occurrence index within one OCP version",
+      "value_type": "int",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "chapter"
+      ],
+      "nodes_with_value": 3018,
+      "observed_unique_count": 77,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "div_fragment": {
+      "description": "literal upstream div/@fragment value",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "div"
+      ],
+      "nodes_with_value": 69,
+      "observed_unique_count": 5,
+      "domain_observation": "observed_small_domain"
+    },
+    "div_index": {
+      "description": "1-based source-order index of a div among sibling divs",
+      "value_type": "int",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "div"
+      ],
+      "nodes_with_value": 46684,
+      "observed_unique_count": 832,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "div_label": {
+      "description": "upstream division-level label declared by the OCP version",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "div"
+      ],
+      "nodes_with_value": 46684,
+      "observed_unique_count": 9,
+      "domain_observation": "observed_small_domain"
+    },
+    "div_level": {
+      "description": "1-based nesting depth of the preserved upstream div",
+      "value_type": "int",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "div"
+      ],
+      "nodes_with_value": 46684,
+      "observed_unique_count": 4,
+      "domain_observation": "observed_small_domain"
+    },
+    "div_number": {
+      "description": "literal upstream div/@number identifier",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "div"
+      ],
+      "nodes_with_value": 46684,
+      "observed_unique_count": 913,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "div_path": {
+      "description": "slash-joined sequence of upstream div numbers for the preserved div",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "div"
+      ],
+      "nodes_with_value": 46684,
+      "observed_unique_count": 7091,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "division_delimiters": {
+      "description": "JSON array of upstream reference delimiters declared by the OCP version",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "version_metadata"
+      ],
+      "nodes_with_value": 349,
+      "observed_unique_count": 10,
+      "domain_observation": "observed_small_domain"
+    },
+    "division_labels": {
+      "description": "JSON array of upstream division labels declared by the OCP version",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "version_metadata"
+      ],
+      "nodes_with_value": 349,
+      "observed_unique_count": 17,
+      "domain_observation": "observed_small_domain"
+    },
+    "division_texts": {
+      "description": "JSON array of upstream division display texts declared by the OCP version",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "version_metadata"
+      ],
+      "nodes_with_value": 349,
+      "observed_unique_count": 4,
+      "domain_observation": "observed_small_domain"
+    },
+    "ellipsis_text": {
+      "description": "text content of an upstream <elipsis> structural omission marker",
+      "value_type": "str",
+      "documentation_category": "Preserved anomalies / technical anchors",
+      "applies_to": [],
+      "nodes_with_value": 0,
+      "observed_unique_count": 0,
+      "domain_observation": "observed_small_domain"
+    },
+    "g_word_utf8": {
+      "description": "Unicode surface form, following the BHSA feature name",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "variant_word",
+        "word"
+      ],
+      "nodes_with_value": 928161,
+      "observed_unique_count": 104833,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "generated_language": {
+      "description": "target language recorded on the generated translation TF book",
+      "value_type": "str",
+      "documentation_category": "Generated-translation features/relations",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 231,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain"
+    },
+    "generation_marker": {
+      "description": "explicit upstream generated-translation provenance marker on the generated TF book",
+      "value_type": "str",
+      "documentation_category": "Generated-translation features/relations",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 231,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "generation_method": {
+      "description": "upstream generation method recorded on the generated TF book",
+      "value_type": "str",
+      "documentation_category": "Generated-translation features/relations",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 231,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "generation_model": {
+      "description": "upstream model recorded on the generated TF book for the pinned generated translation layer",
+      "value_type": "str",
+      "documentation_category": "Generated-translation features/relations",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 231,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "group": {
+      "description": "literal upstream unit/@group value",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "unit"
+      ],
+      "nodes_with_value": 81275,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "historical_biblical_figures_json": {
+      "description": "JSON array of exact public OCP biblical-figure labels from the historical 2017 catalogue",
+      "value_type": "str",
+      "documentation_category": "Historical classifications",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 17,
+      "domain_observation": "observed_small_domain"
+    },
+    "historical_genres_json": {
+      "description": "JSON array of exact public OCP genre labels from the historical 2017 catalogue",
+      "value_type": "str",
+      "documentation_category": "Historical classifications",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 14,
+      "domain_observation": "observed_small_domain"
+    },
+    "historical_ocp_doc_id": {
+      "description": "published OCP docs.id from the historical 2017 classification snapshot",
+      "value_type": "int",
+      "documentation_category": "Historical classifications",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 32,
+      "domain_observation": "observed_small_domain"
+    },
+    "indent": {
+      "description": "literal upstream reading indentation attribute",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "reading"
+      ],
+      "nodes_with_value": 213,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_bibliography_json": {
+      "description": "JSON-scalar encoded public OCP bibliography field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 32,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_citation_json": {
+      "description": "JSON-scalar encoded per-document OCP citation from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 32,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_copyright_json": {
+      "description": "JSON-scalar encoded public OCP copyright field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 32,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_corrections_json": {
+      "description": "JSON-scalar encoded public OCP corrections field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 10,
+      "observed_unique_count": 10,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_introduction_json": {
+      "description": "JSON-scalar encoded public OCP introduction field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 9,
+      "observed_unique_count": 9,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_label": {
+      "description": "short display label for an OCP document_metadata node",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 32,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_manuscripts_json": {
+      "description": "JSON-scalar encoded public OCP manuscripts field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 10,
+      "observed_unique_count": 10,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_provenance_json": {
+      "description": "JSON-scalar encoded public OCP provenance field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 9,
+      "observed_unique_count": 9,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_sigla_json": {
+      "description": "JSON-scalar encoded public OCP sigla field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 11,
+      "observed_unique_count": 11,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_status_json": {
+      "description": "JSON-scalar encoded public OCP status field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 31,
+      "observed_unique_count": 31,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_themes_json": {
+      "description": "JSON-scalar encoded public OCP themes field from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 4,
+      "observed_unique_count": 4,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_title_json": {
+      "description": "JSON-scalar encoded public OCP document title from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 32,
+      "domain_observation": "observed_small_domain"
+    },
+    "intro_version_json": {
+      "description": "JSON-scalar encoded public OCP document edition version from intros.json",
+      "value_type": "str",
+      "documentation_category": "Public work metadata",
+      "applies_to": [
+        "document_metadata"
+      ],
+      "nodes_with_value": 32,
+      "observed_unique_count": 5,
+      "domain_observation": "observed_small_domain"
+    },
+    "is_gap": {
+      "description": "1 for an anchor slot created for an empty primary reading",
+      "value_type": "int",
+      "documentation_category": "Preserved anomalies / technical anchors",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 2462,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "is_metadata_only": {
+      "description": "1 for metadata attached to an upstream version with no textual units",
+      "value_type": "int",
+      "documentation_category": "Preserved anomalies / technical anchors",
+      "applies_to": [
+        "manuscript",
+        "version_metadata"
+      ],
+      "nodes_with_value": 2,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "is_missing_unit_id": {
+      "description": "1 when the upstream unit explicitly has an empty id and no id is inferred",
+      "value_type": "int",
+      "documentation_category": "Preserved anomalies / technical anchors",
+      "applies_to": [
+        "unit"
+      ],
+      "nodes_with_value": 1,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "is_omission": {
+      "description": "1 when an OCP reading has no textual content",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "reading"
+      ],
+      "nodes_with_value": 3849,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "is_primary": {
+      "description": "1 for the reading selected as the primary text of its OCP unit",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "reading"
+      ],
+      "nodes_with_value": 81275,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "is_source_anomaly": {
+      "description": "1 for a preserved upstream structure or identity anomaly",
+      "value_type": "int",
+      "documentation_category": "Preserved anomalies / technical anchors",
+      "applies_to": [
+        "orphan_reading",
+        "unit"
+      ],
+      "nodes_with_value": 10,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "language": {
+      "description": "effective language of the OCP version or token",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "variant_word",
+        "version_metadata",
+        "word"
+      ],
+      "nodes_with_value": 890709,
+      "observed_unique_count": 8,
+      "domain_observation": "observed_small_domain"
+    },
+    "linebreak": {
+      "description": "literal upstream reading linebreak attribute",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [
+        "reading"
+      ],
+      "nodes_with_value": 1107,
+      "observed_unique_count": 3,
+      "domain_observation": "observed_small_domain"
+    },
+    "manuscript_index": {
+      "description": "1-based source-order index of a declared manuscript within an OCP version",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 454,
+      "observed_unique_count": 23,
+      "domain_observation": "observed_small_domain"
+    },
+    "ms_abbrev": {
+      "description": "literal upstream manuscript abbreviation or preserved undeclared witness token",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 483,
+      "observed_unique_count": 147,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "ms_language": {
+      "description": "literal upstream manuscript language value",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 449,
+      "observed_unique_count": 9,
+      "domain_observation": "observed_small_domain"
+    },
+    "ms_name": {
+      "description": "plain-text manuscript name derived from the upstream manuscript element",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 418,
+      "observed_unique_count": 121,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "ms_name_xml": {
+      "description": "mixed XML content preserving the upstream manuscript name",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 418,
+      "observed_unique_count": 121,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "ms_show": {
+      "description": "literal upstream manuscript show/display attribute",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 454,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain"
+    },
+    "mss": {
+      "description": "literal upstream reading witness-list string",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "orphan_reading",
+        "reading"
+      ],
+      "nodes_with_value": 87820,
+      "observed_unique_count": 467,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "ocp_book": {
+      "description": "stable OCP work identifier derived from the source filename",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "chapter",
+        "div",
+        "document_metadata",
+        "ellipsis",
+        "manuscript",
+        "orphan_reading",
+        "reading",
+        "unit",
+        "variant_word",
+        "verse",
+        "version_metadata",
+        "word"
+      ],
+      "nodes_with_value": 1193651,
+      "observed_unique_count": 39,
+      "domain_observation": "observed_small_domain"
+    },
+    "prefix_utf8": {
+      "description": "Unicode material preceding a word inside its OCP reading",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [],
+      "nodes_with_value": 0,
+      "observed_unique_count": 0,
+      "domain_observation": "observed_small_domain"
+    },
+    "reading_index": {
+      "description": "1-based source-order index of a reading within an OCP unit",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "reading"
+      ],
+      "nodes_with_value": 87811,
+      "observed_unique_count": 7,
+      "domain_observation": "observed_small_domain"
+    },
+    "reading_option": {
+      "description": "numeric reading option used by the converter for ordering and query ergonomics",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "reading",
+        "variant_word",
+        "word"
+      ],
+      "nodes_with_value": 1018434,
+      "observed_unique_count": 7,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "reading_option_source": {
+      "description": "literal OCP reading/@option before numeric normalization",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "orphan_reading",
+        "reading",
+        "variant_word",
+        "word"
+      ],
+      "nodes_with_value": 1018443,
+      "observed_unique_count": 7,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    "reading_text": {
+      "description": "plain-text content of the preserved OCP reading",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "orphan_reading",
+        "reading"
+      ],
+      "nodes_with_value": 83971,
+      "observed_unique_count": 64326,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "reading_xml": {
+      "description": "mixed XML content inside the OCP reading",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "orphan_reading",
+        "reading"
+      ],
+      "nodes_with_value": 83971,
+      "observed_unique_count": 64326,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "resource_name": {
+      "description": "literal upstream resource name",
+      "value_type": "str",
+      "documentation_category": "Remaining source-preserved XML attributes/content",
+      "applies_to": [],
+      "nodes_with_value": 0,
+      "observed_unique_count": 0,
+      "domain_observation": "observed_small_domain"
+    },
+    "section_occurrence": {
+      "description": "1-based occurrence of the exact upstream section address within an OCP version",
+      "value_type": "int",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "verse"
+      ],
+      "nodes_with_value": 43366,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain"
+    },
+    "source_child_index": {
+      "description": "1-based position of a preserved source child element within its parent",
+      "value_type": "int",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "ellipsis",
+        "orphan_reading"
+      ],
+      "nodes_with_value": 10,
+      "observed_unique_count": 9,
+      "domain_observation": "observed_small_domain"
+    },
+    "source_file": {
+      "description": "stable source path relative to the supplied OCP docs directory",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "document_metadata",
+        "version_metadata"
+      ],
+      "nodes_with_value": 381,
+      "observed_unique_count": 39,
+      "domain_observation": "observed_small_domain"
+    },
+    "source_ref": {
+      "description": "full OCP reference using every division and declared delimiter",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "chapter",
+        "div",
+        "ellipsis",
+        "orphan_reading",
+        "reading",
+        "unit",
+        "variant_word",
+        "verse",
+        "word"
+      ],
+      "nodes_with_value": 1192781,
+      "observed_unique_count": 7197,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "source_ref_parts": {
+      "description": "JSON array of source division identifiers",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "chapter",
+        "div",
+        "ellipsis",
+        "orphan_reading",
+        "reading",
+        "unit",
+        "variant_word",
+        "verse",
+        "word"
+      ],
+      "nodes_with_value": 1192781,
+      "observed_unique_count": 7091,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "source_sha256": {
+      "description": "SHA-256 digest of source XML bytes",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "version_metadata"
+      ],
+      "nodes_with_value": 349,
+      "observed_unique_count": 38,
+      "domain_observation": "observed_small_domain"
+    },
+    "source_tag": {
+      "description": "literal upstream XML element name",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "ellipsis",
+        "orphan_reading"
+      ],
+      "nodes_with_value": 10,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain"
+    },
+    "synthetic_witness": {
+      "description": "1 for a source-declared synthetic provenance witness rather than a historical manuscript",
+      "value_type": "int",
+      "documentation_category": "Generated-translation features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 231,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "text_structure": {
+      "description": "literal upstream work text-structure declaration",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "version_metadata"
+      ],
+      "nodes_with_value": 262,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain"
+    },
+    "title": {
+      "description": "upstream OCP work title",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "version_metadata"
+      ],
+      "nodes_with_value": 349,
+      "observed_unique_count": 36,
+      "domain_observation": "observed_small_domain"
+    },
+    "token_count": {
+      "description": "number of parsed word tokens in the preserved reading",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "reading"
+      ],
+      "nodes_with_value": 87811,
+      "observed_unique_count": 184,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "trailer_utf8": {
+      "description": "Unicode material following a word inside its OCP reading",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "variant_word",
+        "word"
+      ],
+      "nodes_with_value": 846408,
+      "observed_unique_count": 6,
+      "domain_observation": "observed_small_domain"
+    },
+    "undefined_manuscript": {
+      "description": "1 for a citation-only manuscript node synthesized from an undeclared upstream witness abbreviation",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "manuscript"
+      ],
+      "nodes_with_value": 29,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        1
+      ]
+    },
+    "unit_id": {
+      "description": "literal upstream unit/@id identifier; may be empty only for explicitly validated source anomalies",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "reading",
+        "unit",
+        "variant_word",
+        "word"
+      ],
+      "nodes_with_value": 1099673,
+      "observed_unique_count": 14930,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "unit_index": {
+      "description": "1-based source-order index of a unit within an OCP version",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "unit"
+      ],
+      "nodes_with_value": 81275,
+      "observed_unique_count": 4975,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "unit_linebreak": {
+      "description": "literal upstream unit linebreak attribute",
+      "value_type": "str",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "unit"
+      ],
+      "nodes_with_value": 2,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "variant_position": {
+      "description": "1-based token position inside a non-primary reading",
+      "value_type": "int",
+      "documentation_category": "Apparatus and witness features/relations",
+      "applies_to": [
+        "variant_word"
+      ],
+      "nodes_with_value": 7701,
+      "observed_unique_count": 73,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "verse": {
+      "description": "BHSA-compatible verse label; later duplicate upstream addresses receive a technical ~N suffix",
+      "value_type": "str",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "verse"
+      ],
+      "nodes_with_value": 43366,
+      "observed_unique_count": 893,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "verse_index": {
+      "description": "1-based verse occurrence index within one OCP version",
+      "value_type": "int",
+      "documentation_category": "Text-Fabric warp and section/text features",
+      "applies_to": [
+        "verse"
+      ],
+      "nodes_with_value": 43366,
+      "observed_unique_count": 4356,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "version_fragment": {
+      "description": "literal upstream version/@fragment value",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book"
+      ],
+      "nodes_with_value": 234,
+      "observed_unique_count": 17,
+      "domain_observation": "observed_small_domain"
+    },
+    "version_id": {
+      "description": "stable converter identifier for the exact upstream version owning this node",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "chapter",
+        "div",
+        "ellipsis",
+        "manuscript",
+        "orphan_reading",
+        "reading",
+        "unit",
+        "variant_word",
+        "verse",
+        "version_metadata"
+      ],
+      "nodes_with_value": 270697,
+      "observed_unique_count": 349,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "version_kind": {
+      "description": "source or generated_translation classification stored on TF book, unit, and version_metadata nodes",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "unit",
+        "version_metadata"
+      ],
+      "nodes_with_value": 81624,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        "generated_translation",
+        "source"
+      ]
+    },
+    "version_title": {
+      "description": "literal upstream OCP version title",
+      "value_type": "str",
+      "documentation_category": "Source/version identity and provenance",
+      "applies_to": [
+        "book",
+        "chapter",
+        "div",
+        "ellipsis",
+        "manuscript",
+        "reading",
+        "unit",
+        "variant_word",
+        "verse",
+        "version_metadata",
+        "word"
+      ],
+      "nodes_with_value": 1135220,
+      "observed_unique_count": 217,
+      "domain_observation": "open_or_large_observed_domain"
+    }
+  },
+  "edge_features": {
+    "manuscript_of": {
+      "description": "manuscript node to its TF book/version",
+      "source_types": [
+        "manuscript"
+      ],
+      "target_types": [
+        "book",
+        "version_metadata"
+      ],
+      "edge_count": 483,
+      "valued": false
+    },
+    "parent": {
+      "description": "OCP structural parent relation from div/unit/ellipsis/orphan_reading nodes to div",
+      "source_types": [
+        "div",
+        "ellipsis",
+        "orphan_reading",
+        "unit"
+      ],
+      "target_types": [
+        "div"
+      ],
+      "edge_count": 124027,
+      "valued": false
+    },
+    "reading_of": {
+      "description": "reading node to its OCP unit",
+      "source_types": [
+        "reading"
+      ],
+      "target_types": [
+        "unit"
+      ],
+      "edge_count": 87811,
+      "valued": false
+    },
+    "translation_of": {
+      "description": "generated translation TF book to its exact source-version TF book",
+      "source_types": [
+        "book"
+      ],
+      "target_types": [
+        "book"
+      ],
+      "edge_count": 231,
+      "valued": false
+    },
+    "translation_unit_of": {
+      "description": "generated translation unit to occurrence-aligned source unit",
+      "source_types": [
+        "unit"
+      ],
+      "target_types": [
+        "unit"
+      ],
+      "edge_count": 54143,
+      "valued": false
+    },
+    "variant_word_of": {
+      "description": "variant_word node to its reading",
+      "source_types": [
+        "variant_word"
+      ],
+      "target_types": [
+        "reading"
+      ],
+      "edge_count": 7701,
+      "valued": false
+    },
+    "witness": {
+      "description": "reading/orphan_reading node to cited manuscript nodes",
+      "source_types": [
+        "orphan_reading",
+        "reading"
+      ],
+      "target_types": [
+        "manuscript"
+      ],
+      "edge_count": 124278,
+      "valued": false
+    }
+  },
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "domain_policy": {
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "observed_small_domain_is_not_automatically_categorical": true,
+    "small_domain_limit": 64
+  }
+}
