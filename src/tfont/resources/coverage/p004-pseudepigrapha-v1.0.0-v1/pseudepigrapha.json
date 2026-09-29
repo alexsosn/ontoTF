@@ -1,0 +1,985 @@
+{
+  "accounting_gaps": [],
+  "corpus_id": "pseudepigrapha",
+  "denominator_basis": {
+    "artifact_identity": {
+      "locator": "github-release:v1.0.0/tf-1.0.zip",
+      "materialized_sha256": "9b708add5b9f8ddbfdafa7dd61507956f7987ca6a70b2b9164342bd49003ec61",
+      "sha256": "d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a"
+    },
+    "bounded_node_features": [
+      "generation_marker",
+      "is_metadata_only",
+      "is_missing_unit_id",
+      "is_omission",
+      "is_primary",
+      "is_source_anomaly",
+      "synthetic_witness",
+      "undefined_manuscript",
+      "version_kind"
+    ],
+    "kind": "generated-r005-inventory",
+    "source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json"
+  },
+  "denominator_digest": "sha256:4b6e6874cd7c903521ad3c2918652eb22292010c307b3aea8a762f36fca692fc",
+  "denominator_source_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+  "manifest_id": "coverage:p004-pseudepigrapha-v1.0.0-v1:pseudepigrapha",
+  "repository": "alexsosn/Pseudepigrapha-TF",
+  "schema_version": 1,
+  "scope_quality": "machine-exhaustive",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:manuscript_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:parent",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:reading_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:translation_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:translation_unit_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:variant_word_of",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:witness",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:author",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:bibliography",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:bibliography_xml",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:chapter",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:chapter_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:div_fragment",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:div_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:div_label",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:div_level",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:div_number",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:div_path",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:division_delimiters",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:division_labels",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:division_texts",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ellipsis_text",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_word_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:generated_language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:generation_marker",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:generation_method",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:generation_model",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:group",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:historical_biblical_figures_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:historical_genres_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:historical_ocp_doc_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:indent",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_bibliography_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_citation_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_copyright_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_corrections_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_introduction_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_label",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_manuscripts_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_provenance_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_sigla_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_status_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_themes_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_title_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:intro_version_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_metadata_only",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_missing_unit_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_omission",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_primary",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:is_source_anomaly",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:linebreak",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:manuscript_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_abbrev",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_name",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_name_xml",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ms_show",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:mss",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ocp_book",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:prefix_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading_option_source",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading_text",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:reading_xml",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:resource_name",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:section_occurrence",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_child_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_file",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_ref",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_ref_parts",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_sha256",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_tag",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:synthetic_witness",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:text_structure",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:title",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:token_count",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:trailer_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:undefined_manuscript",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:unit_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:unit_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:unit_linebreak",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:variant_position",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:verse",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:verse_index",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:version_fragment",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:version_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:version_kind",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:version_title",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:book",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:chapter",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:div",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:document_metadata",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:ellipsis",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:manuscript",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:orphan_reading",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:reading",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:unit",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:variant_word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:verse",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:version_metadata",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:generation_marker=\"OCP-Trans\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:is_metadata_only=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:is_missing_unit_id=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:is_omission=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:is_primary=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:is_source_anomaly=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:synthetic_witness=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:undefined_manuscript=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:version_kind=\"generated_translation\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:version_kind=\"source\"",
+      "kind": "node_value"
+    }
+  ],
+  "target_corpus_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+  "technical_exclusions": [
+    {
+      "authority": "production",
+      "item_id": "edge_feature:oslots",
+      "kind": "edge_feature",
+      "reason": "text-fabric-technical-support",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:oslots-technical-support"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:boundary_utf8",
+      "kind": "node_feature",
+      "reason": "converter-inserted-boundary",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:boundary-utf8"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:is_gap",
+      "kind": "node_feature",
+      "reason": "synthetic-anchor-slot-marker",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:is-gap"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:otype",
+      "kind": "node_feature",
+      "reason": "text-fabric-warp-node-typing",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:otype-warp"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:reading_option",
+      "kind": "node_feature",
+      "reason": "converter-query-ordering-normalization",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:reading-option"
+      ]
+    }
+  ],
+  "tf_version": "1.0"
+}
