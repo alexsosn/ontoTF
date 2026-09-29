@@ -1,0 +1,962 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "registered_build_r005_inventory",
+  "candidate": {
+    "repository": "alexsosn/ORACC-TF",
+    "builder_commit": "f6f189bbd99d72bfdc7044555bd3113aa7b54232",
+    "dataset": "assyrian-royal-inscriptions",
+    "tf_version": "0.4.0",
+    "riao_tree": "b03bf0544f4c83710dc6ea88b26b6389e9b85645",
+    "rinap_tree": "96ddf1d4e6bbf37b6ec4a3e37f42e8fae899593c",
+    "datasets_blob": "584d4671959b4f5d35535bc796521299eb6e040e",
+    "tei_archive": "riao-teiCorpus-20241202.zip",
+    "tei_sha256": "b793d8920db58908e3a044b7f2d1a204c1ba0784e880007e0cd7941333e841bd",
+    "candidate_tree_sha256": "cbcc8299c1f5d02bc082ded824452fe3fb0a7857656a0556039a31667c48af1b",
+    "tf_files_sha256": "5d23f56eaa9461d7a6f42dc11a8c2f5d7307ba9820f49869400c5ac9af8bf34f"
+  },
+  "build": {
+    "source_members": 2081,
+    "readable_source_members": 2078,
+    "unreadable_source_members": 3,
+    "documents": 2078,
+    "populated_documents": 1845,
+    "stub_documents": 233,
+    "words": 320975,
+    "semantic_signs": 792651,
+    "synthetic_slots": 689,
+    "tf_slots": 793340,
+    "lines": 56226,
+    "lexemes": 8025,
+    "translation_units": 6792,
+    "translation_gaps": 2509
+  },
+  "sidecars": [
+    {
+      "bytes": 967987,
+      "path": "translation-gaps.json"
+    }
+  ],
+  "slot_type": "sign",
+  "node_types": {
+    "chunk": 13644,
+    "column": 758,
+    "document": 2078,
+    "face": 2312,
+    "lex": 8025,
+    "line": 56226,
+    "phrase": 4499,
+    "sign": 793340,
+    "translation_unit": 6792,
+    "word": 320975
+  },
+  "node_features": {
+    "catalogue_json": {
+      "description": "Canonical JSON serialization of the joined ORACC catalogue record.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 2076,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "catalogue_present": {
+      "description": "Integer flag: 1 when catalogue metadata was joined for the document, otherwise 0.",
+      "value_type": "int",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        0,
+        1
+      ]
+    },
+    "cdli_id": {
+      "description": "ORACC catalogue CDLI identifier value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 1662,
+      "observed_unique_count": 1573,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "cf": {
+      "description": "ORACC citation form (lemma) attached to the word or lexeme.",
+      "value_type": "str",
+      "applies_to": [
+        "lex",
+        "word"
+      ],
+      "nodes_with_value": 297230,
+      "observed_unique_count": 7329,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "chunk_subtype": {
+      "description": "ORACC chunk subtype preserved from the source structure.",
+      "value_type": "str",
+      "applies_to": [
+        "chunk"
+      ],
+      "nodes_with_value": 1846,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "chunk_type": {
+      "description": "ORACC chunk type preserved from the source structure.",
+      "value_type": "str",
+      "applies_to": [
+        "chunk"
+      ],
+      "nodes_with_value": 13644,
+      "observed_unique_count": 4,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        "discourse",
+        "phrase",
+        "sentence",
+        "text"
+      ]
+    },
+    "collection": {
+      "description": "ORACC catalogue collection value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 1784,
+      "observed_unique_count": 231,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "column_id": {
+      "description": "Source ORACC column identifier.",
+      "value_type": "str",
+      "applies_to": [
+        "column"
+      ],
+      "nodes_with_value": 758,
+      "observed_unique_count": 636,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "cuneiform_trailer": {
+      "description": "ORACC-TF presentation-only ASCII word separator attached to the final semantic/source sign of a word; absent on synthetic slots.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 320680,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        " "
+      ]
+    },
+    "designation": {
+      "description": "ORACC catalogue designation value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2075,
+      "observed_unique_count": 1936,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "document": {
+      "description": "Qualified ORACC document key used as the Text-Fabric document section value.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 2078,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "document_key": {
+      "description": "Qualified ORACC subproject/document key used by ORACC-TF for cross-node identity.",
+      "value_type": "str",
+      "applies_to": [
+        "chunk",
+        "column",
+        "document",
+        "face",
+        "line",
+        "phrase",
+        "sign",
+        "translation_unit",
+        "word"
+      ],
+      "nodes_with_value": 1200624,
+      "observed_unique_count": 2078,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "epos": {
+      "description": "ORACC effective/contextual part-of-speech value for the word occurrence.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 289205,
+      "observed_unique_count": 33,
+      "domain_observation": "observed_small_domain"
+    },
+    "exemplars": {
+      "description": "ORACC catalogue exemplars value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2012,
+      "observed_unique_count": 1753,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "face": {
+      "description": "Source face identifier used as the Text-Fabric face section value.",
+      "value_type": "str",
+      "applies_to": [
+        "face"
+      ],
+      "nodes_with_value": 2312,
+      "observed_unique_count": 2168,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "form": {
+      "description": "Surface transliteration form of the ORACC word occurrence.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 320975,
+      "observed_unique_count": 29446,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "frag": {
+      "description": "ORACC source fragment value for the word occurrence.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 303623,
+      "observed_unique_count": 58173,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "gdl_form": {
+      "description": "ORACC GDL form value attached to this sign, when present.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 6584,
+      "observed_unique_count": 87,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "gdl_id": {
+      "description": "ORACC GDL identifier attached to this sign, when present.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 792640,
+      "observed_unique_count": 685864,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "gdl_json": {
+      "description": "Canonical JSON serialization of the source ORACC word-level GDL payload.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 320680,
+      "observed_unique_count": 319188,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "gdl_sexified": {
+      "description": "ORACC GDL sexified value attached to this sign, when present.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 6582,
+      "observed_unique_count": 88,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "genre": {
+      "description": "ORACC catalogue genre value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2075,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "gw": {
+      "description": "ORACC guide word used to disambiguate the lexical entry.",
+      "value_type": "str",
+      "applies_to": [
+        "lex",
+        "word"
+      ],
+      "nodes_with_value": 297230,
+      "observed_unique_count": 4630,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "implicit": {
+      "description": "Source section implicit marker preserved from ORACC.",
+      "value_type": "str",
+      "applies_to": [
+        "chunk"
+      ],
+      "nodes_with_value": 5221,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "inst": {
+      "description": "ORACC source instance-analysis value preserved on the word occurrence.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 320975,
+      "observed_unique_count": 35820,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "label": {
+      "description": "Source section label preserved from ORACC.",
+      "value_type": "str",
+      "applies_to": [
+        "chunk",
+        "column",
+        "face",
+        "line"
+      ],
+      "nodes_with_value": 62673,
+      "observed_unique_count": 8016,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "lang": {
+      "description": "ORACC language code attached to the word or lexeme.",
+      "value_type": "str",
+      "applies_to": [
+        "lex",
+        "word"
+      ],
+      "nodes_with_value": 329000,
+      "observed_unique_count": 5,
+      "domain_observation": "observed_small_domain"
+    },
+    "language": {
+      "description": "ORACC catalogue language value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2075,
+      "observed_unique_count": 6,
+      "domain_observation": "observed_small_domain"
+    },
+    "lemmaknown": {
+      "description": "Integer ORACC lexical-analysis flag indicating whether the word has a known lemma analysis.",
+      "value_type": "int",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 320975,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        0,
+        1
+      ]
+    },
+    "lexeme": {
+      "description": "Canonical JSON tuple [lang, cf, gw, pos] used by ORACC-TF as the lexeme key.",
+      "value_type": "str",
+      "applies_to": [
+        "lex"
+      ],
+      "nodes_with_value": 8025,
+      "observed_unique_count": 8025,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "license": {
+      "description": "Licence label supplied by ORACC for the source document metadata.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "license_url": {
+      "description": "Licence URL supplied by ORACC for the source document metadata.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "line": {
+      "description": "Source ORACC line identifier used as the Text-Fabric line section value.",
+      "value_type": "str",
+      "applies_to": [
+        "line"
+      ],
+      "nodes_with_value": 56226,
+      "observed_unique_count": 47510,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "lnno": {
+      "description": "Source ATF/ORACC line label; compatibility alias used by cross-corpus tooling.",
+      "value_type": "str",
+      "applies_to": [
+        "line"
+      ],
+      "nodes_with_value": 56226,
+      "observed_unique_count": 5453,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "material": {
+      "description": "ORACC catalogue material value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2025,
+      "observed_unique_count": 36,
+      "domain_observation": "observed_small_domain"
+    },
+    "norm": {
+      "description": "ORACC normalized Akkadian form attached to the word occurrence, when available.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 288557,
+      "observed_unique_count": 20399,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "object_type": {
+      "description": "ORACC catalogue object-type value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2027,
+      "observed_unique_count": 137,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "period": {
+      "description": "ORACC catalogue period value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2075,
+      "observed_unique_count": 6,
+      "domain_observation": "observed_small_domain"
+    },
+    "pleiades_coord": {
+      "description": "ORACC catalogue Pleiades coordinate value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2068,
+      "observed_unique_count": 82,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "pleiades_id": {
+      "description": "ORACC catalogue Pleiades identifier value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2069,
+      "observed_unique_count": 82,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "populated": {
+      "description": "Integer flag: 1 when the ORACC edition contains parsed words, otherwise 0.",
+      "value_type": "int",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        0,
+        1
+      ]
+    },
+    "pos": {
+      "description": "ORACC lexical part-of-speech value.",
+      "value_type": "str",
+      "applies_to": [
+        "lex",
+        "word"
+      ],
+      "nodes_with_value": 327886,
+      "observed_unique_count": 35,
+      "domain_observation": "observed_small_domain"
+    },
+    "primary_publication": {
+      "description": "ORACC catalogue primary-publication value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 1922,
+      "observed_unique_count": 1782,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "provenience": {
+      "description": "ORACC catalogue provenience value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2075,
+      "observed_unique_count": 87,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "readingu": {
+      "description": "Compatibility alias for the ORACC Unicode cuneiform sign string in utf8.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 778873,
+      "observed_unique_count": 547,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "ref": {
+      "description": "Source reference string preserved from ORACC.",
+      "value_type": "str",
+      "applies_to": [
+        "column",
+        "face",
+        "line",
+        "word"
+      ],
+      "nodes_with_value": 378429,
+      "observed_unique_count": 327402,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "ruler": {
+      "description": "ORACC catalogue ruler value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2000,
+      "observed_unique_count": 60,
+      "domain_observation": "observed_small_domain"
+    },
+    "script": {
+      "description": "ORACC catalogue script value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 1896,
+      "observed_unique_count": 15,
+      "domain_observation": "observed_small_domain"
+    },
+    "sense": {
+      "description": "ORACC contextual lexical sense attached to the word occurrence.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 289205,
+      "observed_unique_count": 6227,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "sig": {
+      "description": "ORACC occurrence analysis signature preserved verbatim; not a stable ORACC-TF lexeme identifier.",
+      "value_type": "str",
+      "applies_to": [
+        "word"
+      ],
+      "nodes_with_value": 288560,
+      "observed_unique_count": 54439,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "sign_json": {
+      "description": "Canonical JSON serialization of the source ORACC sign/GDL object.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 792651,
+      "observed_unique_count": 789552,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "source_id": {
+      "description": "Source ORACC node identifier preserved from the input data.",
+      "value_type": "str",
+      "applies_to": [
+        "chunk",
+        "column",
+        "document",
+        "face",
+        "line",
+        "phrase",
+        "sign",
+        "word"
+      ],
+      "nodes_with_value": 401181,
+      "observed_unique_count": 349478,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "src_path": {
+      "description": "Source GDL path of this sign within the ORACC word structure.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 792651,
+      "observed_unique_count": 750215,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "subgenre": {
+      "description": "ORACC catalogue subgenre value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 1922,
+      "observed_unique_count": 59,
+      "domain_observation": "observed_small_domain"
+    },
+    "subproject": {
+      "description": "ORACC subproject that supplied the document.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 11,
+      "domain_observation": "observed_small_domain"
+    },
+    "supergenre": {
+      "description": "ORACC catalogue supergenre value preserved as text.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2075,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "synthetic": {
+      "description": "Integer flag marking ORACC-TF-synthesized section nodes or technical empty sign slots; synthetic slots carry no fabricated cuneiform content.",
+      "value_type": "int",
+      "applies_to": [
+        "chunk",
+        "column",
+        "face",
+        "line",
+        "phrase",
+        "sign"
+      ],
+      "nodes_with_value": 78128,
+      "observed_unique_count": 2,
+      "domain_observation": "observed_small_domain",
+      "observed_values": [
+        0,
+        1
+      ]
+    },
+    "text_id": {
+      "description": "ORACC text identifier without the subproject qualifier.",
+      "value_type": "str",
+      "applies_to": [
+        "document"
+      ],
+      "nodes_with_value": 2078,
+      "observed_unique_count": 1938,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_eref": {
+      "description": "Inclusive source line-range end declared by TEI xtr:eref.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6748,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_id": {
+      "description": "Qualified ORACC-TF translation identity composed from the source document key and TEI unit identifier.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6792,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_label": {
+      "description": "Translation label declared by the TEI source.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1734,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_rows": {
+      "description": "Row count declared by the TEI translation source, when present.",
+      "value_type": "int",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 5963,
+      "observed_unique_count": 39,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_se_label": {
+      "description": "Source edition label declared by the TEI translation source.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6791,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_source_id": {
+      "description": "TEI xml:id declared on this translation unit, when supplied by the pinned official source.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6792,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_source_license": {
+      "description": "Conservative translation licence statement, kept separate from corpusjson document licence metadata.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_source_license_url": {
+      "description": "ORACC licensing guidance for the translation source; project-specific terms may differ.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_source_name": {
+      "description": "Name of the pinned official TEI archive supplying this translation.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_source_sha256": {
+      "description": "SHA-256 digest of the pinned official TEI archive supplying this translation.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_source_url": {
+      "description": "Official source URL for the pinned TEI archive.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_sref": {
+      "description": "Inclusive source line-range start declared by TEI xtr:sref.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6792,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_subtype": {
+      "description": "Translation subtype declared by the TEI source, such as tr or dollar.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 1,
+      "domain_observation": "observed_small_domain"
+    },
+    "translation_text": {
+      "description": "Plain running translation text extracted from source TEI markup.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6431,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "translation_text_raw": {
+      "description": "Canonical source TEI markup for the running translation, excluding note elements.",
+      "value_type": "str",
+      "applies_to": [
+        "translation_unit"
+      ],
+      "nodes_with_value": 6792,
+      "observed_unique_count": 6449,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "utf8": {
+      "description": "Unicode cuneiform string supplied by ORACC for this sign, when available.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 778873,
+      "observed_unique_count": 547,
+      "domain_observation": "open_or_large_observed_domain"
+    },
+    "word_id": {
+      "description": "Source ORACC word identifier containing this sign.",
+      "value_type": "str",
+      "applies_to": [
+        "sign"
+      ],
+      "nodes_with_value": 792946,
+      "observed_unique_count": 284594,
+      "domain_observation": "open_or_large_observed_domain"
+    }
+  },
+  "edge_features": {
+    "column_face": {
+      "description": "Edge from a column node to its containing face node.",
+      "source_types": [
+        "column"
+      ],
+      "target_types": [
+        "face"
+      ],
+      "edge_count": 758,
+      "valued": false
+    },
+    "face_document": {
+      "description": "Edge from a face node to its containing document node.",
+      "source_types": [
+        "face"
+      ],
+      "target_types": [
+        "document"
+      ],
+      "edge_count": 2312,
+      "valued": false
+    },
+    "line_column": {
+      "description": "Edge from a line node to its containing column node.",
+      "source_types": [
+        "line"
+      ],
+      "target_types": [
+        "column"
+      ],
+      "edge_count": 30078,
+      "valued": false
+    },
+    "line_face": {
+      "description": "Edge from a line node to its containing face node.",
+      "source_types": [
+        "line"
+      ],
+      "target_types": [
+        "face"
+      ],
+      "edge_count": 56226,
+      "valued": false
+    },
+    "translation_document": {
+      "description": "Edge from a TEI translation unit to its qualified ORACC document.",
+      "source_types": [
+        "translation_unit"
+      ],
+      "target_types": [
+        "document"
+      ],
+      "edge_count": 6792,
+      "valued": false
+    },
+    "translation_line": {
+      "description": "Edge from a TEI translation unit to each explicitly referenced source line in its inclusive range.",
+      "source_types": [
+        "translation_unit"
+      ],
+      "target_types": [
+        "line"
+      ],
+      "edge_count": 36411,
+      "valued": false
+    },
+    "word_lex": {
+      "description": "Edge from a word occurrence to its ORACC-TF lexeme node.",
+      "source_types": [
+        "word"
+      ],
+      "target_types": [
+        "lex"
+      ],
+      "edge_count": 289824,
+      "valued": false
+    },
+    "word_line": {
+      "description": "Edge from a word node to its containing line node.",
+      "source_types": [
+        "word"
+      ],
+      "target_types": [
+        "line"
+      ],
+      "edge_count": 320975,
+      "valued": false
+    }
+  },
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "domain_policy": {
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "observed_small_domain_is_not_automatically_categorical": true,
+    "small_domain_limit": 64
+  }
+}
