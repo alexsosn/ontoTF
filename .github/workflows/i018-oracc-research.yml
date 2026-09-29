@@ -33,6 +33,8 @@ jobs:
             programs/
             datasets.toml
             pyproject.toml
+            .github/certs/
+            scripts/download_m9_tei.sh
             data/riao/
             data/rinap/
 
