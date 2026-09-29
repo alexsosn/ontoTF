@@ -1,0 +1,114 @@
+name: I-019 TLHdig current-artifact inventory research
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/I-019-tlhdig-current-denominator.md"
+      - "docs/research/data/generated/i019/tlhdig-0.4.0.json"
+      - ".github/workflows/i019-tlhdig-research.yml"
+      - "scripts/research/i019_tlhdig_inventory.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out ontoTF exact head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Check out exact shipped TLHdig current artifact
+        uses: actions/checkout@v5
+        with:
+          repository: alexsosn/TLHdig-TF
+          ref: bc4a206690c1856d3cfde8b291f626c45a712640
+          path: _tlhdig
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            tf/0.4.0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Verify exact current-artifact manifest identity
+        run: |
+          set -euo pipefail
+          test "$(git -C _tlhdig rev-parse HEAD)" = "bc4a206690c1856d3cfde8b291f626c45a712640"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("_tlhdig/tf/0.4.0/BUILD-MANIFEST.json")
+          manifest = json.loads(path.read_text(encoding="utf-8"))
+          expected = {
+              "codeCommit": "fb5d93b5d112b77da756893c5561f99c05617c7b",
+              "codeAlgorithm": "tlhdig-current-code-v1",
+              "codeDigest": "sha256:d8337017e18d9d906521e7c1c4d6fb7c6274b607d9b8118ff9c5cd64c459d403",
+              "outputsAlgorithm": "tlhdig-current-tree-v2",
+              "outputsDigest": "sha256:d0160532d03b86069132681ba68e23d3039bcebb96eb5684507ce660ea3b1634",
+          }
+          actual = {
+              "codeCommit": manifest["codeCommit"],
+              "codeAlgorithm": manifest["code"]["algorithm"],
+              "codeDigest": manifest["code"]["digest"],
+              "outputsAlgorithm": manifest["outputs"]["algorithm"],
+              "outputsDigest": manifest["outputs"]["digest"],
+          }
+          if actual != expected:
+              raise SystemExit(f"TLHdig BUILD-MANIFEST identity drifted: {actual!r}")
+
+          main_tf = sorted(
+              key for key in manifest["outputs"]["files"]
+              if key.startswith("main:") and key.endswith(".tf")
+          )
+          provenance_tf = sorted(
+              key for key in manifest["outputs"]["files"]
+              if key.startswith("provenance:") and key.endswith(".tf")
+          )
+          if len(main_tf) != 137 or len(provenance_tf) != 2:
+              raise SystemExit(
+                  "TLHdig BUILD-MANIFEST file census drifted: "
+                  f"main_tf={len(main_tf)} provenance_tf={len(provenance_tf)}"
+              )
+          PY
+
+      - name: Inventory shipped TF schema without loadAll
+        run: |
+          python scripts/research/i019_tlhdig_inventory.py             _tlhdig/tf/0.4.0             --repository alexsosn/TLHdig-TF             --containing-revision bc4a206690c1856d3cfde8b291f626c45a712640             --output /tmp/i019-tlhdig-0.4.0.json
+
+      - name: Show compact research summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("/tmp/i019-tlhdig-0.4.0.json").read_text(encoding="utf-8"))
+          print("I019_ARTIFACT=" + json.dumps(data["artifact"], sort_keys=True))
+          print("I019_COUNTS=" + json.dumps(data["counts"], sort_keys=True))
+          print("I019_NODE_TYPES=" + json.dumps(data["node_types"], sort_keys=True))
+          print("I019_EDGES=" + json.dumps(sorted(data["edge_features"])))
+          for name in data["domain_policy"]["probed_features"]:
+              feature = data["node_features"].get(name) or data["edge_features"].get(name)
+              if feature and "observed_domain" in feature:
+                  print(
+                      "I019_DOMAIN_"
+                      + name
+                      + "="
+                      + json.dumps(feature["observed_domain"], ensure_ascii=False, sort_keys=True)
+                  )
+          PY
+
+      - name: Upload exact compact inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: i019-tlhdig-inventory
+          path: /tmp/i019-tlhdig-0.4.0.json
+          if-no-files-found: error
+          retention-days: 7
