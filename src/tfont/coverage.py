@@ -15,6 +15,7 @@ COVERAGE_DENOMINATOR_ALGORITHM = "tfont-coverage-denominator-jcs-sha256-v1"
 P004_R011_BASELINE_RESOURCE = "p004-r011-baseline-v1"
 P004_PSEUDEPIGRAPHA_V1_RESOURCE = "p004-pseudepigrapha-v1.0.0-v1"
 P004_ORACC_0_4_0_RESOURCE = "p004-oracc-0.4.0-f6f189b-v1"
+P004_TLHDIG_0_4_0_RESOURCE = "p004-tlhdig-0.4.0-bc4a206-v1"
 P004_R011_BASELINE_CORPORA = (
     "bhsa",
     "cuc",
@@ -263,6 +264,11 @@ def coverage_denominator_projection(manifest: dict[str, Any]) -> dict[str, Any]:
             path=("denominator_basis", "bounded_node_features"),
         ),
     }
+    if "bounded_edge_features" in basis:
+        basis_projection["bounded_edge_features"] = _canonical_strings(
+            basis["bounded_edge_features"],
+            path=("denominator_basis", "bounded_edge_features"),
+        )
     if "artifact_identity" in basis:
         artifact = _exact_dict(
             basis["artifact_identity"],
