@@ -5,6 +5,7 @@ on:
     paths:
       - "scripts/research/r005_inventory.py"
       - "docs/research/I-017-pseudepigrapha-current-denominator.md"
+      - "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json"
       - ".github/workflows/i017-pseudepigrapha-research.yml"
   workflow_dispatch:
 
@@ -46,3 +47,61 @@ jobs:
           echo I017_R005_INVENTORY_BEGIN
           cat /tmp/i017-pseudepigrapha-r005.json
           echo I017_R005_INVENTORY_END
+      - name: Verify committed compact evidence matches regenerated inventory
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          raw = json.loads(Path("/tmp/i017-pseudepigrapha-r005.json").read_text(encoding="utf-8"))
+          compact = json.loads(
+              Path("docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json").read_text(encoding="utf-8")
+          )
+          release = compact["release"]
+
+          identity_pairs = {
+              "repository": (raw["repository"], release["repository"]),
+              "revision": (raw["revision"], release["commit"]),
+              "tf_version": (raw["tf_version"], release["tf_version"]),
+              "tf_files_sha256": (raw["tf_files_sha256"], release["tf_files_sha256"]),
+          }
+          for name, (observed, committed) in identity_pairs.items():
+              if observed != committed:
+                  raise SystemExit(f"{name} mismatch: regenerated={observed!r} committed={committed!r}")
+
+          for key in ("slot_type", "node_types", "excluded_warp_features", "domain_policy"):
+              if raw[key] != compact[key]:
+                  raise SystemExit(f"{key} differs from regenerated inventory")
+
+          if set(raw["node_features"]) != set(compact["node_features"]):
+              raise SystemExit("node feature set differs from regenerated inventory")
+          for name, committed in compact["node_features"].items():
+              source = raw["node_features"][name]
+              projected = {
+                  "description": source["metadata"]["description"],
+                  "value_type": source["metadata"]["valueType"],
+                  "documentation_category": source["metadata"]["documentationCategory"],
+                  "applies_to": source["applies_to"],
+                  "nodes_with_value": source["nodes_with_value"],
+                  "observed_unique_count": source["observed_unique_count"],
+                  "domain_observation": source["domain_observation"],
+              }
+              if "observed_values" in committed:
+                  projected["observed_values"] = source.get("observed_values", [])
+              if committed != projected:
+                  raise SystemExit(f"node feature evidence differs for {name}")
+
+          if set(raw["edge_features"]) != set(compact["edge_features"]):
+              raise SystemExit("edge feature set differs from regenerated inventory")
+          for name, committed in compact["edge_features"].items():
+              source = raw["edge_features"][name]
+              projected = {
+                  "description": source["metadata"]["description"],
+                  "source_types": source["source_types"],
+                  "target_types": source["target_types"],
+                  "edge_count": source["edge_count"],
+                  "valued": source["valued"],
+              }
+              if committed != projected:
+                  raise SystemExit(f"edge feature evidence differs for {name}")
+          PY
