@@ -43,6 +43,22 @@ def digest_tf_files(path: Path) -> str:
     return h.hexdigest()
 
 
+def digest_tf_modules(modules: tuple[tuple[str, Path], ...]) -> str:
+    """Hash all materialized TF modules with module-qualified paths."""
+    h = hashlib.sha256()
+    for module, directory in modules:
+        for file in sorted(directory.glob("*.tf"), key=lambda p: p.name):
+            if not file.is_file():
+                continue
+            h.update(f"{module}/{file.name}".encode("utf-8"))
+            h.update(b"\\0")
+            with file.open("rb") as fh:
+                for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+                    h.update(chunk)
+            h.update(b"\\0")
+    return h.hexdigest()
+
+
 def read_header(path: Path) -> dict[str, Any]:
     markers: set[str] = set()
     metadata: dict[str, str] = {}
@@ -199,6 +215,9 @@ def build_inventory(
             "outputs_digest": manifest["outputs"]["digest"],
             "core_tf_files_sha256": digest_tf_files(core_dir),
             "provenance_tf_files_sha256": digest_tf_files(provenance_dir),
+            "materialized_tf_files_sha256": digest_tf_modules(
+                (("core", core_dir), ("provenance", provenance_dir))
+            ),
         },
         "slot_type": slot_type,
         "node_types": node_types,
