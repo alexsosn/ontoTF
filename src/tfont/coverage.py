@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from dataclasses import dataclass
 from importlib.resources import files
 from pathlib import Path
@@ -12,6 +13,7 @@ from .source_validation import load_source, loads_source, validate_source
 
 COVERAGE_DENOMINATOR_ALGORITHM = "tfont-coverage-denominator-jcs-sha256-v1"
 P004_R011_BASELINE_RESOURCE = "p004-r011-baseline-v1"
+P004_PSEUDEPIGRAPHA_V1_RESOURCE = "p004-pseudepigrapha-v1.0.0-v1"
 P004_R011_BASELINE_CORPORA = (
     "bhsa",
     "cuc",
@@ -252,6 +254,25 @@ def coverage_denominator_projection(manifest: dict[str, Any]) -> dict[str, Any]:
         )
     technical_exclusions.sort(key=lambda item: _utf16(item["item_id"]))
 
+    basis_projection: dict[str, Any] = {
+        "kind": basis["kind"],
+        "source": basis["source"],
+        "bounded_node_features": _canonical_strings(
+            basis["bounded_node_features"],
+            path=("denominator_basis", "bounded_node_features"),
+        ),
+    }
+    if "artifact_identity" in basis:
+        artifact = _exact_dict(
+            basis["artifact_identity"],
+            path=("denominator_basis", "artifact_identity"),
+        )
+        basis_projection["artifact_identity"] = {
+            "locator": artifact["locator"],
+            "sha256": artifact["sha256"],
+            "materialized_sha256": artifact["materialized_sha256"],
+        }
+
     projection: dict[str, Any] = {
         "algorithm": COVERAGE_DENOMINATOR_ALGORITHM,
         "schema_version": source["schema_version"],
@@ -260,14 +281,7 @@ def coverage_denominator_projection(manifest: dict[str, Any]) -> dict[str, Any]:
         "denominator_source_revision": source["denominator_source_revision"],
         "target_corpus_revision": source["target_corpus_revision"],
         "scope_quality": source["scope_quality"],
-        "denominator_basis": {
-            "kind": basis["kind"],
-            "source": basis["source"],
-            "bounded_node_features": _canonical_strings(
-                basis["bounded_node_features"],
-                path=("denominator_basis", "bounded_node_features"),
-            ),
-        },
+        "denominator_basis": basis_projection,
         "semantic_items": semantic_items,
         "technical_exclusions": technical_exclusions,
     }
@@ -399,11 +413,28 @@ def load_coverage_manifest(path: str | Path) -> dict[str, Any]:
     return source
 
 
-def _load_packaged_manifest(corpus_id: str) -> dict[str, Any]:
+_RESOURCE_COMPONENT = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
+def _validate_resource_component(value: Any, *, name: str) -> str:
+    if type(value) is not str or not _RESOURCE_COMPONENT.fullmatch(value):
+        _fail(
+            "invalid_resource_component",
+            f"{name} must be a safe package resource component",
+        )
+    return value
+
+
+def load_packaged_coverage_manifest(
+    resource_set: str,
+    corpus_id: str,
+) -> dict[str, Any]:
+    resource_set = _validate_resource_component(resource_set, name="resource_set")
+    corpus_id = _validate_resource_component(corpus_id, name="corpus_id")
     resource = files("tfont").joinpath(
         "resources",
         "coverage",
-        P004_R011_BASELINE_RESOURCE,
+        resource_set,
         f"{corpus_id}.json",
     )
     try:
@@ -417,7 +448,7 @@ def _load_packaged_manifest(corpus_id: str) -> dict[str, Any]:
     data = loads_source(
         text,
         format="json",
-        source_name=f"tfont:resources/coverage/{P004_R011_BASELINE_RESOURCE}/{corpus_id}.json",
+        source_name=f"tfont:resources/coverage/{resource_set}/{corpus_id}.json",
     )
     source = _exact_dict(data)
     validate_coverage_manifest(source)
@@ -426,7 +457,10 @@ def _load_packaged_manifest(corpus_id: str) -> dict[str, Any]:
 
 def load_p004_r011_baseline_manifests() -> dict[str, dict[str, Any]]:
     return {
-        corpus_id: _load_packaged_manifest(corpus_id)
+        corpus_id: load_packaged_coverage_manifest(
+            P004_R011_BASELINE_RESOURCE,
+            corpus_id,
+        )
         for corpus_id in P004_R011_BASELINE_CORPORA
     }
 
