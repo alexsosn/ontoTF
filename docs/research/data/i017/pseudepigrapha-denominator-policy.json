@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "policy_id": "i017-pseudepigrapha-v1.0.0",
+  "technical_node_features": [
+    "boundary_utf8",
+    "is_gap",
+    "reading_option"
+  ],
+  "technical_warp_node_features": [
+    "otype"
+  ],
+  "technical_warp_edge_features": [
+    "oslots"
+  ],
+  "technical_exclusion_details": {
+    "node_feature:otype": {
+      "reason": "text-fabric-warp-node-typing",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:otype-warp"
+      ]
+    },
+    "edge_feature:oslots": {
+      "reason": "text-fabric-technical-support",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:oslots-technical-support"
+      ]
+    },
+    "node_feature:boundary_utf8": {
+      "reason": "converter-inserted-boundary",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:boundary-utf8"
+      ]
+    },
+    "node_feature:is_gap": {
+      "reason": "synthetic-anchor-slot-marker",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:is-gap"
+      ]
+    },
+    "node_feature:reading_option": {
+      "reason": "converter-query-ordering-normalization",
+      "source_ids": [
+        "research:I-017:pseudepigrapha:reading-option"
+      ]
+    }
+  },
+  "bounded_node_values": {
+    "generation_marker": [
+      "OCP-Trans"
+    ],
+    "is_metadata_only": [
+      1
+    ],
+    "is_missing_unit_id": [
+      1
+    ],
+    "is_omission": [
+      1
+    ],
+    "is_primary": [
+      1
+    ],
+    "is_source_anomaly": [
+      1
+    ],
+    "synthetic_witness": [
+      1
+    ],
+    "undefined_manuscript": [
+      1
+    ],
+    "version_kind": [
+      "generated_translation",
+      "source"
+    ]
+  },
+  "bounded_sources": {
+    "generation_marker": [
+      "research:I-017:pseudepigrapha:generation-marker"
+    ],
+    "is_metadata_only": [
+      "research:I-017:pseudepigrapha:is-metadata-only"
+    ],
+    "is_missing_unit_id": [
+      "research:I-017:pseudepigrapha:is-missing-unit-id"
+    ],
+    "is_omission": [
+      "research:I-017:pseudepigrapha:is-omission"
+    ],
+    "is_primary": [
+      "research:I-017:pseudepigrapha:is-primary"
+    ],
+    "is_source_anomaly": [
+      "research:I-017:pseudepigrapha:is-source-anomaly"
+    ],
+    "synthetic_witness": [
+      "research:I-017:pseudepigrapha:synthetic-witness"
+    ],
+    "undefined_manuscript": [
+      "research:I-017:pseudepigrapha:undefined-manuscript"
+    ],
+    "version_kind": [
+      "research:I-017:pseudepigrapha:version-kind"
+    ]
+  }
+}
