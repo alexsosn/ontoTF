@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "policy_id": "i018-oracc-0.4.0-f6f189b",
+  "technical_node_features": [
+    "cuneiform_trailer",
+    "lnno",
+    "readingu",
+    "synthetic"
+  ],
+  "technical_warp_node_features": [
+    "otype"
+  ],
+  "technical_warp_edge_features": [
+    "oslots"
+  ],
+  "technical_exclusion_details": {
+    "node_feature:cuneiform_trailer": {
+      "reason": "converter-presentation-only-word-separator",
+      "source_ids": [
+        "research:I-018:oracc:cuneiform-trailer"
+      ]
+    },
+    "node_feature:lnno": {
+      "reason": "compatibility-alias-for-line-label",
+      "source_ids": [
+        "research:I-018:oracc:lnno"
+      ]
+    },
+    "node_feature:readingu": {
+      "reason": "compatibility-alias-for-utf8",
+      "source_ids": [
+        "research:I-018:oracc:readingu"
+      ]
+    },
+    "node_feature:synthetic": {
+      "reason": "converter-scaffolding-and-empty-slot-provenance",
+      "source_ids": [
+        "research:I-018:oracc:synthetic"
+      ]
+    },
+    "node_feature:otype": {
+      "reason": "text-fabric-warp-node-typing",
+      "source_ids": [
+        "research:I-018:oracc:otype-warp"
+      ]
+    },
+    "edge_feature:oslots": {
+      "reason": "text-fabric-technical-support",
+      "source_ids": [
+        "research:I-018:oracc:oslots-technical-support"
+      ]
+    }
+  },
+  "bounded_node_values": {
+    "catalogue_present": [
+      0,
+      1
+    ],
+    "chunk_type": [
+      "discourse",
+      "phrase",
+      "sentence",
+      "text"
+    ],
+    "lemmaknown": [
+      0,
+      1
+    ],
+    "populated": [
+      0,
+      1
+    ]
+  },
+  "bounded_sources": {
+    "catalogue_present": [
+      "research:I-018:oracc:catalogue-present"
+    ],
+    "chunk_type": [
+      "research:I-018:oracc:chunk-types"
+    ],
+    "lemmaknown": [
+      "research:I-018:oracc:lemmaknown"
+    ],
+    "populated": [
+      "research:I-018:oracc:populated"
+    ]
+  }
+}
