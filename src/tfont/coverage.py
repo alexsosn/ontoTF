@@ -14,6 +14,7 @@ from .source_validation import load_source, loads_source, validate_source
 COVERAGE_DENOMINATOR_ALGORITHM = "tfont-coverage-denominator-jcs-sha256-v1"
 P004_R011_BASELINE_RESOURCE = "p004-r011-baseline-v1"
 P004_PSEUDEPIGRAPHA_V1_RESOURCE = "p004-pseudepigrapha-v1.0.0-v1"
+P004_ORACC_0_4_0_RESOURCE = "p004-oracc-0.4.0-f6f189b-v1"
 P004_R011_BASELINE_CORPORA = (
     "bhsa",
     "cuc",

@@ -1,0 +1,877 @@
+{
+  "accounting_gaps": [],
+  "corpus_id": "oracc",
+  "denominator_basis": {
+    "artifact_identity": {
+      "locator": "registered-build:alexsosn/ORACC-TF@f6f189bbd99d72bfdc7044555bd3113aa7b54232:assyrian-royal-inscriptions/tf/0.4.0",
+      "materialized_sha256": "5d23f56eaa9461d7a6f42dc11a8c2f5d7307ba9820f49869400c5ac9af8bf34f",
+      "sha256": "cbcc8299c1f5d02bc082ded824452fe3fb0a7857656a0556039a31667c48af1b"
+    },
+    "bounded_node_features": [
+      "catalogue_present",
+      "chunk_type",
+      "lemmaknown",
+      "populated"
+    ],
+    "kind": "generated-r005-inventory",
+    "source": "docs/research/data/generated/i018/oracc-0.4.0.json"
+  },
+  "denominator_digest": "sha256:436dc9a35080dd14a4bb6d0c1b5341b8dd2566e10608d5d37c1d2226aba3eda2",
+  "denominator_source_revision": "f6f189bbd99d72bfdc7044555bd3113aa7b54232",
+  "manifest_id": "coverage:p004-oracc-0.4.0-f6f189b-v1:oracc",
+  "repository": "alexsosn/ORACC-TF",
+  "schema_version": 1,
+  "scope_quality": "machine-exhaustive",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:column_face",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:face_document",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:line_column",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:line_face",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:translation_document",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:translation_line",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:word_lex",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "edge_feature:word_line",
+      "kind": "edge_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:catalogue_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:catalogue_present",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:cdli_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:cf",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:chunk_subtype",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:chunk_type",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:collection",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:column_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:designation",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:document",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:document_key",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:epos",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:exemplars",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:face",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:form",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:frag",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gdl_form",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gdl_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gdl_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gdl_sexified",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:genre",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gw",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:implicit",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:inst",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:label",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lang",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:language",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lemmaknown",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:lexeme",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:license",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:license_url",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:line",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:material",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:norm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:object_type",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:period",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pleiades_coord",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pleiades_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:populated",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pos",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:primary_publication",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:provenience",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ref",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ruler",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:script",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sense",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sig",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sign_json",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:source_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:src_path",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:subgenre",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:subproject",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:supergenre",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:text_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_eref",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_label",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_rows",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_se_label",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_source_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_source_license",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_source_license_url",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_source_name",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_source_sha256",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_source_url",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_sref",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_subtype",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_text",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:translation_text_raw",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:word_id",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:chunk",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:column",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:document",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:face",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:lex",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:line",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:phrase",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:sign",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:translation_unit",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:catalogue_present=0",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:catalogue_present=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:chunk_type=\"discourse\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:chunk_type=\"phrase\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:chunk_type=\"sentence\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:chunk_type=\"text\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:lemmaknown=0",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:lemmaknown=1",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:populated=0",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:populated=1",
+      "kind": "node_value"
+    }
+  ],
+  "target_corpus_revision": "f6f189bbd99d72bfdc7044555bd3113aa7b54232",
+  "technical_exclusions": [
+    {
+      "authority": "production",
+      "item_id": "edge_feature:oslots",
+      "kind": "edge_feature",
+      "reason": "text-fabric-technical-support",
+      "source_ids": [
+        "research:I-018:oracc:oslots-technical-support"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:cuneiform_trailer",
+      "kind": "node_feature",
+      "reason": "converter-presentation-only-word-separator",
+      "source_ids": [
+        "research:I-018:oracc:cuneiform-trailer"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:lnno",
+      "kind": "node_feature",
+      "reason": "compatibility-alias-for-line-label",
+      "source_ids": [
+        "research:I-018:oracc:lnno"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:otype",
+      "kind": "node_feature",
+      "reason": "text-fabric-warp-node-typing",
+      "source_ids": [
+        "research:I-018:oracc:otype-warp"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:readingu",
+      "kind": "node_feature",
+      "reason": "compatibility-alias-for-utf8",
+      "source_ids": [
+        "research:I-018:oracc:readingu"
+      ]
+    },
+    {
+      "authority": "production",
+      "item_id": "node_feature:synthetic",
+      "kind": "node_feature",
+      "reason": "converter-scaffolding-and-empty-slot-provenance",
+      "source_ids": [
+        "research:I-018:oracc:synthetic"
+      ]
+    }
+  ],
+  "tf_version": "0.4.0"
+}
