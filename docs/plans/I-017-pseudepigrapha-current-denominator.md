@@ -123,6 +123,12 @@ bounded_node_values:
 The file also records stable source IDs for each technical exclusion and
 bounded-family decision. It must not contain ontology targets.
 
+The generated manifest's `denominator_basis.bounded_node_features` is exactly
+the nine bounded-family feature names from this policy, sorted canonically:
+`generation_marker`, `is_metadata_only`, `is_missing_unit_id`,
+`is_omission`, `is_primary`, `is_source_anomaly`, `synthetic_witness`,
+`undefined_manuscript`, `version_kind`.
+
 ## Deterministic builder
 
 Add:
@@ -198,6 +204,9 @@ Requirements:
 - resource-set and corpus identifiers are restricted to safe simple package
   path components; slash, backslash, `..`, empty names and traversal-like
   input fail closed;
+- unsafe components fail as `CoverageError(category="invalid_resource_component")`;
+- a safe but absent packaged manifest fails as
+  `CoverageError(category="missing_resource")`;
 - the function loads one packaged JSON manifest and runs full coverage
   validation;
 - `load_p004_r011_baseline_manifests()` delegates to this generic function
