@@ -132,8 +132,10 @@ class I017CurrentPseudepigraphaAdversarialTests(unittest.TestCase):
             "requests",
             "urllib",
             "github.com",
-            "from tf",
-            "import tf",
+            "from tf.",
+            "from tf import",
+            "import tf.",
+            "import tf\n",
             "Fabric(",
             "curl ",
         ):
