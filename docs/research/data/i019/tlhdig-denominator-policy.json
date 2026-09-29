@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "policy_id": "i019-tlhdig-0.4.0-bc4a206",
+  "technical_node_features": [
+    "anchor",
+    "subcorpus"
+  ],
+  "technical_warp_node_features": [
+    "otype"
+  ],
+  "technical_warp_edge_features": [
+    "oslots"
+  ],
+  "technical_exclusion_details": {
+    "node_feature:otype": {
+      "reason": "text-fabric-warp-node-typing",
+      "source_ids": [
+        "research:I-019:tlhdig:otype-warp"
+      ]
+    },
+    "edge_feature:oslots": {
+      "reason": "text-fabric-technical-support",
+      "source_ids": [
+        "research:I-019:tlhdig:oslots-technical-support"
+      ]
+    },
+    "node_feature:anchor": {
+      "reason": "artificial-empty-slot-preservation-marker",
+      "source_ids": [
+        "research:I-019:tlhdig:anchor"
+      ]
+    },
+    "node_feature:subcorpus": {
+      "reason": "compatibility-alias-for-project",
+      "source_ids": [
+        "research:I-019:tlhdig:subcorpus"
+      ]
+    }
+  },
+  "bounded_node_values": {
+    "type": [
+      "reading",
+      "signname",
+      "numeral",
+      "unknown",
+      "ellipsis",
+      "empty",
+      "del",
+      "laes",
+      "ras",
+      "add",
+      "quot"
+    ],
+    "sgr": [
+      0,
+      1
+    ],
+    "agr": [
+      0,
+      1
+    ],
+    "det": [
+      0,
+      1
+    ],
+    "num": [
+      0,
+      1
+    ],
+    "missing": [
+      1
+    ],
+    "laes": [
+      1
+    ],
+    "ras": [
+      1
+    ],
+    "add": [
+      1
+    ],
+    "quot": [
+      1
+    ],
+    "materlect_anomalous": [
+      1
+    ],
+    "cu_unrendered": [
+      1
+    ],
+    "crossesline": [
+      1
+    ],
+    "nested": [
+      1
+    ],
+    "siglum_ambiguous": [
+      1
+    ],
+    "from_open_marker": [
+      0,
+      1
+    ],
+    "from_close_marker": [
+      0,
+      1
+    ],
+    "mrpsel_kind": [
+      "analysis",
+      "none",
+      "unknown",
+      "DEL",
+      "AKK",
+      "HURR",
+      "HAT",
+      "SUM",
+      "LUW"
+    ],
+    "sel_group": [
+      "all",
+      "sg",
+      "pl"
+    ],
+    "parse_ok": [
+      0,
+      1
+    ],
+    "field4_kind": [
+      "empty",
+      "pos",
+      "stemclass",
+      "morph"
+    ],
+    "cu_aligned": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "ruling": [
+      "single",
+      "double"
+    ],
+    "kind": [
+      "kor",
+      "kor2",
+      "kor1kf",
+      "annot",
+      "uebern",
+      "format",
+      "author",
+      "kolon",
+      "val",
+      "trlst",
+      "join",
+      "merge",
+      "aufheb",
+      "aufloes",
+      "korof",
+      "koltaf",
+      "kolfot",
+      "kolfot2",
+      "cth",
+      "creation-date",
+      "AOxml-creation"
+    ],
+    "orphan": [
+      "none",
+      "open",
+      "close"
+    ],
+    "fragment_kind": [
+      "txtpubl",
+      "invnr",
+      "plain"
+    ],
+    "siglum_source": [
+      "attr",
+      "element-text",
+      "tail",
+      "plain-text",
+      "conflict"
+    ],
+    "join_kind": [
+      "direct",
+      "indirect",
+      "direct-multi",
+      "indirect-multi",
+      "uncertain",
+      "malformed",
+      "unknown"
+    ],
+    "join_encoding": [
+      "xml",
+      "textual"
+    ],
+    "join_resolved": [
+      0,
+      1
+    ]
+  },
+  "bounded_edge_values": {
+    "joined": [
+      "direct",
+      "indirect"
+    ],
+    "witness_resolution": [
+      "unique",
+      "ambiguous"
+    ]
+  },
+  "bounded_node_sources": {
+    "type": [
+      "research:I-019:tlhdig:type"
+    ],
+    "sgr": [
+      "research:I-019:tlhdig:sgr"
+    ],
+    "agr": [
+      "research:I-019:tlhdig:agr"
+    ],
+    "det": [
+      "research:I-019:tlhdig:det"
+    ],
+    "num": [
+      "research:I-019:tlhdig:num"
+    ],
+    "missing": [
+      "research:I-019:tlhdig:missing"
+    ],
+    "laes": [
+      "research:I-019:tlhdig:laes"
+    ],
+    "ras": [
+      "research:I-019:tlhdig:ras"
+    ],
+    "add": [
+      "research:I-019:tlhdig:add"
+    ],
+    "quot": [
+      "research:I-019:tlhdig:quot"
+    ],
+    "materlect_anomalous": [
+      "research:I-019:tlhdig:materlect-anomalous"
+    ],
+    "cu_unrendered": [
+      "research:I-019:tlhdig:cu-unrendered"
+    ],
+    "crossesline": [
+      "research:I-019:tlhdig:crossesline"
+    ],
+    "nested": [
+      "research:I-019:tlhdig:nested"
+    ],
+    "siglum_ambiguous": [
+      "research:I-019:tlhdig:siglum-ambiguous"
+    ],
+    "from_open_marker": [
+      "research:I-019:tlhdig:from-open-marker"
+    ],
+    "from_close_marker": [
+      "research:I-019:tlhdig:from-close-marker"
+    ],
+    "mrpsel_kind": [
+      "research:I-019:tlhdig:mrpsel-kind"
+    ],
+    "sel_group": [
+      "research:I-019:tlhdig:sel-group"
+    ],
+    "parse_ok": [
+      "research:I-019:tlhdig:parse-ok"
+    ],
+    "field4_kind": [
+      "research:I-019:tlhdig:field4-kind"
+    ],
+    "cu_aligned": [
+      "research:I-019:tlhdig:cu-aligned"
+    ],
+    "ruling": [
+      "research:I-019:tlhdig:ruling"
+    ],
+    "kind": [
+      "research:I-019:tlhdig:kind"
+    ],
+    "orphan": [
+      "research:I-019:tlhdig:orphan"
+    ],
+    "fragment_kind": [
+      "research:I-019:tlhdig:fragment-kind"
+    ],
+    "siglum_source": [
+      "research:I-019:tlhdig:siglum-source"
+    ],
+    "join_kind": [
+      "research:I-019:tlhdig:join-kind"
+    ],
+    "join_encoding": [
+      "research:I-019:tlhdig:join-encoding"
+    ],
+    "join_resolved": [
+      "research:I-019:tlhdig:join-resolved"
+    ]
+  },
+  "bounded_edge_sources": {
+    "joined": [
+      "research:I-019:tlhdig:joined"
+    ],
+    "witness_resolution": [
+      "research:I-019:tlhdig:witness-resolution"
+    ]
+  }
+}
