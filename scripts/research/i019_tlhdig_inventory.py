@@ -73,9 +73,10 @@ def read_header(path: Path) -> dict[str, Any]:
     }
 
 
-def otype_counts(path: Path) -> dict[str, int]:
-    """Decode only otype.tf's simple range form; no generic TF body parser."""
+def otype_inventory(path: Path) -> tuple[str, dict[str, int]]:
+    """Decode otype.tf's simple range form and recover the contiguous slot type."""
     counts: Counter[str] = Counter()
+    slot_type: str | None = None
     in_body = False
     with path.open(encoding="utf-8") as fh:
         for raw in fh:
@@ -89,10 +90,15 @@ def otype_counts(path: Path) -> dict[str, int]:
             fields = line.split("\t")
             if len(fields) == 1:
                 # TF node feature compression: one value means the next node.
-                counts[fields[0]] += 1
+                value = fields[0]
+                if slot_type is None:
+                    slot_type = value
+                counts[value] += 1
                 continue
             if len(fields) == 2:
                 node_spec, value = fields
+                if slot_type is None:
+                    slot_type = value
                 if "-" in node_spec:
                     start, end = node_spec.split("-", 1)
                     counts[value] += int(end) - int(start) + 1
@@ -100,9 +106,9 @@ def otype_counts(path: Path) -> dict[str, int]:
                     counts[value] += 1
                 continue
             raise ValueError(f"{path}: unsupported otype body record: {line!r}")
-    if not counts:
+    if not counts or slot_type is None:
         raise ValueError(f"{path}: empty otype census")
-    return dict(sorted(counts.items()))
+    return slot_type, dict(sorted(counts.items()))
 
 
 def _manifest_output_sets(manifest: dict[str, Any]) -> tuple[set[str], set[str]]:
@@ -174,9 +180,7 @@ def build_inventory(
     if unexpected_provenance:
         raise ValueError(f"unexpected non-node provenance features: {unexpected_provenance}")
 
-    otype = core["otype"]
-    slot_type = otype["metadata"].get("slotType")
-    node_types = otype_counts(core_dir / "otype.tf")
+    slot_type, node_types = otype_inventory(core_dir / "otype.tf")
 
     return {
         "schema_version": 1,
