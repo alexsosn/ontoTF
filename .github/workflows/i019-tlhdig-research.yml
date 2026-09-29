@@ -100,16 +100,7 @@ jobs:
           print("I019_COUNTS=" + json.dumps(data["counts"], sort_keys=True))
           print("I019_NODE_TYPES=" + json.dumps(data["node_types"], sort_keys=True))
           print("I019_EDGES=" + json.dumps(sorted(data["edge_features"])))
-          for name in data["domain_policy"]["probed_features"]:
-              feature = data["node_features"].get(name) or data["edge_features"].get(name)
-              if feature and "observed_domain" in feature:
-                  print(
-                      "I019_DOMAIN_"
-                      + name
-                      + "="
-                      + json.dumps(feature["observed_domain"], ensure_ascii=False, sort_keys=True)
-                  )
-          PY
+          print("I019_PROVENANCE_FEATURES=" + json.dumps(sorted(data["optional_provenance_node_features"])))\n          PY
 
       - name: Upload exact compact inventory
         uses: actions/upload-artifact@v4
