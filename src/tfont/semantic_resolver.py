@@ -1715,13 +1715,6 @@ def _validate_approximation_ir(
     for item in approximation.evidence:
         _evidence_projection(item)
         evidence_keys.append((_utf16(item.evidence_id), _utf16(item.content_digest)))
-    if len(set(evidence_keys)) != len(evidence_keys):
-        _fail(
-            "invalid_compiled_ir",
-            "approximation evidence contains duplicates",
-            corpus_id=binding.corpus_id,
-            related_id=binding.projection_id,
-        )
     if tuple(evidence_keys) != tuple(sorted(evidence_keys)):
         _fail(
             "invalid_compiled_ir",
@@ -1812,7 +1805,6 @@ def _approximation_from_payload(
             related_id=binding.projection_id,
         )
     evidence_rows: list[EvidenceFingerprint] = []
-    evidence_keys: set[tuple[str, str]] = set()
     for row in evidence:
         if (
             type(row) is not dict
@@ -1828,15 +1820,6 @@ def _approximation_from_payload(
                 corpus_id=binding.corpus_id,
                 related_id=binding.projection_id,
             )
-        key = (row["evidence_id"], row["content_digest"])
-        if key in evidence_keys:
-            _fail(
-                "invalid_compiled_ir",
-                "reviewed projection approximation evidence contains duplicates",
-                corpus_id=binding.corpus_id,
-                related_id=binding.projection_id,
-            )
-        evidence_keys.add(key)
         evidence_rows.append(
             EvidenceFingerprint(
                 evidence_id=row["evidence_id"],
