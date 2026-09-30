@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass
 from typing import Any, Iterable
 
 from .digests import canonical_json_bytes
 from .semantic_ir import (
+    ApproximationIR,
     BundleVariantIR,
     BundleVariantKey,
     CapabilityFactsIR,
@@ -23,13 +25,24 @@ from .semantic_ir import (
     TargetBindingIR,
     native_binding_identity,
 )
-from .semantic_vocabulary import CAPABILITY_IDS, FORMAL_KINDS, PROFILE_IDS, SEMANTIC_ROLES
+from .semantic_vocabulary import (
+    CAPABILITY_IDS,
+    FORMAL_KINDS,
+    LOSS_TOKENS,
+    PROFILE_IDS,
+    SEMANTIC_ROLES,
+)
 
 EXACT_RESOLVER_CONTRACT = "tfont-exact-semantic-resolver-v1"
 PROFILE_RELEASE_FINGERPRINT_ALGORITHM = "tfont-profile-release-signature-jcs-sha256-v1"
 RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = "tfont-runtime-prerequisite-jcs-sha256-v1"
 EXACT_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-native-plan-jcs-sha256-v1"
 EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-resolution-jcs-sha256-v1"
+APPROXIMATE_RESOLVER_CONTRACT = "tfont-approximate-semantic-resolver-v1"
+APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-native-plan-jcs-sha256-v1"
+APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-resolution-jcs-sha256-v1"
+APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = "tfont-approximate-semantic-conjunction-resolver-v1"
+APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-conjunction-resolution-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)
@@ -57,6 +70,14 @@ class SemanticResolveRequest:
     key: SemanticKey
     corpora: tuple[str, ...]
     semantic_mode: str = "exact"
+
+
+@dataclass(frozen=True)
+class ApproximateSemanticResolveRequest:
+    key: SemanticKey
+    corpora: tuple[str, ...]
+    semantic_mode: str = "approximate"
+    accept_losses: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -102,6 +123,71 @@ class ExactNativePlan:
     mapping_evidence: tuple[EvidenceFingerprint, ...]
     projection_evidence: tuple[EvidenceFingerprint, ...]
     plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ApproximationLossRecord:
+    corpus_id: str
+    semantic_key: SemanticKey
+    mapping_id: str
+    projection_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    losses: tuple[str, ...]
+    effects: tuple[str, ...]
+    approximation_review_id: str
+    caller_accepted_losses: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+
+
+@dataclass(frozen=True)
+class ApproximateNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    semantic_key: SemanticKey
+    reference_kind: str
+    query_role: str
+    semantic_mode: str
+    capability_state: str
+    variant: BundleVariantKey
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    mapping_id: str
+    projection_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    projection_review: ReviewFingerprint
+    ontology_lock: OntologyLockFingerprint
+    ontology_bundle_digest: str | None
+    mapping_evidence: tuple[EvidenceFingerprint, ...]
+    projection_evidence: tuple[EvidenceFingerprint, ...]
+    approximation: ApproximationIR | None
+    losses: tuple[str, ...]
+    loss_record: ApproximationLossRecord | None
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ApproximateSemanticResolutionResult:
+    resolver_contract: str
+    request: ApproximateSemanticResolveRequest
+    plans: tuple[ApproximateNativePlan, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    loss_records: tuple[ApproximationLossRecord, ...]
+    resolution_fingerprint: str
 
 
 @dataclass(frozen=True)
