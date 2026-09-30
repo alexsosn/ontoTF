@@ -246,8 +246,53 @@ contract:
 - audit-only review metadata may be omitted exactly as the semantic digest
   projection omits it.
 
-Optional fields must remain absent when the compiled value is `None`; adding
-JSON null would change the reviewed semantic projection.
+### Presence-normalization amendment
+
+The compiled IR intentionally normalizes a few source-presence distinctions
+that remain visible to the semantic digest. A single literal reconstruction is
+therefore insufficient for digest verification.
+
+Examples:
+
+- absent `publication_relation` and explicit
+  `"publication_relation": null` both compile to `None`;
+- absent `approximation.evidence` and explicit empty `[]` both compile to
+  `ApproximationIR.evidence == ()`;
+- absent optional ontology-declaration arrays and explicit empty arrays both
+  compile to empty tuples.
+
+I-020 must not reject either valid source spelling.
+
+When a normalized compiled value admits more than one source spelling, build
+the finite set of source-semantic projection candidates consistent with the IR
+and require **at least one** candidate digest to equal
+`binding.projection_semantic_digest`.
+
+The ambiguity set is strictly bounded by schema-known optional-presence
+choices; do not guess arbitrary source fields. At current schema v2 the choices
+are limited to:
+
+- `publication_relation`: absent vs explicit null when compiled value is
+  `None`;
+- `approximation.evidence`: absent vs explicit empty array when compiled
+  evidence is empty;
+- `ontology_declaration_evidence.rdf_types`,
+  `domain_iris`, and `range_iris`: absent vs explicit empty array when the
+  compiled tuple is empty.
+
+Non-empty values have one spelling. `value_kind` is absent when compiled
+`None` because the source schema does not allow null. The full search is at
+most 32 deterministic candidates.
+
+Every candidate uses the **current compiled approximation values**. Therefore
+a structurally valid replacement of `eligible`, `losses`, rationale,
+review ID or approximation evidence still fails all reviewed-digest candidates
+unless it matches the original reviewed projection (ignoring only the
+schema-defined presence normalization above).
+
+This finite reconstruction belongs inside the approximate runtime authority
+validator and does not change source schemas, `CompiledSemanticIR`, exact
+fingerprints, or production mappings.
 
 A structurally valid but digest-incoherent replacement of `eligible`,
 `losses`, rationale, review ID or approximation evidence is therefore
@@ -604,50 +649,53 @@ cover at least:
 19. a structurally valid replacement of eligible/losses/rationale/review ID or
     approximation evidence that no longer matches the reviewed projection
     semantic digest fails `invalid_compiled_ir`;
-20. approximation attached to any exact or related row in the selected semantic
+20. digest reconstruction accepts each schema-equivalent normalized source
+    spelling: absent/null publication relation, absent/empty approximation
+    evidence, and absent/empty optional ontology-declaration arrays;
+21. approximation attached to any exact or related row in the selected semantic
     tuple fails `invalid_compiled_ir` before exact/approximate selection, even
     when another clean exact row exists;
-21. malformed approximation evidence fails closed.
+22. malformed approximation evidence fails closed.
 
 ### Loss records and comparison
 
-22. broader loss record contains undercoverage and deterministic effect;
-23. narrower loss record contains overcoverage and deterministic effect;
-24. record binds review ID, caller acceptance, digests and prerequisite
+23. broader loss record contains undercoverage and deterministic effect;
+24. narrower loss record contains overcoverage and deterministic effect;
+25. record binds review ID, caller acceptance, digests and prerequisite
     fingerprint;
-25. corpus order and accepted-loss order do not change canonical result;
-26. all-exact approximate request -> `exactly-comparable`;
-27. exact + same undercoverage across corpora ->
+26. corpus order and accepted-loss order do not change canonical result;
+27. all-exact approximate request -> `exactly-comparable`;
+28. exact + same undercoverage across corpora ->
     `approximately-comparable`;
-28. undercoverage in one corpus and overcoverage in another ->
+29. undercoverage in one corpus and overcoverage in another ->
     `heterogeneous-loss`.
 
 ### Conjunction
 
-29. exact + broader required atoms union to undercoverage;
-30. broader + narrower union to both loss tokens;
-31. a refused atom fails the whole conjunction;
-32. per-corpus intersection preserves I-015 node-domain safety;
-33. mixed exact/approximate conjunction execution returns deterministic
+30. exact + broader required atoms union to undercoverage;
+31. broader + narrower union to both loss tokens;
+32. a refused atom fails the whole conjunction;
+33. per-corpus intersection preserves I-015 node-domain safety;
+34. mixed exact/approximate conjunction execution returns deterministic
     intersections and retains constituent loss records.
 
 ### Fresh runtime execution
 
-34. approximate execution re-evaluates runtime prerequisites against loaded
+35. approximate execution re-evaluates runtime prerequisites against loaded
     APIs;
-35. stale/mutated loaded state refuses before native query execution;
-36. there is no public caller-plan execution path;
-37. scalar and finite-set bindings execute; structural shapes remain refused;
-38. approximate execution failures use `ApproximateExecutionError`, while
+36. stale/mutated loaded state refuses before native query execution;
+37. there is no public caller-plan execution path;
+38. scalar and finite-set bindings execute; structural shapes remain refused;
+39. approximate execution failures use `ApproximateExecutionError`, while
     translated shared-helper failures preserve their exact category/context.
 
 ### Exact compatibility
 
-39. all exact fingerprint anchors in
+40. all exact fingerprint anchors in
     `docs/research/data/generated/i020/runtime-reconciliation.json` remain
     exact;
-40. existing exact resolver/executor/conjunction tests remain green;
-41. exact public contract constants remain unchanged.
+41. existing exact resolver/executor/conjunction tests remain green;
+42. exact public contract constants remain unchanged.
 
 The RED commit must be observed failing on exact head before GREEN production
 changes.
