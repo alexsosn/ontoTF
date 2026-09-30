@@ -248,15 +248,19 @@ For each requested corpus:
    exact resolution.
 2. Require a semantic tuple for the selected variant.
 3. Run `_validate_binding_against_release()` for every candidate.
-4. Collect exact bindings.
-5. If more than one exact binding exists, fail
+4. Defensively validate approximation coherence for **every** candidate before
+   selection. This includes requiring `approximation=None` on `exact` and
+   `related` rows. A forged approximation anywhere in the selected semantic
+   tuple is `invalid_compiled_ir`, even when a clean exact row would otherwise
+   win.
+5. Collect exact bindings.
+6. If more than one exact binding exists, fail
    `multiple_exact_bindings`.
-6. If exactly one exact binding exists, select it immediately with no loss.
+7. If exactly one exact binding exists, select it immediately with no loss.
    Approximate alternatives are not used to degrade an exact mapping.
-7. Otherwise classify non-exact candidates:
+8. Otherwise classify non-exact candidates:
    - `related` is non-substitutive;
    - `close|broader|narrower` may be approximation candidates.
-8. Defensively validate approximation metadata for the non-exact candidates.
 9. If there are no `close|broader|narrower` candidates but one or more
    `related` candidates, fail `non_substitutive_mapping`.
 10. From `close|broader|narrower`, select mappings whose approximation is
@@ -545,9 +549,9 @@ cover at least:
     `invalid_compiled_ir`;
 18. forged status/eligibility/loss vocabulary/direction fails
     `invalid_compiled_ir`;
-19. approximation attached to exact or related row fails
-    `invalid_compiled_ir` when that row must be evaluated as a non-exact
-    approximation authority;
+19. approximation attached to any exact or related row in the selected semantic
+    tuple fails `invalid_compiled_ir` before exact/approximate selection, even
+    when another clean exact row exists;
 20. malformed approximation evidence fails closed.
 
 ### Loss records and comparison
