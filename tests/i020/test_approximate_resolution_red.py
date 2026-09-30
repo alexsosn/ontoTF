@@ -304,6 +304,17 @@ class I020ApproximateResolutionTests(unittest.TestCase):
             accept_losses=("undercoverage", "overcoverage"),
         )
 
+        ambiguous = compile_semantic_ir(
+            (validated_binding_bundle("bhsa", native_state="ambiguous"),)
+        )
+        assert_problem(
+            self,
+            "semantic_tuple_absent",
+            self.resolve,
+            ambiguous,
+            accept_losses=("undercoverage", "overcoverage"),
+        )
+
     def test_exact_binding_wins_without_loss_but_multiple_exact_still_refuses(self):
         mixed = compiled_two_binding_ir(
             first_assessment="exact",
