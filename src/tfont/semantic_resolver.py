@@ -1778,6 +1778,20 @@ def _approximation_from_payload(
             corpus_id=binding.corpus_id,
             related_id=binding.projection_id,
         )
+    if (
+        value.get("status") != "reviewed"
+        or type(value.get("eligible")) is not bool
+        or type(value.get("rationale")) is not str
+        or not value["rationale"]
+        or type(value.get("review_id")) is not str
+        or not value["review_id"]
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation scalar fields are malformed",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
     losses = value.get("losses")
     evidence = value.get("evidence", [])
     if type(losses) is not list or type(evidence) is not list:
@@ -1787,13 +1801,26 @@ def _approximation_from_payload(
             corpus_id=binding.corpus_id,
             related_id=binding.projection_id,
         )
+    if (
+        any(type(item) is not str or item not in LOSS_TOKENS for item in losses)
+        or len(set(losses)) != len(losses)
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation losses are malformed",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
     evidence_rows: list[EvidenceFingerprint] = []
+    evidence_keys: set[tuple[str, str]] = set()
     for row in evidence:
         if (
             type(row) is not dict
             or set(row) != {"evidence_id", "content_digest"}
             or type(row.get("evidence_id")) is not str
+            or not row["evidence_id"]
             or type(row.get("content_digest")) is not str
+            or not row["content_digest"]
         ):
             _fail(
                 "invalid_compiled_ir",
@@ -1801,6 +1828,15 @@ def _approximation_from_payload(
                 corpus_id=binding.corpus_id,
                 related_id=binding.projection_id,
             )
+        key = (row["evidence_id"], row["content_digest"])
+        if key in evidence_keys:
+            _fail(
+                "invalid_compiled_ir",
+                "reviewed projection approximation evidence contains duplicates",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        evidence_keys.add(key)
         evidence_rows.append(
             EvidenceFingerprint(
                 evidence_id=row["evidence_id"],
@@ -1810,14 +1846,13 @@ def _approximation_from_payload(
     evidence_rows.sort(
         key=lambda item: (_utf16(item.evidence_id), _utf16(item.content_digest))
     )
-    loss_rows = [item for item in losses if type(item) is str]
-    loss_rows.sort(key=_utf16)
+    loss_rows = sorted(losses, key=_utf16)
     return ApproximationIR(
-        status=value.get("status"),
-        eligible=value.get("eligible"),
+        status=value["status"],
+        eligible=value["eligible"],
         losses=tuple(loss_rows),
-        rationale=value.get("rationale"),
-        review_id=value.get("review_id"),
+        rationale=value["rationale"],
+        review_id=value["review_id"],
         evidence=tuple(evidence_rows),
     )
 
@@ -1884,6 +1919,20 @@ def _validate_reviewed_projection_payload(
         )
 
     compiled = _validate_approximation_ir(binding)
+    if "approximation" in decoded and decoded["approximation"] is None:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation envelope cannot be null",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if binding.assessment in {"exact", "related"} and "approximation" in decoded:
+        _fail(
+            "invalid_compiled_ir",
+            f"{binding.assessment} reviewed projection cannot carry approximation",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
     payload_approximation = _approximation_from_payload(
         decoded.get("approximation"),
         binding=binding,
