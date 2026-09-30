@@ -15,6 +15,7 @@ from ._fixtures import (
     approximate_request,
     compiled_binding_ir,
     compiled_noun_ir,
+    compiled_presence_variant_ir,
     compiled_two_binding_ir,
     mutated_production_conjunction,
     noun_semantic_key,
@@ -445,6 +446,62 @@ class I020ApproximateResolutionTests(unittest.TestCase):
             ir,
             prerequisites=(stale,),
         )
+
+    def test_reviewed_projection_payload_preserves_source_presence_variants(self):
+        rows = []
+        for publication_null in (False, True):
+            for evidence_present in (False, True):
+                ir = compiled_presence_variant_ir(
+                    publication_null=publication_null,
+                    approximation_evidence_present=evidence_present,
+                )
+                binding = dict(ir.semantic_index)[noun_semantic_key()][0]
+                payload = binding.projection_semantic_payload
+                self.assertIsInstance(payload, str)
+                decoded = json.loads(payload)
+                self.assertEqual(
+                    payload,
+                    canonical_json_bytes(decoded).decode("utf-8"),
+                )
+                self.assertEqual(
+                    "sha256:" + hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+                    binding.projection_semantic_digest,
+                )
+                rows.append(payload)
+        self.assertEqual(len(set(rows)), 4)
+
+    def test_reviewed_projection_payload_fails_closed_when_forged(self):
+        ir = compiled_binding_ir((("bhsa", "broader", ("undercoverage",), True),))
+        binding = dict(ir.semantic_index)[noun_semantic_key()][0]
+        payload = binding.projection_semantic_payload
+        self.assertIsInstance(payload, str)
+        decoded = json.loads(payload)
+
+        malformed_payloads = (
+            None,
+            "{",
+            json.dumps(decoded, sort_keys=True, indent=2),
+            canonical_json_bytes(
+                {
+                    "projection_id": binding.projection_id,
+                    "assessment": binding.assessment,
+                }
+            ).decode("utf-8"),
+        )
+        for forged in malformed_payloads:
+            with self.subTest(forged=forged):
+                bad = replace_semantic_binding(
+                    ir,
+                    "bhsa",
+                    projection_semantic_payload=forged,
+                )
+                assert_problem(
+                    self,
+                    "invalid_compiled_ir",
+                    self.resolve,
+                    bad,
+                    accept_losses=("undercoverage",),
+                )
 
     def test_compiled_approximation_is_defensively_validated_and_digest_bound(self):
         ir = compiled_binding_ir((("bhsa", "broader", ("undercoverage",), True),))
