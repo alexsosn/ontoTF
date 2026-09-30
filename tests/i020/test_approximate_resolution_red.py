@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import hashlib
+import json
 import unittest
 
 import tfont
+from tfont.digests import canonical_json_bytes
 from tfont.semantic_ir import ApproximationIR, compile_semantic_ir
 from tests.i006._fixtures import validated_assessment_bundle
 
@@ -55,6 +58,23 @@ class I020RedSentinelTests(unittest.TestCase):
             [],
             f"RED: missing I-020 approximate resolver API: {missing}",
         )
+
+    def test_compiler_preserves_reviewed_projection_semantic_payload(self):
+        ir = compiled_binding_ir((("bhsa", "broader", ("undercoverage",), True),))
+        binding = dict(ir.semantic_index)[noun_semantic_key()][0]
+        payload = getattr(binding, "projection_semantic_payload", None)
+        self.assertIsInstance(
+            payload,
+            str,
+            "RED: TargetBindingIR lacks reviewed projection semantic payload",
+        )
+        decoded = json.loads(payload)
+        self.assertEqual(payload, canonical_json_bytes(decoded).decode("utf-8"))
+        digest = "sha256:" + hashlib.sha256(payload.encode("utf-8")).hexdigest()
+        self.assertEqual(digest, binding.projection_semantic_digest)
+        self.assertEqual(decoded["assessment"], "broader")
+        self.assertTrue(decoded["approximation"]["eligible"])
+        self.assertEqual(decoded["approximation"]["losses"], ["undercoverage"])
 
 
 class I020ExactCompatibilityAnchors(unittest.TestCase):
