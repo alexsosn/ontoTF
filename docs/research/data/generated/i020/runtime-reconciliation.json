@@ -26,35 +26,6 @@
     "resolution_fingerprint": "sha256:90b87e1b4f59c3a53338b8ff952c7a1088905f78d25e46adf0d191a904435cfc",
     "resolver_contract": "tfont-exact-semantic-resolver-v1"
   },
-  "exact_multi_corpus": {
-    "canonical_corpora": [
-      "bhsa",
-      "extrabiblical",
-      "syriac"
-    ],
-    "comparison_state": "exactly-comparable",
-    "losses": [],
-    "plan_fingerprints": [
-      "sha256:a7dc2b0d8e234a7df399fed88c2af79aee0653f2233a1b15f68c9022a8f44616",
-      "sha256:ae2c3e6b500da8d110467c0ce303f255fb9c7b0555ef34887f6d538e95d381e7",
-      "sha256:44a1b33de2c44be3dd2cab8d0dd344cb7da7ee2679c7e847ce18b97d01cbc90d"
-    ],
-    "resolution_fingerprint": "sha256:024fceafaca2ff36ebb6f52953b32ae5ac36956d70ecb93e66facab67957a5c7"
-  },
-  "reviewed_broader": {
-    "approximate_mode_result": "unsupported_semantic_mode",
-    "approximation": {
-      "eligible": true,
-      "losses": [
-        "undercoverage"
-      ],
-      "rationale": "I-020 research fixture: source selector is a reviewed subset proxy.",
-      "review_id": "review:i020:approximation:broader",
-      "status": "reviewed"
-    },
-    "assessment": "broader",
-    "exact_mode_result": "non_exact_mapping"
-  },
   "exact_conjunction": {
     "comparison_state": "exactly-comparable",
     "corpora": [
@@ -84,5 +55,34 @@
     "losses": [],
     "resolution_fingerprint": "sha256:2f4b11335365b24adf8910c28a854dda5b0c99f702b38ad528a5b4c10a7054ca",
     "resolver_contract": "tfont-exact-semantic-conjunction-resolver-v1"
+  },
+  "exact_multi_corpus": {
+    "canonical_corpora": [
+      "bhsa",
+      "extrabiblical",
+      "syriac"
+    ],
+    "comparison_state": "exactly-comparable",
+    "losses": [],
+    "plan_fingerprints": [
+      "sha256:a7dc2b0d8e234a7df399fed88c2af79aee0653f2233a1b15f68c9022a8f44616",
+      "sha256:ae2c3e6b500da8d110467c0ce303f255fb9c7b0555ef34887f6d538e95d381e7",
+      "sha256:44a1b33de2c44be3dd2cab8d0dd344cb7da7ee2679c7e847ce18b97d01cbc90d"
+    ],
+    "resolution_fingerprint": "sha256:024fceafaca2ff36ebb6f52953b32ae5ac36956d70ecb93e66facab67957a5c7"
+  },
+  "reviewed_broader": {
+    "approximate_mode_result": "unsupported_semantic_mode",
+    "approximation": {
+      "eligible": true,
+      "losses": [
+        "undercoverage"
+      ],
+      "rationale": "I-020 research fixture: source selector is a reviewed subset proxy.",
+      "review_id": "review:i020:approximation:broader",
+      "status": "reviewed"
+    },
+    "assessment": "broader",
+    "exact_mode_result": "non_exact_mapping"
   }
 }
