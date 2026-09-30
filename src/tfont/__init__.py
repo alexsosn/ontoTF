@@ -105,6 +105,11 @@ from .semantic_ir import (
     native_binding_identity,
 )
 from .semantic_resolver import (
+    APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM,
+    APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT,
+    APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM,
+    APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM,
+    APPROXIMATE_RESOLVER_CONTRACT,
     EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM,
     EXACT_CONJUNCTION_RESOLVER_CONTRACT,
     EXACT_PLAN_FINGERPRINT_ALGORITHM,
@@ -112,6 +117,12 @@ from .semantic_resolver import (
     EXACT_RESOLVER_CONTRACT,
     PROFILE_RELEASE_FINGERPRINT_ALGORITHM,
     RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM,
+    ApproximateNativePlan,
+    ApproximateSemanticConjunctionRequest,
+    ApproximateSemanticConjunctionResolutionResult,
+    ApproximateSemanticResolutionResult,
+    ApproximateSemanticResolveRequest,
+    ApproximationLossRecord,
     DependencyPrerequisiteResult,
     ExactNativePlan,
     RuntimePrerequisiteState,
@@ -126,6 +137,8 @@ from .semantic_resolver import (
     runtime_prerequisite_fingerprint,
     semantic_capabilities,
     semantic_resolve,
+    semantic_resolve_approximate,
+    semantic_resolve_approximate_conjunction,
     semantic_resolve_conjunction,
 )
 from .semantic_validation import (
@@ -146,6 +159,17 @@ from .source_validation import (
 )
 
 __all__ = [
+    "APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM",
+    "APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT",
+    "APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM",
+    "APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM",
+    "APPROXIMATE_RESOLVER_CONTRACT",
+    "ApproximateNativePlan",
+    "ApproximateSemanticConjunctionRequest",
+    "ApproximateSemanticConjunctionResolutionResult",
+    "ApproximateSemanticResolutionResult",
+    "ApproximateSemanticResolveRequest",
+    "ApproximationLossRecord",
     "COVERAGE_DENOMINATOR_ALGORITHM",
     "P004_R011_BASELINE_CORPORA",
     "P004_R011_BASELINE_RESOURCE",
@@ -162,6 +186,8 @@ __all__ = [
     "load_packaged_coverage_manifest",
     "load_p004_r011_baseline_manifests",
     "validate_coverage_manifest",
+    "semantic_resolve_approximate",
+    "semantic_resolve_approximate_conjunction",
     "semantic_resolve_conjunction",
     "load_production_linguistic_bundles",
     "load_production_linguistic_bundle",
