@@ -197,6 +197,20 @@ canonical_json_bytes(
 The payload is evidence of the already-authoritative digest, not new
 authority.
 
+The parent mapping's `native_state` remains part of the reviewed payload but
+is **not** by itself a semantic-capability gate for identity/identifier
+resolution. In particular, an external reference attached to a
+`native-only` mapping can still be a valid reviewed identity or scoped
+identifier: R-017 deliberately separates external-reference semantics from
+common-pivot support. Conversely, the resolver must not manufacture reference
+authority merely because the parent mapping is `positive`.
+
+Reference execution authority comes from the reviewed child contained in the
+reviewed mapping payload, its explicit native binding, and fresh runtime
+prerequisites. If a future policy wants to forbid references under a particular
+mapping state, that must be an explicit reviewed rule rather than an accidental
+reuse of semantic capability activation.
+
 A reference resolver must require:
 
 1. exact non-empty string;
@@ -318,7 +332,10 @@ Public request uses exact `IdentifierKey` semantics:
 - corpora.
 
 Per corpus the resolver requires exactly one reviewed parent-bound
-catalogue-identifier row with an explicit native binding.
+catalogue-identifier row with an explicit native binding. The row may belong
+to a mapping whose common-pivot state is `native-only`; that does not make
+the scoped identifier less exact. Semantic capability state and identifier
+identity are separate contracts.
 
 Multiple rows for the same issuer/literal/corpus fail closed pending explicit
 composition semantics.
