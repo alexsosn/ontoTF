@@ -26,6 +26,7 @@ from tests.i006._fixtures import (
     noun_semantic_key,
 )
 from tests.i008._fixtures import FakeLoadedApi, compiled_executable_noun_ir, loaded_context
+from tests.i015.test_exact_conjunction_behavior import compiled_and_contexts, key as conjunction_key
 from tfont.semantic_ir import compile_semantic_ir
 from tfont.semantic_validation import validate_semantic_bundle
 
@@ -125,6 +126,27 @@ def exact_multi_corpus_control() -> dict[str, object]:
     }
 
 
+def exact_conjunction_control() -> dict[str, object]:
+    ir, contexts = compiled_and_contexts()
+    request = tfont.SemanticConjunctionRequest(
+        keys=(conjunction_key("Noun"), conjunction_key("Plural")),
+        corpora=("syriac", "bhsa", "extrabiblical"),
+        semantic_mode="exact",
+    )
+    result = tfont.execute_exact_conjunction(ir, request, contexts)
+    return {
+        "resolver_contract": result.resolution.resolver_contract,
+        "resolution_fingerprint": result.resolution.resolution_fingerprint,
+        "comparison_state": result.resolution.comparison_state,
+        "losses": list(result.resolution.losses),
+        "execution_contract": result.execution_contract,
+        "corpora": [
+            {"corpus_id": row.corpus_id, "nodes": list(row.nodes)}
+            for row in result.corpora
+        ],
+    }
+
+
 def reviewed_broader_ir():
     sources = noun_sources("bhsa", parent_char="a")
     mapping = sources["mappings"]["mappings"][0]
@@ -188,6 +210,7 @@ def main() -> int:
         "baseline_main": "6efdb106aaf81f349c1b238344b3a195c2c9bd5f",
         "exact": exact_control(),
         "exact_multi_corpus": exact_multi_corpus_control(),
+        "exact_conjunction": exact_conjunction_control(),
         "reviewed_broader": approximation_control(),
         "contracts": {
             "exact_resolver": tfont.EXACT_RESOLVER_CONTRACT,
@@ -209,6 +232,14 @@ def main() -> int:
         raise SystemExit("exact multi-corpus comparison state drifted")
     if result["exact_multi_corpus"]["losses"] != []:
         raise SystemExit("exact multi-corpus resolution unexpectedly reports losses")
+    if result["exact_conjunction"]["comparison_state"] != "exactly-comparable":
+        raise SystemExit("exact conjunction comparison state drifted")
+    if result["exact_conjunction"]["losses"] != []:
+        raise SystemExit("exact conjunction unexpectedly reports losses")
+    if [row["corpus_id"] for row in result["exact_conjunction"]["corpora"]] != [
+        "bhsa", "extrabiblical", "syriac"
+    ]:
+        raise SystemExit("exact conjunction corpus ordering drifted")
     if result["reviewed_broader"]["exact_mode_result"] != "non_exact_mapping":
         raise SystemExit("exact-mode non-exact refusal contract drifted")
     if result["reviewed_broader"]["approximate_mode_result"] != "unsupported_semantic_mode":
