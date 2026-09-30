@@ -133,6 +133,25 @@ def compiled_binding_ir(
     )
 
 
+def compiled_repeated_approximation_evidence_ir() -> CompiledSemanticIR:
+    sources = noun_sources("bhsa", parent_char="a")
+    mapping = sources["mappings"]["mappings"][0]
+    projection = mapping["projections"][0]
+    evidence = copy.deepcopy(projection["evidence"][0])
+    projection["assessment"] = "broader"
+    projection["approximation"] = {
+        "status": "reviewed",
+        "eligible": True,
+        "losses": ["undercoverage"],
+        "rationale": "I-020 repeated-evidence fixture",
+        "review_id": "review:i020:bhsa:repeated-evidence",
+        "evidence": [copy.deepcopy(evidence), copy.deepcopy(evidence)],
+    }
+    _refresh_mapping(mapping)
+    validate_structural_sources(sources)
+    return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
+
+
 def compiled_presence_variant_ir(
     *,
     publication_null: bool,
@@ -349,6 +368,7 @@ __all__ = [
     "approximate_request",
     "compiled_binding_ir",
     "compiled_presence_variant_ir",
+    "compiled_repeated_approximation_evidence_ir",
     "compiled_noun_ir",
     "compiled_two_binding_ir",
     "executable_context",
