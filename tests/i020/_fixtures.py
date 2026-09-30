@@ -133,6 +133,34 @@ def compiled_binding_ir(
     )
 
 
+def compiled_presence_variant_ir(
+    *,
+    publication_null: bool,
+    approximation_evidence_present: bool,
+) -> CompiledSemanticIR:
+    sources = noun_sources("bhsa", parent_char="a")
+    mapping = sources["mappings"]["mappings"][0]
+    projection = mapping["projections"][0]
+    projection["assessment"] = "broader"
+    projection["approximation"] = {
+        "status": "reviewed",
+        "eligible": True,
+        "losses": ["undercoverage"],
+        "rationale": "I-020 source-presence fixture",
+        "review_id": "review:i020:bhsa:presence",
+        "evidence": [],
+    }
+    if not approximation_evidence_present:
+        projection["approximation"].pop("evidence")
+    if publication_null:
+        projection["publication_relation"] = None
+    else:
+        projection.pop("publication_relation", None)
+    _refresh_mapping(mapping)
+    validate_structural_sources(sources)
+    return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
+
+
 def validated_value_set_approximation_bundle(
     corpus_id: str,
     *,
@@ -320,6 +348,7 @@ __all__ = [
     "approximate_conjunction_request",
     "approximate_request",
     "compiled_binding_ir",
+    "compiled_presence_variant_ir",
     "compiled_noun_ir",
     "compiled_two_binding_ir",
     "executable_context",
