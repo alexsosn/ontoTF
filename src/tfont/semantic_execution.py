@@ -13,17 +13,29 @@ from .runtime_prerequisites import (
 )
 from .semantic_ir import BundleVariantIR, BundleVariantKey, CompiledSemanticIR, NativeBindingIR
 from .semantic_resolver import (
+    ApproximateNativePlan,
+    ApproximateSemanticConjunctionRequest,
+    ApproximateSemanticConjunctionResolutionResult,
+    ApproximateSemanticResolutionResult,
+    ApproximateSemanticResolveRequest,
     ExactNativePlan,
     SemanticConjunctionRequest,
     SemanticConjunctionResolutionResult,
     SemanticResolutionResult,
     SemanticResolveRequest,
+    _validate_approximate_conjunction_request,
+    _validate_approximate_request,
     semantic_resolve,
+    semantic_resolve_approximate,
+    semantic_resolve_approximate_conjunction,
     semantic_resolve_conjunction,
 )
 
 EXACT_EXECUTION_CONTRACT = "tfont-exact-execution-v1"
 EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-exact-execution-runtime-v1"
+APPROXIMATE_EXECUTION_CONTRACT = "tfont-approximate-execution-v1"
+APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-approximate-execution-runtime-v1"
+APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT = "tfont-approximate-semantic-conjunction-execution-v1"
 
 
 @dataclass(frozen=True)
@@ -57,6 +69,21 @@ class ExactExecutionResult:
 
 
 @dataclass(frozen=True)
+class ApproximateCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plan: ApproximateNativePlan
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class ApproximateExecutionResult:
+    execution_contract: str
+    resolution: ApproximateSemanticResolutionResult
+    corpora: tuple[ApproximateCorpusExecution, ...]
+
+
+@dataclass(frozen=True)
 class ExactExecutionProblem:
     category: str
     message: str
@@ -68,6 +95,49 @@ class ExactExecutionError(ValueError):
     def __init__(self, problem: ExactExecutionProblem):
         self.problem = problem
         super().__init__(f"{problem.category}: {problem.message}")
+
+
+@dataclass(frozen=True)
+class ApproximateExecutionProblem:
+    category: str
+    message: str
+    corpus_id: str | None = None
+    component_id: str | None = None
+
+
+class ApproximateExecutionError(ValueError):
+    def __init__(self, problem: ApproximateExecutionProblem):
+        self.problem = problem
+        super().__init__(f"{problem.category}: {problem.message}")
+
+
+def _approximate_fail(
+    category: str,
+    message: str,
+    *,
+    corpus_id: str | None = None,
+    component_id: str | None = None,
+) -> None:
+    raise ApproximateExecutionError(
+        ApproximateExecutionProblem(
+            category=category,
+            message=message,
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+    )
+
+
+def _translate_exact_execution_error(error: ExactExecutionError) -> ApproximateExecutionError:
+    problem = error.problem
+    return ApproximateExecutionError(
+        ApproximateExecutionProblem(
+            category=problem.category,
+            message=problem.message,
+            corpus_id=problem.corpus_id,
+            component_id=problem.component_id,
+        )
+    )
 
 
 def _fail(
