@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any, Iterable
 
 from .digests import canonical_json_bytes
 from .semantic_ir import (
     ApproximationIR,
+    AuthorityKey,
     BundleVariantIR,
     BundleVariantKey,
     CapabilityFactsIR,
@@ -15,7 +16,12 @@ from .semantic_ir import (
     CompiledSemanticIR,
     EdgeStepIR,
     EvidenceFingerprint,
+    ExternalReferenceIR,
+    IdentifierKey,
+    IdentityKey,
     NativeBindingIR,
+    NativeKey,
+    NativeRecordIR,
     OntologyBundleRequirementIR,
     OntologyLockFingerprint,
     ProfileReleaseKey,
@@ -43,6 +49,20 @@ APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-native-plan-jcs-sha2
 APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-resolution-jcs-sha256-v1"
 APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = "tfont-approximate-semantic-conjunction-resolver-v1"
 APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-conjunction-resolution-jcs-sha256-v1"
+
+EXACT_AUTHORITY_RESOLVER_CONTRACT = "tfont-exact-authority-resolver-v1"
+APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT = "tfont-approximate-authority-resolver-v1"
+IDENTITY_RESOLVER_CONTRACT = "tfont-identity-resolver-v1"
+IDENTIFIER_RESOLVER_CONTRACT = "tfont-identifier-resolver-v1"
+EXACT_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-authority-plan-jcs-sha256-v1"
+EXACT_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-authority-resolution-jcs-sha256-v1"
+APPROXIMATE_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-authority-plan-jcs-sha256-v1"
+APPROXIMATE_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-authority-resolution-jcs-sha256-v1"
+IDENTITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-identity-plan-jcs-sha256-v1"
+IDENTITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-identity-resolution-jcs-sha256-v1"
+IDENTIFIER_PLAN_FINGERPRINT_ALGORITHM = "tfont-identifier-plan-jcs-sha256-v1"
+IDENTIFIER_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-identifier-resolution-jcs-sha256-v1"
+REFERENCE_FINGERPRINT_ALGORITHM = "tfont-reviewed-reference-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)
@@ -187,6 +207,179 @@ class ApproximateSemanticResolutionResult:
     comparison_state: str
     losses: tuple[str, ...]
     loss_records: tuple[ApproximationLossRecord, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class AuthorityResolveRequest:
+    key: AuthorityKey
+    corpora: tuple[str, ...]
+    authority_mode: str = "exact"
+
+
+@dataclass(frozen=True)
+class ApproximateAuthorityResolveRequest:
+    key: AuthorityKey
+    corpora: tuple[str, ...]
+    authority_mode: str = "approximate"
+    accept_losses: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class AuthorityLossRecord:
+    corpus_id: str
+    authority_key: AuthorityKey
+    mapping_id: str
+    projection_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    losses: tuple[str, ...]
+    effects: tuple[str, ...]
+    approximation_review_id: str
+    caller_accepted_losses: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+
+
+@dataclass(frozen=True)
+class AuthorityNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    authority_key: AuthorityKey
+    query_role: str
+    authority_mode: str
+    variant: BundleVariantKey
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    mapping_id: str
+    projection_id: str
+    profile_id: str
+    capability_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    projection_review: ReviewFingerprint
+    ontology_lock: OntologyLockFingerprint
+    ontology_bundle_digest: str | None
+    mapping_evidence: tuple[EvidenceFingerprint, ...]
+    projection_evidence: tuple[EvidenceFingerprint, ...]
+    approximation: ApproximationIR | None
+    losses: tuple[str, ...]
+    loss_record: AuthorityLossRecord | None
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class AuthorityResolutionResult:
+    resolver_contract: str
+    request: AuthorityResolveRequest
+    plans: tuple[AuthorityNativePlan, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ApproximateAuthorityResolutionResult:
+    resolver_contract: str
+    request: ApproximateAuthorityResolveRequest
+    plans: tuple[AuthorityNativePlan, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    loss_records: tuple[AuthorityLossRecord, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentityResolveRequest:
+    authority_system: str
+    external_entity_id: str
+    corpora: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class IdentifierResolveRequest:
+    key: IdentifierKey
+    corpora: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class IdentityNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    variant: BundleVariantKey
+    authority_system: str
+    external_entity_id: str
+    identity_strength: str
+    mapping_id: str
+    reference_id: str
+    reference_kind: str
+    query_role: str
+    mapping_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    reference_evidence: tuple[EvidenceFingerprint, ...]
+    reference_fingerprint: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentifierNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    variant: BundleVariantKey
+    key: IdentifierKey
+    mapping_id: str
+    reference_id: str
+    reference_kind: str
+    query_role: str
+    mapping_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    reference_evidence: tuple[EvidenceFingerprint, ...]
+    reference_fingerprint: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentityResolutionResult:
+    resolver_contract: str
+    request: IdentityResolveRequest
+    plans: tuple[IdentityNativePlan, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentifierResolutionResult:
+    resolver_contract: str
+    request: IdentifierResolveRequest
+    plans: tuple[IdentifierNativePlan, ...]
     resolution_fingerprint: str
 
 
