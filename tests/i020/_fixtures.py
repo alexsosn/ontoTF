@@ -31,7 +31,7 @@ def prerequisites_for(module, ir: CompiledSemanticIR):
                 dependency_id=dependency_id,
                 result="pass",
                 observed_evidence_digest=None,
-                evaluator_rule_version="test:i020-v1",
+                evaluator_rule_version="research:i020-v1",
             )
             for dependency_id, _record in variant.release_signature.dependency_records
         )
@@ -49,7 +49,7 @@ def prerequisites_for(module, ir: CompiledSemanticIR):
                 ontology_bundle_state=(
                     "verified" if bundle_digest is not None else "not-required"
                 ),
-                source_contract="test:i020-prerequisite-v1",
+                source_contract="research:i020-current-runtime-v1",
             )
         )
     return tuple(rows)
