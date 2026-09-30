@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass
 from typing import Any, Iterable
 
 from .digests import canonical_json_bytes
 from .semantic_ir import (
+    ApproximationIR,
     BundleVariantIR,
     BundleVariantKey,
     CapabilityFactsIR,
@@ -23,13 +25,24 @@ from .semantic_ir import (
     TargetBindingIR,
     native_binding_identity,
 )
-from .semantic_vocabulary import CAPABILITY_IDS, FORMAL_KINDS, PROFILE_IDS, SEMANTIC_ROLES
+from .semantic_vocabulary import (
+    CAPABILITY_IDS,
+    FORMAL_KINDS,
+    LOSS_TOKENS,
+    PROFILE_IDS,
+    SEMANTIC_ROLES,
+)
 
 EXACT_RESOLVER_CONTRACT = "tfont-exact-semantic-resolver-v1"
 PROFILE_RELEASE_FINGERPRINT_ALGORITHM = "tfont-profile-release-signature-jcs-sha256-v1"
 RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = "tfont-runtime-prerequisite-jcs-sha256-v1"
 EXACT_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-native-plan-jcs-sha256-v1"
 EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-resolution-jcs-sha256-v1"
+APPROXIMATE_RESOLVER_CONTRACT = "tfont-approximate-semantic-resolver-v1"
+APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-native-plan-jcs-sha256-v1"
+APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-resolution-jcs-sha256-v1"
+APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = "tfont-approximate-semantic-conjunction-resolver-v1"
+APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-conjunction-resolution-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)
@@ -57,6 +70,14 @@ class SemanticResolveRequest:
     key: SemanticKey
     corpora: tuple[str, ...]
     semantic_mode: str = "exact"
+
+
+@dataclass(frozen=True)
+class ApproximateSemanticResolveRequest:
+    key: SemanticKey
+    corpora: tuple[str, ...]
+    semantic_mode: str = "approximate"
+    accept_losses: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -102,6 +123,71 @@ class ExactNativePlan:
     mapping_evidence: tuple[EvidenceFingerprint, ...]
     projection_evidence: tuple[EvidenceFingerprint, ...]
     plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ApproximationLossRecord:
+    corpus_id: str
+    semantic_key: SemanticKey
+    mapping_id: str
+    projection_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    losses: tuple[str, ...]
+    effects: tuple[str, ...]
+    approximation_review_id: str
+    caller_accepted_losses: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+
+
+@dataclass(frozen=True)
+class ApproximateNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    semantic_key: SemanticKey
+    reference_kind: str
+    query_role: str
+    semantic_mode: str
+    capability_state: str
+    variant: BundleVariantKey
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    mapping_id: str
+    projection_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    projection_review: ReviewFingerprint
+    ontology_lock: OntologyLockFingerprint
+    ontology_bundle_digest: str | None
+    mapping_evidence: tuple[EvidenceFingerprint, ...]
+    projection_evidence: tuple[EvidenceFingerprint, ...]
+    approximation: ApproximationIR | None
+    losses: tuple[str, ...]
+    loss_record: ApproximationLossRecord | None
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ApproximateSemanticResolutionResult:
+    resolver_contract: str
+    request: ApproximateSemanticResolveRequest
+    plans: tuple[ApproximateNativePlan, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    loss_records: tuple[ApproximationLossRecord, ...]
+    resolution_fingerprint: str
 
 
 @dataclass(frozen=True)
@@ -1477,6 +1563,736 @@ def semantic_resolve(
     )
 
 
+_APPROXIMATION_EFFECTS = {
+    "undercoverage": "native selector may miss members of the requested semantic target",
+    "overcoverage": "native selector may include members outside the requested semantic target",
+}
+
+
+def _validate_approximate_request(
+    request: ApproximateSemanticResolveRequest,
+) -> ApproximateSemanticResolveRequest:
+    if type(request) is not ApproximateSemanticResolveRequest:
+        raise TypeError("request must be ApproximateSemanticResolveRequest")
+    if request.semantic_mode != "approximate":
+        _fail(
+            "unsupported_semantic_mode",
+            "approximate resolver requires semantic_mode='approximate'",
+        )
+    accepted = request.accept_losses
+    if type(accepted) is not tuple:
+        _fail(
+            "invalid_loss_acceptance",
+            "accept_losses must be an exact tuple",
+        )
+    if any(type(item) is not str for item in accepted):
+        _fail(
+            "invalid_loss_acceptance",
+            "accepted losses must be exact strings",
+        )
+    if len(set(accepted)) != len(accepted):
+        _fail(
+            "invalid_loss_acceptance",
+            "accepted losses contain duplicates",
+        )
+    unknown = [item for item in accepted if item not in LOSS_TOKENS]
+    if unknown:
+        _fail(
+            "unknown_loss_token",
+            f"unknown accepted loss token: {sorted(unknown, key=_utf16)[0]!r}",
+        )
+
+    exact = _validate_request(
+        SemanticResolveRequest(
+            key=request.key,
+            corpora=request.corpora,
+            semantic_mode="exact",
+        )
+    )
+    return ApproximateSemanticResolveRequest(
+        key=exact.key,
+        corpora=exact.corpora,
+        semantic_mode="approximate",
+        accept_losses=tuple(sorted(accepted, key=_utf16)),
+    )
+
+
+def _validate_approximation_ir(
+    binding: TargetBindingIR,
+) -> ApproximationIR | None:
+    assessment = binding.assessment
+    approximation = binding.approximation
+
+    if assessment not in {"exact", "close", "broader", "narrower", "related"}:
+        _fail(
+            "invalid_compiled_ir",
+            "semantic binding assessment is not recognized",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+
+    if assessment in {"exact", "related"}:
+        if approximation is not None:
+            _fail(
+                "invalid_compiled_ir",
+                f"{assessment} binding cannot carry approximation authority",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        return None
+
+    if approximation is None:
+        return None
+    if type(approximation) is not ApproximationIR:
+        _fail(
+            "invalid_compiled_ir",
+            "approximation authority has the wrong type",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if approximation.status != "reviewed":
+        _fail(
+            "invalid_compiled_ir",
+            "approximation authority is not reviewed",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if type(approximation.eligible) is not bool:
+        _fail(
+            "invalid_compiled_ir",
+            "approximation eligibility must be an exact boolean",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if type(approximation.losses) is not tuple:
+        _fail(
+            "invalid_compiled_ir",
+            "approximation losses must be an exact tuple",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if any(type(item) is not str or item not in LOSS_TOKENS for item in approximation.losses):
+        _fail(
+            "invalid_compiled_ir",
+            "approximation losses contain unknown vocabulary",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if len(set(approximation.losses)) != len(approximation.losses):
+        _fail(
+            "invalid_compiled_ir",
+            "approximation losses contain duplicates",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if approximation.losses != tuple(sorted(approximation.losses, key=_utf16)):
+        _fail(
+            "invalid_compiled_ir",
+            "approximation losses are not canonically ordered",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if (
+        type(approximation.rationale) is not str
+        or not approximation.rationale
+        or type(approximation.review_id) is not str
+        or not approximation.review_id
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "approximation rationale and review ID must be non-empty strings",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if type(approximation.evidence) is not tuple:
+        _fail(
+            "invalid_compiled_ir",
+            "approximation evidence must be an exact tuple",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    evidence_keys: list[tuple[bytes, bytes]] = []
+    for item in approximation.evidence:
+        _evidence_projection(item)
+        evidence_keys.append((_utf16(item.evidence_id), _utf16(item.content_digest)))
+    if tuple(evidence_keys) != tuple(sorted(evidence_keys)):
+        _fail(
+            "invalid_compiled_ir",
+            "approximation evidence is not canonically ordered",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+
+    if approximation.eligible:
+        if assessment == "broader" and approximation.losses != ("undercoverage",):
+            _fail(
+                "invalid_compiled_ir",
+                "eligible broader binding must disclose undercoverage only",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        if assessment == "narrower" and approximation.losses != ("overcoverage",):
+            _fail(
+                "invalid_compiled_ir",
+                "eligible narrower binding must disclose overcoverage only",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        if assessment == "close" and not approximation.losses:
+            _fail(
+                "invalid_compiled_ir",
+                "eligible close binding must disclose at least one loss",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+    return approximation
+
+
+def _approximation_from_payload(
+    value: Any,
+    *,
+    binding: TargetBindingIR,
+) -> ApproximationIR | None:
+    if value is None:
+        return None
+    if type(value) is not dict:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation payload is malformed",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    required = {"status", "eligible", "losses", "rationale", "review_id"}
+    allowed = required | {"evidence"}
+    if required - set(value) or set(value) - allowed:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation payload has invalid fields",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if (
+        value.get("status") != "reviewed"
+        or type(value.get("eligible")) is not bool
+        or type(value.get("rationale")) is not str
+        or not value["rationale"]
+        or type(value.get("review_id")) is not str
+        or not value["review_id"]
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation scalar fields are malformed",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    losses = value.get("losses")
+    evidence = value.get("evidence", [])
+    if type(losses) is not list or type(evidence) is not list:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation payload has invalid collections",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if (
+        any(type(item) is not str or item not in LOSS_TOKENS for item in losses)
+        or len(set(losses)) != len(losses)
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation losses are malformed",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    evidence_rows: list[EvidenceFingerprint] = []
+    for row in evidence:
+        if (
+            type(row) is not dict
+            or set(row) != {"evidence_id", "content_digest"}
+            or type(row.get("evidence_id")) is not str
+            or not row["evidence_id"]
+            or type(row.get("content_digest")) is not str
+            or not row["content_digest"]
+        ):
+            _fail(
+                "invalid_compiled_ir",
+                "reviewed projection approximation evidence is malformed",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        evidence_rows.append(
+            EvidenceFingerprint(
+                evidence_id=row["evidence_id"],
+                content_digest=row["content_digest"],
+            )
+        )
+    evidence_rows.sort(
+        key=lambda item: (_utf16(item.evidence_id), _utf16(item.content_digest))
+    )
+    loss_rows = sorted(losses, key=_utf16)
+    return ApproximationIR(
+        status=value["status"],
+        eligible=value["eligible"],
+        losses=tuple(loss_rows),
+        rationale=value["rationale"],
+        review_id=value["review_id"],
+        evidence=tuple(evidence_rows),
+    )
+
+
+def _validate_reviewed_projection_payload(
+    binding: TargetBindingIR,
+) -> ApproximationIR | None:
+    payload = binding.projection_semantic_payload
+    if type(payload) is not str or not payload:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload is unavailable",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    try:
+        decoded = json.loads(payload)
+    except (TypeError, ValueError, RecursionError):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload is invalid JSON",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if type(decoded) is not dict:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload must decode to an object",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    try:
+        canonical = canonical_json_bytes(decoded).decode("utf-8")
+    except Exception:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload is outside canonical JSON",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if canonical != payload:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload is not canonical",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if _hash(decoded) != binding.projection_semantic_digest:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload digest mismatch",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if (
+        decoded.get("projection_id") != binding.projection_id
+        or decoded.get("assessment") != binding.assessment
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection semantic payload identity mismatch",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+
+    compiled = _validate_approximation_ir(binding)
+    if "approximation" in decoded and decoded["approximation"] is None:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed projection approximation envelope cannot be null",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    if binding.assessment in {"exact", "related"} and "approximation" in decoded:
+        _fail(
+            "invalid_compiled_ir",
+            f"{binding.assessment} reviewed projection cannot carry approximation",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    payload_approximation = _approximation_from_payload(
+        decoded.get("approximation"),
+        binding=binding,
+    )
+    if payload_approximation != compiled:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled approximation disagrees with reviewed projection semantics",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    return compiled
+
+
+def _approximation_projection(value: ApproximationIR | None) -> dict[str, Any] | None:
+    if value is None:
+        return None
+    return {
+        "status": value.status,
+        "eligible": value.eligible,
+        "losses": list(value.losses),
+        "rationale": value.rationale,
+        "review_id": value.review_id,
+        "evidence": [_evidence_projection(item) for item in value.evidence],
+    }
+
+
+def _loss_record_projection(record: ApproximationLossRecord) -> dict[str, Any]:
+    return {
+        "corpus_id": record.corpus_id,
+        "semantic_key": _semantic_key_projection(record.semantic_key),
+        "mapping_id": record.mapping_id,
+        "projection_id": record.projection_id,
+        "assessment": record.assessment,
+        "native_execution_binding_identity": record.native_execution_binding_identity,
+        "losses": list(record.losses),
+        "effects": list(record.effects),
+        "approximation_review_id": record.approximation_review_id,
+        "caller_accepted_losses": list(record.caller_accepted_losses),
+        "mapping_semantic_digest": record.mapping_semantic_digest,
+        "projection_semantic_digest": record.projection_semantic_digest,
+        "prerequisite_fingerprint": record.prerequisite_fingerprint,
+        "prerequisite_source_contract": record.prerequisite_source_contract,
+    }
+
+
+def _approximate_plan_projection(plan: ApproximateNativePlan) -> dict[str, Any]:
+    return {
+        "algorithm": APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM,
+        "resolver_contract": plan.resolver_contract,
+        "corpus_id": plan.corpus_id,
+        "semantic_key": _semantic_key_projection(plan.semantic_key),
+        "reference_kind": plan.reference_kind,
+        "query_role": plan.query_role,
+        "semantic_mode": plan.semantic_mode,
+        "capability_state": plan.capability_state,
+        "variant": _variant_projection(plan.variant),
+        "profile_release_fingerprint": plan.profile_release_fingerprint,
+        "expected_parent_manifest_digest": plan.expected_parent_manifest_digest,
+        "observed_parent_manifest_digest": plan.observed_parent_manifest_digest,
+        "parent_state": plan.parent_state,
+        "prerequisite_fingerprint": plan.prerequisite_fingerprint,
+        "prerequisite_source_contract": plan.prerequisite_source_contract,
+        "mapping_id": plan.mapping_id,
+        "projection_id": plan.projection_id,
+        "assessment": plan.assessment,
+        "native_execution_binding_identity": plan.native_execution_binding_identity,
+        "native_dependencies": list(plan.native_dependencies),
+        "mapping_semantic_digest": plan.mapping_semantic_digest,
+        "projection_semantic_digest": plan.projection_semantic_digest,
+        "mapping_review": _review_projection(plan.mapping_review),
+        "projection_review": _review_projection(plan.projection_review),
+        "ontology_lock": _lock_projection(plan.ontology_lock),
+        "ontology_bundle_digest": plan.ontology_bundle_digest,
+        "mapping_evidence": [
+            _evidence_projection(item) for item in plan.mapping_evidence
+        ],
+        "projection_evidence": [
+            _evidence_projection(item) for item in plan.projection_evidence
+        ],
+        "approximation": _approximation_projection(plan.approximation),
+        "losses": list(plan.losses),
+        "loss_record": (
+            None
+            if plan.loss_record is None
+            else _loss_record_projection(plan.loss_record)
+        ),
+    }
+
+
+def _make_approximate_plan(
+    binding: TargetBindingIR,
+    variant: BundleVariantIR,
+    state: RuntimePrerequisiteState,
+    semantic_key: SemanticKey,
+    accepted_losses: tuple[str, ...],
+) -> ApproximateNativePlan:
+    approximation = binding.approximation
+    losses: tuple[str, ...] = ()
+    loss_record: ApproximationLossRecord | None = None
+    prerequisite_fingerprint = runtime_prerequisite_fingerprint(state)
+
+    if binding.assessment != "exact":
+        if type(approximation) is not ApproximationIR:
+            _fail(
+                "invalid_compiled_ir",
+                "selected approximate binding lacks approximation authority",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        losses = approximation.losses
+        effects = tuple(_APPROXIMATION_EFFECTS[item] for item in losses)
+        loss_record = ApproximationLossRecord(
+            corpus_id=binding.corpus_id,
+            semantic_key=semantic_key,
+            mapping_id=binding.mapping_id,
+            projection_id=binding.projection_id,
+            assessment=binding.assessment,
+            native_execution_binding_identity=binding.native_execution_binding_identity,
+            losses=losses,
+            effects=effects,
+            approximation_review_id=approximation.review_id,
+            caller_accepted_losses=accepted_losses,
+            mapping_semantic_digest=binding.mapping_semantic_digest,
+            projection_semantic_digest=binding.projection_semantic_digest,
+            prerequisite_fingerprint=prerequisite_fingerprint,
+            prerequisite_source_contract=state.source_contract,
+        )
+
+    values = dict(
+        resolver_contract=APPROXIMATE_RESOLVER_CONTRACT,
+        corpus_id=binding.corpus_id,
+        semantic_key=semantic_key,
+        reference_kind="semantic-pivot",
+        query_role="semantic-constraint",
+        semantic_mode="approximate",
+        capability_state="active",
+        variant=variant.key,
+        profile_release_fingerprint=state.profile_release_fingerprint,
+        expected_parent_manifest_digest=variant.key.expected_parent_manifest_digest,
+        observed_parent_manifest_digest=state.observed_parent_manifest_digest,
+        parent_state=state.parent_state,
+        prerequisite_fingerprint=prerequisite_fingerprint,
+        prerequisite_source_contract=state.source_contract,
+        mapping_id=binding.mapping_id,
+        projection_id=binding.projection_id,
+        assessment=binding.assessment,
+        native_execution_binding_identity=binding.native_execution_binding_identity,
+        native_execution_binding=binding.native_execution_binding,
+        native_dependencies=binding.native_dependencies,
+        mapping_semantic_digest=binding.mapping_semantic_digest,
+        projection_semantic_digest=binding.projection_semantic_digest,
+        mapping_review=binding.mapping_review,
+        projection_review=binding.projection_review,
+        ontology_lock=binding.ontology_lock,
+        ontology_bundle_digest=binding.ontology_bundle_digest,
+        mapping_evidence=binding.mapping_evidence,
+        projection_evidence=binding.projection_evidence,
+        approximation=approximation if binding.assessment != "exact" else None,
+        losses=losses,
+        loss_record=loss_record,
+    )
+    provisional = ApproximateNativePlan(plan_fingerprint="", **values)
+    return ApproximateNativePlan(
+        plan_fingerprint=_hash(_approximate_plan_projection(provisional)),
+        **values,
+    )
+
+
+def _comparison_state_from_plans(
+    plans: tuple[ApproximateNativePlan, ...],
+) -> str:
+    nonempty = {plan.losses for plan in plans if plan.losses}
+    if not nonempty:
+        return "exactly-comparable"
+    if len(nonempty) == 1:
+        return "approximately-comparable"
+    return "heterogeneous-loss"
+
+
+def _union_losses(
+    rows: Iterable[tuple[str, ...]],
+) -> tuple[str, ...]:
+    values: set[str] = set()
+    for row in rows:
+        values.update(row)
+    return tuple(sorted(values, key=_utf16))
+
+
+def semantic_resolve_approximate(
+    ir: CompiledSemanticIR,
+    request: ApproximateSemanticResolveRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> ApproximateSemanticResolutionResult:
+    canonical_request = _validate_approximate_request(request)
+    if type(ir) is not CompiledSemanticIR:
+        raise TypeError("ir must be CompiledSemanticIR")
+
+    variants, semantic_index, capabilities = _validate_ir_shape(ir)
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+    bindings_for_key = semantic_index.get(canonical_request.key)
+    plans: list[ApproximateNativePlan] = []
+
+    for corpus_id in canonical_request.corpora:
+        state, variant = _select_prerequisite(
+            corpus_id,
+            prerequisite_rows,
+            variants,
+        )
+        prerequisite_problem = _prerequisite_problem(state, variant)
+        if prerequisite_problem is not None:
+            _fail(
+                prerequisite_problem,
+                "runtime prerequisite is not executable",
+                corpus_id=corpus_id,
+            )
+
+        capability = _capability_view(
+            variant,
+            state,
+            canonical_request.key.profile_id,
+            canonical_request.key.capability_id,
+            capabilities,
+        )
+        if capability.state == "absent":
+            _fail(
+                "capability_absent",
+                "requested capability is absent",
+                corpus_id=corpus_id,
+            )
+        if capability.state != "active":
+            _fail(
+                "capability_unavailable",
+                "requested capability is unavailable",
+                corpus_id=corpus_id,
+            )
+
+        if bindings_for_key is None:
+            _fail(
+                "semantic_tuple_absent",
+                "semantic tuple is absent",
+                corpus_id=corpus_id,
+            )
+        candidates = [
+            row
+            for row in bindings_for_key
+            if row.corpus_id == corpus_id and row.variant == variant.key
+        ]
+        if not candidates:
+            _fail(
+                "semantic_tuple_absent",
+                "semantic tuple is absent for selected corpus variant",
+                corpus_id=corpus_id,
+            )
+
+        for candidate in candidates:
+            _validate_binding_against_release(
+                candidate,
+                variant,
+                canonical_request.key,
+            )
+            _validate_reviewed_projection_payload(candidate)
+
+        exact = [row for row in candidates if row.assessment == "exact"]
+        if len(exact) > 1:
+            _fail(
+                "multiple_exact_bindings",
+                "multiple exact bindings require explicit composition semantics",
+                corpus_id=corpus_id,
+            )
+        if len(exact) == 1:
+            selected = exact[0]
+        else:
+            substitutive = [
+                row
+                for row in candidates
+                if row.assessment in {"close", "broader", "narrower"}
+            ]
+            if not substitutive:
+                if any(row.assessment == "related" for row in candidates):
+                    _fail(
+                        "non_substitutive_mapping",
+                        "semantic tuple has only non-substitutive related mappings",
+                        corpus_id=corpus_id,
+                    )
+                _fail(
+                    "approximation_not_authorized",
+                    "semantic tuple has no approximation-authorized mapping",
+                    corpus_id=corpus_id,
+                )
+
+            authorized = [
+                row
+                for row in substitutive
+                if row.approximation is not None
+                and row.approximation.eligible is True
+            ]
+            if not authorized:
+                _fail(
+                    "approximation_not_authorized",
+                    "semantic tuple has no reviewed eligible approximation",
+                    corpus_id=corpus_id,
+                )
+            if len(authorized) > 1:
+                _fail(
+                    "multiple_approximate_bindings",
+                    "multiple eligible approximate bindings require explicit composition semantics",
+                    corpus_id=corpus_id,
+                )
+            selected = authorized[0]
+            approximation = selected.approximation
+            if type(approximation) is not ApproximationIR:
+                _fail(
+                    "invalid_compiled_ir",
+                    "selected approximate binding has invalid authority",
+                    corpus_id=corpus_id,
+                    related_id=selected.projection_id,
+                )
+            missing = [
+                loss
+                for loss in approximation.losses
+                if loss not in canonical_request.accept_losses
+            ]
+            if missing:
+                _fail(
+                    "approximation_loss_not_accepted",
+                    f"caller did not accept required approximation loss: {missing[0]}",
+                    corpus_id=corpus_id,
+                    related_id=selected.projection_id,
+                )
+
+        plans.append(
+            _make_approximate_plan(
+                selected,
+                variant,
+                state,
+                canonical_request.key,
+                canonical_request.accept_losses,
+            )
+        )
+
+    plans.sort(key=lambda plan: _utf16(plan.corpus_id))
+    plan_tuple = tuple(plans)
+    losses = _union_losses(plan.losses for plan in plan_tuple)
+    loss_records = tuple(
+        plan.loss_record
+        for plan in plan_tuple
+        if plan.loss_record is not None
+    )
+    comparison_state = _comparison_state_from_plans(plan_tuple)
+    projection = {
+        "algorithm": APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": APPROXIMATE_RESOLVER_CONTRACT,
+        "request": {
+            "key": _semantic_key_projection(canonical_request.key),
+            "corpora": list(canonical_request.corpora),
+            "semantic_mode": canonical_request.semantic_mode,
+            "accept_losses": list(canonical_request.accept_losses),
+        },
+        "comparison_state": comparison_state,
+        "losses": list(losses),
+        "loss_records": [
+            _loss_record_projection(record) for record in loss_records
+        ],
+        "plan_fingerprints": [plan.plan_fingerprint for plan in plan_tuple],
+    }
+    return ApproximateSemanticResolutionResult(
+        resolver_contract=APPROXIMATE_RESOLVER_CONTRACT,
+        request=canonical_request,
+        plans=plan_tuple,
+        comparison_state=comparison_state,
+        losses=losses,
+        loss_records=loss_records,
+        resolution_fingerprint=_hash(projection),
+    )
+
+
 EXACT_CONJUNCTION_RESOLVER_CONTRACT = "tfont-exact-semantic-conjunction-resolver-v1"
 EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-conjunction-resolution-jcs-sha256-v1"
 
@@ -1586,5 +2402,176 @@ def semantic_resolve_conjunction(
         resolutions=resolutions,
         comparison_state="exactly-comparable",
         losses=(),
+        resolution_fingerprint=_hash(projection),
+    )
+
+
+@dataclass(frozen=True)
+class ApproximateSemanticConjunctionRequest:
+    keys: tuple[SemanticKey, ...]
+    corpora: tuple[str, ...]
+    semantic_mode: str = "approximate"
+    accept_losses: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class ApproximateSemanticConjunctionResolutionResult:
+    resolver_contract: str
+    request: ApproximateSemanticConjunctionRequest
+    resolutions: tuple[ApproximateSemanticResolutionResult, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    loss_records: tuple[ApproximationLossRecord, ...]
+    resolution_fingerprint: str
+
+
+def _validate_approximate_conjunction_request(
+    request: ApproximateSemanticConjunctionRequest,
+) -> ApproximateSemanticConjunctionRequest:
+    if type(request) is not ApproximateSemanticConjunctionRequest:
+        raise TypeError("request must be ApproximateSemanticConjunctionRequest")
+    if type(request.keys) is not tuple or len(request.keys) < 2:
+        _fail(
+            "invalid_semantic_conjunction",
+            "approximate conjunction requires at least two SemanticKey atoms",
+        )
+    if any(type(key) is not SemanticKey for key in request.keys):
+        _fail(
+            "invalid_semantic_conjunction",
+            "conjunction atoms must be SemanticKey values",
+        )
+    if len(set(request.keys)) != len(request.keys):
+        _fail(
+            "invalid_semantic_conjunction",
+            "conjunction atoms must be unique",
+        )
+
+    validated = tuple(
+        _validate_approximate_request(
+            ApproximateSemanticResolveRequest(
+                key=key,
+                corpora=request.corpora,
+                semantic_mode=request.semantic_mode,
+                accept_losses=request.accept_losses,
+            )
+        )
+        for key in request.keys
+    )
+    keys = tuple(
+        sorted(
+            (row.key for row in validated),
+            key=lambda key: canonical_json_bytes(_semantic_key_projection(key)),
+        )
+    )
+    return ApproximateSemanticConjunctionRequest(
+        keys=keys,
+        corpora=validated[0].corpora,
+        semantic_mode="approximate",
+        accept_losses=validated[0].accept_losses,
+    )
+
+
+def _loss_record_sort_key(
+    record: ApproximationLossRecord,
+) -> tuple[bytes, bytes, bytes, bytes]:
+    return (
+        canonical_json_bytes(_semantic_key_projection(record.semantic_key)),
+        _utf16(record.corpus_id),
+        _utf16(record.mapping_id),
+        _utf16(record.projection_id),
+    )
+
+
+def _conjunction_comparison_state(
+    request: ApproximateSemanticConjunctionRequest,
+    resolutions: tuple[ApproximateSemanticResolutionResult, ...],
+) -> str:
+    shapes: list[tuple[str, ...]] = []
+    for corpus_id in request.corpora:
+        corpus_losses: list[tuple[str, ...]] = []
+        for resolution in resolutions:
+            plan = next(
+                (row for row in resolution.plans if row.corpus_id == corpus_id),
+                None,
+            )
+            if plan is None:
+                _fail(
+                    "invalid_compiled_ir",
+                    "conjunction constituent is missing a requested corpus plan",
+                    corpus_id=corpus_id,
+                )
+            corpus_losses.append(plan.losses)
+        shapes.append(_union_losses(corpus_losses))
+    nonempty = {shape for shape in shapes if shape}
+    if not nonempty:
+        return "exactly-comparable"
+    if len(nonempty) == 1:
+        return "approximately-comparable"
+    return "heterogeneous-loss"
+
+
+def semantic_resolve_approximate_conjunction(
+    ir: CompiledSemanticIR,
+    request: ApproximateSemanticConjunctionRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> ApproximateSemanticConjunctionResolutionResult:
+    canonical_request = _validate_approximate_conjunction_request(request)
+    if type(ir) is not CompiledSemanticIR:
+        raise TypeError("ir must be CompiledSemanticIR")
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+
+    resolutions = tuple(
+        semantic_resolve_approximate(
+            ir,
+            ApproximateSemanticResolveRequest(
+                key=key,
+                corpora=canonical_request.corpora,
+                semantic_mode="approximate",
+                accept_losses=canonical_request.accept_losses,
+            ),
+            prerequisite_rows,
+        )
+        for key in canonical_request.keys
+    )
+    losses = _union_losses(row.losses for row in resolutions)
+    records = tuple(
+        sorted(
+            (
+                record
+                for resolution in resolutions
+                for record in resolution.loss_records
+            ),
+            key=_loss_record_sort_key,
+        )
+    )
+    comparison_state = _conjunction_comparison_state(
+        canonical_request,
+        resolutions,
+    )
+    projection = {
+        "algorithm": APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT,
+        "request": {
+            "keys": [
+                _semantic_key_projection(key) for key in canonical_request.keys
+            ],
+            "corpora": list(canonical_request.corpora),
+            "semantic_mode": canonical_request.semantic_mode,
+            "accept_losses": list(canonical_request.accept_losses),
+        },
+        "comparison_state": comparison_state,
+        "losses": list(losses),
+        "loss_records": [_loss_record_projection(record) for record in records],
+        "constituent_resolution_fingerprints": [
+            row.resolution_fingerprint for row in resolutions
+        ],
+    }
+    return ApproximateSemanticConjunctionResolutionResult(
+        resolver_contract=APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT,
+        request=canonical_request,
+        resolutions=resolutions,
+        comparison_state=comparison_state,
+        losses=losses,
+        loss_records=records,
         resolution_fingerprint=_hash(projection),
     )

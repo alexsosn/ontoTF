@@ -13,17 +13,29 @@ from .runtime_prerequisites import (
 )
 from .semantic_ir import BundleVariantIR, BundleVariantKey, CompiledSemanticIR, NativeBindingIR
 from .semantic_resolver import (
+    ApproximateNativePlan,
+    ApproximateSemanticConjunctionRequest,
+    ApproximateSemanticConjunctionResolutionResult,
+    ApproximateSemanticResolutionResult,
+    ApproximateSemanticResolveRequest,
     ExactNativePlan,
     SemanticConjunctionRequest,
     SemanticConjunctionResolutionResult,
     SemanticResolutionResult,
     SemanticResolveRequest,
+    _validate_approximate_conjunction_request,
+    _validate_approximate_request,
     semantic_resolve,
+    semantic_resolve_approximate,
+    semantic_resolve_approximate_conjunction,
     semantic_resolve_conjunction,
 )
 
 EXACT_EXECUTION_CONTRACT = "tfont-exact-execution-v1"
 EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-exact-execution-runtime-v1"
+APPROXIMATE_EXECUTION_CONTRACT = "tfont-approximate-execution-v1"
+APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-approximate-execution-runtime-v1"
+APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT = "tfont-approximate-semantic-conjunction-execution-v1"
 
 
 @dataclass(frozen=True)
@@ -57,6 +69,21 @@ class ExactExecutionResult:
 
 
 @dataclass(frozen=True)
+class ApproximateCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plan: ApproximateNativePlan
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class ApproximateExecutionResult:
+    execution_contract: str
+    resolution: ApproximateSemanticResolutionResult
+    corpora: tuple[ApproximateCorpusExecution, ...]
+
+
+@dataclass(frozen=True)
 class ExactExecutionProblem:
     category: str
     message: str
@@ -68,6 +95,49 @@ class ExactExecutionError(ValueError):
     def __init__(self, problem: ExactExecutionProblem):
         self.problem = problem
         super().__init__(f"{problem.category}: {problem.message}")
+
+
+@dataclass(frozen=True)
+class ApproximateExecutionProblem:
+    category: str
+    message: str
+    corpus_id: str | None = None
+    component_id: str | None = None
+
+
+class ApproximateExecutionError(ValueError):
+    def __init__(self, problem: ApproximateExecutionProblem):
+        self.problem = problem
+        super().__init__(f"{problem.category}: {problem.message}")
+
+
+def _approximate_fail(
+    category: str,
+    message: str,
+    *,
+    corpus_id: str | None = None,
+    component_id: str | None = None,
+) -> None:
+    raise ApproximateExecutionError(
+        ApproximateExecutionProblem(
+            category=category,
+            message=message,
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+    )
+
+
+def _translate_exact_execution_error(error: ExactExecutionError) -> ApproximateExecutionError:
+    problem = error.problem
+    return ApproximateExecutionError(
+        ApproximateExecutionProblem(
+            category=problem.category,
+            message=problem.message,
+            corpus_id=problem.corpus_id,
+            component_id=problem.component_id,
+        )
+    )
 
 
 def _fail(
@@ -615,7 +685,125 @@ def execute_exact_semantic(
     )
 
 
+
+def _execute_approximate_semantic_impl(
+    ir: CompiledSemanticIR,
+    request: ApproximateSemanticResolveRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ApproximateExecutionResult:
+    canonical_request = _validate_approximate_request(request)
+    requested = canonical_request.corpora
+    normalized_contexts = _normalize_contexts(contexts)
+    for corpus_id in requested:
+        if corpus_id not in normalized_contexts:
+            _fail(
+                "missing_execution_context",
+                "requested corpus has no loaded execution context",
+                corpus_id=corpus_id,
+            )
+
+    variants = _select_variants(ir, requested)
+    reports: dict[str, RuntimeEvaluationReport] = {}
+    prerequisites = []
+    for corpus_id in requested:
+        context = normalized_contexts[corpus_id]
+        report = evaluate_runtime_prerequisites(
+            variants[corpus_id],
+            _observation(context),
+            source_contract=APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT,
+            active_ontology_bundle_digest=context.active_ontology_bundle_digest,
+        )
+        reports[corpus_id] = report
+        prerequisites.append(report.to_prerequisite())
+
+    resolution = semantic_resolve_approximate(
+        ir,
+        canonical_request,
+        tuple(prerequisites),
+    )
+    executions: list[ApproximateCorpusExecution] = []
+    for plan in resolution.plans:
+        if plan.corpus_id not in reports or plan.corpus_id not in normalized_contexts:
+            _fail(
+                "plan_context_mismatch",
+                "fresh approximate resolver plan has no authorized runtime context",
+                corpus_id=plan.corpus_id,
+            )
+        binding = plan.native_execution_binding
+        if type(binding) is not NativeBindingIR:
+            _fail(
+                "unsupported_native_binding",
+                "fresh approximate resolver plan has an invalid native binding",
+                corpus_id=plan.corpus_id,
+            )
+        if binding.execution_shape == "value-predicate":
+            binding = _validate_value_predicate(plan)
+        elif binding.execution_shape == "value-set-predicate":
+            binding = _validate_value_set_predicate(plan)
+        else:
+            _fail(
+                "unsupported_native_binding",
+                "approximate execution supports only scalar or finite-set feature predicates",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+        components = _components(normalized_contexts[plan.corpus_id])
+        component = components.get(binding.component_id or "")
+        if component is None:
+            _fail(
+                "missing_execution_component",
+                "fresh approximate resolver plan references a component outside the execution context",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+        if binding.execution_shape == "value-predicate":
+            nodes = _execute_value_predicate(plan, component)
+        else:
+            nodes = _execute_value_set_predicate(plan, component)
+        executions.append(
+            ApproximateCorpusExecution(
+                corpus_id=plan.corpus_id,
+                nodes=nodes,
+                plan=plan,
+                runtime_report=reports[plan.corpus_id],
+            )
+        )
+
+    executions.sort(key=lambda row: _utf16(row.corpus_id))
+    return ApproximateExecutionResult(
+        execution_contract=APPROXIMATE_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(executions),
+    )
+
+
+def execute_approximate_semantic(
+    ir: CompiledSemanticIR,
+    request: ApproximateSemanticResolveRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ApproximateExecutionResult:
+    try:
+        return _execute_approximate_semantic_impl(ir, request, contexts)
+    except ExactExecutionError as error:
+        raise _translate_exact_execution_error(error) from error
+
+
 EXACT_CONJUNCTION_EXECUTION_CONTRACT = "tfont-exact-semantic-conjunction-execution-v1"
+
+
+@dataclass(frozen=True)
+class ApproximateConjunctionCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plans: tuple[ApproximateNativePlan, ...]
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class ApproximateConjunctionExecutionResult:
+    execution_contract: str
+    resolution: ApproximateSemanticConjunctionResolutionResult
+    corpora: tuple[ApproximateConjunctionCorpusExecution, ...]
 
 
 @dataclass(frozen=True)
@@ -790,3 +978,96 @@ def execute_exact_conjunction(
         resolution=resolution,
         corpora=tuple(executions),
     )
+
+
+def _execute_approximate_conjunction_impl(
+    ir: CompiledSemanticIR,
+    request: ApproximateSemanticConjunctionRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ApproximateConjunctionExecutionResult:
+    canonical_request = _validate_approximate_conjunction_request(request)
+    requested = canonical_request.corpora
+    normalized_contexts = _normalize_contexts(contexts)
+    for corpus_id in requested:
+        if corpus_id not in normalized_contexts:
+            _fail(
+                "missing_execution_context",
+                "requested corpus has no loaded execution context",
+                corpus_id=corpus_id,
+            )
+
+    variants = _select_variants(ir, requested)
+    reports: dict[str, RuntimeEvaluationReport] = {}
+    prerequisites = []
+    for corpus_id in requested:
+        context = normalized_contexts[corpus_id]
+        report = evaluate_runtime_prerequisites(
+            variants[corpus_id],
+            _observation(context),
+            source_contract=APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT,
+            active_ontology_bundle_digest=context.active_ontology_bundle_digest,
+        )
+        reports[corpus_id] = report
+        prerequisites.append(report.to_prerequisite())
+
+    resolution = semantic_resolve_approximate_conjunction(
+        ir,
+        canonical_request,
+        tuple(prerequisites),
+    )
+    _validate_conjunction_node_domains(resolution)
+
+    by_corpus: dict[str, list[tuple[ApproximateNativePlan, tuple[int, ...]]]] = {
+        corpus_id: [] for corpus_id in resolution.request.corpora
+    }
+    for constituent in resolution.resolutions:
+        for plan in constituent.plans:
+            context = normalized_contexts.get(plan.corpus_id)
+            if context is None or plan.corpus_id not in reports:
+                _fail(
+                    "plan_context_mismatch",
+                    "approximate conjunction plan has no authorized runtime context",
+                    corpus_id=plan.corpus_id,
+                )
+            nodes = _execute_exact_plan_in_context(plan, context)
+            by_corpus.setdefault(plan.corpus_id, []).append((plan, nodes))
+
+    executions: list[ApproximateConjunctionCorpusExecution] = []
+    expected_plan_count = len(resolution.request.keys)
+    for corpus_id in resolution.request.corpora:
+        rows = by_corpus.get(corpus_id, [])
+        if len(rows) != expected_plan_count:
+            _fail(
+                "plan_context_mismatch",
+                "conjunction did not produce one approximate plan per requested atom",
+                corpus_id=corpus_id,
+            )
+        intersection = set(rows[0][1])
+        for _plan, nodes in rows[1:]:
+            intersection.intersection_update(nodes)
+        executions.append(
+            ApproximateConjunctionCorpusExecution(
+                corpus_id=corpus_id,
+                nodes=tuple(sorted(intersection)),
+                plans=tuple(plan for plan, _nodes in rows),
+                runtime_report=reports[corpus_id],
+            )
+        )
+
+    executions.sort(key=lambda row: _utf16(row.corpus_id))
+    return ApproximateConjunctionExecutionResult(
+        execution_contract=APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(executions),
+    )
+
+
+def execute_approximate_conjunction(
+    ir: CompiledSemanticIR,
+    request: ApproximateSemanticConjunctionRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ApproximateConjunctionExecutionResult:
+    try:
+        return _execute_approximate_conjunction_impl(ir, request, contexts)
+    except ExactExecutionError as error:
+        raise _translate_exact_execution_error(error) from error

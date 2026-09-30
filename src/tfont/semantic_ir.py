@@ -9,6 +9,7 @@ from .digests import (
     PROJECTION_SEMANTIC_ALGORITHM,
     canonical_json_bytes,
 )
+from .semantic_digest_v2 import projection_semantic_projection_v1
 from .semantic_validation import ValidatedSemanticBundle
 
 NATIVE_BINDING_IDENTITY_ALGORITHM = "tfont-native-binding-jcs-sha256-v1"
@@ -237,6 +238,7 @@ class TargetBindingIR:
     approximation: ApproximationIR | None
     mapping_evidence: tuple[EvidenceFingerprint, ...]
     projection_evidence: tuple[EvidenceFingerprint, ...]
+    projection_semantic_payload: str | None = None
 
 
 @dataclass(frozen=True)
@@ -740,6 +742,9 @@ def _target_ir(
         approximation=_approximation(projection.get("approximation")),
         mapping_evidence=_evidence(mapping.get("evidence", [])),
         projection_evidence=_evidence(projection.get("evidence", [])),
+        projection_semantic_payload=canonical_json_bytes(
+            projection_semantic_projection_v1(projection)
+        ).decode("utf-8"),
     )
 
 
