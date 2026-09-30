@@ -225,6 +225,34 @@ When `eligible=True`:
 Malformed compiled approximation metadata fails `invalid_compiled_ir`; it is
 never downgraded to an ordinary “not authorized” result.
 
+Structural validation alone is insufficient because a caller can replace a
+well-formed `ApproximationIR` while leaving the old reviewed
+`projection_semantic_digest` on the binding. Before treating approximation
+metadata as authority, reconstruct the projection semantic payload from the
+selected `TargetBindingIR` fields and require
+`projection_semantic_digest_v1(reconstructed_projection)` to equal
+`binding.projection_semantic_digest`.
+
+The reconstruction must use the same source semantics as the compiler/digest
+contract:
+
+- projection identity, target/routing/formal/semantic/profile/capability fields;
+- assessment and ontology-lock ID;
+- native execution binding;
+- projection evidence;
+- optional ontology-bundle requirement/declaration;
+- optional publication relation;
+- optional approximation envelope;
+- audit-only review metadata may be omitted exactly as the semantic digest
+  projection omits it.
+
+Optional fields must remain absent when the compiled value is `None`; adding
+JSON null would change the reviewed semantic projection.
+
+A structurally valid but digest-incoherent replacement of `eligible`,
+`losses`, rationale, review ID or approximation evidence is therefore
+`invalid_compiled_ir`.
+
 Do not re-read source JSON or ontology documents at runtime.
 
 ## Single-atom selection algorithm
@@ -549,48 +577,51 @@ cover at least:
     `invalid_compiled_ir`;
 18. forged status/eligibility/loss vocabulary/direction fails
     `invalid_compiled_ir`;
-19. approximation attached to any exact or related row in the selected semantic
+19. a structurally valid replacement of eligible/losses/rationale/review ID or
+    approximation evidence that no longer matches the reviewed projection
+    semantic digest fails `invalid_compiled_ir`;
+20. approximation attached to any exact or related row in the selected semantic
     tuple fails `invalid_compiled_ir` before exact/approximate selection, even
     when another clean exact row exists;
-20. malformed approximation evidence fails closed.
+21. malformed approximation evidence fails closed.
 
 ### Loss records and comparison
 
-21. broader loss record contains undercoverage and deterministic effect;
-22. narrower loss record contains overcoverage and deterministic effect;
-23. record binds review ID, caller acceptance, digests and prerequisite
+22. broader loss record contains undercoverage and deterministic effect;
+23. narrower loss record contains overcoverage and deterministic effect;
+24. record binds review ID, caller acceptance, digests and prerequisite
     fingerprint;
-24. corpus order and accepted-loss order do not change canonical result;
-25. all-exact approximate request -> `exactly-comparable`;
-26. exact + same undercoverage across corpora ->
+25. corpus order and accepted-loss order do not change canonical result;
+26. all-exact approximate request -> `exactly-comparable`;
+27. exact + same undercoverage across corpora ->
     `approximately-comparable`;
-27. undercoverage in one corpus and overcoverage in another ->
+28. undercoverage in one corpus and overcoverage in another ->
     `heterogeneous-loss`.
 
 ### Conjunction
 
-28. exact + broader required atoms union to undercoverage;
-29. broader + narrower union to both loss tokens;
-30. a refused atom fails the whole conjunction;
-31. per-corpus intersection preserves I-015 node-domain safety;
-32. mixed exact/approximate conjunction execution returns deterministic
+29. exact + broader required atoms union to undercoverage;
+30. broader + narrower union to both loss tokens;
+31. a refused atom fails the whole conjunction;
+32. per-corpus intersection preserves I-015 node-domain safety;
+33. mixed exact/approximate conjunction execution returns deterministic
     intersections and retains constituent loss records.
 
 ### Fresh runtime execution
 
-33. approximate execution re-evaluates runtime prerequisites against loaded
+34. approximate execution re-evaluates runtime prerequisites against loaded
     APIs;
-34. stale/mutated loaded state refuses before native query execution;
-35. there is no public caller-plan execution path;
-36. scalar and finite-set bindings execute; structural shapes remain refused.
+35. stale/mutated loaded state refuses before native query execution;
+36. there is no public caller-plan execution path;
+37. scalar and finite-set bindings execute; structural shapes remain refused.
 
 ### Exact compatibility
 
-37. all exact fingerprint anchors in
+38. all exact fingerprint anchors in
     `docs/research/data/generated/i020/runtime-reconciliation.json` remain
     exact;
-38. existing exact resolver/executor/conjunction tests remain green;
-39. exact public contract constants remain unchanged.
+39. existing exact resolver/executor/conjunction tests remain green;
+40. exact public contract constants remain unchanged.
 
 The RED commit must be observed failing on exact head before GREEN production
 changes.
@@ -649,6 +680,8 @@ challenge:
 - broader/narrower direction semantics;
 - close loss authorization;
 - defensive forged-`ApproximationIR` handling;
+- runtime reconstruction of the reviewed projection digest so structurally valid
+  approximation replacements cannot become authority;
 - exact-before-approximate selection;
 - multiple-approximate fail-closed behavior pending R-018;
 - related/native-only/unsupported/ambiguous boundaries;
