@@ -9,7 +9,7 @@ from .digests import (
     PROJECTION_SEMANTIC_ALGORITHM,
     canonical_json_bytes,
 )
-from .semantic_digest_v2 import projection_semantic_projection_v1
+from .semantic_digest_v2 import mapping_semantic_projection_v2, projection_semantic_projection_v1
 from .semantic_validation import ValidatedSemanticBundle
 
 NATIVE_BINDING_IDENTITY_ALGORITHM = "tfont-native-binding-jcs-sha256-v1"
@@ -207,6 +207,7 @@ class NativeRecordIR:
     reference_ids: tuple[str, ...]
     candidates: tuple[CandidateIR, ...]
     external_references: tuple[ExternalReferenceIR, ...]
+    mapping_semantic_payload: str | None = None
 
 
 @dataclass(frozen=True)
@@ -864,6 +865,9 @@ def compile_semantic_ir(bundles: Iterable[ValidatedSemanticBundle]) -> CompiledS
                 ),
                 candidates=candidates,
                 external_references=references,
+                mapping_semantic_payload=canonical_json_bytes(
+                    mapping_semantic_projection_v2(mapping)
+                ).decode("utf-8"),
             )
             native_groups.setdefault(NativeKey(corpus_id, binding_identity), []).append(native_record)
 
