@@ -473,6 +473,27 @@ Add immutable result types:
 - `ApproximateConjunctionCorpusExecution`;
 - `ApproximateConjunctionExecutionResult`.
 
+Add a separate public approximate execution error surface:
+
+```python
+ApproximateExecutionProblem(
+    category: str,
+    message: str,
+    corpus_id: str | None = None,
+    component_id: str | None = None,
+)
+
+class ApproximateExecutionError(ValueError):
+    problem: ApproximateExecutionProblem
+```
+
+Do not expose `ExactExecutionError` from the new approximate public
+functions. Private exact execution helpers may be reused, but if they raise an
+`ExactExecutionError` inside an approximate call, translate it at the
+approximate API boundary while preserving category, message, corpus ID and
+component ID exactly. Do not change the existing exact error/result classes or
+their behavior.
+
 Corpus execution rows include fresh runtime report plus the fresh approximate
 plan(s). Approximate result objects retain the full resolution and therefore
 all loss records.
@@ -613,15 +634,17 @@ cover at least:
     APIs;
 35. stale/mutated loaded state refuses before native query execution;
 36. there is no public caller-plan execution path;
-37. scalar and finite-set bindings execute; structural shapes remain refused.
+37. scalar and finite-set bindings execute; structural shapes remain refused;
+38. approximate execution failures use `ApproximateExecutionError`, while
+    translated shared-helper failures preserve their exact category/context.
 
 ### Exact compatibility
 
-38. all exact fingerprint anchors in
+39. all exact fingerprint anchors in
     `docs/research/data/generated/i020/runtime-reconciliation.json` remain
     exact;
-39. existing exact resolver/executor/conjunction tests remain green;
-40. exact public contract constants remain unchanged.
+40. existing exact resolver/executor/conjunction tests remain green;
+41. exact public contract constants remain unchanged.
 
 The RED commit must be observed failing on exact head before GREEN production
 changes.
@@ -689,6 +712,8 @@ challenge:
 - deterministic loss records and comparison states;
 - conjunction loss union and node-domain safety;
 - fresh runtime revalidation before execution;
+- approximate execution error typing/translation without leaking
+  `ExactExecutionError` from the approximate API;
 - absence of caller-plan trust;
 - absence of ontology reasoning/hierarchy traversal;
 - absence of mapping promotion or structural execution scope creep.
