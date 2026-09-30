@@ -24,7 +24,6 @@ from tests.i006._fixtures import (
     _refresh_mapping,
     compiled_noun_ir,
     noun_semantic_key,
-    prerequisites_for,
 )
 from tests.i008._fixtures import FakeLoadedApi, compiled_executable_noun_ir, loaded_context
 from tfont.semantic_ir import compile_semantic_ir
@@ -33,6 +32,38 @@ from tfont.semantic_validation import validate_semantic_bundle
 
 def problem_category(error: BaseException) -> str:
     return getattr(getattr(error, "problem", None), "category", "")
+
+
+def prerequisites_for(module, ir):
+    rows = []
+    for variant in ir.variants:
+        dependencies = tuple(
+            module.DependencyPrerequisiteResult(
+                dependency_id=dependency_id,
+                result="pass",
+                observed_evidence_digest=None,
+                evaluator_rule_version="research:i020-v1",
+            )
+            for dependency_id, _record in variant.release_signature.dependency_records
+        )
+        bundle_digest = variant.key.ontology_bundle_digest
+        rows.append(
+            module.RuntimePrerequisiteState(
+                variant=variant.key,
+                profile_release_fingerprint=module.profile_release_fingerprint(
+                    variant.release_signature
+                ),
+                observed_parent_manifest_digest=variant.key.expected_parent_manifest_digest,
+                parent_state="verified-exact",
+                dependency_results=dependencies,
+                active_ontology_bundle_digest=bundle_digest,
+                ontology_bundle_state=(
+                    "verified" if bundle_digest is not None else "not-required"
+                ),
+                source_contract="research:i020-current-runtime-v1",
+            )
+        )
+    return tuple(rows)
 
 
 def exact_control() -> dict[str, object]:
