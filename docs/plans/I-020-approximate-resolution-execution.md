@@ -28,8 +28,10 @@ The implementation:
 The existing exact resolver/executor API, contract constants, result types and
 fingerprints remain unchanged.
 
-No new ontology mappings, source schema, compiled-IR schema, corpus data or
-structural edge/path execution is introduced by I-020.
+No new ontology mappings, source schema, corpus data or structural edge/path
+execution is introduced by I-020. One additive compiled-IR authority field is
+introduced by the reviewed amendment below; exact public contracts and
+fingerprints remain unchanged.
 
 ## Compatibility boundary
 
@@ -227,76 +229,66 @@ never downgraded to an ordinary “not authorized” result.
 
 Structural validation alone is insufficient because a caller can replace a
 well-formed `ApproximationIR` while leaving the old reviewed
-`projection_semantic_digest` on the binding. Before treating approximation
-metadata as authority, reconstruct the projection semantic payload from the
-selected `TargetBindingIR` fields and require
-`projection_semantic_digest_v1(reconstructed_projection)` to equal
-`binding.projection_semantic_digest`.
+`projection_semantic_digest` on the binding.
 
-The reconstruction must use the same source semantics as the compiler/digest
-contract:
+### Reviewed projection-payload amendment
 
-- projection identity, target/routing/formal/semantic/profile/capability fields;
-- assessment and ontology-lock ID;
-- native execution binding;
-- projection evidence;
-- optional ontology-bundle requirement/declaration;
-- optional publication relation;
-- optional approximation envelope;
-- audit-only review metadata may be omitted exactly as the semantic digest
-  projection omits it.
+Implementation inspection showed that `TargetBindingIR` does not retain enough
+information to reconstruct the reviewed projection semantic payload exactly for
+all schema-valid sources. The compiler intentionally normalizes ordering and
+presence for fields such as `required_profile_contracts`,
+`rdf_types`, `domain_iris`, `range_iris`, nullable/absent publication
+relation, and optional empty evidence. The semantic digest preserves some of
+those source distinctions.
 
-### Presence-normalization amendment
+Do **not** guess permutations or source spellings at runtime.
 
-The compiled IR intentionally normalizes a few source-presence distinctions
-that remain visible to the semantic digest. A single literal reconstruction is
-therefore insufficient for digest verification.
+Add one optional additive field to `TargetBindingIR`:
 
-Examples:
+```python
+projection_semantic_payload: str | None = None
+```
 
-- absent `publication_relation` and explicit
-  `"publication_relation": null` both compile to `None`;
-- absent `approximation.evidence` and explicit empty `[]` both compile to
-  `ApproximationIR.evidence == ()`;
-- absent optional ontology-declaration arrays and explicit empty arrays both
-  compile to empty tuples.
+During `compile_semantic_ir()`, for every reviewed projection, compute:
 
-I-020 must not reject either valid source spelling.
+```python
+canonical_json_bytes(
+    projection_semantic_projection_v1(source_projection)
+).decode("utf-8")
+```
 
-When a normalized compiled value admits more than one source spelling, build
-the finite set of source-semantic projection candidates consistent with the IR
-and require **at least one** candidate digest to equal
-`binding.projection_semantic_digest`.
+and store that canonical JSON string in
+`TargetBindingIR.projection_semantic_payload`.
 
-The ambiguity set is strictly bounded by schema-known optional-presence
-choices; do not guess arbitrary source fields. At current schema v2 the choices
-are limited to:
+This payload is not a second semantic authority. Its SHA-256 must reproduce the
+already authoritative `binding.projection_semantic_digest`, which is already
+bound by the selected release and projection review.
 
-- `publication_relation`: absent vs explicit null when compiled value is
-  `None`;
-- `approximation.evidence`: absent vs explicit empty array when compiled
-  evidence is empty;
-- `ontology_declaration_evidence.rdf_types`,
-  `domain_iris`, and `range_iris`: absent vs explicit empty array when the
-  compiled tuple is empty.
+The approximate resolver requires the payload to be:
 
-Non-empty values have one spelling. `value_kind` is absent when compiled
-`None` because the source schema does not allow null. The full search is at
-most 32 deterministic candidates.
+- an exact non-empty string;
+- valid JSON decoding to an object;
+- exactly canonical JSON for the decoded object;
+- digest-equal to `binding.projection_semantic_digest`;
+- projection-ID/assessment coherent with the selected binding.
 
-Every candidate uses the **current compiled approximation values**. Therefore
-a structurally valid replacement of `eligible`, `losses`, rationale,
-review ID or approximation evidence still fails all reviewed-digest candidates
-unless it matches the original reviewed projection (ignoring only the
-schema-defined presence normalization above).
+For approximation authority, normalize the payload's optional
+`approximation` object through the same compiler semantics and require it to
+equal the current compiled `binding.approximation` field. Thus a caller cannot
+replace `eligible`, `losses`, rationale, review ID, or approximation evidence
+while keeping the reviewed digest authority.
 
-This finite reconstruction belongs inside the approximate runtime authority
-validator and does not change source schemas, `CompiledSemanticIR`, exact
-fingerprints, or production mappings.
+For `exact` and `related`, both the stored reviewed payload and the compiled
+binding must have no approximation envelope.
 
-A structurally valid but digest-incoherent replacement of `eligible`,
-`losses`, rationale, review ID or approximation evidence is therefore
-`invalid_compiled_ir`.
+The existing exact resolver may ignore
+`projection_semantic_payload`; it must not enter any exact plan or exact
+resolution fingerprint. Existing exact fingerprint anchors therefore remain
+unchanged.
+
+This is an additive IR field only. It does not change source schemas, semantic
+digest algorithms, profile release signatures, production mapping resources,
+or runtime prerequisite contracts.
 
 Do not re-read source JSON or ontology documents at runtime.
 
@@ -649,53 +641,56 @@ cover at least:
 19. a structurally valid replacement of eligible/losses/rationale/review ID or
     approximation evidence that no longer matches the reviewed projection
     semantic digest fails `invalid_compiled_ir`;
-20. digest reconstruction accepts each schema-equivalent normalized source
-    spelling: absent/null publication relation, absent/empty approximation
-    evidence, and absent/empty optional ontology-declaration arrays;
-21. approximation attached to any exact or related row in the selected semantic
+20. compiler stores the canonical reviewed projection semantic payload and its
+    SHA-256 reproduces the reviewed projection digest;
+21. structurally valid source variants whose ordering/presence is normalized by
+    IR compilation still retain their exact reviewed semantic payload;
+22. missing, malformed, non-canonical, digest-mismatched, or
+    approximation-incoherent stored payload fails `invalid_compiled_ir`;
+23. approximation attached to any exact or related row in the selected semantic
     tuple fails `invalid_compiled_ir` before exact/approximate selection, even
     when another clean exact row exists;
-22. malformed approximation evidence fails closed.
+24. malformed approximation evidence fails closed.
 
 ### Loss records and comparison
 
-23. broader loss record contains undercoverage and deterministic effect;
-24. narrower loss record contains overcoverage and deterministic effect;
-25. record binds review ID, caller acceptance, digests and prerequisite
+25. broader loss record contains undercoverage and deterministic effect;
+26. narrower loss record contains overcoverage and deterministic effect;
+27. record binds review ID, caller acceptance, digests and prerequisite
     fingerprint;
-26. corpus order and accepted-loss order do not change canonical result;
-27. all-exact approximate request -> `exactly-comparable`;
-28. exact + same undercoverage across corpora ->
+28. corpus order and accepted-loss order do not change canonical result;
+29. all-exact approximate request -> `exactly-comparable`;
+30. exact + same undercoverage across corpora ->
     `approximately-comparable`;
-29. undercoverage in one corpus and overcoverage in another ->
+31. undercoverage in one corpus and overcoverage in another ->
     `heterogeneous-loss`.
 
 ### Conjunction
 
-30. exact + broader required atoms union to undercoverage;
-31. broader + narrower union to both loss tokens;
-32. a refused atom fails the whole conjunction;
-33. per-corpus intersection preserves I-015 node-domain safety;
-34. mixed exact/approximate conjunction execution returns deterministic
+32. exact + broader required atoms union to undercoverage;
+33. broader + narrower union to both loss tokens;
+34. a refused atom fails the whole conjunction;
+35. per-corpus intersection preserves I-015 node-domain safety;
+36. mixed exact/approximate conjunction execution returns deterministic
     intersections and retains constituent loss records.
 
 ### Fresh runtime execution
 
-35. approximate execution re-evaluates runtime prerequisites against loaded
+37. approximate execution re-evaluates runtime prerequisites against loaded
     APIs;
-36. stale/mutated loaded state refuses before native query execution;
-37. there is no public caller-plan execution path;
-38. scalar and finite-set bindings execute; structural shapes remain refused;
-39. approximate execution failures use `ApproximateExecutionError`, while
+38. stale/mutated loaded state refuses before native query execution;
+39. there is no public caller-plan execution path;
+40. scalar and finite-set bindings execute; structural shapes remain refused;
+41. approximate execution failures use `ApproximateExecutionError`, while
     translated shared-helper failures preserve their exact category/context.
 
 ### Exact compatibility
 
-40. all exact fingerprint anchors in
+42. all exact fingerprint anchors in
     `docs/research/data/generated/i020/runtime-reconciliation.json` remain
     exact;
-41. existing exact resolver/executor/conjunction tests remain green;
-42. exact public contract constants remain unchanged.
+43. existing exact resolver/executor/conjunction tests remain green;
+44. exact public contract constants remain unchanged.
 
 The RED commit must be observed failing on exact head before GREEN production
 changes.
@@ -704,6 +699,7 @@ changes.
 
 Expected production files:
 
+- `src/tfont/semantic_ir.py` — additive reviewed projection semantic payload;
 - `src/tfont/semantic_resolver.py`;
 - `src/tfont/semantic_execution.py`;
 - `src/tfont/__init__.py`;
@@ -716,7 +712,6 @@ allowed when it prevents divergence between exact and approximate execution.
 No expected changes to:
 
 - semantic source schemas;
-- `semantic_ir.py`;
 - semantic digest algorithms;
 - semantic validation/policy behavior;
 - production mapping resources;
@@ -754,7 +749,7 @@ challenge:
 - broader/narrower direction semantics;
 - close loss authorization;
 - defensive forged-`ApproximationIR` handling;
-- runtime reconstruction of the reviewed projection digest so structurally valid
+- reviewed projection payload/digest binding so structurally valid
   approximation replacements cannot become authority;
 - exact-before-approximate selection;
 - multiple-approximate fail-closed behavior pending R-018;
