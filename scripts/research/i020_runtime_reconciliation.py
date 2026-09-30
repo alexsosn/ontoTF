@@ -104,6 +104,27 @@ def exact_control() -> dict[str, object]:
     }
 
 
+def exact_multi_corpus_control() -> dict[str, object]:
+    ir = compiled_noun_ir(("bhsa", "syriac", "extrabiblical"))
+    prerequisites = prerequisites_for(tfont, ir)
+    result = tfont.semantic_resolve(
+        ir,
+        tfont.SemanticResolveRequest(
+            key=noun_semantic_key(),
+            corpora=("extrabiblical", "bhsa", "syriac"),
+            semantic_mode="exact",
+        ),
+        prerequisites,
+    )
+    return {
+        "canonical_corpora": [plan.corpus_id for plan in result.plans],
+        "comparison_state": result.comparison_state,
+        "losses": list(result.losses),
+        "resolution_fingerprint": result.resolution_fingerprint,
+        "plan_fingerprints": [plan.plan_fingerprint for plan in result.plans],
+    }
+
+
 def reviewed_broader_ir():
     sources = noun_sources("bhsa", parent_char="a")
     mapping = sources["mappings"]["mappings"][0]
@@ -166,6 +187,7 @@ def main() -> int:
     result = {
         "baseline_main": "6efdb106aaf81f349c1b238344b3a195c2c9bd5f",
         "exact": exact_control(),
+        "exact_multi_corpus": exact_multi_corpus_control(),
         "reviewed_broader": approximation_control(),
         "contracts": {
             "exact_resolver": tfont.EXACT_RESOLVER_CONTRACT,
@@ -181,6 +203,12 @@ def main() -> int:
             "ir_change_required": False,
         },
     }
+    if result["exact_multi_corpus"]["canonical_corpora"] != ["bhsa", "extrabiblical", "syriac"]:
+        raise SystemExit("exact multi-corpus canonical ordering drifted")
+    if result["exact_multi_corpus"]["comparison_state"] != "exactly-comparable":
+        raise SystemExit("exact multi-corpus comparison state drifted")
+    if result["exact_multi_corpus"]["losses"] != []:
+        raise SystemExit("exact multi-corpus resolution unexpectedly reports losses")
     if result["reviewed_broader"]["exact_mode_result"] != "non_exact_mapping":
         raise SystemExit("exact-mode non-exact refusal contract drifted")
     if result["reviewed_broader"]["approximate_mode_result"] != "unsupported_semantic_mode":
