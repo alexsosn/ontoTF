@@ -1,0 +1,68 @@
+{
+  "baseline_main": "45b4584f7a8ab8ce5d5c3920fa144819a88fdfbe",
+  "conclusion": {
+    "execution_requires_explicit_execution_shape": true,
+    "external_reference_runtime_payload_binding_required": true,
+    "index_schema_change_required": false,
+    "recommended_binding": "canonical reviewed parent mapping semantic payload on NativeRecordIR",
+    "source_schema_change_required": false
+  },
+  "current_ir": {
+    "authority_assessment": "exact",
+    "authority_has_reviewed_projection_payload": true,
+    "authority_key": {
+      "authority_resource": "https://example.org/authority/noun",
+      "authority_system": "authority-test",
+      "formal_kind": "skos-concept",
+      "semantic_role": "annotation-value"
+    },
+    "authority_route": [
+      "authority-value",
+      "authority-value-filter"
+    ],
+    "identifier_key": {
+      "issuer_or_namespace": "fixture-catalogue",
+      "literal_id": "ID-refs"
+    },
+    "identifier_route": [
+      "catalogue-identifier",
+      "identifier-filter"
+    ],
+    "identity_key": {
+      "authority_system": "fixture-authority",
+      "external_entity_id": "https://example.org/entity/refs",
+      "identity_strength": "same-entity"
+    },
+    "identity_route": [
+      "entity-identity",
+      "identity-filter"
+    ],
+    "provenance_locator_not_reverse_indexed": true
+  },
+  "execution_boundary": {
+    "explicit_identifier_execution_shape": "value-predicate",
+    "explicit_identity_execution_shape": "value-predicate",
+    "explicit_shapes_validate_without_schema_change": true,
+    "legacy_identifier_execution_shape": null,
+    "legacy_identity_execution_shape": null
+  },
+  "policy": {
+    "authority_exact_resource": "https://example.org/authority/noun",
+    "first_slice_executable_identity_strength": "same-entity",
+    "identity_strengths": [
+      "same-entity",
+      "probable-same-entity",
+      "related-record",
+      "ambiguous-identity"
+    ],
+    "probable_related_ambiguous_are_not_exact_identity_authority": true
+  },
+  "review_authority": {
+    "external_reference_has_own_review": false,
+    "external_reference_has_own_semantic_digest": false,
+    "forged_external_reference_replace_succeeds": true,
+    "forged_row_keeps_original_release_mapping_digest": true,
+    "mapping_digest_reproduced_from_source_payload": "sha256:b87539f765aea4731cda6b4634f8be584a5fb5c901dc70423e68378377ae30be",
+    "native_record_has_mapping_semantic_payload": false
+  }
+}

@@ -1,0 +1,44 @@
+name: I-021 authority/identity/identifier research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/i021_reference_runtime_reconciliation.py"
+      - "docs/research/I-021-authority-identity-identifier-runtime.md"
+      - "docs/research/data/generated/i021/reference-runtime-reconciliation.json"
+      - ".github/workflows/i021-reference-research.yml"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/semantic_digest_v2.py"
+      - "src/tfont/semantic_validation.py"
+      - "src/tfont/semantic_policy_validation.py"
+      - "tests/i005/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - name: Check out exact head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - name: Reconcile current reference runtime boundary
+        run: |
+          python scripts/research/i021_reference_runtime_reconciliation.py > /tmp/i021-reference-runtime.json
+          cat /tmp/i021-reference-runtime.json
+      - name: Compare committed evidence
+        run: cmp /tmp/i021-reference-runtime.json docs/research/data/generated/i021/reference-runtime-reconciliation.json
+      - name: Preserve current reference-index compiler controls
+        run: |
+          python -m unittest             tests.i005.test_semantic_ir_contract.I005SemanticIRContractTests.test_authority_value_routes_only_to_authority_index             tests.i005.test_semantic_ir_contract.I005SemanticIRContractTests.test_identity_and_catalogue_indexes_are_separate
