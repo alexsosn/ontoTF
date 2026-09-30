@@ -444,7 +444,10 @@ Contract:
 - no required atom is dropped;
 - any atom failure fails the whole conjunction;
 - top-level losses are the union of constituent losses;
-- loss records preserve every non-exact constituent/corpus record.
+- loss records preserve every non-exact constituent/corpus record;
+- conjunction loss records canonicalize by canonical semantic-key order first,
+  then corpus ID, mapping ID and projection ID, so multiple losses from the
+  same corpus cannot depend on input order.
 
 For comparison, first union all atom loss tokens per corpus, then apply the
 same exact/uniform/heterogeneous multi-corpus rule.
