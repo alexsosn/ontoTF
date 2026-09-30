@@ -133,6 +133,47 @@ def compiled_binding_ir(
     )
 
 
+def validated_value_set_approximation_bundle(
+    corpus_id: str,
+    *,
+    assessment: str = "broader",
+    losses: tuple[str, ...] = ("undercoverage",),
+):
+    sources = noun_sources(
+        corpus_id,
+        parent_char=PARENT_CHARS.get(corpus_id, "d"),
+    )
+    profile = sources["profile"]
+    mapping = sources["mappings"]["mappings"][0]
+    projection = mapping["projections"][0]
+
+    first_dependency = profile["dependencies"][0]
+    second_dependency = copy.deepcopy(first_dependency)
+    second_dependency["dependency_id"] = f"dep:{corpus_id}:word-sp-nmpr"
+    second_dependency["assertion"]["value"] = "nmpr"
+    profile["dependencies"].append(second_dependency)
+    mapping["native_dependencies"].append(second_dependency["dependency_id"])
+
+    for binding in (mapping["native_binding"], projection["native_execution_binding"]):
+        binding.pop("value", None)
+        binding["values"] = ["nmpr", "subs"]
+        binding["execution_shape"] = "value-set-predicate"
+
+    projection["assessment"] = assessment
+    projection["approximation"] = {
+        "status": "reviewed",
+        "eligible": True,
+        "losses": list(losses),
+        "rationale": "I-020 finite-set fixture",
+        "review_id": f"review:i020:{corpus_id}:finite-set",
+        "evidence": [],
+    }
+    _refresh_mapping(mapping)
+
+    validate_structural_sources(sources)
+    return validate_semantic_bundle(source_bundle(sources))
+
+
 def validated_two_binding_bundle(
     corpus_id: str,
     *,
@@ -288,4 +329,5 @@ __all__ = [
     "problem_category",
     "replace_semantic_binding",
     "validated_binding_bundle",
+    "validated_value_set_approximation_bundle",
 ]
