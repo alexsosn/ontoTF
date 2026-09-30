@@ -380,10 +380,19 @@ later P-004 Workstream B structural ticket.
 
 ## Error/refusal precedence
 
-Preserve existing prerequisite/capability fail-closed precedence.
+Request-shape and closed-vocabulary validation happens first, as it does for
+the exact resolver. In particular, malformed/duplicate corpus selection,
+malformed semantic keys, a wrong approximate mode marker, non-tuple loss
+acceptance, duplicate accepted losses, or an unknown/future loss token must
+fail deterministically before runtime prerequisite lookup. Unknown accepted
+loss tokens are never ignored merely because an exact binding might later be
+available.
 
-Approximation-specific refusal should happen only after the same checks that an
-exact request currently performs for:
+After a request is structurally valid, preserve existing
+prerequisite/capability fail-closed precedence.
+
+Mapping-level approximation refusal should happen only after the same runtime
+checks that an exact request currently performs for:
 
 - variant selection;
 - stale/invalid prerequisite;
