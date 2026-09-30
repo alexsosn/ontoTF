@@ -54,5 +54,35 @@
     },
     "assessment": "broader",
     "exact_mode_result": "non_exact_mapping"
+  },
+  "exact_conjunction": {
+    "comparison_state": "exactly-comparable",
+    "corpora": [
+      {
+        "corpus_id": "bhsa",
+        "nodes": [
+          2,
+          4
+        ]
+      },
+      {
+        "corpus_id": "extrabiblical",
+        "nodes": [
+          2,
+          4
+        ]
+      },
+      {
+        "corpus_id": "syriac",
+        "nodes": [
+          2,
+          4
+        ]
+      }
+    ],
+    "execution_contract": "tfont-exact-semantic-conjunction-execution-v1",
+    "losses": [],
+    "resolution_fingerprint": "sha256:2f4b11335365b24adf8910c28a854dda5b0c99f702b38ad528a5b4c10a7054ca",
+    "resolver_contract": "tfont-exact-semantic-conjunction-resolver-v1"
   }
 }
