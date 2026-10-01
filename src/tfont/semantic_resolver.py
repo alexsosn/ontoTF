@@ -3214,7 +3214,117 @@ def _reviewed_mapping_payload(
                 corpus_id=parent.corpus_id,
                 related_id=parent.mapping_id,
             )
+
+    payload_references = decoded.get("external_references", [])
+    compiled_reference_ids = tuple(
+        sorted((row.reference_id for row in parent.external_references), key=_utf16)
+    )
+    if compiled_reference_ids != parent.reference_ids:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled parent external-reference tuple disagrees with reference IDs",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    for reference in parent.external_references:
+        matches = [
+            row
+            for row in payload_references
+            if row.get("reference_id") == reference.reference_id
+        ]
+        if len(matches) != 1:
+            _fail(
+                "invalid_compiled_ir",
+                "compiled parent external reference is not uniquely present in reviewed payload",
+                corpus_id=parent.corpus_id,
+                related_id=reference.reference_id,
+            )
+        _validate_external_reference_payload_child(reference, matches[0])
     return decoded
+
+
+def _validate_external_reference_payload_child(
+    reference: ExternalReferenceIR,
+    child: dict[str, Any],
+) -> None:
+    if type(child) is not dict:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed external reference payload child is malformed",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    scalar_pairs = (
+        ("reference_id", reference.reference_id),
+        ("reference_kind", reference.reference_kind),
+        ("query_role", reference.query_role),
+        ("external", reference.external),
+        ("authority_system", reference.authority_system),
+        ("issuer_or_namespace", reference.issuer_or_namespace),
+        ("identity_strength", reference.identity_strength),
+        ("publication_relation", reference.publication_relation),
+    )
+    for field, compiled in scalar_pairs:
+        if child.get(field) != compiled:
+            _fail(
+                "invalid_compiled_ir",
+                "compiled external reference disagrees with reviewed parent payload",
+                corpus_id=reference.corpus_id,
+                related_id=reference.reference_id,
+            )
+    if child.get("evidence", []) != [
+        _evidence_projection(item) for item in reference.evidence
+    ]:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference evidence disagrees with reviewed payload",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    source_binding = child.get("native_binding")
+    if source_binding is None:
+        if reference.native_binding is not None or reference.native_binding_identity is not None:
+            _fail(
+                "invalid_compiled_ir",
+                "compiled external reference invents a native binding",
+                corpus_id=reference.corpus_id,
+                related_id=reference.reference_id,
+            )
+        return
+    if (
+        type(source_binding) is not dict
+        or type(reference.native_binding) is not NativeBindingIR
+        or type(reference.native_binding_identity) is not str
+        or not reference.native_binding_identity
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference native binding is invalid",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    try:
+        source_identity = native_binding_identity(source_binding)
+        compiled_identity = native_binding_identity(
+            _native_binding_projection(reference.native_binding)
+        )
+    except Exception:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference native binding cannot be reconstructed",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    if (
+        source_identity != reference.native_binding_identity
+        or compiled_identity != reference.native_binding_identity
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference native binding identity mismatch",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
 
 
 def _authoritative_reference_child(
@@ -3252,77 +3362,7 @@ def _authoritative_reference_child(
             related_id=reference.reference_id,
         )
     child = payload_rows[0]
-    scalar_pairs = (
-        ("reference_id", reference.reference_id),
-        ("reference_kind", reference.reference_kind),
-        ("query_role", reference.query_role),
-        ("external", reference.external),
-        ("authority_system", reference.authority_system),
-        ("issuer_or_namespace", reference.issuer_or_namespace),
-        ("identity_strength", reference.identity_strength),
-        ("publication_relation", reference.publication_relation),
-    )
-    for field, compiled in scalar_pairs:
-        if child.get(field) != compiled:
-            _fail(
-                "invalid_compiled_ir",
-                "compiled external reference disagrees with reviewed parent payload",
-                corpus_id=reference.corpus_id,
-                related_id=reference.reference_id,
-            )
-    if child.get("evidence", []) != [
-        _evidence_projection(item) for item in reference.evidence
-    ]:
-        _fail(
-            "invalid_compiled_ir",
-            "compiled external reference evidence disagrees with reviewed payload",
-            corpus_id=reference.corpus_id,
-            related_id=reference.reference_id,
-        )
-    source_binding = child.get("native_binding")
-    if source_binding is None:
-        if reference.native_binding is not None or reference.native_binding_identity is not None:
-            _fail(
-                "invalid_compiled_ir",
-                "compiled external reference invents a native binding",
-                corpus_id=reference.corpus_id,
-                related_id=reference.reference_id,
-            )
-    else:
-        if (
-            type(source_binding) is not dict
-            or type(reference.native_binding) is not NativeBindingIR
-            or type(reference.native_binding_identity) is not str
-            or not reference.native_binding_identity
-        ):
-            _fail(
-                "invalid_compiled_ir",
-                "compiled external reference native binding is invalid",
-                corpus_id=reference.corpus_id,
-                related_id=reference.reference_id,
-            )
-        try:
-            source_identity = native_binding_identity(source_binding)
-            compiled_identity = native_binding_identity(
-                _native_binding_projection(reference.native_binding)
-            )
-        except Exception:
-            _fail(
-                "invalid_compiled_ir",
-                "compiled external reference native binding cannot be reconstructed",
-                corpus_id=reference.corpus_id,
-                related_id=reference.reference_id,
-            )
-        if (
-            source_identity != reference.native_binding_identity
-            or compiled_identity != reference.native_binding_identity
-        ):
-            _fail(
-                "invalid_compiled_ir",
-                "compiled external reference native binding identity mismatch",
-                corpus_id=reference.corpus_id,
-                related_id=reference.reference_id,
-            )
+    _validate_external_reference_payload_child(reference, child)
     return child
 
 
