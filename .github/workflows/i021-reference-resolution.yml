@@ -49,9 +49,18 @@ jobs:
         run: |
           python -m pip install build
           python -m build --wheel --outdir dist
-          python -m venv /tmp/i021-wheel
-          /tmp/i021-wheel/bin/python -m pip install --no-deps dist/tfont-*.whl
-          /tmp/i021-wheel/bin/python - <<'PY'
+          python - <<'PY'
+          import pathlib
+          import subprocess
+          import sys
+          import tempfile
+
+          wheel = next(pathlib.Path("dist").glob("tfont-*.whl"))
+          with tempfile.TemporaryDirectory() as tmp:
+              subprocess.check_call(
+                  [sys.executable, "-m", "pip", "install", "--target", tmp, str(wheel)]
+              )
+              code = """
           import tfont
           required = (
               "AuthorityResolveRequest",
@@ -70,4 +79,6 @@ jobs:
           missing = [name for name in required if not hasattr(tfont, name)]
           if missing:
               raise SystemExit(f"missing I-021 wheel API: {missing}")
+          """
+              subprocess.check_call([sys.executable, "-c", code], env={"PYTHONPATH": tmp})
           PY
