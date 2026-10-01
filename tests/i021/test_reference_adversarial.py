@@ -21,6 +21,7 @@ from tests.i021._fixtures import (
     authority_ir,
     prerequisites,
     reference_ir,
+    reference_ir_with_execution_shape,
     replace_identifier_row,
     replace_identity_row,
 )
@@ -239,6 +240,44 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
             identifier_request,
             prerequisites(tfont, forged_identifier),
         )
+
+    def test_value_set_reference_execution_uses_existing_native_union_path(self):
+        ir = reference_ir_with_execution_shape("value-set-predicate")
+        key = ir.identity_index[0][0]
+        request = tfont.IdentityResolveRequest(
+            authority_system=key.authority_system,
+            external_entity_id=key.external_entity_id,
+            corpora=("bhsa",),
+        )
+        from tests.i021._fixtures import context
+
+        result = tfont.execute_identity(ir, request, (context(tfont, ir),))
+        self.assertEqual(result.corpora[0].nodes, (1, 3))
+        self.assertEqual(
+            result.corpora[0].plan.native_execution_binding.execution_shape,
+            "value-set-predicate",
+        )
+
+    def test_reviewed_but_unsupported_reference_shape_resolves_then_refuses_execution(self):
+        ir = reference_ir_with_execution_shape("inspection-only")
+        key = ir.identity_index[0][0]
+        request = tfont.IdentityResolveRequest(
+            authority_system=key.authority_system,
+            external_entity_id=key.external_entity_id,
+            corpora=("bhsa",),
+        )
+        resolved = tfont.identity_resolve(ir, request, prerequisites(tfont, ir))
+        self.assertEqual(len(resolved.plans), 1)
+        self.assertEqual(
+            resolved.plans[0].native_execution_binding.execution_shape,
+            "inspection-only",
+        )
+
+        from tests.i021._fixtures import context
+
+        with self.assertRaises(Exception) as raised:
+            tfont.execute_identity(ir, request, (context(tfont, ir),))
+        self.assertEqual(category(raised.exception), "unsupported_native_binding")
 
     def test_public_reference_executors_have_no_caller_plan_parameter(self):
         for fn in (
