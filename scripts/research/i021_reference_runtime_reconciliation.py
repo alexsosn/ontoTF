@@ -177,9 +177,8 @@ def main() -> int:
         },
         "review_authority": {
             "mapping_digest_reproduced_from_source_payload": payload_digest,
-            "native_record_has_mapping_semantic_payload": hasattr(
-                refs_ir.native_index[0][1][0],
-                "mapping_semantic_payload",
+            "native_record_has_mapping_semantic_payload": (
+                refs_ir.native_index[0][1][0].mapping_semantic_payload == payload
             ),
             "external_reference_has_own_review": hasattr(identity, "review"),
             "external_reference_has_own_semantic_digest": hasattr(
