@@ -55,6 +55,37 @@ def authority_ir(
     return compile_semantic_ir((_validated(sources),))
 
 
+def authority_multi_ir(
+    corpora: tuple[str, ...] = ("bhsa", "syriac"),
+    *,
+    assessment: str = "exact",
+    losses: tuple[str, ...] = (),
+) -> CompiledSemanticIR:
+    bundles = []
+    for corpus_id in corpora:
+        sources = noun_sources(
+            corpus_id,
+            parent_char=PARENT_CHARS.get(corpus_id, "d"),
+            projection_route="authority",
+        )
+        mapping = sources["mappings"]["mappings"][0]
+        projection = mapping["projections"][0]
+        projection["assessment"] = assessment
+        projection.pop("approximation", None)
+        if assessment in {"close", "broader", "narrower"}:
+            projection["approximation"] = {
+                "status": "reviewed",
+                "eligible": True,
+                "losses": list(losses),
+                "rationale": f"I-021 multi-authority fixture {assessment}",
+                "review_id": f"review:i021:{corpus_id}:authority:{assessment}",
+                "evidence": [],
+            }
+        _refresh_mapping(mapping)
+        bundles.append(_validated(sources))
+    return compile_semantic_ir(tuple(bundles))
+
+
 def authority_two_binding_ir(
     *,
     first_assessment: str,
