@@ -19,6 +19,7 @@ from tests.i005._fixtures import (
 from tests.i020._fixtures import noun_semantic_key
 from tests.i021._fixtures import (
     authority_ir,
+    authority_multi_ir,
     prerequisites,
     reference_ir,
     reference_ir_with_execution_shape,
@@ -135,6 +136,34 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         )
         with self.assertRaises(tfont.SemanticResolutionError):
             tfont.semantic_resolve(ir, request, prerequisites(tfont, ir))
+
+    def test_authority_corpus_order_is_canonical_and_fingerprint_stable(self):
+        ir = authority_multi_ir()
+        key = ir.authority_index[0][0]
+        left_request = tfont.AuthorityResolveRequest(
+            key=key,
+            corpora=("syriac", "bhsa"),
+        )
+        right_request = tfont.AuthorityResolveRequest(
+            key=key,
+            corpora=("bhsa", "syriac"),
+        )
+        left = tfont.authority_resolve_exact(
+            ir,
+            left_request,
+            prerequisites(tfont, ir),
+        )
+        right = tfont.authority_resolve_exact(
+            ir,
+            right_request,
+            prerequisites(tfont, ir),
+        )
+        self.assertEqual(
+            tuple(plan.corpus_id for plan in left.plans),
+            ("bhsa", "syriac"),
+        )
+        self.assertEqual(left.request.corpora, ("bhsa", "syriac"))
+        self.assertEqual(left.resolution_fingerprint, right.resolution_fingerprint)
 
     def test_related_authority_is_non_substitutive_in_both_modes(self):
         ir = authority_ir(assessment="related")
