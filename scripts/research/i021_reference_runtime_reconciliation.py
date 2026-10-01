@@ -217,7 +217,7 @@ def main() -> int:
         "conclusion": {
             "source_schema_change_required": False,
             "index_schema_change_required": False,
-            "external_reference_runtime_payload_binding_required": False,
+            "external_reference_runtime_payload_binding_required": True,
             "recommended_binding": "canonical reviewed parent mapping semantic payload on NativeRecordIR",
             "execution_requires_explicit_execution_shape": True,
         },
