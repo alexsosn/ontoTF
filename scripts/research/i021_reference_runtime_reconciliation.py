@@ -218,7 +218,7 @@ def main() -> int:
         "conclusion": {
             "source_schema_change_required": False,
             "index_schema_change_required": False,
-            "external_reference_runtime_payload_binding_required": True,
+            "external_reference_runtime_payload_binding_required": False,
             "recommended_binding": "canonical reviewed parent mapping semantic payload on NativeRecordIR",
             "execution_requires_explicit_execution_shape": True,
         },
@@ -234,8 +234,8 @@ def main() -> int:
         raise SystemExit("identity fixture strength drifted")
     if not result["current_ir"]["provenance_locator_not_reverse_indexed"]:
         raise SystemExit("reference-family index isolation drifted")
-    if result["review_authority"]["native_record_has_mapping_semantic_payload"]:
-        raise SystemExit("research premise drifted: mapping payload is already retained")
+    if not result["review_authority"]["native_record_has_mapping_semantic_payload"]:
+        raise SystemExit("I-021 runtime payload binding is missing")
 
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
