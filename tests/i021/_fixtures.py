@@ -139,6 +139,27 @@ def reference_ir(
     return compile_semantic_ir((_validated(sources),))
 
 
+def reference_ir_with_execution_shape(
+    execution_shape: str,
+    corpus_id: str = "bhsa",
+) -> CompiledSemanticIR:
+    identity = entity_identity_reference(corpus_id)
+    identifier = catalogue_reference(corpus_id)
+    for reference in (identity, identifier):
+        binding = reference["native_binding"]
+        if execution_shape == "value-set-predicate":
+            value = binding.pop("value")
+            binding["values"] = [value]
+        binding["execution_shape"] = execution_shape
+
+    sources = noun_sources(
+        corpus_id,
+        parent_char=PARENT_CHARS.get(corpus_id, "d"),
+        external_references=[identity, identifier],
+    )
+    return compile_semantic_ir((_validated(sources),))
+
+
 def identity_external(ir: CompiledSemanticIR) -> str:
     return ir.identity_index[0][0].external_entity_id
 
