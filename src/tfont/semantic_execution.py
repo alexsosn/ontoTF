@@ -13,7 +13,18 @@ from .runtime_prerequisites import (
 )
 from .semantic_ir import BundleVariantIR, BundleVariantKey, CompiledSemanticIR, NativeBindingIR
 from .semantic_resolver import (
+    ApproximateAuthorityResolveRequest,
+    ApproximateAuthorityResolutionResult,
     ApproximateNativePlan,
+    AuthorityNativePlan,
+    AuthorityResolveRequest,
+    AuthorityResolutionResult,
+    IdentifierNativePlan,
+    IdentifierResolveRequest,
+    IdentifierResolutionResult,
+    IdentityNativePlan,
+    IdentityResolveRequest,
+    IdentityResolutionResult,
     ApproximateSemanticConjunctionRequest,
     ApproximateSemanticConjunctionResolutionResult,
     ApproximateSemanticResolutionResult,
@@ -23,8 +34,16 @@ from .semantic_resolver import (
     SemanticConjunctionResolutionResult,
     SemanticResolutionResult,
     SemanticResolveRequest,
+    _validate_approximate_authority_request,
     _validate_approximate_conjunction_request,
     _validate_approximate_request,
+    _validate_authority_request,
+    _validate_identifier_request,
+    _validate_identity_request,
+    authority_resolve_approximate,
+    authority_resolve_exact,
+    identifier_resolve,
+    identity_resolve,
     semantic_resolve,
     semantic_resolve_approximate,
     semantic_resolve_approximate_conjunction,
@@ -36,6 +55,11 @@ EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-exact-execution-runtime-v1"
 APPROXIMATE_EXECUTION_CONTRACT = "tfont-approximate-execution-v1"
 APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-approximate-execution-runtime-v1"
 APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT = "tfont-approximate-semantic-conjunction-execution-v1"
+REFERENCE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-reference-execution-runtime-v1"
+EXACT_AUTHORITY_EXECUTION_CONTRACT = "tfont-exact-authority-execution-v1"
+APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT = "tfont-approximate-authority-execution-v1"
+IDENTITY_EXECUTION_CONTRACT = "tfont-identity-execution-v1"
+IDENTIFIER_EXECUTION_CONTRACT = "tfont-identifier-execution-v1"
 
 
 @dataclass(frozen=True)
@@ -81,6 +105,66 @@ class ApproximateExecutionResult:
     execution_contract: str
     resolution: ApproximateSemanticResolutionResult
     corpora: tuple[ApproximateCorpusExecution, ...]
+
+
+@dataclass(frozen=True)
+class ExactAuthorityCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plan: AuthorityNativePlan
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class ExactAuthorityExecutionResult:
+    execution_contract: str
+    resolution: AuthorityResolutionResult
+    corpora: tuple[ExactAuthorityCorpusExecution, ...]
+
+
+@dataclass(frozen=True)
+class ApproximateAuthorityCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plan: AuthorityNativePlan
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class ApproximateAuthorityExecutionResult:
+    execution_contract: str
+    resolution: ApproximateAuthorityResolutionResult
+    corpora: tuple[ApproximateAuthorityCorpusExecution, ...]
+
+
+@dataclass(frozen=True)
+class IdentityCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plan: IdentityNativePlan
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class IdentityExecutionResult:
+    execution_contract: str
+    resolution: IdentityResolutionResult
+    corpora: tuple[IdentityCorpusExecution, ...]
+
+
+@dataclass(frozen=True)
+class IdentifierCorpusExecution:
+    corpus_id: str
+    nodes: tuple[int, ...]
+    plan: IdentifierNativePlan
+    runtime_report: RuntimeEvaluationReport
+
+
+@dataclass(frozen=True)
+class IdentifierExecutionResult:
+    execution_contract: str
+    resolution: IdentifierResolutionResult
+    corpora: tuple[IdentifierCorpusExecution, ...]
 
 
 @dataclass(frozen=True)
@@ -1071,3 +1155,213 @@ def execute_approximate_conjunction(
         return _execute_approximate_conjunction_impl(ir, request, contexts)
     except ExactExecutionError as error:
         raise _translate_exact_execution_error(error) from error
+
+def _reference_runtime_state(
+    ir: CompiledSemanticIR,
+    corpora: tuple[str, ...],
+    contexts: Iterable[LoadedCorpusContext],
+) -> tuple[
+    dict[str, LoadedCorpusContext],
+    dict[str, RuntimeEvaluationReport],
+    tuple[Any, ...],
+]:
+    normalized_contexts = _normalize_contexts(contexts)
+    for corpus_id in corpora:
+        if corpus_id not in normalized_contexts:
+            _fail(
+                "missing_execution_context",
+                "requested corpus has no loaded execution context",
+                corpus_id=corpus_id,
+            )
+
+    variants = _select_variants(ir, corpora)
+    reports: dict[str, RuntimeEvaluationReport] = {}
+    prerequisites = []
+    for corpus_id in corpora:
+        context = normalized_contexts[corpus_id]
+        report = evaluate_runtime_prerequisites(
+            variants[corpus_id],
+            _observation(context),
+            source_contract=REFERENCE_EXECUTION_RUNTIME_SOURCE_CONTRACT,
+            active_ontology_bundle_digest=context.active_ontology_bundle_digest,
+        )
+        reports[corpus_id] = report
+        prerequisites.append(report.to_prerequisite())
+    return normalized_contexts, reports, tuple(prerequisites)
+
+
+def _execute_reference_plan(
+    plan: AuthorityNativePlan | IdentityNativePlan | IdentifierNativePlan,
+    context: LoadedCorpusContext,
+) -> tuple[int, ...]:
+    binding = plan.native_execution_binding
+    if type(binding) is not NativeBindingIR:
+        _fail(
+            "unsupported_native_binding",
+            "fresh reference resolver plan has an invalid native binding",
+            corpus_id=plan.corpus_id,
+        )
+    if binding.execution_shape == "value-predicate":
+        binding = _validate_value_predicate(plan)
+    elif binding.execution_shape == "value-set-predicate":
+        binding = _validate_value_set_predicate(plan)
+    else:
+        _fail(
+            "unsupported_native_binding",
+            "reference execution supports only scalar or finite-set feature predicates",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+
+    component = _components(context).get(binding.component_id or "")
+    if component is None:
+        _fail(
+            "missing_execution_component",
+            "fresh reference resolver plan references a component outside the execution context",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+    if binding.execution_shape == "value-predicate":
+        return _execute_value_predicate(plan, component)
+    return _execute_value_set_predicate(plan, component)
+
+
+def execute_exact_authority(
+    ir: CompiledSemanticIR,
+    request: AuthorityResolveRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ExactAuthorityExecutionResult:
+    canonical = _validate_authority_request(request)
+    normalized, reports, prerequisites = _reference_runtime_state(
+        ir, canonical.corpora, contexts
+    )
+    resolution = authority_resolve_exact(ir, canonical, prerequisites)
+    rows = []
+    for plan in resolution.plans:
+        context = normalized.get(plan.corpus_id)
+        if context is None or plan.corpus_id not in reports:
+            _fail(
+                "plan_context_mismatch",
+                "fresh authority plan has no authorized runtime context",
+                corpus_id=plan.corpus_id,
+            )
+        rows.append(
+            ExactAuthorityCorpusExecution(
+                corpus_id=plan.corpus_id,
+                nodes=_execute_reference_plan(plan, context),
+                plan=plan,
+                runtime_report=reports[plan.corpus_id],
+            )
+        )
+    rows.sort(key=lambda row: _utf16(row.corpus_id))
+    return ExactAuthorityExecutionResult(
+        execution_contract=EXACT_AUTHORITY_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(rows),
+    )
+
+
+def execute_approximate_authority(
+    ir: CompiledSemanticIR,
+    request: ApproximateAuthorityResolveRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> ApproximateAuthorityExecutionResult:
+    canonical = _validate_approximate_authority_request(request)
+    normalized, reports, prerequisites = _reference_runtime_state(
+        ir, canonical.corpora, contexts
+    )
+    resolution = authority_resolve_approximate(ir, canonical, prerequisites)
+    rows = []
+    for plan in resolution.plans:
+        context = normalized.get(plan.corpus_id)
+        if context is None or plan.corpus_id not in reports:
+            _fail(
+                "plan_context_mismatch",
+                "fresh approximate authority plan has no authorized runtime context",
+                corpus_id=plan.corpus_id,
+            )
+        rows.append(
+            ApproximateAuthorityCorpusExecution(
+                corpus_id=plan.corpus_id,
+                nodes=_execute_reference_plan(plan, context),
+                plan=plan,
+                runtime_report=reports[plan.corpus_id],
+            )
+        )
+    rows.sort(key=lambda row: _utf16(row.corpus_id))
+    return ApproximateAuthorityExecutionResult(
+        execution_contract=APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(rows),
+    )
+
+
+def execute_identity(
+    ir: CompiledSemanticIR,
+    request: IdentityResolveRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> IdentityExecutionResult:
+    canonical = _validate_identity_request(request)
+    normalized, reports, prerequisites = _reference_runtime_state(
+        ir, canonical.corpora, contexts
+    )
+    resolution = identity_resolve(ir, canonical, prerequisites)
+    rows = []
+    for plan in resolution.plans:
+        context = normalized.get(plan.corpus_id)
+        if context is None or plan.corpus_id not in reports:
+            _fail(
+                "plan_context_mismatch",
+                "fresh identity plan has no authorized runtime context",
+                corpus_id=plan.corpus_id,
+            )
+        rows.append(
+            IdentityCorpusExecution(
+                corpus_id=plan.corpus_id,
+                nodes=_execute_reference_plan(plan, context),
+                plan=plan,
+                runtime_report=reports[plan.corpus_id],
+            )
+        )
+    rows.sort(key=lambda row: _utf16(row.corpus_id))
+    return IdentityExecutionResult(
+        execution_contract=IDENTITY_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(rows),
+    )
+
+
+def execute_identifier(
+    ir: CompiledSemanticIR,
+    request: IdentifierResolveRequest,
+    contexts: Iterable[LoadedCorpusContext],
+) -> IdentifierExecutionResult:
+    canonical = _validate_identifier_request(request)
+    normalized, reports, prerequisites = _reference_runtime_state(
+        ir, canonical.corpora, contexts
+    )
+    resolution = identifier_resolve(ir, canonical, prerequisites)
+    rows = []
+    for plan in resolution.plans:
+        context = normalized.get(plan.corpus_id)
+        if context is None or plan.corpus_id not in reports:
+            _fail(
+                "plan_context_mismatch",
+                "fresh identifier plan has no authorized runtime context",
+                corpus_id=plan.corpus_id,
+            )
+        rows.append(
+            IdentifierCorpusExecution(
+                corpus_id=plan.corpus_id,
+                nodes=_execute_reference_plan(plan, context),
+                plan=plan,
+                runtime_report=reports[plan.corpus_id],
+            )
+        )
+    rows.sort(key=lambda row: _utf16(row.corpus_id))
+    return IdentifierExecutionResult(
+        execution_contract=IDENTIFIER_EXECUTION_CONTRACT,
+        resolution=resolution,
+        corpora=tuple(rows),
+    )
+
