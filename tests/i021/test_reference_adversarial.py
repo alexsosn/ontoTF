@@ -44,6 +44,22 @@ def assert_problem(testcase, expected, fn, *args):
     testcase.assertEqual(category(raised.exception), expected)
 
 
+def ordered_reference_ir(*, reverse: bool):
+    refs = [
+        entity_identity_reference("bhsa"),
+        catalogue_reference("bhsa"),
+    ]
+    if reverse:
+        refs.reverse()
+    sources = noun_sources(
+        "bhsa",
+        parent_char="d",
+        external_references=refs,
+    )
+    validate_structural_sources(sources)
+    return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
+
+
 def explanation_reference_ir():
     refs = [
         entity_identity_reference("bhsa"),
@@ -61,6 +77,20 @@ def explanation_reference_ir():
 
 
 class I021ReferenceAdversarialTests(unittest.TestCase):
+    def test_source_order_does_not_change_reviewed_mapping_payload_or_digest(self):
+        left = ordered_reference_ir(reverse=False)
+        right = ordered_reference_ir(reverse=True)
+        left_parent = next(row for _key, rows in left.native_index for row in rows)
+        right_parent = next(row for _key, rows in right.native_index for row in rows)
+        self.assertEqual(
+            left_parent.mapping_semantic_payload,
+            right_parent.mapping_semantic_payload,
+        )
+        self.assertEqual(
+            left_parent.mapping_semantic_digest,
+            right_parent.mapping_semantic_digest,
+        )
+
     def test_reviewed_mapping_payload_is_canonical_and_digest_bound(self):
         ir = reference_ir()
         parent = next(row for _key, rows in ir.native_index for row in rows)
@@ -184,6 +214,34 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
                     request,
                     prerequisites(tfont, forged),
                 )
+
+    def test_forged_parent_review_cannot_escape_selected_release_signature(self):
+        ir = reference_ir()
+        key, native_rows = ir.native_index[0]
+        parent = native_rows[0]
+        forged_review = replace(
+            parent.mapping_review,
+            reviewed_semantic_digest="sha256:" + "0" * 64,
+        )
+        forged_parent = replace(parent, mapping_review=forged_review)
+        forged = replace(
+            ir,
+            native_index=((key, (forged_parent,)),) + ir.native_index[1:],
+        )
+        identity_key = ir.identity_index[0][0]
+        request = tfont.IdentityResolveRequest(
+            authority_system=identity_key.authority_system,
+            external_entity_id=identity_key.external_entity_id,
+            corpora=("bhsa",),
+        )
+        assert_problem(
+            self,
+            "invalid_compiled_ir",
+            tfont.identity_resolve,
+            forged,
+            request,
+            prerequisites(tfont, forged),
+        )
 
     def test_explanation_only_rows_cannot_be_injected_into_reverse_indexes(self):
         ir = explanation_reference_ir()
