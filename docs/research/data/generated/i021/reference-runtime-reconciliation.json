@@ -2,7 +2,7 @@
   "baseline_main": "45b4584f7a8ab8ce5d5c3920fa144819a88fdfbe",
   "conclusion": {
     "execution_requires_explicit_execution_shape": true,
-    "external_reference_runtime_payload_binding_required": false,
+    "external_reference_runtime_payload_binding_required": true,
     "index_schema_change_required": false,
     "recommended_binding": "canonical reviewed parent mapping semantic payload on NativeRecordIR",
     "source_schema_change_required": false
