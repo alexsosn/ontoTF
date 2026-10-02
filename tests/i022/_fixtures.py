@@ -196,6 +196,7 @@ def approximate_membership_request(tfont_module, *, accept_losses=()):
     return tfont_module.ApproximateSemanticResolveRequest(
         key=noun_semantic_key(),
         corpora=("bhsa",),
+        semantic_mode="approximate",
         accept_losses=tuple(accept_losses),
     )
 
@@ -232,4 +233,33 @@ def compiled_authority_membership_ir(
         projection_route="authority",
         assessment=assessment,
         losses=losses,
+    )
+
+
+def compiled_two_key_membership_ir():
+    sources = membership_sources()
+    first = sources["mappings"]["mappings"][0]
+    second = copy.deepcopy(first)
+    second["mapping_id"] = "mapping:bhsa:proper-noun"
+    second["review"]["review_id"] = "review:bhsa:mapping:proper-noun"
+    projection = second["projections"][0]
+    projection["projection_id"] = "projection:bhsa:proper-noun"
+    projection["target"] = "http://purl.org/olia/olia.owl#ProperNoun"
+    projection["review"]["review_id"] = "review:bhsa:projection:proper-noun"
+    sources["locks"][0]["terms_used"].append(
+        "http://purl.org/olia/olia.owl#ProperNoun"
+    )
+    _refresh_mapping(second)
+    sources["mappings"]["mappings"].append(second)
+    validate_structural_sources(sources)
+    return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
+
+
+def proper_noun_key(tfont_module):
+    return tfont_module.SemanticKey(
+        profile_id="linguistic",
+        capability_id="linguistic.part-of-speech",
+        target="http://purl.org/olia/olia.owl#ProperNoun",
+        formal_kind="class",
+        semantic_role="annotation-value",
     )
