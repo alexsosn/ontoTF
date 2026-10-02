@@ -43,10 +43,16 @@ class I022MembershipRedTests(unittest.TestCase):
             "execution_shape": "membership",
         }
         self.assertFalse(tuple(validator.iter_errors(typed)))
-        self.assertTrue(
-            tuple(validator.iter_errors({"execution_shape": "membership"})),
-            "RED: shape-only membership is still schema-valid",
-        )
+        for incomplete in (
+            {"execution_shape": "membership"},
+            {"component_id": "bhsa-tf", "execution_shape": "membership"},
+            {"node_type": "word", "execution_shape": "membership"},
+        ):
+            with self.subTest(incomplete=incomplete):
+                self.assertTrue(tuple(validator.iter_errors(incomplete)))
+        unknown = dict(typed)
+        unknown["invented_field"] = "nope"
+        self.assertTrue(tuple(validator.iter_errors(unknown)))
         for field, value in (
             ("feature", "sp"),
             ("value", "subs"),
