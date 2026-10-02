@@ -761,6 +761,7 @@ def _native_binding_projection(binding: NativeBindingIR) -> dict[str, Any]:
             if (
                 type(step.edge) is not str
                 or not step.edge
+                or type(step.direction) is not str
                 or step.direction not in {"outgoing", "incoming"}
                 or type(step.result_node_type) is not str
                 or not step.result_node_type
