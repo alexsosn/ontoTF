@@ -118,12 +118,23 @@ Extend `EdgeStepIR` in `src/tfont/semantic_ir.py` to:
 class EdgeStepIR:
     edge: str
     direction: str
-    result_node_type: str
-    valued: bool
+    result_node_type: str | None = None
+    valued: bool | None = None
 ```
 
 Update `_native_binding()` so validated source steps compile all four fields
 in source order.
+
+The two new dataclass fields deliberately have defaults. `EdgeStepIR` is
+already exported from `tfont.__init__`; making the fields mandatory would
+break existing external Python construction such as
+`EdgeStepIR("mother", "outgoing")` even though old two-field steps are not an
+executable I-023 path. Preserve that constructor compatibility.
+
+Backward construction does **not** confer execution authority: an old
+two-field `EdgeStepIR` has `result_node_type is None` and
+`valued is None` and must fail compiled-IR/runtime edge-path validation.
+Validated I-023 source always compiles concrete `str + False`.
 
 Do not sort path steps: order is semantic.
 
@@ -147,8 +158,10 @@ For every compiled `EdgeStepIR`, require:
 - non-empty exact-string `result_node_type`;
 - `valued is False` exactly.
 
-Malformed or forged steps fail `invalid_compiled_ir` before plan trust or
-fingerprint reconstruction succeeds.
+Malformed or forged steps, including backward-compatible two-field
+`EdgeStepIR` instances with defaulted new fields, fail
+`invalid_compiled_ir` before plan trust or fingerprint reconstruction
+succeeds.
 
 Existing source/compiled `native_binding_identity` comparisons remain
 authoritative. No new plan-fingerprint algorithm is introduced.
@@ -517,59 +530,61 @@ Prove failures before implementation for:
 20. step order / result type / direction / edge / valuedness changes binding
     identity;
 21. resolver reconstructs all four fields;
-22. forged/malformed step fails compiled-IR validation;
-23. existing packaged mapping/projection digests and frozen fingerprints remain
+22. public two-argument `EdgeStepIR(edge, direction)` construction remains
+    source-compatible but is non-executable for edge-path;
+23. forged/malformed/defaulted step fails compiled-IR validation;
+24. existing packaged mapping/projection digests and frozen fingerprints remain
     unchanged.
 
 ### Exact runtime RED
 
-24. ORACC-style `word -> line -> column` two-step outgoing execution works;
-25. incoming traversal returns the declared source-domain type;
-26. mixed incoming/outgoing typed path works on a fixture;
-27. fan-out preserves loaded order;
-28. fan-in de-duplicates by first discovery;
-29. empty post-step frontier succeeds empty;
-30. empty start after fresh prerequisite pass fails drift;
-31. a polymorphic edge result is filtered to the reviewed
+25. ORACC-style `word -> line -> column` two-step outgoing execution works;
+26. incoming traversal returns the declared source-domain type;
+27. mixed incoming/outgoing typed path works on a fixture;
+28. fan-out preserves loaded order;
+29. fan-in de-duplicates by first discovery;
+30. empty post-step frontier succeeds empty;
+31. empty start after fresh prerequisite pass fails drift;
+32. a polymorphic edge result is filtered to the reviewed
     `result_node_type` without inferring edge-domain semantics;
-32. all well-formed neighbors outside the reviewed result type may yield a
+33. all well-formed neighbors outside the reviewed result type may yield a
     valid empty next frontier;
-33. malformed node-type values and malformed/invalid/duplicate raw edge nodes
+34. malformed node-type values and malformed/invalid/duplicate raw edge nodes
     fail appropriately.
 
 ### Loaded API / valuedness RED
 
-34. missing/malformed `Eall` fails closed;
-35. unloaded edge fails closed and never autoloads;
-36. missing/non-callable `f/t` fails;
-37. missing/malformed `doValues` fails;
-38. `doValues=True` fails before tuple values can be stripped;
-39. an early empty frontier does not hide a later missing/malformed/valued
+35. missing/malformed `Eall` fails closed;
+36. unloaded edge fails closed and never autoloads;
+37. missing/non-callable `f/t` fails;
+38. missing/malformed `doValues` fails;
+39. `doValues=True` fails before tuple values can be stripped;
+40. an early empty frontier does not hide a later missing/malformed/valued
     step: full-path preflight still fails closed;
-40. traversal exception fails loaded-API category;
-41. missing/malformed `F.otype.s/v` fails;
-42. no access to `E.oslots`, loaders, network or Text-Fabric search.
+41. traversal exception fails loaded-API category;
+42. missing/malformed `F.otype.s/v` fails;
+43. no access to `E.oslots`, loaders, network or Text-Fabric search.
 
 ### Surface and conjunction RED
 
-43. exact semantic execution supports edge-path;
-44. approximate semantic execution supports reviewed edge-path;
-45. exact/approximate authority execution supports it;
-46. identity/identifier execution supports it;
-47. exact conjunction uses final result domain, not start domain;
-48. approximate conjunction uses final result domain;
-49. two paths with different starts but same final domain can intersect;
-50. same starts but different final domains reject;
-51. path plus membership/predicate can intersect only when final domains match.
+44. exact semantic execution supports edge-path;
+45. approximate semantic execution supports reviewed edge-path;
+46. exact/approximate authority execution supports it;
+47. identity/identifier execution supports it;
+48. exact conjunction uses final result domain, not start domain;
+49. approximate conjunction uses final result domain;
+50. two paths with different starts but same final domain can intersect;
+51. same starts but different final domains reject;
+52. path plus membership/predicate can intersect only when final domains match.
 
 ### Real-data controls
 
-52. committed ORACC inventory proves `word_line -> line_column` endpoint types
+53. committed ORACC inventory proves `word_line -> line_column` endpoint types
     and unvaluedness;
-53. BHSA `mother` demonstrates that edge labels may span multiple endpoint
+54. BHSA `mother` demonstrates that edge labels may span multiple endpoint
     domains and that typed execution must select, not infer, the reviewed result
     domain;
-54. TLHdig valued edges remain negative controls and cannot execute in I-023.
+55. TLHdig valued edges remain negative controls and cannot execute in I-023.
 
 Observe RED on the tests-only head before touching production source.
 
@@ -592,6 +607,8 @@ Expected non-production changes:
 
 No expected production change to:
 
+- public package export names (the already-exported `EdgeStepIR` is extended
+  compatibly with defaulted fields);
 - dependency schema / `path-present` record shape;
 - `runtime_tf_observation.py`;
 - digest algorithms;
@@ -628,7 +645,8 @@ Before merge, a logically-independent review of the exact implementation head
 must challenge at minimum:
 
 - schema closure and absence of one-step alias;
-- exact typed step compilation/reconstruction;
+- exact typed step compilation/reconstruction and backward-compatible
+  two-argument public `EdgeStepIR` construction;
 - binding/digest/fingerprint authority against forged IR;
 - start and every result-domain dependency authority;
 - exact ordered path-present matching;
