@@ -423,23 +423,27 @@ Tests-only RED must include at least:
 13. exact semantic membership selects all nodes of the requested native type;
 14. selector order is preserved;
 15. slot-type membership works;
-16. empty membership is a successful empty result.
+16. an absent node type fails fresh `node-type-present` prerequisite authorization
+    before native membership execution;
+17. if `F.otype.s(node_type)` was non-empty during fresh prerequisite evaluation
+    but is empty when membership executes, fail `invalid_result_nodes` as
+    runtime drift; do not return a successful empty membership result.
 
 ### Loaded API failure
 
-14. missing/non-callable `F.otype.s` fails `loaded_api_unavailable`;
-15. missing/non-callable `F.otype.v` fails `loaded_api_unavailable`;
-19. selector exception fails `loaded_api_unavailable`;
-20. non-iterable result fails `invalid_result_nodes`;
-21. bool/non-index/zero/negative/duplicate node IDs fail;
-22. wrong-domain returned node fails `invalid_result_nodes`;
-23. malformed `otype.v` result fails `loaded_api_unavailable`.
+18. missing/non-callable `F.otype.s` fails `loaded_api_unavailable`;
+19. missing/non-callable `F.otype.v` fails `loaded_api_unavailable`;
+20. selector exception fails `loaded_api_unavailable`;
+21. non-iterable result fails `invalid_result_nodes`;
+22. bool/non-index/zero/negative/duplicate node IDs fail;
+23. wrong-domain returned node fails `invalid_result_nodes`;
+24. malformed `otype.v` result fails `loaded_api_unavailable`.
 
 ### Trust / unsupported shape
 
 25. forged membership IR carrying a forbidden field fails
     `unsupported_native_binding`;
-26. stale/incompatible loaded state prevents `F.otype.s` access;
+26. stale/incompatible loaded state prevents membership execution authorization;
 27. no public caller-plan execution path exists;
 28. edge-path remains `unsupported_native_binding`;
 29. inspection-only remains unsupported;
