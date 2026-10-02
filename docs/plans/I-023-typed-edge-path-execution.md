@@ -247,17 +247,22 @@ network APIs, ontology APIs, or any corpus acquisition path.
 
 Do not add Text-Fabric as an ordinary runtime dependency.
 
-### Edge availability
+### Edge availability and full-path preflight
 
-For each step, at execution time:
+Before traversing any node, preflight **every reviewed step in order**:
 
-1. obtain loaded edge names through `Eall()`;
-2. require a well-formed iterable of exact non-empty strings;
-3. require the reviewed edge name to be present;
-4. obtain the edge API and requested `f/t` method;
-5. require the traversal method callable;
-6. require `type(edge_api.doValues) is bool`;
-7. require `edge_api.doValues is False`.
+1. obtain loaded edge names through `Eall()` and require a well-formed
+   iterable of exact non-empty strings;
+2. require each reviewed edge name to be present;
+3. obtain each edge API and its requested `f/t` method;
+4. require every traversal method callable;
+5. require `type(edge_api.doValues) is bool`;
+6. require `edge_api.doValues is False`;
+7. retain only these validated already-loaded method handles for traversal.
+
+The entire reviewed path is therefore checked even when an early traversal
+frontier becomes empty. A later missing edge or `doValues=True` is still
+runtime drift and must not be hidden by graph sparsity.
 
 Failures in loaded inventory/API/valuedness are `loaded_api_unavailable`
 unless a more specific existing runtime category is already established by the
@@ -313,9 +318,11 @@ path result.
 A loaded path dependency means the edge APIs exist; it does not assert that
 the current source nodes have outgoing/incoming edges.
 
-Once a frontier becomes empty, the executor may return an empty final result
-without calling later edge traversals. The reviewed plan still records the
-full path.
+Once a frontier becomes empty, later **per-node traversal calls** may be
+skipped because the final result is necessarily empty. However, the full-path
+API/valuedness preflight above must already have validated every later step.
+An empty frontier must never suppress detection of a missing, malformed, or
+valued later edge.
 
 ## Deterministic ordering
 
@@ -517,29 +524,31 @@ Prove failures before implementation for:
 35. missing/non-callable `f/t` fails;
 36. missing/malformed `doValues` fails;
 37. `doValues=True` fails before tuple values can be stripped;
-38. traversal exception fails loaded-API category;
-39. missing/malformed `F.otype.s/v` fails;
-40. no access to `E.oslots`, loaders, network or Text-Fabric search.
+38. an early empty frontier does not hide a later missing/malformed/valued
+    step: full-path preflight still fails closed;
+39. traversal exception fails loaded-API category;
+40. missing/malformed `F.otype.s/v` fails;
+41. no access to `E.oslots`, loaders, network or Text-Fabric search.
 
 ### Surface and conjunction RED
 
-41. exact semantic execution supports edge-path;
-42. approximate semantic execution supports reviewed edge-path;
-43. exact/approximate authority execution supports it;
-44. identity/identifier execution supports it;
-45. exact conjunction uses final result domain, not start domain;
-46. approximate conjunction uses final result domain;
-47. two paths with different starts but same final domain can intersect;
-48. same starts but different final domains reject;
-49. path plus membership/predicate can intersect only when final domains match.
+42. exact semantic execution supports edge-path;
+43. approximate semantic execution supports reviewed edge-path;
+44. exact/approximate authority execution supports it;
+45. identity/identifier execution supports it;
+46. exact conjunction uses final result domain, not start domain;
+47. approximate conjunction uses final result domain;
+48. two paths with different starts but same final domain can intersect;
+49. same starts but different final domains reject;
+50. path plus membership/predicate can intersect only when final domains match.
 
 ### Real-data controls
 
-50. committed ORACC inventory proves `word_line -> line_column` endpoint types
+51. committed ORACC inventory proves `word_line -> line_column` endpoint types
     and unvaluedness;
-51. BHSA `mother` demonstrates that edge labels may span multiple endpoint
+52. BHSA `mother` demonstrates that edge labels may span multiple endpoint
     domains, so result type cannot be inferred from edge name;
-52. TLHdig valued edges remain negative controls and cannot execute in I-023.
+53. TLHdig valued edges remain negative controls and cannot execute in I-023.
 
 Observe RED on the tests-only head before touching production source.
 
@@ -603,6 +612,7 @@ must challenge at minimum:
 - start and every result-domain dependency authority;
 - exact ordered path-present matching;
 - incoming/outgoing endpoint orientation;
+- full-path loaded-edge preflight even when an early frontier is empty;
 - loaded edge inventory and no-autoload behavior;
 - `doValues=False` enforcement and TLHdig valued-edge rejection;
 - positive/unique node normalization;
