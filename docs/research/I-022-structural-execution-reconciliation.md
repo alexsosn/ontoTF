@@ -156,8 +156,14 @@ Execution then means exactly:
 
 `loaded_api.F.otype.s(node_type)`
 
-followed by deterministic validation that the returned values are node IDs
-whose `F.otype.v(node)` is exactly the requested native type.
+followed by deterministic validation that the returned values are positive,
+unique node IDs whose `F.otype.v(node)` is exactly the requested native type.
+
+Do not numerically re-sort this result: Text-Fabric documents
+`F.otype.s()` as returning canonical TF node order, and the existing scalar
+predicate executor already preserves the loaded selector's order through
+`_normalize_result_nodes()`. Membership should reuse that normalization
+boundary rather than invent a second ordering rule.
 
 This is **native TF node-kind membership**. A node type named `word`,
 `document`, `lex`, `fragment`, etc. does not thereby become an OLiA,
