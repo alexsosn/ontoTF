@@ -6,12 +6,12 @@
     "edge_traversal_mechanics_available": true,
     "extent_interpretation_should_not_be_direct_execution_authority": true,
     "membership_mechanics_available": true,
+    "membership_production_runtime_available": true,
     "membership_requires_source_contract_amendment": false,
     "no_slot_must_not_fabricate_slot_membership": true,
     "research_authorizes_production_runtime_change": false,
     "technical_anchor_must_not_imply_textual_extent": true,
-    "warp_may_be_used_internally_without_semantic_promotion": true,
-    "membership_production_runtime_available": true
+    "warp_may_be_used_internally_without_semantic_promotion": true
   },
   "corpus_mechanics": {
     "bhsa": {
