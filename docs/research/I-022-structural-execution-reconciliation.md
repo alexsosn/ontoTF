@@ -27,6 +27,10 @@ The research probe records that fact against the actual schema and also pins:
 - the current `NativeBindingIR` field set;
 - the current executor's only supported shapes
   (`value-predicate`, `value-set-predicate`);
+- all 48 execution bindings in packaged production mapping resources: their
+  shape set is exactly `value-predicate | value-set-predicate`, with zero
+  `membership` or `edge-path` bindings, so closing the two structural
+  source shapes does not invalidate a shipped production mapping;
 - the public Text-Fabric mechanics at pinned upstream revision
   `0c45c386916cb52be84098796ec27ce97e5bf9fc`;
 - committed CUC, ORACC, TLHdig and BHSA structural inventories.
@@ -226,7 +230,8 @@ the upstream API contract.
 
 If this research is accepted, the I-022 implementation plan should:
 
-1. amend only the `membership` source-shape contract;
+1. amend only the `membership` source-shape contract; the current packaged
+   mapping inventory proves this is additive for shipped production mappings;
 2. add schema/semantic regressions before implementation;
 3. preserve all existing semantic digests/fingerprints for existing mappings;
 4. add a typed membership executor path shared by exact/approximate/reference
