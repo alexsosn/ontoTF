@@ -1,8 +1,9 @@
 {
   "baseline_main": "d1da009cc49b3dc812a395e0813c51500c28fa08",
   "conclusion": {
-    "edge_path_requires_source_contract_amendment": true,
-    "edge_path_start_selector_is_currently_normatively_undefined": true,
+    "edge_path_production_runtime_available": true,
+    "edge_path_requires_source_contract_amendment": false,
+    "edge_path_start_selector_is_currently_normatively_undefined": false,
     "edge_traversal_mechanics_available": true,
     "extent_interpretation_should_not_be_direct_execution_authority": true,
     "membership_mechanics_available": true,
@@ -195,7 +196,7 @@
     }
   },
   "current_contract": {
-    "edge_path_has_closed_shape_rule": false,
+    "edge_path_has_closed_shape_rule": true,
     "execution_shapes": [
       "membership",
       "value-predicate",
@@ -228,13 +229,14 @@
       "structural_bindings": []
     },
     "runtime_execution_shapes": [
+      "edge-path",
       "membership",
       "value-predicate",
       "value-set-predicate"
     ],
     "schema_acceptance": {
-      "edge_path_shape_only": true,
-      "edge_path_steps_only": true,
+      "edge_path_shape_only": false,
+      "edge_path_steps_only": false,
       "edge_path_typed_start": true,
       "membership_shape_only": false,
       "membership_typed": true,
