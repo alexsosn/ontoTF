@@ -1,0 +1,48 @@
+name: I-024 valued-edge research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/i024_valued_edge_execution_reconciliation.py"
+      - "docs/research/I-024-valued-edge-execution-reconciliation.md"
+      - "docs/research/data/generated/i024/valued-edge-reconciliation.json"
+      - "src/tfont/schemas/mapping.schema.json"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/semantic_execution.py"
+      - "docs/research/data/generated/r005/bhsa.json"
+      - ".github/workflows/i024-valued-edge-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v5
+        with:
+          repository: alexsosn/TLHdig-TF
+          ref: 0261d2d46b3419a1f907e231a03f749d133cfb5e
+          path: _research/tlhdig
+      - uses: actions/checkout@v5
+        with:
+          repository: ETCBC/bhsa
+          ref: 4db00e2157915495e1a4d3d57e41223df24775da
+          path: _research/bhsa
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - run: python -m pip install "text-fabric @ git+https://github.com/annotation/text-fabric.git@0c45c386916cb52be84098796ec27ce97e5bf9fc"
+      - name: Reproduce I-024 evidence
+        run: |
+          python scripts/research/i024_valued_edge_execution_reconciliation.py > /tmp/i024-valued-edge.json
+          cmp /tmp/i024-valued-edge.json docs/research/data/generated/i024/valued-edge-reconciliation.json
