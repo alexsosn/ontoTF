@@ -73,6 +73,39 @@ No field is silently ignored.
 The generic schema's `additionalProperties: false` remains authoritative for
 unknown fields.
 
+### Required node-type prerequisite authority
+
+A closed binding shape is not sufficient. A membership binding must also be
+covered by the mapping's reviewed dependency set.
+
+For every membership binding on a mapping, projection, or external reference,
+semantic validation must require at least one dependency named by that
+mapping's `native_dependencies` whose reviewed record is exactly:
+
+- `kind == "node-type-present"`;
+- the same `component_id` as the binding;
+- `assertion.node_type` equal to the binding's `node_type`.
+
+If no such dependency exists, semantic validation fails closed with a stable
+`dependency_authority` diagnostic at the membership binding.
+
+Do not infer this authority from:
+
+- `component-present` alone;
+- a feature dependency that happens to name the same node type;
+- the parent manifest's general list of node types;
+- `F.otype.s()` returning a non-empty result.
+
+This link is necessary because I-007 already evaluates
+`node-type-present` against fresh loaded state. Without the reviewed
+dependency, an unknown native node type could be mistaken for a legitimate
+empty membership result.
+
+Multiple semantically equivalent node-type-present dependencies are not a new
+execution composition mechanism; at least one exact matching dependency is
+sufficient, and all ordinary prerequisite results retain their existing
+fail-closed behavior.
+
 ### Why no mapping-schema version bump
 
 This is a closure of an already-named but previously unexecutable/undefined
@@ -199,7 +232,10 @@ Pinned Text-Fabric documents `F.otype.s()` as canonical TF node order. The
 existing scalar predicate path already preserves loaded selector order through
 `_normalize_result_nodes()`.
 
-An empty selector result is a successful empty result.
+An empty selector result is a successful empty result **only after** the fresh
+runtime prerequisite state has passed the reviewed matching
+`node-type-present` dependency. Unknown/absent node type must therefore fail
+at prerequisite authorization before `F.otype.s()` is used.
 
 ### Domain verification
 
@@ -358,63 +394,68 @@ Tests-only RED must include at least:
 2. exact `component_id + node_type + membership` validates;
 3. membership with each forbidden field is rejected independently;
 4. unknown fields remain rejected;
-5. all packaged production mappings remain valid;
-6. all packaged production mapping/projection digests remain unchanged.
+5. membership without a matching reviewed `node-type-present` dependency
+   fails semantic validation as `dependency_authority`;
+6. component-present alone does not authorize membership;
+7. a matching node-type-present dependency for the wrong component or wrong
+   node type does not authorize membership;
+8. all packaged production mappings remain valid;
+9. all packaged production mapping/projection digests remain unchanged.
 
 ### Compiler / identity
 
-7. a validated membership source compiles to the existing
+10. a validated membership source compiles to the existing
    `NativeBindingIR` with exact membership fields and normalized absence of
    all forbidden fields;
-8. source key order does not change native binding identity;
-9. adding/changing node type or component changes native binding identity.
+11. source key order does not change native binding identity;
+12. adding/changing node type or component changes native binding identity.
 
 ### Exact execution
 
-10. exact semantic membership selects all nodes of the requested native type;
-11. selector order is preserved;
-12. slot-type membership works;
-13. empty membership is a successful empty result.
+13. exact semantic membership selects all nodes of the requested native type;
+14. selector order is preserved;
+15. slot-type membership works;
+16. empty membership is a successful empty result.
 
 ### Loaded API failure
 
 14. missing/non-callable `F.otype.s` fails `loaded_api_unavailable`;
 15. missing/non-callable `F.otype.v` fails `loaded_api_unavailable`;
-16. selector exception fails `loaded_api_unavailable`;
-17. non-iterable result fails `invalid_result_nodes`;
-18. bool/non-index/zero/negative/duplicate node IDs fail;
-19. wrong-domain returned node fails `invalid_result_nodes`;
-20. malformed `otype.v` result fails `loaded_api_unavailable`.
+19. selector exception fails `loaded_api_unavailable`;
+20. non-iterable result fails `invalid_result_nodes`;
+21. bool/non-index/zero/negative/duplicate node IDs fail;
+22. wrong-domain returned node fails `invalid_result_nodes`;
+23. malformed `otype.v` result fails `loaded_api_unavailable`.
 
 ### Trust / unsupported shape
 
-21. forged membership IR carrying a forbidden field fails
+24. forged membership IR carrying a forbidden field fails
     `unsupported_native_binding`;
-22. stale/incompatible loaded state prevents `F.otype.s` access;
-23. no public caller-plan execution path exists;
-24. edge-path remains `unsupported_native_binding`;
-25. inspection-only remains unsupported;
-26. execution does not touch `E.oslots` or trigger loading/network access.
+25. stale/incompatible loaded state prevents `F.otype.s` access;
+26. no public caller-plan execution path exists;
+27. edge-path remains `unsupported_native_binding`;
+28. inspection-only remains unsupported;
+29. execution does not touch `E.oslots` or trigger loading/network access.
 
 ### Existing surfaces
 
-27. exact semantic execution handles membership;
-28. approximate semantic execution handles exact membership with no loss;
-29. an authorized approximate semantic membership binding preserves I-020 loss
+30. exact semantic execution handles membership;
+31. approximate semantic execution handles exact membership with no loss;
+32. an authorized approximate semantic membership binding preserves I-020 loss
     records while executing membership;
-30. exact/approximate conjunction can execute membership constituents under
+33. exact/approximate conjunction can execute membership constituents under
     existing node-domain safety;
-31. exact/approximate authority execution can execute a reviewed membership
+34. exact/approximate authority execution can execute a reviewed membership
     binding;
-32. identity/identifier execution can execute a reviewed membership binding
+35. identity/identifier execution can execute a reviewed membership binding
     without weakening I-021 review/index checks.
 
 ### Compatibility
 
-33. frozen I-020 fingerprint anchors remain exact;
-34. I-021 resolver/execution adversarial suite remains green;
-35. I-005/I-006/I-008/I-015 exact controls remain green;
-36. pyproject still has no Text-Fabric runtime dependency.
+36. frozen I-020 fingerprint anchors remain exact;
+37. I-021 resolver/execution adversarial suite remains green;
+38. I-005/I-006/I-008/I-015 exact controls remain green;
+39. pyproject still has no Text-Fabric runtime dependency.
 
 Observe actual RED on the exact tests-only head before changing schema/runtime.
 
@@ -423,6 +464,8 @@ Observe actual RED on the exact tests-only head before changing schema/runtime.
 Expected production changes:
 
 - `src/tfont/schemas/mapping.schema.json` — close membership shape only;
+- `src/tfont/semantic_validation.py` — require matching reviewed
+  `node-type-present` dependency authority for every membership binding;
 - `src/tfont/semantic_execution.py` — private validator/API helper/executor
   and membership dispatch only.
 
@@ -439,7 +482,6 @@ No expected changes to:
 
 - `semantic_ir.py`;
 - `semantic_resolver.py`;
-- `semantic_validation.py`;
 - semantic digest algorithms;
 - public package exports;
 - production profiles/mappings;
@@ -481,6 +523,9 @@ At minimum challenge:
 
 - whether membership schema closure really rejects every extraneous structural
   field;
+- whether every membership binding is backed by an exact reviewed
+  `node-type-present` dependency and fresh I-007 evaluation;
+- whether empty membership can occur only after that prerequisite passes;
 - whether defensive runtime validation catches forged IR despite schema
   validation;
 - whether `F.otype.s/v` is used exactly as pinned upstream documents;
