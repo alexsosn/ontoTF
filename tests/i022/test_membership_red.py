@@ -13,12 +13,8 @@ from tests.i022._fixtures import (
     membership_request,
     membership_sources,
 )
-from tfont.semantic_validation import (
-    SemanticValidationError,
-    source_bundle,
-    validate_semantic_bundle,
-)
-from tests.i005._fixtures import validate_structural_sources
+from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
+from tests.i005._fixtures import source_bundle, validate_structural_sources
 
 
 ROOT = Path(__file__).resolve().parents[2]
