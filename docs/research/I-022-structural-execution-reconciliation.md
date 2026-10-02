@@ -248,3 +248,33 @@ If this research is accepted, the I-022 implementation plan should:
 
 The final implementation still requires plan review, tests-only RED, GREEN,
 focused/full exact-head CI, and a fresh code/data-grounded adversarial review.
+
+## Post-implementation reconciliation
+
+I-022 production implementation closes only the reviewed native node-kind
+membership slice.
+
+Current state after implementation:
+
+- shape-only `{"execution_shape":"membership"}` is rejected;
+- membership requires exactly `component_id + node_type + execution_shape`
+  and rejects feature/value/value-set/edge/path/interpretation fields;
+- semantic validation requires an exact matching reviewed
+  `node-type-present` dependency from the mapping's `native_dependencies`;
+- loaded execution supports membership through `F.otype.s(node_type)` plus
+  exact `F.otype.v(node)` domain validation;
+- exact, approximate, conjunction and I-021 reference executors share that
+  membership path;
+- packaged production mappings remain 48 scalar/value-set bindings with zero
+  shipped membership/edge-path bindings;
+- `edge-path` remains source-under-specified and runtime-unsupported, owned by
+  I-023 #244;
+- TFont still does not declare Text-Fabric as an ordinary runtime dependency.
+
+The earlier plan-handoff sentence saying empty membership should be a
+successful empty result is superseded by reviewed plan amendment #246. Fresh
+runtime authorization requires `node-type-present`: an absent node type fails
+before execution, while a selector that was non-empty during prerequisite
+evaluation but becomes empty at execution is treated as runtime drift and
+fails closed as `invalid_result_nodes`.
+

@@ -111,12 +111,27 @@ def main() -> int:
         "execution_shape"
     ]["enum"]
 
+    membership_typed = {
+        "component_id": "fixture-tf",
+        "node_type": "word",
+        "execution_shape": "membership",
+    }
+    membership_forbidden = {
+        "feature": "sp",
+        "value": "subs",
+        "closed_values": ["subs"],
+        "values": ["subs"],
+        "edge": "mother",
+        "direction": "outgoing",
+        "steps": [{"edge": "mother", "direction": "outgoing"}],
+        "interpretation": "occurrenceSet",
+    }
     examples = {
         "membership_shape_only": {"execution_shape": "membership"},
-        "membership_typed": {
-            "component_id": "fixture-tf",
-            "node_type": "word",
-            "execution_shape": "membership",
+        "membership_typed": membership_typed,
+        **{
+            f"membership_with_{field}": {**membership_typed, field: value}
+            for field, value in membership_forbidden.items()
         },
         "edge_path_shape_only": {"execution_shape": "edge-path"},
         "edge_path_steps_only": {
@@ -165,7 +180,14 @@ def main() -> int:
             "schema_acceptance": {
                 name: is_valid(validator, value) for name, value in examples.items()
             },
-            "membership_has_closed_shape_rule": False,
+            "membership_has_closed_shape_rule": (
+                not is_valid(validator, examples["membership_shape_only"])
+                and is_valid(validator, examples["membership_typed"])
+                and all(
+                    not is_valid(validator, examples[f"membership_with_{field}"])
+                    for field in membership_forbidden
+                )
+            ),
             "edge_path_has_closed_shape_rule": False,
             "runtime_execution_shapes": runtime_shapes,
             "tfont_declares_text_fabric_runtime_dependency": (
@@ -211,7 +233,8 @@ def main() -> int:
         },
         "conclusion": {
             "membership_mechanics_available": True,
-            "membership_requires_source_contract_amendment": True,
+            "membership_requires_source_contract_amendment": False,
+            "membership_production_runtime_available": True,
             "edge_traversal_mechanics_available": True,
             "edge_path_requires_source_contract_amendment": True,
             "edge_path_start_selector_is_currently_normatively_undefined": True,
@@ -234,10 +257,19 @@ def main() -> int:
     }
     if set(execution_shapes) != expected_shapes:
         raise SystemExit("native execution-shape vocabulary drifted")
-    if runtime_shapes != ["value-predicate", "value-set-predicate"]:
-        raise SystemExit("runtime structural-execution premise drifted")
-    if not result["current_contract"]["schema_acceptance"]["membership_shape_only"]:
-        raise SystemExit("membership source contract is already closed; research premise drifted")
+    if runtime_shapes != ["membership", "value-predicate", "value-set-predicate"]:
+        raise SystemExit("membership runtime execution support drifted")
+    if result["current_contract"]["schema_acceptance"]["membership_shape_only"]:
+        raise SystemExit("shape-only membership must fail the closed source contract")
+    if not result["current_contract"]["schema_acceptance"]["membership_typed"]:
+        raise SystemExit("typed membership must satisfy the closed source contract")
+    if any(
+        result["current_contract"]["schema_acceptance"][f"membership_with_{field}"]
+        for field in membership_forbidden
+    ):
+        raise SystemExit("membership source contract accepts a forbidden field")
+    if not result["current_contract"]["membership_has_closed_shape_rule"]:
+        raise SystemExit("membership closed-shape reconciliation failed")
     if not result["current_contract"]["schema_acceptance"]["edge_path_shape_only"]:
         raise SystemExit("edge-path source contract is already closed; research premise drifted")
     if result["current_contract"]["tfont_declares_text_fabric_runtime_dependency"]:

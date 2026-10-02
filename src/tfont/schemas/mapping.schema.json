@@ -51,6 +51,18 @@
       "additionalProperties": false,
       "allOf": [
         {
+          "if": {"properties": {"execution_shape": {"const": "membership"}}, "required": ["execution_shape"]},
+          "then": {
+            "required": ["component_id", "node_type"],
+            "not": {"anyOf": [
+              {"required": ["feature"]}, {"required": ["value"]},
+              {"required": ["closed_values"]}, {"required": ["values"]},
+              {"required": ["edge"]}, {"required": ["direction"]},
+              {"required": ["steps"]}, {"required": ["interpretation"]}
+            ]}
+          }
+        },
+        {
           "if": {"properties": {"execution_shape": {"const": "value-predicate"}}, "required": ["execution_shape"]},
           "then": {
             "required": ["component_id", "node_type", "feature", "value"],

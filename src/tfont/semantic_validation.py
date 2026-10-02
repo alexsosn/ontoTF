@@ -322,6 +322,75 @@ def _validate_dependency_closure_and_mapping_scope(bundle: SemanticSourceBundle,
                 _fail(artifact, "component_authority", f"native binding component is not authorized by mapping dependencies: {component_id!r}", path=path, related_id=related_id or (component_id if type(component_id) is str else None))
 
 
+def _validate_membership_dependency_authority(
+    bundle: SemanticSourceBundle,
+    indexes: SemanticIndexes,
+) -> None:
+    artifact = bundle.mappings
+    dependencies = dict(indexes.dependencies)
+    for mapping_id, mapping in indexes.mappings:
+        dependency_ids = _sorted_strings(mapping.get("native_dependencies", []))
+        dependency_rows = [
+            dependencies[dependency_id]
+            for dependency_id in dependency_ids
+            if dependency_id in dependencies
+        ]
+        binding_rows: list[tuple[tuple[str | int, ...], Any, str | None]] = [
+            (
+                ("mappings", mapping_id, "native_binding"),
+                mapping.get("native_binding"),
+                mapping_id,
+            )
+        ]
+        for projection in _sorted_children(mapping.get("projections", []), "projection_id"):
+            projection_id = projection.get("projection_id")
+            binding_rows.append(
+                (
+                    (
+                        "mappings", mapping_id, "projections", projection_id,
+                        "native_execution_binding",
+                    ),
+                    projection.get("native_execution_binding"),
+                    projection_id if type(projection_id) is str else None,
+                )
+            )
+        for reference in _sorted_children(mapping.get("external_references", []), "reference_id"):
+            reference_id = reference.get("reference_id")
+            native = reference.get("native_binding")
+            if native is not None:
+                binding_rows.append(
+                    (
+                        (
+                            "mappings", mapping_id, "external_references", reference_id,
+                            "native_binding",
+                        ),
+                        native,
+                        reference_id if type(reference_id) is str else None,
+                    )
+                )
+
+        for binding_path, binding, related_id in binding_rows:
+            if type(binding) is not dict or binding.get("execution_shape") != "membership":
+                continue
+            component_id = binding.get("component_id")
+            node_type = binding.get("node_type")
+            authorized = any(
+                dependency.get("kind") == "node-type-present"
+                and dependency.get("component_id") == component_id
+                and type(dependency.get("assertion")) is dict
+                and dependency["assertion"].get("node_type") == node_type
+                for dependency in dependency_rows
+            )
+            if not authorized:
+                _fail(
+                    artifact,
+                    "dependency_authority",
+                    "membership binding requires a matching reviewed node-type-present dependency",
+                    path=binding_path,
+                    related_id=related_id,
+                )
+
+
 def _validate_vocabulary(bundle: SemanticSourceBundle, indexes: SemanticIndexes) -> None:
     artifact = bundle.mappings
     profile_artifact = bundle.profile
@@ -664,6 +733,7 @@ def validate_semantic_bundle(bundle: SemanticSourceBundle) -> ValidatedSemanticB
     indexes = _build_indexes(bundle)
     _validate_component_authority(bundle, indexes)
     _validate_dependency_closure_and_mapping_scope(bundle, indexes)
+    _validate_membership_dependency_authority(bundle, indexes)
     _validate_vocabulary(bundle, indexes)
     _validate_record_states(bundle, indexes)
     _validate_projection_and_candidate_legality(bundle, indexes)

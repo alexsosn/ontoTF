@@ -6,7 +6,8 @@
     "edge_traversal_mechanics_available": true,
     "extent_interpretation_should_not_be_direct_execution_authority": true,
     "membership_mechanics_available": true,
-    "membership_requires_source_contract_amendment": true,
+    "membership_production_runtime_available": true,
+    "membership_requires_source_contract_amendment": false,
     "no_slot_must_not_fabricate_slot_membership": true,
     "research_authorizes_production_runtime_change": false,
     "technical_anchor_must_not_imply_textual_extent": true,
@@ -203,7 +204,7 @@
       "identity-key",
       "inspection-only"
     ],
-    "membership_has_closed_shape_rule": false,
+    "membership_has_closed_shape_rule": true,
     "native_binding_ir_fields": [
       "component_id",
       "node_type",
@@ -227,6 +228,7 @@
       "structural_bindings": []
     },
     "runtime_execution_shapes": [
+      "membership",
       "value-predicate",
       "value-set-predicate"
     ],
@@ -234,8 +236,16 @@
       "edge_path_shape_only": true,
       "edge_path_steps_only": true,
       "edge_path_typed_start": true,
-      "membership_shape_only": true,
-      "membership_typed": true
+      "membership_shape_only": false,
+      "membership_typed": true,
+      "membership_with_closed_values": false,
+      "membership_with_direction": false,
+      "membership_with_edge": false,
+      "membership_with_feature": false,
+      "membership_with_interpretation": false,
+      "membership_with_steps": false,
+      "membership_with_value": false,
+      "membership_with_values": false
     },
     "tfont_declares_text_fabric_runtime_dependency": false
   },

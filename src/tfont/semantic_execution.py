@@ -459,6 +459,126 @@ def _validate_value_set_predicate(plan: ExactNativePlan) -> NativeBindingIR:
     return binding
 
 
+def _validate_membership_binding(plan: Any) -> NativeBindingIR:
+    binding = plan.native_execution_binding
+    valid = (
+        type(binding) is NativeBindingIR
+        and _nonempty_string(binding.component_id)
+        and _nonempty_string(binding.node_type)
+        and binding.execution_shape == "membership"
+        and binding.feature is None
+        and binding.value_present is False
+        and binding.value is None
+        and binding.closed_values is None
+        and binding.values is None
+        and binding.edge is None
+        and binding.direction is None
+        and binding.steps is None
+        and binding.interpretation is None
+    )
+    if not valid:
+        _fail(
+            "unsupported_native_binding",
+            "membership execution requires only component_id and node_type",
+            corpus_id=plan.corpus_id,
+            component_id=getattr(binding, "component_id", None),
+        )
+    return binding
+
+
+def _loaded_membership_api(
+    api: Any,
+    binding: NativeBindingIR,
+    *,
+    corpus_id: str,
+) -> tuple[Any, Any]:
+    try:
+        otype_api = api.F.otype
+        selector = otype_api.s
+        lookup = otype_api.v
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "loaded node-type API is unavailable",
+                corpus_id=corpus_id,
+                component_id=binding.component_id,
+            )
+        ) from error
+    if not callable(selector) or not callable(lookup):
+        _fail(
+            "loaded_api_unavailable",
+            "loaded node-type API methods are unavailable",
+            corpus_id=corpus_id,
+            component_id=binding.component_id,
+        )
+    return selector, lookup
+
+
+def _execute_membership(
+    plan: Any,
+    component: LoadedComponentContext,
+) -> tuple[int, ...]:
+    binding = _validate_membership_binding(plan)
+    selector, lookup = _loaded_membership_api(
+        component.api,
+        binding,
+        corpus_id=plan.corpus_id,
+    )
+    try:
+        raw_nodes = selector(binding.node_type)
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "loaded node-type selector failed",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+        ) from error
+
+    nodes = _normalize_result_nodes(
+        raw_nodes,
+        corpus_id=plan.corpus_id,
+        component_id=binding.component_id or "",
+    )
+    if not nodes:
+        _fail(
+            "invalid_result_nodes",
+            "membership selector became empty after prerequisite authorization",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+
+    for node in nodes:
+        try:
+            observed_type = lookup(node)
+        except Exception as error:
+            raise ExactExecutionError(
+                ExactExecutionProblem(
+                    "loaded_api_unavailable",
+                    "loaded node-type lookup failed",
+                    corpus_id=plan.corpus_id,
+                    component_id=binding.component_id,
+                )
+            ) from error
+        if type(observed_type) is not str or not observed_type:
+            _fail(
+                "loaded_api_unavailable",
+                "loaded node-type lookup returned a malformed value",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+        if observed_type != binding.node_type:
+            _fail(
+                "invalid_result_nodes",
+                "membership selector returned a node outside the reviewed node type",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+    return nodes
+
+
 def _loaded_feature_api(
     api: Any,
     binding: NativeBindingIR,
@@ -732,10 +852,12 @@ def execute_exact_semantic(
             binding = _validate_value_predicate(plan)
         elif binding.execution_shape == "value-set-predicate":
             binding = _validate_value_set_predicate(plan)
+        elif binding.execution_shape == "membership":
+            binding = _validate_membership_binding(plan)
         else:
             _fail(
                 "unsupported_native_binding",
-                "v0.1 execution supports only scalar or finite-set feature predicates",
+                "execution shape is not supported by the loaded runtime",
                 corpus_id=plan.corpus_id,
                 component_id=binding.component_id,
             )
@@ -750,8 +872,10 @@ def execute_exact_semantic(
             )
         if binding.execution_shape == "value-predicate":
             nodes = _execute_value_predicate(plan, component)
-        else:
+        elif binding.execution_shape == "value-set-predicate":
             nodes = _execute_value_set_predicate(plan, component)
+        else:
+            nodes = _execute_membership(plan, component)
         executions.append(
             ExactCorpusExecution(
                 corpus_id=plan.corpus_id,
@@ -824,10 +948,12 @@ def _execute_approximate_semantic_impl(
             binding = _validate_value_predicate(plan)
         elif binding.execution_shape == "value-set-predicate":
             binding = _validate_value_set_predicate(plan)
+        elif binding.execution_shape == "membership":
+            binding = _validate_membership_binding(plan)
         else:
             _fail(
                 "unsupported_native_binding",
-                "approximate execution supports only scalar or finite-set feature predicates",
+                "approximate execution shape is not supported by the loaded runtime",
                 corpus_id=plan.corpus_id,
                 component_id=binding.component_id,
             )
@@ -842,8 +968,10 @@ def _execute_approximate_semantic_impl(
             )
         if binding.execution_shape == "value-predicate":
             nodes = _execute_value_predicate(plan, component)
-        else:
+        elif binding.execution_shape == "value-set-predicate":
             nodes = _execute_value_set_predicate(plan, component)
+        else:
+            nodes = _execute_membership(plan, component)
         executions.append(
             ApproximateCorpusExecution(
                 corpus_id=plan.corpus_id,
@@ -920,10 +1048,12 @@ def _execute_exact_plan_in_context(
         binding = _validate_value_predicate(plan)
     elif binding.execution_shape == "value-set-predicate":
         binding = _validate_value_set_predicate(plan)
+    elif binding.execution_shape == "membership":
+        binding = _validate_membership_binding(plan)
     else:
         _fail(
             "unsupported_native_binding",
-            "exact conjunction supports only scalar or finite-set feature predicates",
+            "exact conjunction execution shape is not supported by the loaded runtime",
             corpus_id=plan.corpus_id,
             component_id=binding.component_id,
         )
@@ -938,7 +1068,9 @@ def _execute_exact_plan_in_context(
         )
     if binding.execution_shape == "value-predicate":
         return _execute_value_predicate(plan, component)
-    return _execute_value_set_predicate(plan, component)
+    if binding.execution_shape == "value-set-predicate":
+        return _execute_value_set_predicate(plan, component)
+    return _execute_membership(plan, component)
 
 
 def _validate_conjunction_node_domains(
@@ -1205,10 +1337,12 @@ def _execute_reference_plan(
         binding = _validate_value_predicate(plan)
     elif binding.execution_shape == "value-set-predicate":
         binding = _validate_value_set_predicate(plan)
+    elif binding.execution_shape == "membership":
+        binding = _validate_membership_binding(plan)
     else:
         _fail(
             "unsupported_native_binding",
-            "reference execution supports only scalar or finite-set feature predicates",
+            "reference execution shape is not supported by the loaded runtime",
             corpus_id=plan.corpus_id,
             component_id=binding.component_id,
         )
@@ -1223,7 +1357,9 @@ def _execute_reference_plan(
         )
     if binding.execution_shape == "value-predicate":
         return _execute_value_predicate(plan, component)
-    return _execute_value_set_predicate(plan, component)
+    if binding.execution_shape == "value-set-predicate":
+        return _execute_value_set_predicate(plan, component)
+    return _execute_membership(plan, component)
 
 
 def execute_exact_authority(
