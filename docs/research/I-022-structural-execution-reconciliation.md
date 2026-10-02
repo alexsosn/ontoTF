@@ -143,9 +143,14 @@ Amend the source contract so
 
 - required: `component_id`, `node_type`, `execution_shape`;
 - `execution_shape` is exactly `membership`;
-- no feature/value/value-set/edge/direction/steps fields participate;
-- an optional already-reviewed extent interpretation may remain preserved as
-  metadata, but it does not alter the selected node set.
+- feature/value/value-set/edge/direction/steps/interpretation fields are
+  forbidden for this shape.
+
+Extent/anchor interpretation remains represented by the existing reviewed
+structural dependency contract rather than being overloaded onto node-kind
+selection. No current production mapping uses `interpretation` as part of an
+executable binding, so allowing it here would widen the first slice without
+evidence.
 
 Execution then means exactly:
 
