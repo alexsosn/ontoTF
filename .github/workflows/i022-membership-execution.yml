@@ -33,3 +33,65 @@ jobs:
       - run: python -m pip install -e .
       - name: Run I-022 contract
         run: python -m unittest discover -s tests/i022 -p 'test*.py'
+      - name: Preserve compiler and exact runtime controls
+        run: |
+          python -m unittest discover -s tests/i005 -p 'test*.py'
+          python -m unittest discover -s tests/i006 -p 'test*.py'
+          python -m unittest discover -s tests/i008 -p 'test*.py'
+          python -m unittest discover -s tests/i015 -p 'test*.py'
+      - name: Preserve approximate and reference runtime controls
+        run: |
+          python -m unittest discover -s tests/i020 -p 'test*.py'
+          python -m unittest discover -s tests/i021 -p 'test*.py'
+      - name: Reproduce I-020 fingerprint anchors
+        run: |
+          python scripts/research/i020_runtime_reconciliation.py > /tmp/i020-runtime.json
+          cmp /tmp/i020-runtime.json docs/research/data/generated/i020/runtime-reconciliation.json
+      - name: Reproduce I-022 structural current-state evidence
+        run: |
+          python -m pip install "text-fabric @ git+https://github.com/annotation/text-fabric.git@0c45c386916cb52be84098796ec27ce97e5bf9fc"
+          python scripts/research/i022_structural_execution_reconciliation.py > /tmp/i022-structural-runtime.json
+          cmp /tmp/i022-structural-runtime.json docs/research/data/generated/i022/structural-runtime-reconciliation.json
+      - name: Build isolated wheel and verify dependency boundary
+        run: |
+          python -m pip install build
+          python -m build --wheel --outdir dist
+          python - <<'PY'
+          import pathlib
+          import subprocess
+          import sys
+          import tempfile
+          from zipfile import ZipFile
+
+          wheel = next(pathlib.Path("dist").glob("tfont-*.whl"))
+          with ZipFile(wheel) as archive:
+              metadata_name = next(
+                  name for name in archive.namelist()
+                  if name.endswith(".dist-info/METADATA")
+              )
+              metadata = archive.read(metadata_name).decode("utf-8").lower()
+          if "requires-dist: text-fabric" in metadata:
+              raise SystemExit("I-022 must not add Text-Fabric as a runtime dependency")
+
+          with tempfile.TemporaryDirectory() as tmp:
+              subprocess.check_call(
+                  [sys.executable, "-m", "pip", "install", "--target", tmp, str(wheel)]
+              )
+              code = """
+          import tfont
+          required = (
+              "execute_exact_semantic",
+              "execute_approximate_semantic",
+              "execute_exact_conjunction",
+              "execute_approximate_conjunction",
+              "execute_exact_authority",
+              "execute_approximate_authority",
+              "execute_identity",
+              "execute_identifier",
+          )
+          missing = [name for name in required if not hasattr(tfont, name)]
+          if missing:
+              raise SystemExit(f"missing runtime API after I-022 wheel build: {missing}")
+          """
+              subprocess.check_call([sys.executable, "-c", code], env={"PYTHONPATH": tmp})
+          PY
