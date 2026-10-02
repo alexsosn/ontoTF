@@ -7,6 +7,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import tfont
+import tfont.semantic_resolver as semantic_resolver
 from jsonschema import Draft202012Validator
 
 from tests.i005._fixtures import (
@@ -410,6 +411,142 @@ class I023EdgePathContractTests(unittest.TestCase):
             (edge_path_context(tfont, ir),),
         )
         self.assertEqual(approximate.corpora[0].nodes, (20, 21))
+
+    def test_mixed_direction_path_uses_each_reviewed_result_domain(self):
+        steps = (
+            {
+                "edge": "word_line",
+                "direction": "outgoing",
+                "result_node_type": "line",
+                "valued": False,
+            },
+            {
+                "edge": "word_line",
+                "direction": "incoming",
+                "result_node_type": "word",
+                "valued": False,
+            },
+        )
+        ir = compiled_edge_path_ir(steps=steps)
+        result = tfont.execute_exact_semantic(
+            ir,
+            semantic_request(tfont),
+            (edge_path_context(tfont, ir),),
+        )
+        self.assertEqual(result.corpora[0].nodes, (1, 2))
+
+    def test_forged_defaulted_edge_step_fails_compiled_ir_validation(self):
+        ir = compiled_edge_path_ir()
+        binding = ir.semantic_index[0][1][0].native_execution_binding
+        forged = replace(
+            binding,
+            steps=(tfont.EdgeStepIR("word_line", "outgoing"),),
+        )
+        with self.assertRaises(Exception) as raised:
+            semantic_resolver._native_binding_projection(forged)
+        self.assertEqual(category(raised.exception), "invalid_compiled_ir")
+
+    def test_approximate_authority_reuses_edge_path_after_loss_acceptance(self):
+        ir = compiled_authority_edge_path_ir(
+            assessment="broader",
+            losses=("undercoverage",),
+        )
+        key = ir.authority_index[0][0]
+        refused = tfont.ApproximateAuthorityResolveRequest(
+            key=key,
+            corpora=("bhsa",),
+        )
+        with self.assertRaises(Exception) as raised:
+            tfont.execute_approximate_authority(
+                ir,
+                refused,
+                (edge_path_context(tfont, ir),),
+            )
+        self.assertEqual(category(raised.exception), "approximation_loss_not_accepted")
+
+        accepted = tfont.ApproximateAuthorityResolveRequest(
+            key=key,
+            corpora=("bhsa",),
+            accept_losses=("undercoverage",),
+        )
+        result = tfont.execute_approximate_authority(
+            ir,
+            accepted,
+            (edge_path_context(tfont, ir),),
+        )
+        self.assertEqual(result.corpora[0].nodes, (21, 20))
+        self.assertEqual(result.resolution.losses, ("undercoverage",))
+
+    def test_loaded_edge_path_adversarial_api_failures_are_closed(self):
+        ir = compiled_edge_path_ir()
+        loaded = ("word_line", "line_column")
+
+        malformed_inventory = path_api(
+            eall_sequence=(loaded, loaded, "word_line"),
+        )
+
+        noncallable_method = path_api()
+        noncallable_method.E.word_line.f = None
+
+        missing_valuedness = path_api()
+        delattr(missing_valuedness.E.word_line, "doValues")
+
+        traversal_failure = path_api(
+            features={
+                "word_line": FakeEdgeFeature(
+                    {1: (10,), 2: (10,)},
+                    raise_on_f=True,
+                ),
+                "line_column": FakeEdgeFeature({10: (20,)}),
+            }
+        )
+
+        malformed_otype = path_api(
+            node_types={
+                1: "word",
+                2: "word",
+                10: "line",
+                11: None,
+                20: "column",
+                21: "column",
+                99: "phrase",
+            }
+        )
+
+        invalid_raw_node = path_api(
+            features={
+                "word_line": FakeEdgeFeature({1: (True,), 2: ()}),
+                "line_column": FakeEdgeFeature({10: (20,)}),
+            }
+        )
+
+        duplicate_raw_node = path_api(
+            features={
+                "word_line": FakeEdgeFeature({1: (10, 10), 2: ()}),
+                "line_column": FakeEdgeFeature({10: (20,)}),
+            }
+        )
+
+        cases = (
+            (malformed_inventory, "loaded_api_unavailable"),
+            (noncallable_method, "loaded_api_unavailable"),
+            (missing_valuedness, "loaded_api_unavailable"),
+            (traversal_failure, "loaded_api_unavailable"),
+            (malformed_otype, "loaded_api_unavailable"),
+            (invalid_raw_node, "invalid_result_nodes"),
+            (duplicate_raw_node, "invalid_result_nodes"),
+        )
+        for api, expected in cases:
+            with self.subTest(expected=expected, api=api):
+                with self.assertRaises(Exception) as raised:
+                    tfont.execute_exact_semantic(
+                        ir,
+                        semantic_request(tfont),
+                        (edge_path_context(tfont, ir, api),),
+                    )
+                self.assertEqual(category(raised.exception), expected)
+                self.assertEqual(api.load_calls, 0)
+                self.assertFalse(api.E.oslots_touched)
 
     def test_packaged_resources_and_real_edge_controls_remain_grounded(self):
         count = 0
