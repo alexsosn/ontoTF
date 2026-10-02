@@ -1,8 +1,8 @@
 """I-023 edge-path execution reconciliation.
 
-Research-only probe. It closes the remaining questions needed before a
-production edge-path plan can be written. No production runtime behavior is
-changed here.
+Research probe plus post-implementation current-state guard. Historical
+research findings remain documented in the report; this script records the
+current source/IR/runtime boundary after I-023 productionization.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from jsonschema import Draft202012Validator
 from tf.core.edgefeature import EdgeFeature
 
 from tfont.runtime_tf_observation import LoadedTFObservation
-from tfont.semantic_ir import NativeBindingIR
+from tfont.semantic_ir import EdgeStepIR, NativeBindingIR
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -109,13 +109,14 @@ def edge_summary(inventory: dict, edge: str) -> dict:
 def main() -> int:
     schema = load_json("src/tfont/schemas/mapping.schema.json")
     validator = binding_validator(schema)
-    current_typed_start = {
+
+    old_typed_start = {
         "component_id": "fixture-tf",
         "node_type": "word",
         "execution_shape": "edge-path",
         "steps": [{"edge": "word_line", "direction": "outgoing"}],
     }
-    proposed_typed_path = {
+    typed_path = {
         "component_id": "fixture-tf",
         "node_type": "word",
         "execution_shape": "edge-path",
@@ -128,13 +129,16 @@ def main() -> int:
             }
         ],
     }
+    valued_path = json.loads(json.dumps(typed_path))
+    valued_path["steps"][0]["valued"] = True
+
     examples = {
         "edge_path_shape_only": {"execution_shape": "edge-path"},
         "edge_path_steps_only": {
             "execution_shape": "edge-path",
             "steps": [{"edge": "word_line", "direction": "outgoing"}],
         },
-        "edge_path_current_typed_start": current_typed_start,
+        "edge_path_old_typed_start": old_typed_start,
         "edge_path_one_step_alias": {
             "component_id": "fixture-tf",
             "node_type": "word",
@@ -142,15 +146,13 @@ def main() -> int:
             "edge": "word_line",
             "direction": "outgoing",
         },
-        "edge_path_typed_start_with_feature": {
-            **current_typed_start,
-            "feature": "sp",
-        },
-        "edge_path_typed_start_with_interpretation": {
-            **current_typed_start,
+        "edge_path_typed_unvalued": typed_path,
+        "edge_path_typed_with_feature": {**typed_path, "feature": "sp"},
+        "edge_path_typed_with_interpretation": {
+            **typed_path,
             "interpretation": "occurrenceSet",
         },
-        "edge_path_proposed_typed_step": proposed_typed_path,
+        "edge_path_typed_valued_true": valued_path,
     }
 
     execution_source = (
@@ -160,12 +162,13 @@ def main() -> int:
         set(re.findall(r'binding\.execution_shape == "([^"]+)"', execution_source))
     )
     conjunction_start = execution_source.index("def _validate_conjunction_node_domains")
-    conjunction_end = execution_source.index("def execute_exact_conjunction", conjunction_start)
+    conjunction_end = execution_source.index(
+        "def execute_exact_conjunction", conjunction_start
+    )
     conjunction_source = execution_source[conjunction_start:conjunction_end]
 
     path_source = inspect.getsource(LoadedTFObservation.path)
     edge_init_source = inspect.getsource(EdgeFeature.__init__)
-
     r007 = (
         ROOT / "docs/research/R-007-tf-structural-semantics.md"
     ).read_text(encoding="utf-8")
@@ -186,13 +189,28 @@ def main() -> int:
         if row.get("valued") is True
     )
 
+    acceptance = {
+        name: is_valid(validator, value) for name, value in examples.items()
+    }
+    edge_path_closed = (
+        not acceptance["edge_path_shape_only"]
+        and not acceptance["edge_path_steps_only"]
+        and not acceptance["edge_path_old_typed_start"]
+        and not acceptance["edge_path_one_step_alias"]
+        and acceptance["edge_path_typed_unvalued"]
+        and not acceptance["edge_path_typed_with_feature"]
+        and not acceptance["edge_path_typed_with_interpretation"]
+        and not acceptance["edge_path_typed_valued_true"]
+    )
+
     result = {
         "baseline_main": BASELINE_MAIN,
         "current_contract": {
-            "conjunction_domain_uses_binding_node_type": (
-                "(binding.component_id, binding.node_type)" in conjunction_source
+            "conjunction_uses_shape_aware_result_domain": (
+                "_execution_result_domain(plan)" in conjunction_source
             ),
-            "edge_path_has_closed_shape_rule": False,
+            "edge_path_has_closed_shape_rule": edge_path_closed,
+            "edge_step_ir_fields": [field.name for field in fields(EdgeStepIR)],
             "native_binding_ir_fields": [field.name for field in fields(NativeBindingIR)],
             "packaged_production_mappings": production_shapes,
             "path_prerequisite_checks_valuedness": "doValues" in path_source,
@@ -202,9 +220,7 @@ def main() -> int:
                 and "valued vs unvalued" in r007
             ),
             "runtime_execution_shapes": runtime_shapes,
-            "schema_acceptance": {
-                name: is_valid(validator, value) for name, value in examples.items()
-            },
+            "schema_acceptance": acceptance,
             "tfont_declares_text_fabric_runtime_dependency": (
                 '"text-fabric' in pyproject or "'text-fabric" in pyproject
             ),
@@ -241,40 +257,26 @@ def main() -> int:
             "tlhdig_valued_edges": tlhdig_valued,
         },
         "conclusion": {
-            "canonical_edge_path_source_fields": [
-                "component_id",
-                "execution_shape",
-                "node_type",
-                "steps",
-            ],
-            "edge_step_required_fields": [
-                "direction",
-                "edge",
-                "result_node_type",
-                "valued",
-            ],
+            "edge_path_production_runtime_available": True,
+            "edge_path_source_contract_closed": True,
+            "edge_step_result_domain_is_explicit": True,
+            "edge_step_valued_false_is_explicit": True,
+            "valued_true_edges_remain_unsupported_until_i024": True,
             "node_type_is_start_selector": True,
-            "result_node_type_is_traversal_result_domain": True,
-            "direction_plus_current_and_result_type_preserve_native_edge_domains": True,
-            "first_slice_requires_explicit_valued_false": True,
-            "one_step_edge_direction_alias_should_be_rejected": True,
-            "require_matching_node_type_present_dependency_for_all_path_domains": True,
-            "require_matching_path_present_dependency": True,
+            "conjunction_result_domain_is_shape_aware": True,
+            "full_path_loaded_api_preflight_required": True,
             "empty_post_traversal_result_is_valid": True,
             "empty_start_after_fresh_authorization_is_runtime_drift": True,
             "result_order_policy": (
                 "stable-first-discovery-from-canonical-start-and-edge-order"
             ),
             "path_provenance_remains_in_reviewed_plan_and_runtime_report": True,
-            "semantic_reference_and_conjunction_execution_can_share_typed_edge_path": True,
-            "conjunction_result_domain_is_last_step_result_node_type": True,
-            "valued_true_edges_remain_unsupported_until_value_semantics_are_defined": True,
             "no_new_text_fabric_runtime_dependency": True,
             "research_authorizes_production_runtime_change": False,
         },
     }
 
-    expected_ir_fields = [
+    expected_native_fields = [
         "component_id",
         "node_type",
         "feature",
@@ -288,27 +290,28 @@ def main() -> int:
         "execution_shape",
         "values",
     ]
-    if result["current_contract"]["native_binding_ir_fields"] != expected_ir_fields:
+    if result["current_contract"]["native_binding_ir_fields"] != expected_native_fields:
         raise SystemExit("NativeBindingIR field set drifted")
-    if runtime_shapes != ["membership", "value-predicate", "value-set-predicate"]:
-        raise SystemExit("edge-path unexpectedly entered the production runtime")
-    acceptance = result["current_contract"]["schema_acceptance"]
-    if not acceptance["edge_path_shape_only"]:
-        raise SystemExit("edge-path source contract is already closed; premise drifted")
-    if not acceptance["edge_path_current_typed_start"]:
-        raise SystemExit("current typed-start edge-path no longer validates")
-    if not acceptance["edge_path_one_step_alias"]:
-        raise SystemExit("legacy edge+direction surface is no longer schema-valid")
-    if not acceptance["edge_path_typed_start_with_feature"]:
-        raise SystemExit("generic edge-path shape stopped accepting feature before I-023")
-    if not acceptance["edge_path_typed_start_with_interpretation"]:
-        raise SystemExit("generic edge-path shape stopped accepting interpretation before I-023")
-    if acceptance["edge_path_proposed_typed_step"]:
-        raise SystemExit("edgeStep unexpectedly already supports typed valuedness/result domains")
-    if not result["current_contract"]["conjunction_domain_uses_binding_node_type"]:
-        raise SystemExit("conjunction domain contract drifted")
+    if result["current_contract"]["edge_step_ir_fields"] != [
+        "edge",
+        "direction",
+        "result_node_type",
+        "valued",
+    ]:
+        raise SystemExit("typed EdgeStepIR contract drifted")
+    if runtime_shapes != [
+        "edge-path",
+        "membership",
+        "value-predicate",
+        "value-set-predicate",
+    ]:
+        raise SystemExit("edge-path runtime execution support drifted")
+    if not edge_path_closed:
+        raise SystemExit("typed unvalued edge-path source contract is not closed")
+    if not result["current_contract"]["conjunction_uses_shape_aware_result_domain"]:
+        raise SystemExit("conjunction result-domain helper drifted")
     if result["current_contract"]["path_prerequisite_checks_valuedness"]:
-        raise SystemExit("path prerequisite unexpectedly started checking edge valuedness")
+        raise SystemExit("P-002 path prerequisite unexpectedly absorbed valuedness")
     if not result["current_contract"]["r007_requires_edge_source_target_and_valuedness"]:
         raise SystemExit("accepted R-007 edge contract wording drifted")
     if not result["text_fabric_api"]["edge_value_flag_is_explicit_implementation_state"]:
