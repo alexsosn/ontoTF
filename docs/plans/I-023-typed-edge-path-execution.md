@@ -37,6 +37,12 @@ traversal.
 The first slice executes only `valued=false`. I-024 #249 owns any
 `valued=true` execution/result contract.
 
+Planning review refines one runtime detail from the research narrative:
+`result_node_type` is a reviewed **typed projection** over a potentially
+polymorphic native TF edge. Well-formed neighbors of other native types are
+ignored, not treated as API corruption. This is required by the real BHSA
+`mother` control and by R-007's explicit source/target selector semantics.
+
 No production ontology mapping is added merely to exercise this runtime path.
 
 ## Source-contract amendment
@@ -296,10 +302,13 @@ For each step in order:
 1. traverse every node in the current frontier with `f` or `t`;
 2. normalize each returned iterable using the same positive-integer / bool /
    duplicate safety semantics as existing node-result normalization;
-3. validate every returned node has
-   `F.otype.v(node) == step.result_node_type`;
-4. append nodes to the next frontier in first-discovery order;
-5. de-duplicate nodes reached from multiple current nodes by first discovery.
+3. read `F.otype.v(node)` for every returned node and require a well-formed
+   non-empty native type;
+4. append the node only when that type equals `step.result_node_type`;
+5. ignore well-formed neighbors of other native types as outside the reviewed
+   typed projection;
+6. de-duplicate selected nodes reached from multiple current nodes by first
+   discovery.
 
 A duplicate inside one raw edge traversal result remains malformed and fails
 closed if it violates the existing normalizer contract. Duplication caused by
@@ -307,7 +316,14 @@ two different source nodes converging on the same result node is legitimate
 graph fan-in and is de-duplicated at the path-frontier layer.
 
 If `F.otype.v` is missing, raises, or returns malformed data, fail
-`loaded_api_unavailable`. A well-formed but wrong node type fails
+`loaded_api_unavailable`. A well-formed nonmatching node type is not runtime
+corruption: native TF edge features may legitimately span multiple endpoint
+types, as the committed BHSA `mother` inventory demonstrates. The reviewed
+`result_node_type` is therefore a typed projection/filter over that native
+edge, not a claim that the underlying edge feature is globally monomorphic.
+
+This differs from membership start validation: `F.otype.s(start_type)`
+claims to be an exact type selector, so a wrong-type start node remains
 `invalid_result_nodes`.
 
 ### Empty traversal result
@@ -332,7 +348,7 @@ Do not numerically sort graph results and do not access Text-Fabric internal
 Pinned Text-Fabric returns each `f/t` call in canonical TF order. Start nodes
 come from canonical `F.otype.s()` order.
 
-The path result order is therefore stable first discovery:
+The selected path result order is therefore stable first discovery:
 
 - start nodes in selector order;
 - current frontier in first-discovery order;
@@ -514,41 +530,46 @@ Prove failures before implementation for:
 28. fan-in de-duplicates by first discovery;
 29. empty post-step frontier succeeds empty;
 30. empty start after fresh prerequisite pass fails drift;
-31. wrong result node type fails;
-32. malformed/invalid/duplicate raw edge nodes fail appropriately.
+31. a polymorphic edge result is filtered to the reviewed
+    `result_node_type` without inferring edge-domain semantics;
+32. all well-formed neighbors outside the reviewed result type may yield a
+    valid empty next frontier;
+33. malformed node-type values and malformed/invalid/duplicate raw edge nodes
+    fail appropriately.
 
 ### Loaded API / valuedness RED
 
-33. missing/malformed `Eall` fails closed;
-34. unloaded edge fails closed and never autoloads;
-35. missing/non-callable `f/t` fails;
-36. missing/malformed `doValues` fails;
-37. `doValues=True` fails before tuple values can be stripped;
-38. an early empty frontier does not hide a later missing/malformed/valued
+34. missing/malformed `Eall` fails closed;
+35. unloaded edge fails closed and never autoloads;
+36. missing/non-callable `f/t` fails;
+37. missing/malformed `doValues` fails;
+38. `doValues=True` fails before tuple values can be stripped;
+39. an early empty frontier does not hide a later missing/malformed/valued
     step: full-path preflight still fails closed;
-39. traversal exception fails loaded-API category;
-40. missing/malformed `F.otype.s/v` fails;
-41. no access to `E.oslots`, loaders, network or Text-Fabric search.
+40. traversal exception fails loaded-API category;
+41. missing/malformed `F.otype.s/v` fails;
+42. no access to `E.oslots`, loaders, network or Text-Fabric search.
 
 ### Surface and conjunction RED
 
-42. exact semantic execution supports edge-path;
-43. approximate semantic execution supports reviewed edge-path;
-44. exact/approximate authority execution supports it;
-45. identity/identifier execution supports it;
-46. exact conjunction uses final result domain, not start domain;
-47. approximate conjunction uses final result domain;
-48. two paths with different starts but same final domain can intersect;
-49. same starts but different final domains reject;
-50. path plus membership/predicate can intersect only when final domains match.
+43. exact semantic execution supports edge-path;
+44. approximate semantic execution supports reviewed edge-path;
+45. exact/approximate authority execution supports it;
+46. identity/identifier execution supports it;
+47. exact conjunction uses final result domain, not start domain;
+48. approximate conjunction uses final result domain;
+49. two paths with different starts but same final domain can intersect;
+50. same starts but different final domains reject;
+51. path plus membership/predicate can intersect only when final domains match.
 
 ### Real-data controls
 
-51. committed ORACC inventory proves `word_line -> line_column` endpoint types
+52. committed ORACC inventory proves `word_line -> line_column` endpoint types
     and unvaluedness;
-52. BHSA `mother` demonstrates that edge labels may span multiple endpoint
-    domains, so result type cannot be inferred from edge name;
-53. TLHdig valued edges remain negative controls and cannot execute in I-023.
+53. BHSA `mother` demonstrates that edge labels may span multiple endpoint
+    domains and that typed execution must select, not infer, the reviewed result
+    domain;
+54. TLHdig valued edges remain negative controls and cannot execute in I-023.
 
 Observe RED on the tests-only head before touching production source.
 
@@ -616,7 +637,9 @@ must challenge at minimum:
 - loaded edge inventory and no-autoload behavior;
 - `doValues=False` enforcement and TLHdig valued-edge rejection;
 - positive/unique node normalization;
-- wrong-type start/intermediate/final nodes;
+- wrong-type start nodes versus intentional filtering of polymorphic
+  intermediate/final neighbors;
+- BHSA-style multi-domain edge filtering without semantic inference;
 - fan-in/fan-out ordering and de-duplication;
 - valid empty traversal frontier versus invalid stale empty start;
 - shape-aware conjunction final-domain safety;
