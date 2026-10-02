@@ -8,8 +8,14 @@ Baseline: main `d1da009cc49b3dc812a395e0813c51500c28fa08`
 
 ## Research status
 
-In progress. This branch contains only reconciliation/probe material; it does
-not change production source schemas or runtime behavior.
+Complete; ready for independent adversarial review and, if accepted, a
+separate implementation plan.
+
+This branch contains only reconciliation/probe material; it does not change
+production source schemas or runtime behavior. Generated evidence is frozen at
+`docs/research/data/generated/i022/structural-runtime-reconciliation.json`
+and reproduced on Python 3.10/3.12 against pinned Text-Fabric revision
+`0c45c386916cb52be84098796ec27ce97e5bf9fc`.
 
 The current evidence already establishes one blocking contract gap: the
 mapping schema names `membership` and `edge-path` as execution shapes, but
@@ -125,18 +131,104 @@ In particular:
 - `textualExtent` still does not imply a CRM/CRMtex/POWLA containment
   relation without a reviewed semantic projection.
 
-## Provisional recommendation
+## Research conclusion
 
-The likely implementation boundary is:
+The first production slice should be deliberately narrower than the structural
+vocabulary already present in the schema.
 
-1. amend the mapping source contract to close `membership` exactly;
-2. implement only exact native node-kind membership first, reusing the
-   existing fresh-runtime trust path;
-3. preserve extent interpretation as plan/provenance/guard metadata only;
-4. keep `edge-path` fail-closed until the source contract explicitly states
-   its start selector, path shape, node-domain rules and valued-edge policy;
-5. do not add Text-Fabric as a TFont runtime dependency merely for this work:
-   the executor continues to operate on already-loaded API objects.
+### Authorize for the implementation plan: native node-kind membership
 
-This recommendation remains provisional until generated evidence is frozen and
-the research PR receives a fresh independent adversarial review.
+Amend the source contract so
+`execution_shape="membership"` has one closed meaning:
+
+- required: `component_id`, `node_type`, `execution_shape`;
+- `execution_shape` is exactly `membership`;
+- no feature/value/value-set/edge/direction/steps fields participate;
+- an optional already-reviewed extent interpretation may remain preserved as
+  metadata, but it does not alter the selected node set.
+
+Execution then means exactly:
+
+`loaded_api.F.otype.s(node_type)`
+
+followed by deterministic validation that the returned values are node IDs
+whose `F.otype.v(node)` is exactly the requested native type.
+
+This is **native TF node-kind membership**. A node type named `word`,
+`document`, `lex`, `fragment`, etc. does not thereby become an OLiA,
+OntoLex, CRM, CRMtex or LRMoo class.
+
+The implementation should reuse the existing I-008 trust sequence:
+fresh loaded-context prerequisite evaluation -> fresh resolver plan -> typed
+native execution. Public caller-created plans remain non-authoritative.
+
+### Do not authorize yet: edge-path
+
+Keep `edge-path` fail-closed in the I-022 implementation.
+
+The current schema admits under-specified values such as
+`{"execution_shape":"edge-path"}`. More importantly, the accepted source
+contract does not say what node set starts a path. Treating generic
+`node_type` as the start selector would be a new semantic rule, not a runtime
+detail.
+
+A later reviewed contract must specify at minimum:
+
+- the start selector/domain;
+- a closed non-empty ordered step list;
+- exact outgoing/incoming meaning;
+- intermediate/final node-domain checks or an explicit statement that they
+  are unconstrained native nodes;
+- policy for valued-edge return values;
+- behavior when an edge is unavailable/not loaded;
+- whether one-step `edge + direction` is merely syntax sugar for `steps`;
+- how path provenance remains visible in result/fingerprint data.
+
+The real ORACC `word_line -> line_column`, BHSA `mother`, and TLHdig edge
+families are sufficient to test those mechanics later, but they do not supply
+the missing source-level execution authority.
+
+### Extent/anchor interpretation remains non-executable
+
+`textualExtent`, `occurrenceSet`, `technicalAnchor`, and `noSlot`
+remain reviewed structural interpretation/provenance in the first slice.
+
+I-022 must not query `oslots` to manufacture a semantic result merely because
+one of these values is present. In particular:
+
+- `technicalAnchor` never becomes textual extent;
+- `noSlot` is not an execution failure and receives no synthetic slots;
+- `occurrenceSet` is not collapsed into one text span;
+- `textualExtent` is not promoted to domain containment.
+
+Warp APIs may still be used internally for native type/domain validation
+without removing `otype` or `oslots` from technical coverage exclusions.
+
+### Runtime dependency boundary
+
+Do not add Text-Fabric to ordinary `tfont` dependencies. The current executor
+works over already-loaded API objects supplied by the caller. I-022 should do
+the same; the pinned Text-Fabric install in research CI exists only to verify
+the upstream API contract.
+
+## Plan handoff
+
+If this research is accepted, the I-022 implementation plan should:
+
+1. amend only the `membership` source-shape contract;
+2. add schema/semantic regressions before implementation;
+3. preserve all existing semantic digests/fingerprints for existing mappings;
+4. add a typed membership executor path shared by exact/approximate/reference
+   execution where a fresh resolver plan carries that binding;
+5. validate loaded `otype` availability and returned node domains
+   fail-closed;
+6. preserve empty membership as a successful empty result;
+7. leave `edge-path`, `identity-key` and `inspection-only` unsupported by
+   the generic structural executor;
+8. add no corpus mappings merely to exercise the new runtime path;
+9. keep extent/anchor modes provenance-only in this slice;
+10. create a separate follow-up for the missing edge-path source/execution
+    contract rather than smuggling path semantics into `membership`.
+
+The final implementation still requires plan review, tests-only RED, GREEN,
+focused/full exact-head CI, and a fresh code/data-grounded adversarial review.
