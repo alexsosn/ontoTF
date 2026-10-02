@@ -56,6 +56,54 @@ def corpus_summary(path: str) -> dict:
     }
 
 
+def production_mapping_shapes() -> dict:
+    root = ROOT / "src/tfont/resources/profiles"
+    rows = []
+    shapes = set()
+    structural = []
+    for path in sorted(root.glob("*/*/mappings/*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        relative = str(path.relative_to(ROOT))
+        for mapping in data.get("mappings", []):
+            candidates = [
+                ("mapping", mapping.get("mapping_id"), mapping.get("native_binding")),
+            ]
+            candidates.extend(
+                ("projection", item.get("projection_id"), item.get("native_execution_binding"))
+                for item in mapping.get("projections", [])
+            )
+            candidates.extend(
+                ("reference", item.get("reference_id"), item.get("native_binding"))
+                for item in mapping.get("external_references", [])
+            )
+            for owner_kind, owner_id, binding in candidates:
+                if type(binding) is not dict:
+                    continue
+                shape = binding.get("execution_shape")
+                if type(shape) is str:
+                    shapes.add(shape)
+                    row = {
+                        "path": relative,
+                        "owner_kind": owner_kind,
+                        "owner_id": owner_id,
+                        "execution_shape": shape,
+                    }
+                    rows.append(row)
+                    if shape in {"membership", "edge-path"}:
+                        structural.append(row)
+    rows.sort(key=lambda row: (
+        row["path"],
+        row["owner_kind"],
+        row["owner_id"] or "",
+        row["execution_shape"],
+    ))
+    return {
+        "execution_shapes": sorted(shapes),
+        "binding_count": len(rows),
+        "structural_bindings": structural,
+    }
+
+
 def main() -> int:
     schema = load_json("src/tfont/schemas/mapping.schema.json")
     validator = binding_validator(schema)
@@ -91,6 +139,7 @@ def main() -> int:
     )
 
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    production_shapes = production_mapping_shapes()
 
     cuc = corpus_summary("docs/research/data/generated/r005/cuc.json")
     oracc = corpus_summary(
@@ -122,6 +171,7 @@ def main() -> int:
             "tfont_declares_text_fabric_runtime_dependency": (
                 '"text-fabric' in pyproject or "'text-fabric" in pyproject
             ),
+            "packaged_production_mappings": production_shapes,
         },
         "text_fabric_api": {
             "upstream_revision": TF_UPSTREAM_REVISION,
@@ -192,6 +242,13 @@ def main() -> int:
         raise SystemExit("edge-path source contract is already closed; research premise drifted")
     if result["current_contract"]["tfont_declares_text_fabric_runtime_dependency"]:
         raise SystemExit("TFont runtime dependency boundary drifted")
+    if production_shapes["execution_shapes"] != [
+        "value-predicate",
+        "value-set-predicate",
+    ]:
+        raise SystemExit("packaged production execution-shape inventory drifted")
+    if production_shapes["structural_bindings"]:
+        raise SystemExit("packaged production structural bindings appeared")
     if cuc["edge_count"] != 0:
         raise SystemExit("CUC non-warp edge inventory drifted")
     if set(("word_line", "line_column", "translation_line")) - set(oracc["edge_names"]):
