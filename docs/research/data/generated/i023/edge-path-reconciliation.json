@@ -1,5 +1,12 @@
 {
   "baseline_main": "c8b38cfb5656b161acbf1b9afcde3655770ee69f",
+  "accepted_r007_contract": {
+    "requires_explicit_valued_state": true,
+    "requires_first_class_directed_path_semantics": true,
+    "requires_source_selector_type": true,
+    "requires_target_selector_type": true,
+    "requires_value_semantics_when_valued": true
+  },
   "conclusion": {
     "canonical_edge_path_source_fields": [
       "component_id",
@@ -7,28 +14,31 @@
       "node_type",
       "steps"
     ],
-    "conjunction_result_domain_is_last_step_result_node_type": true,
-    "direction_plus_current_and_result_type_preserve_native_edge_domains": true,
-    "edge_step_required_fields": [
+    "canonical_unvalued_step_fields": [
       "direction",
       "edge",
       "result_node_type",
       "valued"
     ],
+    "conjunction_requires_result_domain_helper_before_edge_path_support": true,
     "empty_post_traversal_result_is_valid": true,
     "empty_start_after_fresh_authorization_is_runtime_drift": true,
-    "first_slice_requires_explicit_valued_false": true,
+    "first_slice_requires_valued_false": true,
     "no_new_text_fabric_runtime_dependency": true,
     "node_type_is_start_selector": true,
     "one_step_edge_direction_alias_should_be_rejected": true,
+    "path_present_dependency_projects_edge_and_direction_only": true,
     "path_provenance_remains_in_reviewed_plan_and_runtime_report": true,
-    "require_matching_node_type_present_dependency_for_all_path_domains": true,
+    "production_contract_requires_edge_step_ir_amendment": true,
+    "require_matching_node_type_dependencies_for_all_path_domains": true,
     "require_matching_path_present_dependency": true,
     "research_authorizes_production_runtime_change": false,
-    "result_node_type_is_traversal_result_domain": true,
+    "result_domain_is_final_step_result_node_type": true,
     "result_order_policy": "stable-first-discovery-from-canonical-start-and-edge-order",
-    "semantic_reference_and_conjunction_execution_can_share_typed_edge_path": true,
-    "valued_true_edges_remain_unsupported_until_value_semantics_are_defined": true
+    "single_semantic_and_reference_execution_can_support_edge_path": true,
+    "step_result_node_type_is_required": true,
+    "step_valued_flag_is_required": true,
+    "valued_edge_semantics_deferred_to_i024": 252
   },
   "corpus_mechanics": {
     "bhsa_mother": {
@@ -77,6 +87,10 @@
   "current_contract": {
     "conjunction_domain_uses_binding_node_type": true,
     "edge_path_has_closed_shape_rule": false,
+    "edge_step_ir_fields": [
+      "edge",
+      "direction"
+    ],
     "native_binding_ir_fields": [
       "component_id",
       "node_type",
@@ -100,18 +114,19 @@
       "structural_bindings": []
     },
     "path_prerequisite_checks_valuedness": false,
-    "r007_requires_edge_source_target_and_valuedness": true,
     "runtime_execution_shapes": [
       "membership",
       "value-predicate",
       "value-set-predicate"
     ],
     "schema_acceptance": {
-      "edge_path_current_typed_start": true,
+      "edge_path_closed_candidate": false,
       "edge_path_one_step_alias": true,
-      "edge_path_proposed_typed_step": false,
       "edge_path_shape_only": true,
+      "edge_path_step_with_result_node_type": false,
+      "edge_path_step_with_valued": false,
       "edge_path_steps_only": true,
+      "edge_path_typed_start": true,
       "edge_path_typed_start_with_feature": true,
       "edge_path_typed_start_with_interpretation": true
     },
