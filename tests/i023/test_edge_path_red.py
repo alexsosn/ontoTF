@@ -435,16 +435,28 @@ class I023EdgePathContractTests(unittest.TestCase):
         )
         self.assertEqual(result.corpora[0].nodes, (1, 2))
 
-    def test_forged_defaulted_edge_step_fails_compiled_ir_validation(self):
+    def test_forged_edge_step_fields_fail_compiled_ir_validation(self):
         ir = compiled_edge_path_ir()
         binding = ir.semantic_index[0][1][0].native_execution_binding
-        forged = replace(
-            binding,
-            steps=(tfont.EdgeStepIR("word_line", "outgoing"),),
+
+        class DirectionSubclass(str):
+            pass
+
+        forged_steps = (
+            tfont.EdgeStepIR("word_line", "outgoing"),
+            tfont.EdgeStepIR(
+                "word_line",
+                DirectionSubclass("outgoing"),
+                "line",
+                False,
+            ),
         )
-        with self.assertRaises(Exception) as raised:
-            semantic_resolver._native_binding_projection(forged)
-        self.assertEqual(category(raised.exception), "invalid_compiled_ir")
+        for forged_step in forged_steps:
+            with self.subTest(forged_step=forged_step):
+                forged = replace(binding, steps=(forged_step,))
+                with self.assertRaises(Exception) as raised:
+                    semantic_resolver._native_binding_projection(forged)
+                self.assertEqual(category(raised.exception), "invalid_compiled_ir")
 
     def test_approximate_authority_reuses_edge_path_after_loss_acceptance(self):
         ir = compiled_authority_edge_path_ir(
