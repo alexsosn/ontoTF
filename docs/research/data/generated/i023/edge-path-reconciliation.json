@@ -1,0 +1,129 @@
+{
+  "baseline_main": "c8b38cfb5656b161acbf1b9afcde3655770ee69f",
+  "conclusion": {
+    "canonical_edge_path_source_fields": [
+      "component_id",
+      "execution_shape",
+      "node_type",
+      "steps"
+    ],
+    "conjunction_result_domain_is_last_step_result_node_type": true,
+    "direction_plus_current_and_result_type_preserve_native_edge_domains": true,
+    "edge_step_required_fields": [
+      "direction",
+      "edge",
+      "result_node_type",
+      "valued"
+    ],
+    "empty_post_traversal_result_is_valid": true,
+    "empty_start_after_fresh_authorization_is_runtime_drift": true,
+    "first_slice_requires_explicit_valued_false": true,
+    "no_new_text_fabric_runtime_dependency": true,
+    "node_type_is_start_selector": true,
+    "one_step_edge_direction_alias_should_be_rejected": true,
+    "path_provenance_remains_in_reviewed_plan_and_runtime_report": true,
+    "require_matching_node_type_present_dependency_for_all_path_domains": true,
+    "require_matching_path_present_dependency": true,
+    "research_authorizes_production_runtime_change": false,
+    "result_node_type_is_traversal_result_domain": true,
+    "result_order_policy": "stable-first-discovery-from-canonical-start-and-edge-order",
+    "semantic_reference_and_conjunction_execution_can_share_typed_edge_path": true,
+    "valued_true_edges_remain_unsupported_until_value_semantics_are_defined": true
+  },
+  "corpus_mechanics": {
+    "bhsa_mother": {
+      "source_types": [
+        "clause",
+        "clause_atom",
+        "phrase",
+        "phrase_atom",
+        "subphrase"
+      ],
+      "target_types": [
+        "clause",
+        "clause_atom",
+        "phrase",
+        "phrase_atom",
+        "subphrase",
+        "word"
+      ],
+      "valued": false
+    },
+    "oracc_line_column": {
+      "source_types": [
+        "line"
+      ],
+      "target_types": [
+        "column"
+      ],
+      "valued": false
+    },
+    "oracc_word_line": {
+      "source_types": [
+        "word"
+      ],
+      "target_types": [
+        "line"
+      ],
+      "valued": false
+    },
+    "oracc_word_to_column_path_is_unvalued": true,
+    "tlhdig_valued_edges": [
+      "joined",
+      "selected",
+      "witness_resolution"
+    ]
+  },
+  "current_contract": {
+    "conjunction_domain_uses_binding_node_type": true,
+    "edge_path_has_closed_shape_rule": false,
+    "native_binding_ir_fields": [
+      "component_id",
+      "node_type",
+      "feature",
+      "value_present",
+      "value",
+      "closed_values",
+      "edge",
+      "direction",
+      "steps",
+      "interpretation",
+      "execution_shape",
+      "values"
+    ],
+    "packaged_production_mappings": {
+      "binding_count": 48,
+      "execution_shapes": [
+        "value-predicate",
+        "value-set-predicate"
+      ],
+      "structural_bindings": []
+    },
+    "path_prerequisite_checks_valuedness": false,
+    "r007_requires_edge_source_target_and_valuedness": true,
+    "runtime_execution_shapes": [
+      "membership",
+      "value-predicate",
+      "value-set-predicate"
+    ],
+    "schema_acceptance": {
+      "edge_path_current_typed_start": true,
+      "edge_path_one_step_alias": true,
+      "edge_path_proposed_typed_step": false,
+      "edge_path_shape_only": true,
+      "edge_path_steps_only": true,
+      "edge_path_typed_start_with_feature": true,
+      "edge_path_typed_start_with_interpretation": true
+    },
+    "tfont_declares_text_fabric_runtime_dependency": false
+  },
+  "text_fabric_api": {
+    "edge_constructor_signature": "(self, api, metaData, data, doValues)",
+    "edge_incoming_signature": "(self, n)",
+    "edge_outgoing_signature": "(self, n)",
+    "edge_value_flag_is_explicit_implementation_state": true,
+    "upstream_revision": "0c45c386916cb52be84098796ec27ce97e5bf9fc",
+    "valued_incoming_pairs_documented": true,
+    "valued_outgoing_pairs_documented": true
+  }
+}

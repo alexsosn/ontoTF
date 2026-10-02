@@ -1,0 +1,41 @@
+name: I-023 edge-path research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/i023_edge_path_execution_reconciliation.py"
+      - "docs/research/I-023-edge-path-execution-reconciliation.md"
+      - "docs/research/data/generated/i023/edge-path-reconciliation.json"
+      - "src/tfont/schemas/mapping.schema.json"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/runtime_tf_observation.py"
+      - "src/tfont/semantic_execution.py"
+      - "docs/research/data/generated/i018/oracc-0.4.0.json"
+      - "docs/research/data/generated/i019/tlhdig-0.4.0.json"
+      - "docs/research/data/generated/r005/bhsa.json"
+      - ".github/workflows/i023-edge-path-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - run: python -m pip install "text-fabric @ git+https://github.com/annotation/text-fabric.git@0c45c386916cb52be84098796ec27ce97e5bf9fc"
+      - name: Reproduce I-023 evidence
+        run: |
+          python scripts/research/i023_edge_path_execution_reconciliation.py > /tmp/i023-edge-path.json
+          cmp /tmp/i023-edge-path.json docs/research/data/generated/i023/edge-path-reconciliation.json
