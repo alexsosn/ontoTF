@@ -8,6 +8,7 @@ from pathlib import Path
 import tfont
 from jsonschema import Draft202012Validator
 from tests.i022._fixtures import (
+    compiled_edge_path_ir,
     compiled_membership_ir,
     membership_context,
     membership_request,
@@ -71,7 +72,6 @@ class I022MembershipRedTests(unittest.TestCase):
 
         for kwargs in (
             {"dependency_kind": "component-present"},
-            {"dependency_component": "other-tf"},
             {"dependency_node_type": "phrase"},
         ):
             with self.subTest(kwargs=kwargs):
@@ -80,6 +80,12 @@ class I022MembershipRedTests(unittest.TestCase):
                 with self.assertRaises(SemanticValidationError) as raised:
                     validate_semantic_bundle(source_bundle(sources))
                 self.assertEqual(raised.exception.problem.category, "dependency_authority")
+
+        wrong_component = membership_sources(dependency_component="other-tf")
+        validate_structural_sources(wrong_component)
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(wrong_component))
+        self.assertEqual(raised.exception.problem.category, "component_authority")
 
     def test_membership_compiles_without_new_ir_shape(self):
         ir = compiled_membership_ir()
@@ -110,21 +116,12 @@ class I022MembershipRedTests(unittest.TestCase):
         )
 
     def test_edge_path_stays_unsupported(self):
-        ir = compiled_membership_ir()
-        key, rows = ir.semantic_index[0]
-        row = rows[0]
-        forged_binding = copy.deepcopy(row.native_execution_binding)
-        object.__setattr__(forged_binding, "execution_shape", "edge-path")
-        object.__setattr__(forged_binding, "steps", ())
-        forged_row = copy.deepcopy(row)
-        object.__setattr__(forged_row, "native_execution_binding", forged_binding)
-        forged = copy.deepcopy(ir)
-        object.__setattr__(forged, "semantic_index", ((key, (forged_row,)),))
+        ir = compiled_edge_path_ir()
         with self.assertRaises(Exception) as raised:
             tfont.execute_exact_semantic(
-                forged,
+                ir,
                 membership_request(tfont),
-                (membership_context(tfont, forged),),
+                (membership_context(tfont, ir),),
             )
         self.assertEqual(
             getattr(getattr(raised.exception, "problem", None), "category", ""),
