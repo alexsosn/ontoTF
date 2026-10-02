@@ -77,3 +77,18 @@ def membership_request(tfont_module):
         key=noun_semantic_key(),
         corpora=("bhsa",),
     )
+
+
+def compiled_edge_path_ir():
+    sources = membership_sources()
+    mapping = sources["mappings"]["mappings"][0]
+    binding = {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "execution_shape": "edge-path",
+    }
+    mapping["native_binding"] = dict(binding)
+    mapping["projections"][0]["native_execution_binding"] = dict(binding)
+    _refresh_mapping(mapping)
+    validate_structural_sources(sources)
+    return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
