@@ -1,0 +1,211 @@
+"""I-022 structural execution reconciliation.
+
+Research-only probe. It records the exact current source/IR/runtime gap and
+corpus mechanics needed before structural execution can be planned.
+"""
+
+from __future__ import annotations
+
+import inspect
+import json
+import re
+from dataclasses import fields
+from pathlib import Path
+
+from jsonschema import Draft202012Validator
+from tf.core.edgefeature import EdgeFeature
+from tf.core.oslotsfeature import OslotsFeature
+from tf.core.otypefeature import OtypeFeature
+
+from tfont.semantic_ir import NativeBindingIR
+
+
+ROOT = Path(__file__).resolve().parents[2]
+BASELINE_MAIN = "d1da009cc49b3dc812a395e0813c51500c28fa08"
+TF_UPSTREAM_REVISION = "0c45c386916cb52be84098796ec27ce97e5bf9fc"
+
+
+def load_json(relative: str):
+    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+
+
+def binding_validator(schema: dict) -> Draft202012Validator:
+    wrapper = {
+        "$schema": schema["$schema"],
+        "$defs": schema["$defs"],
+        "$ref": "#/$defs/nativeBinding",
+    }
+    return Draft202012Validator(wrapper)
+
+
+def is_valid(validator: Draft202012Validator, value: dict) -> bool:
+    return not tuple(validator.iter_errors(value))
+
+
+def corpus_summary(path: str) -> dict:
+    data = load_json(path)
+    edges = data.get("edge_features", {})
+    return {
+        "slot_type": data.get("slot_type"),
+        "node_types": sorted(data.get("node_types", {})),
+        "edge_count": len(edges),
+        "edge_names": sorted(edges),
+        "valued_edges": sorted(
+            name for name, row in edges.items() if row.get("valued") is True
+        ),
+    }
+
+
+def main() -> int:
+    schema = load_json("src/tfont/schemas/mapping.schema.json")
+    validator = binding_validator(schema)
+    execution_shapes = schema["$defs"]["nativeBinding"]["properties"][
+        "execution_shape"
+    ]["enum"]
+
+    examples = {
+        "membership_shape_only": {"execution_shape": "membership"},
+        "membership_typed": {
+            "component_id": "fixture-tf",
+            "node_type": "word",
+            "execution_shape": "membership",
+        },
+        "edge_path_shape_only": {"execution_shape": "edge-path"},
+        "edge_path_steps_only": {
+            "execution_shape": "edge-path",
+            "steps": [{"edge": "mother", "direction": "outgoing"}],
+        },
+        "edge_path_typed_start": {
+            "component_id": "fixture-tf",
+            "node_type": "clause",
+            "execution_shape": "edge-path",
+            "steps": [{"edge": "mother", "direction": "outgoing"}],
+        },
+    }
+
+    execution_source = (
+        ROOT / "src/tfont/semantic_execution.py"
+    ).read_text(encoding="utf-8")
+    runtime_shapes = sorted(
+        set(re.findall(r'binding\.execution_shape == "([^"]+)"', execution_source))
+    )
+
+    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+
+    cuc = corpus_summary("docs/research/data/generated/r005/cuc.json")
+    oracc = corpus_summary(
+        "docs/research/data/generated/i018/oracc-0.4.0.json"
+    )
+    tlhdig = corpus_summary(
+        "docs/research/data/generated/i019/tlhdig-0.4.0.json"
+    )
+    bhsa = corpus_summary("docs/research/data/generated/r005/bhsa.json")
+
+    oracc_details = load_json(
+        "docs/research/data/generated/i018/oracc-0.4.0.json"
+    )["edge_features"]
+    bhsa_details = load_json(
+        "docs/research/data/generated/r005/bhsa.json"
+    )["edge_features"]
+
+    result = {
+        "baseline_main": BASELINE_MAIN,
+        "current_contract": {
+            "execution_shapes": execution_shapes,
+            "native_binding_ir_fields": [field.name for field in fields(NativeBindingIR)],
+            "schema_acceptance": {
+                name: is_valid(validator, value) for name, value in examples.items()
+            },
+            "membership_has_closed_shape_rule": False,
+            "edge_path_has_closed_shape_rule": False,
+            "runtime_execution_shapes": runtime_shapes,
+            "tfont_declares_text_fabric_runtime_dependency": (
+                '"text-fabric' in pyproject or "'text-fabric" in pyproject
+            ),
+        },
+        "text_fabric_api": {
+            "upstream_revision": TF_UPSTREAM_REVISION,
+            "otype_membership_signature": str(inspect.signature(OtypeFeature.s)),
+            "edge_outgoing_signature": str(inspect.signature(EdgeFeature.f)),
+            "edge_incoming_signature": str(inspect.signature(EdgeFeature.t)),
+            "oslots_signature": str(inspect.signature(OslotsFeature.s)),
+            "otype_membership_documented": "all nodes" in (OtypeFeature.s.__doc__ or "").lower(),
+            "outgoing_direction_documented": "outgoing" in (EdgeFeature.f.__doc__ or "").lower(),
+            "incoming_direction_documented": "incoming" in (EdgeFeature.t.__doc__ or "").lower(),
+        },
+        "corpus_mechanics": {
+            "cuc": cuc,
+            "oracc": {
+                **oracc,
+                "typed_edges": {
+                    name: {
+                        "source_types": oracc_details[name].get("source_types", []),
+                        "target_types": oracc_details[name].get("target_types", []),
+                        "valued": oracc_details[name].get("valued"),
+                    }
+                    for name in ("word_line", "line_column", "translation_line")
+                },
+            },
+            "tlhdig": tlhdig,
+            "bhsa": {
+                **bhsa,
+                "typed_edges": {
+                    name: {
+                        "source_types": bhsa_details[name].get("source_types", []),
+                        "target_types": bhsa_details[name].get("target_types", []),
+                        "valued": bhsa_details[name].get("valued"),
+                    }
+                    for name in ("mother", "functional_parent")
+                },
+            },
+        },
+        "conclusion": {
+            "membership_mechanics_available": True,
+            "membership_requires_source_contract_amendment": True,
+            "edge_traversal_mechanics_available": True,
+            "edge_path_requires_source_contract_amendment": True,
+            "edge_path_start_selector_is_currently_normatively_undefined": True,
+            "extent_interpretation_should_not_be_direct_execution_authority": True,
+            "technical_anchor_must_not_imply_textual_extent": True,
+            "no_slot_must_not_fabricate_slot_membership": True,
+            "warp_may_be_used_internally_without_semantic_promotion": True,
+            "research_authorizes_production_runtime_change": False,
+        },
+    }
+
+    # Guard the findings this reconciliation is intended to measure.
+    expected_shapes = {
+        "membership",
+        "value-predicate",
+        "value-set-predicate",
+        "edge-path",
+        "identity-key",
+        "inspection-only",
+    }
+    if set(execution_shapes) != expected_shapes:
+        raise SystemExit("native execution-shape vocabulary drifted")
+    if runtime_shapes != ["value-predicate", "value-set-predicate"]:
+        raise SystemExit("runtime structural-execution premise drifted")
+    if not result["current_contract"]["schema_acceptance"]["membership_shape_only"]:
+        raise SystemExit("membership source contract is already closed; research premise drifted")
+    if not result["current_contract"]["schema_acceptance"]["edge_path_shape_only"]:
+        raise SystemExit("edge-path source contract is already closed; research premise drifted")
+    if result["current_contract"]["tfont_declares_text_fabric_runtime_dependency"]:
+        raise SystemExit("TFont runtime dependency boundary drifted")
+    if cuc["edge_count"] != 0:
+        raise SystemExit("CUC non-warp edge inventory drifted")
+    if set(("word_line", "line_column", "translation_line")) - set(oracc["edge_names"]):
+        raise SystemExit("ORACC structural edge evidence drifted")
+    if set(("lexeme", "analyses", "witness", "startsAt", "endsAt")) - set(
+        tlhdig["edge_names"]
+    ):
+        raise SystemExit("TLHdig structural edge evidence drifted")
+    if set(("mother", "functional_parent")) - set(bhsa["edge_names"]):
+        raise SystemExit("BHSA structural edge evidence drifted")
+
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
