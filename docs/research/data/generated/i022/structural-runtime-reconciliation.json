@@ -218,6 +218,14 @@
       "execution_shape",
       "values"
     ],
+    "packaged_production_mappings": {
+      "binding_count": 48,
+      "execution_shapes": [
+        "value-predicate",
+        "value-set-predicate"
+      ],
+      "structural_bindings": []
+    },
     "runtime_execution_shapes": [
       "value-predicate",
       "value-set-predicate"
@@ -229,15 +237,7 @@
       "membership_shape_only": true,
       "membership_typed": true
     },
-    "tfont_declares_text_fabric_runtime_dependency": false,
-    "packaged_production_mappings": {
-      "execution_shapes": [
-        "value-predicate",
-        "value-set-predicate"
-      ],
-      "binding_count": 48,
-      "structural_bindings": []
-    }
+    "tfont_declares_text_fabric_runtime_dependency": false
   },
   "text_fabric_api": {
     "edge_incoming_signature": "(self, n)",
