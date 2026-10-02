@@ -7,10 +7,12 @@
     },
     "edgeStep": {
       "type": "object",
-      "required": ["edge", "direction"],
+      "required": ["edge", "direction", "result_node_type", "valued"],
       "properties": {
         "edge": {"type": "string", "minLength": 1},
-        "direction": {"enum": ["outgoing", "incoming"]}
+        "direction": {"enum": ["outgoing", "incoming"]},
+        "result_node_type": {"type": "string", "minLength": 1},
+        "valued": {"const": false}
       },
       "additionalProperties": false
     },
@@ -59,6 +61,18 @@
               {"required": ["closed_values"]}, {"required": ["values"]},
               {"required": ["edge"]}, {"required": ["direction"]},
               {"required": ["steps"]}, {"required": ["interpretation"]}
+            ]}
+          }
+        },
+        {
+          "if": {"properties": {"execution_shape": {"const": "edge-path"}}, "required": ["execution_shape"]},
+          "then": {
+            "required": ["component_id", "node_type", "steps"],
+            "not": {"anyOf": [
+              {"required": ["feature"]}, {"required": ["value"]},
+              {"required": ["closed_values"]}, {"required": ["values"]},
+              {"required": ["edge"]}, {"required": ["direction"]},
+              {"required": ["interpretation"]}
             ]}
           }
         },
