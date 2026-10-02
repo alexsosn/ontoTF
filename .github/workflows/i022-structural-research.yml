@@ -1,0 +1,46 @@
+name: I-022 structural execution research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/i022_structural_execution_reconciliation.py"
+      - "docs/research/I-022-structural-execution-reconciliation.md"
+      - "docs/research/data/generated/i022/structural-runtime-reconciliation.json"
+      - ".github/workflows/i022-structural-research.yml"
+      - "src/tfont/schemas/mapping.schema.json"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/semantic_execution.py"
+      - "docs/research/data/generated/i018/oracc-0.4.0.json"
+      - "docs/research/data/generated/i019/tlhdig-0.4.0.json"
+      - "docs/research/data/generated/r005/cuc.json"
+      - "docs/research/data/generated/r005/bhsa.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - name: Check out exact head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install TFont and pinned Text-Fabric research dependency
+        run: |
+          python -m pip install -e .
+          python -m pip install "text-fabric @ git+https://github.com/annotation/text-fabric.git@0c45c386916cb52be84098796ec27ce97e5bf9fc"
+      - name: Reconcile structural execution boundary
+        run: |
+          python scripts/research/i022_structural_execution_reconciliation.py > /tmp/i022-structural-runtime.json
+          cat /tmp/i022-structural-runtime.json
+      - name: Compare committed evidence
+        run: cmp /tmp/i022-structural-runtime.json docs/research/data/generated/i022/structural-runtime-reconciliation.json
