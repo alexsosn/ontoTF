@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any, Iterable
 
 from .digests import canonical_json_bytes
 from .semantic_ir import (
     ApproximationIR,
+    AuthorityKey,
     BundleVariantIR,
     BundleVariantKey,
     CapabilityFactsIR,
@@ -15,7 +16,12 @@ from .semantic_ir import (
     CompiledSemanticIR,
     EdgeStepIR,
     EvidenceFingerprint,
+    ExternalReferenceIR,
+    IdentifierKey,
+    IdentityKey,
     NativeBindingIR,
+    NativeKey,
+    NativeRecordIR,
     OntologyBundleRequirementIR,
     OntologyLockFingerprint,
     ProfileReleaseKey,
@@ -28,6 +34,7 @@ from .semantic_ir import (
 from .semantic_vocabulary import (
     CAPABILITY_IDS,
     FORMAL_KINDS,
+    IDENTITY_STRENGTHS,
     LOSS_TOKENS,
     PROFILE_IDS,
     SEMANTIC_ROLES,
@@ -43,6 +50,20 @@ APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-native-plan-jcs-sha2
 APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-resolution-jcs-sha256-v1"
 APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = "tfont-approximate-semantic-conjunction-resolver-v1"
 APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-conjunction-resolution-jcs-sha256-v1"
+
+EXACT_AUTHORITY_RESOLVER_CONTRACT = "tfont-exact-authority-resolver-v1"
+APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT = "tfont-approximate-authority-resolver-v1"
+IDENTITY_RESOLVER_CONTRACT = "tfont-identity-resolver-v1"
+IDENTIFIER_RESOLVER_CONTRACT = "tfont-identifier-resolver-v1"
+EXACT_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-authority-plan-jcs-sha256-v1"
+EXACT_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-authority-resolution-jcs-sha256-v1"
+APPROXIMATE_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-authority-plan-jcs-sha256-v1"
+APPROXIMATE_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-authority-resolution-jcs-sha256-v1"
+IDENTITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-identity-plan-jcs-sha256-v1"
+IDENTITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-identity-resolution-jcs-sha256-v1"
+IDENTIFIER_PLAN_FINGERPRINT_ALGORITHM = "tfont-identifier-plan-jcs-sha256-v1"
+IDENTIFIER_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-identifier-resolution-jcs-sha256-v1"
+REFERENCE_FINGERPRINT_ALGORITHM = "tfont-reviewed-reference-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)
@@ -187,6 +208,179 @@ class ApproximateSemanticResolutionResult:
     comparison_state: str
     losses: tuple[str, ...]
     loss_records: tuple[ApproximationLossRecord, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class AuthorityResolveRequest:
+    key: AuthorityKey
+    corpora: tuple[str, ...]
+    authority_mode: str = "exact"
+
+
+@dataclass(frozen=True)
+class ApproximateAuthorityResolveRequest:
+    key: AuthorityKey
+    corpora: tuple[str, ...]
+    authority_mode: str = "approximate"
+    accept_losses: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class AuthorityLossRecord:
+    corpus_id: str
+    authority_key: AuthorityKey
+    mapping_id: str
+    projection_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    losses: tuple[str, ...]
+    effects: tuple[str, ...]
+    approximation_review_id: str
+    caller_accepted_losses: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+
+
+@dataclass(frozen=True)
+class AuthorityNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    authority_key: AuthorityKey
+    query_role: str
+    authority_mode: str
+    variant: BundleVariantKey
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    mapping_id: str
+    projection_id: str
+    profile_id: str
+    capability_id: str
+    assessment: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    mapping_semantic_digest: str
+    projection_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    projection_review: ReviewFingerprint
+    ontology_lock: OntologyLockFingerprint
+    ontology_bundle_digest: str | None
+    mapping_evidence: tuple[EvidenceFingerprint, ...]
+    projection_evidence: tuple[EvidenceFingerprint, ...]
+    approximation: ApproximationIR | None
+    losses: tuple[str, ...]
+    loss_record: AuthorityLossRecord | None
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class AuthorityResolutionResult:
+    resolver_contract: str
+    request: AuthorityResolveRequest
+    plans: tuple[AuthorityNativePlan, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ApproximateAuthorityResolutionResult:
+    resolver_contract: str
+    request: ApproximateAuthorityResolveRequest
+    plans: tuple[AuthorityNativePlan, ...]
+    comparison_state: str
+    losses: tuple[str, ...]
+    loss_records: tuple[AuthorityLossRecord, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentityResolveRequest:
+    authority_system: str
+    external_entity_id: str
+    corpora: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class IdentifierResolveRequest:
+    key: IdentifierKey
+    corpora: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class IdentityNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    variant: BundleVariantKey
+    authority_system: str
+    external_entity_id: str
+    identity_strength: str
+    mapping_id: str
+    reference_id: str
+    reference_kind: str
+    query_role: str
+    mapping_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    reference_evidence: tuple[EvidenceFingerprint, ...]
+    reference_fingerprint: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentifierNativePlan:
+    resolver_contract: str
+    corpus_id: str
+    variant: BundleVariantKey
+    key: IdentifierKey
+    mapping_id: str
+    reference_id: str
+    reference_kind: str
+    query_role: str
+    mapping_semantic_digest: str
+    mapping_review: ReviewFingerprint
+    reference_evidence: tuple[EvidenceFingerprint, ...]
+    reference_fingerprint: str
+    native_execution_binding_identity: str
+    native_execution_binding: NativeBindingIR
+    native_dependencies: tuple[str, ...]
+    prerequisite_fingerprint: str
+    prerequisite_source_contract: str
+    profile_release_fingerprint: str
+    expected_parent_manifest_digest: str
+    observed_parent_manifest_digest: str
+    parent_state: str
+    plan_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentityResolutionResult:
+    resolver_contract: str
+    request: IdentityResolveRequest
+    plans: tuple[IdentityNativePlan, ...]
+    resolution_fingerprint: str
+
+
+@dataclass(frozen=True)
+class IdentifierResolutionResult:
+    resolver_contract: str
+    request: IdentifierResolveRequest
+    plans: tuple[IdentifierNativePlan, ...]
     resolution_fingerprint: str
 
 
@@ -2573,5 +2767,1311 @@ def semantic_resolve_approximate_conjunction(
         comparison_state=comparison_state,
         losses=losses,
         loss_records=records,
+        resolution_fingerprint=_hash(projection),
+    )
+
+
+# I-021 authority / identity / identifier resolution.
+
+def _canonical_corpora(corpora: tuple[str, ...]) -> tuple[str, ...]:
+    if type(corpora) is not tuple or not corpora:
+        _fail("invalid_corpus_selection", "corpora must be a non-empty exact tuple")
+    if any(type(item) is not str or not item for item in corpora):
+        _fail("invalid_corpus_selection", "corpus IDs must be non-empty strings")
+    if len(set(corpora)) != len(corpora):
+        _fail("invalid_corpus_selection", "duplicate corpus selection")
+    return tuple(sorted(corpora, key=_utf16))
+
+
+def _authority_key_projection(key: AuthorityKey) -> dict[str, str]:
+    if type(key) is not AuthorityKey:
+        _fail("invalid_request", "authority key must be AuthorityKey")
+    fields = (
+        key.authority_system,
+        key.authority_resource,
+        key.formal_kind,
+        key.semantic_role,
+    )
+    if any(type(item) is not str or not item for item in fields):
+        _fail("invalid_request", "authority key fields must be non-empty strings")
+    if key.formal_kind not in FORMAL_KINDS or key.semantic_role not in SEMANTIC_ROLES:
+        _fail("unknown_request_vocabulary", "authority key uses unknown formal vocabulary")
+    return {
+        "authority_system": key.authority_system,
+        "authority_resource": key.authority_resource,
+        "formal_kind": key.formal_kind,
+        "semantic_role": key.semantic_role,
+    }
+
+
+def _identifier_key_projection(key: IdentifierKey) -> dict[str, str]:
+    if type(key) is not IdentifierKey:
+        _fail("invalid_request", "identifier key must be IdentifierKey")
+    if (
+        type(key.issuer_or_namespace) is not str
+        or not key.issuer_or_namespace
+        or type(key.literal_id) is not str
+        or not key.literal_id
+    ):
+        _fail("invalid_request", "identifier key fields must be non-empty strings")
+    return {
+        "issuer_or_namespace": key.issuer_or_namespace,
+        "literal_id": key.literal_id,
+    }
+
+
+def _validate_authority_request(request: AuthorityResolveRequest) -> AuthorityResolveRequest:
+    if type(request) is not AuthorityResolveRequest:
+        raise TypeError("request must be AuthorityResolveRequest")
+    if request.authority_mode != "exact":
+        _fail("unsupported_semantic_mode", "exact authority resolver requires authority_mode='exact'")
+    _authority_key_projection(request.key)
+    return AuthorityResolveRequest(
+        key=request.key,
+        corpora=_canonical_corpora(request.corpora),
+        authority_mode="exact",
+    )
+
+
+def _validate_approximate_authority_request(
+    request: ApproximateAuthorityResolveRequest,
+) -> ApproximateAuthorityResolveRequest:
+    if type(request) is not ApproximateAuthorityResolveRequest:
+        raise TypeError("request must be ApproximateAuthorityResolveRequest")
+    if request.authority_mode != "approximate":
+        _fail(
+            "unsupported_semantic_mode",
+            "approximate authority resolver requires authority_mode='approximate'",
+        )
+    _authority_key_projection(request.key)
+    accepted = request.accept_losses
+    if type(accepted) is not tuple:
+        _fail("invalid_loss_acceptance", "accept_losses must be an exact tuple")
+    if any(type(item) is not str for item in accepted):
+        _fail("invalid_loss_acceptance", "accepted losses must be exact strings")
+    if len(set(accepted)) != len(accepted):
+        _fail("invalid_loss_acceptance", "accepted losses contain duplicates")
+    unknown = [item for item in accepted if item not in LOSS_TOKENS]
+    if unknown:
+        _fail(
+            "unknown_loss_token",
+            f"unknown accepted loss token: {sorted(unknown, key=_utf16)[0]!r}",
+        )
+    return ApproximateAuthorityResolveRequest(
+        key=request.key,
+        corpora=_canonical_corpora(request.corpora),
+        authority_mode="approximate",
+        accept_losses=tuple(sorted(accepted, key=_utf16)),
+    )
+
+
+def _validate_identity_request(request: IdentityResolveRequest) -> IdentityResolveRequest:
+    if type(request) is not IdentityResolveRequest:
+        raise TypeError("request must be IdentityResolveRequest")
+    if (
+        type(request.authority_system) is not str
+        or not request.authority_system
+        or type(request.external_entity_id) is not str
+        or not request.external_entity_id
+    ):
+        _fail("invalid_request", "identity request fields must be non-empty strings")
+    return IdentityResolveRequest(
+        authority_system=request.authority_system,
+        external_entity_id=request.external_entity_id,
+        corpora=_canonical_corpora(request.corpora),
+    )
+
+
+def _validate_identifier_request(request: IdentifierResolveRequest) -> IdentifierResolveRequest:
+    if type(request) is not IdentifierResolveRequest:
+        raise TypeError("request must be IdentifierResolveRequest")
+    _identifier_key_projection(request.key)
+    return IdentifierResolveRequest(
+        key=request.key,
+        corpora=_canonical_corpora(request.corpora),
+    )
+
+
+def _validate_reference_ir(
+    ir: CompiledSemanticIR,
+) -> tuple[
+    dict[BundleVariantKey, BundleVariantIR],
+    dict[CapabilityKey, CapabilityFactsIR],
+    dict[tuple[BundleVariantKey, str], NativeRecordIR],
+    dict[AuthorityKey, tuple[TargetBindingIR, ...]],
+    dict[IdentityKey, tuple[ExternalReferenceIR, ...]],
+    dict[IdentifierKey, tuple[ExternalReferenceIR, ...]],
+]:
+    variants, _semantic, capabilities = _validate_ir_shape(ir)
+
+    parents: dict[tuple[BundleVariantKey, str], NativeRecordIR] = {}
+    for key, rows in ir.native_index:
+        if type(key) is not NativeKey or type(rows) is not tuple:
+            _fail("invalid_compiled_ir", "native index has an invalid row shape")
+        if (
+            type(key.corpus_id) is not str
+            or not key.corpus_id
+            or type(key.native_binding_identity) is not str
+            or not key.native_binding_identity
+        ):
+            _fail("invalid_compiled_ir", "native index key fields are invalid")
+        for row in rows:
+            if type(row) is not NativeRecordIR:
+                _fail("invalid_compiled_ir", "native index contains an invalid record")
+            _validate_compiled_variant_key(row.variant)
+            variant = variants.get(row.variant)
+            if variant is None:
+                _fail(
+                    "invalid_compiled_ir",
+                    "native record references a variant outside compiled variants",
+                    corpus_id=row.corpus_id,
+                    related_id=row.mapping_id,
+                )
+            if (
+                row.corpus_id != variant.key.corpus_id
+                or row.corpus_id != key.corpus_id
+                or row.native_binding_identity != key.native_binding_identity
+            ):
+                _fail(
+                    "invalid_compiled_ir",
+                    "native index key disagrees with native record",
+                    corpus_id=variant.key.corpus_id,
+                    related_id=row.mapping_id,
+                )
+            pair = (row.variant, row.mapping_id)
+            if pair in parents:
+                _fail(
+                    "invalid_compiled_ir",
+                    "duplicate native parent mapping record",
+                    corpus_id=row.corpus_id,
+                    related_id=row.mapping_id,
+                )
+            parents[pair] = row
+
+    authority: dict[AuthorityKey, tuple[TargetBindingIR, ...]] = {}
+    for key, rows in ir.authority_index:
+        _authority_key_projection(key)
+        if type(rows) is not tuple or any(type(row) is not TargetBindingIR for row in rows):
+            _fail("invalid_compiled_ir", "authority index has an invalid row shape")
+        if key in authority:
+            _fail("invalid_compiled_ir", "duplicate authority index key")
+        for row in rows:
+            variant = variants.get(row.variant)
+            if variant is None or row.corpus_id != row.variant.corpus_id:
+                _fail(
+                    "invalid_compiled_ir",
+                    "authority row references an invalid variant",
+                    corpus_id=row.corpus_id,
+                    related_id=row.mapping_id,
+                )
+            if (
+                row.reference_kind != "authority-value"
+                or row.query_role != "authority-value-filter"
+                or row.target != key.authority_resource
+                or row.formal_kind != key.formal_kind
+                or row.semantic_role != key.semantic_role
+                or row.ontology_lock.ontology_id != key.authority_system
+            ):
+                _fail(
+                    "invalid_compiled_ir",
+                    "authority index key disagrees with binding",
+                    corpus_id=row.corpus_id,
+                    related_id=row.projection_id,
+                )
+        authority[key] = rows
+
+    identity: dict[IdentityKey, tuple[ExternalReferenceIR, ...]] = {}
+    for key, rows in ir.identity_index:
+        if type(key) is not IdentityKey:
+            _fail("invalid_compiled_ir", "identity index key has the wrong type")
+        if (
+            type(key.authority_system) is not str
+            or not key.authority_system
+            or type(key.external_entity_id) is not str
+            or not key.external_entity_id
+            or key.identity_strength not in IDENTITY_STRENGTHS
+        ):
+            _fail("invalid_compiled_ir", "identity index key fields are invalid")
+        if type(rows) is not tuple or any(type(row) is not ExternalReferenceIR for row in rows):
+            _fail("invalid_compiled_ir", "identity index has an invalid row shape")
+        if key in identity:
+            _fail("invalid_compiled_ir", "duplicate identity index key")
+        for row in rows:
+            if variants.get(row.variant) is None or row.corpus_id != row.variant.corpus_id:
+                _fail(
+                    "invalid_compiled_ir",
+                    "identity row references an invalid variant",
+                    corpus_id=row.corpus_id,
+                    related_id=row.reference_id,
+                )
+            if (
+                row.reference_kind != "entity-identity"
+                or row.query_role != "identity-filter"
+                or row.authority_system != key.authority_system
+                or row.external != key.external_entity_id
+                or row.identity_strength != key.identity_strength
+            ):
+                _fail(
+                    "invalid_compiled_ir",
+                    "identity index key disagrees with reference",
+                    corpus_id=row.corpus_id,
+                    related_id=row.reference_id,
+                )
+        identity[key] = rows
+
+    identifier: dict[IdentifierKey, tuple[ExternalReferenceIR, ...]] = {}
+    for key, rows in ir.identifier_index:
+        _identifier_key_projection(key)
+        if type(rows) is not tuple or any(type(row) is not ExternalReferenceIR for row in rows):
+            _fail("invalid_compiled_ir", "identifier index has an invalid row shape")
+        if key in identifier:
+            _fail("invalid_compiled_ir", "duplicate identifier index key")
+        for row in rows:
+            if variants.get(row.variant) is None or row.corpus_id != row.variant.corpus_id:
+                _fail(
+                    "invalid_compiled_ir",
+                    "identifier row references an invalid variant",
+                    corpus_id=row.corpus_id,
+                    related_id=row.reference_id,
+                )
+            if (
+                row.reference_kind != "catalogue-identifier"
+                or row.query_role != "identifier-filter"
+                or row.issuer_or_namespace != key.issuer_or_namespace
+                or row.external != key.literal_id
+            ):
+                _fail(
+                    "invalid_compiled_ir",
+                    "identifier index key disagrees with reference",
+                    corpus_id=row.corpus_id,
+                    related_id=row.reference_id,
+                )
+        identifier[key] = rows
+    return variants, capabilities, parents, authority, identity, identifier
+
+
+def _reviewed_mapping_payload(
+    parent: NativeRecordIR,
+    variant: BundleVariantIR,
+) -> dict[str, Any]:
+    payload = parent.mapping_semantic_payload
+    if type(payload) is not str or not payload:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping semantic payload is unavailable",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    try:
+        decoded = json.loads(payload)
+    except (TypeError, ValueError, RecursionError):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping semantic payload is invalid JSON",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if type(decoded) is not dict:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping semantic payload must be an object",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    try:
+        canonical = canonical_json_bytes(decoded).decode("utf-8")
+    except Exception:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping semantic payload is outside canonical JSON",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if canonical != payload:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping semantic payload is not canonical",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if _hash(decoded) != parent.mapping_semantic_digest:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping semantic payload digest mismatch",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    signature = variant.release_signature
+    if (parent.mapping_id, parent.mapping_semantic_digest) not in signature.mapping_digests:
+        _fail(
+            "invalid_compiled_ir",
+            "parent mapping digest is not part of selected release",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if (parent.mapping_id, parent.mapping_review) not in signature.mapping_reviews:
+        _fail(
+            "invalid_compiled_ir",
+            "parent mapping review is not selected release authority",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if (
+        parent.mapping_review.status != "reviewed"
+        or parent.mapping_review.reviewed_semantic_digest != parent.mapping_semantic_digest
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "parent mapping review does not bind current semantics",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if (
+        decoded.get("mapping_id") != parent.mapping_id
+        or decoded.get("corpus_id") != parent.corpus_id
+        or decoded.get("native_state") != parent.native_state
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping payload identity mismatch",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if tuple(decoded.get("native_dependencies", [])) != parent.native_dependencies:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping dependencies disagree with compiled record",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if tuple(decoded.get("profiles", [])) != parent.profiles or tuple(
+        decoded.get("capabilities", [])
+    ) != parent.capabilities:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping profile scope disagrees with compiled record",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    native = decoded.get("native_binding")
+    if type(native) is not dict:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping native binding is unavailable",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    try:
+        source_identity = native_binding_identity(native)
+        compiled_identity = native_binding_identity(
+            _native_binding_projection(parent.native_binding)
+        )
+    except Exception:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping native binding is invalid",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if (
+        source_identity != parent.native_binding_identity
+        or compiled_identity != parent.native_binding_identity
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping native binding identity mismatch",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    if decoded.get("evidence", []) != [
+        _evidence_projection(item) for item in parent.evidence
+    ]:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed parent mapping evidence disagrees with compiled record",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    collections = (
+        ("projections", "projection_id", parent.projection_ids),
+        ("ambiguous_candidates", "candidate_id", parent.candidate_ids),
+        ("external_references", "reference_id", parent.reference_ids),
+    )
+    for field, id_field, compiled_ids in collections:
+        rows = decoded.get(field, [])
+        if type(rows) is not list or any(type(row) is not dict for row in rows):
+            _fail(
+                "invalid_compiled_ir",
+                f"reviewed parent mapping {field} is invalid",
+                corpus_id=parent.corpus_id,
+                related_id=parent.mapping_id,
+            )
+        payload_ids = tuple(sorted((row.get(id_field) for row in rows), key=_utf16))
+        if payload_ids != compiled_ids:
+            _fail(
+                "invalid_compiled_ir",
+                f"reviewed parent mapping {field} IDs disagree with compiled record",
+                corpus_id=parent.corpus_id,
+                related_id=parent.mapping_id,
+            )
+
+    payload_references = decoded.get("external_references", [])
+    compiled_reference_ids = tuple(
+        sorted((row.reference_id for row in parent.external_references), key=_utf16)
+    )
+    if compiled_reference_ids != parent.reference_ids:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled parent external-reference tuple disagrees with reference IDs",
+            corpus_id=parent.corpus_id,
+            related_id=parent.mapping_id,
+        )
+    for reference in parent.external_references:
+        matches = [
+            row
+            for row in payload_references
+            if row.get("reference_id") == reference.reference_id
+        ]
+        if len(matches) != 1:
+            _fail(
+                "invalid_compiled_ir",
+                "compiled parent external reference is not uniquely present in reviewed payload",
+                corpus_id=parent.corpus_id,
+                related_id=reference.reference_id,
+            )
+        _validate_external_reference_payload_child(reference, matches[0])
+    return decoded
+
+
+def _validate_external_reference_payload_child(
+    reference: ExternalReferenceIR,
+    child: dict[str, Any],
+) -> None:
+    if type(child) is not dict:
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed external reference payload child is malformed",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    scalar_pairs = (
+        ("reference_id", reference.reference_id),
+        ("reference_kind", reference.reference_kind),
+        ("query_role", reference.query_role),
+        ("external", reference.external),
+        ("authority_system", reference.authority_system),
+        ("issuer_or_namespace", reference.issuer_or_namespace),
+        ("identity_strength", reference.identity_strength),
+        ("publication_relation", reference.publication_relation),
+    )
+    for field, compiled in scalar_pairs:
+        if child.get(field) != compiled:
+            _fail(
+                "invalid_compiled_ir",
+                "compiled external reference disagrees with reviewed parent payload",
+                corpus_id=reference.corpus_id,
+                related_id=reference.reference_id,
+            )
+    if child.get("evidence", []) != [
+        _evidence_projection(item) for item in reference.evidence
+    ]:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference evidence disagrees with reviewed payload",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    source_binding = child.get("native_binding")
+    if source_binding is None:
+        if reference.native_binding is not None or reference.native_binding_identity is not None:
+            _fail(
+                "invalid_compiled_ir",
+                "compiled external reference invents a native binding",
+                corpus_id=reference.corpus_id,
+                related_id=reference.reference_id,
+            )
+        return
+    if (
+        type(source_binding) is not dict
+        or type(reference.native_binding) is not NativeBindingIR
+        or type(reference.native_binding_identity) is not str
+        or not reference.native_binding_identity
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference native binding is invalid",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    try:
+        source_identity = native_binding_identity(source_binding)
+        compiled_identity = native_binding_identity(
+            _native_binding_projection(reference.native_binding)
+        )
+    except Exception:
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference native binding cannot be reconstructed",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    if (
+        source_identity != reference.native_binding_identity
+        or compiled_identity != reference.native_binding_identity
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "compiled external reference native binding identity mismatch",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+
+
+def _authoritative_reference_child(
+    reference: ExternalReferenceIR,
+    parent: NativeRecordIR,
+    variant: BundleVariantIR,
+) -> dict[str, Any]:
+    if (
+        reference.variant != parent.variant
+        or reference.corpus_id != parent.corpus_id
+        or reference.mapping_id != parent.mapping_id
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "external reference is not scoped by its parent mapping",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    payload = _reviewed_mapping_payload(parent, variant)
+    payload_rows = [
+        row
+        for row in payload.get("external_references", [])
+        if row.get("reference_id") == reference.reference_id
+    ]
+    compiled_rows = [
+        row
+        for row in parent.external_references
+        if row.reference_id == reference.reference_id
+    ]
+    if len(payload_rows) != 1 or len(compiled_rows) != 1 or compiled_rows[0] != reference:
+        _fail(
+            "invalid_compiled_ir",
+            "external reference is not uniquely bound by reviewed parent mapping",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    child = payload_rows[0]
+    _validate_external_reference_payload_child(reference, child)
+    return child
+
+
+def _reference_fingerprint(child: dict[str, Any]) -> str:
+    return _hash(child)
+
+
+def _validate_authority_binding_against_release(
+    binding: TargetBindingIR,
+    variant: BundleVariantIR,
+    key: AuthorityKey,
+) -> None:
+    if (
+        binding.reference_kind != "authority-value"
+        or binding.query_role != "authority-value-filter"
+        or binding.target != key.authority_resource
+        or binding.formal_kind != key.formal_kind
+        or binding.semantic_role != key.semantic_role
+        or binding.ontology_lock.ontology_id != key.authority_system
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "authority binding disagrees with requested authority key",
+            corpus_id=binding.corpus_id,
+            related_id=binding.projection_id,
+        )
+    shadow = replace(
+        binding,
+        reference_kind="semantic-pivot",
+        query_role="semantic-constraint",
+    )
+    _validate_binding_against_release(
+        shadow,
+        variant,
+        SemanticKey(
+            profile_id=binding.profile_id,
+            capability_id=binding.capability_id,
+            target=key.authority_resource,
+            formal_kind=key.formal_kind,
+            semantic_role=key.semantic_role,
+        ),
+    )
+    _validate_reviewed_projection_payload(binding)
+
+
+def _authority_loss_record_projection(record: AuthorityLossRecord) -> dict[str, Any]:
+    return {
+        "corpus_id": record.corpus_id,
+        "authority_key": _authority_key_projection(record.authority_key),
+        "mapping_id": record.mapping_id,
+        "projection_id": record.projection_id,
+        "assessment": record.assessment,
+        "native_execution_binding_identity": record.native_execution_binding_identity,
+        "losses": list(record.losses),
+        "effects": list(record.effects),
+        "approximation_review_id": record.approximation_review_id,
+        "caller_accepted_losses": list(record.caller_accepted_losses),
+        "mapping_semantic_digest": record.mapping_semantic_digest,
+        "projection_semantic_digest": record.projection_semantic_digest,
+        "prerequisite_fingerprint": record.prerequisite_fingerprint,
+        "prerequisite_source_contract": record.prerequisite_source_contract,
+    }
+
+
+def _authority_plan_projection(plan: AuthorityNativePlan) -> dict[str, Any]:
+    algorithm = (
+        EXACT_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM
+        if plan.authority_mode == "exact"
+        else APPROXIMATE_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM
+    )
+    return {
+        "algorithm": algorithm,
+        "resolver_contract": plan.resolver_contract,
+        "corpus_id": plan.corpus_id,
+        "authority_key": _authority_key_projection(plan.authority_key),
+        "query_role": plan.query_role,
+        "authority_mode": plan.authority_mode,
+        "variant": _variant_projection(plan.variant),
+        "profile_release_fingerprint": plan.profile_release_fingerprint,
+        "expected_parent_manifest_digest": plan.expected_parent_manifest_digest,
+        "observed_parent_manifest_digest": plan.observed_parent_manifest_digest,
+        "parent_state": plan.parent_state,
+        "prerequisite_fingerprint": plan.prerequisite_fingerprint,
+        "prerequisite_source_contract": plan.prerequisite_source_contract,
+        "mapping_id": plan.mapping_id,
+        "projection_id": plan.projection_id,
+        "profile_id": plan.profile_id,
+        "capability_id": plan.capability_id,
+        "assessment": plan.assessment,
+        "native_execution_binding_identity": plan.native_execution_binding_identity,
+        "native_dependencies": list(plan.native_dependencies),
+        "mapping_semantic_digest": plan.mapping_semantic_digest,
+        "projection_semantic_digest": plan.projection_semantic_digest,
+        "mapping_review": _review_projection(plan.mapping_review),
+        "projection_review": _review_projection(plan.projection_review),
+        "ontology_lock": _lock_projection(plan.ontology_lock),
+        "ontology_bundle_digest": plan.ontology_bundle_digest,
+        "mapping_evidence": [_evidence_projection(item) for item in plan.mapping_evidence],
+        "projection_evidence": [
+            _evidence_projection(item) for item in plan.projection_evidence
+        ],
+        "approximation": _approximation_projection(plan.approximation),
+        "losses": list(plan.losses),
+        "loss_record": (
+            None
+            if plan.loss_record is None
+            else _authority_loss_record_projection(plan.loss_record)
+        ),
+    }
+
+
+def _make_authority_plan(
+    binding: TargetBindingIR,
+    variant: BundleVariantIR,
+    state: RuntimePrerequisiteState,
+    key: AuthorityKey,
+    *,
+    mode: str,
+    accepted_losses: tuple[str, ...] = (),
+) -> AuthorityNativePlan:
+    prerequisite_fingerprint = runtime_prerequisite_fingerprint(state)
+    approximation = binding.approximation if binding.assessment != "exact" else None
+    losses: tuple[str, ...] = ()
+    loss_record: AuthorityLossRecord | None = None
+    if binding.assessment != "exact":
+        if type(approximation) is not ApproximationIR:
+            _fail(
+                "invalid_compiled_ir",
+                "selected approximate authority binding lacks approximation authority",
+                corpus_id=binding.corpus_id,
+                related_id=binding.projection_id,
+            )
+        losses = approximation.losses
+        loss_record = AuthorityLossRecord(
+            corpus_id=binding.corpus_id,
+            authority_key=key,
+            mapping_id=binding.mapping_id,
+            projection_id=binding.projection_id,
+            assessment=binding.assessment,
+            native_execution_binding_identity=binding.native_execution_binding_identity,
+            losses=losses,
+            effects=tuple(_APPROXIMATION_EFFECTS[item] for item in losses),
+            approximation_review_id=approximation.review_id,
+            caller_accepted_losses=accepted_losses,
+            mapping_semantic_digest=binding.mapping_semantic_digest,
+            projection_semantic_digest=binding.projection_semantic_digest,
+            prerequisite_fingerprint=prerequisite_fingerprint,
+            prerequisite_source_contract=state.source_contract,
+        )
+    contract = (
+        EXACT_AUTHORITY_RESOLVER_CONTRACT
+        if mode == "exact"
+        else APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT
+    )
+    values = dict(
+        resolver_contract=contract,
+        corpus_id=binding.corpus_id,
+        authority_key=key,
+        query_role="authority-value-filter",
+        authority_mode=mode,
+        variant=variant.key,
+        profile_release_fingerprint=state.profile_release_fingerprint,
+        expected_parent_manifest_digest=variant.key.expected_parent_manifest_digest,
+        observed_parent_manifest_digest=state.observed_parent_manifest_digest,
+        parent_state=state.parent_state,
+        prerequisite_fingerprint=prerequisite_fingerprint,
+        prerequisite_source_contract=state.source_contract,
+        mapping_id=binding.mapping_id,
+        projection_id=binding.projection_id,
+        profile_id=binding.profile_id,
+        capability_id=binding.capability_id,
+        assessment=binding.assessment,
+        native_execution_binding_identity=binding.native_execution_binding_identity,
+        native_execution_binding=binding.native_execution_binding,
+        native_dependencies=binding.native_dependencies,
+        mapping_semantic_digest=binding.mapping_semantic_digest,
+        projection_semantic_digest=binding.projection_semantic_digest,
+        mapping_review=binding.mapping_review,
+        projection_review=binding.projection_review,
+        ontology_lock=binding.ontology_lock,
+        ontology_bundle_digest=binding.ontology_bundle_digest,
+        mapping_evidence=binding.mapping_evidence,
+        projection_evidence=binding.projection_evidence,
+        approximation=approximation,
+        losses=losses,
+        loss_record=loss_record,
+    )
+    provisional = AuthorityNativePlan(plan_fingerprint="", **values)
+    return AuthorityNativePlan(
+        plan_fingerprint=_hash(_authority_plan_projection(provisional)),
+        **values,
+    )
+
+
+def _require_authority_capability(
+    binding: TargetBindingIR,
+    variant: BundleVariantIR,
+    state: RuntimePrerequisiteState,
+    capabilities: dict[CapabilityKey, CapabilityFactsIR],
+) -> None:
+    view = _capability_view(
+        variant,
+        state,
+        binding.profile_id,
+        binding.capability_id,
+        capabilities,
+    )
+    if view.state == "absent":
+        _fail(
+            "capability_absent",
+            "authority binding capability is absent",
+            corpus_id=binding.corpus_id,
+        )
+    if view.state != "active":
+        _fail(
+            "capability_unavailable",
+            "authority binding capability is unavailable",
+            corpus_id=binding.corpus_id,
+        )
+
+
+def authority_resolve_exact(
+    ir: CompiledSemanticIR,
+    request: AuthorityResolveRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> AuthorityResolutionResult:
+    canonical = _validate_authority_request(request)
+    variants, capabilities, _parents, authority, _identity, _identifier = _validate_reference_ir(ir)
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+    rows_for_key = authority.get(canonical.key)
+    plans: list[AuthorityNativePlan] = []
+    for corpus_id in canonical.corpora:
+        state, variant = _select_prerequisite(corpus_id, prerequisite_rows, variants)
+        problem = _prerequisite_problem(state, variant)
+        if problem is not None:
+            _fail(problem, "runtime prerequisite is not executable", corpus_id=corpus_id)
+        candidates = [] if rows_for_key is None else [
+            row
+            for row in rows_for_key
+            if row.corpus_id == corpus_id and row.variant == variant.key
+        ]
+        if not candidates:
+            _fail(
+                "authority_reference_absent",
+                "authority reference is absent for selected corpus variant",
+                corpus_id=corpus_id,
+            )
+        for row in candidates:
+            _validate_authority_binding_against_release(row, variant, canonical.key)
+        exact = [row for row in candidates if row.assessment == "exact"]
+        if len(exact) > 1:
+            _fail(
+                "multiple_authority_bindings",
+                "multiple exact authority bindings require explicit composition",
+                corpus_id=corpus_id,
+            )
+        if not exact:
+            if any(row.assessment in {"close", "broader", "narrower"} for row in candidates):
+                _fail(
+                    "non_exact_authority_mapping",
+                    "authority reference has no exact mapping",
+                    corpus_id=corpus_id,
+                )
+            if any(row.assessment == "related" for row in candidates):
+                _fail(
+                    "non_substitutive_authority_mapping",
+                    "authority reference has only related mapping",
+                    corpus_id=corpus_id,
+                )
+            _fail(
+                "authority_reference_absent",
+                "authority reference has no executable exact mapping",
+                corpus_id=corpus_id,
+            )
+        selected = exact[0]
+        _require_authority_capability(selected, variant, state, capabilities)
+        plans.append(
+            _make_authority_plan(
+                selected,
+                variant,
+                state,
+                canonical.key,
+                mode="exact",
+            )
+        )
+    plans.sort(key=lambda row: _utf16(row.corpus_id))
+    plan_tuple = tuple(plans)
+    projection = {
+        "algorithm": EXACT_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": EXACT_AUTHORITY_RESOLVER_CONTRACT,
+        "request": {
+            "key": _authority_key_projection(canonical.key),
+            "corpora": list(canonical.corpora),
+            "authority_mode": "exact",
+        },
+        "comparison_state": "exactly-comparable",
+        "losses": [],
+        "plan_fingerprints": [row.plan_fingerprint for row in plan_tuple],
+    }
+    return AuthorityResolutionResult(
+        resolver_contract=EXACT_AUTHORITY_RESOLVER_CONTRACT,
+        request=canonical,
+        plans=plan_tuple,
+        comparison_state="exactly-comparable",
+        losses=(),
+        resolution_fingerprint=_hash(projection),
+    )
+
+
+def authority_resolve_approximate(
+    ir: CompiledSemanticIR,
+    request: ApproximateAuthorityResolveRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> ApproximateAuthorityResolutionResult:
+    canonical = _validate_approximate_authority_request(request)
+    variants, capabilities, _parents, authority, _identity, _identifier = _validate_reference_ir(ir)
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+    rows_for_key = authority.get(canonical.key)
+    plans: list[AuthorityNativePlan] = []
+    for corpus_id in canonical.corpora:
+        state, variant = _select_prerequisite(corpus_id, prerequisite_rows, variants)
+        problem = _prerequisite_problem(state, variant)
+        if problem is not None:
+            _fail(problem, "runtime prerequisite is not executable", corpus_id=corpus_id)
+        candidates = [] if rows_for_key is None else [
+            row
+            for row in rows_for_key
+            if row.corpus_id == corpus_id and row.variant == variant.key
+        ]
+        if not candidates:
+            _fail(
+                "authority_reference_absent",
+                "authority reference is absent for selected corpus variant",
+                corpus_id=corpus_id,
+            )
+        for row in candidates:
+            _validate_authority_binding_against_release(row, variant, canonical.key)
+        exact = [row for row in candidates if row.assessment == "exact"]
+        if len(exact) > 1:
+            _fail(
+                "multiple_authority_bindings",
+                "multiple exact authority bindings require explicit composition",
+                corpus_id=corpus_id,
+            )
+        if exact:
+            selected = exact[0]
+        else:
+            substitutive = [
+                row
+                for row in candidates
+                if row.assessment in {"close", "broader", "narrower"}
+            ]
+            if not substitutive:
+                if any(row.assessment == "related" for row in candidates):
+                    _fail(
+                        "non_substitutive_authority_mapping",
+                        "authority reference has only related mappings",
+                        corpus_id=corpus_id,
+                    )
+                _fail(
+                    "approximation_not_authorized",
+                    "authority reference has no approximation-authorized mapping",
+                    corpus_id=corpus_id,
+                )
+            authorized = [
+                row
+                for row in substitutive
+                if row.approximation is not None and row.approximation.eligible is True
+            ]
+            if not authorized:
+                _fail(
+                    "approximation_not_authorized",
+                    "authority reference has no reviewed eligible approximation",
+                    corpus_id=corpus_id,
+                )
+            if len(authorized) > 1:
+                _fail(
+                    "multiple_approximate_authority_bindings",
+                    "multiple eligible approximate authority bindings require explicit composition",
+                    corpus_id=corpus_id,
+                )
+            selected = authorized[0]
+            approximation = selected.approximation
+            if type(approximation) is not ApproximationIR:
+                _fail(
+                    "invalid_compiled_ir",
+                    "selected approximate authority binding has invalid authority",
+                    corpus_id=corpus_id,
+                    related_id=selected.projection_id,
+                )
+            missing = [
+                loss for loss in approximation.losses if loss not in canonical.accept_losses
+            ]
+            if missing:
+                _fail(
+                    "approximation_loss_not_accepted",
+                    f"caller did not accept required approximation loss: {missing[0]}",
+                    corpus_id=corpus_id,
+                    related_id=selected.projection_id,
+                )
+        _require_authority_capability(selected, variant, state, capabilities)
+        plans.append(
+            _make_authority_plan(
+                selected,
+                variant,
+                state,
+                canonical.key,
+                mode="approximate",
+                accepted_losses=canonical.accept_losses,
+            )
+        )
+    plans.sort(key=lambda row: _utf16(row.corpus_id))
+    plan_tuple = tuple(plans)
+    losses = _union_losses(row.losses for row in plan_tuple)
+    nonempty = {row.losses for row in plan_tuple if row.losses}
+    comparison = (
+        "exactly-comparable"
+        if not nonempty
+        else "approximately-comparable"
+        if len(nonempty) == 1
+        else "heterogeneous-loss"
+    )
+    loss_records = tuple(row.loss_record for row in plan_tuple if row.loss_record is not None)
+    projection = {
+        "algorithm": APPROXIMATE_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT,
+        "request": {
+            "key": _authority_key_projection(canonical.key),
+            "corpora": list(canonical.corpora),
+            "authority_mode": "approximate",
+            "accept_losses": list(canonical.accept_losses),
+        },
+        "comparison_state": comparison,
+        "losses": list(losses),
+        "loss_records": [
+            _authority_loss_record_projection(row) for row in loss_records
+        ],
+        "plan_fingerprints": [row.plan_fingerprint for row in plan_tuple],
+    }
+    return ApproximateAuthorityResolutionResult(
+        resolver_contract=APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT,
+        request=canonical,
+        plans=plan_tuple,
+        comparison_state=comparison,
+        losses=losses,
+        loss_records=loss_records,
+        resolution_fingerprint=_hash(projection),
+    )
+
+
+def _reference_plan_common(
+    reference: ExternalReferenceIR,
+    parent: NativeRecordIR,
+    variant: BundleVariantIR,
+    state: RuntimePrerequisiteState,
+    child: dict[str, Any],
+) -> dict[str, Any]:
+    if (
+        type(reference.native_binding) is not NativeBindingIR
+        or type(reference.native_binding_identity) is not str
+        or not reference.native_binding_identity
+    ):
+        _fail(
+            "invalid_compiled_ir",
+            "reviewed external reference lacks explicit native binding",
+            corpus_id=reference.corpus_id,
+            related_id=reference.reference_id,
+        )
+    return {
+        "corpus_id": reference.corpus_id,
+        "variant": variant.key,
+        "mapping_id": reference.mapping_id,
+        "reference_id": reference.reference_id,
+        "reference_kind": reference.reference_kind,
+        "query_role": reference.query_role,
+        "mapping_semantic_digest": parent.mapping_semantic_digest,
+        "mapping_review": parent.mapping_review,
+        "reference_evidence": reference.evidence,
+        "reference_fingerprint": _reference_fingerprint(child),
+        "native_execution_binding_identity": reference.native_binding_identity,
+        "native_execution_binding": reference.native_binding,
+        "native_dependencies": parent.native_dependencies,
+        "prerequisite_fingerprint": runtime_prerequisite_fingerprint(state),
+        "prerequisite_source_contract": state.source_contract,
+        "profile_release_fingerprint": state.profile_release_fingerprint,
+        "expected_parent_manifest_digest": variant.key.expected_parent_manifest_digest,
+        "observed_parent_manifest_digest": state.observed_parent_manifest_digest,
+        "parent_state": state.parent_state,
+    }
+
+
+def _identity_plan_projection(plan: IdentityNativePlan) -> dict[str, Any]:
+    return {
+        "algorithm": IDENTITY_PLAN_FINGERPRINT_ALGORITHM,
+        "resolver_contract": plan.resolver_contract,
+        "corpus_id": plan.corpus_id,
+        "variant": _variant_projection(plan.variant),
+        "authority_system": plan.authority_system,
+        "external_entity_id": plan.external_entity_id,
+        "identity_strength": plan.identity_strength,
+        "mapping_id": plan.mapping_id,
+        "reference_id": plan.reference_id,
+        "reference_kind": plan.reference_kind,
+        "query_role": plan.query_role,
+        "mapping_semantic_digest": plan.mapping_semantic_digest,
+        "mapping_review": _review_projection(plan.mapping_review),
+        "reference_evidence": [
+            _evidence_projection(item) for item in plan.reference_evidence
+        ],
+        "reference_fingerprint": plan.reference_fingerprint,
+        "native_execution_binding_identity": plan.native_execution_binding_identity,
+        "native_dependencies": list(plan.native_dependencies),
+        "prerequisite_fingerprint": plan.prerequisite_fingerprint,
+        "prerequisite_source_contract": plan.prerequisite_source_contract,
+        "profile_release_fingerprint": plan.profile_release_fingerprint,
+        "expected_parent_manifest_digest": plan.expected_parent_manifest_digest,
+        "observed_parent_manifest_digest": plan.observed_parent_manifest_digest,
+        "parent_state": plan.parent_state,
+    }
+
+
+def _identifier_plan_projection(plan: IdentifierNativePlan) -> dict[str, Any]:
+    return {
+        "algorithm": IDENTIFIER_PLAN_FINGERPRINT_ALGORITHM,
+        "resolver_contract": plan.resolver_contract,
+        "corpus_id": plan.corpus_id,
+        "variant": _variant_projection(plan.variant),
+        "key": _identifier_key_projection(plan.key),
+        "mapping_id": plan.mapping_id,
+        "reference_id": plan.reference_id,
+        "reference_kind": plan.reference_kind,
+        "query_role": plan.query_role,
+        "mapping_semantic_digest": plan.mapping_semantic_digest,
+        "mapping_review": _review_projection(plan.mapping_review),
+        "reference_evidence": [
+            _evidence_projection(item) for item in plan.reference_evidence
+        ],
+        "reference_fingerprint": plan.reference_fingerprint,
+        "native_execution_binding_identity": plan.native_execution_binding_identity,
+        "native_dependencies": list(plan.native_dependencies),
+        "prerequisite_fingerprint": plan.prerequisite_fingerprint,
+        "prerequisite_source_contract": plan.prerequisite_source_contract,
+        "profile_release_fingerprint": plan.profile_release_fingerprint,
+        "expected_parent_manifest_digest": plan.expected_parent_manifest_digest,
+        "observed_parent_manifest_digest": plan.observed_parent_manifest_digest,
+        "parent_state": plan.parent_state,
+    }
+
+
+def identity_resolve(
+    ir: CompiledSemanticIR,
+    request: IdentityResolveRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> IdentityResolutionResult:
+    canonical = _validate_identity_request(request)
+    variants, _capabilities, parents, _authority, identity, _identifier = _validate_reference_ir(ir)
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+    plans: list[IdentityNativePlan] = []
+    for corpus_id in canonical.corpora:
+        state, variant = _select_prerequisite(corpus_id, prerequisite_rows, variants)
+        problem = _prerequisite_problem(state, variant)
+        if problem is not None:
+            _fail(problem, "runtime prerequisite is not executable", corpus_id=corpus_id)
+        candidates: list[tuple[ExternalReferenceIR, NativeRecordIR, dict[str, Any]]] = []
+        for key, rows in identity.items():
+            if (
+                key.authority_system != canonical.authority_system
+                or key.external_entity_id != canonical.external_entity_id
+            ):
+                continue
+            for row in rows:
+                if row.corpus_id != corpus_id or row.variant != variant.key:
+                    continue
+                parent = parents.get((row.variant, row.mapping_id))
+                if parent is None:
+                    _fail(
+                        "invalid_compiled_ir",
+                        "identity reference has no parent mapping record",
+                        corpus_id=corpus_id,
+                        related_id=row.reference_id,
+                    )
+                child = _authoritative_reference_child(row, parent, variant)
+                candidates.append((row, parent, child))
+        if not candidates:
+            _fail(
+                "identity_reference_absent",
+                "identity reference is absent for selected corpus variant",
+                corpus_id=corpus_id,
+            )
+        exact = [item for item in candidates if item[0].identity_strength == "same-entity"]
+        if len(exact) > 1:
+            _fail(
+                "multiple_identity_bindings",
+                "multiple same-entity bindings require explicit composition",
+                corpus_id=corpus_id,
+            )
+        if not exact:
+            _fail(
+                "identity_not_exact",
+                "reviewed identity exists but no same-entity authority is available",
+                corpus_id=corpus_id,
+            )
+        reference, parent, child = exact[0]
+        common = _reference_plan_common(reference, parent, variant, state, child)
+        values = dict(
+            resolver_contract=IDENTITY_RESOLVER_CONTRACT,
+            authority_system=canonical.authority_system,
+            external_entity_id=canonical.external_entity_id,
+            identity_strength="same-entity",
+            **common,
+        )
+        provisional = IdentityNativePlan(plan_fingerprint="", **values)
+        plans.append(
+            IdentityNativePlan(
+                plan_fingerprint=_hash(_identity_plan_projection(provisional)),
+                **values,
+            )
+        )
+    plans.sort(key=lambda row: _utf16(row.corpus_id))
+    plan_tuple = tuple(plans)
+    projection = {
+        "algorithm": IDENTITY_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": IDENTITY_RESOLVER_CONTRACT,
+        "request": {
+            "authority_system": canonical.authority_system,
+            "external_entity_id": canonical.external_entity_id,
+            "corpora": list(canonical.corpora),
+        },
+        "plan_fingerprints": [row.plan_fingerprint for row in plan_tuple],
+    }
+    return IdentityResolutionResult(
+        resolver_contract=IDENTITY_RESOLVER_CONTRACT,
+        request=canonical,
+        plans=plan_tuple,
+        resolution_fingerprint=_hash(projection),
+    )
+
+
+def identifier_resolve(
+    ir: CompiledSemanticIR,
+    request: IdentifierResolveRequest,
+    prerequisites: Iterable[RuntimePrerequisiteState],
+) -> IdentifierResolutionResult:
+    canonical = _validate_identifier_request(request)
+    variants, _capabilities, parents, _authority, _identity, identifier = _validate_reference_ir(ir)
+    prerequisite_rows = _materialize_prerequisites(prerequisites)
+    rows_for_key = identifier.get(canonical.key)
+    plans: list[IdentifierNativePlan] = []
+    for corpus_id in canonical.corpora:
+        state, variant = _select_prerequisite(corpus_id, prerequisite_rows, variants)
+        problem = _prerequisite_problem(state, variant)
+        if problem is not None:
+            _fail(problem, "runtime prerequisite is not executable", corpus_id=corpus_id)
+        rows = [] if rows_for_key is None else [
+            row
+            for row in rows_for_key
+            if row.corpus_id == corpus_id and row.variant == variant.key
+        ]
+        if not rows:
+            _fail(
+                "identifier_reference_absent",
+                "identifier reference is absent for selected corpus variant",
+                corpus_id=corpus_id,
+            )
+        candidates: list[tuple[ExternalReferenceIR, NativeRecordIR, dict[str, Any]]] = []
+        for row in rows:
+            parent = parents.get((row.variant, row.mapping_id))
+            if parent is None:
+                _fail(
+                    "invalid_compiled_ir",
+                    "identifier reference has no parent mapping record",
+                    corpus_id=corpus_id,
+                    related_id=row.reference_id,
+                )
+            candidates.append((row, parent, _authoritative_reference_child(row, parent, variant)))
+        if len(candidates) > 1:
+            _fail(
+                "multiple_identifier_bindings",
+                "multiple identifier bindings require explicit composition",
+                corpus_id=corpus_id,
+            )
+        reference, parent, child = candidates[0]
+        common = _reference_plan_common(reference, parent, variant, state, child)
+        values = dict(
+            resolver_contract=IDENTIFIER_RESOLVER_CONTRACT,
+            key=canonical.key,
+            **common,
+        )
+        provisional = IdentifierNativePlan(plan_fingerprint="", **values)
+        plans.append(
+            IdentifierNativePlan(
+                plan_fingerprint=_hash(_identifier_plan_projection(provisional)),
+                **values,
+            )
+        )
+    plans.sort(key=lambda row: _utf16(row.corpus_id))
+    plan_tuple = tuple(plans)
+    projection = {
+        "algorithm": IDENTIFIER_RESOLUTION_FINGERPRINT_ALGORITHM,
+        "resolver_contract": IDENTIFIER_RESOLVER_CONTRACT,
+        "request": {
+            "key": _identifier_key_projection(canonical.key),
+            "corpora": list(canonical.corpora),
+        },
+        "plan_fingerprints": [row.plan_fingerprint for row in plan_tuple],
+    }
+    return IdentifierResolutionResult(
+        resolver_contract=IDENTIFIER_RESOLVER_CONTRACT,
+        request=canonical,
+        plans=plan_tuple,
         resolution_fingerprint=_hash(projection),
     )

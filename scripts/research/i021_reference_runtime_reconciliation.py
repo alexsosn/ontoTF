@@ -177,9 +177,8 @@ def main() -> int:
         },
         "review_authority": {
             "mapping_digest_reproduced_from_source_payload": payload_digest,
-            "native_record_has_mapping_semantic_payload": hasattr(
-                refs_ir.native_index[0][1][0],
-                "mapping_semantic_payload",
+            "native_record_has_mapping_semantic_payload": (
+                refs_ir.native_index[0][1][0].mapping_semantic_payload == payload
             ),
             "external_reference_has_own_review": hasattr(identity, "review"),
             "external_reference_has_own_semantic_digest": hasattr(
@@ -234,8 +233,8 @@ def main() -> int:
         raise SystemExit("identity fixture strength drifted")
     if not result["current_ir"]["provenance_locator_not_reverse_indexed"]:
         raise SystemExit("reference-family index isolation drifted")
-    if result["review_authority"]["native_record_has_mapping_semantic_payload"]:
-        raise SystemExit("research premise drifted: mapping payload is already retained")
+    if not result["review_authority"]["native_record_has_mapping_semantic_payload"]:
+        raise SystemExit("I-021 runtime payload binding is missing")
 
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

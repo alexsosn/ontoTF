@@ -63,6 +63,6 @@
     "forged_external_reference_replace_succeeds": true,
     "forged_row_keeps_original_release_mapping_digest": true,
     "mapping_digest_reproduced_from_source_payload": "sha256:b87539f765aea4731cda6b4634f8be584a5fb5c901dc70423e68378377ae30be",
-    "native_record_has_mapping_semantic_payload": false
+    "native_record_has_mapping_semantic_payload": true
   }
 }

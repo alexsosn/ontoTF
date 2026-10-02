@@ -1,0 +1,84 @@
+name: I-021 authority identity identifier resolution
+
+on:
+  pull_request:
+    paths:
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/semantic_resolver.py"
+      - "src/tfont/semantic_execution.py"
+      - "src/tfont/__init__.py"
+      - "tests/i021/**"
+      - "scripts/research/i021_reference_runtime_reconciliation.py"
+      - "docs/research/data/generated/i021/reference-runtime-reconciliation.json"
+      - ".github/workflows/i021-reference-resolution.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i021:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - name: Run I-021 contract
+        run: python -m unittest discover -s tests/i021 -p 'test*.py'
+      - name: Preserve I-005 reference-index separation
+        run: |
+          python -m unittest             tests.i005.test_semantic_ir_contract.I005SemanticIRContractTests.test_authority_value_routes_only_to_authority_index             tests.i005.test_semantic_ir_contract.I005SemanticIRContractTests.test_identity_and_catalogue_indexes_are_separate
+      - name: Preserve exact and approximate semantic anchors
+        run: |
+          python -m unittest tests.i006.test_semantic_resolver_contract
+          python -m unittest tests.i020.test_approximate_resolution_red
+          python -m unittest tests.i020.test_approximate_execution_red
+      - name: Reproduce I-021 research evidence
+        run: |
+          python scripts/research/i021_reference_runtime_reconciliation.py > /tmp/i021-reference-runtime.json
+          cmp /tmp/i021-reference-runtime.json docs/research/data/generated/i021/reference-runtime-reconciliation.json
+      - name: Build and import isolated wheel
+        run: |
+          python -m pip install build
+          python -m build --wheel --outdir dist
+          python - <<'PY'
+          import pathlib
+          import subprocess
+          import sys
+          import tempfile
+
+          wheel = next(pathlib.Path("dist").glob("tfont-*.whl"))
+          with tempfile.TemporaryDirectory() as tmp:
+              subprocess.check_call(
+                  [sys.executable, "-m", "pip", "install", "--target", tmp, str(wheel)]
+              )
+              code = """
+          import tfont
+          required = (
+              "AuthorityResolveRequest",
+              "ApproximateAuthorityResolveRequest",
+              "IdentityResolveRequest",
+              "IdentifierResolveRequest",
+              "authority_resolve_exact",
+              "authority_resolve_approximate",
+              "identity_resolve",
+              "identifier_resolve",
+              "execute_exact_authority",
+              "execute_approximate_authority",
+              "execute_identity",
+              "execute_identifier",
+          )
+          missing = [name for name in required if not hasattr(tfont, name)]
+          if missing:
+              raise SystemExit(f"missing I-021 wheel API: {missing}")
+          """
+              subprocess.check_call([sys.executable, "-c", code], env={"PYTHONPATH": tmp})
+          PY
