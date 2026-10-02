@@ -232,10 +232,18 @@ Pinned Text-Fabric documents `F.otype.s()` as canonical TF node order. The
 existing scalar predicate path already preserves loaded selector order through
 `_normalize_result_nodes()`.
 
-An empty selector result is a successful empty result **only after** the fresh
-runtime prerequisite state has passed the reviewed matching
-`node-type-present` dependency. Unknown/absent node type must therefore fail
-at prerequisite authorization before `F.otype.s()` is used.
+Under the current I-007 observation contract, an empty
+`F.otype.s(node_type)` means that `node-type-present` is **absent**, so a
+stable authorized membership execution cannot legitimately be empty.
+
+The fresh prerequisite evaluation calls `F.otype.s(node_type)` first:
+
+- empty there -> dependency fails and the resolver is never authorized;
+- non-empty there followed by empty at execution time -> loaded state changed
+  between prerequisite evaluation and execution and must fail closed as
+  `invalid_result_nodes`.
+
+Do not turn either case into a successful empty membership result.
 
 ### Domain verification
 
@@ -429,33 +437,33 @@ Tests-only RED must include at least:
 
 ### Trust / unsupported shape
 
-24. forged membership IR carrying a forbidden field fails
+25. forged membership IR carrying a forbidden field fails
     `unsupported_native_binding`;
-25. stale/incompatible loaded state prevents `F.otype.s` access;
-26. no public caller-plan execution path exists;
-27. edge-path remains `unsupported_native_binding`;
-28. inspection-only remains unsupported;
-29. execution does not touch `E.oslots` or trigger loading/network access.
+26. stale/incompatible loaded state prevents `F.otype.s` access;
+27. no public caller-plan execution path exists;
+28. edge-path remains `unsupported_native_binding`;
+29. inspection-only remains unsupported;
+30. execution does not touch `E.oslots` or trigger loading/network access.
 
 ### Existing surfaces
 
-30. exact semantic execution handles membership;
-31. approximate semantic execution handles exact membership with no loss;
-32. an authorized approximate semantic membership binding preserves I-020 loss
+31. exact semantic execution handles membership;
+32. approximate semantic execution handles exact membership with no loss;
+33. an authorized approximate semantic membership binding preserves I-020 loss
     records while executing membership;
-33. exact/approximate conjunction can execute membership constituents under
+34. exact/approximate conjunction can execute membership constituents under
     existing node-domain safety;
-34. exact/approximate authority execution can execute a reviewed membership
+35. exact/approximate authority execution can execute a reviewed membership
     binding;
-35. identity/identifier execution can execute a reviewed membership binding
+36. identity/identifier execution can execute a reviewed membership binding
     without weakening I-021 review/index checks.
 
 ### Compatibility
 
-36. frozen I-020 fingerprint anchors remain exact;
-37. I-021 resolver/execution adversarial suite remains green;
-38. I-005/I-006/I-008/I-015 exact controls remain green;
-39. pyproject still has no Text-Fabric runtime dependency.
+37. frozen I-020 fingerprint anchors remain exact;
+38. I-021 resolver/execution adversarial suite remains green;
+39. I-005/I-006/I-008/I-015 exact controls remain green;
+40. pyproject still has no Text-Fabric runtime dependency.
 
 Observe actual RED on the exact tests-only head before changing schema/runtime.
 
@@ -525,7 +533,8 @@ At minimum challenge:
   field;
 - whether every membership binding is backed by an exact reviewed
   `node-type-present` dependency and fresh I-007 evaluation;
-- whether empty membership can occur only after that prerequisite passes;
+- whether absent node type fails at fresh prerequisite evaluation and whether
+  a later empty selector is treated as runtime drift rather than success;
 - whether defensive runtime validation catches forged IR despite schema
   validation;
 - whether `F.otype.s/v` is used exactly as pinned upstream documents;
@@ -551,10 +560,12 @@ From `main`:
 
 1. validate one exact membership source;
 2. execute one membership fixture and confirm node order/domain;
-3. confirm shape-only membership rejects;
-4. confirm edge-path remains rejected at execution;
-5. re-read frozen I-020 anchors;
-6. verify packaged production mapping inventory still reports zero structural
+3. confirm absent node type fails prerequisite authorization and a post-check
+   empty selector fails closed;
+4. confirm shape-only membership rejects;
+5. confirm edge-path remains rejected at execution;
+6. re-read frozen I-020 anchors;
+7. verify packaged production mapping inventory still reports zero structural
    bindings.
 
 Close #242 after this readback. Continue Workstream B with I-023 #244.
