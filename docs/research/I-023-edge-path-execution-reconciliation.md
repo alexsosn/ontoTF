@@ -15,97 +15,98 @@ The reproducible probe is
 is written to
 `docs/research/data/generated/i023/edge-path-reconciliation.json`.
 
-The current source contract still accepts under-specified and ambiguous
-`edge-path` bindings. In particular, all of the following are schema-valid
-today:
+The first research pass proposed a start-typed path with unconstrained
+intermediate/final node types. Independent adversarial reconciliation rejected
+that proposal: accepted R-007 explicitly requires native edge source/target
+types and valued/unvalued distinction to survive canonical mapping/IR.
+The contract below corrects that gap.
+
+## Current gap
+
+The current mapping schema still accepts under-specified and mixed
+`edge-path` bindings:
 
 - `{"execution_shape":"edge-path"}`;
-- steps without a component or start node kind;
+- steps without component/start domain;
 - `component_id + node_type + steps`;
-- the legacy-looking one-step `edge + direction` surface;
-- a typed-start path polluted by unrelated `feature` or `interpretation`
-  fields.
+- top-level one-step `edge + direction`;
+- unrelated `feature` or `interpretation` fields.
 
-At the same time, `edgeStep` is closed to only `edge + direction`, so it
-cannot currently express an expected result node type.
+Current `edgeStep` is closed to only `edge + direction`. It therefore cannot
+state the traversal-result node domain or whether an edge is valued.
+
+That is insufficient for R-007 and also conflicts with I-015 conjunction
+safety, which needs a known result domain.
 
 ## Mechanical grounding
 
 Pinned Text-Fabric revision
-`0c45c386916cb52be84098796ec27ce97e5bf9fc` provides the mechanics already
-identified in I-022:
+`0c45c386916cb52be84098796ec27ce97e5bf9fc` provides:
 
-- `E.<edge>.f(node)` traverses outgoing edges;
-- `E.<edge>.t(node)` traverses incoming edges;
-- both return TF-canonical node order;
-- valued edges return `(node, value)` pairs;
-- `EdgeFeature` retains explicit `doValues` state.
+- `E.<edge>.f(node)`: outgoing traversal;
+- `E.<edge>.t(node)`: incoming traversal;
+- TF-canonical ordering for both;
+- `(node, value)` pairs for valued edges;
+- explicit `EdgeFeature.doValues` implementation state.
 
-The current TFont `LoadedTFObservation.path()` checks only that every
-`edge + direction` step is loaded. It does not attest start-node semantics,
-endpoint domains, connectivity, or valued/unvalued edge behavior.
+Current `LoadedTFObservation.path()` proves only that the requested
+`edge + direction` steps are loaded. It does not prove endpoint types,
+connectivity, or valuedness.
 
-Committed corpus evidence provides three useful controls:
+Committed corpus controls remain:
 
-- ORACC `word_line` is `word -> line`, unvalued;
-- ORACC `line_column` is `line -> column`, unvalued;
-- therefore `word_line -> line_column` is a concrete two-step unvalued path
-  from native `word` nodes to native `column` nodes;
-- BHSA `mother` is an unvalued graph edge with multiple native source and
-  target types;
-- TLHdig includes valued edges `joined`, `selected`, and
-  `witness_resolution`, which are a mandatory negative control.
+- ORACC `word_line`: `word -> line`, unvalued;
+- ORACC `line_column`: `line -> column`, unvalued;
+- BHSA `mother`: unvalued, with multiple native endpoint types;
+- TLHdig valued controls: `joined`, `selected`,
+  `witness_resolution`.
 
-These facts authorize mechanical tests only. No edge name is promoted to
-CRM/CRMtex/POWLA/linguistic semantics by this research.
+## Closed source contract
 
-## Start selector
-
-The smallest closed meaning for an executable path is:
+The executable binding should be:
 
 ```json
 {
-  "component_id": "...",
-  "node_type": "...",
+  "component_id": "oracc-tf",
+  "node_type": "word",
   "execution_shape": "edge-path",
   "steps": [
-    {"edge": "...", "direction": "outgoing"}
+    {
+      "edge": "word_line",
+      "direction": "outgoing",
+      "result_node_type": "line",
+      "valued": false
+    },
+    {
+      "edge": "line_column",
+      "direction": "outgoing",
+      "result_node_type": "column",
+      "valued": false
+    }
   ]
 }
 ```
 
-For this shape, `node_type` means the native **start-node selector**:
+Binding-level `node_type` is the **start traversal domain** and therefore
+selects `F.otype.s(node_type)`.
 
-`F.otype.s(node_type)`
+Each step must require exactly:
 
-It is not the result node domain and it is not an ontology class.
+- `edge`;
+- `direction`;
+- `result_node_type`;
+- `valued`.
 
-The mapping must carry both:
+For the first production slice, `valued` is required and must be exactly
+`false`.
 
-1. an exact matching `node-type-present` dependency for
-   `component_id + node_type`;
-2. an exact matching `path-present` dependency for the same component and
-   ordered `steps`.
+`result_node_type` means the expected type of nodes **returned by that
+traversal step**. For outgoing traversal it is the native edge target type; for
+incoming traversal it is the native edge source type. Therefore the current
+domain + direction + result domain preserve both native endpoint types without
+directional ambiguity.
 
-A generic `component-present` or unrelated edge dependency is insufficient.
-
-## Canonical path syntax
-
-Only `steps` should be executable syntax for `edge-path`.
-
-The generic top-level `edge + direction` fields should be rejected for this
-shape rather than retained as one-step sugar. Keeping two equivalent source
-representations would complicate review authority, semantic digests, and
-provenance without adding capability.
-
-The closed first-slice source rule should therefore require:
-
-- `component_id`;
-- `node_type`;
-- `execution_shape="edge-path"`;
-- non-empty ordered `steps`;
-
-and forbid:
+The `edge-path` binding must reject:
 
 - `feature`;
 - `value`;
@@ -115,132 +116,142 @@ and forbid:
 - top-level `direction`;
 - `interpretation`.
 
-## Intermediate and final node domains
+Top-level `edge + direction` should not survive as one-step sugar. One
+canonical representation keeps review authority, digests and provenance
+unambiguous.
 
-The first slice should not invent target-node-type semantics that the current
-source contract cannot state.
+## Dependency authority
 
-Policy:
+A reviewed edge-path owner must have dependencies that authorize:
 
-- the reviewed `node_type` constrains only start nodes;
-- every traversed node must be a positive unique TF node ID;
-- every traversed node must have a readable, non-empty `F.otype.v(node)`;
-- intermediate and final node types are otherwise unconstrained native node
-  types;
-- parent/profile identity and reviewed path authority remain the semantic
-  boundary.
+1. the start `component_id + node_type` with exact
+   `node-type-present`;
+2. every distinct step `result_node_type` with exact
+   `node-type-present` on the same component;
+3. the exact ordered `edge + direction` sequence with matching
+   `path-present`.
 
-A later contract may add explicit endpoint/result domains if a production
-mapping needs them. That must be versioned rather than inferred from edge
-labels or corpus observations.
+`path-present` remains a mechanical loaded-edge prerequisite. The typed
+domains and explicit `valued=false` remain part of the reviewed mapping
+identity and are revalidated during execution.
 
-## Valued edges
+This avoids expanding the dependency contract merely to duplicate binding
+semantics while still preventing an unreviewed start/result domain from
+becoming executable.
 
-The first production slice should reject valued edges fail-closed.
-
-Current execution results are node sets plus reviewed plan/runtime provenance;
-they have no lossless place to carry edge values or path traces. Silently
-dropping a TLHdig edge value would therefore change native semantics.
-
-At each step the executor should require a loaded edge API with explicit
-`doValues is False`. A missing/malformed flag or `True` must fail closed.
-A future valued-edge ticket can define whether values are filters, returned
-provenance, semantic payload, or all three.
-
-## Traversal and ordering
+## Runtime traversal
 
 Execution should use only already-loaded APIs:
 
 1. fresh prerequisite evaluation;
 2. fresh resolver plan;
 3. `F.otype.s(start_node_type)`;
-4. for each ordered step, `E.<edge>.f` or `.t`;
-5. validate every returned node through `F.otype.v`;
-6. de-duplicate by first discovery.
+4. validate each start node is exactly the start type;
+5. for each ordered step:
+   - require the edge is still listed by `Eall()`;
+   - get `E.<edge>.f` or `.t`;
+   - require explicit `doValues is False`;
+   - traverse the current frontier;
+   - normalize positive unique node IDs;
+   - require `F.otype.v(node) == step.result_node_type`;
+   - de-duplicate by first discovery;
+6. return the final frontier.
 
-Because the start selector and each Text-Fabric edge call are already
-canonically ordered, first-discovery de-duplication is deterministic without
-touching undocumented `C.rank` internals.
+The start selector and each Text-Fabric edge call are canonically ordered, so
+first-discovery de-duplication is deterministic without reading undocumented
+`C.rank` internals.
 
 An empty start selector after a fresh `node-type-present` pass is runtime
-drift and should fail closed, matching I-022 membership behavior.
+drift and fails closed, matching I-022 membership.
 
-An empty frontier **after traversal** is a legitimate path result: path
-presence says the edges are loaded, not that every start node has a reachable
-target.
+An empty frontier after one or more traversal steps is valid: loaded path
+availability does not assert graph connectivity for every start node.
 
-The existing execution result already contains the reviewed plan and runtime
-report, so the exact ordered path and prerequisite authority remain visible.
-This is sufficient for unvalued paths; it would not be sufficient for valued
-edges, which is why they remain unsupported.
+## Valued-edge boundary
 
-## Conjunction boundary
+R-007 requires valued/unvalued distinction to survive mapping and IR. The first
+slice satisfies that requirement by making `valued=false` explicit rather
+than silently assuming it.
 
-I-015 conjunction safety currently treats
-`(binding.component_id, binding.node_type)` as the result node domain.
+`valued=true` remains unsupported until a separate contract defines how edge
+values survive execution: filter predicate, returned path provenance, semantic
+payload, or some combination. Accepting valued edges while returning only node
+IDs would discard native semantics.
 
-That assumption is valid for value predicates and membership, where
-`node_type` is the result domain. It is false for the proposed edge-path
-contract, where `node_type` is the **start** domain.
+The runtime must therefore fail closed if `doValues` is missing, malformed,
+or true for a step whose reviewed contract says `valued=false`.
 
-Therefore the first edge-path implementation must remain unsupported in exact
-and approximate conjunction execution. Allowing it through the current
-conjunction helper would create a false domain-equivalence proof.
+## Conjunction domain
 
-A separate follow-up should define an explicit result-domain contract before
-edge-path participates in conjunction/intersection execution.
+The initial research pass found that current conjunction safety treats
+`binding.node_type` as the result domain. With typed steps, the production
+fix can preserve conjunction support instead of banning edge-path:
+
+- scalar predicate / value-set / membership result domain:
+  `binding.node_type`;
+- edge-path result domain:
+  `binding.steps[-1].result_node_type`.
+
+A shared private result-domain helper should feed I-015 exact and approximate
+conjunction checks. This keeps intersection fail-closed while allowing typed
+edge-path plans to participate when all constituents resolve to the same
+component and final node type.
+
+A forged/malformed edge-path with no valid final result domain remains
+unsupported.
 
 ## Recommended first production slice
 
-Authorize the implementation plan to:
+Authorize a plan-only gate to:
 
-- close the `edge-path` source shape to
+- extend `edgeStep` with required `result_node_type` and
+  `valued=false`;
+- close `edge-path` to
   `component_id + node_type + steps + execution_shape`;
-- define `node_type` as start selector;
-- require exact matching `node-type-present` and `path-present`
-  dependency authority;
-- support only unvalued edges;
-- traverse outgoing/incoming steps in order;
-- validate all traversed node IDs and native node existence;
+- extend `EdgeStepIR` accordingly;
+- require matching `node-type-present` dependencies for start and every
+  result domain plus exact `path-present`;
+- execute only unvalued paths;
+- validate every start/intermediate/final node against the reviewed domain;
 - use stable first-discovery ordering;
 - permit empty post-traversal results;
-- expose the same path execution through exact semantic, approximate semantic,
-  authority, identity, and identifier surfaces where their reviewed plans
-  carry the binding;
-- explicitly keep edge-path unsupported in exact/approximate conjunction;
+- share execution across exact/approximate semantic, conjunction, authority,
+  identity and identifier surfaces;
+- update conjunction result-domain validation to use the final typed step;
 - preserve `interpretation` / `oslots` as non-executable;
-- add no Text-Fabric runtime dependency and no corpus autoload;
-- add no production ontology mappings merely to exercise the executor.
+- add no Text-Fabric runtime dependency, autoload or network access;
+- add no production semantic mappings solely to exercise the runtime.
 
 ## Non-goals
 
-- no valued-edge execution;
-- no path-value filter language;
+- no `valued=true` execution yet;
+- no edge-value filter language;
+- no path-trace result object in this slice;
 - no generic graph query language;
-- no inferred endpoint type from an edge name;
+- no endpoint types inferred from edge names;
 - no CRM/CRMtex/POWLA promotion from native structure;
 - no `oslots` extent semantics;
 - no caller-created trusted plan;
-- no corpus acquisition or network dereference;
-- no conjunction support until result-domain semantics are explicit.
+- no corpus acquisition or URI dereference.
 
 ## Plan handoff
 
-If independently accepted, the next PR should be a plan-only gate specifying
-the exact schema/validation/runtime changes and a tests-only RED commit before
-any production implementation.
+The next PR must be plan-only and specify the exact schema, IR, validation,
+runtime, conjunction and TDD changes before production code.
 
-The implementation PR must prove at minimum:
+Implementation acceptance must include:
 
-- ORACC `word -> line -> column` outgoing mechanics;
-- incoming traversal;
-- BHSA-style multi-domain edge mechanics without inferred domain meaning;
-- TLHdig valued-edge rejection;
+- ORACC typed `word -> line -> column` outgoing path;
+- incoming path with correctly reversed native endpoint orientation;
+- BHSA-style multi-domain edge control without inferred semantics;
+- TLHdig `valued=true` rejection;
+- schema rejection of shape-only/mixed/legacy alias paths;
+- dependency-authority rejection for missing/wrong start or result node types
+  and wrong path sequence;
 - missing/unloaded/malformed edge fail-closed behavior;
-- duplicate and invalid node rejection;
+- duplicate/invalid/wrong-type traversed node rejection;
 - valid empty post-traversal result;
 - stale prerequisite/runtime drift handling;
-- unchanged production mapping fingerprints for existing resources;
-- exact/approximate/reference execution reuse;
-- explicit conjunction rejection;
+- unchanged existing production mapping fingerprints;
+- exact/approximate/reference/conjunction reuse;
 - no `oslots`, autoload, network, or Text-Fabric package dependency.
