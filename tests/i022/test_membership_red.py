@@ -15,7 +15,13 @@ from tests.i022._fixtures import (
     membership_sources,
 )
 from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
-from tests.i005._fixtures import source_bundle, validate_structural_sources
+from tests.i005._fixtures import (
+    entity_identity_reference,
+    noun_sources,
+    source_bundle,
+    validate_structural_sources,
+)
+from tests.i006._fixtures import _refresh_mapping
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -92,6 +98,34 @@ class I022MembershipRedTests(unittest.TestCase):
         with self.assertRaises(SemanticValidationError) as raised:
             validate_semantic_bundle(source_bundle(wrong_component))
         self.assertEqual(raised.exception.problem.category, "component_authority")
+
+    def test_dependency_authority_applies_to_every_membership_owner(self):
+        membership = {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "execution_shape": "membership",
+        }
+
+        for owner in ("mapping", "projection", "reference"):
+            with self.subTest(owner=owner):
+                refs = [entity_identity_reference("bhsa")] if owner == "reference" else None
+                sources = noun_sources(
+                    "bhsa",
+                    parent_char="a",
+                    external_references=refs,
+                )
+                mapping = sources["mappings"]["mappings"][0]
+                if owner == "mapping":
+                    mapping["native_binding"] = dict(membership)
+                elif owner == "projection":
+                    mapping["projections"][0]["native_execution_binding"] = dict(membership)
+                else:
+                    mapping["external_references"][0]["native_binding"] = dict(membership)
+                _refresh_mapping(mapping)
+                validate_structural_sources(sources)
+                with self.assertRaises(SemanticValidationError) as raised:
+                    validate_semantic_bundle(source_bundle(sources))
+                self.assertEqual(raised.exception.problem.category, "dependency_authority")
 
     def test_membership_compiles_without_new_ir_shape(self):
         ir = compiled_membership_ir()
