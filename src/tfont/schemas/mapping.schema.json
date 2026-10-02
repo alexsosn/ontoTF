@@ -3,30 +3,14 @@
   "$id": "https://tfont.dev/schema/v2/mapping.schema.json",
   "$defs": {
     "jsonScalar": {
-      "type": [
-        "string",
-        "number",
-        "boolean",
-        "null"
-      ]
+      "type": ["string", "number", "boolean", "null"]
     },
     "edgeStep": {
       "type": "object",
-      "required": [
-        "edge",
-        "direction"
-      ],
+      "required": ["edge", "direction"],
       "properties": {
-        "edge": {
-          "type": "string",
-          "minLength": 1
-        },
-        "direction": {
-          "enum": [
-            "outgoing",
-            "incoming"
-          ]
-        }
+        "edge": {"type": "string", "minLength": 1},
+        "direction": {"enum": ["outgoing", "incoming"]}
       },
       "additionalProperties": false
     },
@@ -34,393 +18,128 @@
       "type": "object",
       "minProperties": 1,
       "properties": {
-        "component_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "node_type": {
-          "type": "string",
-          "minLength": 1
-        },
-        "feature": {
-          "type": "string",
-          "minLength": 1
-        },
-        "value": {
-          "$ref": "#/$defs/jsonScalar"
-        },
+        "component_id": {"type": "string", "minLength": 1},
+        "node_type": {"type": "string", "minLength": 1},
+        "feature": {"type": "string", "minLength": 1},
+        "value": {"$ref": "#/$defs/jsonScalar"},
         "closed_values": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/jsonScalar"
-          }
+          "items": {"$ref": "#/$defs/jsonScalar"}
         },
         "values": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/jsonScalar"
-          }
+          "items": {"$ref": "#/$defs/jsonScalar"}
         },
-        "edge": {
-          "type": "string",
-          "minLength": 1
-        },
-        "direction": {
-          "enum": [
-            "outgoing",
-            "incoming"
-          ]
-        },
+        "edge": {"type": "string", "minLength": 1},
+        "direction": {"enum": ["outgoing", "incoming"]},
         "steps": {
           "type": "array",
           "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/edgeStep"
-          }
+          "items": {"$ref": "#/$defs/edgeStep"}
         },
         "interpretation": {
-          "enum": [
-            "textualExtent",
-            "occurrenceSet",
-            "technicalAnchor",
-            "noSlot"
-          ]
+          "enum": ["textualExtent", "occurrenceSet", "technicalAnchor", "noSlot"]
         },
         "execution_shape": {
-          "enum": [
-            "membership",
-            "value-predicate",
-            "value-set-predicate",
-            "edge-path",
-            "identity-key",
-            "inspection-only"
-          ]
+          "enum": ["membership", "value-predicate", "value-set-predicate", "edge-path", "identity-key", "inspection-only"]
         }
       },
       "additionalProperties": false,
       "allOf": [
         {
-          "if": {
-            "properties": {
-              "execution_shape": {
-                "const": "membership"
-              }
-            },
-            "required": [
-              "execution_shape"
-            ]
-          },
+          "if": {"properties": {"execution_shape": {"const": "membership"}}, "required": ["execution_shape"]},
           "then": {
-            "required": [
-              "component_id",
-              "node_type"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "feature"
-                  ]
-                },
-                {
-                  "required": [
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "closed_values"
-                  ]
-                },
-                {
-                  "required": [
-                    "values"
-                  ]
-                },
-                {
-                  "required": [
-                    "edge"
-                  ]
-                },
-                {
-                  "required": [
-                    "direction"
-                  ]
-                },
-                {
-                  "required": [
-                    "steps"
-                  ]
-                },
-                {
-                  "required": [
-                    "interpretation"
-                  ]
-                }
-              ]
-            }
+            "required": ["component_id", "node_type"],
+            "not": {"anyOf": [
+              {"required": ["feature"]}, {"required": ["value"]},
+              {"required": ["closed_values"]}, {"required": ["values"]},
+              {"required": ["edge"]}, {"required": ["direction"]},
+              {"required": ["steps"]}, {"required": ["interpretation"]}
+            ]}
           }
         },
         {
-          "if": {
-            "properties": {
-              "execution_shape": {
-                "const": "value-predicate"
-              }
-            },
-            "required": [
-              "execution_shape"
-            ]
-          },
+          "if": {"properties": {"execution_shape": {"const": "value-predicate"}}, "required": ["execution_shape"]},
           "then": {
-            "required": [
-              "component_id",
-              "node_type",
-              "feature",
-              "value"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "values"
-                  ]
-                },
-                {
-                  "required": [
-                    "closed_values"
-                  ]
-                },
-                {
-                  "required": [
-                    "edge"
-                  ]
-                },
-                {
-                  "required": [
-                    "direction"
-                  ]
-                },
-                {
-                  "required": [
-                    "steps"
-                  ]
-                },
-                {
-                  "required": [
-                    "interpretation"
-                  ]
-                }
-              ]
-            }
+            "required": ["component_id", "node_type", "feature", "value"],
+            "not": {"anyOf": [
+              {"required": ["values"]}, {"required": ["closed_values"]}, {"required": ["edge"]},
+              {"required": ["direction"]}, {"required": ["steps"]}, {"required": ["interpretation"]}
+            ]}
           }
         },
         {
-          "if": {
-            "properties": {
-              "execution_shape": {
-                "const": "value-set-predicate"
-              }
-            },
-            "required": [
-              "execution_shape"
-            ]
-          },
+          "if": {"properties": {"execution_shape": {"const": "value-set-predicate"}}, "required": ["execution_shape"]},
           "then": {
-            "required": [
-              "component_id",
-              "node_type",
-              "feature",
-              "values"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "closed_values"
-                  ]
-                },
-                {
-                  "required": [
-                    "edge"
-                  ]
-                },
-                {
-                  "required": [
-                    "direction"
-                  ]
-                },
-                {
-                  "required": [
-                    "steps"
-                  ]
-                },
-                {
-                  "required": [
-                    "interpretation"
-                  ]
-                }
-              ]
-            }
+            "required": ["component_id", "node_type", "feature", "values"],
+            "not": {"anyOf": [
+              {"required": ["value"]}, {"required": ["closed_values"]}, {"required": ["edge"]},
+              {"required": ["direction"]}, {"required": ["steps"]}, {"required": ["interpretation"]}
+            ]}
           }
         },
         {
-          "if": {
-            "required": [
-              "values"
-            ]
-          },
+          "if": {"required": ["values"]},
           "then": {
-            "required": [
-              "execution_shape"
-            ],
-            "properties": {
-              "execution_shape": {
-                "const": "value-set-predicate"
-              }
-            }
+            "required": ["execution_shape"],
+            "properties": {"execution_shape": {"const": "value-set-predicate"}}
           }
         }
       ]
     },
     "evidenceBinding": {
       "type": "object",
-      "required": [
-        "evidence_id",
-        "content_digest"
-      ],
+      "required": ["evidence_id", "content_digest"],
       "properties": {
-        "evidence_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "content_digest": {
-          "type": "string",
-          "minLength": 1
-        }
+        "evidence_id": {"type": "string", "minLength": 1},
+        "content_digest": {"type": "string", "minLength": 1}
       },
       "additionalProperties": false
     },
     "review": {
       "type": "object",
-      "required": [
-        "review_id",
-        "status",
-        "reviewed_mapping_digest",
-        "reviewer_id",
-        "reviewed_at",
-        "review_source",
-        "review_method"
-      ],
+      "required": ["review_id", "status", "reviewed_mapping_digest", "reviewer_id", "reviewed_at", "review_source", "review_method"],
       "properties": {
-        "review_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "status": {
-          "enum": [
-            "reviewed",
-            "provisional",
-            "disputed"
-          ]
-        },
-        "reviewed_mapping_digest": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reviewer_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reviewed_at": {
-          "type": "string",
-          "minLength": 1
-        },
-        "review_source": {
-          "type": "string",
-          "minLength": 1
-        },
-        "review_method": {
-          "type": "string",
-          "minLength": 1
-        },
-        "notes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "evidence": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
+        "review_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["reviewed", "provisional", "disputed"]},
+        "reviewed_mapping_digest": {"type": "string", "minLength": 1},
+        "reviewer_id": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "minLength": 1},
+        "review_source": {"type": "string", "minLength": 1},
+        "review_method": {"type": "string", "minLength": 1},
+        "notes": {"type": "array", "items": {"type": "string"}},
+        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}}
       },
       "additionalProperties": false
     },
     "evidenceBindings": {
       "type": "array",
-      "items": {
-        "$ref": "#/$defs/evidenceBinding"
-      }
+      "items": {"$ref": "#/$defs/evidenceBinding"}
     },
     "approximation": {
       "type": "object",
-      "required": [
-        "status",
-        "eligible",
-        "losses",
-        "rationale",
-        "review_id"
-      ],
+      "required": ["status", "eligible", "losses", "rationale", "review_id"],
       "properties": {
-        "status": {
-          "const": "reviewed"
-        },
-        "eligible": {
-          "type": "boolean"
-        },
+        "status": {"const": "reviewed"},
+        "eligible": {"type": "boolean"},
         "losses": {
           "type": "array",
           "uniqueItems": true,
-          "items": {
-            "enum": [
-              "undercoverage",
-              "overcoverage"
-            ]
-          }
+          "items": {"enum": ["undercoverage", "overcoverage"]}
         },
-        "rationale": {
-          "type": "string",
-          "minLength": 1
-        },
-        "review_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "evidence": {
-          "$ref": "#/$defs/evidenceBindings"
-        }
+        "rationale": {"type": "string", "minLength": 1},
+        "review_id": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/evidenceBindings"}
       },
       "additionalProperties": false
     },
     "ontologyBundleRequirement": {
       "type": "object",
-      "required": [
-        "bundle_digest",
-        "required_profile_contracts"
-      ],
+      "required": ["bundle_digest", "required_profile_contracts"],
       "properties": {
         "bundle_digest": {
           "type": "string",
@@ -430,61 +149,33 @@
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "items": {"type": "string", "minLength": 1}
         }
       },
       "additionalProperties": false
     },
     "ontologyDeclarationEvidence": {
       "type": "object",
-      "required": [
-        "ontology_lock_id",
-        "ontology_lock_content_digest"
-      ],
+      "required": ["ontology_lock_id", "ontology_lock_content_digest"],
       "properties": {
-        "ontology_lock_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "ontology_lock_content_digest": {
-          "type": "string",
-          "minLength": 1
-        },
+        "ontology_lock_id": {"type": "string", "minLength": 1},
+        "ontology_lock_content_digest": {"type": "string", "minLength": 1},
         "rdf_types": {
           "type": "array",
           "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "items": {"type": "string", "minLength": 1}
         },
         "domain_iris": {
           "type": "array",
           "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "items": {"type": "string", "minLength": 1}
         },
         "range_iris": {
           "type": "array",
           "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "items": {"type": "string", "minLength": 1}
         },
-        "value_kind": {
-          "enum": [
-            "resource",
-            "literal",
-            "mixed",
-            "unknown"
-          ]
-        }
+        "value_kind": {"enum": ["resource", "literal", "mixed", "unknown"]}
       },
       "additionalProperties": false
     },
@@ -492,419 +183,136 @@
       "oneOf": [
         {
           "properties": {
-            "reference_kind": {
-              "const": "semantic-pivot"
-            },
-            "query_role": {
-              "const": "semantic-constraint"
-            }
+            "reference_kind": {"const": "semantic-pivot"},
+            "query_role": {"const": "semantic-constraint"}
           },
-          "required": [
-            "reference_kind",
-            "query_role"
-          ]
+          "required": ["reference_kind", "query_role"]
         },
         {
           "properties": {
-            "reference_kind": {
-              "const": "authority-value"
-            },
-            "query_role": {
-              "const": "authority-value-filter"
-            }
+            "reference_kind": {"const": "authority-value"},
+            "query_role": {"const": "authority-value-filter"}
           },
-          "required": [
-            "reference_kind",
-            "query_role"
-          ]
+          "required": ["reference_kind", "query_role"]
         }
       ]
     },
     "projection": {
       "type": "object",
       "required": [
-        "projection_id",
-        "target",
-        "reference_kind",
-        "query_role",
-        "formal_kind",
-        "semantic_role",
-        "profile_id",
-        "capability_id",
-        "assessment",
-        "ontology_lock",
-        "native_execution_binding",
-        "evidence",
-        "review",
-        "projection_semantic_digest"
+        "projection_id", "target", "reference_kind", "query_role", "formal_kind",
+        "semantic_role", "profile_id", "capability_id", "assessment", "ontology_lock",
+        "native_execution_binding", "evidence", "review", "projection_semantic_digest"
       ],
       "properties": {
-        "projection_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "target": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reference_kind": {
-          "enum": [
-            "semantic-pivot",
-            "authority-value"
-          ]
-        },
-        "query_role": {
-          "enum": [
-            "semantic-constraint",
-            "authority-value-filter"
-          ]
-        },
-        "formal_kind": {
-          "enum": [
-            "class",
-            "property",
-            "skos-concept",
-            "named-resource"
-          ]
-        },
+        "projection_id": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1},
+        "reference_kind": {"enum": ["semantic-pivot", "authority-value"]},
+        "query_role": {"enum": ["semantic-constraint", "authority-value-filter"]},
+        "formal_kind": {"enum": ["class", "property", "skos-concept", "named-resource"]},
         "semantic_role": {
           "enum": [
-            "entity-type",
-            "annotation-category",
-            "annotation-value",
-            "relation",
-            "attribute",
-            "lexical-entry-identity",
-            "lexical-form-identity",
-            "lexical-sense-identity",
-            "lexical-concept-identity",
-            "authority-reference",
-            "claim-proposition",
-            "inference-activity"
+            "entity-type", "annotation-category", "annotation-value", "relation", "attribute",
+            "lexical-entry-identity", "lexical-form-identity", "lexical-sense-identity",
+            "lexical-concept-identity", "authority-reference", "claim-proposition", "inference-activity"
           ]
         },
         "profile_id": {
           "enum": [
-            "structural",
-            "linguistic",
-            "lexical",
-            "written-text",
-            "textology",
-            "heritage",
-            "scholarly-inference",
-            "archaeology",
-            "scientific-analysis",
-            "lexicography"
+            "structural", "linguistic", "lexical", "written-text", "textology", "heritage",
+            "scholarly-inference", "archaeology", "scientific-analysis", "lexicography"
           ]
         },
-        "capability_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "assessment": {
-          "enum": [
-            "exact",
-            "close",
-            "broader",
-            "narrower",
-            "related"
-          ]
-        },
-        "ontology_lock": {
-          "type": "string",
-          "minLength": 1
-        },
-        "ontology_bundle_requirement": {
-          "$ref": "#/$defs/ontologyBundleRequirement"
-        },
-        "ontology_declaration_evidence": {
-          "$ref": "#/$defs/ontologyDeclarationEvidence"
-        },
-        "publication_relation": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "native_execution_binding": {
-          "$ref": "#/$defs/nativeBinding"
-        },
-        "approximation": {
-          "$ref": "#/$defs/approximation"
-        },
-        "evidence": {
-          "$ref": "#/$defs/evidenceBindings"
-        },
-        "review": {
-          "$ref": "#/$defs/review"
-        },
-        "projection_semantic_digest": {
-          "type": "string",
-          "minLength": 1
-        }
+        "capability_id": {"type": "string", "minLength": 1},
+        "assessment": {"enum": ["exact", "close", "broader", "narrower", "related"]},
+        "ontology_lock": {"type": "string", "minLength": 1},
+        "ontology_bundle_requirement": {"$ref": "#/$defs/ontologyBundleRequirement"},
+        "ontology_declaration_evidence": {"$ref": "#/$defs/ontologyDeclarationEvidence"},
+        "publication_relation": {"type": ["string", "null"]},
+        "native_execution_binding": {"$ref": "#/$defs/nativeBinding"},
+        "approximation": {"$ref": "#/$defs/approximation"},
+        "evidence": {"$ref": "#/$defs/evidenceBindings"},
+        "review": {"$ref": "#/$defs/review"},
+        "projection_semantic_digest": {"type": "string", "minLength": 1}
       },
       "allOf": [
-        {
-          "$ref": "#/$defs/targetRouting"
-        }
+        {"$ref": "#/$defs/targetRouting"}
       ],
       "additionalProperties": false
     },
     "candidate": {
       "type": "object",
       "required": [
-        "candidate_id",
-        "target",
-        "reference_kind",
-        "query_role",
-        "formal_kind",
-        "semantic_role",
-        "profile_id",
-        "capability_id",
-        "assessment_candidate",
-        "ontology_lock",
-        "evidence"
+        "candidate_id", "target", "reference_kind", "query_role", "formal_kind", "semantic_role",
+        "profile_id", "capability_id", "assessment_candidate", "ontology_lock", "evidence"
       ],
       "properties": {
-        "candidate_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "target": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reference_kind": {
-          "enum": [
-            "semantic-pivot",
-            "authority-value"
-          ]
-        },
-        "query_role": {
-          "enum": [
-            "semantic-constraint",
-            "authority-value-filter"
-          ]
-        },
-        "formal_kind": {
-          "enum": [
-            "class",
-            "property",
-            "skos-concept",
-            "named-resource"
-          ]
-        },
+        "candidate_id": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1},
+        "reference_kind": {"enum": ["semantic-pivot", "authority-value"]},
+        "query_role": {"enum": ["semantic-constraint", "authority-value-filter"]},
+        "formal_kind": {"enum": ["class", "property", "skos-concept", "named-resource"]},
         "semantic_role": {
           "enum": [
-            "entity-type",
-            "annotation-category",
-            "annotation-value",
-            "relation",
-            "attribute",
-            "lexical-entry-identity",
-            "lexical-form-identity",
-            "lexical-sense-identity",
-            "lexical-concept-identity",
-            "authority-reference",
-            "claim-proposition",
-            "inference-activity"
+            "entity-type", "annotation-category", "annotation-value", "relation", "attribute",
+            "lexical-entry-identity", "lexical-form-identity", "lexical-sense-identity",
+            "lexical-concept-identity", "authority-reference", "claim-proposition", "inference-activity"
           ]
         },
         "profile_id": {
           "enum": [
-            "structural",
-            "linguistic",
-            "lexical",
-            "written-text",
-            "textology",
-            "heritage",
-            "scholarly-inference",
-            "archaeology",
-            "scientific-analysis",
-            "lexicography"
+            "structural", "linguistic", "lexical", "written-text", "textology", "heritage",
+            "scholarly-inference", "archaeology", "scientific-analysis", "lexicography"
           ]
         },
-        "capability_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "assessment_candidate": {
-          "enum": [
-            "exact",
-            "close",
-            "broader",
-            "narrower",
-            "related"
-          ]
-        },
-        "ontology_lock": {
-          "type": "string",
-          "minLength": 1
-        },
-        "ontology_declaration_evidence": {
-          "$ref": "#/$defs/ontologyDeclarationEvidence"
-        },
-        "evidence": {
-          "$ref": "#/$defs/evidenceBindings"
-        }
+        "capability_id": {"type": "string", "minLength": 1},
+        "assessment_candidate": {"enum": ["exact", "close", "broader", "narrower", "related"]},
+        "ontology_lock": {"type": "string", "minLength": 1},
+        "ontology_declaration_evidence": {"$ref": "#/$defs/ontologyDeclarationEvidence"},
+        "evidence": {"$ref": "#/$defs/evidenceBindings"}
       },
       "allOf": [
-        {
-          "$ref": "#/$defs/targetRouting"
-        }
+        {"$ref": "#/$defs/targetRouting"}
       ],
       "additionalProperties": false
     },
     "externalReference": {
       "type": "object",
-      "required": [
-        "reference_id",
-        "reference_kind",
-        "query_role",
-        "external"
-      ],
+      "required": ["reference_id", "reference_kind", "query_role", "external"],
       "properties": {
-        "reference_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reference_kind": {
-          "enum": [
-            "entity-identity",
-            "catalogue-identifier",
-            "provenance-source",
-            "locator"
-          ]
-        },
-        "query_role": {
-          "enum": [
-            "identity-filter",
-            "identifier-filter",
-            "metadata-filter",
-            "explanation-only"
-          ]
-        },
-        "external": {
-          "type": "string",
-          "minLength": 1
-        },
-        "authority_system": {
-          "type": "string",
-          "minLength": 1
-        },
-        "identity_strength": {
-          "enum": [
-            "same-entity",
-            "probable-same-entity",
-            "related-record",
-            "ambiguous-identity"
-          ]
-        },
-        "issuer_or_namespace": {
-          "type": "string",
-          "minLength": 1
-        },
-        "native_binding": {
-          "$ref": "#/$defs/nativeBinding"
-        },
-        "publication_relation": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "evidence": {
-          "$ref": "#/$defs/evidenceBindings"
-        }
+        "reference_id": {"type": "string", "minLength": 1},
+        "reference_kind": {"enum": ["entity-identity", "catalogue-identifier", "provenance-source", "locator"]},
+        "query_role": {"enum": ["identity-filter", "identifier-filter", "metadata-filter", "explanation-only"]},
+        "external": {"type": "string", "minLength": 1},
+        "authority_system": {"type": "string", "minLength": 1},
+        "identity_strength": {"enum": ["same-entity", "probable-same-entity", "related-record", "ambiguous-identity"]},
+        "issuer_or_namespace": {"type": "string", "minLength": 1},
+        "native_binding": {"$ref": "#/$defs/nativeBinding"},
+        "publication_relation": {"type": ["string", "null"]},
+        "evidence": {"$ref": "#/$defs/evidenceBindings"}
       },
       "allOf": [
         {
-          "if": {
-            "properties": {
-              "reference_kind": {
-                "const": "entity-identity"
-              }
-            },
-            "required": [
-              "reference_kind"
-            ]
-          },
+          "if": {"properties": {"reference_kind": {"const": "entity-identity"}}, "required": ["reference_kind"]},
           "then": {
-            "required": [
-              "authority_system",
-              "identity_strength",
-              "native_binding"
-            ],
-            "properties": {
-              "query_role": {
-                "const": "identity-filter"
-              }
-            }
+            "required": ["authority_system", "identity_strength", "native_binding"],
+            "properties": {"query_role": {"const": "identity-filter"}}
           }
         },
         {
-          "if": {
-            "properties": {
-              "reference_kind": {
-                "const": "catalogue-identifier"
-              }
-            },
-            "required": [
-              "reference_kind"
-            ]
-          },
+          "if": {"properties": {"reference_kind": {"const": "catalogue-identifier"}}, "required": ["reference_kind"]},
           "then": {
-            "required": [
-              "issuer_or_namespace",
-              "native_binding"
-            ],
-            "properties": {
-              "query_role": {
-                "const": "identifier-filter"
-              }
-            }
+            "required": ["issuer_or_namespace", "native_binding"],
+            "properties": {"query_role": {"const": "identifier-filter"}}
           }
         },
         {
-          "if": {
-            "properties": {
-              "reference_kind": {
-                "const": "provenance-source"
-              }
-            },
-            "required": [
-              "reference_kind"
-            ]
-          },
-          "then": {
-            "properties": {
-              "query_role": {
-                "enum": [
-                  "metadata-filter",
-                  "explanation-only"
-                ]
-              }
-            }
-          }
+          "if": {"properties": {"reference_kind": {"const": "provenance-source"}}, "required": ["reference_kind"]},
+          "then": {"properties": {"query_role": {"enum": ["metadata-filter", "explanation-only"]}}}
         },
         {
-          "if": {
-            "properties": {
-              "reference_kind": {
-                "const": "locator"
-              }
-            },
-            "required": [
-              "reference_kind"
-            ]
-          },
-          "then": {
-            "properties": {
-              "query_role": {
-                "const": "explanation-only"
-              }
-            }
-          }
+          "if": {"properties": {"reference_kind": {"const": "locator"}}, "required": ["reference_kind"]},
+          "then": {"properties": {"query_role": {"const": "explanation-only"}}}
         }
       ],
       "additionalProperties": false
@@ -912,197 +320,64 @@
     "mapping": {
       "type": "object",
       "required": [
-        "mapping_id",
-        "corpus_id",
-        "native_binding",
-        "native_dependencies",
-        "profiles",
-        "capabilities",
-        "native_state",
-        "projections",
-        "ambiguous_candidates",
-        "external_references",
-        "evidence",
-        "review",
-        "mapping_semantic_digest",
-        "rationale"
+        "mapping_id", "corpus_id", "native_binding", "native_dependencies", "profiles", "capabilities",
+        "native_state", "projections", "ambiguous_candidates", "external_references", "evidence",
+        "review", "mapping_semantic_digest", "rationale"
       ],
       "properties": {
-        "mapping_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "corpus_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "native_binding": {
-          "$ref": "#/$defs/nativeBinding"
-        },
-        "native_dependencies": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
+        "mapping_id": {"type": "string", "minLength": 1},
+        "corpus_id": {"type": "string", "minLength": 1},
+        "native_binding": {"$ref": "#/$defs/nativeBinding"},
+        "native_dependencies": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "profiles": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
           "items": {
             "enum": [
-              "structural",
-              "linguistic",
-              "lexical",
-              "written-text",
-              "textology",
-              "heritage",
-              "scholarly-inference",
-              "archaeology",
-              "scientific-analysis",
-              "lexicography"
+              "structural", "linguistic", "lexical", "written-text", "textology", "heritage",
+              "scholarly-inference", "archaeology", "scientific-analysis", "lexicography"
             ]
           }
         },
-        "capabilities": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "native_state": {
-          "enum": [
-            "positive",
-            "ambiguous",
-            "native-only",
-            "unsupported"
-          ]
-        },
-        "projections": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/projection"
-          }
-        },
-        "ambiguous_candidates": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/candidate"
-          }
-        },
-        "external_references": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/externalReference"
-          }
-        },
-        "evidence": {
-          "$ref": "#/$defs/evidenceBindings"
-        },
-        "review": {
-          "$ref": "#/$defs/review"
-        },
-        "mapping_semantic_digest": {
-          "type": "string",
-          "minLength": 1
-        },
-        "rationale": {
-          "type": "string"
-        },
-        "introduced_in": {
-          "type": "string",
-          "minLength": 1
-        },
-        "changed_in": {
-          "type": "string",
-          "minLength": 1
-        }
+        "capabilities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "native_state": {"enum": ["positive", "ambiguous", "native-only", "unsupported"]},
+        "projections": {"type": "array", "items": {"$ref": "#/$defs/projection"}},
+        "ambiguous_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "external_references": {"type": "array", "items": {"$ref": "#/$defs/externalReference"}},
+        "evidence": {"$ref": "#/$defs/evidenceBindings"},
+        "review": {"$ref": "#/$defs/review"},
+        "mapping_semantic_digest": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string"},
+        "introduced_in": {"type": "string", "minLength": 1},
+        "changed_in": {"type": "string", "minLength": 1}
       },
       "allOf": [
         {
-          "if": {
-            "properties": {
-              "native_state": {
-                "const": "positive"
-              }
-            },
-            "required": [
-              "native_state"
-            ]
-          },
+          "if": {"properties": {"native_state": {"const": "positive"}}, "required": ["native_state"]},
           "then": {
-            "properties": {
-              "ambiguous_candidates": {
-                "maxItems": 0
-              }
-            },
+            "properties": {"ambiguous_candidates": {"maxItems": 0}},
             "anyOf": [
-              {
-                "properties": {
-                  "projections": {
-                    "minItems": 1
-                  }
-                }
-              },
-              {
-                "properties": {
-                  "external_references": {
-                    "minItems": 1
-                  }
-                }
-              }
+              {"properties": {"projections": {"minItems": 1}}},
+              {"properties": {"external_references": {"minItems": 1}}}
             ]
           }
         },
         {
-          "if": {
-            "properties": {
-              "native_state": {
-                "const": "ambiguous"
-              }
-            },
-            "required": [
-              "native_state"
-            ]
-          },
+          "if": {"properties": {"native_state": {"const": "ambiguous"}}, "required": ["native_state"]},
           "then": {
             "properties": {
-              "projections": {
-                "maxItems": 0
-              },
-              "ambiguous_candidates": {
-                "minItems": 1
-              }
+              "projections": {"maxItems": 0},
+              "ambiguous_candidates": {"minItems": 1}
             }
           }
         },
         {
-          "if": {
-            "properties": {
-              "native_state": {
-                "enum": [
-                  "native-only",
-                  "unsupported"
-                ]
-              }
-            },
-            "required": [
-              "native_state"
-            ]
-          },
+          "if": {"properties": {"native_state": {"enum": ["native-only", "unsupported"]}}, "required": ["native_state"]},
           "then": {
             "properties": {
-              "projections": {
-                "maxItems": 0
-              },
-              "ambiguous_candidates": {
-                "maxItems": 0
-              }
+              "projections": {"maxItems": 0},
+              "ambiguous_candidates": {"maxItems": 0}
             }
           }
         }
@@ -1111,21 +386,10 @@
     }
   },
   "type": "object",
-  "required": [
-    "schema_version",
-    "mappings"
-  ],
+  "required": ["schema_version", "mappings"],
   "properties": {
-    "schema_version": {
-      "const": 2
-    },
-    "mappings": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/mapping"
-      }
-    }
+    "schema_version": {"const": 2},
+    "mappings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/mapping"}}
   },
   "additionalProperties": false
 }
