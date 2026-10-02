@@ -1,0 +1,244 @@
+{
+  "baseline_main": "d1da009cc49b3dc812a395e0813c51500c28fa08",
+  "conclusion": {
+    "edge_path_requires_source_contract_amendment": true,
+    "edge_path_start_selector_is_currently_normatively_undefined": true,
+    "edge_traversal_mechanics_available": true,
+    "extent_interpretation_should_not_be_direct_execution_authority": true,
+    "membership_mechanics_available": true,
+    "membership_requires_source_contract_amendment": true,
+    "no_slot_must_not_fabricate_slot_membership": true,
+    "research_authorizes_production_runtime_change": false,
+    "technical_anchor_must_not_imply_textual_extent": true,
+    "warp_may_be_used_internally_without_semantic_promotion": true
+  },
+  "corpus_mechanics": {
+    "bhsa": {
+      "edge_count": 5,
+      "edge_names": [
+        "distributional_parent",
+        "functional_parent",
+        "mother",
+        "omap@2017-2021",
+        "omap@c-2021"
+      ],
+      "node_types": [
+        "book",
+        "chapter",
+        "clause",
+        "clause_atom",
+        "half_verse",
+        "lex",
+        "phrase",
+        "phrase_atom",
+        "sentence",
+        "sentence_atom",
+        "subphrase",
+        "verse",
+        "word"
+      ],
+      "slot_type": "word",
+      "typed_edges": {
+        "functional_parent": {
+          "source_types": [
+            "clause",
+            "clause_atom",
+            "phrase",
+            "phrase_atom",
+            "sentence_atom",
+            "word"
+          ],
+          "target_types": [
+            "clause",
+            "phrase",
+            "sentence"
+          ],
+          "valued": false
+        },
+        "mother": {
+          "source_types": [
+            "clause",
+            "clause_atom",
+            "phrase",
+            "phrase_atom",
+            "subphrase"
+          ],
+          "target_types": [
+            "clause",
+            "clause_atom",
+            "phrase",
+            "phrase_atom",
+            "subphrase",
+            "word"
+          ],
+          "valued": false
+        }
+      },
+      "valued_edges": [
+        "omap@2017-2021",
+        "omap@c-2021"
+      ]
+    },
+    "cuc": {
+      "edge_count": 0,
+      "edge_names": [],
+      "node_types": [
+        "column",
+        "line",
+        "sign",
+        "tablet",
+        "word"
+      ],
+      "slot_type": "sign",
+      "valued_edges": []
+    },
+    "oracc": {
+      "edge_count": 8,
+      "edge_names": [
+        "column_face",
+        "face_document",
+        "line_column",
+        "line_face",
+        "translation_document",
+        "translation_line",
+        "word_lex",
+        "word_line"
+      ],
+      "node_types": [
+        "chunk",
+        "column",
+        "document",
+        "face",
+        "lex",
+        "line",
+        "phrase",
+        "sign",
+        "translation_unit",
+        "word"
+      ],
+      "slot_type": "sign",
+      "typed_edges": {
+        "line_column": {
+          "source_types": [
+            "line"
+          ],
+          "target_types": [
+            "column"
+          ],
+          "valued": false
+        },
+        "translation_line": {
+          "source_types": [
+            "translation_unit"
+          ],
+          "target_types": [
+            "line"
+          ],
+          "valued": false
+        },
+        "word_line": {
+          "source_types": [
+            "word"
+          ],
+          "target_types": [
+            "line"
+          ],
+          "valued": false
+        }
+      },
+      "valued_edges": []
+    },
+    "tlhdig": {
+      "edge_count": 14,
+      "edge_names": [
+        "analyses",
+        "edition",
+        "edits",
+        "endsAt",
+        "joinDocument",
+        "joinLeft",
+        "joinRight",
+        "joined",
+        "lexeme",
+        "noteref",
+        "selected",
+        "startsAt",
+        "witness",
+        "witness_resolution"
+      ],
+      "node_types": [
+        "analysis",
+        "cluster",
+        "colon",
+        "column",
+        "docgroup",
+        "document",
+        "edit",
+        "fragment",
+        "joinstmt",
+        "layout",
+        "lex",
+        "line",
+        "note",
+        "paragraph",
+        "sign",
+        "surface",
+        "word"
+      ],
+      "slot_type": "sign",
+      "valued_edges": [
+        "joined",
+        "selected",
+        "witness_resolution"
+      ]
+    }
+  },
+  "current_contract": {
+    "edge_path_has_closed_shape_rule": false,
+    "execution_shapes": [
+      "membership",
+      "value-predicate",
+      "value-set-predicate",
+      "edge-path",
+      "identity-key",
+      "inspection-only"
+    ],
+    "membership_has_closed_shape_rule": false,
+    "native_binding_ir_fields": [
+      "component_id",
+      "node_type",
+      "feature",
+      "value_present",
+      "value",
+      "closed_values",
+      "edge",
+      "direction",
+      "steps",
+      "interpretation",
+      "execution_shape",
+      "values"
+    ],
+    "runtime_execution_shapes": [
+      "value-predicate",
+      "value-set-predicate"
+    ],
+    "schema_acceptance": {
+      "edge_path_shape_only": true,
+      "edge_path_steps_only": true,
+      "edge_path_typed_start": true,
+      "membership_shape_only": true,
+      "membership_typed": true
+    },
+    "tfont_declares_text_fabric_runtime_dependency": false
+  },
+  "text_fabric_api": {
+    "edge_incoming_signature": "(self, n)",
+    "edge_outgoing_signature": "(self, n)",
+    "incoming_direction_documented": true,
+    "oslots_signature": "(self, n)",
+    "otype_membership_documented": true,
+    "otype_membership_signature": "(self, val)",
+    "outgoing_direction_documented": true,
+    "upstream_revision": "0c45c386916cb52be84098796ec27ce97e5bf9fc"
+  }
+}
