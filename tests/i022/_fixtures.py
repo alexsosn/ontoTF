@@ -1,10 +1,18 @@
 from __future__ import annotations
 
-from typing import Any
+import copy
+import operator
+from typing import Any, Iterable
 
-from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
+from tests.i005._fixtures import (
+    catalogue_reference,
+    entity_identity_reference,
+    noun_sources,
+    source_bundle,
+    validate_structural_sources,
+)
 from tests.i006._fixtures import _refresh_mapping, noun_semantic_key
-from tests.i008._fixtures import FakeLoadedApi, loaded_context
+from tests.i008._fixtures import loaded_context
 from tfont.semantic_ir import compile_semantic_ir
 from tfont.semantic_validation import validate_semantic_bundle
 
@@ -17,8 +25,17 @@ def membership_sources(
     dependency_component: str | None = None,
     dependency_node_type: str = "word",
     node_type: str = "word",
+    projection_route: str = "semantic",
+    assessment: str = "exact",
+    losses: tuple[str, ...] = (),
+    external_references: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    sources = noun_sources(corpus_id, parent_char=parent_char)
+    sources = noun_sources(
+        corpus_id,
+        parent_char=parent_char,
+        projection_route=projection_route,
+        external_references=external_references,
+    )
     component_id = f"{corpus_id}-tf"
     dependency = sources["profile"]["dependencies"][0]
     dependency["kind"] = dependency_kind
@@ -36,7 +53,25 @@ def membership_sources(
         "execution_shape": "membership",
     }
     mapping["native_binding"] = dict(binding)
-    mapping["projections"][0]["native_execution_binding"] = dict(binding)
+    if mapping["projections"]:
+        projection = mapping["projections"][0]
+        projection["native_execution_binding"] = dict(binding)
+        projection["assessment"] = assessment
+        projection.pop("approximation", None)
+        if assessment in {"broader", "narrower", "close"}:
+            projection["approximation"] = {
+                "status": "reviewed",
+                "eligible": True,
+                "losses": list(losses),
+                "rationale": f"I-022 membership fixture {assessment}",
+                "review_id": f"review:i022:{corpus_id}:{assessment}",
+                "evidence": [],
+            }
+
+    for reference in mapping["external_references"]:
+        if reference.get("native_binding") is not None:
+            reference["native_binding"] = dict(binding)
+
     _refresh_mapping(mapping)
     return sources
 
@@ -51,15 +86,93 @@ def compiled_membership_ir(**kwargs):
     return compile_semantic_ir((validated_membership_bundle(**kwargs),))
 
 
+class Namespace:
+    pass
+
+
+class MembershipOtype:
+    def __init__(
+        self,
+        selections: Iterable[Any] = ((4, 2, 7),),
+        *,
+        node_types: dict[int, Any] | None = None,
+        raise_on_v: bool = False,
+    ) -> None:
+        self.selections = tuple(selections)
+        self.node_types = dict(node_types or {4: "word", 2: "word", 7: "word"})
+        self.raise_on_v = raise_on_v
+        self.s_calls = 0
+        self.v_calls = 0
+
+    def s(self, node_type: str):
+        self.s_calls += 1
+        if not self.selections:
+            return ()
+        index = min(self.s_calls - 1, len(self.selections) - 1)
+        value = self.selections[index]
+        if isinstance(value, BaseException):
+            raise value
+        return value
+
+    def v(self, node: Any):
+        self.v_calls += 1
+        if self.raise_on_v:
+            raise RuntimeError("otype lookup failed")
+        try:
+            normalized = operator.index(node)
+        except TypeError:
+            normalized = node
+        return self.node_types.get(normalized)
+
+
+class ExplodingEdges:
+    def __init__(self) -> None:
+        self.touched = False
+
+    def __getattr__(self, name: str):
+        self.touched = True
+        raise AssertionError(f"I-022 membership must not access edge API: {name}")
+
+
+class MembershipApi:
+    def __init__(
+        self,
+        *,
+        selections: Iterable[Any] = ((4, 2, 7),),
+        node_types: dict[int, Any] | None = None,
+        raise_on_v: bool = False,
+    ) -> None:
+        self.F = Namespace()
+        self.F.otype = MembershipOtype(
+            selections,
+            node_types=node_types,
+            raise_on_v=raise_on_v,
+        )
+        self.E = ExplodingEdges()
+        self.load_calls = 0
+
+    def Fall(self):
+        return ("otype",)
+
+    def Eall(self):
+        self.E.touched = True
+        raise AssertionError("I-022 membership must not enumerate edge features")
+
+    def load(self, *args, **kwargs):
+        self.load_calls += 1
+        raise AssertionError("I-022 membership must never autoload features")
+
+
 def membership_api(
     *,
-    nodes: tuple[int, ...] = (4, 2, 7),
-    node_type: str = "word",
+    selections: Iterable[Any] = ((4, 2, 7),),
+    node_types: dict[int, Any] | None = None,
+    raise_on_v: bool = False,
 ):
-    return FakeLoadedApi(
-        values={node: "unused" for node in nodes},
-        node_types={node: node_type for node in nodes},
-        loaded_features=("otype",),
+    return MembershipApi(
+        selections=selections,
+        node_types=node_types,
+        raise_on_v=raise_on_v,
     )
 
 
@@ -79,6 +192,14 @@ def membership_request(tfont_module):
     )
 
 
+def approximate_membership_request(tfont_module, *, accept_losses=()):
+    return tfont_module.ApproximateSemanticResolveRequest(
+        key=noun_semantic_key(),
+        corpora=("bhsa",),
+        accept_losses=tuple(accept_losses),
+    )
+
+
 def compiled_edge_path_ir():
     sources = membership_sources()
     mapping = sources["mappings"]["mappings"][0]
@@ -92,3 +213,23 @@ def compiled_edge_path_ir():
     _refresh_mapping(mapping)
     validate_structural_sources(sources)
     return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
+
+
+def compiled_reference_membership_ir():
+    refs = [
+        entity_identity_reference("bhsa"),
+        catalogue_reference("bhsa"),
+    ]
+    return compiled_membership_ir(external_references=refs)
+
+
+def compiled_authority_membership_ir(
+    *,
+    assessment: str = "exact",
+    losses: tuple[str, ...] = (),
+):
+    return compiled_membership_ir(
+        projection_route="authority",
+        assessment=assessment,
+        losses=losses,
+    )
