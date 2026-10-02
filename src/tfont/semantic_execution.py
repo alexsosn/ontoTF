@@ -591,6 +591,7 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
             if (
                 type(step) is not EdgeStepIR
                 or not _nonempty_string(step.edge)
+                or type(step.direction) is not str
                 or step.direction not in {"outgoing", "incoming"}
                 or not _nonempty_string(step.result_node_type)
                 or step.valued is not False
