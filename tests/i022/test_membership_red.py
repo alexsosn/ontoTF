@@ -8,7 +8,6 @@ from pathlib import Path
 import tfont
 from jsonschema import Draft202012Validator
 from tests.i022._fixtures import (
-    compiled_edge_path_ir,
     compiled_membership_ir,
     membership_context,
     membership_request,
@@ -155,18 +154,14 @@ class I022MembershipRedTests(unittest.TestCase):
             "membership",
         )
 
-    def test_edge_path_stays_unsupported(self):
-        ir = compiled_edge_path_ir()
-        with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
-                ir,
-                membership_request(tfont),
-                (membership_context(tfont, ir),),
-            )
-        self.assertEqual(
-            getattr(getattr(raised.exception, "problem", None), "category", ""),
-            "unsupported_native_binding",
-        )
+    def test_legacy_untyped_edge_path_shape_is_rejected_after_i023(self):
+        validator = binding_validator()
+        legacy = {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "execution_shape": "edge-path",
+        }
+        self.assertTrue(tuple(validator.iter_errors(legacy)))
 
 
 if __name__ == "__main__":
