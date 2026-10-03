@@ -168,7 +168,8 @@
     "safe_jcs_integer_required": true,
     "singleton_means_exact_equality": true,
     "source_evidence_filtering_deferred": true,
-    "technical_filtering_deferred": true
+    "technical_filtering_deferred": true,
+    "value_role_is_reviewed_not_runtime_inferred": true
   },
   "text_fabric_mechanics": {
     "edge_feature_exposes_do_values": true,
