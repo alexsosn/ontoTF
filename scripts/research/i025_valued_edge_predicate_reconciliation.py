@@ -94,6 +94,7 @@ def main() -> int:
     items_source = inspect.getsource(EdgeFeature.items)
     f_source = inspect.getsource(EdgeFeature.f)
     t_source = inspect.getsource(EdgeFeature.t)
+    freq_list_source = inspect.getsource(EdgeFeature.freqList)
     digest_source = inspect.getsource(semantic_digest_v2)
     binding_identity_source = inspect.getsource(semantic_ir.native_binding_identity)
     dependency_normalizer_source = inspect.getsource(
@@ -174,6 +175,11 @@ def main() -> int:
             ),
             "valued_incoming_uses_node_value_pairs": (
                 "self.dataInv[n].items()" in t_source
+            ),
+            "freq_list_accepts_source_target_type_filters": (
+                "nodeTypesFrom" in freq_list_source
+                and "nodeTypesTo" in freq_list_source
+                and "self.data.items()" in freq_list_source
             ),
             "loaded_edge_domain_can_be_observed_without_autoload": True,
         },
@@ -272,6 +278,8 @@ def main() -> int:
             "observed_domain_alone_authorizes_predicate": False,
             "runtime_observation_method": "edge_values",
             "runtime_observation_uses_loaded_edge_items": True,
+            "runtime_observation_is_memoized_per_loaded_observation": True,
+            "freq_list_is_not_normative_domain_authority": True,
             "runtime_observation_filters_native_source_target_types": True,
             "runtime_observation_excludes_missing_int_none_from_domain": True,
             "runtime_observation_records_missing_count": True,
