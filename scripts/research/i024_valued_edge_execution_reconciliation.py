@@ -275,6 +275,7 @@ def main() -> int:
             "path_present_dependency_remains_edge_direction_only": True,
             "runtime_requires_do_values_true": True,
             "runtime_requires_declared_value_type_match": True,
+            "runtime_requires_exact_two_tuple_valued_results": True,
             "missing_integer_value_none_is_preserved_not_coerced": True,
             "empty_string_is_preserved_not_treated_as_absence": True,
             "bool_is_not_an_integer_edge_value": True,
