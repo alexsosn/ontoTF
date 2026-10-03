@@ -108,6 +108,7 @@
     "path_present_dependency_remains_edge_direction_only": true,
     "runtime_requires_declared_value_type_match": true,
     "runtime_requires_do_values_true": true,
+    "runtime_requires_exact_two_tuple_valued_results": true,
     "runtime_validates_value_before_domain_filter": true,
     "semantic_approximation_does_not_approximate_native_edge_values": true,
     "single_result_evidence_field": "edge_path_evidence",
