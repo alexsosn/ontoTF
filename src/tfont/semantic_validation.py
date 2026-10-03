@@ -26,7 +26,7 @@ from .semantic_vocabulary import (
 
 _PROFILE_SCHEMA_VERSION = 2
 _MAPPING_SCHEMA_VERSION = 2
-_DEPENDENCY_CONTRACT_VERSION = 1
+_DEPENDENCY_CONTRACT_VERSIONS = frozenset({1, 2})
 _PROFILE_CATALOG_VERSION = 1
 
 _PUBLIC_CATEGORY_ALIASES = {
@@ -140,7 +140,6 @@ def _sorted_children(value: Any, id_field: str) -> list[dict[str, Any]]:
 def _validate_contract_versions(bundle: SemanticSourceBundle) -> None:
     checks = (
         (bundle.profile, ("schema_version",), bundle.profile.data.get("schema_version"), _PROFILE_SCHEMA_VERSION, "profile schema_version"),
-        (bundle.profile, ("dependency_contract_version",), bundle.profile.data.get("dependency_contract_version"), _DEPENDENCY_CONTRACT_VERSION, "dependency contract version"),
         (bundle.profile, ("profile_catalog_version",), bundle.profile.data.get("profile_catalog_version"), _PROFILE_CATALOG_VERSION, "profile catalog version"),
         (bundle.mappings, ("schema_version",), bundle.mappings.data.get("schema_version"), _MAPPING_SCHEMA_VERSION, "mapping schema_version"),
     )
@@ -152,6 +151,18 @@ def _validate_contract_versions(bundle: SemanticSourceBundle) -> None:
                 f"{label} must be exact integer {expected}",
                 path=path,
             )
+
+    dependency_version = bundle.profile.data.get("dependency_contract_version")
+    if (
+        type(dependency_version) is not int
+        or dependency_version not in _DEPENDENCY_CONTRACT_VERSIONS
+    ):
+        _fail(
+            bundle.profile,
+            "unsupported_contract_version",
+            "dependency contract version must be exact integer 1 or 2",
+            path=("dependency_contract_version",),
+        )
 
     if bundle.profile_catalog is not None:
         _fail(
@@ -502,6 +513,62 @@ def _validate_edge_path_dependency_authority(
                     path=binding_path,
                     related_id=related_id,
                 )
+
+            current_type = start_node_type
+            for step in steps:
+                if type(step) is not dict:
+                    continue
+                result_type = step.get("result_node_type")
+                match_values = step.get("match_values")
+                if match_values is not None:
+                    if bundle.profile.data.get("dependency_contract_version") != 2:
+                        _fail(
+                            artifact,
+                            "dependency_authority",
+                            "edge-value predicates require dependency contract v2",
+                            path=binding_path + ("steps",),
+                            related_id=related_id,
+                        )
+                    direction = step.get("direction")
+                    if direction == "outgoing":
+                        native_source = current_type
+                        native_target = result_type
+                    else:
+                        native_source = result_type
+                        native_target = current_type
+                    requested = set(match_values) if type(match_values) is list else set()
+                    authorized = False
+                    for dependency in dependency_rows:
+                        assertion = dependency.get("assertion")
+                        if (
+                            dependency.get("kind") != "edge-value-domain"
+                            or dependency.get("component_id") != component_id
+                            or type(assertion) is not dict
+                        ):
+                            continue
+                        reviewed_values = assertion.get("values")
+                        if (
+                            assertion.get("edge") == step.get("edge")
+                            and assertion.get("source_node_type") == native_source
+                            and assertion.get("target_node_type") == native_target
+                            and assertion.get("value_type") == step.get("value_type")
+                            and assertion.get("value_role") == step.get("value_role")
+                            and assertion.get("domain_semantics") == "closed-reviewed"
+                            and type(reviewed_values) is list
+                            and requested
+                            and requested.issubset(set(reviewed_values))
+                        ):
+                            authorized = True
+                            break
+                    if not authorized:
+                        _fail(
+                            artifact,
+                            "dependency_authority",
+                            "edge-path match_values require one matching reviewed edge-value-domain dependency covering the whole requested set",
+                            path=binding_path + ("steps",),
+                            related_id=related_id,
+                        )
+                current_type = result_type
 
 
 def _validate_vocabulary(bundle: SemanticSourceBundle, indexes: SemanticIndexes) -> None:
