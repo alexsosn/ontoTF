@@ -12,8 +12,25 @@
         "edge": {"type": "string", "minLength": 1},
         "direction": {"enum": ["outgoing", "incoming"]},
         "result_node_type": {"type": "string", "minLength": 1},
-        "valued": {"const": false}
+        "valued": {"type": "boolean"},
+        "value_type": {"enum": ["str", "int"]},
+        "value_role": {"enum": ["semantic-qualifier", "source-evidence", "technical"]}
       },
+      "allOf": [
+        {
+          "if": {"properties": {"valued": {"const": true}}, "required": ["valued"]},
+          "then": {"required": ["value_type", "value_role"]}
+        },
+        {
+          "if": {"properties": {"valued": {"const": false}}, "required": ["valued"]},
+          "then": {
+            "not": {"anyOf": [
+              {"required": ["value_type"]},
+              {"required": ["value_role"]}
+            ]}
+          }
+        }
+      ],
       "additionalProperties": false
     },
     "nativeBinding": {
