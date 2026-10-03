@@ -157,8 +157,19 @@ materializing the Cartesian product of complete paths.
 ## Evidence identity and public result shape
 
 Introduce a nested evidence contract tfont-edge-path-evidence-v1 and a
-JCS/SHA-256 evidence fingerprint over native binding identity, start nodes,
-ordered layers, ordered native edge observations, and final nodes.
+JCS/SHA-256 evidence fingerprint over the **fresh execution plan fingerprint**,
+native binding identity, start nodes, ordered layers, ordered native edge
+observations, and final nodes.
+
+Binding only to native binding identity is insufficient: the same native
+binding shape can occur in distinct corpus/profile/parent variants, and node
+integers are corpus-local. Every current semantic, authority, identity and
+identifier native plan already exposes a deterministic `plan_fingerprint`
+that binds corpus ID, variant/profile identity, observed parent state,
+prerequisite state and reviewed mapping/reference authority. Edge-path evidence
+must carry that exact plan fingerprint and include it in its own fingerprint.
+For conjunction, each constituent evidence object binds the corresponding
+constituent plan fingerprint.
 
 Current public corpus-execution records return nodes, plan and runtime report.
 They have no place for path evidence. The smallest additive public change is an
@@ -203,7 +214,7 @@ Recommended I-024 boundary:
 - native binding identity algorithm stays unchanged;
 - resolver plan fingerprint algorithms stay unchanged;
 - outer execution contract strings stay unchanged;
-- new nested edge-path evidence contract/fingerprint starts at v1.
+- new nested edge-path evidence contract/fingerprint starts at v1 and binds the fresh execution plan fingerprint.
 
 The new valued step fields are semantic identity, so future valued mappings
 naturally produce different digests from otherwise identical unvalued
