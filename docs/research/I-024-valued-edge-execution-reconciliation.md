@@ -104,7 +104,11 @@ existing production digests do not change.
 
 The mapping schema can remain v2 and existing binding/digest algorithms can
 remain unchanged because their canonical JSON projections already include
-nested step fields. EdgeStepIR gains optional/defaulted value_type and
+nested step fields. This follows the existing mapping-v2 capability-extension
+precedent: I-010 added `values` / `value-set-predicate`, and I-023 closed and
+typed the previously named `edge-path` branch without changing the mapping
+schema major version; the v1 -> v2 bump was reserved for the P-003 semantic
+architecture migration. EdgeStepIR gains optional/defaulted value_type and
 value_role fields so old unvalued compiled fixtures remain distinguishable.
 
 ## No value predicates in I-024
