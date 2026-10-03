@@ -267,6 +267,8 @@ def main() -> int:
             "edge_value_domain_includes_direction": False,
             "edge_value_domain_semantics": "closed-reviewed",
             "edge_value_domain_requires_evidence": True,
+            "match_values_must_be_subset_of_reviewed_domain": True,
+            "one_domain_dependency_must_cover_the_whole_match_set": True,
             "observed_domain_alone_authorizes_predicate": False,
             "runtime_observation_method": "edge_values",
             "runtime_observation_uses_loaded_edge_items": True,
