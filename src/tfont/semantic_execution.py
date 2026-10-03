@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import operator
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
@@ -60,6 +61,10 @@ EXACT_AUTHORITY_EXECUTION_CONTRACT = "tfont-exact-authority-execution-v1"
 APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT = "tfont-approximate-authority-execution-v1"
 IDENTITY_EXECUTION_CONTRACT = "tfont-identity-execution-v1"
 IDENTIFIER_EXECUTION_CONTRACT = "tfont-identifier-execution-v1"
+EDGE_PATH_EVIDENCE_CONTRACT = "tfont-edge-path-evidence-v1"
+EDGE_PATH_EVIDENCE_FINGERPRINT_ALGORITHM = "tfont-edge-path-evidence-jcs-sha256-v1"
+_SAFE_JCS_INT_MIN = -(2**53) + 1
+_SAFE_JCS_INT_MAX = 2**53 - 1
 
 
 @dataclass(frozen=True)
@@ -78,11 +83,43 @@ class LoadedCorpusContext:
 
 
 @dataclass(frozen=True)
+class EdgePathObservation:
+    source_node: int
+    target_node: int
+    value_present: bool
+    value: str | int | None
+
+
+@dataclass(frozen=True)
+class EdgePathEvidenceLayer:
+    step_index: int
+    observations: tuple[EdgePathObservation, ...]
+
+
+@dataclass(frozen=True)
+class EdgePathEvidence:
+    evidence_contract: str
+    plan_fingerprint: str
+    native_execution_binding_identity: str
+    start_nodes: tuple[int, ...]
+    layers: tuple[EdgePathEvidenceLayer, ...]
+    final_nodes: tuple[int, ...]
+    evidence_fingerprint: str
+
+
+@dataclass(frozen=True)
+class _NativePlanExecution:
+    nodes: tuple[int, ...]
+    edge_path_evidence: EdgePathEvidence | None = None
+
+
+@dataclass(frozen=True)
 class ExactCorpusExecution:
     corpus_id: str
     nodes: tuple[int, ...]
     plan: ExactNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -98,6 +135,7 @@ class ApproximateCorpusExecution:
     nodes: tuple[int, ...]
     plan: ApproximateNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -113,6 +151,7 @@ class ExactAuthorityCorpusExecution:
     nodes: tuple[int, ...]
     plan: AuthorityNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -128,6 +167,7 @@ class ApproximateAuthorityCorpusExecution:
     nodes: tuple[int, ...]
     plan: AuthorityNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -143,6 +183,7 @@ class IdentityCorpusExecution:
     nodes: tuple[int, ...]
     plan: IdentityNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -158,6 +199,7 @@ class IdentifierCorpusExecution:
     nodes: tuple[int, ...]
     plan: IdentifierNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -247,6 +289,78 @@ def _utf16(value: str) -> bytes:
 
 def _nonempty_string(value: Any) -> bool:
     return type(value) is str and bool(value)
+
+
+def _require_evidence_node(node: Any) -> int:
+    if type(node) is not int or node <= 0:
+        raise TypeError("edge-path evidence node IDs must be positive exact integers")
+    return node
+
+
+def edge_path_evidence_fingerprint(evidence: EdgePathEvidence) -> str:
+    if type(evidence) is not EdgePathEvidence:
+        raise TypeError("evidence must be an exact EdgePathEvidence")
+    if (
+        not _nonempty_string(evidence.evidence_contract)
+        or evidence.evidence_contract != EDGE_PATH_EVIDENCE_CONTRACT
+        or not _nonempty_string(evidence.plan_fingerprint)
+        or not _nonempty_string(evidence.native_execution_binding_identity)
+        or type(evidence.start_nodes) is not tuple
+        or type(evidence.layers) is not tuple
+        or type(evidence.final_nodes) is not tuple
+    ):
+        raise TypeError("edge-path evidence has an invalid envelope")
+
+    start_nodes = [_require_evidence_node(node) for node in evidence.start_nodes]
+    final_nodes = [_require_evidence_node(node) for node in evidence.final_nodes]
+    layer_rows: list[dict[str, Any]] = []
+    for expected_index, layer in enumerate(evidence.layers):
+        if (
+            type(layer) is not EdgePathEvidenceLayer
+            or type(layer.step_index) is not int
+            or layer.step_index != expected_index
+            or type(layer.observations) is not tuple
+        ):
+            raise TypeError("edge-path evidence layers must be exact and step-aligned")
+        observations: list[dict[str, Any]] = []
+        for observation in layer.observations:
+            if type(observation) is not EdgePathObservation:
+                raise TypeError("edge-path evidence observation has the wrong type")
+            if type(observation.value_present) is not bool:
+                raise TypeError("edge-path evidence value_present must be an exact bool")
+            source_node = _require_evidence_node(observation.source_node)
+            target_node = _require_evidence_node(observation.target_node)
+            value = observation.value
+            if observation.value_present:
+                if type(value) not in {str, int}:
+                    raise TypeError("present edge-path evidence values must be exact str or int")
+            elif value is not None:
+                raise TypeError("absent edge-path evidence value must be None")
+            observations.append(
+                {
+                    "source_node": source_node,
+                    "target_node": target_node,
+                    "value_present": observation.value_present,
+                    "value": value,
+                }
+            )
+        layer_rows.append(
+            {
+                "step_index": layer.step_index,
+                "observations": observations,
+            }
+        )
+
+    projection = {
+        "algorithm": EDGE_PATH_EVIDENCE_FINGERPRINT_ALGORITHM,
+        "evidence_contract": evidence.evidence_contract,
+        "plan_fingerprint": evidence.plan_fingerprint,
+        "native_execution_binding_identity": evidence.native_execution_binding_identity,
+        "start_nodes": start_nodes,
+        "layers": layer_rows,
+        "final_nodes": final_nodes,
+    }
+    return "sha256:" + hashlib.sha256(canonical_json_bytes(projection)).hexdigest()
 
 
 def _normalize_contexts(
