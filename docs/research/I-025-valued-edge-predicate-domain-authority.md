@@ -243,7 +243,10 @@ Recommended dependency-contract v2 kind:
 ```
 
 The assertion uses **native edge orientation**. It does not include traversal
-direction.
+direction. `value_role` is reviewed semantic provenance: runtime must not try
+to infer or rediscover it from the edge name, literal values, or TF metadata.
+Runtime observation verifies the loaded mechanical edge/value domain; the
+reviewed dependency and mapping/review binding supply the role authority.
 
 For an outgoing step, the current frontier type is the native source and
 `result_node_type` is the native target. For an incoming step those roles are
