@@ -276,6 +276,32 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
                 replace(base, layers=(layer1, layer0))
             )
 
+    def test_fingerprint_helper_rejects_duplicate_forged_nodes_and_pairs(self):
+        observation = tfont.EdgePathObservation(1, 2, True, "x")
+        layer = tfont.EdgePathEvidenceLayer(0, (observation,))
+        base = tfont.EdgePathEvidence(
+            "tfont-edge-path-evidence-v1",
+            "sha256:" + "a" * 64,
+            "sha256:" + "b" * 64,
+            (1,),
+            (layer,),
+            (2,),
+            "",
+        )
+        forged = (
+            replace(base, start_nodes=(1, 1)),
+            replace(base, final_nodes=(2, 2)),
+            replace(
+                base,
+                layers=(
+                    tfont.EdgePathEvidenceLayer(0, (observation, observation)),
+                ),
+            ),
+        )
+        for row in forged:
+            with self.subTest(row=row):
+                with self.assertRaises(TypeError):
+                    tfont.edge_path_evidence_fingerprint(row)
     def test_conjunction_intersection_does_not_trim_constituent_path_evidence(self):
         ir = compiled_mixed_conjunction_ir()
         keys = (
