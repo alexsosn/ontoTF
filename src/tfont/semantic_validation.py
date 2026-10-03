@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from .digests import canonical_json_bytes
 from .parent_identity import parent_manifest_digest
 from .semantic_bundle_validation import validate_bundle_source_closure
 from .semantic_child_validation import (
@@ -552,7 +553,13 @@ def _validate_edge_path_dependency_authority(
                     else:
                         native_source = result_type
                         native_target = current_type
-                    requested = set(match_values) if type(match_values) is list else set()
+                    try:
+                        requested = {
+                            canonical_json_bytes(value)
+                            for value in match_values
+                        } if type(match_values) is list else set()
+                    except Exception:
+                        requested = set()
                     authorized = False
                     for dependency in dependency_rows:
                         assertion = dependency.get("assertion")
@@ -572,7 +579,12 @@ def _validate_edge_path_dependency_authority(
                             and assertion.get("domain_semantics") == "closed-reviewed"
                             and type(reviewed_values) is list
                             and requested
-                            and requested.issubset(set(reviewed_values))
+                            and requested.issubset(
+                                {
+                                    canonical_json_bytes(value)
+                                    for value in reviewed_values
+                                }
+                            )
                         ):
                             authorized = True
                             break
