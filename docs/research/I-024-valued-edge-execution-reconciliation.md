@@ -236,4 +236,6 @@ v1 remain frozen. Any edge-value filter field is rejected in I-024.
 Tests must cover None, empty string, integer/bool distinction, incoming valued
 traversal, fan-in/fan-out, mixed paths, empty post-traversal frontiers,
 malformed pair shapes, metadata/type drift, deterministic evidence
-fingerprints, conjunction evidence alignment, and forged IR/evidence attempts.
+fingerprints, the same binding/node trace under two distinct plan fingerprints,
+rejection of evidence replay under the wrong plan, conjunction evidence
+alignment, and forged IR/evidence attempts.
