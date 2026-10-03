@@ -167,6 +167,26 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             )
         self.assertEqual(category(raised.exception), "loaded_api_unavailable")
 
+    def test_oversized_off_domain_neighbor_is_filtered_before_evidence_bounds(self):
+        ir = compiled_valued_ir()
+        oversized = SAFE_MAX + 1
+        feature = ValuedFakeEdgeFeature(
+            {1: ((oversized, "off-domain"), (10, "kept")), 2: ()}
+        )
+        api = selected_api(feature=feature)
+        api.node_types[oversized] = "phrase"
+        api.F.otype.node_types[oversized] = "phrase"
+        result = tfont.execute_exact_semantic(
+            ir,
+            semantic_request(tfont),
+            (valued_context(tfont, ir, api),),
+        ).corpora[0]
+        self.assertEqual(result.nodes, (10,))
+        observations = result.edge_path_evidence.layers[0].observations
+        self.assertEqual(
+            tuple((row.target_node, row.value) for row in observations),
+            ((10, "kept"),),
+        )
     def test_safe_jcs_upper_boundary_is_preserved_exactly(self):
         ir = compiled_valued_ir(steps=VALUED_INT_STEPS)
         feature = ValuedFakeEdgeFeature(
