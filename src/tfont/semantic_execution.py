@@ -702,9 +702,11 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
     )
     if steps_valid:
         for step in binding.steps or ():
+            if type(step) is not EdgeStepIR:
+                steps_valid = False
+                break
             common_valid = (
-                type(step) is EdgeStepIR
-                and _nonempty_string(step.edge)
+                _nonempty_string(step.edge)
                 and type(step.direction) is str
                 and step.direction in {"outgoing", "incoming"}
                 and _nonempty_string(step.result_node_type)
