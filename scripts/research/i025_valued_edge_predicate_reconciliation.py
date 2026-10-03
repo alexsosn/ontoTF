@@ -271,6 +271,7 @@ def main() -> int:
             ],
             "edge_value_domain_uses_native_orientation": True,
             "edge_value_domain_includes_direction": False,
+            "value_role_is_reviewed_not_runtime_inferred": True,
             "edge_value_domain_semantics": "closed-reviewed",
             "edge_value_domain_requires_evidence": True,
             "match_values_must_be_subset_of_reviewed_domain": True,
