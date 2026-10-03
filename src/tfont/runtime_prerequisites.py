@@ -381,6 +381,10 @@ def _validate_assertion(record: dict[str, Any]) -> None:
             raise RuntimeEvaluationError(
                 "edge-value-domain values must be unique by JSON identity"
             )
+        if tuple(encoded) != tuple(sorted(encoded)):
+            raise RuntimeEvaluationError(
+                "edge-value-domain values must be canonically ordered"
+            )
         return
 
     if kind == "extent-interpretation":
