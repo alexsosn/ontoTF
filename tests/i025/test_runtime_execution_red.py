@@ -104,6 +104,32 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
                 )
                 self.assertEqual(state[0], "unknown")
 
+    def test_runtime_rejects_noncanonical_custom_edge_domain_observation(self):
+        ir = compiled_predicate_ir()
+        base = predicate_observation(tfont, ir)
+
+        class ReorderedObservation:
+            parent_manifest_digest = base.parent_manifest_digest
+
+            def __getattr__(self, name):
+                return getattr(base, name)
+
+            def edge_values(self, component_id, edge, source_node_type, target_node_type):
+                return ("complete", "str", ("unique", "ambiguous"), 0)
+
+        report = tfont.evaluate_runtime_prerequisites(
+            ir.variants[0],
+            ReorderedObservation(),
+            source_contract="i025-test",
+        )
+        edge_row = tuple(
+            row
+            for row in report.dependency_results
+            if row.dependency_id.endswith(":domain")
+        )[0]
+        self.assertEqual(edge_row.result, "unknown")
+        self.assertEqual(report.compatibility_state, "unverified")
+
     def test_runtime_closed_domain_fails_on_unexpected_value(self):
         ir = compiled_predicate_ir()
         feature = ObservableValuedEdgeFeature(
