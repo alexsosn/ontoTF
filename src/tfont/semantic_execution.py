@@ -1905,46 +1905,8 @@ def _reference_runtime_state(
 def _execute_reference_plan(
     plan: AuthorityNativePlan | IdentityNativePlan | IdentifierNativePlan,
     context: LoadedCorpusContext,
-) -> tuple[int, ...]:
-    binding = plan.native_execution_binding
-    if type(binding) is not NativeBindingIR:
-        _fail(
-            "unsupported_native_binding",
-            "fresh reference resolver plan has an invalid native binding",
-            corpus_id=plan.corpus_id,
-        )
-    if binding.execution_shape == "value-predicate":
-        binding = _validate_value_predicate(plan)
-    elif binding.execution_shape == "value-set-predicate":
-        binding = _validate_value_set_predicate(plan)
-    elif binding.execution_shape == "membership":
-        binding = _validate_membership_binding(plan)
-    elif binding.execution_shape == "edge-path":
-        binding = _validate_edge_path_binding(plan)
-    else:
-        _fail(
-            "unsupported_native_binding",
-            "reference execution shape is not supported by the loaded runtime",
-            corpus_id=plan.corpus_id,
-            component_id=binding.component_id,
-        )
-
-    component = _components(context).get(binding.component_id or "")
-    if component is None:
-        _fail(
-            "missing_execution_component",
-            "fresh reference resolver plan references a component outside the execution context",
-            corpus_id=plan.corpus_id,
-            component_id=binding.component_id,
-        )
-    if binding.execution_shape == "value-predicate":
-        return _execute_value_predicate(plan, component)
-    if binding.execution_shape == "value-set-predicate":
-        return _execute_value_set_predicate(plan, component)
-    if binding.execution_shape == "membership":
-        return _execute_membership(plan, component)
-    return _execute_edge_path(plan, component)
-
+) -> _NativePlanExecution:
+    return _execute_exact_plan_in_context(plan, context)
 
 def execute_exact_authority(
     ir: CompiledSemanticIR,
@@ -1965,12 +1927,14 @@ def execute_exact_authority(
                 "fresh authority plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             ExactAuthorityCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
@@ -2000,12 +1964,14 @@ def execute_approximate_authority(
                 "fresh approximate authority plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             ApproximateAuthorityCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
@@ -2035,12 +2001,14 @@ def execute_identity(
                 "fresh identity plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             IdentityCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
@@ -2070,12 +2038,14 @@ def execute_identifier(
                 "fresh identifier plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             IdentifierCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
