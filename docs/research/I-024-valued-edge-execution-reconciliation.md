@@ -80,9 +80,12 @@ pinned TF empty-integer encoding; that case is preserved as
 TFont's existing RFC 8785/JCS boundary accepts integers only in the portable
 safe range `[-(2^53)+1, 2^53-1]`. Because edge evidence is content-addressed
 through that canonicalizer, an integer outside this range must fail closed
-rather than be coerced to a decimal string or float. Within the accepted
-domain, the native integer is preserved exactly. Any other returned value
-shape or type fails closed.
+rather than be coerced to a decimal string or float. This applies to every
+integer in the evidence fingerprint projection, including native integer edge
+values and node IDs. It does **not** retroactively narrow I-023 unvalued
+execution; the extra bound is required only when I-024 must construct
+fingerprintable valued-path evidence. Within the accepted domain, integers are
+preserved exactly. Any other returned value shape or type fails closed.
 
 ## Source and IR contract
 
@@ -262,8 +265,8 @@ technical negative control. Production mapping digests and dependency-contract
 v1 remain frozen. Any edge-value filter field is rejected in I-024.
 
 Tests must cover integer `None`, rejection of string `None`, empty string,
-integer/bool distinction, JCS boundary integers and oversized-int rejection,
-incoming valued
+integer/bool distinction, JCS boundary values/node IDs and oversized-integer
+rejection, incoming valued
 traversal, fan-in/fan-out, mixed paths, empty post-traversal frontiers,
 malformed pair shapes including list/tuple-subclass impostors, duplicate raw
 neighbors/pairs, metadata/type drift,
