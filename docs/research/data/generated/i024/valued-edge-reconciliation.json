@@ -6,12 +6,12 @@
     "semantic_promotion_is_not_authorized": true,
     "valued_edges": {
       "omap@2017-2021": {
-        "description": "⚠️ Maps the nodes of version 2017 to 2021",
+        "description": "\u26a0\ufe0f Maps the nodes of version 2017 to 2021",
         "value_type": "int",
         "valued": true
       },
       "omap@c-2021": {
-        "description": "⚠️ Maps the nodes of version c to 2021",
+        "description": "\u26a0\ufe0f Maps the nodes of version c to 2021",
         "value_type": "int",
         "valued": true
       }
