@@ -36,6 +36,8 @@ class EdgeStepIR:
     direction: str
     result_node_type: str | None = None
     valued: bool | None = None
+    value_type: str | None = None
+    value_role: str | None = None
 
 
 @dataclass(frozen=True)
@@ -508,6 +510,8 @@ def _native_binding(binding: dict[str, Any]) -> NativeBindingIR:
                 step["direction"],
                 step["result_node_type"],
                 step["valued"],
+                step.get("value_type"),
+                step.get("value_role"),
             )
             for step in steps_value
         )

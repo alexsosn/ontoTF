@@ -67,7 +67,9 @@
       "edge",
       "direction",
       "result_node_type",
-      "valued"
+      "valued",
+      "value_type",
+      "value_role"
     ],
     "native_binding_ir_fields": [
       "component_id",

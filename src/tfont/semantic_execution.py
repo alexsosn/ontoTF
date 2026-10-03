@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import operator
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
@@ -60,6 +61,10 @@ EXACT_AUTHORITY_EXECUTION_CONTRACT = "tfont-exact-authority-execution-v1"
 APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT = "tfont-approximate-authority-execution-v1"
 IDENTITY_EXECUTION_CONTRACT = "tfont-identity-execution-v1"
 IDENTIFIER_EXECUTION_CONTRACT = "tfont-identifier-execution-v1"
+EDGE_PATH_EVIDENCE_CONTRACT = "tfont-edge-path-evidence-v1"
+EDGE_PATH_EVIDENCE_FINGERPRINT_ALGORITHM = "tfont-edge-path-evidence-jcs-sha256-v1"
+_SAFE_JCS_INT_MIN = -(2**53) + 1
+_SAFE_JCS_INT_MAX = 2**53 - 1
 
 
 @dataclass(frozen=True)
@@ -78,11 +83,43 @@ class LoadedCorpusContext:
 
 
 @dataclass(frozen=True)
+class EdgePathObservation:
+    source_node: int
+    target_node: int
+    value_present: bool
+    value: str | int | None
+
+
+@dataclass(frozen=True)
+class EdgePathEvidenceLayer:
+    step_index: int
+    observations: tuple[EdgePathObservation, ...]
+
+
+@dataclass(frozen=True)
+class EdgePathEvidence:
+    evidence_contract: str
+    plan_fingerprint: str
+    native_execution_binding_identity: str
+    start_nodes: tuple[int, ...]
+    layers: tuple[EdgePathEvidenceLayer, ...]
+    final_nodes: tuple[int, ...]
+    evidence_fingerprint: str
+
+
+@dataclass(frozen=True)
+class _NativePlanExecution:
+    nodes: tuple[int, ...]
+    edge_path_evidence: EdgePathEvidence | None = None
+
+
+@dataclass(frozen=True)
 class ExactCorpusExecution:
     corpus_id: str
     nodes: tuple[int, ...]
     plan: ExactNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -98,6 +135,7 @@ class ApproximateCorpusExecution:
     nodes: tuple[int, ...]
     plan: ApproximateNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -113,6 +151,7 @@ class ExactAuthorityCorpusExecution:
     nodes: tuple[int, ...]
     plan: AuthorityNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -128,6 +167,7 @@ class ApproximateAuthorityCorpusExecution:
     nodes: tuple[int, ...]
     plan: AuthorityNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -143,6 +183,7 @@ class IdentityCorpusExecution:
     nodes: tuple[int, ...]
     plan: IdentityNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -158,6 +199,7 @@ class IdentifierCorpusExecution:
     nodes: tuple[int, ...]
     plan: IdentifierNativePlan
     runtime_report: RuntimeEvaluationReport
+    edge_path_evidence: EdgePathEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -247,6 +289,87 @@ def _utf16(value: str) -> bytes:
 
 def _nonempty_string(value: Any) -> bool:
     return type(value) is str and bool(value)
+
+
+def _require_evidence_node(node: Any) -> int:
+    if type(node) is not int or node <= 0:
+        raise TypeError("edge-path evidence node IDs must be positive exact integers")
+    return node
+
+
+def edge_path_evidence_fingerprint(evidence: EdgePathEvidence) -> str:
+    if type(evidence) is not EdgePathEvidence:
+        raise TypeError("evidence must be an exact EdgePathEvidence")
+    if (
+        not _nonempty_string(evidence.evidence_contract)
+        or evidence.evidence_contract != EDGE_PATH_EVIDENCE_CONTRACT
+        or not _nonempty_string(evidence.plan_fingerprint)
+        or not _nonempty_string(evidence.native_execution_binding_identity)
+        or type(evidence.start_nodes) is not tuple
+        or type(evidence.layers) is not tuple
+        or type(evidence.final_nodes) is not tuple
+    ):
+        raise TypeError("edge-path evidence has an invalid envelope")
+
+    start_nodes = [_require_evidence_node(node) for node in evidence.start_nodes]
+    final_nodes = [_require_evidence_node(node) for node in evidence.final_nodes]
+    if len(set(start_nodes)) != len(start_nodes):
+        raise TypeError("edge-path evidence start nodes must be unique")
+    if len(set(final_nodes)) != len(final_nodes):
+        raise TypeError("edge-path evidence final nodes must be unique")
+    layer_rows: list[dict[str, Any]] = []
+    for expected_index, layer in enumerate(evidence.layers):
+        if (
+            type(layer) is not EdgePathEvidenceLayer
+            or type(layer.step_index) is not int
+            or layer.step_index != expected_index
+            or type(layer.observations) is not tuple
+        ):
+            raise TypeError("edge-path evidence layers must be exact and step-aligned")
+        observations: list[dict[str, Any]] = []
+        observed_pairs: set[tuple[int, int]] = set()
+        for observation in layer.observations:
+            if type(observation) is not EdgePathObservation:
+                raise TypeError("edge-path evidence observation has the wrong type")
+            if type(observation.value_present) is not bool:
+                raise TypeError("edge-path evidence value_present must be an exact bool")
+            source_node = _require_evidence_node(observation.source_node)
+            target_node = _require_evidence_node(observation.target_node)
+            pair = (source_node, target_node)
+            if pair in observed_pairs:
+                raise TypeError("edge-path evidence contains a duplicate native edge pair")
+            observed_pairs.add(pair)
+            value = observation.value
+            if observation.value_present:
+                if type(value) not in {str, int}:
+                    raise TypeError("present edge-path evidence values must be exact str or int")
+            elif value is not None:
+                raise TypeError("absent edge-path evidence value must be None")
+            observations.append(
+                {
+                    "source_node": source_node,
+                    "target_node": target_node,
+                    "value_present": observation.value_present,
+                    "value": value,
+                }
+            )
+        layer_rows.append(
+            {
+                "step_index": layer.step_index,
+                "observations": observations,
+            }
+        )
+
+    projection = {
+        "algorithm": EDGE_PATH_EVIDENCE_FINGERPRINT_ALGORITHM,
+        "evidence_contract": evidence.evidence_contract,
+        "plan_fingerprint": evidence.plan_fingerprint,
+        "native_execution_binding_identity": evidence.native_execution_binding_identity,
+        "start_nodes": start_nodes,
+        "layers": layer_rows,
+        "final_nodes": final_nodes,
+    }
+    return "sha256:" + hashlib.sha256(canonical_json_bytes(projection)).hexdigest()
 
 
 def _normalize_contexts(
@@ -588,14 +711,31 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
     )
     if steps_valid:
         for step in binding.steps or ():
-            if (
-                type(step) is not EdgeStepIR
-                or not _nonempty_string(step.edge)
-                or type(step.direction) is not str
-                or step.direction not in {"outgoing", "incoming"}
-                or not _nonempty_string(step.result_node_type)
-                or step.valued is not False
-            ):
+            if type(step) is not EdgeStepIR:
+                steps_valid = False
+                break
+            common_valid = (
+                _nonempty_string(step.edge)
+                and type(step.direction) is str
+                and step.direction in {"outgoing", "incoming"}
+                and _nonempty_string(step.result_node_type)
+                and type(step.valued) is bool
+            )
+            if step.valued is True:
+                value_contract_valid = (
+                    type(step.value_type) is str
+                    and step.value_type in {"str", "int"}
+                    and type(step.value_role) is str
+                    and step.value_role
+                    in {"semantic-qualifier", "source-evidence", "technical"}
+                )
+            else:
+                value_contract_valid = (
+                    step.valued is False
+                    and step.value_type is None
+                    and step.value_role is None
+                )
+            if not common_valid or not value_contract_valid:
                 steps_valid = False
                 break
 
@@ -617,7 +757,7 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
     if not valid:
         _fail(
             "unsupported_native_binding",
-            "edge-path execution requires a typed non-empty unvalued step sequence",
+            "edge-path execution requires a typed non-empty step sequence with a closed valuedness contract",
             corpus_id=plan.corpus_id,
             component_id=getattr(binding, "component_id", None),
         )
@@ -699,13 +839,36 @@ def _loaded_edge_path_api(
                 corpus_id=corpus_id,
                 component_id=binding.component_id,
             )
-        if type(valued) is not bool or valued is not False:
+        if type(valued) is not bool or valued is not step.valued:
             _fail(
                 "loaded_api_unavailable",
-                "I-023 executes only explicitly unvalued loaded edges",
+                "loaded edge valuedness disagrees with the reviewed path step",
                 corpus_id=corpus_id,
                 component_id=binding.component_id,
             )
+        if step.valued:
+            try:
+                metadata = edge_api.meta
+            except Exception as error:
+                raise ExactExecutionError(
+                    ExactExecutionProblem(
+                        "loaded_api_unavailable",
+                        "loaded valued edge metadata is unavailable",
+                        corpus_id=corpus_id,
+                        component_id=binding.component_id,
+                    )
+                ) from error
+            if (
+                type(metadata) is not dict
+                or type(metadata.get("valueType")) is not str
+                or metadata.get("valueType") != step.value_type
+            ):
+                _fail(
+                    "loaded_api_unavailable",
+                    "loaded valued edge value type disagrees with the reviewed path step",
+                    corpus_id=corpus_id,
+                    component_id=binding.component_id,
+                )
         methods.append(method)
 
     return selector, lookup, tuple(methods)
@@ -739,16 +902,116 @@ def _loaded_node_type(
     return observed_type
 
 
+def _validate_runtime_evidence_node(
+    node: int,
+    *,
+    corpus_id: str,
+    component_id: str,
+) -> None:
+    if node < _SAFE_JCS_INT_MIN or node > _SAFE_JCS_INT_MAX:
+        _fail(
+            "invalid_result_nodes",
+            "valued edge-path evidence node ID is outside the safe JCS integer domain",
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+
+
+def _normalize_valued_edge_rows(
+    raw_rows: Any,
+    step: EdgeStepIR,
+    *,
+    corpus_id: str,
+    component_id: str,
+) -> tuple[tuple[int, bool, str | int | None], ...]:
+    try:
+        rows = tuple(raw_rows)
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "valued edge traversal returned a non-iterable result",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        ) from error
+
+    result: list[tuple[int, bool, str | int | None]] = []
+    seen: set[int] = set()
+    for row in rows:
+        if type(row) is not tuple or len(row) != 2:
+            _fail(
+                "loaded_api_unavailable",
+                "valued edge traversal must return exact (node, value) pairs",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        raw_node, value = row
+        normalized = _normalize_result_nodes(
+            (raw_node,),
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+        node = normalized[0]
+        if node in seen:
+            _fail(
+                "invalid_result_nodes",
+                "valued edge traversal returned duplicate neighbor node IDs",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        seen.add(node)
+
+        if step.value_type == "str":
+            if type(value) is not str:
+                _fail(
+                    "loaded_api_unavailable",
+                    "valued edge traversal returned a non-string value for reviewed str metadata",
+                    corpus_id=corpus_id,
+                    component_id=component_id,
+                )
+            value_present = True
+        elif step.value_type == "int":
+            if value is None:
+                value_present = False
+            elif type(value) is int:
+                if value < _SAFE_JCS_INT_MIN or value > _SAFE_JCS_INT_MAX:
+                    _fail(
+                        "loaded_api_unavailable",
+                        "valued edge integer is outside the safe JCS domain",
+                        corpus_id=corpus_id,
+                        component_id=component_id,
+                    )
+                value_present = True
+            else:
+                _fail(
+                    "loaded_api_unavailable",
+                    "valued edge traversal returned a non-integer value for reviewed int metadata",
+                    corpus_id=corpus_id,
+                    component_id=component_id,
+                )
+        else:
+            _fail(
+                "loaded_api_unavailable",
+                "valued edge step has no supported reviewed value type",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        result.append((node, value_present, value))
+    return tuple(result)
+
+
 def _execute_edge_path(
     plan: Any,
     component: LoadedComponentContext,
-) -> tuple[int, ...]:
+) -> _NativePlanExecution:
     binding = _validate_edge_path_binding(plan)
     selector, lookup, methods = _loaded_edge_path_api(
         component.api,
         binding,
         corpus_id=plan.corpus_id,
     )
+    evidence_required = any(step.valued is True for step in binding.steps or ())
 
     try:
         raw_start = selector(binding.node_type)
@@ -775,6 +1038,14 @@ def _execute_edge_path(
             component_id=binding.component_id,
         )
 
+    if evidence_required:
+        for node in frontier:
+            _validate_runtime_evidence_node(
+                node,
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id or "",
+            )
+
     for node in frontier:
         observed_type = _loaded_node_type(
             lookup,
@@ -790,14 +1061,20 @@ def _execute_edge_path(
                 component_id=binding.component_id,
             )
 
-    for step, method in zip(binding.steps or (), methods):
+    start_nodes = frontier
+    layers: list[EdgePathEvidenceLayer] = []
+    for step_index, (step, method) in enumerate(zip(binding.steps or (), methods)):
         if not frontier:
-            break
+            if evidence_required:
+                layers.append(EdgePathEvidenceLayer(step_index, ()))
+            continue
+
         selected: list[int] = []
         selected_seen: set[int] = set()
-        for source_node in frontier:
+        observations: list[EdgePathObservation] = []
+        for current_node in frontier:
             try:
-                raw_nodes = method(source_node)
+                raw_result = method(current_node)
             except Exception as error:
                 raise ExactExecutionError(
                     ExactExecutionProblem(
@@ -807,12 +1084,23 @@ def _execute_edge_path(
                         component_id=binding.component_id,
                     )
                 ) from error
-            nodes = _normalize_result_nodes(
-                raw_nodes,
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id or "",
-            )
-            for node in nodes:
+
+            if step.valued:
+                rows = _normalize_valued_edge_rows(
+                    raw_result,
+                    step,
+                    corpus_id=plan.corpus_id,
+                    component_id=binding.component_id or "",
+                )
+            else:
+                nodes = _normalize_result_nodes(
+                    raw_result,
+                    corpus_id=plan.corpus_id,
+                    component_id=binding.component_id or "",
+                )
+                rows = tuple((node, False, None) for node in nodes)
+
+            for node, value_present, value in rows:
                 observed_type = _loaded_node_type(
                     lookup,
                     node,
@@ -821,14 +1109,85 @@ def _execute_edge_path(
                 )
                 if observed_type != step.result_node_type:
                     continue
+
+                if evidence_required:
+                    if step.direction == "outgoing":
+                        source_node, target_node = current_node, node
+                    else:
+                        source_node, target_node = node, current_node
+                    _validate_runtime_evidence_node(
+                        source_node,
+                        corpus_id=plan.corpus_id,
+                        component_id=binding.component_id or "",
+                    )
+                    _validate_runtime_evidence_node(
+                        target_node,
+                        corpus_id=plan.corpus_id,
+                        component_id=binding.component_id or "",
+                    )
+                    observations.append(
+                        EdgePathObservation(
+                            source_node=source_node,
+                            target_node=target_node,
+                            value_present=value_present,
+                            value=value,
+                        )
+                    )
+
                 if node in selected_seen:
                     continue
                 selected_seen.add(node)
                 selected.append(node)
+
         frontier = tuple(selected)
+        if evidence_required:
+            layers.append(
+                EdgePathEvidenceLayer(
+                    step_index=step_index,
+                    observations=tuple(observations),
+                )
+            )
 
-    return frontier
+    if not evidence_required:
+        return _NativePlanExecution(nodes=frontier)
 
+    if not _nonempty_string(getattr(plan, "plan_fingerprint", None)):
+        _fail(
+            "unsupported_native_binding",
+            "valued edge-path execution requires a fresh plan fingerprint",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+    if not _nonempty_string(getattr(plan, "native_execution_binding_identity", None)):
+        _fail(
+            "unsupported_native_binding",
+            "valued edge-path execution requires a native binding identity",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+
+    provisional = EdgePathEvidence(
+        evidence_contract=EDGE_PATH_EVIDENCE_CONTRACT,
+        plan_fingerprint=plan.plan_fingerprint,
+        native_execution_binding_identity=plan.native_execution_binding_identity,
+        start_nodes=start_nodes,
+        layers=tuple(layers),
+        final_nodes=frontier,
+        evidence_fingerprint="",
+    )
+    evidence = EdgePathEvidence(
+        evidence_contract=provisional.evidence_contract,
+        plan_fingerprint=provisional.plan_fingerprint,
+        native_execution_binding_identity=provisional.native_execution_binding_identity,
+        start_nodes=provisional.start_nodes,
+        layers=provisional.layers,
+        final_nodes=provisional.final_nodes,
+        evidence_fingerprint=edge_path_evidence_fingerprint(provisional),
+    )
+    return _NativePlanExecution(
+        nodes=frontier,
+        edge_path_evidence=evidence,
+    )
 
 def _execution_result_domain(plan: Any) -> tuple[str, str]:
     binding = plan.native_execution_binding
@@ -1122,51 +1481,17 @@ def execute_exact_semantic(
                 "fresh resolver plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
-        binding = plan.native_execution_binding
-        if type(binding) is not NativeBindingIR:
-            _fail(
-                "unsupported_native_binding",
-                "fresh resolver plan has an invalid native binding",
-                corpus_id=plan.corpus_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            binding = _validate_value_predicate(plan)
-        elif binding.execution_shape == "value-set-predicate":
-            binding = _validate_value_set_predicate(plan)
-        elif binding.execution_shape == "membership":
-            binding = _validate_membership_binding(plan)
-        elif binding.execution_shape == "edge-path":
-            binding = _validate_edge_path_binding(plan)
-        else:
-            _fail(
-                "unsupported_native_binding",
-                "execution shape is not supported by the loaded runtime",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        components = _components(normalized_contexts[plan.corpus_id])
-        component = components.get(binding.component_id or "")
-        if component is None:
-            _fail(
-                "missing_execution_component",
-                "fresh resolver plan references a component outside the execution context",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            nodes = _execute_value_predicate(plan, component)
-        elif binding.execution_shape == "value-set-predicate":
-            nodes = _execute_value_set_predicate(plan, component)
-        elif binding.execution_shape == "membership":
-            nodes = _execute_membership(plan, component)
-        else:
-            nodes = _execute_edge_path(plan, component)
+        execution = _execute_exact_plan_in_context(
+            plan,
+            normalized_contexts[plan.corpus_id],
+        )
         executions.append(
             ExactCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=nodes,
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
 
@@ -1222,51 +1547,17 @@ def _execute_approximate_semantic_impl(
                 "fresh approximate resolver plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
-        binding = plan.native_execution_binding
-        if type(binding) is not NativeBindingIR:
-            _fail(
-                "unsupported_native_binding",
-                "fresh approximate resolver plan has an invalid native binding",
-                corpus_id=plan.corpus_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            binding = _validate_value_predicate(plan)
-        elif binding.execution_shape == "value-set-predicate":
-            binding = _validate_value_set_predicate(plan)
-        elif binding.execution_shape == "membership":
-            binding = _validate_membership_binding(plan)
-        elif binding.execution_shape == "edge-path":
-            binding = _validate_edge_path_binding(plan)
-        else:
-            _fail(
-                "unsupported_native_binding",
-                "approximate execution shape is not supported by the loaded runtime",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        components = _components(normalized_contexts[plan.corpus_id])
-        component = components.get(binding.component_id or "")
-        if component is None:
-            _fail(
-                "missing_execution_component",
-                "fresh approximate resolver plan references a component outside the execution context",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            nodes = _execute_value_predicate(plan, component)
-        elif binding.execution_shape == "value-set-predicate":
-            nodes = _execute_value_set_predicate(plan, component)
-        elif binding.execution_shape == "membership":
-            nodes = _execute_membership(plan, component)
-        else:
-            nodes = _execute_edge_path(plan, component)
+        execution = _execute_exact_plan_in_context(
+            plan,
+            normalized_contexts[plan.corpus_id],
+        )
         executions.append(
             ApproximateCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=nodes,
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
 
@@ -1298,6 +1589,7 @@ class ApproximateConjunctionCorpusExecution:
     nodes: tuple[int, ...]
     plans: tuple[ApproximateNativePlan, ...]
     runtime_report: RuntimeEvaluationReport
+    constituent_edge_path_evidence: tuple[EdgePathEvidence | None, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -1313,6 +1605,7 @@ class ExactConjunctionCorpusExecution:
     nodes: tuple[int, ...]
     plans: tuple[ExactNativePlan, ...]
     runtime_report: RuntimeEvaluationReport
+    constituent_edge_path_evidence: tuple[EdgePathEvidence | None, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -1323,9 +1616,9 @@ class ExactConjunctionExecutionResult:
 
 
 def _execute_exact_plan_in_context(
-    plan: ExactNativePlan,
+    plan: Any,
     context: LoadedCorpusContext,
-) -> tuple[int, ...]:
+) -> _NativePlanExecution:
     binding = plan.native_execution_binding
     if type(binding) is not NativeBindingIR:
         _fail(
@@ -1344,7 +1637,7 @@ def _execute_exact_plan_in_context(
     else:
         _fail(
             "unsupported_native_binding",
-            "exact conjunction execution shape is not supported by the loaded runtime",
+            "execution shape is not supported by the loaded runtime",
             corpus_id=plan.corpus_id,
             component_id=binding.component_id,
         )
@@ -1358,13 +1651,12 @@ def _execute_exact_plan_in_context(
             component_id=binding.component_id,
         )
     if binding.execution_shape == "value-predicate":
-        return _execute_value_predicate(plan, component)
+        return _NativePlanExecution(_execute_value_predicate(plan, component))
     if binding.execution_shape == "value-set-predicate":
-        return _execute_value_set_predicate(plan, component)
+        return _NativePlanExecution(_execute_value_set_predicate(plan, component))
     if binding.execution_shape == "membership":
-        return _execute_membership(plan, component)
+        return _NativePlanExecution(_execute_membership(plan, component))
     return _execute_edge_path(plan, component)
-
 
 def _validate_conjunction_node_domains(
     resolution: SemanticConjunctionResolutionResult,
@@ -1432,7 +1724,7 @@ def execute_exact_conjunction(
 
     resolution = semantic_resolve_conjunction(ir, request, tuple(prerequisites))
     _validate_conjunction_node_domains(resolution)
-    by_corpus: dict[str, list[tuple[ExactNativePlan, tuple[int, ...]]]] = {
+    by_corpus: dict[str, list[tuple[ExactNativePlan, _NativePlanExecution]]] = {
         corpus_id: [] for corpus_id in resolution.request.corpora
     }
     for constituent in resolution.resolutions:
@@ -1444,8 +1736,8 @@ def execute_exact_conjunction(
                     "conjunction plan has no authorized runtime context",
                     corpus_id=plan.corpus_id,
                 )
-            nodes = _execute_exact_plan_in_context(plan, context)
-            by_corpus.setdefault(plan.corpus_id, []).append((plan, nodes))
+            execution = _execute_exact_plan_in_context(plan, context)
+            by_corpus.setdefault(plan.corpus_id, []).append((plan, execution))
 
     executions: list[ExactConjunctionCorpusExecution] = []
     expected_plan_count = len(resolution.request.keys)
@@ -1457,15 +1749,18 @@ def execute_exact_conjunction(
                 "conjunction did not produce one exact plan per requested atom",
                 corpus_id=corpus_id,
             )
-        intersection = set(rows[0][1])
-        for _plan, nodes in rows[1:]:
-            intersection.intersection_update(nodes)
+        intersection = set(rows[0][1].nodes)
+        for _plan, execution in rows[1:]:
+            intersection.intersection_update(execution.nodes)
+        evidences = tuple(execution.edge_path_evidence for _plan, execution in rows)
+        aligned_evidence = () if all(item is None for item in evidences) else evidences
         executions.append(
             ExactConjunctionCorpusExecution(
                 corpus_id=corpus_id,
                 nodes=tuple(sorted(intersection)),
-                plans=tuple(plan for plan, _nodes in rows),
+                plans=tuple(plan for plan, _execution in rows),
                 runtime_report=reports[corpus_id],
+                constituent_edge_path_evidence=aligned_evidence,
             )
         )
 
@@ -1514,7 +1809,7 @@ def _execute_approximate_conjunction_impl(
     )
     _validate_conjunction_node_domains(resolution)
 
-    by_corpus: dict[str, list[tuple[ApproximateNativePlan, tuple[int, ...]]]] = {
+    by_corpus: dict[str, list[tuple[ApproximateNativePlan, _NativePlanExecution]]] = {
         corpus_id: [] for corpus_id in resolution.request.corpora
     }
     for constituent in resolution.resolutions:
@@ -1526,8 +1821,8 @@ def _execute_approximate_conjunction_impl(
                     "approximate conjunction plan has no authorized runtime context",
                     corpus_id=plan.corpus_id,
                 )
-            nodes = _execute_exact_plan_in_context(plan, context)
-            by_corpus.setdefault(plan.corpus_id, []).append((plan, nodes))
+            execution = _execute_exact_plan_in_context(plan, context)
+            by_corpus.setdefault(plan.corpus_id, []).append((plan, execution))
 
     executions: list[ApproximateConjunctionCorpusExecution] = []
     expected_plan_count = len(resolution.request.keys)
@@ -1539,15 +1834,18 @@ def _execute_approximate_conjunction_impl(
                 "conjunction did not produce one approximate plan per requested atom",
                 corpus_id=corpus_id,
             )
-        intersection = set(rows[0][1])
-        for _plan, nodes in rows[1:]:
-            intersection.intersection_update(nodes)
+        intersection = set(rows[0][1].nodes)
+        for _plan, execution in rows[1:]:
+            intersection.intersection_update(execution.nodes)
+        evidences = tuple(execution.edge_path_evidence for _plan, execution in rows)
+        aligned_evidence = () if all(item is None for item in evidences) else evidences
         executions.append(
             ApproximateConjunctionCorpusExecution(
                 corpus_id=corpus_id,
                 nodes=tuple(sorted(intersection)),
-                plans=tuple(plan for plan, _nodes in rows),
+                plans=tuple(plan for plan, _execution in rows),
                 runtime_report=reports[corpus_id],
+                constituent_edge_path_evidence=aligned_evidence,
             )
         )
 
@@ -1606,46 +1904,8 @@ def _reference_runtime_state(
 def _execute_reference_plan(
     plan: AuthorityNativePlan | IdentityNativePlan | IdentifierNativePlan,
     context: LoadedCorpusContext,
-) -> tuple[int, ...]:
-    binding = plan.native_execution_binding
-    if type(binding) is not NativeBindingIR:
-        _fail(
-            "unsupported_native_binding",
-            "fresh reference resolver plan has an invalid native binding",
-            corpus_id=plan.corpus_id,
-        )
-    if binding.execution_shape == "value-predicate":
-        binding = _validate_value_predicate(plan)
-    elif binding.execution_shape == "value-set-predicate":
-        binding = _validate_value_set_predicate(plan)
-    elif binding.execution_shape == "membership":
-        binding = _validate_membership_binding(plan)
-    elif binding.execution_shape == "edge-path":
-        binding = _validate_edge_path_binding(plan)
-    else:
-        _fail(
-            "unsupported_native_binding",
-            "reference execution shape is not supported by the loaded runtime",
-            corpus_id=plan.corpus_id,
-            component_id=binding.component_id,
-        )
-
-    component = _components(context).get(binding.component_id or "")
-    if component is None:
-        _fail(
-            "missing_execution_component",
-            "fresh reference resolver plan references a component outside the execution context",
-            corpus_id=plan.corpus_id,
-            component_id=binding.component_id,
-        )
-    if binding.execution_shape == "value-predicate":
-        return _execute_value_predicate(plan, component)
-    if binding.execution_shape == "value-set-predicate":
-        return _execute_value_set_predicate(plan, component)
-    if binding.execution_shape == "membership":
-        return _execute_membership(plan, component)
-    return _execute_edge_path(plan, component)
-
+) -> _NativePlanExecution:
+    return _execute_exact_plan_in_context(plan, context)
 
 def execute_exact_authority(
     ir: CompiledSemanticIR,
@@ -1666,12 +1926,14 @@ def execute_exact_authority(
                 "fresh authority plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             ExactAuthorityCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
@@ -1701,12 +1963,14 @@ def execute_approximate_authority(
                 "fresh approximate authority plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             ApproximateAuthorityCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
@@ -1736,12 +2000,14 @@ def execute_identity(
                 "fresh identity plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             IdentityCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
@@ -1771,12 +2037,14 @@ def execute_identifier(
                 "fresh identifier plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
+        execution = _execute_reference_plan(plan, context)
         rows.append(
             IdentifierCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=_execute_reference_plan(plan, context),
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
     rows.sort(key=lambda row: _utf16(row.corpus_id))
