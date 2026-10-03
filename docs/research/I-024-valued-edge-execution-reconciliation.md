@@ -7,10 +7,11 @@ Edge-value predicate follow-up: I-025 #253
 
 ## Status and scope
 
-Research only. This branch is based directly on current main after the
-reviewed I-023 implementation merged, so the probe inspects the production
-typed unvalued edge-path contract. It does not change production schemas, IR,
-resolver or execution behavior.
+Research is complete and the reviewed production implementation is carried by
+PR #257. The probe now acts as a post-implementation current-state guard over
+the additive I-024 contract while retaining the pinned corpus and Text-Fabric
+evidence that justified the design. I-025 #253 still owns edge-value filtering
+and value-domain authority.
 
 Pinned evidence is Text-Fabric revision 0c45c386916cb52be84098796ec27ce97e5bf9fc,
 TLHdig-TF revision 0261d2d46b3419a1f907e231a03f749d133cfb5e
@@ -251,6 +252,21 @@ The new valued step fields are semantic identity, so future valued mappings
 naturally produce different digests from otherwise identical unvalued
 bindings. Current packaged production resources have no structural execution
 bindings, so there is no shipped digest migration.
+
+## Implemented production boundary
+
+PR #257 implements the reviewed slice without changing mapping schema version,
+dependency-contract version, resolver modes, outer execution-contract strings,
+or the Text-Fabric runtime dependency boundary. `EdgeStepIR` now appends
+defaulted `value_type` and `value_role`; valued source steps require both.
+Execution validates loaded `doValues`, declared `valueType`, exact pair/value
+shapes and JCS-safe evidence integers before result-domain filtering.
+
+Any path containing a valued step emits plan-bound
+`tfont-edge-path-evidence-v1` evidence. The same shared traversal result is
+propagated through exact/approximate semantic, authority, identity, identifier,
+and conjunction execution. Pure I-023 unvalued paths retain `None` evidence
+(and legacy `()` for all-unvalued conjunctions).
 
 ## Plan handoff
 
