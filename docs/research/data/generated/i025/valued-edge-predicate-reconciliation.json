@@ -1,0 +1,177 @@
+{
+  "current_contract": {
+    "dependency_contract_version": 1,
+    "dependency_kinds": [
+      "component-present",
+      "node-type-present",
+      "feature-present",
+      "edge-present",
+      "path-present",
+      "native-value-present",
+      "value-domain",
+      "extent-interpretation"
+    ],
+    "dependency_normalization_sorts_values": true,
+    "edge_step_ir_fields": [
+      "edge",
+      "direction",
+      "result_node_type",
+      "valued",
+      "value_type",
+      "value_role"
+    ],
+    "edge_value_domain_kind_exists": false,
+    "loaded_tf_observation_has_edge_values": false,
+    "mapping_schema_version": 2,
+    "native_binding_identity_normalizes_match_values": false,
+    "native_value_present_fields": [
+      "node_type",
+      "feature",
+      "value",
+      "value_semantics"
+    ],
+    "profile_release_fingerprint_binds_dependency_contract_version": true,
+    "profile_schema_version": 2,
+    "runtime_accepts_dependency_contract_v1_only": true,
+    "runtime_observation_has_edge_values": false,
+    "semantic_digest_treats_match_values_as_set_like": false,
+    "step_match_values_is_schema_valid": false,
+    "value_domain_fields": [
+      "node_type",
+      "feature",
+      "values",
+      "domain_semantics"
+    ],
+    "valued_path_is_schema_valid": true
+  },
+  "i024_boundary_preserved": {
+    "edge_values_are_already_losslessly_preserved": true,
+    "nested_evidence_contract": "tfont-edge-path-evidence-v1",
+    "path_present_remains_edge_direction_only": true
+  },
+  "pinned_sources": {
+    "bhsa": "4db00e2157915495e1a4d3d57e41223df24775da",
+    "text_fabric": "0c45c386916cb52be84098796ec27ce97e5bf9fc",
+    "tlhdig": "0261d2d46b3419a1f907e231a03f749d133cfb5e"
+  },
+  "real_controls": {
+    "bhsa_omap_2017_2021": {
+      "domain_observation": "open_or_large_observed_domain",
+      "empty_observation_count": 1404055,
+      "observed_unique_count": 74,
+      "semantic_predicate_authority": false,
+      "value_role": "technical",
+      "value_type": "int"
+    },
+    "bhsa_omap_c_2021": {
+      "domain_observation": "observed_small_domain",
+      "empty_observation_count": 1404813,
+      "observed_small_domain_is_not_semantic_closure": true,
+      "observed_unique_count": 34,
+      "omap_values_are_correspondence_quality": true,
+      "semantic_predicate_authority": false,
+      "value_role": "technical",
+      "value_type": "int"
+    },
+    "tlhdig_joined": {
+      "closed_source_evidence": true,
+      "documented_closed_values": [
+        "direct",
+        "indirect"
+      ],
+      "orientation_is_apparatus_order": true,
+      "predicate_use_case": "joined=direct",
+      "value_role": "semantic-qualifier",
+      "value_type": "str"
+    },
+    "tlhdig_selected": {
+      "open_token_domain": true,
+      "semantic_predicate_authority": false,
+      "value_role": "source-evidence",
+      "value_type": "str"
+    },
+    "tlhdig_witness_resolution": {
+      "closed_source_evidence": true,
+      "documented_closed_values": [
+        "ambiguous",
+        "unique"
+      ],
+      "predicate_use_case": "witness_resolution=ambiguous",
+      "value_role": "semantic-qualifier",
+      "value_type": "str"
+    }
+  },
+  "recommended_i025_slice": {
+    "absent_reviewed_value_yields_valid_empty_result": true,
+    "approximate_mapping_keeps_native_value_match_exact": true,
+    "autoload_or_network": false,
+    "canonicalization_extension_required_for_match_values": true,
+    "closed_domain_runtime_rule": "observed-present-values-subset-of-reviewed-values",
+    "conjunction_uses_filtered_final_nodes": true,
+    "dependency_contract_version": 2,
+    "edge_value_domain_assertion_fields": [
+      "edge",
+      "source_node_type",
+      "target_node_type",
+      "value_type",
+      "value_role",
+      "values",
+      "domain_semantics"
+    ],
+    "edge_value_domain_includes_direction": false,
+    "edge_value_domain_requires_evidence": true,
+    "edge_value_domain_semantics": "closed-reviewed",
+    "edge_value_domain_uses_native_orientation": true,
+    "empty_string_is_matchable_when_reviewed": true,
+    "evidence_contains_justifying_native_value": true,
+    "execution_filter_order": [
+      "validate-pair-node-value",
+      "validate-result-node-type",
+      "exact-match-values",
+      "evidence-node-jcs-bound",
+      "accept-frontier-and-evidence"
+    ],
+    "existing_dependency_v1_profiles_remain_valid": true,
+    "fuzzy_matching": false,
+    "initial_predicate_value_roles": [
+      "semantic-qualifier"
+    ],
+    "mapping_digest_algorithm_change": false,
+    "mapping_schema_version_change": false,
+    "match_none": false,
+    "match_values_is_set_like": true,
+    "match_values_types": [
+      "str",
+      "int"
+    ],
+    "multiple_values_mean_exact_or": true,
+    "native_binding_identity_algorithm_change": false,
+    "new_dependency_kind": "edge-value-domain",
+    "new_edge_value_domains_require_dependency_v2": true,
+    "observed_domain_alone_authorizes_predicate": false,
+    "predicate_field": "match_values",
+    "predicate_form": "non-empty-finite-set-membership",
+    "profile_release_fingerprint_algorithm_change": false,
+    "profile_schema_version_change": false,
+    "reference_execution_reuses_same_filter": true,
+    "reuse_i024_evidence_shape": true,
+    "reviewed_match_value_may_be_absent_at_runtime": true,
+    "runtime_observation_excludes_missing_int_none_from_domain": true,
+    "runtime_observation_filters_native_source_target_types": true,
+    "runtime_observation_method": "edge_values",
+    "runtime_observation_records_missing_count": true,
+    "runtime_observation_uses_loaded_edge_items": true,
+    "safe_jcs_integer_required": true,
+    "singleton_means_exact_equality": true,
+    "source_evidence_filtering_deferred": true,
+    "technical_filtering_deferred": true
+  },
+  "text_fabric_mechanics": {
+    "edge_feature_exposes_do_values": true,
+    "edge_feature_exposes_metadata": true,
+    "items_is_public_data_iterator": true,
+    "loaded_edge_domain_can_be_observed_without_autoload": true,
+    "valued_incoming_uses_node_value_pairs": true,
+    "valued_outgoing_uses_node_value_pairs": true
+  }
+}
