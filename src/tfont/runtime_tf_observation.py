@@ -3,6 +3,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
+from .digests import canonical_json_bytes
+
 
 _SAFE_JCS_INT_MAX = 2**53 - 1
 _SAFE_JCS_INT_MIN = -_SAFE_JCS_INT_MAX
@@ -262,15 +264,7 @@ class LoadedTFObservation:
             return result
 
         try:
-            ordered = tuple(
-                sorted(
-                    present,
-                    key=lambda value: (
-                        0 if type(value) is int else 1,
-                        value,
-                    ),
-                )
-            )
+            ordered = tuple(sorted(present, key=canonical_json_bytes))
         except Exception:
             result = ("unknown", None, (), 0)
             self._edge_value_cache[cache_key] = result
