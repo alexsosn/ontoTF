@@ -92,6 +92,8 @@
     "empty_string_is_preserved_not_treated_as_absence": true,
     "evidence_binds_execution_plan_fingerprint": true,
     "evidence_excludes_off_domain_neighbors": true,
+    "evidence_fingerprint_algorithm": "tfont-edge-path-evidence-jcs-sha256-v1",
+    "evidence_fingerprint_projection_is_domain_separated": true,
     "evidence_has_deterministic_fingerprint": true,
     "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": true,
     "evidence_records_all_steps_when_any_step_is_valued": true,
