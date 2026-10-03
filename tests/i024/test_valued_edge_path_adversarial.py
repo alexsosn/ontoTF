@@ -99,8 +99,8 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             value_type="int",
         )
         api = selected_api()
-        api.node_types.update({20: "column"})
-        api.F.otype.node_types.update({20: "column"})
+        api.node_types.update({10: "line", 11: "line", 20: "column"})
+        api.F.otype.node_types.update({10: "line", 11: "line", 20: "column"})
         api.E.word_line = FakeEdgeFeature({1: (), 2: ()})
         api.E.line_quality = line_quality
         api.loaded_edges = ("word_line", "line_quality")
