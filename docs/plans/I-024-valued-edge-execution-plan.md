@@ -136,7 +136,8 @@ The canonical fingerprint projection includes:
 - fresh `plan_fingerprint`;
 - `native_execution_binding_identity`;
 - ordered `start_nodes`;
-- ordered layers with `step_index`;
+- ordered layers with **zero-based** `step_index`;
+- exactly one layer for every reviewed step, including an empty `observations=()` layer when the frontier was already empty;
 - ordered observations with native `source_node`, native `target_node`, exact `value_present`, and `value`;
 - ordered `final_nodes`.
 
@@ -262,7 +263,9 @@ Malformed value/type data on a well-formed off-domain neighbor still fails befor
 
 Keep the I-023 traversal-order policy: stable first discovery from canonical start order and native `f/t` order.
 
-For each step and each source in the current frontier:
+For each reviewed step create exactly one zero-based evidence layer when the path contains any valued step. If the current frontier is already empty, append that step's empty layer and continue without calling the traversal method; full-path API validation has already happened during preflight.
+
+For each source in a non-empty current frontier:
 
 - unvalued step: consume plain neighbor IDs exactly as I-023;
 - valued step: consume validated `(neighbor, value)` pairs;
@@ -281,7 +284,7 @@ For unvalued observations in a mixed path use `value_present=False, value=None`.
 
 Do not record off-domain neighbors in evidence.
 
-The existing valid-empty post-traversal result remains valid. If any valued step exists, empty final nodes still produce mandatory evidence with the traversed/accepted layers accumulated up to that point.
+The existing valid-empty post-traversal result remains valid. If any valued step exists, empty final nodes still produce mandatory evidence with exactly `len(binding.steps)` layers; steps after frontier exhaustion contribute empty observation tuples.
 
 ## Evidence fingerprint construction
 
@@ -408,7 +411,7 @@ Required RED coverage:
 ### Evidence identity
 
 29. any path containing a valued step emits evidence; a pure unvalued path emits `None`;
-30. mixed paths record all accepted layers, including unvalued layers;
+30. mixed paths record all reviewed layers, including unvalued layers and empty trailing layers after frontier exhaustion, with zero-based step indices;
 31. evidence fingerprint is deterministic;
 32. changing plan fingerprint changes evidence fingerprint even with identical binding/node trace;
 33. changing native source/target/value/value-presence/layer order/final nodes changes the fingerprint;
