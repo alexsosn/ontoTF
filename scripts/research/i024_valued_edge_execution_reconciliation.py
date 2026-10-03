@@ -290,6 +290,7 @@ def main() -> int:
             "single_result_evidence_field": "edge_path_evidence",
             "conjunction_evidence_field": "constituent_edge_path_evidence",
             "conjunction_evidence_is_plan_aligned_with_none_placeholders": True,
+            "conjunction_evidence_stays_empty_when_all_constituents_unvalued": True,
             "outer_execution_contract_version_change": False,
             "nested_evidence_contract": "tfont-edge-path-evidence-v1",
             "evidence_fingerprint_algorithm": "tfont-edge-path-evidence-jcs-sha256-v1",
