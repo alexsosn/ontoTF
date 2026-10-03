@@ -34,6 +34,8 @@ class SemanticIRError(ValueError):
 class EdgeStepIR:
     edge: str
     direction: str
+    result_node_type: str | None = None
+    valued: bool | None = None
 
 
 @dataclass(frozen=True)
@@ -500,7 +502,15 @@ def _native_binding(binding: dict[str, Any]) -> NativeBindingIR:
     steps_value = binding.get("steps")
     steps = None
     if type(steps_value) is list:
-        steps = tuple(EdgeStepIR(step["edge"], step["direction"]) for step in steps_value)
+        steps = tuple(
+            EdgeStepIR(
+                step["edge"],
+                step["direction"],
+                step["result_node_type"],
+                step["valued"],
+            )
+            for step in steps_value
+        )
     closed_value = binding.get("closed_values")
     closed_values = tuple(closed_value) if type(closed_value) is list else None
     selected_value = binding.get("values")

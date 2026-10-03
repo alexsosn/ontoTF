@@ -142,7 +142,12 @@ def main() -> int:
             "component_id": "fixture-tf",
             "node_type": "clause",
             "execution_shape": "edge-path",
-            "steps": [{"edge": "mother", "direction": "outgoing"}],
+            "steps": [{
+                "edge": "mother",
+                "direction": "outgoing",
+                "result_node_type": "clause",
+                "valued": False,
+            }],
         },
     }
 
@@ -188,7 +193,11 @@ def main() -> int:
                     for field in membership_forbidden
                 )
             ),
-            "edge_path_has_closed_shape_rule": False,
+            "edge_path_has_closed_shape_rule": (
+                not is_valid(validator, examples["edge_path_shape_only"])
+                and not is_valid(validator, examples["edge_path_steps_only"])
+                and is_valid(validator, examples["edge_path_typed_start"])
+            ),
             "runtime_execution_shapes": runtime_shapes,
             "tfont_declares_text_fabric_runtime_dependency": (
                 '"text-fabric' in pyproject or "'text-fabric" in pyproject
@@ -236,8 +245,9 @@ def main() -> int:
             "membership_requires_source_contract_amendment": False,
             "membership_production_runtime_available": True,
             "edge_traversal_mechanics_available": True,
-            "edge_path_requires_source_contract_amendment": True,
-            "edge_path_start_selector_is_currently_normatively_undefined": True,
+            "edge_path_requires_source_contract_amendment": False,
+            "edge_path_start_selector_is_currently_normatively_undefined": False,
+            "edge_path_production_runtime_available": True,
             "extent_interpretation_should_not_be_direct_execution_authority": True,
             "technical_anchor_must_not_imply_textual_extent": True,
             "no_slot_must_not_fabricate_slot_membership": True,
@@ -257,8 +267,8 @@ def main() -> int:
     }
     if set(execution_shapes) != expected_shapes:
         raise SystemExit("native execution-shape vocabulary drifted")
-    if runtime_shapes != ["membership", "value-predicate", "value-set-predicate"]:
-        raise SystemExit("membership runtime execution support drifted")
+    if runtime_shapes != ["edge-path", "membership", "value-predicate", "value-set-predicate"]:
+        raise SystemExit("structural runtime execution support drifted")
     if result["current_contract"]["schema_acceptance"]["membership_shape_only"]:
         raise SystemExit("shape-only membership must fail the closed source contract")
     if not result["current_contract"]["schema_acceptance"]["membership_typed"]:
@@ -270,8 +280,14 @@ def main() -> int:
         raise SystemExit("membership source contract accepts a forbidden field")
     if not result["current_contract"]["membership_has_closed_shape_rule"]:
         raise SystemExit("membership closed-shape reconciliation failed")
-    if not result["current_contract"]["schema_acceptance"]["edge_path_shape_only"]:
-        raise SystemExit("edge-path source contract is already closed; research premise drifted")
+    if result["current_contract"]["schema_acceptance"]["edge_path_shape_only"]:
+        raise SystemExit("shape-only edge-path must fail the closed I-023 source contract")
+    if result["current_contract"]["schema_acceptance"]["edge_path_steps_only"]:
+        raise SystemExit("steps-only edge-path must fail the closed I-023 source contract")
+    if not result["current_contract"]["schema_acceptance"]["edge_path_typed_start"]:
+        raise SystemExit("typed unvalued edge-path must satisfy the closed I-023 source contract")
+    if not result["current_contract"]["edge_path_has_closed_shape_rule"]:
+        raise SystemExit("edge-path closed-shape reconciliation failed")
     if result["current_contract"]["tfont_declares_text_fabric_runtime_dependency"]:
         raise SystemExit("TFont runtime dependency boundary drifted")
     if production_shapes["execution_shapes"] != [

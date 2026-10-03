@@ -255,3 +255,29 @@ Implementation acceptance must include:
 - unchanged existing production mapping fingerprints;
 - exact/approximate/reference/conjunction reuse;
 - no `oslots`, autoload, network, or Text-Fabric package dependency.
+
+
+## Post-implementation current state
+
+I-023 productionization supersedes only the historical **current-state gap**,
+not the research reasoning that identified it.
+
+The current implementation now has:
+
+- a closed four-field unvalued step contract
+  (`edge + direction + result_node_type + valued=false`);
+- closed `edge-path` bindings with `node_type` as start domain;
+- matching reviewed start/result node-type plus ordered path dependency
+  authority;
+- compiled/reconstructed typed `EdgeStepIR`;
+- already-loaded full-path API preflight with explicit `doValues is False`;
+- typed outgoing/incoming traversal with polymorphic-neighbor filtering,
+  stable first-discovery ordering and valid empty post-step results;
+- shape-aware conjunction result domains using the final typed step;
+- shared exact/approximate/reference execution;
+- no shipped production structural mappings and no Text-Fabric runtime
+  dependency.
+
+The old shape-only, steps-only, two-field-step, top-level one-step alias,
+mixed feature/interpretation, and `valued=true` source forms are now rejected.
+Lossless valued-edge execution remains owned by I-024 #249.

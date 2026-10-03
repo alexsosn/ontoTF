@@ -278,3 +278,16 @@ before execution, while a selector that was non-empty during prerequisite
 evaluation but becomes empty at execution is treated as runtime drift and
 fails closed as `invalid_result_nodes`.
 
+
+
+## I-023 supersession note
+
+The I-022 historical edge-path gap is now closed by I-023 #244. Current
+production state has a closed typed unvalued edge-path source contract and
+loaded runtime execution. Shape-only and old two-field path forms are invalid;
+typed steps preserve result domains and explicit `valued=false`.
+Lossless valued-edge execution remains deferred to I-024 #249.
+
+This note supersedes only I-022's old current-state statements that edge-path
+was source-under-specified/runtime-unsupported; the original research record
+and rationale are retained.

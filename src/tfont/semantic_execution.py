@@ -11,7 +11,7 @@ from .runtime_prerequisites import (
     RuntimeEvaluationReport,
     evaluate_runtime_prerequisites,
 )
-from .semantic_ir import BundleVariantIR, BundleVariantKey, CompiledSemanticIR, NativeBindingIR
+from .semantic_ir import BundleVariantIR, BundleVariantKey, CompiledSemanticIR, EdgeStepIR, NativeBindingIR
 from .semantic_resolver import (
     ApproximateAuthorityResolveRequest,
     ApproximateAuthorityResolutionResult,
@@ -579,6 +579,287 @@ def _execute_membership(
     return nodes
 
 
+def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
+    binding = plan.native_execution_binding
+    steps_valid = (
+        type(binding) is NativeBindingIR
+        and type(binding.steps) is tuple
+        and bool(binding.steps)
+    )
+    if steps_valid:
+        for step in binding.steps or ():
+            if (
+                type(step) is not EdgeStepIR
+                or not _nonempty_string(step.edge)
+                or type(step.direction) is not str
+                or step.direction not in {"outgoing", "incoming"}
+                or not _nonempty_string(step.result_node_type)
+                or step.valued is not False
+            ):
+                steps_valid = False
+                break
+
+    valid = (
+        type(binding) is NativeBindingIR
+        and _nonempty_string(binding.component_id)
+        and _nonempty_string(binding.node_type)
+        and binding.execution_shape == "edge-path"
+        and steps_valid
+        and binding.feature is None
+        and binding.value_present is False
+        and binding.value is None
+        and binding.closed_values is None
+        and binding.values is None
+        and binding.edge is None
+        and binding.direction is None
+        and binding.interpretation is None
+    )
+    if not valid:
+        _fail(
+            "unsupported_native_binding",
+            "edge-path execution requires a typed non-empty unvalued step sequence",
+            corpus_id=plan.corpus_id,
+            component_id=getattr(binding, "component_id", None),
+        )
+    return binding
+
+
+def _loaded_edge_path_api(
+    api: Any,
+    binding: NativeBindingIR,
+    *,
+    corpus_id: str,
+) -> tuple[Any, Any, tuple[Any, ...]]:
+    selector, lookup = _loaded_membership_api(
+        api,
+        binding,
+        corpus_id=corpus_id,
+    )
+
+    try:
+        loaded_value = api.Eall()
+        if isinstance(loaded_value, (str, bytes, bytearray, Mapping)):
+            _fail(
+                "loaded_api_unavailable",
+                "loaded edge inventory is malformed",
+                corpus_id=corpus_id,
+                component_id=binding.component_id,
+            )
+        loaded = tuple(loaded_value)
+    except ExactExecutionError:
+        raise
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "loaded edge inventory is unavailable",
+                corpus_id=corpus_id,
+                component_id=binding.component_id,
+            )
+        ) from error
+
+    if any(type(name) is not str or not name for name in loaded):
+        _fail(
+            "loaded_api_unavailable",
+            "loaded edge inventory is malformed",
+            corpus_id=corpus_id,
+            component_id=binding.component_id,
+        )
+    loaded_set = set(loaded)
+
+    methods: list[Any] = []
+    for step in binding.steps or ():
+        if step.edge not in loaded_set:
+            _fail(
+                "loaded_api_unavailable",
+                "reviewed edge path references an edge that is not loaded",
+                corpus_id=corpus_id,
+                component_id=binding.component_id,
+            )
+        try:
+            edge_api = getattr(api.E, step.edge)
+            method = getattr(
+                edge_api,
+                "f" if step.direction == "outgoing" else "t",
+            )
+            valued = edge_api.doValues
+        except Exception as error:
+            raise ExactExecutionError(
+                ExactExecutionProblem(
+                    "loaded_api_unavailable",
+                    "loaded edge API is unavailable",
+                    corpus_id=corpus_id,
+                    component_id=binding.component_id,
+                )
+            ) from error
+        if not callable(method):
+            _fail(
+                "loaded_api_unavailable",
+                "loaded edge traversal method is unavailable",
+                corpus_id=corpus_id,
+                component_id=binding.component_id,
+            )
+        if type(valued) is not bool or valued is not False:
+            _fail(
+                "loaded_api_unavailable",
+                "I-023 executes only explicitly unvalued loaded edges",
+                corpus_id=corpus_id,
+                component_id=binding.component_id,
+            )
+        methods.append(method)
+
+    return selector, lookup, tuple(methods)
+
+
+def _loaded_node_type(
+    lookup: Any,
+    node: int,
+    *,
+    corpus_id: str,
+    component_id: str,
+) -> str:
+    try:
+        observed_type = lookup(node)
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "loaded node-type lookup failed",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        ) from error
+    if type(observed_type) is not str or not observed_type:
+        _fail(
+            "loaded_api_unavailable",
+            "loaded node-type lookup returned a malformed value",
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+    return observed_type
+
+
+def _execute_edge_path(
+    plan: Any,
+    component: LoadedComponentContext,
+) -> tuple[int, ...]:
+    binding = _validate_edge_path_binding(plan)
+    selector, lookup, methods = _loaded_edge_path_api(
+        component.api,
+        binding,
+        corpus_id=plan.corpus_id,
+    )
+
+    try:
+        raw_start = selector(binding.node_type)
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "loaded edge-path start selector failed",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+        ) from error
+
+    frontier = _normalize_result_nodes(
+        raw_start,
+        corpus_id=plan.corpus_id,
+        component_id=binding.component_id or "",
+    )
+    if not frontier:
+        _fail(
+            "invalid_result_nodes",
+            "edge-path start selector became empty after prerequisite authorization",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+
+    for node in frontier:
+        observed_type = _loaded_node_type(
+            lookup,
+            node,
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id or "",
+        )
+        if observed_type != binding.node_type:
+            _fail(
+                "invalid_result_nodes",
+                "edge-path start selector returned a node outside the reviewed start type",
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id,
+            )
+
+    for step, method in zip(binding.steps or (), methods):
+        if not frontier:
+            break
+        selected: list[int] = []
+        selected_seen: set[int] = set()
+        for source_node in frontier:
+            try:
+                raw_nodes = method(source_node)
+            except Exception as error:
+                raise ExactExecutionError(
+                    ExactExecutionProblem(
+                        "loaded_api_unavailable",
+                        "loaded edge traversal failed",
+                        corpus_id=plan.corpus_id,
+                        component_id=binding.component_id,
+                    )
+                ) from error
+            nodes = _normalize_result_nodes(
+                raw_nodes,
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id or "",
+            )
+            for node in nodes:
+                observed_type = _loaded_node_type(
+                    lookup,
+                    node,
+                    corpus_id=plan.corpus_id,
+                    component_id=binding.component_id or "",
+                )
+                if observed_type != step.result_node_type:
+                    continue
+                if node in selected_seen:
+                    continue
+                selected_seen.add(node)
+                selected.append(node)
+        frontier = tuple(selected)
+
+    return frontier
+
+
+def _execution_result_domain(plan: Any) -> tuple[str, str]:
+    binding = plan.native_execution_binding
+    if type(binding) is not NativeBindingIR:
+        _fail(
+            "unsupported_native_binding",
+            "execution plan has an invalid native binding",
+            corpus_id=plan.corpus_id,
+        )
+    if binding.execution_shape == "value-predicate":
+        binding = _validate_value_predicate(plan)
+        return binding.component_id or "", binding.node_type or ""
+    if binding.execution_shape == "value-set-predicate":
+        binding = _validate_value_set_predicate(plan)
+        return binding.component_id or "", binding.node_type or ""
+    if binding.execution_shape == "membership":
+        binding = _validate_membership_binding(plan)
+        return binding.component_id or "", binding.node_type or ""
+    if binding.execution_shape == "edge-path":
+        binding = _validate_edge_path_binding(plan)
+        final_step = (binding.steps or ())[-1]
+        return binding.component_id or "", final_step.result_node_type or ""
+    _fail(
+        "unsupported_native_binding",
+        "execution shape has no reviewed result-node domain",
+        corpus_id=plan.corpus_id,
+        component_id=binding.component_id,
+    )
+    raise AssertionError("unreachable")
+
+
 def _loaded_feature_api(
     api: Any,
     binding: NativeBindingIR,
@@ -854,6 +1135,8 @@ def execute_exact_semantic(
             binding = _validate_value_set_predicate(plan)
         elif binding.execution_shape == "membership":
             binding = _validate_membership_binding(plan)
+        elif binding.execution_shape == "edge-path":
+            binding = _validate_edge_path_binding(plan)
         else:
             _fail(
                 "unsupported_native_binding",
@@ -874,8 +1157,10 @@ def execute_exact_semantic(
             nodes = _execute_value_predicate(plan, component)
         elif binding.execution_shape == "value-set-predicate":
             nodes = _execute_value_set_predicate(plan, component)
-        else:
+        elif binding.execution_shape == "membership":
             nodes = _execute_membership(plan, component)
+        else:
+            nodes = _execute_edge_path(plan, component)
         executions.append(
             ExactCorpusExecution(
                 corpus_id=plan.corpus_id,
@@ -950,6 +1235,8 @@ def _execute_approximate_semantic_impl(
             binding = _validate_value_set_predicate(plan)
         elif binding.execution_shape == "membership":
             binding = _validate_membership_binding(plan)
+        elif binding.execution_shape == "edge-path":
+            binding = _validate_edge_path_binding(plan)
         else:
             _fail(
                 "unsupported_native_binding",
@@ -970,8 +1257,10 @@ def _execute_approximate_semantic_impl(
             nodes = _execute_value_predicate(plan, component)
         elif binding.execution_shape == "value-set-predicate":
             nodes = _execute_value_set_predicate(plan, component)
-        else:
+        elif binding.execution_shape == "membership":
             nodes = _execute_membership(plan, component)
+        else:
+            nodes = _execute_edge_path(plan, component)
         executions.append(
             ApproximateCorpusExecution(
                 corpus_id=plan.corpus_id,
@@ -1050,6 +1339,8 @@ def _execute_exact_plan_in_context(
         binding = _validate_value_set_predicate(plan)
     elif binding.execution_shape == "membership":
         binding = _validate_membership_binding(plan)
+    elif binding.execution_shape == "edge-path":
+        binding = _validate_edge_path_binding(plan)
     else:
         _fail(
             "unsupported_native_binding",
@@ -1070,7 +1361,9 @@ def _execute_exact_plan_in_context(
         return _execute_value_predicate(plan, component)
     if binding.execution_shape == "value-set-predicate":
         return _execute_value_set_predicate(plan, component)
-    return _execute_membership(plan, component)
+    if binding.execution_shape == "membership":
+        return _execute_membership(plan, component)
+    return _execute_edge_path(plan, component)
 
 
 def _validate_conjunction_node_domains(
@@ -1081,20 +1374,8 @@ def _validate_conjunction_node_domains(
     }
     for constituent in resolution.resolutions:
         for plan in constituent.plans:
-            binding = plan.native_execution_binding
-            if (
-                type(binding) is not NativeBindingIR
-                or not _nonempty_string(binding.component_id)
-                or not _nonempty_string(binding.node_type)
-            ):
-                _fail(
-                    "unsupported_native_binding",
-                    "conjunction plan has no explicit component/node-type domain",
-                    corpus_id=plan.corpus_id,
-                    component_id=getattr(binding, "component_id", None),
-                )
             domains.setdefault(plan.corpus_id, set()).add(
-                (binding.component_id, binding.node_type)
+                _execution_result_domain(plan)
             )
 
     for corpus_id in resolution.request.corpora:
@@ -1339,6 +1620,8 @@ def _execute_reference_plan(
         binding = _validate_value_set_predicate(plan)
     elif binding.execution_shape == "membership":
         binding = _validate_membership_binding(plan)
+    elif binding.execution_shape == "edge-path":
+        binding = _validate_edge_path_binding(plan)
     else:
         _fail(
             "unsupported_native_binding",
@@ -1359,7 +1642,9 @@ def _execute_reference_plan(
         return _execute_value_predicate(plan, component)
     if binding.execution_shape == "value-set-predicate":
         return _execute_value_set_predicate(plan, component)
-    return _execute_membership(plan, component)
+    if binding.execution_shape == "membership":
+        return _execute_membership(plan, component)
+    return _execute_edge_path(plan, component)
 
 
 def execute_exact_authority(

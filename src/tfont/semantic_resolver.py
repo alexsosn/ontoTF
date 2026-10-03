@@ -754,7 +754,7 @@ def _native_binding_projection(binding: NativeBindingIR) -> dict[str, Any]:
     if binding.steps is not None:
         if type(binding.steps) is not tuple:
             _fail("invalid_compiled_ir", "native binding steps must be an exact tuple")
-        steps: list[dict[str, str]] = []
+        steps: list[dict[str, Any]] = []
         for step in binding.steps:
             if type(step) is not EdgeStepIR:
                 _fail("invalid_compiled_ir", "native binding contains an invalid edge step")
@@ -762,11 +762,43 @@ def _native_binding_projection(binding: NativeBindingIR) -> dict[str, Any]:
                 type(step.edge) is not str
                 or not step.edge
                 or type(step.direction) is not str
-                or not step.direction
+                or step.direction not in {"outgoing", "incoming"}
+                or type(step.result_node_type) is not str
+                or not step.result_node_type
+                or step.valued is not False
             ):
-                _fail("invalid_compiled_ir", "native binding edge step fields must be non-empty strings")
-            steps.append({"edge": step.edge, "direction": step.direction})
+                _fail(
+                    "invalid_compiled_ir",
+                    "native binding edge step must carry edge, direction, result_node_type, and valued=false",
+                )
+            steps.append(
+                {
+                    "edge": step.edge,
+                    "direction": step.direction,
+                    "result_node_type": step.result_node_type,
+                    "valued": False,
+                }
+            )
         result["steps"] = steps
+    if binding.execution_shape == "edge-path":
+        valid = (
+            type(binding.component_id) is str
+            and bool(binding.component_id)
+            and type(binding.node_type) is str
+            and bool(binding.node_type)
+            and binding.feature is None
+            and binding.value_present is False
+            and binding.value is None
+            and binding.closed_values is None
+            and binding.values is None
+            and binding.edge is None
+            and binding.direction is None
+            and type(binding.steps) is tuple
+            and bool(binding.steps)
+            and binding.interpretation is None
+        )
+        if not valid:
+            _fail("invalid_compiled_ir", "edge-path binding has an invalid mixed shape")
     if binding.execution_shape == "value-set-predicate":
         valid = (
             type(binding.component_id) is str

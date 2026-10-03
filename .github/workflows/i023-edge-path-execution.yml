@@ -1,0 +1,75 @@
+name: I-023 edge-path execution
+
+on:
+  pull_request:
+    paths:
+      - "src/tfont/schemas/mapping.schema.json"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/semantic_validation.py"
+      - "src/tfont/semantic_resolver.py"
+      - "src/tfont/semantic_execution.py"
+      - "tests/i023/**"
+      - "scripts/research/i023_edge_path_execution_reconciliation.py"
+      - "docs/research/data/generated/i023/edge-path-reconciliation.json"
+      - "docs/research/I-023-edge-path-execution-reconciliation.md"
+      - ".github/workflows/i023-edge-path-execution.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i023:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - name: Run I-023 contract
+        run: python -m unittest discover -s tests/i023 -t . -p 'test*.py'
+      - name: Preserve compiler/resolver/execution controls
+        run: |
+          python -m unittest discover -s tests/i005 -t . -p 'test*.py'
+          python -m unittest discover -s tests/i006 -t . -p 'test*.py'
+          python -m unittest discover -s tests/i008 -t . -p 'test*.py'
+          python -m unittest discover -s tests/i015 -t . -p 'test*.py'
+      - name: Preserve approximate/reference/membership controls
+        run: |
+          python -m unittest discover -s tests/i020 -t . -p 'test*.py'
+          python -m unittest discover -s tests/i021 -t . -p 'test*.py'
+          python -m unittest discover -s tests/i022 -t . -p 'test*.py'
+      - name: Reproduce I-020 fingerprint anchors
+        run: |
+          python scripts/research/i020_runtime_reconciliation.py > /tmp/i020-runtime.json
+          cmp /tmp/i020-runtime.json docs/research/data/generated/i020/runtime-reconciliation.json
+      - name: Reproduce I-023 current-state evidence
+        run: |
+          python -m pip install "text-fabric @ git+https://github.com/annotation/text-fabric.git@0c45c386916cb52be84098796ec27ce97e5bf9fc"
+          python scripts/research/i023_edge_path_execution_reconciliation.py > /tmp/i023-edge-path.json
+          cmp /tmp/i023-edge-path.json docs/research/data/generated/i023/edge-path-reconciliation.json
+      - name: Build isolated wheel and verify dependency boundary
+        run: |
+          python -m pip install build
+          python -m build --wheel --outdir dist
+          python - <<'PY'
+          import pathlib
+          from zipfile import ZipFile
+
+          wheel = next(pathlib.Path("dist").glob("tfont-*.whl"))
+          with ZipFile(wheel) as archive:
+              metadata_name = next(
+                  name for name in archive.namelist()
+                  if name.endswith(".dist-info/METADATA")
+              )
+              metadata = archive.read(metadata_name).decode("utf-8").lower()
+          if "requires-dist: text-fabric" in metadata:
+              raise SystemExit("I-023 must not add Text-Fabric as a runtime dependency")
+          PY
