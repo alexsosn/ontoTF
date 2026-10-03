@@ -71,10 +71,12 @@ therefore cannot use None as the only unvalued marker and cannot collapse an
 empty string to absence. Evidence needs an explicit value_present flag beside
 the native value.
 
-For I-024, value_type=str accepts exact Python str including the empty string.
-value_type=int accepts exact Python int and rejects bool. None from an
-explicitly valued TF edge is preserved as value_present=false and value=None.
-Any other returned value shape or type fails closed.
+For I-024, `value_type=str` accepts exact Python `str`, including the
+empty string, and rejects `None`. `value_type=int` accepts exact Python
+`int`, rejects `bool`, and additionally accepts `None` only for the
+pinned TF empty-integer encoding; that case is preserved as
+`value_present=false, value=None`. Any other returned value shape or type
+fails closed.
 
 ## Source and IR contract
 
@@ -253,7 +255,8 @@ Real-data controls must cover all three TLHdig value roles plus BHSA omap as a
 technical negative control. Production mapping digests and dependency-contract
 v1 remain frozen. Any edge-value filter field is rejected in I-024.
 
-Tests must cover None, empty string, integer/bool distinction, incoming valued
+Tests must cover integer `None`, rejection of string `None`, empty string,
+integer/bool distinction, incoming valued
 traversal, fan-in/fan-out, mixed paths, empty post-traversal frontiers,
 malformed pair shapes including list/tuple-subclass impostors, duplicate raw
 neighbors/pairs, metadata/type drift,
