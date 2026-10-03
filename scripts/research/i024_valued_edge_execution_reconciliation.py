@@ -282,6 +282,8 @@ def main() -> int:
             "evidence_records_all_steps_when_any_step_is_valued": True,
             "evidence_records_native_edge_orientation": True,
             "evidence_records_value_presence_separately_from_value": True,
+            "evidence_excludes_off_domain_neighbors": True,
+            "runtime_validates_value_before_domain_filter": True,
             "evidence_has_deterministic_fingerprint": True,
             "evidence_binds_execution_plan_fingerprint": True,
             "single_result_evidence_field": "edge_path_evidence",
