@@ -283,6 +283,7 @@ def main() -> int:
             "evidence_records_native_edge_orientation": True,
             "evidence_records_value_presence_separately_from_value": True,
             "evidence_has_deterministic_fingerprint": True,
+            "evidence_binds_execution_plan_fingerprint": True,
             "single_result_evidence_field": "edge_path_evidence",
             "conjunction_evidence_field": "constituent_edge_path_evidence",
             "outer_execution_contract_version_change": False,
