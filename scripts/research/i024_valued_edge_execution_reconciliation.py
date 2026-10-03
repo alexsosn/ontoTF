@@ -26,6 +26,7 @@ from tfont.semantic_execution import (
     IdentifierCorpusExecution,
     IdentityCorpusExecution,
 )
+from tfont.digests import DigestError, canonical_json_bytes
 from tfont.semantic_ir import EdgeStepIR
 
 
@@ -146,6 +147,12 @@ def main() -> int:
         )
     }
 
+    try:
+        canonical_json_bytes(2**53)
+        unsafe_integer_rejected = False
+    except DigestError as error:
+        unsafe_integer_rejected = error.problem.category == "integer_domain"
+
     result = {
         "pinned_sources": {
             "text_fabric": TF_REVISION,
@@ -181,6 +188,7 @@ def main() -> int:
             "string_empty_value_is_representable": (
                 'else ""' in parser_source and 'if valTf == ""' in parser_source
             ),
+            "tfont_jcs_rejects_unsafe_integer": unsafe_integer_rejected,
         },
         "tlhdig_real_edges": {
             "selected": {
@@ -280,6 +288,8 @@ def main() -> int:
             "none_is_allowed_only_for_declared_int_values": True,
             "empty_string_is_preserved_not_treated_as_absence": True,
             "bool_is_not_an_integer_edge_value": True,
+            "integer_values_must_fit_tfont_safe_jcs_domain": True,
+            "oversized_integer_values_fail_closed_without_string_coercion": True,
             "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": True,
             "evidence_records_all_steps_when_any_step_is_valued": True,
             "evidence_records_native_edge_orientation": True,
