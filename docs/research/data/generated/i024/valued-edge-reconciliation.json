@@ -88,6 +88,7 @@
     "bool_is_not_an_integer_edge_value": true,
     "conjunction_evidence_field": "constituent_edge_path_evidence",
     "conjunction_evidence_is_plan_aligned_with_none_placeholders": true,
+    "conjunction_evidence_stays_empty_when_all_constituents_unvalued": true,
     "dependency_contract_version_change": false,
     "empty_string_is_preserved_not_treated_as_absence": true,
     "evidence_binds_execution_plan_fingerprint": true,
