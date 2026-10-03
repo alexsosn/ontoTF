@@ -197,7 +197,10 @@ def main() -> int:
                     (row.split("=", 1)[1] for row in selected_header if row.startswith("@valueType=")),
                     None,
                 ),
-                "word_to_analysis": "word -> analysis" in selected_doc,
+                "word_to_analysis": (
+                    "word -> analysis" in selected_doc
+                    or "word -> an analysis" in selected_doc
+                ),
                 "selector_tokens_verbatim": (
                     "selector token" in selected_doc.lower()
                     and "verbatim" in selected_doc.lower()
