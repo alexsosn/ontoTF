@@ -313,6 +313,10 @@ def edge_path_evidence_fingerprint(evidence: EdgePathEvidence) -> str:
 
     start_nodes = [_require_evidence_node(node) for node in evidence.start_nodes]
     final_nodes = [_require_evidence_node(node) for node in evidence.final_nodes]
+    if len(set(start_nodes)) != len(start_nodes):
+        raise TypeError("edge-path evidence start nodes must be unique")
+    if len(set(final_nodes)) != len(final_nodes):
+        raise TypeError("edge-path evidence final nodes must be unique")
     layer_rows: list[dict[str, Any]] = []
     for expected_index, layer in enumerate(evidence.layers):
         if (
@@ -323,6 +327,7 @@ def edge_path_evidence_fingerprint(evidence: EdgePathEvidence) -> str:
         ):
             raise TypeError("edge-path evidence layers must be exact and step-aligned")
         observations: list[dict[str, Any]] = []
+        observed_pairs: set[tuple[int, int]] = set()
         for observation in layer.observations:
             if type(observation) is not EdgePathObservation:
                 raise TypeError("edge-path evidence observation has the wrong type")
@@ -330,6 +335,10 @@ def edge_path_evidence_fingerprint(evidence: EdgePathEvidence) -> str:
                 raise TypeError("edge-path evidence value_present must be an exact bool")
             source_node = _require_evidence_node(observation.source_node)
             target_node = _require_evidence_node(observation.target_node)
+            pair = (source_node, target_node)
+            if pair in observed_pairs:
+                raise TypeError("edge-path evidence contains a duplicate native edge pair")
+            observed_pairs.add(pair)
             value = observation.value
             if observation.value_present:
                 if type(value) not in {str, int}:
