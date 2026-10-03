@@ -97,6 +97,7 @@
     "evidence_fingerprint_projection_is_domain_separated": true,
     "evidence_has_deterministic_fingerprint": true,
     "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": true,
+    "evidence_node_ids_must_fit_tfont_safe_jcs_domain": true,
     "evidence_records_all_steps_when_any_step_is_valued": true,
     "evidence_records_native_edge_orientation": true,
     "evidence_records_value_presence_separately_from_value": true,
