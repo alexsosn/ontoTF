@@ -702,14 +702,29 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
     )
     if steps_valid:
         for step in binding.steps or ():
-            if (
-                type(step) is not EdgeStepIR
-                or not _nonempty_string(step.edge)
-                or type(step.direction) is not str
-                or step.direction not in {"outgoing", "incoming"}
-                or not _nonempty_string(step.result_node_type)
-                or step.valued is not False
-            ):
+            common_valid = (
+                type(step) is EdgeStepIR
+                and _nonempty_string(step.edge)
+                and type(step.direction) is str
+                and step.direction in {"outgoing", "incoming"}
+                and _nonempty_string(step.result_node_type)
+                and type(step.valued) is bool
+            )
+            if step.valued is True:
+                value_contract_valid = (
+                    type(step.value_type) is str
+                    and step.value_type in {"str", "int"}
+                    and type(step.value_role) is str
+                    and step.value_role
+                    in {"semantic-qualifier", "source-evidence", "technical"}
+                )
+            else:
+                value_contract_valid = (
+                    step.valued is False
+                    and step.value_type is None
+                    and step.value_role is None
+                )
+            if not common_valid or not value_contract_valid:
                 steps_valid = False
                 break
 
@@ -731,7 +746,7 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
     if not valid:
         _fail(
             "unsupported_native_binding",
-            "edge-path execution requires a typed non-empty unvalued step sequence",
+            "edge-path execution requires a typed non-empty step sequence with a closed valuedness contract",
             corpus_id=plan.corpus_id,
             component_id=getattr(binding, "component_id", None),
         )
@@ -813,13 +828,36 @@ def _loaded_edge_path_api(
                 corpus_id=corpus_id,
                 component_id=binding.component_id,
             )
-        if type(valued) is not bool or valued is not False:
+        if type(valued) is not bool or valued is not step.valued:
             _fail(
                 "loaded_api_unavailable",
-                "I-023 executes only explicitly unvalued loaded edges",
+                "loaded edge valuedness disagrees with the reviewed path step",
                 corpus_id=corpus_id,
                 component_id=binding.component_id,
             )
+        if step.valued:
+            try:
+                metadata = edge_api.meta
+            except Exception as error:
+                raise ExactExecutionError(
+                    ExactExecutionProblem(
+                        "loaded_api_unavailable",
+                        "loaded valued edge metadata is unavailable",
+                        corpus_id=corpus_id,
+                        component_id=binding.component_id,
+                    )
+                ) from error
+            if (
+                type(metadata) is not dict
+                or type(metadata.get("valueType")) is not str
+                or metadata.get("valueType") != step.value_type
+            ):
+                _fail(
+                    "loaded_api_unavailable",
+                    "loaded valued edge value type disagrees with the reviewed path step",
+                    corpus_id=corpus_id,
+                    component_id=binding.component_id,
+                )
         methods.append(method)
 
     return selector, lookup, tuple(methods)
@@ -853,16 +891,121 @@ def _loaded_node_type(
     return observed_type
 
 
+def _validate_runtime_evidence_node(
+    node: int,
+    *,
+    corpus_id: str,
+    component_id: str,
+) -> None:
+    if node < _SAFE_JCS_INT_MIN or node > _SAFE_JCS_INT_MAX:
+        _fail(
+            "invalid_result_nodes",
+            "valued edge-path evidence node ID is outside the safe JCS integer domain",
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+
+
+def _normalize_valued_edge_rows(
+    raw_rows: Any,
+    step: EdgeStepIR,
+    *,
+    corpus_id: str,
+    component_id: str,
+) -> tuple[tuple[int, bool, str | int | None], ...]:
+    try:
+        rows = tuple(raw_rows)
+    except Exception as error:
+        raise ExactExecutionError(
+            ExactExecutionProblem(
+                "loaded_api_unavailable",
+                "valued edge traversal returned a non-iterable result",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        ) from error
+
+    result: list[tuple[int, bool, str | int | None]] = []
+    seen: set[int] = set()
+    for row in rows:
+        if type(row) is not tuple or len(row) != 2:
+            _fail(
+                "loaded_api_unavailable",
+                "valued edge traversal must return exact (node, value) pairs",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        raw_node, value = row
+        normalized = _normalize_result_nodes(
+            (raw_node,),
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+        node = normalized[0]
+        if node in seen:
+            _fail(
+                "invalid_result_nodes",
+                "valued edge traversal returned duplicate neighbor node IDs",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        seen.add(node)
+        _validate_runtime_evidence_node(
+            node,
+            corpus_id=corpus_id,
+            component_id=component_id,
+        )
+
+        if step.value_type == "str":
+            if type(value) is not str:
+                _fail(
+                    "loaded_api_unavailable",
+                    "valued edge traversal returned a non-string value for reviewed str metadata",
+                    corpus_id=corpus_id,
+                    component_id=component_id,
+                )
+            value_present = True
+        elif step.value_type == "int":
+            if value is None:
+                value_present = False
+            elif type(value) is int:
+                if value < _SAFE_JCS_INT_MIN or value > _SAFE_JCS_INT_MAX:
+                    _fail(
+                        "loaded_api_unavailable",
+                        "valued edge integer is outside the safe JCS domain",
+                        corpus_id=corpus_id,
+                        component_id=component_id,
+                    )
+                value_present = True
+            else:
+                _fail(
+                    "loaded_api_unavailable",
+                    "valued edge traversal returned a non-integer value for reviewed int metadata",
+                    corpus_id=corpus_id,
+                    component_id=component_id,
+                )
+        else:
+            _fail(
+                "loaded_api_unavailable",
+                "valued edge step has no supported reviewed value type",
+                corpus_id=corpus_id,
+                component_id=component_id,
+            )
+        result.append((node, value_present, value))
+    return tuple(result)
+
+
 def _execute_edge_path(
     plan: Any,
     component: LoadedComponentContext,
-) -> tuple[int, ...]:
+) -> _NativePlanExecution:
     binding = _validate_edge_path_binding(plan)
     selector, lookup, methods = _loaded_edge_path_api(
         component.api,
         binding,
         corpus_id=plan.corpus_id,
     )
+    evidence_required = any(step.valued is True for step in binding.steps or ())
 
     try:
         raw_start = selector(binding.node_type)
@@ -889,6 +1032,14 @@ def _execute_edge_path(
             component_id=binding.component_id,
         )
 
+    if evidence_required:
+        for node in frontier:
+            _validate_runtime_evidence_node(
+                node,
+                corpus_id=plan.corpus_id,
+                component_id=binding.component_id or "",
+            )
+
     for node in frontier:
         observed_type = _loaded_node_type(
             lookup,
@@ -904,14 +1055,20 @@ def _execute_edge_path(
                 component_id=binding.component_id,
             )
 
-    for step, method in zip(binding.steps or (), methods):
+    start_nodes = frontier
+    layers: list[EdgePathEvidenceLayer] = []
+    for step_index, (step, method) in enumerate(zip(binding.steps or (), methods)):
         if not frontier:
-            break
+            if evidence_required:
+                layers.append(EdgePathEvidenceLayer(step_index, ()))
+            continue
+
         selected: list[int] = []
         selected_seen: set[int] = set()
-        for source_node in frontier:
+        observations: list[EdgePathObservation] = []
+        for current_node in frontier:
             try:
-                raw_nodes = method(source_node)
+                raw_result = method(current_node)
             except Exception as error:
                 raise ExactExecutionError(
                     ExactExecutionProblem(
@@ -921,12 +1078,30 @@ def _execute_edge_path(
                         component_id=binding.component_id,
                     )
                 ) from error
-            nodes = _normalize_result_nodes(
-                raw_nodes,
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id or "",
-            )
-            for node in nodes:
+
+            if step.valued:
+                rows = _normalize_valued_edge_rows(
+                    raw_result,
+                    step,
+                    corpus_id=plan.corpus_id,
+                    component_id=binding.component_id or "",
+                )
+            else:
+                nodes = _normalize_result_nodes(
+                    raw_result,
+                    corpus_id=plan.corpus_id,
+                    component_id=binding.component_id or "",
+                )
+                if evidence_required:
+                    for node in nodes:
+                        _validate_runtime_evidence_node(
+                            node,
+                            corpus_id=plan.corpus_id,
+                            component_id=binding.component_id or "",
+                        )
+                rows = tuple((node, False, None) for node in nodes)
+
+            for node, value_present, value in rows:
                 observed_type = _loaded_node_type(
                     lookup,
                     node,
@@ -935,14 +1110,85 @@ def _execute_edge_path(
                 )
                 if observed_type != step.result_node_type:
                     continue
+
+                if evidence_required:
+                    if step.direction == "outgoing":
+                        source_node, target_node = current_node, node
+                    else:
+                        source_node, target_node = node, current_node
+                    _validate_runtime_evidence_node(
+                        source_node,
+                        corpus_id=plan.corpus_id,
+                        component_id=binding.component_id or "",
+                    )
+                    _validate_runtime_evidence_node(
+                        target_node,
+                        corpus_id=plan.corpus_id,
+                        component_id=binding.component_id or "",
+                    )
+                    observations.append(
+                        EdgePathObservation(
+                            source_node=source_node,
+                            target_node=target_node,
+                            value_present=value_present,
+                            value=value,
+                        )
+                    )
+
                 if node in selected_seen:
                     continue
                 selected_seen.add(node)
                 selected.append(node)
+
         frontier = tuple(selected)
+        if evidence_required:
+            layers.append(
+                EdgePathEvidenceLayer(
+                    step_index=step_index,
+                    observations=tuple(observations),
+                )
+            )
 
-    return frontier
+    if not evidence_required:
+        return _NativePlanExecution(nodes=frontier)
 
+    if not _nonempty_string(getattr(plan, "plan_fingerprint", None)):
+        _fail(
+            "unsupported_native_binding",
+            "valued edge-path execution requires a fresh plan fingerprint",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+    if not _nonempty_string(getattr(plan, "native_execution_binding_identity", None)):
+        _fail(
+            "unsupported_native_binding",
+            "valued edge-path execution requires a native binding identity",
+            corpus_id=plan.corpus_id,
+            component_id=binding.component_id,
+        )
+
+    provisional = EdgePathEvidence(
+        evidence_contract=EDGE_PATH_EVIDENCE_CONTRACT,
+        plan_fingerprint=plan.plan_fingerprint,
+        native_execution_binding_identity=plan.native_execution_binding_identity,
+        start_nodes=start_nodes,
+        layers=tuple(layers),
+        final_nodes=frontier,
+        evidence_fingerprint="",
+    )
+    evidence = EdgePathEvidence(
+        evidence_contract=provisional.evidence_contract,
+        plan_fingerprint=provisional.plan_fingerprint,
+        native_execution_binding_identity=provisional.native_execution_binding_identity,
+        start_nodes=provisional.start_nodes,
+        layers=provisional.layers,
+        final_nodes=provisional.final_nodes,
+        evidence_fingerprint=edge_path_evidence_fingerprint(provisional),
+    )
+    return _NativePlanExecution(
+        nodes=frontier,
+        edge_path_evidence=evidence,
+    )
 
 def _execution_result_domain(plan: Any) -> tuple[str, str]:
     binding = plan.native_execution_binding
