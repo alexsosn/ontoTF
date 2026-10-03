@@ -7,9 +7,10 @@ Edge-value predicate follow-up: I-025 #253
 
 ## Status and scope
 
-Research only. This branch is stacked on the current I-023 implementation
-branch so the probe can inspect the typed unvalued edge-path contract. It does
-not change production schemas, IR, resolver or execution behavior.
+Research only. This branch is based directly on current main after the
+reviewed I-023 implementation merged, so the probe inspects the production
+typed unvalued edge-path contract. It does not change production schemas, IR,
+resolver or execution behavior.
 
 Pinned evidence is Text-Fabric revision 0c45c386916cb52be84098796ec27ce97e5bf9fc,
 TLHdig-TF revision 0261d2d46b3419a1f907e231a03f749d133cfb5e
