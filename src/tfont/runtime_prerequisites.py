@@ -33,6 +33,7 @@ _KIND_RULES = {
     "path-present": "tfont-runtime-path-present-v1",
     "native-value-present": "tfont-runtime-native-value-present-v1",
     "value-domain": "tfont-runtime-value-domain-v1",
+    "edge-value-domain": "tfont-runtime-edge-value-domain-v1",
     "extent-interpretation": "tfont-runtime-extent-interpretation-v1",
 }
 _DIRECTIONS = {"outgoing", "incoming"}
@@ -67,6 +68,14 @@ class RuntimeObservation(Protocol):
         node_type: str,
         feature: str,
     ) -> tuple[str, tuple[Any, ...]]: ...
+
+    def edge_values(
+        self,
+        component_id: str,
+        edge: str,
+        source_node_type: str,
+        target_node_type: str,
+    ) -> tuple[str, str | None, tuple[str | int, ...], int]: ...
 
     def extent(
         self,
@@ -188,7 +197,10 @@ def _validate_variant(variant: BundleVariantIR) -> None:
         or release_key.profile_version != key.profile_version
     ):
         raise RuntimeEvaluationError("variant release key does not match variant key")
-    if signature.dependency_contract_version != 1:
+    if (
+        type(signature.dependency_contract_version) is not int
+        or signature.dependency_contract_version not in {1, 2}
+    ):
         raise RuntimeEvaluationError("unsupported dependency contract version")
     if signature.ontology_bundle_digest != key.ontology_bundle_digest:
         raise RuntimeEvaluationError("variant ontology bundle identity is incoherent")
@@ -318,6 +330,59 @@ def _validate_assertion(record: dict[str, Any]) -> None:
         if assertion["domain_semantics"] not in {"observed", "closed-reviewed"}:
             raise RuntimeEvaluationError("value-domain semantics are invalid")
         return
+    if kind == "edge-value-domain":
+        _expect_exact_keys(
+            assertion,
+            {
+                "edge",
+                "source_node_type",
+                "target_node_type",
+                "value_type",
+                "value_role",
+                "values",
+                "domain_semantics",
+            },
+            kind,
+        )
+        _require_string(assertion["edge"], "edge")
+        _require_string(assertion["source_node_type"], "source_node_type")
+        _require_string(assertion["target_node_type"], "target_node_type")
+        value_type = assertion["value_type"]
+        if value_type not in {"str", "int"} or type(value_type) is not str:
+            raise RuntimeEvaluationError("edge value type is invalid")
+        if assertion["value_role"] != "semantic-qualifier":
+            raise RuntimeEvaluationError("edge value role is invalid")
+        if assertion["domain_semantics"] != "closed-reviewed":
+            raise RuntimeEvaluationError("edge value domain semantics are invalid")
+        values = assertion["values"]
+        if type(values) is not list or not values:
+            raise RuntimeEvaluationError(
+                "edge-value-domain values must be a non-empty array"
+            )
+        encoded: list[bytes] = []
+        for value in values:
+            if value_type == "str":
+                if type(value) is not str:
+                    raise RuntimeEvaluationError(
+                        "edge-value-domain string values have an invalid type"
+                    )
+            else:
+                if type(value) is not int:
+                    raise RuntimeEvaluationError(
+                        "edge-value-domain integer values have an invalid type"
+                    )
+            try:
+                encoded.append(canonical_json_bytes(value))
+            except Exception as error:
+                raise RuntimeEvaluationError(
+                    "edge-value-domain values are outside the canonical JSON domain"
+                ) from error
+        if len(set(encoded)) != len(encoded):
+            raise RuntimeEvaluationError(
+                "edge-value-domain values must be unique by JSON identity"
+            )
+        return
+
     if kind == "extent-interpretation":
         _expect_exact_keys(assertion, {"node_type", "interpretation"}, kind)
         _require_string(assertion["node_type"], "node_type")
@@ -368,10 +433,20 @@ def _dependency_records(
         kind = _require_string(record["kind"], "dependency kind")
         if kind not in _KIND_RULES:
             raise RuntimeEvaluationError("dependency kind is not recognized")
+        if (
+            variant.release_signature.dependency_contract_version == 1
+            and kind == "edge-value-domain"
+        ):
+            raise RuntimeEvaluationError(
+                "dependency contract v1 cannot carry edge-value-domain"
+            )
         _validate_assertion(record)
         requires_evidence = (
-            kind == "value-domain"
-            and record["assertion"]["domain_semantics"] == "closed-reviewed"
+            (
+                kind == "value-domain"
+                and record["assertion"]["domain_semantics"] == "closed-reviewed"
+            )
+            or kind == "edge-value-domain"
         )
         if "evidence" in record:
             _validate_evidence(
@@ -657,6 +732,82 @@ def _evaluate_dependency(
             {
                 **evidence,
                 "domain_semantics": assertion["domain_semantics"],
+            },
+        )
+
+    if kind == "edge-value-domain":
+        try:
+            observed = observation.edge_values(
+                component_id,
+                assertion["edge"],
+                assertion["source_node_type"],
+                assertion["target_node_type"],
+            )
+        except Exception:
+            return _unknown(dependency_id, kind)
+        if type(observed) is not tuple or len(observed) != 4:
+            return _unknown(dependency_id, kind)
+        state, declared_value_type, values, missing_count = observed
+        base_evidence = {
+            "kind": kind,
+            "component_id": component_id,
+            "edge": assertion["edge"],
+            "source_node_type": assertion["source_node_type"],
+            "target_node_type": assertion["target_node_type"],
+        }
+        if state == "absent":
+            return _known(
+                dependency_id,
+                kind,
+                "fail",
+                {**base_evidence, "state": "absent"},
+            )
+        if (
+            state != "complete"
+            or declared_value_type not in {"str", "int"}
+            or type(declared_value_type) is not str
+            or type(values) is not tuple
+            or type(missing_count) is not int
+            or missing_count < 0
+        ):
+            return _unknown(dependency_id, kind)
+        try:
+            observed_encoded = tuple(canonical_json_bytes(value) for value in values)
+        except Exception:
+            return _unknown(dependency_id, kind)
+        if len(set(observed_encoded)) != len(observed_encoded):
+            return _unknown(dependency_id, kind)
+        if declared_value_type == "str":
+            if any(type(value) is not str for value in values):
+                return _unknown(dependency_id, kind)
+        else:
+            if any(type(value) is not int for value in values):
+                return _unknown(dependency_id, kind)
+
+        allowed_values = assertion["values"]
+        try:
+            allowed = {canonical_json_bytes(value) for value in allowed_values}
+        except Exception:
+            return _unknown(dependency_id, kind)
+        observed_set = set(observed_encoded)
+        passed = (
+            declared_value_type == assertion["value_type"]
+            and observed_set.issubset(allowed)
+        )
+        return _known(
+            dependency_id,
+            kind,
+            "pass" if passed else "fail",
+            {
+                **base_evidence,
+                "complete": True,
+                "declared_value_type": declared_value_type,
+                "values": [
+                    {"type": declared_value_type, "value": value}
+                    for value in values
+                ],
+                "missing_count": missing_count,
+                "domain_semantics": "closed-reviewed",
             },
         )
 
