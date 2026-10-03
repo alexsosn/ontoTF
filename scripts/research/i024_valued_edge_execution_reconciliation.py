@@ -277,6 +277,7 @@ def main() -> int:
             "runtime_requires_declared_value_type_match": True,
             "runtime_requires_exact_two_tuple_valued_results": True,
             "missing_integer_value_none_is_preserved_not_coerced": True,
+            "none_is_allowed_only_for_declared_int_values": True,
             "empty_string_is_preserved_not_treated_as_absence": True,
             "bool_is_not_an_integer_edge_value": True,
             "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": True,
