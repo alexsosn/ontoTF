@@ -105,6 +105,7 @@
     "missing_integer_value_none_is_preserved_not_coerced": true,
     "native_binding_identity_algorithm_change": false,
     "nested_evidence_contract": "tfont-edge-path-evidence-v1",
+    "none_is_allowed_only_for_declared_int_values": true,
     "outer_execution_contract_version_change": false,
     "path_present_dependency_remains_edge_direction_only": true,
     "runtime_requires_declared_value_type_match": true,
