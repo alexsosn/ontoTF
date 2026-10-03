@@ -4,6 +4,10 @@ from collections.abc import Mapping
 from typing import Any
 
 
+_SAFE_JCS_INT_MAX = 2**53 - 1
+_SAFE_JCS_INT_MIN = -_SAFE_JCS_INT_MAX
+
+
 class LoadedTFObservation:
     """Narrow read-only adapter over already-loaded Text-Fabric-like APIs.
 
@@ -26,6 +30,10 @@ class LoadedTFObservation:
             component_id: dict(values)
             for component_id, values in (extent_interpretations or {}).items()
         }
+        self._edge_value_cache: dict[
+            tuple[str, str, str, str],
+            tuple[str, str | None, tuple[str | int, ...], int],
+        ] = {}
 
     def _component(self, component_id: str) -> tuple[str, Any] | None:
         value = self._components.get(component_id)
@@ -149,6 +157,128 @@ class LoadedTFObservation:
         except Exception:
             return ("unknown", ())
         return ("complete", values)
+
+    def edge_values(
+        self,
+        component_id: str,
+        edge: str,
+        source_node_type: str,
+        target_node_type: str,
+    ) -> tuple[str, str | None, tuple[str | int, ...], int]:
+        cache_key = (component_id, edge, source_node_type, target_node_type)
+        cached = self._edge_value_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        api = self._api(component_id)
+        if api is None:
+            result = (
+                ("absent", None, (), 0)
+                if component_id not in self._components
+                else ("unknown", None, (), 0)
+            )
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        loaded = self._loaded_names(api, "Eall")
+        if loaded is None or edge not in loaded:
+            result = ("unknown", None, (), 0)
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        try:
+            edge_api = getattr(api.E, edge)
+            do_values = edge_api.doValues
+            metadata = edge_api.meta
+            items = edge_api.items
+            otype = api.F.otype.v
+        except Exception:
+            result = ("unknown", None, (), 0)
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        if (
+            do_values is not True
+            or type(metadata) is not dict
+            or metadata.get("valueType") not in {"str", "int"}
+            or type(metadata.get("valueType")) is not str
+            or not callable(items)
+            or not callable(otype)
+        ):
+            result = ("unknown", None, (), 0)
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        value_type = metadata["valueType"]
+        try:
+            raw_items = items()
+            rows = tuple(raw_items)
+        except Exception:
+            result = ("unknown", None, (), 0)
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        present: set[str | int] = set()
+        missing_count = 0
+        try:
+            for source, targets in rows:
+                if type(source) is not int or source <= 0:
+                    raise ValueError("invalid edge source")
+                if not isinstance(targets, Mapping):
+                    raise ValueError("invalid valued edge target map")
+                source_type = otype(source)
+                if type(source_type) is not str or not source_type:
+                    raise ValueError("invalid source node type")
+                for target, value in targets.items():
+                    if type(target) is not int or target <= 0:
+                        raise ValueError("invalid edge target")
+                    if value_type == "str":
+                        if type(value) is not str:
+                            raise ValueError("invalid string edge value")
+                        value_present = True
+                    else:
+                        if value is None:
+                            value_present = False
+                        elif type(value) is int:
+                            if value < _SAFE_JCS_INT_MIN or value > _SAFE_JCS_INT_MAX:
+                                raise ValueError("unsafe integer edge value")
+                            value_present = True
+                        else:
+                            raise ValueError("invalid integer edge value")
+                    target_type = otype(target)
+                    if type(target_type) is not str or not target_type:
+                        raise ValueError("invalid target node type")
+                    if (
+                        source_type == source_node_type
+                        and target_type == target_node_type
+                    ):
+                        if value_present:
+                            present.add(value)
+                        else:
+                            missing_count += 1
+        except Exception:
+            result = ("unknown", None, (), 0)
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        try:
+            ordered = tuple(
+                sorted(
+                    present,
+                    key=lambda value: (
+                        0 if type(value) is int else 1,
+                        value,
+                    ),
+                )
+            )
+        except Exception:
+            result = ("unknown", None, (), 0)
+            self._edge_value_cache[cache_key] = result
+            return result
+
+        result = ("complete", value_type, ordered, missing_count)
+        self._edge_value_cache[cache_key] = result
+        return result
 
     def extent(self, component_id: str, node_type: str) -> tuple[str, str | None]:
         if component_id not in self._components:
