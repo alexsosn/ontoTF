@@ -1482,51 +1482,17 @@ def execute_exact_semantic(
                 "fresh resolver plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
-        binding = plan.native_execution_binding
-        if type(binding) is not NativeBindingIR:
-            _fail(
-                "unsupported_native_binding",
-                "fresh resolver plan has an invalid native binding",
-                corpus_id=plan.corpus_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            binding = _validate_value_predicate(plan)
-        elif binding.execution_shape == "value-set-predicate":
-            binding = _validate_value_set_predicate(plan)
-        elif binding.execution_shape == "membership":
-            binding = _validate_membership_binding(plan)
-        elif binding.execution_shape == "edge-path":
-            binding = _validate_edge_path_binding(plan)
-        else:
-            _fail(
-                "unsupported_native_binding",
-                "execution shape is not supported by the loaded runtime",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        components = _components(normalized_contexts[plan.corpus_id])
-        component = components.get(binding.component_id or "")
-        if component is None:
-            _fail(
-                "missing_execution_component",
-                "fresh resolver plan references a component outside the execution context",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            nodes = _execute_value_predicate(plan, component)
-        elif binding.execution_shape == "value-set-predicate":
-            nodes = _execute_value_set_predicate(plan, component)
-        elif binding.execution_shape == "membership":
-            nodes = _execute_membership(plan, component)
-        else:
-            nodes = _execute_edge_path(plan, component)
+        execution = _execute_exact_plan_in_context(
+            plan,
+            normalized_contexts[plan.corpus_id],
+        )
         executions.append(
             ExactCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=nodes,
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
 
@@ -1582,51 +1548,17 @@ def _execute_approximate_semantic_impl(
                 "fresh approximate resolver plan has no authorized runtime context",
                 corpus_id=plan.corpus_id,
             )
-        binding = plan.native_execution_binding
-        if type(binding) is not NativeBindingIR:
-            _fail(
-                "unsupported_native_binding",
-                "fresh approximate resolver plan has an invalid native binding",
-                corpus_id=plan.corpus_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            binding = _validate_value_predicate(plan)
-        elif binding.execution_shape == "value-set-predicate":
-            binding = _validate_value_set_predicate(plan)
-        elif binding.execution_shape == "membership":
-            binding = _validate_membership_binding(plan)
-        elif binding.execution_shape == "edge-path":
-            binding = _validate_edge_path_binding(plan)
-        else:
-            _fail(
-                "unsupported_native_binding",
-                "approximate execution shape is not supported by the loaded runtime",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        components = _components(normalized_contexts[plan.corpus_id])
-        component = components.get(binding.component_id or "")
-        if component is None:
-            _fail(
-                "missing_execution_component",
-                "fresh approximate resolver plan references a component outside the execution context",
-                corpus_id=plan.corpus_id,
-                component_id=binding.component_id,
-            )
-        if binding.execution_shape == "value-predicate":
-            nodes = _execute_value_predicate(plan, component)
-        elif binding.execution_shape == "value-set-predicate":
-            nodes = _execute_value_set_predicate(plan, component)
-        elif binding.execution_shape == "membership":
-            nodes = _execute_membership(plan, component)
-        else:
-            nodes = _execute_edge_path(plan, component)
+        execution = _execute_exact_plan_in_context(
+            plan,
+            normalized_contexts[plan.corpus_id],
+        )
         executions.append(
             ApproximateCorpusExecution(
                 corpus_id=plan.corpus_id,
-                nodes=nodes,
+                nodes=execution.nodes,
                 plan=plan,
                 runtime_report=reports[plan.corpus_id],
+                edge_path_evidence=execution.edge_path_evidence,
             )
         )
 
@@ -1658,6 +1590,7 @@ class ApproximateConjunctionCorpusExecution:
     nodes: tuple[int, ...]
     plans: tuple[ApproximateNativePlan, ...]
     runtime_report: RuntimeEvaluationReport
+    constituent_edge_path_evidence: tuple[EdgePathEvidence | None, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -1673,6 +1606,7 @@ class ExactConjunctionCorpusExecution:
     nodes: tuple[int, ...]
     plans: tuple[ExactNativePlan, ...]
     runtime_report: RuntimeEvaluationReport
+    constituent_edge_path_evidence: tuple[EdgePathEvidence | None, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -1683,9 +1617,9 @@ class ExactConjunctionExecutionResult:
 
 
 def _execute_exact_plan_in_context(
-    plan: ExactNativePlan,
+    plan: Any,
     context: LoadedCorpusContext,
-) -> tuple[int, ...]:
+) -> _NativePlanExecution:
     binding = plan.native_execution_binding
     if type(binding) is not NativeBindingIR:
         _fail(
@@ -1704,7 +1638,7 @@ def _execute_exact_plan_in_context(
     else:
         _fail(
             "unsupported_native_binding",
-            "exact conjunction execution shape is not supported by the loaded runtime",
+            "execution shape is not supported by the loaded runtime",
             corpus_id=plan.corpus_id,
             component_id=binding.component_id,
         )
@@ -1718,13 +1652,12 @@ def _execute_exact_plan_in_context(
             component_id=binding.component_id,
         )
     if binding.execution_shape == "value-predicate":
-        return _execute_value_predicate(plan, component)
+        return _NativePlanExecution(_execute_value_predicate(plan, component))
     if binding.execution_shape == "value-set-predicate":
-        return _execute_value_set_predicate(plan, component)
+        return _NativePlanExecution(_execute_value_set_predicate(plan, component))
     if binding.execution_shape == "membership":
-        return _execute_membership(plan, component)
+        return _NativePlanExecution(_execute_membership(plan, component))
     return _execute_edge_path(plan, component)
-
 
 def _validate_conjunction_node_domains(
     resolution: SemanticConjunctionResolutionResult,
