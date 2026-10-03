@@ -196,13 +196,15 @@ contract, I-024 need not change outer exact/approximate/reference execution
 contract strings. The plan gate must explicitly test positional/default
 compatibility of public dataclasses before accepting this.
 
-For conjunction, `constituent_edge_path_evidence` is a tuple with exactly
-the same length and order as `plans`. Each slot is either that constituent's
-complete evidence or `None` when the constituent has no valued path evidence.
-This preserves positional identity for mixed path/predicate/membership
-conjunctions. Each constituent keeps its own final-node set; the existing node
-intersection remains the conjunction result. Evidence is not flattened across
-semantic atoms.
+For conjunction, `constituent_edge_path_evidence` keeps the backward-compatible
+default `()` when **no** constituent has valued path evidence. If at least one
+constituent has valued evidence, the field becomes a tuple with exactly the
+same length and order as `plans`; each slot is either that constituent's
+complete evidence or `None`. This preserves positional identity for mixed
+path/predicate/membership conjunctions without changing legacy all-unvalued
+result values. Each constituent keeps its own final-node set; the existing
+node intersection remains the conjunction result. Evidence is not flattened
+across semantic atoms.
 
 ## Runtime trust boundary
 
@@ -258,5 +260,5 @@ neighbors/pairs, metadata/type drift,
 malformed values on off-domain neighbors, deterministic evidence fingerprints,
 the same binding/node trace under two distinct plan fingerprints,
 rejection of evidence replay under the wrong plan, conjunction evidence
-alignment including `None` placeholders for mixed constituent kinds, and
-forged IR/evidence attempts.
+alignment including legacy `()` when all constituents are unvalued and
+`None` placeholders when evidence is mixed, and forged IR/evidence attempts.
