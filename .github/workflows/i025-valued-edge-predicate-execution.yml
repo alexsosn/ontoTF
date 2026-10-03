@@ -1,0 +1,66 @@
+name: I-025 valued edge predicates
+
+on:
+  pull_request:
+    paths:
+      - "tests/i025/**"
+      - "src/tfont/schemas/mapping.schema.json"
+      - "src/tfont/schemas/profile.schema.json"
+      - "src/tfont/semantic_digest_v2.py"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/semantic_validation.py"
+      - "src/tfont/semantic_resolver.py"
+      - "src/tfont/runtime_prerequisites.py"
+      - "src/tfont/runtime_tf_observation.py"
+      - "src/tfont/semantic_execution.py"
+      - "scripts/research/i025_valued_edge_predicate_reconciliation.py"
+      - "docs/research/data/generated/i025/valued-edge-predicate-reconciliation.json"
+      - ".github/workflows/i025-valued-edge-predicate-execution.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i025:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - name: Check out exact head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package
+        run: python -m pip install -e .
+      - name: Run I-025 contract
+        run: python -m unittest discover -s tests/i025 -p 'test_*.py'
+      - name: Preserve I-023/I-024 edge-path controls
+        run: |
+          python -m unittest discover -s tests/i023 -p 'test_*.py'
+          python -m unittest discover -s tests/i024 -p 'test_*.py'
+      - name: Build isolated wheel and verify dependency boundary
+        run: |
+          python -m pip install build
+          python -m build --wheel --outdir /tmp/i025-dist
+          python - <<'PY'
+          import pathlib
+          import zipfile
+
+          wheels = list(pathlib.Path("/tmp/i025-dist").glob("*.whl"))
+          if len(wheels) != 1:
+              raise SystemExit(f"expected one wheel, got {wheels}")
+          with zipfile.ZipFile(wheels[0]) as wheel:
+              metadata_name = next(
+                  name for name in wheel.namelist() if name.endswith(".dist-info/METADATA")
+              )
+              metadata = wheel.read(metadata_name).decode("utf-8").lower()
+          if "requires-dist: text-fabric" in metadata:
+              raise SystemExit("Text-Fabric became a runtime dependency")
+          PY
