@@ -289,6 +289,7 @@ def main() -> int:
             "empty_string_is_preserved_not_treated_as_absence": True,
             "bool_is_not_an_integer_edge_value": True,
             "integer_values_must_fit_tfont_safe_jcs_domain": True,
+            "evidence_node_ids_must_fit_tfont_safe_jcs_domain": True,
             "oversized_integer_values_fail_closed_without_string_coercion": True,
             "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": True,
             "evidence_records_all_steps_when_any_step_is_valued": True,
