@@ -122,6 +122,9 @@
     "edge_value_domain_requires_evidence": true,
     "edge_value_domain_semantics": "closed-reviewed",
     "edge_value_domain_uses_native_orientation": true,
+    "edge_value_domain_value_roles": [
+      "semantic-qualifier"
+    ],
     "empty_string_is_matchable_when_reviewed": true,
     "evidence_contains_justifying_native_value": true,
     "execution_filter_order": [
