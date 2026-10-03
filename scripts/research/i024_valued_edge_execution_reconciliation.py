@@ -1,8 +1,8 @@
 """I-024 valued-edge execution reconciliation.
 
-Research-only probe. It records the current post-I-023 contract, pinned
-Text-Fabric mechanics, and real TLHdig/BHSA valued-edge semantics used to
-choose the smallest lossless production slice.
+Research plus post-implementation current-state guard. It records pinned
+Text-Fabric mechanics, real TLHdig/BHSA valued-edge semantics, and the
+production I-024 contract that implements the reviewed lossless slice.
 """
 
 from __future__ import annotations
@@ -322,14 +322,16 @@ def main() -> int:
         "direction",
         "result_node_type",
         "valued",
+        "value_type",
+        "value_role",
     ]:
-        raise SystemExit("I-023 EdgeStepIR contract drifted")
+        raise SystemExit("I-024 EdgeStepIR contract drifted")
     if not result["current_tfont_contract"]["unvalued_edge_path_is_schema_valid"]:
-        raise SystemExit("I-023 unvalued edge path is not available")
-    if result["current_tfont_contract"]["valued_candidate_is_schema_valid"]:
-        raise SystemExit("valued edge path unexpectedly became source-valid before I-024")
-    if result["current_tfont_contract"]["execution_results_have_edge_path_evidence"]:
-        raise SystemExit("edge-path evidence unexpectedly exists before I-024")
+        raise SystemExit("I-023 unvalued edge-path compatibility disappeared")
+    if not result["current_tfont_contract"]["valued_candidate_is_schema_valid"]:
+        raise SystemExit("I-024 valued edge path is not source-valid")
+    if not result["current_tfont_contract"]["execution_results_have_edge_path_evidence"]:
+        raise SystemExit("I-024 edge-path evidence fields are unavailable")
 
     mechanics = result["text_fabric_mechanics"]
     if not all(mechanics.values()):
