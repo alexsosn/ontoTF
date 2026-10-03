@@ -961,11 +961,6 @@ def _normalize_valued_edge_rows(
                 component_id=component_id,
             )
         seen.add(node)
-        _validate_runtime_evidence_node(
-            node,
-            corpus_id=corpus_id,
-            component_id=component_id,
-        )
 
         if step.value_type == "str":
             if type(value) is not str:
@@ -1103,13 +1098,6 @@ def _execute_edge_path(
                     corpus_id=plan.corpus_id,
                     component_id=binding.component_id or "",
                 )
-                if evidence_required:
-                    for node in nodes:
-                        _validate_runtime_evidence_node(
-                            node,
-                            corpus_id=plan.corpus_id,
-                            component_id=binding.component_id or "",
-                        )
                 rows = tuple((node, False, None) for node in nodes)
 
             for node, value_present, value in rows:
