@@ -140,6 +140,7 @@
     "mapping_schema_version_change": false,
     "match_none": false,
     "match_values_is_set_like": true,
+    "match_values_must_be_subset_of_reviewed_domain": true,
     "match_values_types": [
       "str",
       "int"
@@ -149,6 +150,7 @@
     "new_dependency_kind": "edge-value-domain",
     "new_edge_value_domains_require_dependency_v2": true,
     "observed_domain_alone_authorizes_predicate": false,
+    "one_domain_dependency_must_cover_the_whole_match_set": true,
     "predicate_field": "match_values",
     "predicate_form": "non-empty-finite-set-membership",
     "profile_release_fingerprint_algorithm_change": false,
