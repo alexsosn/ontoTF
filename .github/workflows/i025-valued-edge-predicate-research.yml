@@ -1,0 +1,62 @@
+name: I-025 valued-edge predicate research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/i025_valued_edge_predicate_reconciliation.py"
+      - "docs/research/I-025-valued-edge-predicate-domain-authority.md"
+      - "docs/research/data/generated/i025/valued-edge-predicate-reconciliation.json"
+      - "src/tfont/schemas/mapping.schema.json"
+      - "src/tfont/schemas/profile.schema.json"
+      - "src/tfont/semantic_digest_v2.py"
+      - "src/tfont/semantic_ir.py"
+      - "src/tfont/runtime_prerequisites.py"
+      - "src/tfont/runtime_tf_observation.py"
+      - "docs/research/data/generated/r005/bhsa.json"
+      - "docs/research/data/generated/i024/valued-edge-reconciliation.json"
+      - ".github/workflows/i025-valued-edge-predicate-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v5
+        with:
+          repository: alexsosn/TLHdig-TF
+          ref: 0261d2d46b3419a1f907e231a03f749d133cfb5e
+          path: _research/tlhdig
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            docs/features/selected.md
+            docs/features/witness_resolution.md
+            docs/features/joined.md
+            programs/tlhdig/featuremeta.py
+            programs/tlhdig/manuscript_graph.py
+      - uses: actions/checkout@v5
+        with:
+          repository: ETCBC/bhsa
+          ref: 4db00e2157915495e1a4d3d57e41223df24775da
+          path: _research/bhsa
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            docs/features/omap@ll.md
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - run: python -m pip install "text-fabric @ git+https://github.com/annotation/text-fabric.git@0c45c386916cb52be84098796ec27ce97e5bf9fc"
+      - name: Reproduce I-025 evidence
+        run: |
+          python scripts/research/i025_valued_edge_predicate_reconciliation.py > /tmp/i025-valued-edge-predicate.json
+          diff -u docs/research/data/generated/i025/valued-edge-predicate-reconciliation.json /tmp/i025-valued-edge-predicate.json
