@@ -166,6 +166,38 @@ def compiled_reference_predicate_ir(**kwargs):
     )
 
 
+def compiled_mixed_conjunction_predicate_ir():
+    sources = predicate_sources()
+    first = sources["mappings"]["mappings"][0]
+
+    second = copy.deepcopy(first)
+    second["mapping_id"] = "mapping:bhsa:proper-noun"
+    second["review"]["review_id"] = "review:bhsa:mapping:proper-noun"
+    membership = {
+        "component_id": "bhsa-tf",
+        "node_type": "fragment",
+        "execution_shape": "membership",
+    }
+    second["native_dependencies"] = ["dep:bhsa:node-type:fragment"]
+    second["native_binding"] = copy.deepcopy(membership)
+
+    projection = second["projections"][0]
+    projection["projection_id"] = "projection:bhsa:proper-noun"
+    projection["target"] = "http://purl.org/olia/olia.owl#ProperNoun"
+    projection["review"]["review_id"] = "review:bhsa:projection:proper-noun"
+    projection["native_execution_binding"] = copy.deepcopy(membership)
+    sources["locks"][0]["terms_used"].append(
+        "http://purl.org/olia/olia.owl#ProperNoun"
+    )
+    _refresh_mapping(second)
+    sources["mappings"]["mappings"].append(second)
+
+    validate_structural_sources(sources)
+    return compile_semantic_ir(
+        (validate_semantic_bundle(source_bundle(sources)),)
+    )
+
+
 class ObservableValuedEdgeFeature(ValuedFakeEdgeFeature):
     def __init__(
         self,
