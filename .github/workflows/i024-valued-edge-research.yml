@@ -45,4 +45,4 @@ jobs:
       - name: Reproduce I-024 evidence
         run: |
           python scripts/research/i024_valued_edge_execution_reconciliation.py > /tmp/i024-valued-edge.json
-          cmp /tmp/i024-valued-edge.json docs/research/data/generated/i024/valued-edge-reconciliation.json
+          diff -u docs/research/data/generated/i024/valued-edge-reconciliation.json /tmp/i024-valued-edge.json
