@@ -100,6 +100,7 @@
     "evidence_records_all_steps_when_any_step_is_valued": true,
     "evidence_records_native_edge_orientation": true,
     "evidence_records_value_presence_separately_from_value": true,
+    "integer_values_must_fit_tfont_safe_jcs_domain": true,
     "mapping_digest_algorithm_change": false,
     "mapping_schema_version_change": false,
     "missing_integer_value_none_is_preserved_not_coerced": true,
@@ -107,6 +108,7 @@
     "nested_evidence_contract": "tfont-edge-path-evidence-v1",
     "none_is_allowed_only_for_declared_int_values": true,
     "outer_execution_contract_version_change": false,
+    "oversized_integer_values_fail_closed_without_string_coercion": true,
     "path_present_dependency_remains_edge_direction_only": true,
     "runtime_requires_declared_value_type_match": true,
     "runtime_requires_do_values_true": true,
@@ -140,7 +142,8 @@
     "empty_integer_value_can_decode_to_none": true,
     "incoming_returns_value_pairs_when_valued": true,
     "outgoing_returns_value_pairs_when_valued": true,
-    "string_empty_value_is_representable": true
+    "string_empty_value_is_representable": true,
+    "tfont_jcs_rejects_unsafe_integer": true
   },
   "tlhdig_real_edges": {
     "joined": {
