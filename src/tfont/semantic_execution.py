@@ -1725,7 +1725,7 @@ def execute_exact_conjunction(
 
     resolution = semantic_resolve_conjunction(ir, request, tuple(prerequisites))
     _validate_conjunction_node_domains(resolution)
-    by_corpus: dict[str, list[tuple[ExactNativePlan, tuple[int, ...]]]] = {
+    by_corpus: dict[str, list[tuple[ExactNativePlan, _NativePlanExecution]]] = {
         corpus_id: [] for corpus_id in resolution.request.corpora
     }
     for constituent in resolution.resolutions:
@@ -1737,8 +1737,8 @@ def execute_exact_conjunction(
                     "conjunction plan has no authorized runtime context",
                     corpus_id=plan.corpus_id,
                 )
-            nodes = _execute_exact_plan_in_context(plan, context)
-            by_corpus.setdefault(plan.corpus_id, []).append((plan, nodes))
+            execution = _execute_exact_plan_in_context(plan, context)
+            by_corpus.setdefault(plan.corpus_id, []).append((plan, execution))
 
     executions: list[ExactConjunctionCorpusExecution] = []
     expected_plan_count = len(resolution.request.keys)
@@ -1750,15 +1750,18 @@ def execute_exact_conjunction(
                 "conjunction did not produce one exact plan per requested atom",
                 corpus_id=corpus_id,
             )
-        intersection = set(rows[0][1])
-        for _plan, nodes in rows[1:]:
-            intersection.intersection_update(nodes)
+        intersection = set(rows[0][1].nodes)
+        for _plan, execution in rows[1:]:
+            intersection.intersection_update(execution.nodes)
+        evidences = tuple(execution.edge_path_evidence for _plan, execution in rows)
+        aligned_evidence = () if all(item is None for item in evidences) else evidences
         executions.append(
             ExactConjunctionCorpusExecution(
                 corpus_id=corpus_id,
                 nodes=tuple(sorted(intersection)),
-                plans=tuple(plan for plan, _nodes in rows),
+                plans=tuple(plan for plan, _execution in rows),
                 runtime_report=reports[corpus_id],
+                constituent_edge_path_evidence=aligned_evidence,
             )
         )
 
@@ -1807,7 +1810,7 @@ def _execute_approximate_conjunction_impl(
     )
     _validate_conjunction_node_domains(resolution)
 
-    by_corpus: dict[str, list[tuple[ApproximateNativePlan, tuple[int, ...]]]] = {
+    by_corpus: dict[str, list[tuple[ApproximateNativePlan, _NativePlanExecution]]] = {
         corpus_id: [] for corpus_id in resolution.request.corpora
     }
     for constituent in resolution.resolutions:
@@ -1819,8 +1822,8 @@ def _execute_approximate_conjunction_impl(
                     "approximate conjunction plan has no authorized runtime context",
                     corpus_id=plan.corpus_id,
                 )
-            nodes = _execute_exact_plan_in_context(plan, context)
-            by_corpus.setdefault(plan.corpus_id, []).append((plan, nodes))
+            execution = _execute_exact_plan_in_context(plan, context)
+            by_corpus.setdefault(plan.corpus_id, []).append((plan, execution))
 
     executions: list[ApproximateConjunctionCorpusExecution] = []
     expected_plan_count = len(resolution.request.keys)
@@ -1832,15 +1835,18 @@ def _execute_approximate_conjunction_impl(
                 "conjunction did not produce one approximate plan per requested atom",
                 corpus_id=corpus_id,
             )
-        intersection = set(rows[0][1])
-        for _plan, nodes in rows[1:]:
-            intersection.intersection_update(nodes)
+        intersection = set(rows[0][1].nodes)
+        for _plan, execution in rows[1:]:
+            intersection.intersection_update(execution.nodes)
+        evidences = tuple(execution.edge_path_evidence for _plan, execution in rows)
+        aligned_evidence = () if all(item is None for item in evidences) else evidences
         executions.append(
             ApproximateConjunctionCorpusExecution(
                 corpus_id=corpus_id,
                 nodes=tuple(sorted(intersection)),
-                plans=tuple(plan for plan, _nodes in rows),
+                plans=tuple(plan for plan, _execution in rows),
                 runtime_report=reports[corpus_id],
+                constituent_edge_path_evidence=aligned_evidence,
             )
         )
 
