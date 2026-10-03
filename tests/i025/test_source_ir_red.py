@@ -144,6 +144,13 @@ class I025SourceIRRedTests(unittest.TestCase):
         old["profile"]["dependency_contract_version"] = 2
         self.assertFalse(tuple(profile_validator().iter_errors(old["profile"])))
 
+    def test_semantic_validation_rejects_v1_edge_domain_even_if_schema_is_bypassed(self):
+        sources = predicate_sources()
+        sources["profile"]["dependency_contract_version"] = 1
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(sources))
+        self.assertEqual(category(raised.exception), "unsupported_contract_version")
+
     def test_edge_domain_requires_closed_semantic_qualifier_evidence_and_typed_values(self):
         base = predicate_sources()["profile"]
         validator = profile_validator()
