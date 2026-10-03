@@ -3,7 +3,12 @@ from __future__ import annotations
 import copy
 from typing import Any, Iterable
 
-from tests.i005._fixtures import source_bundle, validate_structural_sources
+from tests.i005._fixtures import (
+    catalogue_reference,
+    entity_identity_reference,
+    source_bundle,
+    validate_structural_sources,
+)
 from tests.i006._fixtures import _refresh_mapping
 from tests.i008._fixtures import loaded_context
 from tests.i023._fixtures import PathApi, edge_path_sources
@@ -83,6 +88,10 @@ def predicate_sources(
     domain_values: Iterable[Any] | None = None,
     domain_value_role: str = "semantic-qualifier",
     domain_semantics: str = "closed-reviewed",
+    projection_route: str = "semantic",
+    assessment: str = "exact",
+    losses: tuple[str, ...] = (),
+    external_references: list[dict[str, Any]] | None = None,
 ):
     start_node_type = "line" if direction == "outgoing" else "fragment"
     step = predicate_step(
@@ -94,6 +103,10 @@ def predicate_sources(
     sources = edge_path_sources(
         start_node_type=start_node_type,
         steps=(step,),
+        projection_route=projection_route,
+        assessment=assessment,
+        losses=losses,
+        external_references=external_references,
     )
     sources["profile"]["dependency_contract_version"] = 2
 
@@ -127,6 +140,30 @@ def validated_predicate_bundle(**kwargs):
 
 def compiled_predicate_ir(**kwargs):
     return compile_semantic_ir((validated_predicate_bundle(**kwargs),))
+
+
+def compiled_authority_predicate_ir(
+    *,
+    assessment: str = "exact",
+    losses: tuple[str, ...] = (),
+    **kwargs,
+):
+    return compiled_predicate_ir(
+        projection_route="authority",
+        assessment=assessment,
+        losses=losses,
+        **kwargs,
+    )
+
+
+def compiled_reference_predicate_ir(**kwargs):
+    return compiled_predicate_ir(
+        external_references=[
+            entity_identity_reference("bhsa"),
+            catalogue_reference("bhsa"),
+        ],
+        **kwargs,
+    )
 
 
 class ObservableValuedEdgeFeature(ValuedFakeEdgeFeature):
