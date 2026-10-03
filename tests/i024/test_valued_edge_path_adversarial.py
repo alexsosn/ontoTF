@@ -6,6 +6,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import tfont
+import tfont.semantic_execution as semantic_execution
 from jsonschema import Draft202012Validator
 
 from tests.i006._fixtures import noun_semantic_key
@@ -113,6 +114,17 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         self.assertEqual(category(raised.exception), "loaded_api_unavailable")
         self.assertEqual(line_quality.f_calls, [])
 
+    def test_runtime_rejects_forged_non_edge_step_before_field_access(self):
+        ir = compiled_valued_ir()
+        binding = ir.semantic_index[0][1][0].native_execution_binding
+
+        class Plan:
+            corpus_id = "bhsa"
+            native_execution_binding = replace(binding, steps=(object(),))
+
+        with self.assertRaises(tfont.ExactExecutionError) as raised:
+            semantic_execution._validate_edge_path_binding(Plan())
+        self.assertEqual(raised.exception.problem.category, "unsupported_native_binding")
     def test_malformed_metadata_pair_shapes_and_value_subclasses_fail_closed(self):
         ir = compiled_valued_ir()
 
