@@ -164,10 +164,12 @@ polymorphic.
 
 ## Evidence identity and public result shape
 
-Introduce a nested evidence contract tfont-edge-path-evidence-v1 and a
-JCS/SHA-256 evidence fingerprint over the **fresh execution plan fingerprint**,
-native binding identity, start nodes, ordered layers, ordered native edge
-observations, and final nodes.
+Introduce a nested evidence contract `tfont-edge-path-evidence-v1` and a
+domain-separated JCS/SHA-256 fingerprint algorithm
+`tfont-edge-path-evidence-jcs-sha256-v1`. The canonical fingerprint projection
+includes those contract/algorithm tokens, the **fresh execution plan
+fingerprint**, native binding identity, start nodes, ordered layers, ordered
+native edge observations, and final nodes.
 
 Binding only to native binding identity is insufficient: the same native
 binding shape can occur in distinct corpus/profile/parent variants, and node
