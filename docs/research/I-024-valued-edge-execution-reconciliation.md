@@ -75,8 +75,14 @@ For I-024, `value_type=str` accepts exact Python `str`, including the
 empty string, and rejects `None`. `value_type=int` accepts exact Python
 `int`, rejects `bool`, and additionally accepts `None` only for the
 pinned TF empty-integer encoding; that case is preserved as
-`value_present=false, value=None`. Any other returned value shape or type
-fails closed.
+`value_present=false, value=None`.
+
+TFont's existing RFC 8785/JCS boundary accepts integers only in the portable
+safe range `[-(2^53)+1, 2^53-1]`. Because edge evidence is content-addressed
+through that canonicalizer, an integer outside this range must fail closed
+rather than be coerced to a decimal string or float. Within the accepted
+domain, the native integer is preserved exactly. Any other returned value
+shape or type fails closed.
 
 ## Source and IR contract
 
@@ -256,7 +262,8 @@ technical negative control. Production mapping digests and dependency-contract
 v1 remain frozen. Any edge-value filter field is rejected in I-024.
 
 Tests must cover integer `None`, rejection of string `None`, empty string,
-integer/bool distinction, incoming valued
+integer/bool distinction, JCS boundary integers and oversized-int rejection,
+incoming valued
 traversal, fan-in/fan-out, mixed paths, empty post-traversal frontiers,
 malformed pair shapes including list/tuple-subclass impostors, duplicate raw
 neighbors/pairs, metadata/type drift,
