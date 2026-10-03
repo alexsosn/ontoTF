@@ -164,6 +164,22 @@ def _validate_contract_versions(bundle: SemanticSourceBundle) -> None:
             path=("dependency_contract_version",),
         )
 
+    if dependency_version == 1:
+        for index, dependency in enumerate(bundle.profile.data.get("dependencies", [])):
+            if (
+                type(dependency) is dict
+                and dependency.get("kind") == "edge-value-domain"
+            ):
+                _fail(
+                    bundle.profile,
+                    "unsupported_contract_version",
+                    "dependency contract v1 cannot carry edge-value-domain",
+                    path=("dependencies", index, "kind"),
+                    related_id=dependency.get("dependency_id")
+                    if type(dependency.get("dependency_id")) is str
+                    else None,
+                )
+
     if bundle.profile_catalog is not None:
         _fail(
             bundle.profile_catalog,
