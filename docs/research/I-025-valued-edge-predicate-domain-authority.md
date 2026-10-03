@@ -325,6 +325,21 @@ It must:
 9. never autoload a feature, access the network, infer from `oslots`, or use
    source-format sidecars.
 
+Text-Fabric also exposes `EdgeFeature.freqList(nodeTypesFrom,
+nodeTypesTo)`, and the pinned implementation performs native source/target type
+filtering over the same loaded edge data. It is useful corroborating API
+evidence, but it should not be the normative trust-boundary primitive for
+I-025: it aggregates values/frequencies and therefore gives less control over
+exact raw-shape validation and explicit missing-value accounting than
+`items()`.
+
+Complete domain observation is O(edge-domain size). Cache the validated
+observation inside one `LoadedTFObservation` instance, keyed by component,
+edge, source type and target type, so several dependencies/resolutions in the
+same loaded runtime evaluation do not repeatedly rescan a large valued edge.
+The cache is an in-memory optimization over already-loaded data, not corpus
+autoload or persisted authority.
+
 For `closed-reviewed`, runtime compatibility passes when every **present**
 observed value in that native edge/domain is contained in the reviewed set.
 A reviewed allowed value need not occur in the current parent snapshot; querying
@@ -444,7 +459,8 @@ The later tests-only RED head should cover at minimum:
 21. exact/approximate conjunction preserve plan-aligned evidence;
 22. all existing I-023/I-024 unfiltered paths remain byte/behavior compatible;
 23. full v1 packaged profile/runtime regression;
-24. no Text-Fabric runtime dependency/autoload/network regression.
+24. repeated edge-domain dependencies reuse one loaded-observation scan;
+25. no Text-Fabric runtime dependency/autoload/network regression.
 
 ## Plan handoff
 
