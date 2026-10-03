@@ -132,6 +132,7 @@
       "accept-frontier-and-evidence"
     ],
     "existing_dependency_v1_profiles_remain_valid": true,
+    "freq_list_is_not_normative_domain_authority": true,
     "fuzzy_matching": false,
     "initial_predicate_value_roles": [
       "semantic-qualifier"
@@ -160,6 +161,7 @@
     "reviewed_match_value_may_be_absent_at_runtime": true,
     "runtime_observation_excludes_missing_int_none_from_domain": true,
     "runtime_observation_filters_native_source_target_types": true,
+    "runtime_observation_is_memoized_per_loaded_observation": true,
     "runtime_observation_method": "edge_values",
     "runtime_observation_records_missing_count": true,
     "runtime_observation_uses_loaded_edge_items": true,
@@ -171,6 +173,7 @@
   "text_fabric_mechanics": {
     "edge_feature_exposes_do_values": true,
     "edge_feature_exposes_metadata": true,
+    "freq_list_accepts_source_target_type_filters": true,
     "items_is_public_data_iterator": true,
     "loaded_edge_domain_can_be_observed_without_autoload": true,
     "valued_incoming_uses_node_value_pairs": true,
