@@ -6,12 +6,12 @@
     "semantic_promotion_is_not_authorized": true,
     "valued_edges": {
       "omap@2017-2021": {
-        "description": "\u26a0\ufe0f Maps the nodes of version 2017 to 2021",
+        "description": "⚠️ Maps the nodes of version 2017 to 2021",
         "value_type": "int",
         "valued": true
       },
       "omap@c-2021": {
-        "description": "\u26a0\ufe0f Maps the nodes of version c to 2021",
+        "description": "⚠️ Maps the nodes of version c to 2021",
         "value_type": "int",
         "valued": true
       }
@@ -22,61 +22,71 @@
       "edge",
       "direction",
       "result_node_type",
-      "valued"
+      "valued",
+      "value_type",
+      "value_role"
     ],
     "execution_result_fields": {
       "ApproximateAuthorityCorpusExecution": [
         "corpus_id",
         "nodes",
         "plan",
-        "runtime_report"
+        "runtime_report",
+        "edge_path_evidence"
       ],
       "ApproximateConjunctionCorpusExecution": [
         "corpus_id",
         "nodes",
         "plans",
-        "runtime_report"
+        "runtime_report",
+        "constituent_edge_path_evidence"
       ],
       "ApproximateCorpusExecution": [
         "corpus_id",
         "nodes",
         "plan",
-        "runtime_report"
+        "runtime_report",
+        "edge_path_evidence"
       ],
       "ExactAuthorityCorpusExecution": [
         "corpus_id",
         "nodes",
         "plan",
-        "runtime_report"
+        "runtime_report",
+        "edge_path_evidence"
       ],
       "ExactConjunctionCorpusExecution": [
         "corpus_id",
         "nodes",
         "plans",
-        "runtime_report"
+        "runtime_report",
+        "constituent_edge_path_evidence"
       ],
       "ExactCorpusExecution": [
         "corpus_id",
         "nodes",
         "plan",
-        "runtime_report"
+        "runtime_report",
+        "edge_path_evidence"
       ],
       "IdentifierCorpusExecution": [
         "corpus_id",
         "nodes",
         "plan",
-        "runtime_report"
+        "runtime_report",
+        "edge_path_evidence"
       ],
       "IdentityCorpusExecution": [
         "corpus_id",
         "nodes",
         "plan",
-        "runtime_report"
+        "runtime_report",
+        "edge_path_evidence"
       ]
     },
-    "execution_results_have_edge_path_evidence": false,
+    "execution_results_have_edge_path_evidence": true,
     "unvalued_edge_path_is_schema_valid": true,
-    "valued_candidate_is_schema_valid": false
+    "valued_candidate_is_schema_valid": true
   },
   "pinned_sources": {
     "bhsa": "4db00e2157915495e1a4d3d57e41223df24775da",
