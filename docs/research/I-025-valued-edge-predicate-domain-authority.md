@@ -264,6 +264,12 @@ The assertion must bind:
 Closed-reviewed edge domains require evidence exactly as closed-reviewed
 node-feature value domains do.
 
+Every authored `match_values` member must be contained in one matching
+reviewed `edge-value-domain` dependency. Do not combine several partial domain
+claims to manufacture authority for one predicate: one dependency must bind the
+same edge, native source/target types, value type, value role, and contain the
+whole requested match set.
+
 No `observed` edge domain is sufficient to authorize `match_values` in the
 initial production slice. Observation is runtime compatibility evidence, not
 scholarly/domain authority.
