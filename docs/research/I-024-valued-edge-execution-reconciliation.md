@@ -152,8 +152,11 @@ steps. Otherwise a valued observation separated from start/final nodes by an
 unvalued traversal would not be enough to reconstruct execution
 justification.
 
-This graph representation preserves every traversed native pair without
-materializing the Cartesian product of complete paths.
+This graph representation preserves every **accepted** native pair without
+materializing the Cartesian product of complete paths. Well-formed neighbors
+outside the reviewed `result_node_type` remain filtered exactly as in I-023
+and are not copied into evidence merely because the corpus edge is
+polymorphic.
 
 ## Evidence identity and public result shape
 
@@ -196,8 +199,11 @@ Evidence is not flattened across semantic atoms.
 A valued step is revalidated after fresh prerequisite/resolver evaluation:
 the edge is loaded; requested f/t is callable; doValues is true; metadata
 declares the reviewed value_type; every return member is exactly a two-item
-(node, value) pair; node normalization/domain checks remain I-023-safe; value
-type and presence are validated as above.
+(node, value) pair; node normalization remains I-023-safe; and value
+type/presence are validated **before** reviewed result-domain filtering.
+Malformed values on an otherwise off-domain neighbor therefore still expose a
+broken loaded API instead of being silently hidden. After validation, only
+neighbors matching `result_node_type` enter the next frontier and evidence.
 
 An unvalued step in the same path still requires doValues=false and plain
 nodes. Full-path preflight remains required before traversal so an invalid
@@ -236,7 +242,8 @@ v1 remain frozen. Any edge-value filter field is rejected in I-024.
 
 Tests must cover None, empty string, integer/bool distinction, incoming valued
 traversal, fan-in/fan-out, mixed paths, empty post-traversal frontiers,
-malformed pair shapes, metadata/type drift, deterministic evidence
-fingerprints, the same binding/node trace under two distinct plan fingerprints,
+malformed pair shapes, duplicate raw neighbors/pairs, metadata/type drift,
+malformed values on off-domain neighbors, deterministic evidence fingerprints,
+the same binding/node trace under two distinct plan fingerprints,
 rejection of evidence replay under the wrong plan, conjunction evidence
 alignment, and forged IR/evidence attempts.
