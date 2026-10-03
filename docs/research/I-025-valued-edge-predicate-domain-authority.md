@@ -260,9 +260,15 @@ The assertion must bind:
 - native source node type;
 - native target node type;
 - `value_type`;
-- `value_role`;
+- `value_role=semantic-qualifier` in the initial v2 contract;
 - a non-empty unique allowed `values` set;
 - `domain_semantics=closed-reviewed`.
+
+Do not make v2 `edge-value-domain` a generic domain claim for
+`source-evidence` or `technical` values yet. That would create an unused
+authority surface immediately adjacent to a predicate that intentionally
+forbids those roles. A later evidence-backed use case can extend the contract
+deliberately.
 
 Closed-reviewed edge domains require evidence exactly as closed-reviewed
 node-feature value domains do.
@@ -446,7 +452,8 @@ The later tests-only RED head should cover at minimum:
 6. defensive IR/resolver rejection of forged predicate tuples/types;
 7. dependency v1 remains valid for existing profiles;
 8. v1 cannot authorize edge-value predicates;
-9. v2 `edge-value-domain` exact source/target/value-type/value-role matching;
+9. v2 `edge-value-domain` exact source/target/value-type matching and a
+   closed `semantic-qualifier` role;
 10. incoming traversal uses reversed current/result domains but the same native
     domain assertion;
 11. closed-reviewed evidence is mandatory;
