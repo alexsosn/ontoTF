@@ -32,11 +32,27 @@ jobs:
           repository: alexsosn/TLHdig-TF
           ref: 0261d2d46b3419a1f907e231a03f749d133cfb5e
           path: _research/tlhdig
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            README.md
+            docs/features/selected.md
+            docs/features/witness_resolution.md
+            docs/features/joined.md
+            programs/tlhdig/convert.py
+            programs/tlhdig/manuscript_graph.py
+            programs/tests/test_convert.py
+            reports/manuscript-joins.md
+            tf/0.4.0/selected.tf
+            tf/0.4.0/witness_resolution.tf
+            tf/0.4.0/joined.tf
       - uses: actions/checkout@v5
         with:
           repository: ETCBC/bhsa
           ref: 4db00e2157915495e1a4d3d57e41223df24775da
           path: _research/bhsa
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            docs/features/omap@ll.md
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
