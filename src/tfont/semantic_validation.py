@@ -560,6 +560,8 @@ def _validate_edge_path_dependency_authority(
                         } if type(match_values) is list else set()
                     except Exception:
                         requested = set()
+                    if step.get("value_role") != "semantic-qualifier":
+                        requested = set()
                     authorized = False
                     for dependency in dependency_rows:
                         assertion = dependency.get("assertion")
