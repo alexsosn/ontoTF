@@ -291,6 +291,8 @@ def main() -> int:
             "conjunction_evidence_is_plan_aligned_with_none_placeholders": True,
             "outer_execution_contract_version_change": False,
             "nested_evidence_contract": "tfont-edge-path-evidence-v1",
+            "evidence_fingerprint_algorithm": "tfont-edge-path-evidence-jcs-sha256-v1",
+            "evidence_fingerprint_projection_is_domain_separated": True,
             "mapping_schema_version_change": False,
             "mapping_digest_algorithm_change": False,
             "native_binding_identity_algorithm_change": False,
