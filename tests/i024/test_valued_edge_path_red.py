@@ -462,11 +462,11 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
 
         self.assertEqual(
             tfont.EXACT_EXECUTION_CONTRACT,
-            "tfont-exact-semantic-execution-v1",
+            "tfont-exact-execution-v1",
         )
         self.assertEqual(
             tfont.APPROXIMATE_EXECUTION_CONTRACT,
-            "tfont-approximate-semantic-execution-v1",
+            "tfont-approximate-execution-v1",
         )
 
     def test_packaged_mappings_and_runtime_dependency_boundary_remain_unchanged(self):
