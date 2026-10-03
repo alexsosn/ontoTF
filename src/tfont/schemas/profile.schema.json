@@ -3,23 +3,48 @@
   "$id": "https://tfont.dev/schema/v2/profile.schema.json",
   "$defs": {
     "jsonScalar": {
-      "type": ["string", "number", "boolean", "null"]
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ]
     },
     "evidenceBinding": {
       "type": "object",
-      "required": ["evidence_id", "content_digest"],
+      "required": [
+        "evidence_id",
+        "content_digest"
+      ],
       "properties": {
-        "evidence_id": {"type": "string", "minLength": 1},
-        "content_digest": {"type": "string", "minLength": 1}
+        "evidence_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "additionalProperties": false
     },
     "edgeStep": {
       "type": "object",
-      "required": ["edge", "direction"],
+      "required": [
+        "edge",
+        "direction"
+      ],
       "properties": {
-        "edge": {"type": "string", "minLength": 1},
-        "direction": {"enum": ["outgoing", "incoming"]}
+        "edge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction": {
+          "enum": [
+            "outgoing",
+            "incoming"
+          ]
+        }
       },
       "additionalProperties": false
     },
@@ -30,86 +55,170 @@
     },
     "nodeTypePresentAssertion": {
       "type": "object",
-      "required": ["node_type"],
+      "required": [
+        "node_type"
+      ],
       "properties": {
-        "node_type": {"type": "string", "minLength": 1}
+        "node_type": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "additionalProperties": false
     },
     "featurePresentAssertion": {
       "type": "object",
-      "required": ["node_type", "feature"],
+      "required": [
+        "node_type",
+        "feature"
+      ],
       "properties": {
-        "node_type": {"type": "string", "minLength": 1},
-        "feature": {"type": "string", "minLength": 1}
+        "node_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feature": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "additionalProperties": false
     },
     "edgePresentAssertion": {
       "type": "object",
-      "required": ["edge", "direction"],
+      "required": [
+        "edge",
+        "direction"
+      ],
       "properties": {
-        "edge": {"type": "string", "minLength": 1},
-        "direction": {"enum": ["outgoing", "incoming"]}
+        "edge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction": {
+          "enum": [
+            "outgoing",
+            "incoming"
+          ]
+        }
       },
       "additionalProperties": false
     },
     "pathPresentAssertion": {
       "type": "object",
-      "required": ["steps"],
+      "required": [
+        "steps"
+      ],
       "properties": {
         "steps": {
           "type": "array",
           "minItems": 1,
-          "items": {"$ref": "#/$defs/edgeStep"}
+          "items": {
+            "$ref": "#/$defs/edgeStep"
+          }
         }
       },
       "additionalProperties": false
     },
     "nativeValuePresentAssertion": {
       "type": "object",
-      "required": ["node_type", "feature", "value", "value_semantics"],
+      "required": [
+        "node_type",
+        "feature",
+        "value",
+        "value_semantics"
+      ],
       "properties": {
-        "node_type": {"type": "string", "minLength": 1},
-        "feature": {"type": "string", "minLength": 1},
-        "value": {"$ref": "#/$defs/jsonScalar"},
-        "value_semantics": {"const": "semantic"}
+        "node_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feature": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "$ref": "#/$defs/jsonScalar"
+        },
+        "value_semantics": {
+          "const": "semantic"
+        }
       },
       "additionalProperties": false
     },
     "valueDomainAssertion": {
       "type": "object",
-      "required": ["node_type", "feature", "values", "domain_semantics"],
+      "required": [
+        "node_type",
+        "feature",
+        "values",
+        "domain_semantics"
+      ],
       "properties": {
-        "node_type": {"type": "string", "minLength": 1},
-        "feature": {"type": "string", "minLength": 1},
+        "node_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feature": {
+          "type": "string",
+          "minLength": 1
+        },
         "values": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": {"$ref": "#/$defs/jsonScalar"}
+          "items": {
+            "$ref": "#/$defs/jsonScalar"
+          }
         },
-        "domain_semantics": {"enum": ["observed", "closed-reviewed"]}
+        "domain_semantics": {
+          "enum": [
+            "observed",
+            "closed-reviewed"
+          ]
+        }
       },
       "additionalProperties": false
     },
     "extentInterpretationAssertion": {
       "type": "object",
-      "required": ["node_type", "interpretation"],
+      "required": [
+        "node_type",
+        "interpretation"
+      ],
       "properties": {
-        "node_type": {"type": "string", "minLength": 1},
+        "node_type": {
+          "type": "string",
+          "minLength": 1
+        },
         "interpretation": {
-          "enum": ["textualExtent", "occurrenceSet", "technicalAnchor", "noSlot"]
+          "enum": [
+            "textualExtent",
+            "occurrenceSet",
+            "technicalAnchor",
+            "noSlot"
+          ]
         }
       },
       "additionalProperties": false
     },
     "dependency": {
       "type": "object",
-      "required": ["dependency_id", "component_id", "kind", "assertion"],
+      "required": [
+        "dependency_id",
+        "component_id",
+        "kind",
+        "assertion"
+      ],
       "properties": {
-        "dependency_id": {"type": "string", "minLength": 1},
-        "component_id": {"type": "string", "minLength": 1},
+        "dependency_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "component_id": {
+          "type": "string",
+          "minLength": 1
+        },
         "kind": {
           "enum": [
             "component-present",
@@ -119,64 +228,327 @@
             "path-present",
             "native-value-present",
             "value-domain",
-            "extent-interpretation"
+            "extent-interpretation",
+            "edge-value-domain"
           ]
         },
-        "assertion": {"type": "object"},
+        "assertion": {
+          "type": "object"
+        },
         "evidence": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"$ref": "#/$defs/evidenceBinding"}
+          "items": {
+            "$ref": "#/$defs/evidenceBinding"
+          }
         }
       },
       "allOf": [
         {
-          "if": {"properties": {"kind": {"const": "component-present"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/componentPresentAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "node-type-present"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/nodeTypePresentAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "feature-present"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/featurePresentAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "edge-present"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/edgePresentAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "path-present"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/pathPresentAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "native-value-present"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/nativeValuePresentAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "value-domain"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/valueDomainAssertion"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "extent-interpretation"}}, "required": ["kind"]},
-          "then": {"properties": {"assertion": {"$ref": "#/$defs/extentInterpretationAssertion"}}}
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "component-present"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/componentPresentAssertion"
+              }
+            }
+          }
         },
         {
           "if": {
             "properties": {
-              "kind": {"const": "value-domain"},
-              "assertion": {
-                "type": "object",
-                "properties": {"domain_semantics": {"const": "closed-reviewed"}},
-                "required": ["domain_semantics"]
+              "kind": {
+                "const": "node-type-present"
               }
             },
-            "required": ["kind", "assertion"]
+            "required": [
+              "kind"
+            ]
           },
           "then": {
-            "required": ["evidence"],
-            "properties": {"evidence": {"minItems": 1}}
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/nodeTypePresentAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "feature-present"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/featurePresentAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "edge-present"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/edgePresentAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "path-present"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/pathPresentAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "native-value-present"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/nativeValuePresentAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "value-domain"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/valueDomainAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "extent-interpretation"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/extentInterpretationAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "value-domain"
+              },
+              "assertion": {
+                "type": "object",
+                "properties": {
+                  "domain_semantics": {
+                    "const": "closed-reviewed"
+                  }
+                },
+                "required": [
+                  "domain_semantics"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "assertion"
+            ]
+          },
+          "then": {
+            "required": [
+              "evidence"
+            ],
+            "properties": {
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "edge-value-domain"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "evidence"
+            ],
+            "properties": {
+              "assertion": {
+                "$ref": "#/$defs/edgeValueDomainAssertion"
+              },
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "edgeValueDomainAssertion": {
+      "type": "object",
+      "required": [
+        "edge",
+        "source_node_type",
+        "target_node_type",
+        "value_type",
+        "value_role",
+        "values",
+        "domain_semantics"
+      ],
+      "properties": {
+        "edge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_node_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_node_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value_type": {
+          "enum": [
+            "str",
+            "int"
+          ]
+        },
+        "value_role": {
+          "const": "semantic-qualifier"
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "domain_semantics": {
+          "const": "closed-reviewed"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "str"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "values": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "int"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "values": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              }
+            }
           }
         }
       ],
@@ -199,24 +571,45 @@
     "license"
   ],
   "properties": {
-    "schema_version": {"const": 2},
-    "profile_id": {"type": "string", "minLength": 1},
-    "profile_version": {"type": "string", "minLength": 1},
+    "schema_version": {
+      "const": 2
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_version": {
+      "type": "string",
+      "minLength": 1
+    },
     "semantic_domains": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-    "profile_catalog_version": {"const": 1},
+    "profile_catalog_version": {
+      "const": 1
+    },
     "profiles": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
       "items": {
         "enum": [
-          "structural", "linguistic", "lexical", "written-text", "textology", "heritage",
-          "scholarly-inference", "archaeology", "scientific-analysis", "lexicography"
+          "structural",
+          "linguistic",
+          "lexical",
+          "written-text",
+          "textology",
+          "heritage",
+          "scholarly-inference",
+          "archaeology",
+          "scientific-analysis",
+          "lexicography"
         ]
       }
     },
@@ -226,48 +619,145 @@
       "uniqueItems": true,
       "items": {
         "enum": [
-          "structural.entity-kind", "structural.slot-coverage", "structural.edge-traversal", "structural.section-navigation",
-          "linguistic.part-of-speech", "linguistic.morphology", "linguistic.syntax", "linguistic.discourse",
-          "lexical.entry", "lexical.form", "lexical.sense", "lexical.concept", "lexical.relation",
-          "written-text.segment", "written-text.sign", "written-text.writing-system", "written-text.transcription-recognition",
-          "textology.textual-version", "textology.witness", "textology.fragment-transmission", "textology.apparatus-reading",
-          "textology.witness-attestation", "textology.explicit-omission",
-          "heritage.physical-object", "heritage.physical-part", "heritage.identifier", "heritage.material",
-          "heritage.place-provenance", "heritage.custody-location",
-          "scholarly-inference.claim", "scholarly-inference.inference", "scholarly-inference.meaning-comprehension",
+          "structural.entity-kind",
+          "structural.slot-coverage",
+          "structural.edge-traversal",
+          "structural.section-navigation",
+          "linguistic.part-of-speech",
+          "linguistic.morphology",
+          "linguistic.syntax",
+          "linguistic.discourse",
+          "lexical.entry",
+          "lexical.form",
+          "lexical.sense",
+          "lexical.concept",
+          "lexical.relation",
+          "written-text.segment",
+          "written-text.sign",
+          "written-text.writing-system",
+          "written-text.transcription-recognition",
+          "textology.textual-version",
+          "textology.witness",
+          "textology.fragment-transmission",
+          "textology.apparatus-reading",
+          "textology.witness-attestation",
+          "textology.explicit-omission",
+          "heritage.physical-object",
+          "heritage.physical-part",
+          "heritage.identifier",
+          "heritage.material",
+          "heritage.place-provenance",
+          "heritage.custody-location",
+          "scholarly-inference.claim",
+          "scholarly-inference.inference",
+          "scholarly-inference.meaning-comprehension",
           "scholarly-inference.provenance-assessment"
         ]
       }
     },
-    "parent_compatibility": {"enum": ["exact-only", "dependency-verified"]},
-    "parent_component_manifest": {"type": "string", "minLength": 1},
+    "parent_compatibility": {
+      "enum": [
+        "exact-only",
+        "dependency-verified"
+      ]
+    },
+    "parent_component_manifest": {
+      "type": "string",
+      "minLength": 1
+    },
     "required_components": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "ontology_locks": {
       "type": "array",
       "uniqueItems": true,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "mapping_sources": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-    "dependency_contract_version": {"const": 1},
+    "dependency_contract_version": {
+      "enum": [
+        1,
+        2
+      ]
+    },
     "dependencies": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"$ref": "#/$defs/dependency"}
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
     },
-    "minimum_tfont_runtime": {"type": "string", "minLength": 1},
-    "license": {"type": "string", "minLength": 1},
-    "provenance": {"type": "object"}
+    "minimum_tfont_runtime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "type": "object"
+    }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "dependency_contract_version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "dependency_contract_version"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dependencies": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/dependency"
+                },
+                {
+                  "not": {
+                    "properties": {
+                      "kind": {
+                        "const": "edge-value-domain"
+                      }
+                    },
+                    "required": [
+                      "kind"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }
