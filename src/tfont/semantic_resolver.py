@@ -758,27 +758,44 @@ def _native_binding_projection(binding: NativeBindingIR) -> dict[str, Any]:
         for step in binding.steps:
             if type(step) is not EdgeStepIR:
                 _fail("invalid_compiled_ir", "native binding contains an invalid edge step")
-            if (
-                type(step.edge) is not str
-                or not step.edge
-                or type(step.direction) is not str
-                or step.direction not in {"outgoing", "incoming"}
-                or type(step.result_node_type) is not str
-                or not step.result_node_type
-                or step.valued is not False
-            ):
+            common_valid = (
+                type(step.edge) is str
+                and bool(step.edge)
+                and type(step.direction) is str
+                and step.direction in {"outgoing", "incoming"}
+                and type(step.result_node_type) is str
+                and bool(step.result_node_type)
+                and type(step.valued) is bool
+            )
+            if step.valued is True:
+                value_contract_valid = (
+                    type(step.value_type) is str
+                    and step.value_type in {"str", "int"}
+                    and type(step.value_role) is str
+                    and step.value_role
+                    in {"semantic-qualifier", "source-evidence", "technical"}
+                )
+            else:
+                value_contract_valid = (
+                    step.valued is False
+                    and step.value_type is None
+                    and step.value_role is None
+                )
+            if not common_valid or not value_contract_valid:
                 _fail(
                     "invalid_compiled_ir",
-                    "native binding edge step must carry edge, direction, result_node_type, and valued=false",
+                    "native binding edge step has an invalid typed valuedness contract",
                 )
-            steps.append(
-                {
-                    "edge": step.edge,
-                    "direction": step.direction,
-                    "result_node_type": step.result_node_type,
-                    "valued": False,
-                }
-            )
+            row = {
+                "edge": step.edge,
+                "direction": step.direction,
+                "result_node_type": step.result_node_type,
+                "valued": step.valued,
+            }
+            if step.valued:
+                row["value_type"] = step.value_type
+                row["value_role"] = step.value_role
+            steps.append(row)
         result["steps"] = steps
     if binding.execution_shape == "edge-path":
         valid = (
