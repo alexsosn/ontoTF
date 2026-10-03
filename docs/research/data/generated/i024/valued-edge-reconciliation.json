@@ -90,6 +90,7 @@
     "dependency_contract_version_change": false,
     "empty_string_is_preserved_not_treated_as_absence": true,
     "evidence_binds_execution_plan_fingerprint": true,
+    "evidence_excludes_off_domain_neighbors": true,
     "evidence_has_deterministic_fingerprint": true,
     "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": true,
     "evidence_records_all_steps_when_any_step_is_valued": true,
@@ -104,6 +105,7 @@
     "path_present_dependency_remains_edge_direction_only": true,
     "runtime_requires_declared_value_type_match": true,
     "runtime_requires_do_values_true": true,
+    "runtime_validates_value_before_domain_filter": true,
     "semantic_approximation_does_not_approximate_native_edge_values": true,
     "single_result_evidence_field": "edge_path_evidence",
     "step_fields_when_valued": [
