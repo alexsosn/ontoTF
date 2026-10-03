@@ -775,7 +775,10 @@ def _evaluate_dependency(
             observed_encoded = tuple(canonical_json_bytes(value) for value in values)
         except Exception:
             return _unknown(dependency_id, kind)
-        if len(set(observed_encoded)) != len(observed_encoded):
+        if (
+            len(set(observed_encoded)) != len(observed_encoded)
+            or observed_encoded != tuple(sorted(observed_encoded))
+        ):
             return _unknown(dependency_id, kind)
         if declared_value_type == "str":
             if any(type(value) is not str for value in values):
