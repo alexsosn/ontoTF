@@ -1,0 +1,181 @@
+{
+  "bhsa_technical_control": {
+    "omap_is_version_mapping": true,
+    "omap_value_describes_correspondence_quality": true,
+    "recommended_value_role": "technical",
+    "semantic_promotion_is_not_authorized": true,
+    "valued_edges": {
+      "omap@2017-2021": {
+        "description": "\u26a0\ufe0f Maps the nodes of version 2017 to 2021",
+        "value_type": "int",
+        "valued": true
+      },
+      "omap@c-2021": {
+        "description": "\u26a0\ufe0f Maps the nodes of version c to 2021",
+        "value_type": "int",
+        "valued": true
+      }
+    }
+  },
+  "current_tfont_contract": {
+    "edge_step_ir_fields": [
+      "edge",
+      "direction",
+      "result_node_type",
+      "valued"
+    ],
+    "execution_result_fields": {
+      "ApproximateAuthorityCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plan",
+        "runtime_report"
+      ],
+      "ApproximateConjunctionCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plans",
+        "runtime_report"
+      ],
+      "ApproximateCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plan",
+        "runtime_report"
+      ],
+      "ExactAuthorityCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plan",
+        "runtime_report"
+      ],
+      "ExactConjunctionCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plans",
+        "runtime_report"
+      ],
+      "ExactCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plan",
+        "runtime_report"
+      ],
+      "IdentifierCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plan",
+        "runtime_report"
+      ],
+      "IdentityCorpusExecution": [
+        "corpus_id",
+        "nodes",
+        "plan",
+        "runtime_report"
+      ]
+    },
+    "execution_results_have_edge_path_evidence": false,
+    "unvalued_edge_path_is_schema_valid": true,
+    "valued_candidate_is_schema_valid": false
+  },
+  "pinned_sources": {
+    "bhsa": "4db00e2157915495e1a4d3d57e41223df24775da",
+    "text_fabric": "0c45c386916cb52be84098796ec27ce97e5bf9fc",
+    "tlhdig": "0261d2d46b3419a1f907e231a03f749d133cfb5e"
+  },
+  "recommended_i024_slice": {
+    "accepted_values_or_value_predicates": false,
+    "bool_is_not_an_integer_edge_value": true,
+    "conjunction_evidence_field": "constituent_edge_path_evidence",
+    "conjunction_evidence_is_plan_aligned_with_none_placeholders": true,
+    "conjunction_evidence_stays_empty_when_all_constituents_unvalued": true,
+    "dependency_contract_version_change": false,
+    "empty_string_is_preserved_not_treated_as_absence": true,
+    "evidence_binds_execution_plan_fingerprint": true,
+    "evidence_excludes_off_domain_neighbors": true,
+    "evidence_fingerprint_algorithm": "tfont-edge-path-evidence-jcs-sha256-v1",
+    "evidence_fingerprint_projection_is_domain_separated": true,
+    "evidence_has_deterministic_fingerprint": true,
+    "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": true,
+    "evidence_node_ids_must_fit_tfont_safe_jcs_domain": true,
+    "evidence_records_all_steps_when_any_step_is_valued": true,
+    "evidence_records_native_edge_orientation": true,
+    "evidence_records_value_presence_separately_from_value": true,
+    "integer_values_must_fit_tfont_safe_jcs_domain": true,
+    "mapping_digest_algorithm_change": false,
+    "mapping_schema_version_change": false,
+    "missing_integer_value_none_is_preserved_not_coerced": true,
+    "native_binding_identity_algorithm_change": false,
+    "nested_evidence_contract": "tfont-edge-path-evidence-v1",
+    "none_is_allowed_only_for_declared_int_values": true,
+    "outer_execution_contract_version_change": false,
+    "oversized_integer_values_fail_closed_without_string_coercion": true,
+    "path_present_dependency_remains_edge_direction_only": true,
+    "runtime_requires_declared_value_type_match": true,
+    "runtime_requires_do_values_true": true,
+    "runtime_requires_exact_two_tuple_valued_results": true,
+    "runtime_validates_value_before_domain_filter": true,
+    "semantic_approximation_does_not_approximate_native_edge_values": true,
+    "single_result_evidence_field": "edge_path_evidence",
+    "step_fields_when_valued": [
+      "edge",
+      "direction",
+      "result_node_type",
+      "valued",
+      "value_type",
+      "value_role"
+    ],
+    "value_predicates_follow_up_issue": 253,
+    "value_role_enum": [
+      "semantic-qualifier",
+      "source-evidence",
+      "technical"
+    ],
+    "value_type_enum": [
+      "str",
+      "int"
+    ]
+  },
+  "text_fabric_mechanics": {
+    "declared_value_type_supports_int": true,
+    "edge_feature_has_do_values": true,
+    "edge_feature_has_meta": true,
+    "empty_integer_value_can_decode_to_none": true,
+    "incoming_returns_value_pairs_when_valued": true,
+    "outgoing_returns_value_pairs_when_valued": true,
+    "string_empty_value_is_representable": true,
+    "tfont_jcs_rejects_unsafe_integer": true
+  },
+  "tlhdig_real_edges": {
+    "joined": {
+      "authoritative_ledger_is_joinstmt": true,
+      "closed_real_values_documented": true,
+      "filter_in_i024": false,
+      "fragment_to_fragment": true,
+      "header_has_edge_values": true,
+      "header_value_type": "str",
+      "orientation_is_source_order_not_semantic_direction": true,
+      "recommended_value_role": "semantic-qualifier"
+    },
+    "selected": {
+      "examples_are_preserved": true,
+      "filter_in_i024": false,
+      "header_has_edge_values": true,
+      "header_value_type": "str",
+      "multi_selection_is_real": true,
+      "recommended_value_role": "source-evidence",
+      "same_analysis_tokens_are_joined": true,
+      "selector_tokens_verbatim": true,
+      "word_to_analysis": true
+    },
+    "witness_resolution": {
+      "block_local_resolution_is_explicit": true,
+      "closed_real_values_documented": true,
+      "filter_in_i024": false,
+      "header_has_edge_values": true,
+      "header_value_type": "str",
+      "line_to_fragment": true,
+      "recommended_value_role": "semantic-qualifier"
+    }
+  }
+}
