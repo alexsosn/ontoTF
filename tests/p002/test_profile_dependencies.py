@@ -17,7 +17,7 @@ PROFILE_SCHEMA = SCHEMA_ROOT / "profile.schema.json"
 RESEARCH = ROOT / "docs" / "research" / "P-002-i004-source-contract-amendment.md"
 PLAN = ROOT / "docs" / "plans" / "P-002-i004-source-contract-amendment.md"
 
-TF_NATIVE_KINDS = {
+TF_NATIVE_KINDS_V1 = {
     "component-present",
     "node-type-present",
     "feature-present",
@@ -27,6 +27,8 @@ TF_NATIVE_KINDS = {
     "value-domain",
     "extent-interpretation",
 }
+TF_NATIVE_KINDS_V2 = TF_NATIVE_KINDS_V1 | {"edge-value-domain"}
+TF_NATIVE_KINDS = TF_NATIVE_KINDS_V1
 FORBIDDEN_RUNTIME_KINDS = {
     "adapter-capability",
     "sidecar-field",
@@ -63,6 +65,15 @@ def assertion_for(kind: str) -> dict:
             "node_type": "word",
             "interpretation": "textualExtent",
         },
+        "edge-value-domain": {
+            "edge": "witness_resolution",
+            "source_node_type": "line",
+            "target_node_type": "fragment",
+            "value_type": "str",
+            "value_role": "semantic-qualifier",
+            "values": ["ambiguous", "unique"],
+            "domain_semantics": "closed-reviewed",
+        },
     }[kind]
 
 
@@ -72,7 +83,7 @@ def dependency(**overrides):
         "dependency_id": "dep:word-pos",
         "component_id": "test-tf",
         "kind": kind,
-        "assertion": assertion_for(kind) if kind in TF_NATIVE_KINDS else {},
+        "assertion": assertion_for(kind) if kind in TF_NATIVE_KINDS_V2 else {},
         "evidence": [
             {
                 "evidence_id": "evidence:test",
@@ -135,18 +146,33 @@ class ProfileDependencyContractTests(unittest.TestCase):
         empty["dependencies"] = []
         self.assert_invalid(empty)
 
-    def test_dependency_contract_version_is_closed_to_current_version(self):
-        for unsupported in (0, 2, 999):
+    def test_dependency_contract_versions_are_closed_to_v1_and_v2(self):
+        for supported in (1, 2):
+            instance = profile_v2()
+            instance["dependency_contract_version"] = supported
+            with self.subTest(version=supported):
+                self.validate(instance)
+        for unsupported in (0, 3, 999):
             instance = profile_v2()
             instance["dependency_contract_version"] = unsupported
             with self.subTest(version=unsupported):
                 self.assert_invalid(instance)
 
     def test_dependency_kind_set_is_exact_and_external_runtime_kinds_are_rejected(self):
-        self.assertEqual(self.dependency_kind_enum(), TF_NATIVE_KINDS)
+        self.assertEqual(self.dependency_kind_enum(), TF_NATIVE_KINDS_V2)
         for kind in sorted(FORBIDDEN_RUNTIME_KINDS | {"semantic-target"}):
             with self.subTest(kind=kind):
                 self.assert_invalid(self.profile_with_dependency(dependency(kind=kind)))
+
+    def test_edge_value_domain_is_dependency_v2_only(self):
+        dep = dependency(kind="edge-value-domain")
+
+        v1 = self.profile_with_dependency(dep)
+        self.assert_invalid(v1)
+
+        v2 = self.profile_with_dependency(dep)
+        v2["dependency_contract_version"] = 2
+        self.validate(v2)
 
     def test_dependency_common_fields_are_required(self):
         for missing in ("dependency_id", "component_id", "kind", "assertion"):
