@@ -69,7 +69,8 @@
       "result_node_type",
       "valued",
       "value_type",
-      "value_role"
+      "value_role",
+      "match_values"
     ],
     "native_binding_ir_fields": [
       "component_id",
