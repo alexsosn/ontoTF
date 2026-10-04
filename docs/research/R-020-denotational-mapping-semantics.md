@@ -206,14 +206,18 @@ N_bhsa = N_syriac
 It means each corpus has a reviewed local realization of the same semantic request:
 
 ```text
-N_bhsa = T_bhsa(Noun)
-N_syriac = T_syriac(Noun)
-N_extra = T_extra(Noun)
+N_bhsa = T_rep,bhsa(Noun)
+N_syriac = T_rep,syriac(Noun)
+N_extra = T_rep,extra(Noun)
 ```
 
 for current exact mappings.
 
-Cross-corpus interoperability is equality of the **query meaning under each corpus interpretation**, not equality of node sets or native feature names.
+These equations say nothing about whether each corpus has annotated every
+hypothetical real-world/textual instance belonging to `T_truth`.
+Cross-corpus interoperability is equality of the **reviewed represented query
+meaning under each corpus interpretation**, not equality of node sets, native
+feature names, or annotation completeness.
 
 ## 7. Current production OLiA controls
 
@@ -234,7 +238,9 @@ It finds 21 projections total, seven per corpus:
 
 All 21 are current `exact` OLiA class / `annotation-value` projections.
 
-This is a useful real test because the same target denotation is implemented by different native representations.
+This is a useful real test because the same reviewed target meaning is
+represented by different native selectors. It is not evidence that the three
+corpora have equal annotation completeness.
 
 ### Noun
 
@@ -259,12 +265,12 @@ word.sp == subs
 The denotational statement is not “`subs` means the same everywhere.” It is:
 
 ```text
-N_bhsa(binding) = T_bhsa(OLiA:Noun)
-N_syriac(binding) = T_syriac(OLiA:Noun)
-N_extra(binding) = T_extra(OLiA:Noun)
+N_bhsa(binding) = T_rep,bhsa(OLiA:Noun)
+N_syriac(binding) = T_rep,syriac(OLiA:Noun)
+N_extra(binding) = T_rep,extra(OLiA:Noun)
 ```
 
-under the reviewed exact mapping claims.
+under the reviewed exact mapping claims. No equation to `T_truth` follows.
 
 ### ProperNoun
 
@@ -304,9 +310,15 @@ TFont does not derive from first principles that:
 BHSA sp in {nmpr,subs} = OLiA Noun
 ```
 
-That is a reviewed semantic correspondence supported by evidence.
+That is a reviewed semantic correspondence supported by evidence. In the
+R-020 model it authorizes the relation between the native selector and
+`T_rep`; it does not prove that the source annotation exhausts
+`T_truth`.
 
-Likewise a reviewed `broader` mapping supplies the semantic authority for the inclusion orientation. The runtime can verify the contract and execute it; it does not independently prove the philological equivalence/inclusion claim.
+Likewise a reviewed `broader` mapping supplies the semantic authority for the
+represented-denotation inclusion orientation. The runtime can verify the
+contract and execute it; it does not independently prove the philological
+correspondence or corpus annotation completeness.
 
 ### Empirically observable
 
@@ -318,9 +330,14 @@ N(c,s,b)
 
 and compare results from different native bindings within the same node universe.
 
-It normally cannot enumerate `T(c,s,t)` independently, because no separate gold-standard target annotation exists.
+It normally cannot enumerate `T_rep(c,s,t)` independently of the reviewed
+mapping that defines how the target is represented. It also has no current
+authority for an independent `T_truth(c,s,t)` because the production profiles
+do not carry a total annotation-completeness contract.
 
-Therefore empirical equality of native selectors is not the general proof method for mapping correctness.
+Therefore empirical equality of native selectors is not the general proof
+method for mapping correctness, and exact mapping assessment must not be
+reported as annotation-recall completeness.
 
 ### Ontology-derived facts
 
@@ -330,7 +347,9 @@ Those facts do not automatically authorize a new native mapping or execution rou
 
 ## 9. Conjunction has a useful small algebra
 
-The prototype checks finite-set witnesses for conjunction/intersection.
+The prototype checks finite-set witnesses for conjunction/intersection. In
+this section `T1` and `T2` are shorthand for represented target extensions
+`T_rep,1` and `T_rep,2`, not annotation-independent truth sets.
 
 ### Uniform undercoverage
 
@@ -528,9 +547,14 @@ The production ProperNoun example demonstrates this directly.
 
 ### 14.1 False extensional precision
 
-The biggest risk is presenting reviewed semantic correspondence as if TFont independently enumerated the target class extension.
+The biggest risk is presenting reviewed semantic correspondence as if TFont
+independently enumerated an annotation-independent target class extension.
 
-It usually cannot.
+It usually cannot. Current exact mappings establish exactness of the reviewed
+**representation**, while current BHSA/Syriac/ExtraBiblical profiles do not
+claim that every semantically true instance is annotated. Treating
+`T_rep = T_truth` as automatic would turn mapping quality into an unsupported
+corpus-completeness claim.
 
 ### 14.2 Overformalizing `close`
 
@@ -644,6 +668,7 @@ If the derived relation is exposed in public resolver/execution result contracts
 - [x] exact/broader/narrower direction formalized;
 - [x] R-016 undercoverage/overcoverage direction reconciled;
 - [x] reviewed claims separated from mechanical proof and empirical enumeration;
+- [x] represented target semantics separated from unsupported total-annotation truth/completeness claims;
 - [x] current production BHSA/Syriac/ExtraBiblical OLiA controls checked;
 - [x] prior denotational/database/data-integration/ontology-matching work compared;
 - [x] resolver, explanation, testing, cross-corpus and composition benefits evaluated;
@@ -660,7 +685,8 @@ Independent review should challenge:
 2. whether non-strict inclusion is safer than strict inclusion for corpus-local extensions;
 3. whether reviewed loss tokens really justify the proposed answer bound;
 4. whether `close` is kept sufficiently opaque;
-5. whether “latent target query denotation” accidentally claims target annotations exist;
+5. whether `T_rep` is clearly separated from hypothetical `T_truth` and
+   exact mapping is kept distinct from annotation completeness;
 6. whether any refusal state is being smuggled into set semantics;
 7. whether the mixed-direction conjunction counterexample is valid;
 8. whether production OLiA examples genuinely demonstrate semantic abstraction beyond feature-name matching;
