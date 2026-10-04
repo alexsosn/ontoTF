@@ -9,6 +9,8 @@
 
 ## Decision
 
+> **Backlog note (2026-10-04):** R-021 through R-026 are deferred until the active P-004 semantic coverage queue #263–#269 is complete. References below to R-021/R-022/R-023 are architectural dependencies for any future public formal-semantics API, not a recommendation to execute those research tickets next.
+
 Adopt a **small denotational verification model** for reasoning, tests, and explanations, but **defer a public/normative runtime API** until the adjacent composition/bounds/query-language studies R-021, R-022, and R-023 are complete.
 
 The useful core is smaller than a general ontology semantics:
