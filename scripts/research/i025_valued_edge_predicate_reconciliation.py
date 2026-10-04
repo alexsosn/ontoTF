@@ -1,9 +1,8 @@
 """I-025 valued-edge predicate/domain-authority reconciliation.
 
-Research-only probe. It records the post-I-024 contract, pinned Text-Fabric
-edge-value mechanics, real TLHdig/BHSA controls, and the smallest reviewed
-design candidate for exact valued-edge predicates. It changes no production
-runtime behavior.
+Research plus post-implementation current-state guard. It records pinned
+Text-Fabric mechanics, real TLHdig/BHSA controls, and the production contract
+that implements the reviewed exact valued-edge predicate slice.
 """
 
 from __future__ import annotations
@@ -134,9 +133,9 @@ def main() -> int:
         "current_contract": {
             "mapping_schema_version": mapping_schema["properties"]["schema_version"]["const"],
             "profile_schema_version": profile_schema["properties"]["schema_version"]["const"],
-            "dependency_contract_version": profile_schema["properties"][
+            "dependency_contract_versions": profile_schema["properties"][
                 "dependency_contract_version"
-            ]["const"],
+            ]["enum"],
             "dependency_kinds": dependency_kinds,
             "edge_value_domain_kind_exists": "edge-value-domain" in dependency_kinds,
             "native_value_present_fields": native_value["required"],
@@ -161,8 +160,8 @@ def main() -> int:
                 '"dependency_contract_version": signature.dependency_contract_version'
                 in profile_fingerprint_source
             ),
-            "runtime_accepts_dependency_contract_v1_only": (
-                "signature.dependency_contract_version != 1"
+            "runtime_accepts_dependency_contract_v1_and_v2": (
+                "signature.dependency_contract_version not in {1, 2}"
                 in release_projection_source
             ),
         },
@@ -324,16 +323,32 @@ def main() -> int:
     }
 
     current = result["current_contract"]
-    if current["dependency_contract_version"] != 1:
-        raise SystemExit("current dependency-contract baseline drifted")
-    if current["edge_value_domain_kind_exists"]:
-        raise SystemExit("edge-value-domain unexpectedly already exists")
-    if current["step_match_values_is_schema_valid"]:
-        raise SystemExit("match_values unexpectedly already source-valid")
-    if current["runtime_observation_has_edge_values"]:
-        raise SystemExit("runtime observation unexpectedly already exposes edge values")
-    if current["loaded_tf_observation_has_edge_values"]:
-        raise SystemExit("loaded TF observation unexpectedly already exposes edge values")
+    if current["dependency_contract_versions"] != [1, 2]:
+        raise SystemExit("implemented dependency-contract version set drifted")
+    if current["edge_step_ir_fields"] != [
+        "edge",
+        "direction",
+        "result_node_type",
+        "valued",
+        "value_type",
+        "value_role",
+        "match_values",
+    ]:
+        raise SystemExit("I-025 EdgeStepIR contract drifted")
+    if not current["edge_value_domain_kind_exists"]:
+        raise SystemExit("I-025 edge-value-domain is unavailable")
+    if not current["step_match_values_is_schema_valid"]:
+        raise SystemExit("I-025 match_values is not source-valid")
+    if not current["runtime_observation_has_edge_values"]:
+        raise SystemExit("runtime observation does not expose edge values")
+    if not current["loaded_tf_observation_has_edge_values"]:
+        raise SystemExit("loaded TF observation does not expose edge values")
+    if not current["semantic_digest_treats_match_values_as_set_like"]:
+        raise SystemExit("semantic digest does not canonicalize match_values")
+    if not current["native_binding_identity_normalizes_match_values"]:
+        raise SystemExit("native binding identity does not normalize match_values")
+    if not current["runtime_accepts_dependency_contract_v1_and_v2"]:
+        raise SystemExit("runtime dependency-contract version gate drifted")
 
     mechanics = result["text_fabric_mechanics"]
     if not all(mechanics.values()):
