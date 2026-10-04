@@ -294,7 +294,10 @@ class I025SourceIRRedTests(unittest.TestCase):
         )
         for field, value in mutations:
             sources = predicate_sources()
-            sources["profile"]["dependencies"][-1]["assertion"][field] = value
+            assertion = sources["profile"]["dependencies"][-1]["assertion"]
+            assertion[field] = value
+            if field == "value_type":
+                assertion["values"] = [1, 2]
             validate_structural_sources(sources)
             with self.subTest(field=field):
                 with self.assertRaises(SemanticValidationError) as raised:
