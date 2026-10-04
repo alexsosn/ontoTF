@@ -10,6 +10,17 @@
       "syriac",
       "extrabiblical"
     ],
+    "dependency_kinds_by_corpus": {
+      "bhsa": [
+        "native-value-present"
+      ],
+      "extrabiblical": [
+        "native-value-present"
+      ],
+      "syriac": [
+        "native-value-present"
+      ]
+    },
     "noun_native_bindings": {
       "bhsa": {
         "component_id": "bhsa-tf",
@@ -77,12 +88,14 @@
       "Plural": 3,
       "ProperNoun": 3,
       "Singular": 3
-    }
+    },
+    "total_annotation_completeness_claim_present": false
   },
   "derived_findings": {
     "bhsa_and_extrabiblical_noun_use_value_sets": true,
     "mixed_direction_intersection_has_no_inclusion_bound": true,
     "production_exact_rows_are_coherent": true,
+    "production_profiles_lack_total_annotation_completeness_claim": true,
     "proper_noun_uses_different_native_features_across_corpora": true,
     "syriac_noun_uses_scalar_value": true,
     "uniform_overcoverage_intersection_preserves_upper_bound": true,
@@ -167,27 +180,31 @@
   },
   "minimal_model": {
     "answer_guarantees": {
-      "no-loss": "A = T",
-      "overcoverage": "T subseteq A",
-      "undercoverage": "A subseteq T",
+      "no-loss": "A = T_rep",
+      "overcoverage": "T_rep subseteq A",
+      "undercoverage": "A subseteq T_rep",
       "undercoverage+overcoverage": "neither inclusion is guaranteed"
     },
     "assessment_constraints": {
       "ambiguous": "no unique target denotation",
-      "broader": "N subseteq T",
+      "broader": "N subseteq T_rep",
       "close": "no inclusion follows from assessment alone",
-      "exact": "N = T",
-      "narrower": "T subseteq N",
+      "exact": "N = T_rep",
+      "narrower": "T_rep subseteq N",
       "native-only": "native denotation exists without shared target",
       "related": "non-substitutive; no inclusion follows",
       "unsupported": "no authorized shared execution denotation"
     },
     "corpus_query_domain": "U_c = TF nodes of the reviewed query node domain",
     "cross_corpus_node_sets_share_no_common_universe": true,
-    "latent_target_query_denotation": "T_c(t) subseteq U_c",
+    "current_profiles_do_not_claim_total_annotation_completeness": true,
+    "hypothetical_truth_extension": "T_truth_c(t) subseteq U_c",
     "native_selector_denotation": "N_c(b) subseteq U_c",
     "refusal_is_not_empty_set": true,
-    "target_extension_is_not_materialized_by_default": true
+    "relation_between_T_rep_and_T_truth": "unknown without separate coverage/quality authority",
+    "represented_target_is_not_materialized_independently": true,
+    "represented_target_query_denotation": "T_rep_c(t) subseteq U_c",
+    "truth_extension_is_outside_current_tfont_authority": true
   },
   "recommendation": {
     "productionization": "defer-public-runtime-api",
