@@ -1,6 +1,9 @@
 {
   "current_contract": {
-    "dependency_contract_version": 1,
+    "dependency_contract_versions": [
+      1,
+      2
+    ],
     "dependency_kinds": [
       "component-present",
       "node-type-present",
@@ -9,7 +12,8 @@
       "path-present",
       "native-value-present",
       "value-domain",
-      "extent-interpretation"
+      "extent-interpretation",
+      "edge-value-domain"
     ],
     "dependency_normalization_sorts_values": true,
     "edge_step_ir_fields": [
@@ -18,12 +22,13 @@
       "result_node_type",
       "valued",
       "value_type",
-      "value_role"
+      "value_role",
+      "match_values"
     ],
-    "edge_value_domain_kind_exists": false,
-    "loaded_tf_observation_has_edge_values": false,
+    "edge_value_domain_kind_exists": true,
+    "loaded_tf_observation_has_edge_values": true,
     "mapping_schema_version": 2,
-    "native_binding_identity_normalizes_match_values": false,
+    "native_binding_identity_normalizes_match_values": true,
     "native_value_present_fields": [
       "node_type",
       "feature",
@@ -32,10 +37,10 @@
     ],
     "profile_release_fingerprint_binds_dependency_contract_version": true,
     "profile_schema_version": 2,
-    "runtime_accepts_dependency_contract_v1_only": true,
-    "runtime_observation_has_edge_values": false,
-    "semantic_digest_treats_match_values_as_set_like": false,
-    "step_match_values_is_schema_valid": false,
+    "runtime_accepts_dependency_contract_v1_and_v2": true,
+    "runtime_observation_has_edge_values": true,
+    "semantic_digest_treats_match_values_as_set_like": true,
+    "step_match_values_is_schema_valid": true,
     "value_domain_fields": [
       "node_type",
       "feature",
