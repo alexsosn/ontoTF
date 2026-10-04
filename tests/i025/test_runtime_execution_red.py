@@ -4,6 +4,7 @@ import unittest
 from dataclasses import replace
 
 import tfont
+import tfont.semantic_execution as semantic_execution
 
 from tests.i006._fixtures import noun_semantic_key
 from tests.i023._fixtures import approximate_request, semantic_request
@@ -28,6 +29,33 @@ def category(error: BaseException) -> str:
 
 
 class I025RuntimeExecutionRedTests(unittest.TestCase):
+    def test_execution_rejects_forged_match_values_before_traversal(self):
+        ir = compiled_predicate_ir()
+        binding = ir.semantic_index[0][1][0].native_execution_binding
+        step = binding.steps[0]
+
+        forged_values = (
+            ["ambiguous"],
+            (),
+            ("ambiguous", "ambiguous"),
+            (None,),
+        )
+        for values in forged_values:
+            with self.subTest(values=values):
+                forged_step = replace(step, match_values=values)
+                forged_binding = replace(binding, steps=(forged_step,))
+
+                class Plan:
+                    corpus_id = "bhsa"
+                    native_execution_binding = forged_binding
+
+                with self.assertRaises(tfont.ExactExecutionError) as raised:
+                    semantic_execution._validate_edge_path_binding(Plan())
+                self.assertEqual(
+                    raised.exception.problem.category,
+                    "unsupported_native_binding",
+                )
+
     def test_loaded_observation_reports_complete_string_domain_and_caches_scan(self):
         ir = compiled_predicate_ir()
         feature = predicate_feature()
