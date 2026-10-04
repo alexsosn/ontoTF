@@ -262,8 +262,8 @@ def main() -> int:
                 "The model clarifies existing exact/directional loss semantics and "
                 "supports static coherence checks, but target extensions are usually "
                 "reviewed/intensional rather than independently enumerable. Keep the "
-                "semantics as a verification/explanation model until R-021/R-023 "
-                "settle composition and query-calculus needs."
+                "semantics as a verification/explanation model until R-021/R-022/R-023 "
+                "settle composition, bound, and query-calculus needs."
             ),
             "smallest_future_slice": [
                 "pure derived answer-relation helper: equal|subset|superset|unbounded",
