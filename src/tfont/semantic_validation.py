@@ -304,6 +304,48 @@ def _require_vocab(value: Any, allowed: frozenset[str], *, artifact: SemanticArt
     return value
 
 
+def _validate_edge_value_domain_exact_types(
+    bundle: SemanticSourceBundle,
+    indexes: SemanticIndexes,
+) -> None:
+    artifact = bundle.profile
+    for dependency_id, dependency in indexes.dependencies:
+        if dependency.get("kind") != "edge-value-domain":
+            continue
+        assertion = dependency.get("assertion")
+        if type(assertion) is not dict:
+            continue
+        value_type = assertion.get("value_type")
+        values = assertion.get("values")
+        if type(values) is not list or not values:
+            continue
+        if value_type == "str":
+            exact = all(type(value) is str for value in values)
+        elif value_type == "int":
+            exact = all(type(value) is int for value in values)
+        else:
+            exact = False
+        if not exact:
+            _fail(
+                artifact,
+                "dependency_authority",
+                "edge-value-domain values must use exact reviewed str/int value types",
+                path=("dependencies", dependency_id, "assertion", "values"),
+                related_id=dependency_id,
+            )
+        try:
+            for value in values:
+                canonical_json_bytes(value)
+        except Exception:
+            _fail(
+                artifact,
+                "dependency_authority",
+                "edge-value-domain values must stay inside the canonical JSON domain",
+                path=("dependencies", dependency_id, "assertion", "values"),
+                related_id=dependency_id,
+            )
+
+
 def _validate_component_authority(bundle: SemanticSourceBundle, indexes: SemanticIndexes) -> None:
     profile = bundle.profile
     component_ids = set(dict(indexes.components))
@@ -976,6 +1018,7 @@ def validate_semantic_bundle(bundle: SemanticSourceBundle) -> ValidatedSemanticB
 
     _validate_contract_versions(bundle)
     indexes = _build_indexes(bundle)
+    _validate_edge_value_domain_exact_types(bundle, indexes)
     _validate_component_authority(bundle, indexes)
     _validate_dependency_closure_and_mapping_scope(bundle, indexes)
     _validate_membership_dependency_authority(bundle, indexes)
