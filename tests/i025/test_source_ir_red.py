@@ -125,6 +125,29 @@ class I025SourceIRRedTests(unittest.TestCase):
             with self.subTest(value=value):
                 self.assertTrue(tuple(validator.iter_errors(value)))
 
+    def test_integral_float_cannot_smuggle_integer_match_or_reviewed_domain(self):
+        match_float = predicate_sources(
+            value_type="int",
+            match_values=(1.0,),
+            domain_values=(1, 2),
+        )
+        # Draft 2020-12 treats 1.0 as an integer; semantic validation must
+        # still enforce the exact TFont int contract.
+        validate_structural_sources(match_float)
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(match_float))
+        self.assertEqual(category(raised.exception), "dependency_authority")
+
+        domain_float = predicate_sources(
+            value_type="int",
+            match_values=(1,),
+            domain_values=(1.0, 2),
+        )
+        validate_structural_sources(domain_float)
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(domain_float))
+        self.assertEqual(category(raised.exception), "dependency_authority")
+
     def test_no_predicate_i024_shape_remains_valid(self):
         binding = edge_path_sources(
             start_node_type="word",
