@@ -155,6 +155,28 @@ class I025SourceIRRedTests(unittest.TestCase):
         )["mappings"]["mappings"][0]["native_binding"]
         self.assertFalse(tuple(mapping_binding_validator().iter_errors(binding)))
 
+    def test_unused_integer_edge_domain_still_rejects_integral_float_values(self):
+        sources = edge_path_sources(
+            start_node_type="word",
+            steps=VALUED_STR_STEPS,
+        )
+        sources["profile"]["dependency_contract_version"] = 2
+        dependency = edge_domain_dependency(
+            sources,
+            edge="quality_score",
+            source_node_type="line",
+            target_node_type="fragment",
+            value_type="int",
+            values=(1.0, 2),
+            dependency_id="dep:bhsa:unused-quality-domain",
+        )
+        sources["profile"]["dependencies"].append(dependency)
+
+        validate_structural_sources(sources)
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(sources))
+        self.assertEqual(category(raised.exception), "dependency_authority")
+
     def test_profile_v2_accepts_old_kinds_and_edge_domain_but_v1_rejects_new_kind(self):
         sources = predicate_sources()
         self.assertFalse(tuple(profile_validator().iter_errors(sources["profile"])))
