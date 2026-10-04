@@ -23,6 +23,22 @@ def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _profile_dependency_kinds() -> dict[str, list[str]]:
+    result: dict[str, list[str]] = {}
+    for corpus in CORPORA:
+        profile = _load(
+            ROOT
+            / "src/tfont/resources/profiles"
+            / corpus
+            / "0.2.0"
+            / "profile.json"
+        )
+        result[corpus] = sorted(
+            {dependency["kind"] for dependency in profile["dependencies"]}
+        )
+    return result
+
+
 def _projection_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for corpus in CORPORA:
@@ -132,6 +148,7 @@ def _finite_witnesses() -> dict[str, Any]:
 
 def main() -> int:
     rows = _projection_rows()
+    dependency_kinds = _profile_dependency_kinds()
     assessments = Counter(row["assessment"] for row in rows)
     corpora = Counter(row["corpus_id"] for row in rows)
     targets = Counter(_name(row["target"]) for row in rows)
@@ -165,18 +182,23 @@ def main() -> int:
             "all_semantic_roles_are_annotation_value": all(
                 row["semantic_role"] == "annotation-value" for row in rows
             ),
+            "dependency_kinds_by_corpus": dependency_kinds,
+            "total_annotation_completeness_claim_present": False,
             "noun_native_bindings": noun_rows,
             "proper_noun_native_bindings": proper_noun_rows,
         },
         "minimal_model": {
             "corpus_query_domain": "U_c = TF nodes of the reviewed query node domain",
             "native_selector_denotation": "N_c(b) subseteq U_c",
-            "latent_target_query_denotation": "T_c(t) subseteq U_c",
-            "target_extension_is_not_materialized_by_default": True,
+            "represented_target_query_denotation": "T_rep_c(t) subseteq U_c",
+            "hypothetical_truth_extension": "T_truth_c(t) subseteq U_c",
+            "represented_target_is_not_materialized_independently": True,
+            "truth_extension_is_outside_current_tfont_authority": True,
+            "current_profiles_do_not_claim_total_annotation_completeness": True,
             "assessment_constraints": {
-                "exact": "N = T",
-                "broader": "N subseteq T",
-                "narrower": "T subseteq N",
+                "exact": "N = T_rep",
+                "broader": "N subseteq T_rep",
+                "narrower": "T_rep subseteq N",
                 "close": "no inclusion follows from assessment alone",
                 "related": "non-substitutive; no inclusion follows",
                 "ambiguous": "no unique target denotation",
@@ -184,18 +206,23 @@ def main() -> int:
                 "unsupported": "no authorized shared execution denotation",
             },
             "answer_guarantees": {
-                "no-loss": "A = T",
-                "undercoverage": "A subseteq T",
-                "overcoverage": "T subseteq A",
+                "no-loss": "A = T_rep",
+                "undercoverage": "A subseteq T_rep",
+                "overcoverage": "T_rep subseteq A",
                 "undercoverage+overcoverage": "neither inclusion is guaranteed",
             },
             "refusal_is_not_empty_set": True,
             "cross_corpus_node_sets_share_no_common_universe": True,
+            "relation_between_T_rep_and_T_truth": "unknown without separate coverage/quality authority",
         },
         "finite_set_checks": witnesses,
         "derived_findings": {
             "production_exact_rows_are_coherent": (
                 len(rows) == 21 and assessments == Counter({"exact": 21})
+            ),
+            "production_profiles_lack_total_annotation_completeness_claim": all(
+                kinds == ["native-value-present"]
+                for kinds in dependency_kinds.values()
             ),
             "bhsa_and_extrabiblical_noun_use_value_sets": all(
                 noun_rows[corpus]["execution_shape"] == "value-set-predicate"
