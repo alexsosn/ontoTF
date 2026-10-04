@@ -1,0 +1,36 @@
+name: R-020 denotational semantics research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/r020_denotational_semantics.py"
+      - "docs/research/R-020-denotational-mapping-semantics.md"
+      - "docs/research/data/generated/r020/denotational-semantics.json"
+      - "src/tfont/resources/profiles/bhsa/0.2.0/mappings/**"
+      - "src/tfont/resources/profiles/syriac/0.2.0/mappings/**"
+      - "src/tfont/resources/profiles/extrabiblical/0.2.0/mappings/**"
+      - "docs/research/R-016-approximate-execution-policy.md"
+      - ".github/workflows/r020-denotational-semantics.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Reproduce R-020 evidence
+        run: |
+          python scripts/research/r020_denotational_semantics.py > /tmp/r020-denotational-semantics.json
+          diff -u docs/research/data/generated/r020/denotational-semantics.json /tmp/r020-denotational-semantics.json
