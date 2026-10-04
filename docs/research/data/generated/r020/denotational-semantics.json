@@ -1,0 +1,205 @@
+{
+  "current_production_controls": {
+    "all_semantic_roles_are_annotation_value": true,
+    "all_targets_are_olia_classes": true,
+    "assessment_counts": {
+      "exact": 21
+    },
+    "corpora": [
+      "bhsa",
+      "syriac",
+      "extrabiblical"
+    ],
+    "noun_native_bindings": {
+      "bhsa": {
+        "component_id": "bhsa-tf",
+        "execution_shape": "value-set-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "values": [
+          "nmpr",
+          "subs"
+        ]
+      },
+      "extrabiblical": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-set-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "values": [
+          "nmpr",
+          "subs"
+        ]
+      },
+      "syriac": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "subs"
+      }
+    },
+    "profile_version": "0.2.0",
+    "projection_count": 21,
+    "projection_count_by_corpus": {
+      "bhsa": 7,
+      "extrabiblical": 7,
+      "syriac": 7
+    },
+    "proper_noun_native_bindings": {
+      "bhsa": {
+        "component_id": "bhsa-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "nmpr"
+      },
+      "extrabiblical": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "nmpr"
+      },
+      "syriac": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "ls",
+        "node_type": "word",
+        "value": "prop"
+      }
+    },
+    "target_counts": {
+      "Dual": 3,
+      "Feminine": 3,
+      "Masculine": 3,
+      "Noun": 3,
+      "Plural": 3,
+      "ProperNoun": 3,
+      "Singular": 3
+    }
+  },
+  "derived_findings": {
+    "bhsa_and_extrabiblical_noun_use_value_sets": true,
+    "mixed_direction_intersection_has_no_inclusion_bound": true,
+    "production_exact_rows_are_coherent": true,
+    "proper_noun_uses_different_native_features_across_corpora": true,
+    "syriac_noun_uses_scalar_value": true,
+    "uniform_overcoverage_intersection_preserves_upper_bound": true,
+    "uniform_undercoverage_intersection_preserves_lower_bound": true
+  },
+  "finite_set_checks": {
+    "exact": {
+      "answer": [
+        "a",
+        "b"
+      ],
+      "answer_equals_target": true,
+      "target": [
+        "a",
+        "b"
+      ]
+    },
+    "mixed_direction_conjunction": {
+      "answer": [
+        "a",
+        "b"
+      ],
+      "answer_subset_target": false,
+      "false_negative_witnesses": [
+        "c"
+      ],
+      "false_positive_witnesses": [
+        "a"
+      ],
+      "target": [
+        "b",
+        "c"
+      ],
+      "target_subset_answer": false
+    },
+    "overcoverage": {
+      "answer": [
+        "a",
+        "b"
+      ],
+      "answer_minus_target": [
+        "b"
+      ],
+      "target": [
+        "a"
+      ],
+      "target_subset_answer": true
+    },
+    "undercoverage": {
+      "answer": [
+        "a"
+      ],
+      "answer_subset_target": true,
+      "target": [
+        "a",
+        "b"
+      ],
+      "target_minus_answer": [
+        "b"
+      ]
+    },
+    "uniform_overcoverage_conjunction": {
+      "answer": [
+        "b",
+        "c"
+      ],
+      "target": [
+        "b"
+      ],
+      "target_subset_answer": true
+    },
+    "uniform_undercoverage_conjunction": {
+      "answer": [
+        "b"
+      ],
+      "answer_subset_target": true,
+      "target": [
+        "b",
+        "c"
+      ]
+    }
+  },
+  "minimal_model": {
+    "answer_guarantees": {
+      "no-loss": "A = T",
+      "overcoverage": "T subseteq A",
+      "undercoverage": "A subseteq T",
+      "undercoverage+overcoverage": "neither inclusion is guaranteed"
+    },
+    "assessment_constraints": {
+      "ambiguous": "no unique target denotation",
+      "broader": "N subseteq T",
+      "close": "no inclusion follows from assessment alone",
+      "exact": "N = T",
+      "narrower": "T subseteq N",
+      "native-only": "native denotation exists without shared target",
+      "related": "non-substitutive; no inclusion follows",
+      "unsupported": "no authorized shared execution denotation"
+    },
+    "corpus_query_domain": "U_c = TF nodes of the reviewed query node domain",
+    "cross_corpus_node_sets_share_no_common_universe": true,
+    "latent_target_query_denotation": "T_c(t) subseteq U_c",
+    "native_selector_denotation": "N_c(b) subseteq U_c",
+    "refusal_is_not_empty_set": true,
+    "target_extension_is_not_materialized_by_default": true
+  },
+  "recommendation": {
+    "productionization": "defer-public-runtime-api",
+    "reason": "The model clarifies existing exact/directional loss semantics and supports static coherence checks, but target extensions are usually reviewed/intensional rather than independently enumerable. Keep the semantics as a verification/explanation model until R-021/R-023 settle composition and query-calculus needs.",
+    "requires_materialized_target_extensions": false,
+    "requires_new_corpus_annotation": false,
+    "requires_ontology_reasoner": false,
+    "smallest_future_slice": [
+      "pure derived answer-relation helper: equal|subset|superset|unbounded",
+      "static assessment/loss coherence verifier",
+      "explanation/provenance projection derived from existing reviewed fields"
+    ],
+    "verification_model": "go"
+  }
+}
