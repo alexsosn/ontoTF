@@ -419,7 +419,7 @@ This result also directly motivates R-022's abstract-bound study.
 It is tempting to formalize `close` as:
 
 ```text
-N ∩ T != ∅
+N ∩ T_rep != ∅
 ```
 
 or even “large overlap”.
@@ -506,7 +506,7 @@ losses = ["undercoverage"]
 an explanation can derive:
 
 ```text
-answer_relation = "subset-of-requested-denotation"
+answer_relation = "subset-of-reviewed-represented-target"
 ```
 
 without adding new semantic authority.
