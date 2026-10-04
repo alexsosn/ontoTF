@@ -553,13 +553,33 @@ def _validate_edge_path_dependency_authority(
                     else:
                         native_source = result_type
                         native_target = current_type
-                    try:
-                        requested = {
-                            canonical_json_bytes(value)
-                            for value in match_values
-                        } if type(match_values) is list else set()
-                    except Exception:
+                    value_type = step.get("value_type")
+                    if type(match_values) is not list or not match_values:
                         requested = set()
+                    else:
+                        requested_values_valid = all(
+                            type(value) is str
+                            if value_type == "str"
+                            else type(value) is int
+                            if value_type == "int"
+                            else False
+                            for value in match_values
+                        )
+                        if not requested_values_valid:
+                            _fail(
+                                artifact,
+                                "dependency_authority",
+                                "edge-path match_values must use exact reviewed str/int value types",
+                                path=binding_path + ("steps",),
+                                related_id=related_id,
+                            )
+                        try:
+                            requested = {
+                                canonical_json_bytes(value)
+                                for value in match_values
+                            }
+                        except Exception:
+                            requested = set()
                     if step.get("value_role") != "semantic-qualifier":
                         requested = set()
                     authorized = False
@@ -572,21 +592,36 @@ def _validate_edge_path_dependency_authority(
                         ):
                             continue
                         reviewed_values = assertion.get("values")
+                        reviewed_values_valid = (
+                            type(reviewed_values) is list
+                            and bool(reviewed_values)
+                            and all(
+                                type(value) is str
+                                if assertion.get("value_type") == "str"
+                                else type(value) is int
+                                if assertion.get("value_type") == "int"
+                                else False
+                                for value in reviewed_values
+                            )
+                        )
+                        if not reviewed_values_valid:
+                            continue
+                        try:
+                            reviewed = {
+                                canonical_json_bytes(value)
+                                for value in reviewed_values
+                            }
+                        except Exception:
+                            continue
                         if (
                             assertion.get("edge") == step.get("edge")
                             and assertion.get("source_node_type") == native_source
                             and assertion.get("target_node_type") == native_target
-                            and assertion.get("value_type") == step.get("value_type")
+                            and assertion.get("value_type") == value_type
                             and assertion.get("value_role") == step.get("value_role")
                             and assertion.get("domain_semantics") == "closed-reviewed"
-                            and type(reviewed_values) is list
                             and requested
-                            and requested.issubset(
-                                {
-                                    canonical_json_bytes(value)
-                                    for value in reviewed_values
-                                }
-                            )
+                            and requested.issubset(reviewed)
                         ):
                             authorized = True
                             break
