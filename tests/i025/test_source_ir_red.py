@@ -271,6 +271,63 @@ class I025SourceIRRedTests(unittest.TestCase):
             validate_semantic_bundle(source_bundle(sources))
         self.assertEqual(category(raised.exception), "dependency_authority")
 
+    def test_second_step_predicate_tracks_prior_result_as_native_source_domain(self):
+        first = {
+            "edge": "word_line",
+            "direction": "outgoing",
+            "result_node_type": "line",
+            "valued": False,
+        }
+        second = predicate_step(
+            edge="witness_resolution",
+            result_node_type="fragment",
+        )
+        sources = edge_path_sources(
+            start_node_type="word",
+            steps=(first, second),
+        )
+        sources["profile"]["dependency_contract_version"] = 2
+        dependency = edge_domain_dependency(
+            sources,
+            edge="witness_resolution",
+            source_node_type="line",
+            target_node_type="fragment",
+        )
+        sources["profile"]["dependencies"].append(dependency)
+        mapping = sources["mappings"]["mappings"][0]
+        mapping["native_dependencies"].append(dependency["dependency_id"])
+        _refresh_mapping(mapping)
+
+        validate_structural_sources(sources)
+        validate_semantic_bundle(source_bundle(sources))
+
+        wrong = copy.deepcopy(sources)
+        wrong["profile"]["dependencies"][-1]["assertion"]["source_node_type"] = "word"
+        validate_structural_sources(wrong)
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(wrong))
+        self.assertEqual(category(raised.exception), "dependency_authority")
+
+    def test_partial_edge_domains_cannot_be_unioned_for_one_match_set(self):
+        sources = predicate_sources(
+            match_values=("ambiguous", "unique"),
+            domain_values=("ambiguous",),
+        )
+        second = edge_domain_dependency(
+            sources,
+            values=("unique",),
+            dependency_id="dep:bhsa:witness-resolution:domain:second",
+        )
+        sources["profile"]["dependencies"].append(second)
+        mapping = sources["mappings"]["mappings"][0]
+        mapping["native_dependencies"].append(second["dependency_id"])
+        _refresh_mapping(mapping)
+
+        validate_structural_sources(sources)
+        with self.assertRaises(SemanticValidationError) as raised:
+            validate_semantic_bundle(source_bundle(sources))
+        self.assertEqual(category(raised.exception), "dependency_authority")
+
     def test_incoming_dependency_uses_native_source_target_orientation(self):
         sources = predicate_sources(direction="incoming")
         validate_structural_sources(sources)
