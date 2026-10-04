@@ -24,7 +24,8 @@
       "result_node_type",
       "valued",
       "value_type",
-      "value_role"
+      "value_role",
+      "match_values"
     ],
     "execution_result_fields": {
       "ApproximateAuthorityCorpusExecution": [
