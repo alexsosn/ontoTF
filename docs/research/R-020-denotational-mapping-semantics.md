@@ -15,9 +15,10 @@ The useful core is smaller than a general ontology semantics:
 
 - every executable TFont semantic query for one corpus returns a set of corpus nodes;
 - a reviewed native binding denotes a set of nodes in that corpus/query domain;
-- a shared semantic target has a **latent corpus-relative query extension** against the same node domain;
-- `exact`, `broader`, and `narrower` impose equality/inclusion constraints;
-- reviewed approximation losses constrain how the actual answer may differ from the requested target extension;
+- a shared semantic target has a **reviewed represented corpus-relative extension** against the same node domain;
+- that represented extension is distinct from any hypothetical annotation-independent “truth set” in the text;
+- `exact`, `broader`, and `narrower` impose equality/inclusion constraints against the represented extension;
+- reviewed approximation losses constrain how the actual answer may differ from that represented extension;
 - refusal states such as unsupported, ambiguous, or absent capability are not empty denotations;
 - `close` and `related` remain intentionally under-specified unless a separate reviewed loss contract provides a directional execution guarantee.
 
@@ -66,18 +67,30 @@ N(c,s,b) ⊆ U(c,s)
 
 is the set of corpus nodes selected by that binding.
 
-For a common semantic target `t`:
+For a common semantic target `t`, distinguish two notions.
+
+The **represented target extension** is:
 
 ```text
-T(c,s,t) ⊆ U(c,s)
+T_rep(c,s,t) ⊆ U(c,s)
 ```
 
-is the **latent corpus-relative query extension**: the nodes that would satisfy the target meaning under the reviewed semantic interpretation.
+It is the target meaning **as represented by the reviewed active TFont profile** on that corpus snapshot.
 
-Usually TFont can enumerate `N`, but it cannot independently enumerate `T`. `T` is therefore a semantic variable constrained by reviewed mapping claims; it is not another hidden TF feature and must not be fabricated from ontology labels or hierarchy traversal.
+A stronger hypothetical set would be:
+
+```text
+T_truth(c,s,t) ⊆ U(c,s)
+```
+
+meaning every corpus node that would satisfy the semantic concept under an independent truth criterion, whether or not the corpus annotated it.
+
+Current production profiles do not assert such total annotation completeness. Their linguistic dependencies are `native-value-present` claims; no current BHSA/Syriac/ExtraBiblical 0.2.0 profile asserts that every semantically eligible node is annotated with the mapped feature/value. Therefore R-020 must **not** identify `T_rep` with `T_truth`.
+
+Usually TFont can enumerate `N`. It does not independently enumerate either target extension. `T_rep` is the semantic variable constrained by the reviewed mapping/profile contract. `T_truth` is outside current TFont authority unless a future evidence-backed coverage/quality contract explicitly relates it to represented annotations.
 
 This matters for OLiA class mappings. The URI
-`http://purl.org/olia/olia.owl#Noun` denotes an ontology class/resource under the ontology semantics. TFont's result is a set of TF nodes reviewed as realizing that target in one corpus. Those two objects are related by the mapping contract; they are not identical data structures.
+`http://purl.org/olia/olia.owl#Noun` denotes an ontology class/resource under the ontology semantics. TFont's result is a set of TF nodes reviewed as realizing that target **within the profile's represented annotation semantics**. The ontology class, its ontology-model extension, `T_rep`, and any external ground-truth set are distinct objects.
 
 ## 3. Minimal mapping relation
 
@@ -87,27 +100,29 @@ Use the current TFont direction fixed by R-016:
 native/source concept -> external/common target
 ```
 
-For executable unary semantic constraints, the smallest safe corpus-local relation is:
+For executable unary semantic constraints, the smallest safe corpus-local relation is between the native binding and `T_rep`:
 
-| TFont state | Corpus-local denotational constraint |
+| TFont state | Corpus-local represented-denotation constraint |
 |---|---|
-| `exact` | `N = T` |
-| `broader` | `N ⊆ T` |
-| `narrower` | `T ⊆ N` |
+| `exact` | `N = T_rep` |
+| `broader` | `N ⊆ T_rep` |
+| `narrower` | `T_rep ⊆ N` |
 | `close` | no inclusion follows from assessment alone |
 | `related` | non-substitutive; no inclusion follows |
-| `ambiguous` native state | no unique target `T` is authorized |
-| `native-only` | `N` may exist, but there is no shared target `T` |
+| `ambiguous` native state | no unique represented target is authorized |
+| `native-only` | `N` may exist, but there is no shared target projection |
 | `unsupported` | no authorized shared execution denotation |
 
-The use of non-strict `⊆` is deliberate. A reviewed `broader` or `narrower` relation is intensional: on one concrete corpus snapshot the observed extensions can accidentally coincide. The runtime guarantee should not claim a strict set difference that the current snapshot need not exhibit.
+No row above states a relation to `T_truth`.
+
+The use of non-strict `⊆` is deliberate. A reviewed `broader` or `narrower` relation is intensional: on one concrete corpus snapshot represented extensions can accidentally coincide. The runtime guarantee should not claim a strict set difference that the current snapshot need not exhibit.
 
 ### Direction check against R-016
 
 R-016 says:
 
-- `broader`: target is broader than native; reverse execution can miss target members -> undercoverage.
-- `narrower`: target is narrower than native; reverse execution can include extra members -> overcoverage.
+- `broader`: target is broader than native; reverse execution can miss represented target members -> undercoverage.
+- `narrower`: target is narrower than native; reverse execution can include members outside the represented requested target -> overcoverage.
 
 The set relations above are exactly that orientation.
 
@@ -117,16 +132,16 @@ The common naming hazard is to read “broader” as “the native answer is bro
 
 Let the executed node set be `A`.
 
-For a reviewed executable plan:
+For a reviewed executable plan, relative to `T_rep`:
 
 | Reviewed loss set | Answer guarantee |
 |---|---|
-| none | `A = T` |
-| `undercoverage` | `A ⊆ T` |
-| `overcoverage` | `T ⊆ A` |
+| none | `A = T_rep` |
+| `undercoverage` | `A ⊆ T_rep` |
+| `overcoverage` | `T_rep ⊆ A` |
 | both | no inclusion direction is guaranteed |
 
-This is the most useful denotational projection of current I-020 state.
+This is the most useful denotational projection of current I-020 state. It is a guarantee about the **reviewed represented semantics**, not a corpus-annotation completeness theorem.
 
 Important separation:
 
