@@ -299,6 +299,7 @@ def main() -> int:
         "valued",
         "value_type",
         "value_role",
+        "match_values",
     ]:
         raise SystemExit("typed EdgeStepIR contract drifted")
     if runtime_shapes != [
