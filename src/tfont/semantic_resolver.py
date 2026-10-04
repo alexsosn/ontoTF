@@ -780,11 +780,45 @@ def _native_binding_projection(binding: NativeBindingIR) -> dict[str, Any]:
                     step.valued is False
                     and step.value_type is None
                     and step.value_role is None
+                    and step.match_values is None
                 )
-            if not common_valid or not value_contract_valid:
+
+            match_values_valid = step.match_values is None
+            encoded_match_values: list[bytes] = []
+            if step.match_values is not None:
+                match_values_valid = (
+                    step.valued is True
+                    and step.value_role == "semantic-qualifier"
+                    and type(step.match_values) is tuple
+                    and bool(step.match_values)
+                )
+                if match_values_valid:
+                    for value in step.match_values:
+                        if step.value_type == "str":
+                            typed = type(value) is str
+                        else:
+                            typed = type(value) is int
+                        if not typed:
+                            match_values_valid = False
+                            break
+                        try:
+                            encoded_match_values.append(canonical_json_bytes(value))
+                        except Exception:
+                            match_values_valid = False
+                            break
+                    if (
+                        match_values_valid
+                        and (
+                            len(set(encoded_match_values)) != len(encoded_match_values)
+                            or tuple(encoded_match_values)
+                            != tuple(sorted(encoded_match_values))
+                        )
+                    ):
+                        match_values_valid = False
+            if not common_valid or not value_contract_valid or not match_values_valid:
                 _fail(
                     "invalid_compiled_ir",
-                    "native binding edge step has an invalid typed valuedness contract",
+                    "native binding edge step has an invalid typed valuedness or match contract",
                 )
             row = {
                 "edge": step.edge,
@@ -795,6 +829,8 @@ def _native_binding_projection(binding: NativeBindingIR) -> dict[str, Any]:
             if step.valued:
                 row["value_type"] = step.value_type
                 row["value_role"] = step.value_role
+            if step.match_values is not None:
+                row["match_values"] = list(step.match_values)
             steps.append(row)
         result["steps"] = steps
     if binding.execution_shape == "edge-path":

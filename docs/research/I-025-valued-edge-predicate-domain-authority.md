@@ -6,8 +6,11 @@ Prerequisite: merged I-024 #249 / PR #257
 
 ## Status and scope
 
-Research gate only. No production schema, IR, resolver, runtime, packaged mapping,
-or dependency behavior is changed by this branch.
+Research is complete. PR #260 implements the reviewed production slice after
+the separate plan gate #259. The reproducible probe now doubles as a
+post-implementation current-state guard; the pinned corpus/Text-Fabric evidence
+below remains the design basis. No packaged production profile is migrated by
+I-025.
 
 The study is pinned to:
 
@@ -187,6 +190,20 @@ Rules:
 Do not add a second scalar `match_value` field. One finite-set field avoids
 two equivalent authored forms and reuses the same execution semantics for
 singleton and multi-value filters.
+
+### Exact integer typing at the source/semantic boundary
+
+JSON Schema Draft 2020-12 treats a numeric value such as `1.0` as satisfying
+`type: integer` because it has no fractional part. TFont's reviewed I-025
+contract is stricter: an integer edge literal is an **exact integer value**, not
+a float that happens to be mathematically integral.
+
+The implementation therefore keeps the ordinary Draft 2020-12 schema and adds
+an exact-type semantic-validation guard for every `match_values` predicate and
+every v2 `edge-value-domain`, including unused domain records. Resolver,
+execution and runtime prerequisite validation independently repeat the exact
+type check. This prevents `1.0` from acquiring the same canonical authority as
+`1` before compiled IR is produced.
 
 ## 5. Canonicalization and identity
 

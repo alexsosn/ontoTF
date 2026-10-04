@@ -93,6 +93,51 @@
       },
       "additionalProperties": false
     },
+    "edgeValueDomainAssertion": {
+      "type": "object",
+      "required": [
+        "edge", "source_node_type", "target_node_type", "value_type",
+        "value_role", "values", "domain_semantics"
+      ],
+      "properties": {
+        "edge": {"type": "string", "minLength": 1},
+        "source_node_type": {"type": "string", "minLength": 1},
+        "target_node_type": {"type": "string", "minLength": 1},
+        "value_type": {"enum": ["str", "int"]},
+        "value_role": {"const": "semantic-qualifier"},
+        "values": {"type": "array", "minItems": 1, "uniqueItems": true},
+        "domain_semantics": {"const": "closed-reviewed"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"value_type": {"const": "str"}}, "required": ["value_type"]},
+          "then": {
+            "properties": {
+              "values": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {"type": "string"}
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"value_type": {"const": "int"}}, "required": ["value_type"]},
+          "then": {
+            "properties": {
+              "values": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
     "extentInterpretationAssertion": {
       "type": "object",
       "required": ["node_type", "interpretation"],
@@ -119,7 +164,8 @@
             "path-present",
             "native-value-present",
             "value-domain",
-            "extent-interpretation"
+            "extent-interpretation",
+            "edge-value-domain"
           ]
         },
         "assertion": {"type": "object"},
@@ -177,6 +223,19 @@
           "then": {
             "required": ["evidence"],
             "properties": {"evidence": {"minItems": 1}}
+          }
+        },
+        {
+          "if": {
+            "properties": {"kind": {"const": "edge-value-domain"}},
+            "required": ["kind"]
+          },
+          "then": {
+            "required": ["evidence"],
+            "properties": {
+              "assertion": {"$ref": "#/$defs/edgeValueDomainAssertion"},
+              "evidence": {"minItems": 1}
+            }
           }
         }
       ],
@@ -258,7 +317,7 @@
       "uniqueItems": true,
       "items": {"type": "string", "minLength": 1}
     },
-    "dependency_contract_version": {"const": 1},
+    "dependency_contract_version": {"enum": [1, 2]},
     "dependencies": {
       "type": "array",
       "minItems": 1,
@@ -269,5 +328,33 @@
     "license": {"type": "string", "minLength": 1},
     "provenance": {"type": "object"}
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {"dependency_contract_version": {"const": 1}},
+        "required": ["dependency_contract_version"]
+      },
+      "then": {
+        "properties": {
+          "dependencies": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "allOf": [
+                {"$ref": "#/$defs/dependency"},
+                {
+                  "not": {
+                    "properties": {"kind": {"const": "edge-value-domain"}},
+                    "required": ["kind"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }

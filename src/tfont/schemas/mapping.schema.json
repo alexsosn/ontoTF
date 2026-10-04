@@ -14,7 +14,8 @@
         "result_node_type": {"type": "string", "minLength": 1},
         "valued": {"type": "boolean"},
         "value_type": {"enum": ["str", "int"]},
-        "value_role": {"enum": ["semantic-qualifier", "source-evidence", "technical"]}
+        "value_role": {"enum": ["semantic-qualifier", "source-evidence", "technical"]},
+        "match_values": {"type": "array", "minItems": 1, "uniqueItems": true}
       },
       "allOf": [
         {
@@ -26,8 +27,51 @@
           "then": {
             "not": {"anyOf": [
               {"required": ["value_type"]},
-              {"required": ["value_role"]}
+              {"required": ["value_role"]},
+              {"required": ["match_values"]}
             ]}
+          }
+        },
+        {
+          "if": {"required": ["match_values"]},
+          "then": {
+            "required": ["valued", "value_type", "value_role"],
+            "properties": {
+              "valued": {"const": true},
+              "value_role": {"const": "semantic-qualifier"}
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["match_values", "value_type"],
+            "properties": {"value_type": {"const": "str"}}
+          },
+          "then": {
+            "properties": {
+              "match_values": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {"type": "string"}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["match_values", "value_type"],
+            "properties": {"value_type": {"const": "int"}}
+          },
+          "then": {
+            "properties": {
+              "match_values": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              }
+            }
           }
         }
       ],

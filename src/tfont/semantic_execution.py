@@ -734,8 +734,42 @@ def _validate_edge_path_binding(plan: Any) -> NativeBindingIR:
                     step.valued is False
                     and step.value_type is None
                     and step.value_role is None
+                    and step.match_values is None
                 )
-            if not common_valid or not value_contract_valid:
+
+            match_contract_valid = step.match_values is None
+            if step.match_values is not None:
+                match_contract_valid = (
+                    step.valued is True
+                    and step.value_role == "semantic-qualifier"
+                    and type(step.match_values) is tuple
+                    and bool(step.match_values)
+                )
+                encoded: list[bytes] = []
+                if match_contract_valid:
+                    for value in step.match_values:
+                        typed = (
+                            type(value) is str
+                            if step.value_type == "str"
+                            else type(value) is int
+                        )
+                        if not typed:
+                            match_contract_valid = False
+                            break
+                        try:
+                            encoded.append(canonical_json_bytes(value))
+                        except Exception:
+                            match_contract_valid = False
+                            break
+                if (
+                    match_contract_valid
+                    and (
+                        len(set(encoded)) != len(encoded)
+                        or tuple(encoded) != tuple(sorted(encoded))
+                    )
+                ):
+                    match_contract_valid = False
+            if not common_valid or not value_contract_valid or not match_contract_valid:
                 steps_valid = False
                 break
 
@@ -1108,6 +1142,15 @@ def _execute_edge_path(
                     component_id=binding.component_id or "",
                 )
                 if observed_type != step.result_node_type:
+                    continue
+
+                if (
+                    step.match_values is not None
+                    and (
+                        not value_present
+                        or value not in step.match_values
+                    )
+                ):
                     continue
 
                 if evidence_required:

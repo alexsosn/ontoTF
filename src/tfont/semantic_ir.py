@@ -38,6 +38,7 @@ class EdgeStepIR:
     valued: bool | None = None
     value_type: str | None = None
     value_role: str | None = None
+    match_values: tuple[str | int, ...] | None = None
 
 
 @dataclass(frozen=True)
@@ -496,6 +497,24 @@ def native_binding_identity(binding: dict[str, Any]) -> str:
     selected_values = normalized.get("values")
     if type(selected_values) is list:
         normalized["values"] = sorted(selected_values, key=canonical_json_bytes)
+    steps = normalized.get("steps")
+    if type(steps) is list and any(
+        type(step) is dict and type(step.get("match_values")) is list
+        for step in steps
+    ):
+        normalized_steps: list[Any] = []
+        for step in steps:
+            if type(step) is not dict:
+                normalized_steps.append(step)
+                continue
+            normalized_step = dict(step)
+            match_values = normalized_step.get("match_values")
+            if type(match_values) is list:
+                normalized_step["match_values"] = sorted(
+                    match_values, key=canonical_json_bytes
+                )
+            normalized_steps.append(normalized_step)
+        normalized["steps"] = normalized_steps
     payload = canonical_json_bytes(normalized)
     return "sha256:" + hashlib.sha256(payload).hexdigest()
 
@@ -512,6 +531,11 @@ def _native_binding(binding: dict[str, Any]) -> NativeBindingIR:
                 step["valued"],
                 step.get("value_type"),
                 step.get("value_role"),
+                (
+                    tuple(sorted(step["match_values"], key=canonical_json_bytes))
+                    if type(step.get("match_values")) is list
+                    else None
+                ),
             )
             for step in steps_value
         )

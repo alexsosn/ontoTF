@@ -324,6 +324,7 @@ def main() -> int:
         "valued",
         "value_type",
         "value_role",
+        "match_values",
     ]:
         raise SystemExit("I-024 EdgeStepIR contract drifted")
     if not result["current_tfont_contract"]["unvalued_edge_path_is_schema_valid"]:

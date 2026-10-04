@@ -37,6 +37,7 @@ _SET_LIKE_LIST_FIELDS = {
     "external_references",
     "losses",
     "values",
+    "match_values",
 }
 
 
