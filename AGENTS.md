@@ -15,6 +15,29 @@ TFont is a semantic interoperability layer for Text-Fabric / Context-Fabric corp
 
 For zero-span textual data, follow the materialized corpus model rather than inventing a TFont storage workaround. In particular, current ORACC-TF architecture keeps independently positioned zero-span textual entities in the TF warp through explicit synthetic/empty slots. Such slots are technical positional anchors, not semantic cuneiform signs, and do not justify a TFont sidecar abstraction.
 
+## Backlog selection and program priority
+
+The autonomous development loop must optimize for completion of the active project program, not for the mere existence of an open issue.
+
+Priority rules:
+
+1. An explicit user instruction about what to work on next always wins.
+2. Otherwise, follow the active roadmap/program's declared execution order and dependency graph before unrelated backlog items.
+3. For P-004 (#202), until the completion gate #269 is closed, the default queue is:
+   - #263 I-026 accounting work queue;
+   - #264 I-027 OLiA linguistic coverage and #265 I-028 OntoLex-Lemon/SKOS lexical coverage after #263, with #264/#265 allowed in parallel;
+   - #266 I-029 CIDOC CRM/CRMtex;
+   - #267 I-030 LRMoo;
+   - #268 I-031 CRMinf;
+   - #269 I-032 residual accounting and completion release.
+4. Do not select deferred/exploratory research ahead of an actionable active-program ticket. In particular, R-021 through R-026 are post-P-004-core research unless explicitly reopened because a concrete P-004 blocker requires them.
+5. A large roadmap ticket with unfinished acceptance criteria does not count as “no tickets left”. If its next workstream lacks a suitably scoped implementation ticket, decompose that workstream into evidence-grounded tickets and continue within the same program.
+6. If the earliest queued ticket is genuinely blocked, work on the next dependency-safe ticket within the same active program. Leave the active program only when all dependency-safe work is blocked or the user explicitly changes priority.
+7. Performance, stability, ergonomics, documentation, and edge-case fallback work comes after actionable active-program work, not before it.
+8. Issue number, creation time, ease of completion, or the fact that a research issue is unblocked are not priority signals by themselves.
+
+When work is deferred for prioritization rather than rejected on substance, record that explicitly so it can be reopened after the active program completes.
+
 ## Required development loop
 
 Every ticket moves through the relevant gates below. Do not skip a gate because the implementation appears obvious.
