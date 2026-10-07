@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import argparse
 import copy
-import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -38,16 +37,6 @@ def _utf16_key(value: str) -> bytes:
 
 def _json_pointer_token(value: str) -> str:
     return value.replace("~", "~0").replace("/", "~1")
-
-
-def _policy_digest(policy: dict[str, Any]) -> str:
-    payload = json.dumps(
-        policy,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode("utf-8")
-    return "sha256:" + hashlib.sha256(payload).hexdigest()
 
 
 def _item_base(item_id: str, kind: str) -> str:
@@ -469,7 +458,6 @@ def build_queue(*, policy: dict[str, Any] | None = None) -> dict[str, Any]:
     queue: dict[str, Any] = {
         "schema_version": 1,
         "policy_id": policy["policy_id"],
-        "policy_digest": _policy_digest(policy),
         "manifest_bindings": manifest_bindings,
         "semantic_rows": rows,
         "technical_exclusions": technical_exclusions,
