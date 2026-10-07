@@ -5,6 +5,8 @@ import json
 import unittest
 from pathlib import Path
 
+from tfont.semantic_vocabulary import CAPABILITY_IDS, PROFILE_IDS
+
 
 ROOT = Path(__file__).resolve().parents[2]
 BUILDER = ROOT / "scripts/coverage/build_i026_work_queue.py"
@@ -74,6 +76,13 @@ class I026WorkQueueRedTests(unittest.TestCase):
         self.assertEqual(len(keys), len(set(keys)))
         self.assertEqual(set(row["workstream"] for row in rows), set("CDEFGH"))
         self.assertTrue(all(type(row["owner_issue"]) is int for row in rows))
+        for row in rows:
+            self.assertTrue(row["candidate_profiles"])
+            self.assertTrue(row["candidate_capabilities"])
+            self.assertTrue(set(row["candidate_profiles"]) <= PROFILE_IDS)
+            self.assertTrue(set(row["candidate_capabilities"]) <= CAPABILITY_IDS)
+            self.assertNotIn("heritage-written-text", row["candidate_profiles"])
+            self.assertNotIn("completion", row["candidate_profiles"])
         self.assertTrue(all(row["evidence_source"] and row["evidence_pointer"] for row in rows))
 
     def test_node_and_edge_values_inherit_parent_route(self):
@@ -118,6 +127,10 @@ class I026WorkQueueRedTests(unittest.TestCase):
         self.assertEqual(gap["reason"], "outside-denominator")
         self.assertEqual(gap["workstream"], "C")
         self.assertEqual(gap["owner_issue"], 264)
+        self.assertEqual(gap["candidate_profiles"], ["linguistic"])
+        self.assertEqual(
+            gap["candidate_capabilities"], ["linguistic.part-of-speech"]
+        )
         self.assertFalse(
             any(
                 row["corpus_id"] == "syriac" and row["item_id"] == gap["item_id"]
