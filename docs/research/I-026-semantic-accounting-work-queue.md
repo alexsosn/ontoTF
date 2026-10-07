@@ -107,10 +107,10 @@ The reviewed routing policy developed against the exact current manifests yields
 | CUC | 0 | 2 | 23 | 1 | 10 | 1 | 37 |
 | Syriac | 61 | 5 | 0 | 0 | 0 | 8 | 74 |
 | ExtraBiblical | 113 | 10 | 0 | 2 | 0 | 11 | 136 |
-| Pseudepigrapha-TF | 0 | 8 | 0 | 80 | 0 | 25 | 113 |
+| Pseudepigrapha-TF | 0 | 8 | 0 | 83 | 0 | 22 | 113 |
 | ORACC-TF | 11 | 13 | 40 | 18 | 0 | 17 | 99 |
 | TLHdig-TF | 46 | 7 | 90 | 51 | 29 | 33 | 256 |
-| **total** | **380** | **67** | **153** | **158** | **39** | **137** | **934** |
+| **total** | **380** | **67** | **153** | **161** | **39** | **134** | **934** |
 
 These are workload-routing counts, not ontology coverage percentages.
 
