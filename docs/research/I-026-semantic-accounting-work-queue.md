@@ -63,7 +63,7 @@ The queue needs exactly one primary final-disposition owner per denominator item
 | G | #268 | CRMinf / explicit scholarly/editorial inference audit |
 | H | #269 | cross-model, structural/native-only, residual/ambiguous completion |
 
-A row may mention complementary future profiles, but it must still have one primary owner. Candidate profile/capability ownership uses only the controlled R-014 vocabulary. These are review envelopes, not activation claims: an E-owned item can require review against both `heritage` and `written-text` without asserting that either profile is active for that item. True complementary projection is completed in H after the primary owner establishes its semantic layer.
+A row may mention complementary future profiles, but it must still have one primary owner. Candidate profile/capability ownership uses only the controlled R-014 vocabulary. These are review envelopes, not activation claims: an E-owned item can require review against both `heritage` and `written-text` without asserting that either profile is active for that item. H `cross-model` word domains use `structural.entity-kind`; H `native-only-candidate` metadata carries no fabricated semantic-profile ownership. True complementary projection is completed in H after the primary owner establishes its semantic layer.
 
 ## 5. Evidence policy
 
