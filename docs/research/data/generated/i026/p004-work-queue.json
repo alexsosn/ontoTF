@@ -35,21 +35,21 @@
   ],
   "counts": {
     "aggregate_workstreams": {
-      "C": 376,
-      "D": 66,
+      "C": 380,
+      "D": 67,
       "E": 153,
-      "F": 157,
+      "F": 158,
       "G": 39,
-      "H": 143
+      "H": 137
     },
     "per_corpus": {
       "bhsa": {
-        "C": 147,
-        "D": 21,
+        "C": 149,
+        "D": 22,
         "E": 0,
         "F": 6,
         "G": 0,
-        "H": 45
+        "H": 42
       },
       "cuc": {
         "C": 0,
@@ -60,12 +60,12 @@
         "H": 1
       },
       "extrabiblical": {
-        "C": 111,
+        "C": 113,
         "D": 10,
         "E": 0,
         "F": 2,
         "G": 0,
-        "H": 13
+        "H": 11
       },
       "oracc": {
         "C": 11,
@@ -79,9 +79,9 @@
         "C": 0,
         "D": 8,
         "E": 0,
-        "F": 79,
+        "F": 80,
         "G": 0,
-        "H": 26
+        "H": 25
       },
       "syriac": {
         "C": 61,
@@ -728,7 +728,7 @@
       "workstream": "H"
     },
     {
-      "candidate_profile": "completion",
+      "candidate_profile": "linguistic",
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/code",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -738,10 +738,10 @@
       },
       "item_id": "node_feature:code",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "conservative-residual",
-      "routing_bucket": "needs-focused-research",
-      "workstream": "H"
+      "owner_issue": 264,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "C"
     },
     {
       "candidate_profile": "linguistic",
@@ -1200,7 +1200,7 @@
       "workstream": "C"
     },
     {
-      "candidate_profile": "completion",
+      "candidate_profile": "linguistic",
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/is_root",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -1210,10 +1210,10 @@
       },
       "item_id": "node_feature:is_root",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "conservative-residual",
-      "routing_bucket": "needs-focused-research",
-      "workstream": "H"
+      "owner_issue": 264,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "C"
     },
     {
       "candidate_profile": "linguistic",
@@ -1408,7 +1408,7 @@
       "workstream": "C"
     },
     {
-      "candidate_profile": "completion",
+      "candidate_profile": "lexical",
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/nametype",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -1418,10 +1418,10 @@
       },
       "item_id": "node_feature:nametype",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "conservative-residual",
-      "routing_bucket": "needs-focused-research",
-      "workstream": "H"
+      "owner_issue": 265,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "D"
     },
     {
       "candidate_profile": "linguistic",
@@ -6175,7 +6175,7 @@
       "workstream": "H"
     },
     {
-      "candidate_profile": "completion",
+      "candidate_profile": "linguistic",
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/code",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -6185,10 +6185,10 @@
       },
       "item_id": "node_feature:code",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "conservative-residual",
-      "routing_bucket": "needs-focused-research",
-      "workstream": "H"
+      "owner_issue": 264,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "C"
     },
     {
       "candidate_profile": "linguistic",
@@ -6575,7 +6575,7 @@
       "workstream": "C"
     },
     {
-      "candidate_profile": "completion",
+      "candidate_profile": "linguistic",
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/is_root",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -6585,10 +6585,10 @@
       },
       "item_id": "node_feature:is_root",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "conservative-residual",
-      "routing_bucket": "needs-focused-research",
-      "workstream": "H"
+      "owner_issue": 264,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "C"
     },
     {
       "candidate_profile": "linguistic",
@@ -9106,7 +9106,7 @@
       "workstream": "H"
     },
     {
-      "candidate_profile": "completion",
+      "candidate_profile": "textology",
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_corrections_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -9116,10 +9116,10 @@
       },
       "item_id": "node_feature:intro_corrections_json",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "conservative-residual",
-      "routing_bucket": "needs-focused-research",
-      "workstream": "H"
+      "owner_issue": 267,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "F"
     },
     {
       "candidate_profile": "completion",
