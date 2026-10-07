@@ -65,6 +65,13 @@ class I026WorkQueueRedTests(unittest.TestCase):
             if row["workstream"] == "H":
                 h_buckets[row["routing_bucket"]] = h_buckets.get(row["routing_bucket"], 0) + 1
         self.assertEqual(h_buckets, {"cross-model": 7, "native-only-candidate": 127})
+        for row in queue["semantic_rows"]:
+            if row["workstream"] == "H" and row["routing_bucket"] == "cross-model":
+                self.assertEqual(row["candidate_profiles"], ["structural"])
+                self.assertEqual(row["candidate_capabilities"], ["structural.entity-kind"])
+            elif row["workstream"] == "H":
+                self.assertEqual(row["candidate_profiles"], [])
+                self.assertEqual(row["candidate_capabilities"], [])
 
     def test_every_manifest_item_is_present_exactly_once(self):
         module = _load_builder()
@@ -75,8 +82,9 @@ class I026WorkQueueRedTests(unittest.TestCase):
         self.assertEqual(set(row["workstream"] for row in rows), set("CDEFGH"))
         self.assertTrue(all(type(row["owner_issue"]) is int for row in rows))
         for row in rows:
-            self.assertTrue(row["candidate_profiles"])
-            self.assertTrue(row["candidate_capabilities"])
+            if row["workstream"] != "H" or row["routing_bucket"] == "cross-model":
+                self.assertTrue(row["candidate_profiles"])
+                self.assertTrue(row["candidate_capabilities"])
             self.assertTrue(set(row["candidate_profiles"]) <= module.PROFILE_IDS)
             self.assertTrue(set(row["candidate_capabilities"]) <= module.CAPABILITY_IDS)
             self.assertNotIn("heritage-written-text", row["candidate_profiles"])
