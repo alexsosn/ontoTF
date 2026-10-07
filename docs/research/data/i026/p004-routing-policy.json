@@ -102,15 +102,8 @@
     },
     "H": {
       "owner_issue": 269,
-      "candidate_profiles": [
-        "structural"
-      ],
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
+      "candidate_profiles": [],
+      "candidate_capabilities": [],
       "models": []
     }
   },
@@ -1082,5 +1075,27 @@
         "linguistic.part-of-speech"
       ]
     }
-  ]
+  ],
+  "h_bucket_ownership": {
+    "cross-model": {
+      "candidate_profiles": [
+        "structural"
+      ],
+      "candidate_capabilities": [
+        "structural.entity-kind"
+      ]
+    },
+    "native-only-candidate": {
+      "candidate_profiles": [],
+      "candidate_capabilities": []
+    },
+    "unsupported-candidate": {
+      "candidate_profiles": [],
+      "candidate_capabilities": []
+    },
+    "needs-focused-research": {
+      "candidate_profiles": [],
+      "candidate_capabilities": []
+    }
+  }
 }
