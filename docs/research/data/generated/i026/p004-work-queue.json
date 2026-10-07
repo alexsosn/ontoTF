@@ -43,9 +43,9 @@
       "C": 380,
       "D": 67,
       "E": 153,
-      "F": 158,
+      "F": 161,
       "G": 39,
-      "H": 137
+      "H": 134
     },
     "per_corpus": {
       "bhsa": {
@@ -84,9 +84,9 @@
         "C": 0,
         "D": 8,
         "E": 0,
-        "F": 80,
+        "F": 83,
         "G": 0,
-        "H": 25
+        "H": 22
       },
       "syriac": {
         "C": 61,
@@ -13476,13 +13476,15 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "textology.textual-version",
+        "textology.witness",
+        "textology.fragment-transmission",
+        "textology.apparatus-reading",
+        "textology.witness-attestation",
+        "textology.explicit-omission"
       ],
       "candidate_profiles": [
-        "structural"
+        "textology"
       ],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_manuscripts_json",
@@ -13493,10 +13495,10 @@
       },
       "item_id": "node_feature:intro_manuscripts_json",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "explicit-h-policy",
-      "routing_bucket": "native-only-candidate",
-      "workstream": "H"
+      "owner_issue": 267,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "F"
     },
     {
       "candidate_capabilities": [
@@ -13524,13 +13526,15 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "textology.textual-version",
+        "textology.witness",
+        "textology.fragment-transmission",
+        "textology.apparatus-reading",
+        "textology.witness-attestation",
+        "textology.explicit-omission"
       ],
       "candidate_profiles": [
-        "structural"
+        "textology"
       ],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_sigla_json",
@@ -13541,10 +13545,10 @@
       },
       "item_id": "node_feature:intro_sigla_json",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "explicit-h-policy",
-      "routing_bucket": "native-only-candidate",
-      "workstream": "H"
+      "owner_issue": 267,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "F"
     },
     {
       "candidate_capabilities": [
@@ -13620,13 +13624,15 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "textology.textual-version",
+        "textology.witness",
+        "textology.fragment-transmission",
+        "textology.apparatus-reading",
+        "textology.witness-attestation",
+        "textology.explicit-omission"
       ],
       "candidate_profiles": [
-        "structural"
+        "textology"
       ],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_version_json",
@@ -13637,10 +13643,10 @@
       },
       "item_id": "node_feature:intro_version_json",
       "kind": "node_feature",
-      "owner_issue": 269,
-      "routing_basis": "explicit-h-policy",
-      "routing_bucket": "native-only-candidate",
-      "workstream": "H"
+      "owner_issue": 267,
+      "routing_basis": "explicit-corpus-policy",
+      "routing_bucket": "model-workstream",
+      "workstream": "F"
     },
     {
       "candidate_capabilities": [
