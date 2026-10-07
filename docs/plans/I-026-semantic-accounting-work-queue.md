@@ -73,12 +73,15 @@ Each semantic row contains:
 - `kind`;
 - `workstream`;
 - `owner_issue`;
-- `candidate_profile`;
+- `candidate_profiles` using only controlled R-014 profile IDs;
+- `candidate_capabilities` using only controlled R-014 capability IDs;
 - `routing_bucket`;
 - `routing_basis`;
 - `evidence_source`;
 - `evidence_pointer`;
 - `existing_accounting` copied from the manifest.
+
+The profile/capability lists are review ownership envelopes: they identify the controlled semantic contracts the downstream workstream must consider. They do not activate a profile/capability and do not assert that every row belongs positively to every listed capability.
 
 No row contains a newly invented mapping assessment.
 
