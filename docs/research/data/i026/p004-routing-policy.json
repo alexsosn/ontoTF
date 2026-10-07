@@ -15,14 +15,31 @@
   "workstreams": {
     "C": {
       "owner_issue": 264,
-      "candidate_profile": "linguistic",
+      "candidate_profiles": [
+        "linguistic"
+      ],
+      "candidate_capabilities": [
+        "linguistic.part-of-speech",
+        "linguistic.morphology",
+        "linguistic.syntax",
+        "linguistic.discourse"
+      ],
       "models": [
         "OLiA"
       ]
     },
     "D": {
       "owner_issue": 265,
-      "candidate_profile": "lexical",
+      "candidate_profiles": [
+        "lexical"
+      ],
+      "candidate_capabilities": [
+        "lexical.entry",
+        "lexical.form",
+        "lexical.sense",
+        "lexical.concept",
+        "lexical.relation"
+      ],
       "models": [
         "OntoLex-Lemon",
         "SKOS"
@@ -30,7 +47,22 @@
     },
     "E": {
       "owner_issue": 266,
-      "candidate_profile": "heritage-written-text",
+      "candidate_profiles": [
+        "heritage",
+        "written-text"
+      ],
+      "candidate_capabilities": [
+        "heritage.physical-object",
+        "heritage.physical-part",
+        "heritage.identifier",
+        "heritage.material",
+        "heritage.place-provenance",
+        "heritage.custody-location",
+        "written-text.segment",
+        "written-text.sign",
+        "written-text.writing-system",
+        "written-text.transcription-recognition"
+      ],
       "models": [
         "CIDOC CRM",
         "CRMtex"
@@ -38,21 +70,47 @@
     },
     "F": {
       "owner_issue": 267,
-      "candidate_profile": "textology",
+      "candidate_profiles": [
+        "textology"
+      ],
+      "candidate_capabilities": [
+        "textology.textual-version",
+        "textology.witness",
+        "textology.fragment-transmission",
+        "textology.apparatus-reading",
+        "textology.witness-attestation",
+        "textology.explicit-omission"
+      ],
       "models": [
         "LRMoo"
       ]
     },
     "G": {
       "owner_issue": 268,
-      "candidate_profile": "scholarly-inference",
+      "candidate_profiles": [
+        "scholarly-inference"
+      ],
+      "candidate_capabilities": [
+        "scholarly-inference.claim",
+        "scholarly-inference.inference",
+        "scholarly-inference.meaning-comprehension",
+        "scholarly-inference.provenance-assessment"
+      ],
       "models": [
         "CRMinf"
       ]
     },
     "H": {
       "owner_issue": 269,
-      "candidate_profile": "completion",
+      "candidate_profiles": [
+        "structural"
+      ],
+      "candidate_capabilities": [
+        "structural.entity-kind",
+        "structural.slot-coverage",
+        "structural.edge-traversal",
+        "structural.section-navigation"
+      ],
       "models": []
     }
   },
@@ -1014,10 +1072,15 @@
       "reason": "outside-denominator",
       "workstream": "C",
       "owner_issue": 264,
-      "candidate_profile": "linguistic",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
       "evidence_feature": "ls",
-      "required_action": "review whether the next versioned denominator should close ls over prop or retain feature-level accounting without denominator inflation"
+      "required_action": "review whether the next versioned denominator should close ls over prop or retain feature-level accounting without denominator inflation",
+      "candidate_profiles": [
+        "linguistic"
+      ],
+      "candidate_capabilities": [
+        "linguistic.part-of-speech"
+      ]
     }
   ]
 }
