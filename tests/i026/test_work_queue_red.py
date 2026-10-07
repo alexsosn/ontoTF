@@ -12,15 +12,15 @@ POLICY = ROOT / "docs/research/data/i026/p004-routing-policy.json"
 GENERATED = ROOT / "docs/research/data/generated/i026/p004-work-queue.json"
 
 EXPECTED_PER_CORPUS = {
-    "bhsa": {"C": 147, "D": 21, "E": 0, "F": 6, "G": 0, "H": 45},
+    "bhsa": {"C": 149, "D": 22, "E": 0, "F": 6, "G": 0, "H": 42},
     "cuc": {"C": 0, "D": 2, "E": 23, "F": 1, "G": 10, "H": 1},
     "syriac": {"C": 61, "D": 5, "E": 0, "F": 0, "G": 0, "H": 8},
-    "extrabiblical": {"C": 111, "D": 10, "E": 0, "F": 2, "G": 0, "H": 13},
-    "pseudepigrapha": {"C": 0, "D": 8, "E": 0, "F": 79, "G": 0, "H": 26},
+    "extrabiblical": {"C": 113, "D": 10, "E": 0, "F": 2, "G": 0, "H": 11},
+    "pseudepigrapha": {"C": 0, "D": 8, "E": 0, "F": 80, "G": 0, "H": 25},
     "oracc": {"C": 11, "D": 13, "E": 40, "F": 18, "G": 0, "H": 17},
     "tlhdig": {"C": 46, "D": 7, "E": 90, "F": 51, "G": 29, "H": 33},
 }
-EXPECTED_AGGREGATE = {"C": 376, "D": 66, "E": 153, "F": 157, "G": 39, "H": 143}
+EXPECTED_AGGREGATE = {"C": 380, "D": 67, "E": 153, "F": 158, "G": 39, "H": 137}
 
 
 def _load_builder():
