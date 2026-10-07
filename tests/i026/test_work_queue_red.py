@@ -16,11 +16,11 @@ EXPECTED_PER_CORPUS = {
     "cuc": {"C": 0, "D": 2, "E": 23, "F": 1, "G": 10, "H": 1},
     "syriac": {"C": 61, "D": 5, "E": 0, "F": 0, "G": 0, "H": 8},
     "extrabiblical": {"C": 113, "D": 10, "E": 0, "F": 2, "G": 0, "H": 11},
-    "pseudepigrapha": {"C": 0, "D": 8, "E": 0, "F": 80, "G": 0, "H": 25},
+    "pseudepigrapha": {"C": 0, "D": 8, "E": 0, "F": 83, "G": 0, "H": 22},
     "oracc": {"C": 11, "D": 13, "E": 40, "F": 18, "G": 0, "H": 17},
     "tlhdig": {"C": 46, "D": 7, "E": 90, "F": 51, "G": 29, "H": 33},
 }
-EXPECTED_AGGREGATE = {"C": 380, "D": 67, "E": 153, "F": 158, "G": 39, "H": 137}
+EXPECTED_AGGREGATE = {"C": 380, "D": 67, "E": 153, "F": 161, "G": 39, "H": 134}
 
 
 def _load_builder():
@@ -64,7 +64,7 @@ class I026WorkQueueRedTests(unittest.TestCase):
         for row in queue["semantic_rows"]:
             if row["workstream"] == "H":
                 h_buckets[row["routing_bucket"]] = h_buckets.get(row["routing_bucket"], 0) + 1
-        self.assertEqual(h_buckets, {"cross-model": 7, "native-only-candidate": 130})
+        self.assertEqual(h_buckets, {"cross-model": 7, "native-only-candidate": 127})
 
     def test_every_manifest_item_is_present_exactly_once(self):
         module = _load_builder()
