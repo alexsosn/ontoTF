@@ -261,15 +261,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/edge_features/omap@2017-2021",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -285,15 +278,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/edge_features/omap@c-2021",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -309,15 +295,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -333,15 +312,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@am",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -357,15 +329,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@ar",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -381,15 +346,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@bn",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -405,15 +363,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@da",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -429,15 +380,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@de",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -453,15 +397,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@el",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -477,15 +414,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@en",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -501,15 +431,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@es",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -525,15 +448,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@fa",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -549,15 +465,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@fr",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -573,15 +482,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@he",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -597,15 +499,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@hi",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -621,15 +516,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@id",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -645,15 +533,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@ja",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -669,15 +550,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@ko",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -693,15 +567,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@la",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -717,15 +584,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@nl",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -741,15 +601,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@pa",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -765,15 +618,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@pt",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -789,15 +635,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@ru",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -813,15 +652,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@sw",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -837,15 +669,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@syc",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -861,15 +686,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@tr",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -885,15 +703,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@ua",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -909,15 +720,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@ur",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -933,15 +737,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@yo",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -957,15 +754,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/book@zh",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -981,15 +771,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/chapter",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -1818,15 +1601,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/label",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2113,15 +1889,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/number",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2137,15 +1906,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/pargr",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2676,15 +2438,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/trailer",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2700,15 +2455,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/trailer_utf8",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2844,15 +2592,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_features/verse",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2974,15 +2715,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_types/book",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -2998,15 +2732,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_types/chapter",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -3070,15 +2797,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_types/half_verse",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -3247,15 +2967,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "bhsa",
       "evidence_pointer": "/node_types/verse",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
@@ -3272,10 +2985,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -6489,10 +6199,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -6975,15 +6682,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_features/book",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -6999,15 +6699,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_features/chapter",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -7548,15 +7241,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_features/trailer",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -7620,15 +7306,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_features/verse",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -7748,15 +7427,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_types/book",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -7772,15 +7444,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_types/chapter",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -7796,15 +7461,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "syriac",
       "evidence_pointer": "/node_types/verse",
       "evidence_source": "docs/research/data/generated/r005/syriac.json",
@@ -7821,10 +7479,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -9000,15 +8655,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/book",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -9024,15 +8672,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/book@en",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -9048,15 +8689,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/chapter",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -9726,15 +9360,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/label",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -9954,15 +9581,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/number",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -10486,15 +10106,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_features/verse",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -10566,15 +10179,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_types/book",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -10590,15 +10196,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_types/chapter",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -10662,15 +10261,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_types/half_verse",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -10806,15 +10398,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "extrabiblical",
       "evidence_pointer": "/node_types/verse",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
@@ -10831,10 +10416,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -12689,15 +12271,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/bibliography",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -12713,15 +12288,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/bibliography_xml",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13279,15 +12847,8 @@
       "workstream": "D"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/historical_ocp_doc_id",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13329,15 +12890,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_bibliography_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13353,15 +12907,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_citation_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13377,15 +12924,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_copyright_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13427,15 +12967,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_introduction_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13451,15 +12984,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_label",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13501,15 +13027,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_provenance_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13551,15 +13070,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_status_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13575,15 +13087,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_themes_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13599,15 +13104,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/intro_title_json",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13649,15 +13147,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/is_metadata_only",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13673,15 +13164,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/is_missing_unit_id",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -13749,15 +13233,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/is_source_anomaly",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -14160,15 +13637,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/resource_name",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -14236,15 +13706,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/source_file",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -14312,15 +13775,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/source_sha256",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -15090,10 +14546,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -15139,15 +14592,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/is_metadata_only",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -15163,15 +14609,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/is_missing_unit_id",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -15239,15 +14678,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "pseudepigrapha",
       "evidence_pointer": "/node_features/is_source_anomaly",
       "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
@@ -15889,15 +15321,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/document_key",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16225,15 +15650,8 @@
       "workstream": "D"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/implicit",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16410,15 +15828,8 @@
       "workstream": "D"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/license",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16434,15 +15845,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/license_url",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16669,15 +16073,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/populated",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16717,15 +16114,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/primary_publication",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16946,15 +16336,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/source_id",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -16970,15 +16353,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/src_path",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17020,15 +16396,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/subproject",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17070,15 +16439,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/text_id",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17250,15 +16612,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/translation_source_license",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17274,15 +16629,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/translation_source_license_url",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17324,15 +16672,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/translation_source_sha256",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17348,15 +16689,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/translation_source_url",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -17793,10 +17127,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -18024,15 +17355,8 @@
       "workstream": "D"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/populated",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -18048,15 +17372,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "oracc",
       "evidence_pointer": "/node_features/populated",
       "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
@@ -19337,15 +18654,8 @@
       "workstream": "G"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/29",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -19361,15 +18671,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/30",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -19676,15 +18979,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/41",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -19700,15 +18996,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/42",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -19749,15 +19038,8 @@
       "workstream": "D"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/44",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -19773,15 +19055,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/45",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20501,15 +19776,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/72",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20525,15 +19793,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/73",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20549,15 +19810,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/74",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20629,15 +19883,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/77",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20653,15 +19900,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/78",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20758,15 +19998,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/82",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20782,15 +20015,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/83",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20892,15 +20118,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/87",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -20978,15 +20197,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/90",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21136,15 +20348,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/96",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21238,15 +20443,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/100",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21262,15 +20460,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/101",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21317,15 +20508,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/103",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21341,15 +20525,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/104",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21365,15 +20542,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/optional_provenance_node_features/0",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21389,15 +20559,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/105",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -21413,15 +20576,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/optional_provenance_node_features/1",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -22272,10 +21428,7 @@
     },
     {
       "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
+        "structural.entity-kind"
       ],
       "candidate_profiles": [
         "structural"
@@ -22828,15 +21981,8 @@
       "workstream": "E"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/41",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -22852,15 +21998,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/41",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -22876,15 +22015,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/42",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -22900,15 +22032,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/42",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -24016,15 +23141,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/73",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -24166,15 +23284,8 @@
       "workstream": "F"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/83",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -24190,15 +23301,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/83",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -24410,15 +23514,8 @@
       "workstream": "C"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/96",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
@@ -24434,15 +23531,8 @@
       "workstream": "H"
     },
     {
-      "candidate_capabilities": [
-        "structural.entity-kind",
-        "structural.slot-coverage",
-        "structural.edge-traversal",
-        "structural.section-navigation"
-      ],
-      "candidate_profiles": [
-        "structural"
-      ],
+      "candidate_capabilities": [],
+      "candidate_profiles": [],
       "corpus_id": "tlhdig",
       "evidence_pointer": "/core_node_features/96",
       "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
