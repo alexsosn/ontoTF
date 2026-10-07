@@ -346,6 +346,33 @@ def build_queue(*, policy: dict[str, Any] | None = None) -> dict[str, Any]:
                 f"{sorted(unknown_capabilities)}"
             )
 
+    h_bucket_ownership = policy.get("h_bucket_ownership")
+    if type(h_bucket_ownership) is not dict:
+        raise ValueError("H bucket ownership policy is absent")
+    expected_h_buckets = {
+        "cross-model",
+        "native-only-candidate",
+        "unsupported-candidate",
+        "needs-focused-research",
+    }
+    if set(h_bucket_ownership) != expected_h_buckets:
+        raise ValueError("H bucket ownership policy must define all controlled buckets")
+    for bucket, ownership in h_bucket_ownership.items():
+        if type(ownership) is not dict:
+            raise ValueError(f"H {bucket}: ownership must be an object")
+        profiles = _exact_name_list(
+            ownership.get("candidate_profiles"),
+            label=f"H {bucket} candidate_profiles",
+        )
+        capabilities = _exact_name_list(
+            ownership.get("candidate_capabilities"),
+            label=f"H {bucket} candidate_capabilities",
+        )
+        unknown_profiles = set(profiles) - PROFILE_IDS
+        unknown_capabilities = set(capabilities) - CAPABILITY_IDS
+        if unknown_profiles or unknown_capabilities:
+            raise ValueError(f"H {bucket}: unknown controlled ownership vocabulary")
+
     rows: list[dict[str, Any]] = []
     manifest_bindings: dict[str, Any] = {}
     technical_exclusions: dict[str, list[str]] = {}
@@ -414,25 +441,20 @@ def build_queue(*, policy: dict[str, Any] | None = None) -> dict[str, Any]:
                 basis = "explicit-corpus-policy"
 
             workstream_spec = workstreams[workstream]
-            candidate_profiles = workstream_spec.get("candidate_profiles")
-            candidate_capabilities = workstream_spec.get("candidate_capabilities")
-            if (
-                type(candidate_profiles) is not list
-                or not candidate_profiles
-                or any(type(value) is not str or not value for value in candidate_profiles)
+            ownership_spec = (
+                h_bucket_ownership[bucket] if workstream == "H" else workstream_spec
+            )
+            candidate_profiles = ownership_spec.get("candidate_profiles")
+            candidate_capabilities = ownership_spec.get("candidate_capabilities")
+            if type(candidate_profiles) is not list or any(
+                type(value) is not str or not value for value in candidate_profiles
             ):
-                raise ValueError(f"{workstream}: candidate_profiles must be non-empty strings")
-            if (
-                type(candidate_capabilities) is not list
-                or not candidate_capabilities
-                or any(
-                    type(value) is not str or not value
-                    for value in candidate_capabilities
-                )
+                raise ValueError(f"{workstream}: invalid candidate_profiles")
+            if type(candidate_capabilities) is not list or any(
+                type(value) is not str or not value
+                for value in candidate_capabilities
             ):
-                raise ValueError(
-                    f"{workstream}: candidate_capabilities must be non-empty strings"
-                )
+                raise ValueError(f"{workstream}: invalid candidate_capabilities")
             pointer = _evidence_pointer(
                 evidence,
                 item_id=item_id,
@@ -579,9 +601,14 @@ def validate_queue(
         workstream_spec = workstreams[workstream]
         if row.get("owner_issue") != workstream_spec["owner_issue"]:
             raise ValueError("queue owner issue/workstream mismatch")
-        if row.get("candidate_profiles") != workstream_spec.get("candidate_profiles"):
+        ownership_spec = (
+            policy["h_bucket_ownership"][row.get("routing_bucket")]
+            if workstream == "H"
+            else workstream_spec
+        )
+        if row.get("candidate_profiles") != ownership_spec.get("candidate_profiles"):
             raise ValueError("queue candidate profiles/workstream mismatch")
-        if row.get("candidate_capabilities") != workstream_spec.get(
+        if row.get("candidate_capabilities") != ownership_spec.get(
             "candidate_capabilities"
         ):
             raise ValueError("queue candidate capabilities/workstream mismatch")
