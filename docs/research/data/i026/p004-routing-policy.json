@@ -1,0 +1,1017 @@
+{
+  "schema_version": 1,
+  "policy_id": "p004-routing-v1",
+  "expected_semantic_items": 934,
+  "expected_technical_exclusions": 15,
+  "corpus_order": [
+    "bhsa",
+    "cuc",
+    "syriac",
+    "extrabiblical",
+    "pseudepigrapha",
+    "oracc",
+    "tlhdig"
+  ],
+  "workstreams": {
+    "C": {
+      "owner_issue": 264,
+      "candidate_profile": "linguistic",
+      "models": [
+        "OLiA"
+      ]
+    },
+    "D": {
+      "owner_issue": 265,
+      "candidate_profile": "lexical",
+      "models": [
+        "OntoLex-Lemon",
+        "SKOS"
+      ]
+    },
+    "E": {
+      "owner_issue": 266,
+      "candidate_profile": "heritage-written-text",
+      "models": [
+        "CIDOC CRM",
+        "CRMtex"
+      ]
+    },
+    "F": {
+      "owner_issue": 267,
+      "candidate_profile": "textology",
+      "models": [
+        "LRMoo"
+      ]
+    },
+    "G": {
+      "owner_issue": 268,
+      "candidate_profile": "scholarly-inference",
+      "models": [
+        "CRMinf"
+      ]
+    },
+    "H": {
+      "owner_issue": 269,
+      "candidate_profile": "completion",
+      "models": []
+    }
+  },
+  "corpora": {
+    "bhsa": {
+      "manifest": "src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json",
+      "repository": "ETCBC/bhsa",
+      "denominator_digest": "sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03",
+      "denominator_source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "target_corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "evidence_source": "docs/research/data/generated/r005/bhsa.json",
+      "expected_counts": {
+        "C": 147,
+        "D": 21,
+        "E": 0,
+        "F": 6,
+        "G": 0,
+        "H": 45
+      },
+      "routes": {
+        "C": {
+          "node_types": [
+            "clause",
+            "clause_atom",
+            "phrase",
+            "phrase_atom",
+            "sentence",
+            "sentence_atom",
+            "subphrase"
+          ],
+          "node_features": [
+            "det",
+            "dist",
+            "dist_unit",
+            "domain",
+            "function",
+            "gn",
+            "instruction",
+            "kind",
+            "ls",
+            "mother_object_type",
+            "nme",
+            "nu",
+            "pdp",
+            "pfm",
+            "prs",
+            "prs_gn",
+            "prs_nu",
+            "prs_ps",
+            "ps",
+            "rela",
+            "sp",
+            "st",
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person",
+            "tab",
+            "txt",
+            "typ",
+            "uvf",
+            "vbe",
+            "vbs",
+            "vs",
+            "vt",
+            "g_nme",
+            "g_nme_utf8",
+            "g_pfm",
+            "g_pfm_utf8",
+            "g_prs",
+            "g_prs_utf8",
+            "g_uvf",
+            "g_uvf_utf8",
+            "g_vbe",
+            "g_vbe_utf8",
+            "g_vbs",
+            "g_vbs_utf8"
+          ],
+          "edge_features": [
+            "distributional_parent",
+            "functional_parent",
+            "mother"
+          ]
+        },
+        "D": {
+          "node_types": [
+            "lex"
+          ],
+          "node_features": [
+            "freq_lex",
+            "freq_occ",
+            "g_cons",
+            "g_cons_utf8",
+            "g_lex",
+            "g_lex_utf8",
+            "g_word",
+            "g_word_utf8",
+            "gloss",
+            "language",
+            "languageISO",
+            "lex",
+            "lex0",
+            "lex_utf8",
+            "lexeme_count",
+            "rank_lex",
+            "rank_occ",
+            "root",
+            "voc_lex",
+            "voc_lex_utf8"
+          ]
+        },
+        "F": {
+          "node_features": [
+            "kq_hybrid",
+            "kq_hybrid_utf8",
+            "qere",
+            "qere_trailer",
+            "qere_trailer_utf8",
+            "qere_utf8"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        },
+        "native-only-candidate": {
+          "node_types": [
+            "book",
+            "chapter",
+            "half_verse",
+            "verse"
+          ],
+          "node_features": [
+            "book",
+            "book@am",
+            "book@ar",
+            "book@bn",
+            "book@da",
+            "book@de",
+            "book@el",
+            "book@en",
+            "book@es",
+            "book@fa",
+            "book@fr",
+            "book@he",
+            "book@hi",
+            "book@id",
+            "book@ja",
+            "book@ko",
+            "book@la",
+            "book@nl",
+            "book@pa",
+            "book@pt",
+            "book@ru",
+            "book@sw",
+            "book@syc",
+            "book@tr",
+            "book@ua",
+            "book@ur",
+            "book@yo",
+            "book@zh",
+            "chapter",
+            "label",
+            "number",
+            "pargr",
+            "trailer",
+            "trailer_utf8",
+            "verse"
+          ],
+          "edge_features": [
+            "omap@2017-2021",
+            "omap@c-2021"
+          ]
+        }
+      }
+    },
+    "cuc": {
+      "manifest": "src/tfont/resources/coverage/p004-r011-baseline-v1/cuc.json",
+      "repository": "DT-UCPH/cuc",
+      "denominator_digest": "sha256:5d441baeb913e3d696b293bdc5fd2c71a3b354f561fd8654f9b2dbd9a7157fec",
+      "denominator_source_revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+      "target_corpus_revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+      "evidence_source": "docs/research/data/generated/r005/cuc.json",
+      "expected_counts": {
+        "C": 0,
+        "D": 2,
+        "E": 23,
+        "F": 1,
+        "G": 10,
+        "H": 1
+      },
+      "routes": {
+        "D": {
+          "node_features": [
+            "g_cons",
+            "language"
+          ]
+        },
+        "E": {
+          "node_types": [
+            "tablet",
+            "column",
+            "line",
+            "sign"
+          ],
+          "node_features": [
+            "column",
+            "cont",
+            "line",
+            "side",
+            "sign",
+            "tablet",
+            "tablet_info",
+            "trailer",
+            "usign",
+            "utrailer"
+          ]
+        },
+        "F": {
+          "node_features": [
+            "alt"
+          ]
+        },
+        "G": {
+          "node_features": [
+            "cert",
+            "emen",
+            "trailer_emen"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        }
+      }
+    },
+    "syriac": {
+      "manifest": "src/tfont/resources/coverage/p004-r011-baseline-v1/syriac.json",
+      "repository": "ETCBC/syriac",
+      "denominator_digest": "sha256:33ea9d6ce7b44dbdf7ed12e11971e229321efb3b422dbfd9cf0bc9131d5972f8",
+      "denominator_source_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "target_corpus_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "evidence_source": "docs/research/data/generated/r005/syriac.json",
+      "expected_counts": {
+        "C": 61,
+        "D": 5,
+        "E": 0,
+        "F": 0,
+        "G": 0,
+        "H": 8
+      },
+      "routes": {
+        "C": {
+          "node_features": [
+            "emf",
+            "g_emf",
+            "g_nme",
+            "g_pfm",
+            "g_pfx",
+            "g_vbe",
+            "g_vbs",
+            "gn",
+            "ls",
+            "nme",
+            "nu",
+            "pfm",
+            "pfx",
+            "ps",
+            "sp",
+            "st",
+            "vbe",
+            "vbs",
+            "vo",
+            "vpm",
+            "vs",
+            "vt"
+          ]
+        },
+        "D": {
+          "node_features": [
+            "g_cons",
+            "g_cons_utf8",
+            "g_lex",
+            "gloss",
+            "lex"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        },
+        "native-only-candidate": {
+          "node_types": [
+            "book",
+            "chapter",
+            "verse"
+          ],
+          "node_features": [
+            "book",
+            "chapter",
+            "trailer",
+            "verse"
+          ]
+        }
+      }
+    },
+    "extrabiblical": {
+      "manifest": "src/tfont/resources/coverage/p004-r011-baseline-v1/extrabiblical.json",
+      "repository": "ETCBC/extrabiblical",
+      "denominator_digest": "sha256:58bdadddd54cc1848eddf0b5918137e37e85bbea52022cc2a40386ad46f1b46e",
+      "denominator_source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+      "target_corpus_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+      "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
+      "expected_counts": {
+        "C": 111,
+        "D": 10,
+        "E": 0,
+        "F": 2,
+        "G": 0,
+        "H": 13
+      },
+      "routes": {
+        "C": {
+          "node_types": [
+            "clause",
+            "clause_atom",
+            "phrase",
+            "phrase_atom",
+            "sentence",
+            "sentence_atom",
+            "subphrase"
+          ],
+          "node_features": [
+            "det",
+            "dist",
+            "dist_unit",
+            "domain",
+            "function",
+            "gn",
+            "kind",
+            "ls",
+            "mother_object_type",
+            "nme",
+            "nu",
+            "pdp",
+            "pfm",
+            "prs",
+            "prs_gn",
+            "prs_nu",
+            "prs_ps",
+            "ps",
+            "rela",
+            "sp",
+            "st",
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person",
+            "tab",
+            "txt",
+            "typ",
+            "uvf",
+            "vbe",
+            "vbs",
+            "vs",
+            "vt",
+            "g_nme",
+            "g_nme_utf8",
+            "g_pfm",
+            "g_pfm_utf8",
+            "g_suffix",
+            "g_suffix_utf8",
+            "g_uvf",
+            "g_uvf_utf8",
+            "g_vbe",
+            "g_vbe_utf8",
+            "g_vbs",
+            "g_vbs_utf8"
+          ],
+          "edge_features": [
+            "distributional_parent",
+            "functional_parent",
+            "mother"
+          ]
+        },
+        "D": {
+          "node_features": [
+            "g_cons",
+            "g_cons_utf8",
+            "g_lex",
+            "g_lex_utf8",
+            "g_word",
+            "g_word_utf8",
+            "language",
+            "lex",
+            "lex_utf8",
+            "lexeme_count"
+          ]
+        },
+        "F": {
+          "node_features": [
+            "qere",
+            "qere_utf8"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        },
+        "native-only-candidate": {
+          "node_types": [
+            "book",
+            "chapter",
+            "half_verse",
+            "verse"
+          ],
+          "node_features": [
+            "book",
+            "book@en",
+            "chapter",
+            "label",
+            "number",
+            "verse"
+          ]
+        }
+      }
+    },
+    "pseudepigrapha": {
+      "manifest": "src/tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
+      "repository": "alexsosn/Pseudepigrapha-TF",
+      "denominator_digest": "sha256:4b6e6874cd7c903521ad3c2918652eb22292010c307b3aea8a762f36fca692fc",
+      "denominator_source_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+      "target_corpus_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+      "evidence_source": "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json",
+      "expected_counts": {
+        "C": 0,
+        "D": 8,
+        "E": 0,
+        "F": 79,
+        "G": 0,
+        "H": 26
+      },
+      "routes": {
+        "D": {
+          "node_features": [
+            "g_word_utf8",
+            "generated_language",
+            "historical_biblical_figures_json",
+            "historical_genres_json",
+            "language",
+            "ms_language",
+            "prefix_utf8",
+            "trailer_utf8"
+          ]
+        },
+        "F": {
+          "node_types": [
+            "book",
+            "chapter",
+            "div",
+            "document_metadata",
+            "ellipsis",
+            "manuscript",
+            "orphan_reading",
+            "reading",
+            "unit",
+            "variant_word",
+            "verse",
+            "version_metadata"
+          ],
+          "node_features": [
+            "author",
+            "book",
+            "chapter",
+            "chapter_index",
+            "div_fragment",
+            "div_index",
+            "div_label",
+            "div_level",
+            "div_number",
+            "div_path",
+            "division_delimiters",
+            "division_labels",
+            "division_texts",
+            "ellipsis_text",
+            "generation_marker",
+            "generation_method",
+            "generation_model",
+            "group",
+            "indent",
+            "is_omission",
+            "is_primary",
+            "linebreak",
+            "manuscript_index",
+            "ms_abbrev",
+            "ms_name",
+            "ms_name_xml",
+            "ms_show",
+            "mss",
+            "ocp_book",
+            "reading_index",
+            "reading_option_source",
+            "reading_text",
+            "reading_xml",
+            "section_occurrence",
+            "source_child_index",
+            "source_ref",
+            "source_ref_parts",
+            "source_tag",
+            "synthetic_witness",
+            "text_structure",
+            "title",
+            "token_count",
+            "undefined_manuscript",
+            "unit_id",
+            "unit_index",
+            "unit_linebreak",
+            "variant_position",
+            "verse",
+            "verse_index",
+            "version_fragment",
+            "version_id",
+            "version_kind",
+            "version_title"
+          ],
+          "edge_features": [
+            "manuscript_of",
+            "parent",
+            "reading_of",
+            "translation_of",
+            "translation_unit_of",
+            "variant_word_of",
+            "witness"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        },
+        "native-only-candidate": {
+          "node_features": [
+            "bibliography",
+            "bibliography_xml",
+            "historical_ocp_doc_id",
+            "intro_bibliography_json",
+            "intro_citation_json",
+            "intro_copyright_json",
+            "intro_introduction_json",
+            "intro_label",
+            "intro_manuscripts_json",
+            "intro_provenance_json",
+            "intro_sigla_json",
+            "intro_status_json",
+            "intro_themes_json",
+            "intro_title_json",
+            "intro_version_json",
+            "is_metadata_only",
+            "is_missing_unit_id",
+            "is_source_anomaly",
+            "resource_name",
+            "source_file",
+            "source_sha256"
+          ]
+        }
+      }
+    },
+    "oracc": {
+      "manifest": "src/tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
+      "repository": "alexsosn/ORACC-TF",
+      "denominator_digest": "sha256:436dc9a35080dd14a4bb6d0c1b5341b8dd2566e10608d5d37c1d2226aba3eda2",
+      "denominator_source_revision": "f6f189bbd99d72bfdc7044555bd3113aa7b54232",
+      "target_corpus_revision": "f6f189bbd99d72bfdc7044555bd3113aa7b54232",
+      "evidence_source": "docs/research/data/generated/i018/oracc-0.4.0.json",
+      "expected_counts": {
+        "C": 11,
+        "D": 13,
+        "E": 40,
+        "F": 18,
+        "G": 0,
+        "H": 17
+      },
+      "routes": {
+        "C": {
+          "node_types": [
+            "chunk",
+            "phrase"
+          ],
+          "node_features": [
+            "chunk_subtype",
+            "chunk_type",
+            "epos",
+            "inst",
+            "pos"
+          ]
+        },
+        "D": {
+          "node_types": [
+            "lex"
+          ],
+          "node_features": [
+            "cf",
+            "form",
+            "gw",
+            "lang",
+            "lemmaknown",
+            "lexeme",
+            "norm",
+            "sense",
+            "sig"
+          ],
+          "edge_features": [
+            "word_lex"
+          ]
+        },
+        "E": {
+          "node_types": [
+            "column",
+            "document",
+            "face",
+            "line",
+            "sign"
+          ],
+          "node_features": [
+            "catalogue_json",
+            "catalogue_present",
+            "cdli_id",
+            "collection",
+            "column_id",
+            "designation",
+            "document",
+            "exemplars",
+            "face",
+            "gdl_form",
+            "gdl_id",
+            "gdl_json",
+            "gdl_sexified",
+            "label",
+            "language",
+            "line",
+            "material",
+            "object_type",
+            "period",
+            "pleiades_coord",
+            "pleiades_id",
+            "provenience",
+            "ref",
+            "ruler",
+            "script",
+            "sign_json",
+            "utf8",
+            "word_id"
+          ],
+          "edge_features": [
+            "column_face",
+            "face_document",
+            "line_column",
+            "line_face",
+            "word_line"
+          ]
+        },
+        "F": {
+          "node_types": [
+            "translation_unit"
+          ],
+          "node_features": [
+            "frag",
+            "genre",
+            "subgenre",
+            "supergenre",
+            "translation_eref",
+            "translation_id",
+            "translation_label",
+            "translation_rows",
+            "translation_se_label",
+            "translation_source_id",
+            "translation_source_name",
+            "translation_sref",
+            "translation_subtype",
+            "translation_text",
+            "translation_text_raw"
+          ],
+          "edge_features": [
+            "translation_document",
+            "translation_line"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        },
+        "native-only-candidate": {
+          "node_features": [
+            "document_key",
+            "implicit",
+            "license",
+            "license_url",
+            "populated",
+            "primary_publication",
+            "source_id",
+            "src_path",
+            "subproject",
+            "text_id",
+            "translation_source_license",
+            "translation_source_license_url",
+            "translation_source_sha256",
+            "translation_source_url"
+          ]
+        }
+      }
+    },
+    "tlhdig": {
+      "manifest": "src/tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json",
+      "repository": "alexsosn/TLHdig-TF",
+      "denominator_digest": "sha256:099ee8b834aefba80ed6bde0b597a0e0cde070056806402c8d2941f8420d8117",
+      "denominator_source_revision": "bc4a206690c1856d3cfde8b291f626c45a712640",
+      "target_corpus_revision": "bc4a206690c1856d3cfde8b291f626c45a712640",
+      "evidence_source": "docs/research/data/generated/i019/tlhdig-0.4.0.json",
+      "expected_counts": {
+        "C": 46,
+        "D": 7,
+        "E": 90,
+        "F": 51,
+        "G": 29,
+        "H": 33
+      },
+      "routes": {
+        "C": {
+          "node_types": [
+            "analysis"
+          ],
+          "node_features": [
+            "agr",
+            "clitic_det",
+            "clitic_morph",
+            "clitic_stemclass",
+            "det",
+            "field4_kind",
+            "lang",
+            "lang_raw",
+            "materlect",
+            "materlect_anomalous",
+            "morph",
+            "mrpsel",
+            "mrpsel_kind",
+            "num",
+            "pos",
+            "sel_base",
+            "sel_clitic",
+            "sel_group",
+            "stemclass",
+            "stemclass_raw"
+          ],
+          "edge_features": [
+            "analyses",
+            "selected"
+          ]
+        },
+        "D": {
+          "node_types": [
+            "lex"
+          ],
+          "node_features": [
+            "clitic_lemma",
+            "gloss",
+            "lemma",
+            "noccs",
+            "trans"
+          ],
+          "edge_features": [
+            "lexeme"
+          ]
+        },
+        "E": {
+          "node_types": [
+            "cluster",
+            "column",
+            "document",
+            "fragment",
+            "layout",
+            "line",
+            "sign",
+            "surface"
+          ],
+          "node_features": [
+            "add",
+            "after",
+            "alt",
+            "c",
+            "collabel",
+            "column",
+            "crossesline",
+            "cu",
+            "cu_aligned",
+            "cu_broken",
+            "cu_method",
+            "cu_nsigns",
+            "cu_pua",
+            "cu_sign",
+            "cu_undecided",
+            "cu_unrendered",
+            "cudirty",
+            "end_offset",
+            "frag",
+            "frag_raw",
+            "fragment_kind",
+            "fragment_label",
+            "fragment_order",
+            "frgm",
+            "invnr",
+            "laes",
+            "linetail",
+            "ln",
+            "lnno",
+            "lnr",
+            "markers",
+            "missing",
+            "n",
+            "nr",
+            "order",
+            "part",
+            "prime",
+            "quot",
+            "ras",
+            "ruling",
+            "sep",
+            "space_count",
+            "start_offset",
+            "subscr",
+            "surface",
+            "surplus",
+            "sym",
+            "symmark",
+            "txtid",
+            "txtpubl",
+            "type",
+            "width"
+          ],
+          "edge_features": [
+            "endsAt",
+            "startsAt"
+          ]
+        },
+        "F": {
+          "node_types": [
+            "colon",
+            "docgroup",
+            "joinstmt",
+            "note",
+            "paragraph"
+          ],
+          "node_features": [
+            "cth",
+            "docs",
+            "join_context",
+            "join_encoding",
+            "join_kind",
+            "join_order",
+            "join_raw",
+            "join_reason",
+            "join_resolved",
+            "manuscript_block",
+            "orphan",
+            "siglum_ambiguous",
+            "siglum_raw_candidates",
+            "siglum_source",
+            "subcorpus"
+          ],
+          "edge_features": [
+            "edition",
+            "joinDocument",
+            "joinLeft",
+            "joinRight",
+            "joined",
+            "noteref",
+            "witness",
+            "witness_resolution"
+          ]
+        },
+        "G": {
+          "node_types": [
+            "edit"
+          ],
+          "node_features": [
+            "author",
+            "corr",
+            "date",
+            "det_hint",
+            "editor",
+            "kind"
+          ],
+          "edge_features": [
+            "edits"
+          ]
+        }
+      },
+      "h_buckets": {
+        "cross-model": {
+          "node_types": [
+            "word"
+          ]
+        },
+        "native-only-candidate": {
+          "node_features": [
+            "docid",
+            "docid_raw",
+            "from_close_marker",
+            "from_open_marker",
+            "id",
+            "index",
+            "nanalyses",
+            "nested",
+            "neu",
+            "nrecords",
+            "nselected",
+            "othertags",
+            "parse_ok",
+            "project",
+            "raw",
+            "sgr",
+            "source_stem",
+            "source_subdir",
+            "src",
+            "src_file",
+            "src_span",
+            "srcln",
+            "srcxml"
+          ]
+        }
+      }
+    }
+  },
+  "accounting_gaps": [
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_value:ls=\"prop\"",
+      "kind": "node_value",
+      "reason": "outside-denominator",
+      "workstream": "C",
+      "owner_issue": 264,
+      "candidate_profile": "linguistic",
+      "evidence_source": "docs/research/data/generated/r005/syriac.json",
+      "evidence_feature": "ls",
+      "required_action": "review whether the next versioned denominator should close ls over prop or retain feature-level accounting without denominator inflation"
+    }
+  ]
+}
