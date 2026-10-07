@@ -564,9 +564,9 @@
         "C": 0,
         "D": 8,
         "E": 0,
-        "F": 80,
+        "F": 83,
         "G": 0,
-        "H": 25
+        "H": 22
       },
       "routes": {
         "D": {
@@ -617,6 +617,9 @@
             "group",
             "indent",
             "intro_corrections_json",
+            "intro_manuscripts_json",
+            "intro_sigla_json",
+            "intro_version_json",
             "is_omission",
             "is_primary",
             "linebreak",
@@ -679,13 +682,10 @@
             "intro_copyright_json",
             "intro_introduction_json",
             "intro_label",
-            "intro_manuscripts_json",
             "intro_provenance_json",
-            "intro_sigla_json",
             "intro_status_json",
             "intro_themes_json",
             "intro_title_json",
-            "intro_version_json",
             "is_metadata_only",
             "is_missing_unit_id",
             "is_source_anomaly",
