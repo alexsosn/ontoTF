@@ -271,9 +271,21 @@ def _route_gap(
     workstream = policy_gap.get("workstream")
     if workstream not in WORKSTREAMS:
         raise ValueError(f"accounting gap has invalid workstream: {workstream}")
-    expected_issue = workstreams[workstream]["owner_issue"]
+    workstream_spec = workstreams[workstream]
+    expected_issue = workstream_spec["owner_issue"]
     if policy_gap.get("owner_issue") != expected_issue:
         raise ValueError("accounting gap owner issue does not match workstream")
+    if policy_gap.get("candidate_profiles") != workstream_spec.get("candidate_profiles"):
+        raise ValueError("accounting gap candidate profiles do not match workstream")
+    gap_capabilities = policy_gap.get("candidate_capabilities")
+    workstream_capabilities = workstream_spec.get("candidate_capabilities")
+    if (
+        type(gap_capabilities) is not list
+        or not gap_capabilities
+        or type(workstream_capabilities) is not list
+        or not set(gap_capabilities) <= set(workstream_capabilities)
+    ):
+        raise ValueError("accounting gap candidate capabilities do not match workstream")
     feature = policy_gap.get("evidence_feature")
     if type(feature) is not str or not feature:
         raise ValueError("accounting gap evidence_feature is absent")
@@ -371,6 +383,25 @@ def build_queue(*, policy: dict[str, Any] | None = None) -> dict[str, Any]:
                 basis = "explicit-corpus-policy"
 
             workstream_spec = workstreams[workstream]
+            candidate_profiles = workstream_spec.get("candidate_profiles")
+            candidate_capabilities = workstream_spec.get("candidate_capabilities")
+            if (
+                type(candidate_profiles) is not list
+                or not candidate_profiles
+                or any(type(value) is not str or not value for value in candidate_profiles)
+            ):
+                raise ValueError(f"{workstream}: candidate_profiles must be non-empty strings")
+            if (
+                type(candidate_capabilities) is not list
+                or not candidate_capabilities
+                or any(
+                    type(value) is not str or not value
+                    for value in candidate_capabilities
+                )
+            ):
+                raise ValueError(
+                    f"{workstream}: candidate_capabilities must be non-empty strings"
+                )
             pointer = _evidence_pointer(
                 evidence,
                 item_id=item_id,
@@ -383,7 +414,8 @@ def build_queue(*, policy: dict[str, Any] | None = None) -> dict[str, Any]:
                     "kind": kind,
                     "workstream": workstream,
                     "owner_issue": workstream_spec["owner_issue"],
-                    "candidate_profile": workstream_spec["candidate_profile"],
+                    "candidate_profiles": list(candidate_profiles),
+                    "candidate_capabilities": list(candidate_capabilities),
                     "routing_bucket": bucket,
                     "routing_basis": basis,
                     "evidence_source": corpus_policy["evidence_source"],
@@ -513,8 +545,15 @@ def validate_queue(
             raise ValueError(f"unknown corpus in queue row: {corpus_id}")
         if workstream not in workstreams:
             raise ValueError(f"unknown workstream in queue row: {workstream}")
-        if row.get("owner_issue") != workstreams[workstream]["owner_issue"]:
+        workstream_spec = workstreams[workstream]
+        if row.get("owner_issue") != workstream_spec["owner_issue"]:
             raise ValueError("queue owner issue/workstream mismatch")
+        if row.get("candidate_profiles") != workstream_spec.get("candidate_profiles"):
+            raise ValueError("queue candidate profiles/workstream mismatch")
+        if row.get("candidate_capabilities") != workstream_spec.get(
+            "candidate_capabilities"
+        ):
+            raise ValueError("queue candidate capabilities/workstream mismatch")
         if not row.get("evidence_source") or not row.get("evidence_pointer"):
             raise ValueError("queue row lacks evidence trace")
         recomputed_per_corpus[corpus_id][workstream] += 1
