@@ -2,17 +2,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import sys
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
-
-from tfont.semantic_vocabulary import CAPABILITY_IDS, PROFILE_IDS
 BUILDER = ROOT / "scripts/coverage/build_i026_work_queue.py"
 POLICY = ROOT / "docs/research/data/i026/p004-routing-policy.json"
 GENERATED = ROOT / "docs/research/data/generated/i026/p004-work-queue.json"
@@ -83,8 +77,8 @@ class I026WorkQueueRedTests(unittest.TestCase):
         for row in rows:
             self.assertTrue(row["candidate_profiles"])
             self.assertTrue(row["candidate_capabilities"])
-            self.assertTrue(set(row["candidate_profiles"]) <= PROFILE_IDS)
-            self.assertTrue(set(row["candidate_capabilities"]) <= CAPABILITY_IDS)
+            self.assertTrue(set(row["candidate_profiles"]) <= module.PROFILE_IDS)
+            self.assertTrue(set(row["candidate_capabilities"]) <= module.CAPABILITY_IDS)
             self.assertNotIn("heritage-written-text", row["candidate_profiles"])
             self.assertNotIn("completion", row["candidate_profiles"])
         self.assertTrue(all(row["evidence_source"] and row["evidence_pointer"] for row in rows))
