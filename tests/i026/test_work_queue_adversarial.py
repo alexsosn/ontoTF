@@ -69,6 +69,18 @@ class I026WorkQueueAdversarialTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "H bucket overlaps"):
             module.build_queue(policy=policy)
 
+    def test_unknown_profile_or_capability_fails_closed(self):
+        module = _load_builder()
+        policy = _policy()
+        policy["workstreams"]["E"]["candidate_profiles"].append("heritage-written-text")
+        with self.assertRaisesRegex(ValueError, "unknown candidate profile"):
+            module.build_queue(policy=policy)
+
+        policy = _policy()
+        policy["workstreams"]["D"]["candidate_capabilities"].append("lexical.magic")
+        with self.assertRaisesRegex(ValueError, "unknown candidate capability"):
+            module.build_queue(policy=policy)
+
     def test_missing_gap_route_fails_closed(self):
         module = _load_builder()
         policy = _policy()
