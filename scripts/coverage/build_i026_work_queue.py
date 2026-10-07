@@ -11,18 +11,21 @@ from __future__ import annotations
 
 import argparse
 import copy
+import importlib.util
 import json
-import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
-
-from tfont.semantic_vocabulary import CAPABILITY_IDS, PROFILE_IDS
+VOCABULARY = ROOT / "src/tfont/semantic_vocabulary.py"
+_VOCAB_SPEC = importlib.util.spec_from_file_location("i026_semantic_vocabulary", VOCABULARY)
+if _VOCAB_SPEC is None or _VOCAB_SPEC.loader is None:
+    raise RuntimeError("cannot load controlled semantic vocabulary")
+_VOCAB = importlib.util.module_from_spec(_VOCAB_SPEC)
+_VOCAB_SPEC.loader.exec_module(_VOCAB)
+PROFILE_IDS = _VOCAB.PROFILE_IDS
+CAPABILITY_IDS = _VOCAB.CAPABILITY_IDS
 POLICY_PATH = ROOT / "docs/research/data/i026/p004-routing-policy.json"
 OUTPUT = ROOT / "docs/research/data/generated/i026/p004-work-queue.json"
 WORKSTREAMS = tuple("CDEFGH")
