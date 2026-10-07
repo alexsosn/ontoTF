@@ -65,12 +65,12 @@
       "target_corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
       "evidence_source": "docs/research/data/generated/r005/bhsa.json",
       "expected_counts": {
-        "C": 147,
-        "D": 21,
+        "C": 149,
+        "D": 22,
         "E": 0,
         "F": 6,
         "G": 0,
-        "H": 45
+        "H": 42
       },
       "routes": {
         "C": {
@@ -84,13 +84,27 @@
             "subphrase"
           ],
           "node_features": [
+            "code",
             "det",
             "dist",
             "dist_unit",
             "domain",
             "function",
+            "g_nme",
+            "g_nme_utf8",
+            "g_pfm",
+            "g_pfm_utf8",
+            "g_prs",
+            "g_prs_utf8",
+            "g_uvf",
+            "g_uvf_utf8",
+            "g_vbe",
+            "g_vbe_utf8",
+            "g_vbs",
+            "g_vbs_utf8",
             "gn",
             "instruction",
+            "is_root",
             "kind",
             "ls",
             "mother_object_type",
@@ -116,19 +130,7 @@
             "vbe",
             "vbs",
             "vs",
-            "vt",
-            "g_nme",
-            "g_nme_utf8",
-            "g_pfm",
-            "g_pfm_utf8",
-            "g_prs",
-            "g_prs_utf8",
-            "g_uvf",
-            "g_uvf_utf8",
-            "g_vbe",
-            "g_vbe_utf8",
-            "g_vbs",
-            "g_vbs_utf8"
+            "vt"
           ],
           "edge_features": [
             "distributional_parent",
@@ -156,6 +158,7 @@
             "lex0",
             "lex_utf8",
             "lexeme_count",
+            "nametype",
             "rank_lex",
             "rank_occ",
             "root",
@@ -255,10 +258,10 @@
         },
         "E": {
           "node_types": [
-            "tablet",
             "column",
             "line",
-            "sign"
+            "sign",
+            "tablet"
           ],
           "node_features": [
             "column",
@@ -375,12 +378,12 @@
       "target_corpus_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
       "evidence_source": "docs/research/data/generated/r005/extrabiblical.json",
       "expected_counts": {
-        "C": 111,
+        "C": 113,
         "D": 10,
         "E": 0,
         "F": 2,
         "G": 0,
-        "H": 13
+        "H": 11
       },
       "routes": {
         "C": {
@@ -394,12 +397,26 @@
             "subphrase"
           ],
           "node_features": [
+            "code",
             "det",
             "dist",
             "dist_unit",
             "domain",
             "function",
+            "g_nme",
+            "g_nme_utf8",
+            "g_pfm",
+            "g_pfm_utf8",
+            "g_suffix",
+            "g_suffix_utf8",
+            "g_uvf",
+            "g_uvf_utf8",
+            "g_vbe",
+            "g_vbe_utf8",
+            "g_vbs",
+            "g_vbs_utf8",
             "gn",
+            "is_root",
             "kind",
             "ls",
             "mother_object_type",
@@ -425,19 +442,7 @@
             "vbe",
             "vbs",
             "vs",
-            "vt",
-            "g_nme",
-            "g_nme_utf8",
-            "g_pfm",
-            "g_pfm_utf8",
-            "g_suffix",
-            "g_suffix_utf8",
-            "g_uvf",
-            "g_uvf_utf8",
-            "g_vbe",
-            "g_vbe_utf8",
-            "g_vbs",
-            "g_vbs_utf8"
+            "vt"
           ],
           "edge_features": [
             "distributional_parent",
@@ -501,9 +506,9 @@
         "C": 0,
         "D": 8,
         "E": 0,
-        "F": 79,
+        "F": 80,
         "G": 0,
-        "H": 26
+        "H": 25
       },
       "routes": {
         "D": {
@@ -553,6 +558,7 @@
             "generation_model",
             "group",
             "indent",
+            "intro_corrections_json",
             "is_omission",
             "is_primary",
             "linebreak",
