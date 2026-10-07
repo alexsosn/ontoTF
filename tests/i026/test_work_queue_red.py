@@ -60,6 +60,11 @@ class I026WorkQueueRedTests(unittest.TestCase):
         self.assertTrue(queue["invariants"]["zero_orphans"])
         self.assertTrue(queue["invariants"]["unique_primary_owner"])
         self.assertTrue(queue["invariants"]["technical_disjoint"])
+        h_buckets = {}
+        for row in queue["semantic_rows"]:
+            if row["workstream"] == "H":
+                h_buckets[row["routing_bucket"]] = h_buckets.get(row["routing_bucket"], 0) + 1
+        self.assertEqual(h_buckets, {"cross-model": 7, "native-only-candidate": 130})
 
     def test_every_manifest_item_is_present_exactly_once(self):
         module = _load_builder()
