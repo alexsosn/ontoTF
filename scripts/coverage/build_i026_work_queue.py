@@ -12,11 +12,17 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from tfont.semantic_vocabulary import CAPABILITY_IDS, PROFILE_IDS
 POLICY_PATH = ROOT / "docs/research/data/i026/p004-routing-policy.json"
 OUTPUT = ROOT / "docs/research/data/generated/i026/p004-work-queue.json"
 WORKSTREAMS = tuple("CDEFGH")
@@ -314,6 +320,28 @@ def build_queue(*, policy: dict[str, Any] | None = None) -> dict[str, Any]:
         raise ValueError("policy corpora do not exactly match corpus_order")
     if type(workstreams) is not dict or set(workstreams) != set(WORKSTREAMS):
         raise ValueError("workstream policy must define exactly C-H")
+    for workstream, spec in workstreams.items():
+        if type(spec) is not dict:
+            raise ValueError(f"{workstream}: workstream policy must be an object")
+        profiles = _exact_name_list(
+            spec.get("candidate_profiles"),
+            label=f"{workstream} candidate_profiles",
+        )
+        capabilities = _exact_name_list(
+            spec.get("candidate_capabilities"),
+            label=f"{workstream} candidate_capabilities",
+        )
+        unknown_profiles = set(profiles) - PROFILE_IDS
+        unknown_capabilities = set(capabilities) - CAPABILITY_IDS
+        if unknown_profiles:
+            raise ValueError(
+                f"{workstream}: unknown candidate profile IDs: {sorted(unknown_profiles)}"
+            )
+        if unknown_capabilities:
+            raise ValueError(
+                f"{workstream}: unknown candidate capability IDs: "
+                f"{sorted(unknown_capabilities)}"
+            )
 
     rows: list[dict[str, Any]] = []
     manifest_bindings: dict[str, Any] = {}
