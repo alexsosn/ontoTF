@@ -81,7 +81,7 @@ Each semantic row contains:
 - `evidence_pointer`;
 - `existing_accounting` copied from the manifest.
 
-The profile/capability lists are review ownership envelopes: they identify the controlled semantic contracts the downstream workstream must consider. They do not activate a profile/capability and do not assert that every row belongs positively to every listed capability.
+The profile/capability lists are review ownership envelopes: they identify the controlled semantic contracts the downstream workstream must consider. They do not activate a profile/capability and do not assert that every row belongs positively to every listed capability. H `cross-model` word-domain rows use the controlled `structural.entity-kind` envelope; H `native-only-candidate` rows deliberately use empty profile/capability lists rather than falsely classifying source/provenance metadata as structural semantics.
 
 No row contains a newly invented mapping assessment.
 
