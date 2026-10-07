@@ -89,9 +89,12 @@ class I026WorkQueueAdversarialTests(unittest.TestCase):
         module = _load_builder()
         queue = module.build_queue()
         mutated = copy.deepcopy(queue)
-        mutated["technical_exclusions"]["oracc"].append(
-            mutated["semantic_rows"][0]["item_id"]
+        oracc_item = next(
+            row["item_id"]
+            for row in mutated["semantic_rows"]
+            if row["corpus_id"] == "oracc"
         )
+        mutated["technical_exclusions"]["oracc"].append(oracc_item)
         with self.assertRaisesRegex(ValueError, "semantic/technical overlap"):
             module.validate_queue(mutated)
 
