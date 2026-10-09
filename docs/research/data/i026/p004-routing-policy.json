@@ -990,8 +990,7 @@
             "orphan",
             "siglum_ambiguous",
             "siglum_raw_candidates",
-            "siglum_source",
-            "subcorpus"
+            "siglum_source"
           ],
           "edge_features": [
             "edition",
