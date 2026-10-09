@@ -1,0 +1,36 @@
+name: I-026 semantic accounting work queue
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/I-026-semantic-accounting-work-queue.md"
+      - "docs/plans/I-026-semantic-accounting-work-queue.md"
+      - "docs/research/data/i026/**"
+      - "docs/research/data/generated/i026/**"
+      - "scripts/coverage/build_i026_work_queue.py"
+      - "tests/i026/**"
+      - "src/tfont/resources/coverage/**"
+      - ".github/workflows/i026-work-queue.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Rebuild queue
+        run: python scripts/coverage/build_i026_work_queue.py --check
+      - name: Focused I-026 tests
+        run: python -m unittest tests.i026.test_work_queue_red tests.i026.test_work_queue_adversarial
