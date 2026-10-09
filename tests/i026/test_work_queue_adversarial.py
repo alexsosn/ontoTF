@@ -60,6 +60,17 @@ class I026WorkQueueAdversarialTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "absent native identity"):
             module.build_queue(policy=policy)
 
+    def test_technical_exclusion_cannot_be_routed_as_semantic(self):
+        module = _load_builder()
+        policy = _policy()
+        # I-019 inventory contains subcorpus, but its coverage manifest
+        # explicitly excludes this converter bookkeeping feature.
+        policy["corpora"]["tlhdig"]["routes"]["F"]["node_features"].append(
+            "subcorpus"
+        )
+        with self.assertRaisesRegex(ValueError, "absent native identity"):
+            module.build_queue(policy=policy)
+
     def test_h_bucket_cannot_overlap_model_route(self):
         module = _load_builder()
         policy = _policy()
