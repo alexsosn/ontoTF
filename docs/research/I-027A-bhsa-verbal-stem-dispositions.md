@@ -39,7 +39,7 @@ Potential later decomposition into voice, valency, reflexivity, derivation, etc.
 
 - Starting manifest: 219 semantic items; 7 production-reviewed, 34 research-reviewed; no accounting gaps.
 - Selected delta: exactly `node_feature:vs` plus 26 `node_value:vs=...` rows. Each currently has research-only `native-only`, none production.
-- Result: 34 production-reviewed; 185 remaining unreviewed across BHSA, of which 122 of 149 BHSA Workstream-C items remain unreviewed (7 previous + 27 new).
+- Result: 34 production-reviewed; 185 remaining unreviewed across BHSA, of which 115 of 149 BHSA Workstream-C items remain unreviewed (7 previous + 27 new).
 - Research accounting must stay byte-for-byte unchanged on all rows.
 - Denominator/source identity must not change, including technical exclusions and the canonical denominator digest.
 - The new manifest receives its own immutable `manifest_id` and resource directory. The historical baseline remains unchanged.
