@@ -38,4 +38,4 @@ jobs:
       - run: python -m pip install -e .
       - run: python scripts/coverage/build_i027c2_bhsa_adj_adv.py --check
       - run: python scripts/coverage/build_i027c2_syriac_adj_adv.py --check
-      - run: python -m unittest tests.i027c2.test_pos_red tests.i027c2.test_pos_adversarial
+      - run: python -m unittest tests.i027c2.test_pos_red tests.i027c2.test_pos_adversarial tests.i027c2.test_original_sources
