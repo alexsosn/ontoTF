@@ -185,17 +185,22 @@ def evaluate_review_snapshot(
         when, identifier = _review_time(event)
         _require(identifier not in seen_ids, "duplicate GitHub review ID")
         seen_ids.add(identifier)
-        previous = latest.get(login)
+        # GitHub account identities are case-insensitive. Revocations must
+        # invalidate an earlier APPROVED review under any login casing.
+        identity = login.casefold()
+        previous = latest.get(identity)
         if previous is None or (when,identifier) > _review_time(previous):
-            latest[login]=event
+            latest[identity]=event
 
     candidates: list[tuple[dict[str, Any], list[dict[str,str]]]] = []
-    for login,event in latest.items():
+    for identity,event in latest.items():
         if event["state"] != "APPROVED":
             continue
         user = event["user"]
-        if (login == author["login"] or user.get("type") != "User"
-                or reviewer_permissions.get(login) not in _ROLES):
+        login = user["login"]
+        role = reviewer_permissions.get(login)
+        if (identity == author["login"].casefold()
+                or user.get("type") != "User" or role not in _ROLES):
             continue
         if event.get("commit_id") != expected_head_sha:
             # Never accept an approval carried across a later code update.
