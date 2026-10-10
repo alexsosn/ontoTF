@@ -62,7 +62,13 @@ class SparsePublishedCoverageAdversarial(unittest.TestCase):
     def test_denominator_native_identity_and_gap_regression_rejected(self):
         self.assert_rejected_target(lambda x:x.__setitem__("denominator_digest","sha256:"+"0"*64))
         self.assert_rejected_target(lambda x:x.__setitem__("target_corpus_revision","forged"))
-        self.assert_rejected_target(lambda x:x["semantic_items"][0].__setitem__("kind","edge_feature"))
+        self.assert_rejected_target(
+            lambda x:x["semantic_items"][0].__setitem__(
+                "kind",
+                "node_feature" if x["semantic_items"][0]["kind"] != "node_feature"
+                else "edge_feature",
+            )
+        )
         self.assert_rejected_target(lambda x:x["semantic_items"].pop())
         self.assert_rejected_target(lambda x:x.__setitem__("technical_exclusions",[{"item_id":"fabricated"}]))
         sy_base=load_packaged_coverage_manifest("p004-i027b2-syriac-verb-v1","syriac")
