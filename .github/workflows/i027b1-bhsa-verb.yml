@@ -6,7 +6,6 @@ on:
       - "src/tfont/resources/profiles/bhsa/0.3.0/**"
       - "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/**"
       - "src/tfont/resources/ontologies/olia/**"
-      - "src/tfont/production_bundles.py"
       - "docs/research/I-027B1-bhsa-olia-verb.md"
       - "docs/plans/I-027B1-bhsa-olia-verb.md"
       - "scripts/coverage/build_i027b1_bhsa_verb.py"
