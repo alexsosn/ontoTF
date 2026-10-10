@@ -1,0 +1,30 @@
+{
+  "evidence_id": "evidence:bhsa:word-sp-adj-adv-source",
+  "kind": "corpus-feature-definition",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/sp.md",
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "feature": "sp",
+    "feature_semantics": "part-of-speech",
+    "documented_node_types": [
+      "word",
+      "lex"
+    ],
+    "production_node_type": "word",
+    "source_definitions": {
+      "adjv": {
+        "gloss": "adjective",
+        "line": 30,
+        "featureObservations": 10141
+      },
+      "advb": {
+        "gloss": "adverb",
+        "line": 21,
+        "featureObservations": 4603
+      }
+    },
+    "target_tf_revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+  },
+  "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63"
+}

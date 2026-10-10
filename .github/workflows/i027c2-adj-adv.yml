@@ -1,0 +1,41 @@
+name: I-027C2 BHSA Syriac OLiA Adjective Adverb
+
+on:
+  pull_request:
+    paths:
+      - "src/tfont/production_bundles.py"
+      - "src/tfont/__init__.py"
+      - "src/tfont/resources/profiles/bhsa/0.4.0/**"
+      - "src/tfont/resources/profiles/syriac/0.4.0/**"
+      - "src/tfont/resources/coverage/p004-i027c2-*/**"
+      - "src/tfont/resources/ontologies/olia/**/adjective-evidence.json"
+      - "src/tfont/resources/ontologies/olia/**/adverb-evidence.json"
+      - "src/tfont/resources/ontologies/olia/**/lock-linguistic-0.4.0.json"
+      - "scripts/coverage/build_i027c2_*.py"
+      - "tests/i027c2/**"
+      - "docs/research/I-027C2-adj-adv.md"
+      - "docs/plans/I-027C2-adj-adv.md"
+      - ".github/workflows/i027c2-adj-adv.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e .
+      - run: python scripts/coverage/build_i027c2_bhsa_adj_adv.py --check
+      - run: python scripts/coverage/build_i027c2_syriac_adj_adv.py --check
+      - run: python -m unittest tests.i027c2.test_pos_red tests.i027c2.test_pos_adversarial tests.i027c2.test_original_sources

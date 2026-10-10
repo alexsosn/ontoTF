@@ -9,9 +9,11 @@ from .source_validation import loads_source, validate_source
 PRODUCTION_NOUN_CORPORA = ("bhsa", "syriac", "extrabiblical")
 PRODUCTION_LINGUISTIC_CORPORA = PRODUCTION_NOUN_CORPORA
 PRODUCTION_VERB_CORPORA = ("bhsa", "syriac", "extrabiblical")
+PRODUCTION_ADJ_ADV_CORPORA = ("bhsa", "syriac")
 _NOUN_PROFILE_VERSION = "0.1.0"
 _LINGUISTIC_PROFILE_VERSION = "0.2.0"
 _VERB_PROFILE_VERSION = "0.3.0"
+_ADJ_ADV_PROFILE_VERSION = "0.4.0"
 _OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 _OLIA_ROOT = f"resources/ontologies/olia/{_OLIA_REVISION}"
 
@@ -64,6 +66,17 @@ _VERB_EVIDENCE = {
     ),
 }
 
+_ADJ_ADV_EVIDENCE = {
+    "bhsa": (
+        *_VERB_EVIDENCE["bhsa"],
+        "resources/profiles/bhsa/0.4.0/evidence/native-adj-adv-pos.json",
+    ),
+    "syriac": (
+        *_VERB_EVIDENCE["syriac"],
+        "resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json",
+    ),
+}
+
 
 class ProductionBundleError(ValueError):
     def __init__(self, corpus_id: object) -> None:
@@ -110,6 +123,7 @@ def _load_bundle(
     lock_name: str,
     include_morphology_evidence: bool,
     include_verb_evidence: bool = False,
+    include_adj_adv_evidence: bool = False,
 ) -> SemanticSourceBundle:
     if type(corpus_id) is not str or corpus_id not in corpora:
         raise ProductionBundleError(corpus_id)
@@ -120,6 +134,8 @@ def _load_bundle(
         ontology_evidence.append(f"{_OLIA_ROOT}/noun-morphology-evidence.json")
     if include_verb_evidence:
         ontology_evidence.append(f"{_OLIA_ROOT}/verb-evidence.json")
+    if include_adj_adv_evidence:
+        ontology_evidence.extend((f"{_OLIA_ROOT}/adjective-evidence.json", f"{_OLIA_ROOT}/adverb-evidence.json"))
     evidences = tuple(
         _artifact("evidence", "evidence", source_name)
         for source_name in (*evidence_sources[corpus_id], *ontology_evidence)
@@ -188,10 +204,29 @@ def load_production_verb_bundle(corpus_id: str) -> SemanticSourceBundle:
     )
 
 
+def load_production_adj_adv_bundle(corpus_id: str) -> SemanticSourceBundle:
+    """Opt-in source-reviewed 0.4.0 OLiA Adjective/Adverb profiles.
+
+    All historical 0.1/0.2/0.3 loaders retain their immutable version scope.
+    """
+    return _load_bundle(
+        corpus_id,
+        corpora=PRODUCTION_ADJ_ADV_CORPORA,
+        profile_version=_ADJ_ADV_PROFILE_VERSION,
+        evidence_sources=_ADJ_ADV_EVIDENCE,
+        lock_name="lock-linguistic-0.4.0.json",
+        include_morphology_evidence=True,
+        include_verb_evidence=True,
+        include_adj_adv_evidence=True,
+    )
+
+
 __all__ = [
     "PRODUCTION_LINGUISTIC_CORPORA",
     "PRODUCTION_NOUN_CORPORA",
     "PRODUCTION_VERB_CORPORA",
+    "PRODUCTION_ADJ_ADV_CORPORA",
+    "load_production_adj_adv_bundle",
     "load_production_verb_bundle",
     "ProductionBundleError",
     "load_production_linguistic_bundle",
