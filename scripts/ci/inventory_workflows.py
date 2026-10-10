@@ -50,9 +50,16 @@ def collect_workflow_inventory(root: Path) -> list[dict[str, Any]]:
             _fail(f"{path}: workflow jobs must be a mapping")
         runs: list[dict[str, str]] = []
         external: list[dict[str, str]] = []
+        actions: list[dict[str, str]] = []
+        called_workflows: list[dict[str, str]] = []
         for job_name, job in value["jobs"].items():
             if type(job_name) is not str or type(job) is not dict:
                 _fail(f"{path}: malformed job {job_name!r}")
+            if "uses" in job:
+                called_workflows.append({
+                    "job": job_name,
+                    "uses": _string(job["uses"], "reusable job reference"),
+                })
             # Reusable workflow jobs without 'steps' are valid Actions jobs.
             steps = job.get("steps", [])
             if type(steps) is not list:
@@ -68,6 +75,12 @@ def collect_workflow_inventory(root: Path) -> list[dict[str, Any]]:
                         "run": _string(command, "shell command").strip(),
                     })
                 action = step.get("uses")
+                if action is not None:
+                    actions.append({
+                        "job": job_name,
+                        "step": str(step_index),
+                        "uses": _string(action, "external/reusable action reference"),
+                    })
                 if type(action) is str and action.startswith("actions/checkout@"):
                     checkout = step.get("with", {})
                     if type(checkout) is not dict:
@@ -83,6 +96,8 @@ def collect_workflow_inventory(root: Path) -> list[dict[str, Any]]:
             "workflow_name": str(value.get("name", path.name)),
             "runs": runs,
             "external_checkouts": external,
+            "actions": actions,
+            "called_workflows": called_workflows,
         })
     return inventory
 
@@ -109,17 +124,24 @@ def validate_ownership(
         path = workflow["path"]
         owner = owners["workflows"][path]
         if type(owner) is not dict or set(owner) != {
-            "replacement_job", "retained_run_commands", "retained_checkout_pins"
+            "replacement_job", "retained_run_commands", "retained_checkout_pins",
+            "retained_actions", "retained_called_workflows"
         }:
             _fail(f"{path}: incomplete owner contract")
         _string(owner["replacement_job"], "replacement job")
         commands = owner["retained_run_commands"]
         pins = owner["retained_checkout_pins"]
+        used_actions = owner["retained_actions"]
+        called = owner["retained_called_workflows"]
         if (
             type(commands) is not list
             or any(type(s) is not str for s in commands)
             or type(pins) is not list
             or any(type(s) is not str for s in pins)
+            or type(used_actions) is not list
+            or any(type(s) is not str for s in used_actions)
+            or type(called) is not list
+            or any(type(s) is not str for s in called)
         ):
             _fail(f"{path}: invalid command/pin ownership lists")
         expected_commands = {run["run"] for run in workflow["runs"]}
@@ -131,6 +153,12 @@ def validate_ownership(
             _fail(f"{path}: missing, extra, or duplicate shell command ownership")
         if set(pins) != expected_pins or len(pins) != len(set(pins)):
             _fail(f"{path}: missing, extra, or duplicate source pin ownership")
+        expected_actions = {item["uses"] for item in workflow["actions"]}
+        expected_called = {item["uses"] for item in workflow["called_workflows"]}
+        if set(used_actions) != expected_actions or len(used_actions) != len(set(used_actions)):
+            _fail(f"{path}: missing, extra, or duplicate GitHub Action owner")
+        if set(called) != expected_called or len(called) != len(set(called)):
+            _fail(f"{path}: missing, extra, or duplicate reusable workflow owner")
 
 
 def main() -> int:
