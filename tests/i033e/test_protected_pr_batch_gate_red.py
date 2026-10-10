@@ -74,6 +74,8 @@ class ProtectedBatchGateRED(unittest.TestCase):
             {"ledger":"src/tfont/resources/batch_pilots/../tools.py"},
             {"packet":"https://evil.com/review.json"},
             {"ledger":"src/tfont/resources/batch_pilots/other.py"},
+            {"ledger":"src/tfont/resources/batch_pilots/nested\ninvalid.json"},
+            {"packet":"docs/research/data/generated/i033d/%2e%2e/approval.json"},
         ):
             payload=dict(self.manifest,**changed)
             fake=dict(self.records,**{MANIFEST:blob(json.dumps(payload).encode(),MANIFEST)})
