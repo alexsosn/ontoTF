@@ -1,6 +1,8 @@
 # F-030 phase 2 — CI trigger consolidation with preserved unique gates
 
-**Issue:** #291. **Dependency:** F-030 phase 1 PR #295 / stable exact-head `.github/workflows/full-suite.yml`.
+**Issue:** #291
+
+**Dependency:** F-030 phase 1 PR #295 / stable exact-head `.github/workflows/full-suite.yml`.
 
 ## Code-grounded trigger audit
 
