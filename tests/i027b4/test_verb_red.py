@@ -55,6 +55,32 @@ class ExtraBiblicalVerbRedTests(unittest.TestCase):
         )
         self.assertIn(BASE + "Verb", new.ontology_locks[0].data["terms_used"])
 
+    def test_three_corpus_exact_olia_verb_semantic_index(self):
+        bundles = tuple(
+            validate_semantic_bundle(load_production_verb_bundle(corpus))
+            for corpus in ("bhsa", "syriac", "extrabiblical")
+        )
+        ir = compile_semantic_ir(bundles)
+        key = SemanticKey(
+            profile_id="linguistic",
+            capability_id="linguistic.part-of-speech",
+            target=BASE + "Verb",
+            formal_kind="class",
+            semantic_role="annotation-value",
+        )
+        records = dict(ir.semantic_index)[key]
+        self.assertEqual(
+            {record.corpus_id for record in records},
+            {"bhsa", "syriac", "extrabiblical"},
+        )
+        for record in records:
+            self.assertEqual(record.assessment, "exact")
+            native = record.native_execution_binding
+            self.assertEqual(
+                (native.node_type, native.feature, native.value, native.execution_shape),
+                ("word", "sp", "verb", "value-predicate"),
+            )
+
     def test_old_reviewed_mapping_and_loader_identity_stays_immutable(self):
         old = validate_semantic_bundle(load_production_linguistic_bundle("extrabiblical"))
         new = validate_semantic_bundle(load_production_verb_bundle("extrabiblical"))
