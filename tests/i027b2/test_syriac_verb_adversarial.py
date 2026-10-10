@@ -51,16 +51,16 @@ class SyriacVerbAdversarialTests(unittest.TestCase):
         # ExtraBiblical now has an independently reviewed v0.3.0 Verb
         # release. The Syriac v0.3.0 bundle must still own its own source,
         # component identity and selector (never reuse a foreign mapping).
-        syriac = validate_semantic_bundle(load_production_verb_bundle("syriac"))
-        extrabiblical = validate_semantic_bundle(
-            load_production_verb_bundle("extrabiblical")
-        )
+        syriac = load_production_verb_bundle("syriac")
+        extrabiblical = load_production_verb_bundle("extrabiblical")
+        validate_semantic_bundle(syriac)
+        validate_semantic_bundle(extrabiblical)
         for corpus_id, bundle in (
             ("syriac", syriac),
             ("extrabiblical", extrabiblical),
         ):
             added = next(
-                mapping for mapping in bundle.indexes.mappings.values()
+                mapping for mapping in bundle.mappings.data["mappings"]
                 if mapping["mapping_id"] == f"mapping:{corpus_id}:olia-verb"
             )
             self.assertEqual(added["corpus_id"], corpus_id)
