@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "evidence_id": "evidence:extrabiblical:word-sp-verb-original-mql",
+  "status": "research-reviewed-pending-production-review",
+  "source_repository": "ETCBC/extrabiblical",
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "source_path": "source/0.2/extraBiblical.mql.bz2",
+  "git_blob_sha": "4ba717b1716b747bb94d0359b950a55d8624b109",
+  "compressed_size": 1992719,
+  "compressed_sha256": "9b60ef03d18785257e80bc199acb7f348c20177b273e9c47b20a868ab7e07073",
+  "decompressed_size": 41353107,
+  "decompressed_sha256": "62540c8b4682121dd002f4c234c693259fb494c439ddfc06574537e5e398790e",
+  "encoding": "UTF-8",
+  "statements": [
+    {
+      "line": 163,
+      "claim": "enum_definition",
+      "excerpt": "CREATE ENUMERATION part_of_speech_t = {"
+    },
+    {
+      "line": 165,
+      "claim": "verb_enumerated_value",
+      "excerpt": "verb = 1,"
+    },
+    {
+      "line": 501,
+      "claim": "sp_uses_part_of_speech_enum",
+      "excerpt": "sp : part_of_speech_t;"
+    },
+    {
+      "line": 269073,
+      "claim": "verb_assigned_to_sp",
+      "excerpt": "sp:=verb;"
+    },
+    {
+      "line": 269212,
+      "claim": "verb_assigned_to_sp",
+      "excerpt": "sp:=verb;"
+    }
+  ],
+  "observed_tf_inventory": {
+    "corpus_id": "extrabiblical",
+    "target_corpus_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+    "inventory_path": "docs/research/data/generated/r005/extrabiblical.json",
+    "feature": "sp",
+    "node_types": [
+      "word"
+    ],
+    "value": "verb",
+    "observed_occurrences": 6100
+  },
+  "source_check_run": "https://github.com/alexsosn/ontoTF/actions/runs/38039463508",
+  "interpretation": "The original MQL defines sp as a part-of-speech enum with verb=1 and uses sp:=verb on records; combined with pinned TF word-node scope, this supports independent review of exact OLiA Verb annotation-category correspondence. This record alone does not activate a production mapping.",
+  "exact_mapping_authorized": false
+}
