@@ -63,7 +63,7 @@
           "reference_kind": "semantic-pivot",
           "semantic_role": "annotation-value",
           "target": "http://purl.org/olia/olia.owl#Verb",
-          "projection_semantic_digest": "sha256:14d2407b66300899adc803caf85e4d0d790b0ff5f29685b4894d51068704a926",
+          "projection_semantic_digest": "sha256:b483d6e66b4f881a00105d06723fc7db4d83e9dec473170c5185b9eeaf54e811",
           "review": {
             "status": "reviewed",
             "reviewer_id": "openai:gpt-6",
@@ -71,12 +71,12 @@
             "review_source": "https://github.com/alexsosn/ontoTF/pull/278",
             "review_method": "logically-independent corpus grammar and pinned OLiA class review",
             "review_id": "review:syriac:olia-verb:projection",
-            "reviewed_mapping_digest": "sha256:14d2407b66300899adc803caf85e4d0d790b0ff5f29685b4894d51068704a926"
+            "reviewed_mapping_digest": "sha256:b483d6e66b4f881a00105d06723fc7db4d83e9dec473170c5185b9eeaf54e811"
           }
         }
       ],
       "rationale": "Reviewed pinned Syriac word_grammar annotation category sp=verb as exact OLiA Verb; no stem, tense or voice equivalence.",
-      "mapping_semantic_digest": "sha256:3937a37c8a956b9a3124b2c4afca9d03c5a38bce27152449204958b1f8c4840b",
+      "mapping_semantic_digest": "sha256:1cd78512783c81c9ed644ceafbbabad32d7050104981b8e1e8c813d05ce1ce78",
       "review": {
         "status": "reviewed",
         "reviewer_id": "openai:gpt-6",
@@ -84,7 +84,7 @@
         "review_source": "https://github.com/alexsosn/ontoTF/pull/278",
         "review_method": "logically-independent corpus grammar and pinned OLiA class review",
         "review_id": "review:syriac:olia-verb:mapping",
-        "reviewed_mapping_digest": "sha256:3937a37c8a956b9a3124b2c4afca9d03c5a38bce27152449204958b1f8c4840b"
+        "reviewed_mapping_digest": "sha256:1cd78512783c81c9ed644ceafbbabad32d7050104981b8e1e8c813d05ce1ce78"
       }
     }
   ]
