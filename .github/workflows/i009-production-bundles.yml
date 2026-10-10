@@ -15,7 +15,6 @@ on:
     paths:
       - 'tests/i009/**'
       - 'src/tfont/production_bundles.py'
-      - 'src/tfont/resources/**'
       - 'src/tfont/__init__.py'
       - 'pyproject.toml'
       - '.github/workflows/i009-production-bundles.yml'
