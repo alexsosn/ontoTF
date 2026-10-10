@@ -49,3 +49,6 @@ jobs:
 
       - name: Run repository test suite
         run: python -m unittest discover -s tests -v
+
+      - name: Build exact-head distributable wheel
+        run: python -m build --wheel --outdir dist
