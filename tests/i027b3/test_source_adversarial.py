@@ -28,8 +28,8 @@ class I027B3SourceEvidenceAdversarialTests(unittest.TestCase):
         assert spec and spec.loader
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        raw = bz2.compress(b"CREATE OBJECT TYPE word;\\n")
-        sha = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest()
+        raw = bz2.compress(b"CREATE OBJECT TYPE word;\n")
+        sha = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
         report = module.extract(raw, expected_blob_sha=sha, expected_size=len(raw))
         self.assertEqual(report["match_counts"]["part_of_speech_t"], 0)
         self.assertFalse(report.get("exact_mapping_authorized", False))
