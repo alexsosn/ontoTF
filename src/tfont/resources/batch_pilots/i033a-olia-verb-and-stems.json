@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "batch_id": "i033a-published-olia-verb-and-bhsa-stem-parity",
+  "mode": "published-parity-only",
+  "positive_pos": [
+    {
+      "corpus_id": "bhsa",
+      "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "native": {
+        "node_type": "word",
+        "feature": "sp",
+        "value": "verb"
+      },
+      "target": "http://purl.org/olia/olia.owl#Verb",
+      "corpus_evidence_id": "evidence:bhsa:word-sp-verb-code",
+      "corpus_evidence_digest": "sha256:b160ad1ed8a3490c240c4674bf550e1b3089faa5e214371711e32dc8cd8671d0",
+      "ontology_evidence_id": "evidence:olia:verb-class",
+      "ontology_evidence_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f",
+      "reviewed_mapping_semantic_digest": "sha256:fea28524b19675bd8e9e6178a4256f86cae62775a14e097047c344813da3ee4f",
+      "reviewed_projection_semantic_digest": "sha256:31e7277035fd4ee215fab38c4ecd0ddb8aee430b53d3562aaf5d0818c9036366"
+    },
+    {
+      "corpus_id": "syriac",
+      "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+      "native": {
+        "node_type": "word",
+        "feature": "sp",
+        "value": "verb"
+      },
+      "target": "http://purl.org/olia/olia.owl#Verb",
+      "corpus_evidence_id": "evidence:syriac:word-sp-verb-code",
+      "corpus_evidence_digest": "sha256:a220f482f37ebca0991cd0c073e7f7199e981f8961c89c9d46738dc1b01a9450",
+      "ontology_evidence_id": "evidence:olia:verb-class",
+      "ontology_evidence_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f",
+      "reviewed_mapping_semantic_digest": "sha256:1cd78512783c81c9ed644ceafbbabad32d7050104981b8e1e8c813d05ce1ce78",
+      "reviewed_projection_semantic_digest": "sha256:b483d6e66b4f881a00105d06723fc7db4d83e9dec473170c5185b9eeaf54e811"
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+      "native": {
+        "node_type": "word",
+        "feature": "sp",
+        "value": "verb"
+      },
+      "target": "http://purl.org/olia/olia.owl#Verb",
+      "corpus_evidence_id": "evidence:extrabiblical:word-sp-verb-source",
+      "corpus_evidence_digest": "sha256:c4a1b0e8b81f3764dbc8350d3c10a214844df0cd5599e4ad78cfc01601cdc0d4",
+      "ontology_evidence_id": "evidence:olia:verb-class",
+      "ontology_evidence_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f",
+      "reviewed_mapping_semantic_digest": "sha256:9361bb2a02bfeab79197f4ea4e3e68c562637356e259753cb86aa4a1f7fb880a",
+      "reviewed_projection_semantic_digest": "sha256:12d32dc8f58bd27ecc043100f5c8d55648983bf0898e660190900df0581a2d1c"
+    }
+  ],
+  "native_only": {
+    "corpus_id": "bhsa",
+    "native_feature": "vs",
+    "assessment": "native-only",
+    "common_target": false,
+    "coverage_manifest": "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
+    "source_ids": [
+      "i027a:bhsa-vs-pinned-source-review"
+    ],
+    "item_ids": [
+      "node_feature:vs",
+      "node_value:vs=\"NA\"",
+      "node_value:vs=\"afel\"",
+      "node_value:vs=\"etpa\"",
+      "node_value:vs=\"etpe\"",
+      "node_value:vs=\"haf\"",
+      "node_value:vs=\"hif\"",
+      "node_value:vs=\"hit\"",
+      "node_value:vs=\"hof\"",
+      "node_value:vs=\"hotp\"",
+      "node_value:vs=\"hsht\"",
+      "node_value:vs=\"htpa\"",
+      "node_value:vs=\"htpe\"",
+      "node_value:vs=\"htpo\"",
+      "node_value:vs=\"nif\"",
+      "node_value:vs=\"nit\"",
+      "node_value:vs=\"pael\"",
+      "node_value:vs=\"pasq\"",
+      "node_value:vs=\"peal\"",
+      "node_value:vs=\"peil\"",
+      "node_value:vs=\"piel\"",
+      "node_value:vs=\"poal\"",
+      "node_value:vs=\"poel\"",
+      "node_value:vs=\"pual\"",
+      "node_value:vs=\"qal\"",
+      "node_value:vs=\"shaf\"",
+      "node_value:vs=\"tif\""
+    ]
+  }
+}
