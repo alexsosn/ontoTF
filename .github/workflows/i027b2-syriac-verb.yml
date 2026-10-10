@@ -8,6 +8,7 @@ on:
       - "src/tfont/production_bundles.py"
       - "docs/research/I-027B2-syriac-extra-verb.md"
       - "docs/plans/I-027B2-syriac-extra-verb.md"
+      - "scripts/coverage/build_i027b2_syriac_verb.py"
       - "tests/i027b2/**"
       - ".github/workflows/i027b2-syriac-verb.yml"
   workflow_dispatch:
@@ -30,4 +31,5 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e .
-      - run: python -m unittest tests.i027b2.test_syriac_verb_red
+      - run: python scripts/coverage/build_i027b2_syriac_verb.py --check
+      - run: python -m unittest tests.i027b2.test_syriac_verb_red tests.i027b2.test_syriac_verb_adversarial
