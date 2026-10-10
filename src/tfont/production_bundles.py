@@ -8,8 +8,10 @@ from .source_validation import loads_source, validate_source
 
 PRODUCTION_NOUN_CORPORA = ("bhsa", "syriac", "extrabiblical")
 PRODUCTION_LINGUISTIC_CORPORA = PRODUCTION_NOUN_CORPORA
+PRODUCTION_VERB_CORPORA = ("bhsa",)
 _NOUN_PROFILE_VERSION = "0.1.0"
 _LINGUISTIC_PROFILE_VERSION = "0.2.0"
+_VERB_PROFILE_VERSION = "0.3.0"
 _OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 _OLIA_ROOT = f"resources/ontologies/olia/{_OLIA_REVISION}"
 
@@ -44,6 +46,13 @@ _LINGUISTIC_EVIDENCE = {
         "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
         "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
         "resources/profiles/bhsa/0.2.0/evidence/native-number.json",
+    ),
+}
+
+_VERB_EVIDENCE = {
+    "bhsa": (
+        *_LINGUISTIC_EVIDENCE["bhsa"],
+        "resources/profiles/bhsa/0.3.0/evidence/native-verb-pos.json",
     ),
 }
 
@@ -92,6 +101,7 @@ def _load_bundle(
     evidence_sources: dict[str, tuple[str, ...]],
     lock_name: str,
     include_morphology_evidence: bool,
+    include_verb_evidence: bool = False,
 ) -> SemanticSourceBundle:
     if type(corpus_id) is not str or corpus_id not in corpora:
         raise ProductionBundleError(corpus_id)
@@ -100,6 +110,8 @@ def _load_bundle(
     ontology_evidence = [f"{_OLIA_ROOT}/noun-evidence.json"]
     if include_morphology_evidence:
         ontology_evidence.append(f"{_OLIA_ROOT}/noun-morphology-evidence.json")
+    if include_verb_evidence:
+        ontology_evidence.append(f"{_OLIA_ROOT}/verb-evidence.json")
     evidences = tuple(
         _artifact("evidence", "evidence", source_name)
         for source_name in (*evidence_sources[corpus_id], *ontology_evidence)
@@ -152,9 +164,27 @@ def load_production_linguistic_bundles() -> tuple[SemanticSourceBundle, ...]:
     )
 
 
+def load_production_verb_bundle(corpus_id: str) -> SemanticSourceBundle:
+    """Load the separately versioned BHSA 0.3.0 OLiA Verb profile.
+
+    This does not change the identity of the historical 0.2.0 loader.
+    """
+    return _load_bundle(
+        corpus_id,
+        corpora=PRODUCTION_VERB_CORPORA,
+        profile_version=_VERB_PROFILE_VERSION,
+        evidence_sources=_VERB_EVIDENCE,
+        lock_name="lock-linguistic-0.3.0.json",
+        include_morphology_evidence=True,
+        include_verb_evidence=True,
+    )
+
+
 __all__ = [
     "PRODUCTION_LINGUISTIC_CORPORA",
     "PRODUCTION_NOUN_CORPORA",
+    "PRODUCTION_VERB_CORPORA",
+    "load_production_verb_bundle",
     "ProductionBundleError",
     "load_production_linguistic_bundle",
     "load_production_linguistic_bundles",

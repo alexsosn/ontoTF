@@ -1,0 +1,25 @@
+{
+  "evidence_id": "evidence:bhsa:word-sp-verb-code",
+  "kind": "corpus-feature-definition",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/sp.md",
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "feature": "sp",
+    "feature_semantics": "part-of-speech",
+    "documented_node_types": [
+      "word",
+      "lex"
+    ],
+    "production_scope": {
+      "node_type": "word",
+      "selected_values": [
+        "verb"
+      ]
+    },
+    "values": {
+      "verb": "verb"
+    }
+  },
+  "content_digest": "sha256:b160ad1ed8a3490c240c4674bf550e1b3089faa5e214371711e32dc8cd8671d0"
+}

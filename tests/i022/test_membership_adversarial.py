@@ -199,6 +199,7 @@ class I022MembershipAdversarialTests(unittest.TestCase):
 
     def test_packaged_production_mappings_remain_non_structural_and_digest_valid(self):
         count = 0
+        historical_count = 0
         shapes = set()
         root = ROOT / "src/tfont/resources/profiles"
         for path in sorted(root.glob("*/*/mappings/*.json")):
@@ -226,9 +227,12 @@ class I022MembershipAdversarialTests(unittest.TestCase):
                     shape = binding.get("execution_shape")
                     if type(shape) is str:
                         count += 1
+                        if path.parent.parent.name in {"0.1.0", "0.2.0"}:
+                            historical_count += 1
                         shapes.add(shape)
                         self.assertNotIn(shape, {"membership", "edge-path"})
-        self.assertEqual(count, 48)
+        self.assertEqual(historical_count, 48)
+        self.assertGreater(count, historical_count)
         self.assertEqual(shapes, {"value-predicate", "value-set-predicate"})
 
     def test_approximate_semantic_executes_exact_membership_without_loss(self):
