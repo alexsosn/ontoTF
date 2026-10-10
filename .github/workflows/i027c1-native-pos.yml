@@ -1,0 +1,60 @@
+name: I-027C1 pinned native POS evidence
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/I-027C1-pinned-pos-matrix.md"
+      - "docs/plans/I-027C1-pinned-pos-matrix.md"
+      - "docs/research/data/generated/i027c1/**"
+      - "scripts/research/build_i027c1_pos_matrix.py"
+      - "tests/i027c1/**"
+      - ".github/workflows/i027c1-native-pos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-pins:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Native source parser and adversarial tests
+        run: python -m unittest tests.i027c1.test_matrix_red tests.i027c1.test_matrix_adversarial
+      - uses: actions/checkout@v5
+        with:
+          repository: ETCBC/bhsa
+          ref: 4db00e2157915495e1a4d3d57e41223df24775da
+          path: upstream-bhsa
+          persist-credentials: false
+      - uses: actions/checkout@v5
+        with:
+          repository: ETCBC/linksyr
+          ref: 3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6
+          path: upstream-syriac
+          persist-credentials: false
+      - uses: actions/checkout@v5
+        with:
+          repository: ETCBC/extrabiblical
+          ref: 9a56288e6777bad6328856acf055c780e65dd5d9
+          path: upstream-extra
+          persist-credentials: false
+      - name: Verify source commits
+        shell: bash
+        run: |
+          test "$(git -C upstream-bhsa rev-parse HEAD)" = "4db00e2157915495e1a4d3d57e41223df24775da"
+          test "$(git -C upstream-syriac rev-parse HEAD)" = "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6"
+          test "$(git -C upstream-extra rev-parse HEAD)" = "9a56288e6777bad6328856acf055c780e65dd5d9"
+      - name: Print exact-source reconciliation (research gate)
+        run: python scripts/research/build_i027c1_pos_matrix.py --stdout
+      - name: Reproduce frozen POS evidence matrix
+        run: python scripts/research/build_i027c1_pos_matrix.py --check
