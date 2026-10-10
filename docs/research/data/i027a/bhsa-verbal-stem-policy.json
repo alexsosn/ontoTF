@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "policy_id": "i027a-bhsa-vs-native-only-v1",
+  "corpus_id": "bhsa",
+  "repository": "ETCBC/bhsa",
+  "tf_version": "2021",
+  "corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "source_manifest": "src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json",
+  "source_manifest_id": "coverage:p004-r011-baseline-v1:bhsa",
+  "successor_resource": "p004-i027a-bhsa-stems-v1",
+  "successor_manifest_id": "coverage:p004-i027a-bhsa-stems-v1:bhsa",
+  "denominator_digest": "sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03",
+  "evidence_inventory": "docs/research/data/generated/r005/bhsa.json",
+  "native_feature": "vs",
+  "node_type": "word",
+  "observed_word_records": 426590,
+  "code_values": [
+    "NA",
+    "afel",
+    "etpa",
+    "etpe",
+    "haf",
+    "hif",
+    "hit",
+    "hof",
+    "hotp",
+    "hsht",
+    "htpa",
+    "htpe",
+    "htpo",
+    "nif",
+    "nit",
+    "pael",
+    "pasq",
+    "peal",
+    "peil",
+    "piel",
+    "poal",
+    "poel",
+    "pual",
+    "qal",
+    "shaf",
+    "tif"
+  ],
+  "expected_selected_items": 27,
+  "expected_existing_production": 7,
+  "expected_production_after": 34,
+  "expected_common_target_after": 7,
+  "expected_unreviewed_after": 185,
+  "review_source_id": "i027a:bhsa-vs-pinned-source-review",
+  "review_document": "docs/research/I-027A-bhsa-verbal-stem-dispositions.md",
+  "production_disposition": {
+    "assessments": [
+      "native-only"
+    ],
+    "common_target": false,
+    "source_ids": [
+      "i027a:bhsa-vs-pinned-source-review"
+    ],
+    "profiles": [
+      "linguistic"
+    ],
+    "capabilities": [
+      "linguistic.morphology"
+    ]
+  }
+}
