@@ -150,7 +150,23 @@ class ProtectedBatchGateRED(unittest.TestCase):
         self.assertIn("ontology-batch-review",source)
         self.assertIn("ref: main",source)
         self.assertIn("check_external_review.py --from-pr-head",source)
-        self.assertNotIn("github.event.pull_request.head.sha",source)
+        # An exact PR head SHA is safe in an audit artifact name. It is NOT
+        # safe as the checkout ref for executable review-gate code.
+        import re
+        checkouts = re.findall(
+            r"(?m)^\s*-\s+name:\s+Checkout trusted base only[^\n]*\n"
+            r"\s+uses:\s+actions/checkout@[^\n]+\n"
+            r"\s+with:\s*\n"
+            r"\s+ref:\s+([^\n]+)\n"
+            r"\s+persist-credentials:\s+([^\n]+)",
+            source,
+        )
+        self.assertEqual(checkouts, [("main", "false")])
+        self.assertEqual(source.count("uses: actions/checkout@"), 1)
+        self.assertNotRegex(
+            source,
+            r"(?m)^\s*ref:\s*.*(?:pull_request\.head|github\.sha|github\.head_ref)",
+        )
         self.assertNotIn("pull-requests: write",source)
         self.assertNotIn("contents: write",source)
 
