@@ -1,0 +1,1 @@
+"""Generic release catalogue contracts."""
