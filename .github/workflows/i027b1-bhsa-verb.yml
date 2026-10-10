@@ -9,6 +9,7 @@ on:
       - "src/tfont/production_bundles.py"
       - "docs/research/I-027B1-bhsa-olia-verb.md"
       - "docs/plans/I-027B1-bhsa-olia-verb.md"
+      - "scripts/coverage/build_i027b1_bhsa_verb.py"
       - "tests/i027b1/**"
       - ".github/workflows/i027b1-bhsa-verb.yml"
   workflow_dispatch:
@@ -31,4 +32,5 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e .
+      - run: python scripts/coverage/build_i027b1_bhsa_verb.py --check
       - run: python -m unittest tests.i027b1.test_verb_red tests.i027b1.test_verb_adversarial
