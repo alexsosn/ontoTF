@@ -48,6 +48,29 @@ class GenericReleaseCatalogAdversarial(unittest.TestCase):
             with self.subTest(mode=mode), self.assertRaises(ProductionBundleError):
                 _load_from_catalogue(changed, "syriac", "0.4.0", ("olia",))
 
+    def test_legacy_syriac_digest_exception_is_exact_blob_only(self):
+        from tfont.production_bundles import _artifact
+        from tfont.release_registry import _historical_evidence_unchanged
+        from tfont.semantic_validation import SemanticArtifact
+
+        path = "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json"
+        historical = _artifact("evidence", "evidence", path)
+        self.assertTrue(_historical_evidence_unchanged(path, historical))
+
+        modified = copy.deepcopy(historical.data)
+        modified["reviewed_content"]["value"] = "noun"
+        forged = SemanticArtifact("evidence", path, modified)
+        self.assertFalse(_historical_evidence_unchanged(path, forged))
+        self.assertFalse(_historical_evidence_unchanged(
+            "resources/profiles/bhsa/0.3.0/evidence/native-verb-pos.json",
+            historical,
+        ))
+        modified = copy.deepcopy(historical.data)
+        modified["content_digest"] = "sha256:" + "0" * 64
+        self.assertFalse(_historical_evidence_unchanged(
+            path, SemanticArtifact("evidence", path, modified),
+        ))
+
     def test_alias_cannot_select_unregistered_release(self):
         changed=copy.deepcopy(_load_catalogue())
         changed["corpora"]["extrabiblical"]["current"] = "0.4.0"
