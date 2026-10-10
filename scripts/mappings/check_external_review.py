@@ -13,6 +13,7 @@ import binascii
 import hashlib
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -104,8 +105,7 @@ def _checked_candidate_path(value: Any, prefix: str) -> str:
         _abort("candidate batch input path is outside the allowed JSON directory")
     parts = value.split("/")
     if any(
-        not part or part in {".", ".."} or "\\" in part
-        or "?" in part or "#" in part or "%" in part
+        not part or part in {".", ".."} or not re.fullmatch(r"[A-Za-z0-9_.-]+", part)
         for part in parts
     ):
         _abort("candidate batch input path is not canonical")
