@@ -43,12 +43,20 @@ def is_valid(validator: Draft202012Validator, value: dict) -> bool:
     return not tuple(validator.iter_errors(value))
 
 
-def production_mapping_shapes() -> dict:
+def production_mapping_shapes(*, historical_only: bool = False) -> dict:
+    """Audit production mappings; optionally reproduce the pinned I-022/23 baseline.
+
+    Historical research reports were frozen when only 0.1.0/0.2.0 profiles
+    existed. Additive profile releases must not rewrite those snapshots.
+    Always audit *all* releases separately for forbidden structural shapes.
+    """
     root = ROOT / "src/tfont/resources/profiles"
     rows = []
     shapes = set()
     structural = []
     for path in sorted(root.glob("*/*/mappings/*.json")):
+        if historical_only and path.parent.parent.name not in {"0.1.0", "0.2.0"}:
+            continue
         data = json.loads(path.read_text(encoding="utf-8"))
         relative = str(path.relative_to(ROOT))
         for mapping in data.get("mappings", []):
@@ -174,7 +182,16 @@ def main() -> int:
     ).read_text(encoding="utf-8")
 
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    production_shapes = production_mapping_shapes()
+    # Keep the historical evidence reproducible while validating the full
+    # current release catalog against the same non-structural safety boundary.
+    production_shapes = production_mapping_shapes(historical_only=True)
+    all_production_shapes = production_mapping_shapes()
+    if all_production_shapes["execution_shapes"] != [
+        "value-predicate", "value-set-predicate"
+    ] or all_production_shapes["structural_bindings"]:
+        raise SystemExit("current released profile has forbidden execution shape")
+    if all_production_shapes["binding_count"] < production_shapes["binding_count"]:
+        raise SystemExit("current production catalog lost historical bindings")
 
     oracc = load_json("docs/research/data/generated/i018/oracc-0.4.0.json")
     tlhdig = load_json("docs/research/data/generated/i019/tlhdig-0.4.0.json")
