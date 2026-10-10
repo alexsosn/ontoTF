@@ -31,10 +31,6 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
             "push:",
             "pull_request:",
             "workflow_dispatch:",
-            "pyproject.toml",
-            '"src/**"',
-            '"tests/**"',
-            '".github/workflows/**"',
             'python-version: ["3.10", "3.12"]',
             "fail-fast: false",
             SOURCE_REPOSITORY,
@@ -47,6 +43,9 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
         for token in required_tokens:
             with self.subTest(token=token):
                 self.assertIn(token, text)
+        # An unfiltered PR event covers all source/test paths and new data
+        # layouts without a stale literal list of allowed globs.
+        self.assertIn("  pull_request:\n  workflow_dispatch:", text)
 
     def test_obsolete_i013_candidate_is_retired_with_release_guards_preserved(self):
         texts = self.workflow_texts()

@@ -2,17 +2,10 @@ name: Full repository suite
 
 on:
   push:
-    paths:
-      - pyproject.toml
-      - "src/**"
-      - "tests/**"
-      - ".github/workflows/**"
+    branches: [main]
+  # All PR paths, including scripts and decision/evidence ledgers, need the
+  # exact-head regression. Branch pushes use this PR event to avoid duplicates.
   pull_request:
-    paths:
-      - pyproject.toml
-      - "src/**"
-      - "tests/**"
-      - ".github/workflows/**"
   workflow_dispatch:
   workflow_call:
 

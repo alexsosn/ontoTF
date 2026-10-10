@@ -42,8 +42,7 @@ class FullSuiteDiscoveryGate(unittest.TestCase):
     def test_canonical_full_suite_keeps_source_and_test_change_gates(self):
         wf=(WORKFLOWS/"full-suite.yml").read_text(encoding="utf-8")
         self.assertIn("  pull_request:",wf)
-        self.assertIn('"src/**"',wf)
-        self.assertIn('"tests/**"',wf)
+        self.assertIn("  pull_request:\n  workflow_dispatch:",wf)
         self.assertIn("python -m unittest discover -s tests -v",wf)
         self.assertIn("python -m build --wheel --outdir dist",wf)
         self.assertIn("python -m pip install build pytest",wf)
