@@ -6,6 +6,7 @@ Historical loaders in production_bundles.py remain unchanged.
 """
 from __future__ import annotations
 
+import hashlib
 import re
 from importlib.resources import files
 from typing import Any
@@ -20,6 +21,33 @@ from .source_validation import loads_source
 _CATALOGUE = ("resources", "release_catalog", "v1.json")
 _ID = re.compile(r"^[a-z][a-z0-9_-]*$")
 _VERSION = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+
+
+# One historical evidence record predates canonical normalized-record hashing.
+# Immutable release parity requires preserving its originally published bytes.
+# Never generalize this to a corpus-, version- or evidence-ID-wide exemption.
+_LEGACY_SYRIAC_VERB_EVIDENCE_PATH = (
+    "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json"
+)
+_LEGACY_SYRIAC_VERB_EVIDENCE_BLOB = "ece9ae0a3016dabf781866d476cd4c31ad82f627"
+_LEGACY_SYRIAC_VERB_EVIDENCE_DIGEST = (
+    "sha256:a220f482f37ebca0991cd0c073e7f7199e981f8961c89c9d46738dc1b01a9450"
+)
+
+
+def _historical_evidence_unchanged(name: str, artifact: Any) -> bool:
+    """Exception for one frozen legacy blob, never an escape for new evidence."""
+    if (
+        name != _LEGACY_SYRIAC_VERB_EVIDENCE_PATH
+        or artifact.data.get("content_digest") != _LEGACY_SYRIAC_VERB_EVIDENCE_DIGEST
+        or artifact.data.get("evidence_id") != "evidence:syriac:word-sp-verb-code"
+    ):
+        return False
+    raw = files("tfont").joinpath(*name.split("/")).read_bytes()
+    blob = hashlib.sha1(
+        b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+    ).hexdigest()
+    return blob == _LEGACY_SYRIAC_VERB_EVIDENCE_BLOB
 
 
 def _fail(message: str) -> None:
@@ -164,7 +192,8 @@ def _load_from_catalogue(
         for name, artifact in zip(evidence_names, evidences):
             if artifact.data.get("content_mode") == "normalized-record":
                 if artifact.data.get("content_digest") != evidence_record_digest(artifact.data):
-                    _fail(f"{name}: evidence content digest is not canonical")
+                    if not _historical_evidence_unchanged(name, artifact):
+                        _fail(f"{name}: evidence content digest is not canonical")
         lock = _artifact(
             "ontology-lock", "ontology-lock", release["ontology_lock"]
         )
