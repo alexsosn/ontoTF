@@ -39,6 +39,7 @@ from .parent_identity import (
     parent_manifest_projection,
     tf_payload_digest,
 )
+from .release_registry import load_profile, list_profile_releases
 from .production_bundles import (
     PRODUCTION_ADJ_ADV_CORPORA,
     PRODUCTION_LINGUISTIC_CORPORA,
@@ -411,6 +412,8 @@ __all__ = [
     "load_and_validate",
     "load_production_noun_bundle",
     "load_production_adj_adv_bundle",
+    "load_profile",
+    "list_profile_releases",
     "load_production_verb_bundle",
     "load_production_noun_bundles",
     "load_source",
