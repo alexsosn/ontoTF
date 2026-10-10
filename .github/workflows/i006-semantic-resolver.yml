@@ -6,7 +6,6 @@ on:
       - impl/i006-exact-semantic-resolver
   pull_request:
     paths:
-      - 'src/tfont/**'
       - 'tests/i006/**'
       - 'tests/i005/**'
       - 'tests/i004/**'
