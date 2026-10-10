@@ -52,6 +52,13 @@ def _json_file(path: Path) -> dict[str, Any]:
     return value
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Never forward reviewer tokens through an HTTP(S) redirect."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def _api(path: str, token: str) -> Any:
     if not path.startswith("/repos/") or "//" in path:
         _abort("untrusted GitHub API route")
@@ -65,7 +72,7 @@ def _api(path: str, token: str) -> Any:
         },
     )
     try:
-        with urllib.request.urlopen(request, timeout=20) as response:
+        with urllib.request.build_opener(_NoRedirect()).open(request, timeout=20) as response:
             if response.status != 200:
                 _abort("GitHub API did not return HTTP 200")
             raw = response.read(MAX_BODY + 1)
