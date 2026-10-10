@@ -8,8 +8,6 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from ruamel.yaml import YAML
-
 
 ROOT=Path(__file__).resolve().parents[2]
 TESTS=ROOT/"tests"
@@ -44,7 +42,7 @@ class FullSuiteDiscoveryGate(unittest.TestCase):
     def test_canonical_full_suite_keeps_source_and_test_change_gates(self):
         wf=(WORKFLOWS/"full-suite.yml").read_text(encoding="utf-8")
         self.assertIn("  pull_request:",wf)
-        self.assertIsNone(YAML(typ="safe").load(wf)["on"]["pull_request"])
+        self.assertIn("  pull_request:\n  workflow_dispatch:",wf)
         self.assertIn("python -m unittest discover -s tests -v",wf)
         self.assertIn("python -m build --wheel --outdir dist",wf)
         self.assertIn("python -m pip install build pytest",wf)

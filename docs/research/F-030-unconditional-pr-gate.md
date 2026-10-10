@@ -1,6 +1,8 @@
 # F-030 phase 3 — complete PR event coverage and duplicate event cost
 
-Issue #308, child of #291. Observed 2026-10-11 at main `2cca620`.
+**Issue:** #291
+
+Implementation ticket #308. Observed 2026-10-11 at main `2cca620`.
 
 ## Observed code and CI
 
@@ -35,6 +37,9 @@ Keep the PR event unfiltered, with no conditional matrix/job skip. Restrict push
 to main, without path filters, to keep post-merge coverage and avoid branch-push
 duplication. Pre-PR branch regression remains available through dispatch; this
 is an explicit scheduling tradeoff. Retain reusable workflow invocation.
+GitHub platform eligibility still applies: merge-conflicted PRs do not run this
+event, and fork approval and commit-message skips can delay or suppress runs.
+Merge only after resolving those conditions and verifying exact-head checks.
 Do not add pull_request_target or execute candidate code with a privileged token.
 
 No ontology/source revisions, runtime semantics, licensing or public mapping

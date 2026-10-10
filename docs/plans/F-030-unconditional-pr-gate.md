@@ -1,6 +1,8 @@
 # F-030 phase 3 — event contract
 
-Issue #308 / #291. Research: `docs/research/F-030-unconditional-pr-gate.md`.
+**Issue:** #291
+
+Implementation ticket #308. Research: `docs/research/F-030-unconditional-pr-gate.md`.
 
 1. Commit research and this plan before implementation.
 2. RED: parse the real workflow with the existing safe YAML parser; require
@@ -10,7 +12,8 @@ Issue #308 / #291. Research: `docs/research/F-030-unconditional-pr-gate.md`.
    against the filtered/duplicate-trigger baseline.
 3. GREEN: change only canonical workflow event scheduling. Inputs remain GitHub
    PR/push events; outputs remain the existing validate matrix and wheel checks.
-   Every opened/synchronized/reopened PR runs both versions regardless of paths.
+   Every eligible opened/synchronized/reopened PR runs both versions regardless
+   of paths; GitHub merge-conflict, fork-approval and commit-skip rules still apply.
    Main pushes run the same gate; other branch pushes use PR or manual dispatch.
 4. Run focused CI tests, full unittest and research pytest, frozen generators,
    build wheel and isolated wheel test. Final candidate GitHub CI must pass both

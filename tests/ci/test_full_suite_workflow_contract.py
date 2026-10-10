@@ -3,8 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from ruamel.yaml import YAML
-
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_DIR = ROOT / ".github" / "workflows"
@@ -47,7 +45,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
                 self.assertIn(token, text)
         # An unfiltered PR event covers all source/test paths and new data
         # layouts without a stale literal list of allowed globs.
-        self.assertIsNone(YAML(typ="safe").load(text)["on"]["pull_request"])
+        self.assertIn("  pull_request:\n  workflow_dispatch:", text)
 
     def test_obsolete_i013_candidate_is_retired_with_release_guards_preserved(self):
         texts = self.workflow_texts()
