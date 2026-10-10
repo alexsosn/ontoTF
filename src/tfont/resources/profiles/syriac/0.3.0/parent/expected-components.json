@@ -1,0 +1,11 @@
+{
+  "algorithm": "tfont-parent-components-sha256-v1",
+  "components": [
+    {
+      "component_id": "syriac-tf",
+      "content_digest": "sha256:54a2596d5525f3afb34db0a89d5511e6b8471ce4a93fae4825b22f0945ab62ef",
+      "identity_algorithm": "tfont-tf-files-sha256-v1",
+      "kind": "tf-payload"
+    }
+  ]
+}

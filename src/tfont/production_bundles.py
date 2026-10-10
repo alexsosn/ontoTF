@@ -8,7 +8,7 @@ from .source_validation import loads_source, validate_source
 
 PRODUCTION_NOUN_CORPORA = ("bhsa", "syriac", "extrabiblical")
 PRODUCTION_LINGUISTIC_CORPORA = PRODUCTION_NOUN_CORPORA
-PRODUCTION_VERB_CORPORA = ("bhsa",)
+PRODUCTION_VERB_CORPORA = ("bhsa", "syriac")
 _NOUN_PROFILE_VERSION = "0.1.0"
 _LINGUISTIC_PROFILE_VERSION = "0.2.0"
 _VERB_PROFILE_VERSION = "0.3.0"
@@ -53,6 +53,10 @@ _VERB_EVIDENCE = {
     "bhsa": (
         *_LINGUISTIC_EVIDENCE["bhsa"],
         "resources/profiles/bhsa/0.3.0/evidence/native-verb-pos.json",
+    ),
+    "syriac": (
+        *_LINGUISTIC_EVIDENCE["syriac"],
+        "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json",
     ),
 }
 
@@ -165,7 +169,7 @@ def load_production_linguistic_bundles() -> tuple[SemanticSourceBundle, ...]:
 
 
 def load_production_verb_bundle(corpus_id: str) -> SemanticSourceBundle:
-    """Load the separately versioned BHSA 0.3.0 OLiA Verb profile.
+    """Load the separately versioned 0.3.0 OLiA Verb profile.
 
     This does not change the identity of the historical 0.2.0 loader.
     """
