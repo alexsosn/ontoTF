@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "evidence_id": "evidence:extrabiblical:word-sp-verb-source",
+          "content_digest": "sha256:c4a1b0e8b81f3764dbc8350d3c10a214844df0cd5599e4ad78cfc01601cdc0d4"
+        },
+        {
+          "evidence_id": "evidence:olia:verb-class",
+          "content_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-verb",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "verb"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-sp:verb"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:extrabiblical:word-sp-verb-source",
+              "content_digest": "sha256:c4a1b0e8b81f3764dbc8350d3c10a214844df0cd5599e4ad78cfc01601cdc0d4"
+            },
+            {
+              "evidence_id": "evidence:olia:verb-class",
+              "content_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "verb"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-verb",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Verb",
+          "projection_semantic_digest": "sha256:7dd102a1349da4bf882feb4f8348bc814ec2741cee90201156e55038f6a42688",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "openai:gpt-6",
+            "reviewed_at": "2026-10-10T09:00:00Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/282",
+            "review_method": "independent original-MQL and vendored OLiA class review",
+            "review_id": "review:extrabiblical:olia-verb:projection",
+            "reviewed_mapping_digest": "sha256:7dd102a1349da4bf882feb4f8348bc814ec2741cee90201156e55038f6a42688"
+          }
+        }
+      ],
+      "rationale": "Reviewed ExtraBiblical MQL part_of_speech_t verb=1 with sp:=verb as exact word-level OLiA Verb annotation category, without tense/stem/voice inference.",
+      "mapping_semantic_digest": "sha256:5f8fcab03d01be7186b81ccc9e6ff5d74cc539adf9f3aa7214c17cee711cf4e2",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "openai:gpt-6",
+        "reviewed_at": "2026-10-10T09:00:00Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/282",
+        "review_method": "independent original-MQL and vendored OLiA class review",
+        "review_id": "review:extrabiblical:olia-verb:mapping",
+        "reviewed_mapping_digest": "sha256:5f8fcab03d01be7186b81ccc9e6ff5d74cc539adf9f3aa7214c17cee711cf4e2"
+      }
+    }
+  ]
+}
