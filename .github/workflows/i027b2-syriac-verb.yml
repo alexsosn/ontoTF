@@ -5,7 +5,6 @@ on:
     paths:
       - "src/tfont/resources/profiles/syriac/0.3.0/**"
       - "src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/**"
-      - "src/tfont/production_bundles.py"
       - "docs/research/I-027B2-syriac-extra-verb.md"
       - "docs/plans/I-027B2-syriac-extra-verb.md"
       - "scripts/coverage/build_i027b2_syriac_verb.py"
