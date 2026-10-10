@@ -65,7 +65,11 @@ class CurrentQueueAdversarial(unittest.TestCase):
         for corpus in ("bhsa","syriac"):
             old,new=self.manifests(corpus)
             altered=copy.deepcopy(new)
-            altered["semantic_items"][0]["kind"]="edge_feature"
+            original_kind = altered["semantic_items"][0]["kind"]
+            altered["semantic_items"][0]["kind"] = (
+                "node_feature" if original_kind != "node_feature" else "edge_feature"
+            )
+            self.assertNotEqual(original_kind, altered["semantic_items"][0]["kind"])
             with self.assertRaises(ValueError):
                 self.mod.validate_successor(corpus,old,altered)
             altered=copy.deepcopy(new)
