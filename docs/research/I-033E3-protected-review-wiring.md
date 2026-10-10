@@ -14,6 +14,24 @@ Only same-repository PRs bearing `ontology-batch-review` label are evaluated in 
 
 `evaluate_live_gate` already rereads the PR after reviews and reviewer-permission requests; retrieve input bytes by the event PR head and require exact GitHub PR head before fetching. If the current head changes at any step the gate fails; a stale approval cannot pass.
 
+## Deploying one review batch
+
+The proposal PR supplies a data-only manifest at `docs/research/data/batch_review/inputs.json`, for example:
+
+```json
+{
+  "schema_version": 1,
+  "ledger": "src/tfont/resources/batch_pilots/i033c-adj-adv-proposals.json",
+  "packet": "docs/research/data/generated/i033d/adj-adv-review-request.json"
+}
+```
+
+The sample source and packet describe an **already published four-row parity example**, not a newly approved release. Replace both paths with the PR's source-pinned candidate ledger and its reproducible I-033D packet (same explicit allowlisted directories). Include the literal original-source rationale, target ontology evidence and exact coverage IDs per mapping. The protected runner fetches these three files by GitHub Content API at the exact PR SHA, never by checking out or executing the branch.
+
+Workflow sequence: submit PR and regular unprivileged CI; a **different** GitHub human with repository write+ access submits an `APPROVED` review containing the exact `ontoTF-batch-review-v1` structured JSON digest and per-row dispositions; **after** the approval, apply the label `ontology-batch-review` (or remove and reapply it) to trigger the protected-base workflow. Failures such as missing reviewer, stale head, incomplete decisions or missing API permission remain blocking. The resulting job artifact is an audit-only *observation*, not a signed approval or a deployed runtime release.
+
+Operational checks: GitHub's default-branch protection must prevent PR authors from altering `main`, and repository policy must permit `pull_request_target` for this repo. Required GitHub token scopes are only `contents:read`, `pull-requests:read` and implicitly `metadata:read`; the token cannot publish a release. Re-query approvals if reviews are dismissed or edited and explicitly retrigger the protected job. No trigger unconditionally approves all proposed rows.
+
 ## Deliberate boundary
 
 This slice **does not itself publish** newly accepted mappings. `src/tfont/published_deltas.py` operates on *already published* registry releases and explicitly forbids authorizing new ones. The integration job will check authenticated approval and emit a non-signature JSON audit artifact, never a new runtime mapping. #303 remains open for a protected reviewer-driven delta publisher and source-bundle overlay. This is an actual deployable independent review gate, not a claim of end-to-end release throughput.
