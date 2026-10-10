@@ -45,9 +45,13 @@ def _historical_evidence_unchanged(name: str, artifact: Any) -> bool:
         return False
     raw = files("tfont").joinpath(*name.split("/")).read_bytes()
     blob = hashlib.sha1(
-        b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+        b"blob " + str(len(raw)).encode("ascii") + bytes((0,)) + raw
     ).hexdigest()
-    return blob == _LEGACY_SYRIAC_VERB_EVIDENCE_BLOB
+    if blob != _LEGACY_SYRIAC_VERB_EVIDENCE_BLOB:
+        return False
+    # The public loader normally reads the package file itself, but also
+    # prevent a forged in-memory SemanticArtifact from borrowing that blob.
+    return loads_source(raw.decode("utf-8"), format="json", source_name=name) == artifact.data
 
 
 def _fail(message: str) -> None:
