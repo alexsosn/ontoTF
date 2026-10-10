@@ -1,0 +1,281 @@
+{
+  "batch_id": "i033c-olia-bhsa-syriac-adjadv",
+  "candidates": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63",
+          "evidence_id": "evidence:bhsa:word-sp-adj-adv-source"
+        },
+        {
+          "content_digest": "sha256:eb4d1fe23aaa3d8a5809db09a1f8601c8d92fa02bd8d303d04664b5ffa591890",
+          "evidence_id": "evidence:olia:adjective-class"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-adjective",
+      "mapping_semantic_digest": "sha256:b1507f34d9bdf13899f33b75f967382ce5bd2717de15c05fe04f66471ef242bb",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "adjv"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:adjv"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63",
+              "evidence_id": "evidence:bhsa:word-sp-adj-adv-source"
+            },
+            {
+              "content_digest": "sha256:eb4d1fe23aaa3d8a5809db09a1f8601c8d92fa02bd8d303d04664b5ffa591890",
+              "evidence_id": "evidence:olia:adjective-class"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "adjv"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-adjective",
+          "projection_semantic_digest": "sha256:23a7d8404899eea3084ecb4669bc826747c5eb731d2b77a088dbf1b1d50b647d",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Adjective"
+        }
+      ],
+      "rationale": "Source-reviewed bhsa word.sp=adjv POS category proposed for pinned OLiA adjective; this candidate is not independently approved by the compiler."
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63",
+          "evidence_id": "evidence:bhsa:word-sp-adj-adv-source"
+        },
+        {
+          "content_digest": "sha256:bf331dcd3a8982eb75bbe9f26ec71c6871e001206030961ed6f41c1fc445db19",
+          "evidence_id": "evidence:olia:adverb-class"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-adverb",
+      "mapping_semantic_digest": "sha256:ec200698a9a059769f98e0d7f7e4bd02e41441d4dfd901700e71e3bcb7ddb069",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "advb"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:advb"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63",
+              "evidence_id": "evidence:bhsa:word-sp-adj-adv-source"
+            },
+            {
+              "content_digest": "sha256:bf331dcd3a8982eb75bbe9f26ec71c6871e001206030961ed6f41c1fc445db19",
+              "evidence_id": "evidence:olia:adverb-class"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "advb"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-adverb",
+          "projection_semantic_digest": "sha256:672c13d3becd10f237762c1040f6ee8f44a311ab213dd57ea88d419c14fba6bf",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Adverb"
+        }
+      ],
+      "rationale": "Source-reviewed bhsa word.sp=advb POS category proposed for pinned OLiA adverb; this candidate is not independently approved by the compiler."
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649",
+          "evidence_id": "evidence:syriac:word-sp-adj-adv-source"
+        },
+        {
+          "content_digest": "sha256:eb4d1fe23aaa3d8a5809db09a1f8601c8d92fa02bd8d303d04664b5ffa591890",
+          "evidence_id": "evidence:olia:adjective-class"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-adjective",
+      "mapping_semantic_digest": "sha256:ee75e32a08e9f48fd12a6daa82ddf0dc9e0fbf8d09e658b80eec48ed3d2cf5c9",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "adjv"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:adjv"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649",
+              "evidence_id": "evidence:syriac:word-sp-adj-adv-source"
+            },
+            {
+              "content_digest": "sha256:eb4d1fe23aaa3d8a5809db09a1f8601c8d92fa02bd8d303d04664b5ffa591890",
+              "evidence_id": "evidence:olia:adjective-class"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "adjv"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-adjective",
+          "projection_semantic_digest": "sha256:4869ff84ae191bc7764ae77ab54ec48d66b96ae10b0fa25ad7a0d5a9455fc92c",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Adjective"
+        }
+      ],
+      "rationale": "Source-reviewed syriac word.sp=adjv POS category proposed for pinned OLiA adjective; this candidate is not independently approved by the compiler."
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649",
+          "evidence_id": "evidence:syriac:word-sp-adj-adv-source"
+        },
+        {
+          "content_digest": "sha256:bf331dcd3a8982eb75bbe9f26ec71c6871e001206030961ed6f41c1fc445db19",
+          "evidence_id": "evidence:olia:adverb-class"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-adverb",
+      "mapping_semantic_digest": "sha256:10640902a1b0af61e0de0bfd06849948c1b287494580f10dbc5774b411b927ec",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "advb"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:advb"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649",
+              "evidence_id": "evidence:syriac:word-sp-adj-adv-source"
+            },
+            {
+              "content_digest": "sha256:bf331dcd3a8982eb75bbe9f26ec71c6871e001206030961ed6f41c1fc445db19",
+              "evidence_id": "evidence:olia:adverb-class"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "advb"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-adverb",
+          "projection_semantic_digest": "sha256:d1234c5cf3636ab58e6d52cdb464087e4aae42d5338da62b0ca4287d9979027c",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Adverb"
+        }
+      ],
+      "rationale": "Source-reviewed syriac word.sp=advb POS category proposed for pinned OLiA adverb; this candidate is not independently approved by the compiler."
+    }
+  ],
+  "count": 4,
+  "mode": "proposal-only",
+  "release_authorized": false,
+  "schema_version": 1
+}
