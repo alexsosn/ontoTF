@@ -18,7 +18,6 @@ on:
       - docs/research/I-001-structural-validator-research.md
       - docs/plans/I-001-structural-validator-plan.md
       - pyproject.toml
-      - src/tfont/**
       - tests/i001/**
       - tests/packaging/**
   workflow_dispatch:
