@@ -17,7 +17,6 @@ on:
       - docs/research/I-002-canonicalization-digest-research.md
       - docs/plans/I-002-canonicalization-digest-plan.md
       - pyproject.toml
-      - src/tfont/**
       - tests/i002/**
   workflow_dispatch:
 
