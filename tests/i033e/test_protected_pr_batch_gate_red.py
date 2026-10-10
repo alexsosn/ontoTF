@@ -55,8 +55,8 @@ class ProtectedBatchGateRED(unittest.TestCase):
                 from urllib.parse import unquote
                 return (records or self.records)[unquote(name)]
             raise AssertionError("unapproved API route: "+path)
-        with patch.dict(os.environ,{"GITHUB_TOKEN":"test-read-token"}), \\
-             patch.object(self.gate,"_github_event",return_value=(REPO,299,SHA)), \\
+        with patch.dict(os.environ,{"GITHUB_TOKEN":"test-read-token"}), \
+             patch.object(self.gate,"_github_event",return_value=(REPO,299,SHA)), \
              patch.object(self.gate,"_api",side_effect=fake_api):
             answer=self.gate.fetch_pr_head_inputs()
         return answer,routes
