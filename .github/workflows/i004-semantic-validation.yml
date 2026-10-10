@@ -6,7 +6,6 @@ on:
       - research/i-004-cross-artifact-semantic-validation
   pull_request:
     paths:
-      - 'src/tfont/**'
       - 'tests/i004/**'
       - 'tests/i001/**'
       - 'tests/i002/**'

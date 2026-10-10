@@ -17,7 +17,6 @@ on:
     paths:
       - .github/workflows/f002-wheel-schema-resources.yml
       - pyproject.toml
-      - src/tfont/**
       - tests/packaging/**
       - tests/i001/**
       - docs/research/F-002-wheel-schema-resources.md

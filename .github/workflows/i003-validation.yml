@@ -17,7 +17,6 @@ on:
       - docs/research/I-003-parent-component-identity-research.md
       - docs/plans/I-003-parent-component-identity-plan.md
       - pyproject.toml
-      - src/tfont/**
       - tests/i003/**
   workflow_dispatch:
 

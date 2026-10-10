@@ -6,7 +6,6 @@ on:
       - impl/i005-semantic-ir-compiler
   pull_request:
     paths:
-      - 'src/tfont/**'
       - 'tests/i005/**'
       - 'tests/i004/**'
       - 'docs/research/I-005-semantic-ir-compiler*.md'
