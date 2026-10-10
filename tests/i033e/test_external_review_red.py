@@ -105,6 +105,17 @@ class ExternalReviewRed(unittest.TestCase):
             with self.subTest(user=who,roles=roles), self.assertRaises(ExternalReviewError):
                 self.evaluate([review(self.packet,user=who)],permissions=roles)
 
+    def test_case_variant_github_identity_cannot_self_approve(self):
+        # GitHub logins are case-insensitive, including for PR authors.
+        # A case-variant author must not count as a second reviewer.
+        altered = pr_data(author="Proposal-Author")
+        with self.assertRaises(ExternalReviewError):
+            self.evaluate(
+                [review(self.packet, user="proposal-author")],
+                pr=altered,
+                permissions={"proposal-author": "admin"},
+            )
+
     def test_exact_head_and_pr_repository_binding(self):
         for pr, record in [
             (pr_data(sha="b"*40), review(self.packet)),
