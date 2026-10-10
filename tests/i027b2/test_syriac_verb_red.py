@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import unittest
+import importlib.util
+from pathlib import Path
 
 from tfont.coverage import coverage_denominator_digest, coverage_report, load_packaged_coverage_manifest
 from tfont.semantic_ir import SemanticKey, compile_semantic_ir
@@ -86,6 +88,18 @@ class SyriacVerbRedTests(unittest.TestCase):
         self.assertNotIn("vs", m["native_binding"])
         self.assertEqual(len(m["projections"]), 1)
         self.assertEqual(m["projections"][0]["target"], TARGET)
+
+    def test_frozen_syriac_successor_is_byte_exact(self):
+        path = Path(__file__).resolve().parents[2] / "scripts/coverage/build_i027b2_syriac_verb.py"
+        self.assertTrue(path.is_file())
+        spec = importlib.util.spec_from_file_location("i027b2_syriac_builder", path)
+        assert spec is not None and spec.loader is not None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.assertEqual(
+            module.OUTPUT.read_text(encoding="utf-8"),
+            module.serialized(module.build_successor()),
+        )
 
 
 if __name__ == "__main__":
