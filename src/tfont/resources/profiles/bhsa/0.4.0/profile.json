@@ -1,0 +1,205 @@
+{
+  "capabilities": [
+    "linguistic.part-of-speech",
+    "linguistic.morphology"
+  ],
+  "dependencies": [
+    {
+      "assertion": {
+        "feature": "gn",
+        "node_type": "word",
+        "value": "f",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-gn:f",
+      "evidence": [
+        {
+          "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+          "evidence_id": "evidence:bhsa:word-gn-values"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "gn",
+        "node_type": "word",
+        "value": "m",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-gn:m",
+      "evidence": [
+        {
+          "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+          "evidence_id": "evidence:bhsa:word-gn-values"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "nu",
+        "node_type": "word",
+        "value": "du",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-nu:du",
+      "evidence": [
+        {
+          "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+          "evidence_id": "evidence:bhsa:word-nu-values"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "nu",
+        "node_type": "word",
+        "value": "pl",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-nu:pl",
+      "evidence": [
+        {
+          "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+          "evidence_id": "evidence:bhsa:word-nu-values"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "nu",
+        "node_type": "word",
+        "value": "sg",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-nu:sg",
+      "evidence": [
+        {
+          "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+          "evidence_id": "evidence:bhsa:word-nu-values"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "nmpr",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:nmpr",
+      "evidence": [
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "subs",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:subs",
+      "evidence": [
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "verb",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:verb",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-verb-code",
+          "content_digest": "sha256:b160ad1ed8a3490c240c4674bf550e1b3089faa5e214371711e32dc8cd8671d0"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "adjv",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:adjv",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-adj-adv-source",
+          "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63"
+        }
+      ],
+      "kind": "native-value-present"
+    },
+    {
+      "assertion": {
+        "feature": "sp",
+        "node_type": "word",
+        "value": "advb",
+        "value_semantics": "semantic"
+      },
+      "component_id": "bhsa-tf",
+      "dependency_id": "dep:bhsa:word-sp:advb",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-adj-adv-source",
+          "content_digest": "sha256:2bd7619f428f9813a8ddb2388d3c3251b46a277053061030b4607e8db8103f63"
+        }
+      ],
+      "kind": "native-value-present"
+    }
+  ],
+  "dependency_contract_version": 1,
+  "license": "MIT",
+  "mapping_sources": [
+    "mappings/noun.json",
+    "mappings/noun-morphology.json",
+    "mappings/verb.json",
+    "mappings/adj-adv.json"
+  ],
+  "minimum_tfont_runtime": "0.1.0",
+  "ontology_locks": [
+    "olia-reference-model"
+  ],
+  "parent_compatibility": "exact-only",
+  "parent_component_manifest": "parent/expected-components.json",
+  "profile_catalog_version": 1,
+  "profile_id": "tfont-bhsa",
+  "profile_version": "0.4.0",
+  "profiles": [
+    "linguistic"
+  ],
+  "required_components": [
+    "bhsa-tf"
+  ],
+  "schema_version": 2,
+  "semantic_domains": [
+    "linguistic"
+  ]
+}
