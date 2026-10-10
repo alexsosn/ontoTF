@@ -13,12 +13,14 @@
     "bhsa": {
       "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
       "evidence_resource": "resources/profiles/bhsa/0.4.0/evidence/native-adj-adv-pos.json",
-      "component_id": "bhsa-tf"
+      "component_id": "bhsa-tf",
+      "target_corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da"
     },
     "syriac": {
       "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
       "evidence_resource": "resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json",
-      "component_id": "syriac-tf"
+      "component_id": "syriac-tf",
+      "target_corpus_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
     }
   },
   "defaults": {
