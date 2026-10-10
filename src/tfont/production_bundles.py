@@ -8,7 +8,7 @@ from .source_validation import loads_source, validate_source
 
 PRODUCTION_NOUN_CORPORA = ("bhsa", "syriac", "extrabiblical")
 PRODUCTION_LINGUISTIC_CORPORA = PRODUCTION_NOUN_CORPORA
-PRODUCTION_VERB_CORPORA = ("bhsa", "syriac")
+PRODUCTION_VERB_CORPORA = ("bhsa", "syriac", "extrabiblical")
 _NOUN_PROFILE_VERSION = "0.1.0"
 _LINGUISTIC_PROFILE_VERSION = "0.2.0"
 _VERB_PROFILE_VERSION = "0.3.0"
@@ -57,6 +57,10 @@ _VERB_EVIDENCE = {
     "syriac": (
         *_LINGUISTIC_EVIDENCE["syriac"],
         "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json",
+    ),
+    "extrabiblical": (
+        *_LINGUISTIC_EVIDENCE["extrabiblical"],
+        "resources/profiles/extrabiblical/0.3.0/evidence/native-verb-pos.json",
     ),
 }
 
