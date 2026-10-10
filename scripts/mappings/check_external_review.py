@@ -129,9 +129,23 @@ def evaluate_live_gate(packet: dict[str, Any], ledger: dict[str, Any]) -> dict[s
                 _abort("cannot establish current GitHub reviewer permission")
             permissions[login]=data["permission"]
 
+    # Re-read the PR after the review + permission API round trips. Otherwise
+    # a force-push in this window could make a correct-looking approval stale.
+    fresh_pr=_api(path+f"/pulls/{pr_number}",token)
+    def identity(record: dict[str, Any]) -> tuple[Any, ...]:
+        try:
+            return (
+                record["number"], record["state"], record["draft"],
+                record["head"]["sha"], record["head"]["repo"]["full_name"],
+                record["base"]["repo"]["full_name"], record["user"]["login"],
+            )
+        except (KeyError, TypeError) as exc:
+            raise ExternalReviewError("GitHub PR changed or became unreadable") from exc
+    if type(fresh_pr) is not dict or identity(pr)!=identity(fresh_pr):
+        _abort("PR head/author/state changed while verifying review authority")
     result=evaluate_review_snapshot(
         packet=packet,repository=repository,pr_number=pr_number,
-        expected_head_sha=sha,pull_request=pr,reviews=reviews,
+        expected_head_sha=sha,pull_request=fresh_pr,reviews=reviews,
         reviewer_permissions=permissions,
     )
     # Not a cryptographic signature. Offline packages may validate the
