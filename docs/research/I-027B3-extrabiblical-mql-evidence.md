@@ -25,6 +25,27 @@ The pinned source repository does not include a human-readable `docs/features/sp
 
 This research phase is evidence acquisition and does not change runtime semantics, ontology locks, mappings, or production-accounted denominator rows.
 
+## Original-source extraction result (GitHub Actions, 2026-10-10)
+
+The pinned source checkout and offline extractor succeeded on the exact GitHub Actions run `38039463508`, job `114176641170`:
+
+- actual Git commit: `9a56288e6777bad6328856acf055c780e65dd5d9`;
+- compressed Git blob: `4ba717b1716b747bb94d0359b950a55d8624b109`;
+- compressed byte length: 1,992,719, SHA256 `9b60ef03d18785257e80bc199acb7f348c20177b273e9c47b20a868ab7e07073`;
+- decompressed byte length: 41,353,107, SHA256 `62540c8b4682121dd002f4c234c693259fb494c439ddfc06574537e5e398790e`; strict UTF-8 decoding passed.
+
+Direct source statements (short extracts only):
+
+- line 163: `CREATE ENUMERATION part_of_speech_t = {`;
+- line 165: `verb = 1,` within that enumeration;
+- line 501: `sp : part_of_speech_t;`;
+- line 269073 (example): `sp:=verb;`;
+- line 269212 (another example): `sp:=verb;`.
+
+The MQL therefore does not merely contain a string `verb`: it types `sp` with a part-of-speech enumeration that includes `verb`, and uses that enumerated value in real assignments. Independently, the exact pinned TF inventory identifies the `sp` feature on `word` nodes and reports 6,100 `verb` instances. That is sufficient to advance to a **reviewed exact annotation-category candidate** targeting `olia:Verb`. It remains distinct from stem/voice/tense equivalence and requires a new production mapping/review gate.
+
+All source identity and short evidence statements are frozen in `docs/research/data/i027b3/extrabiblical-mql-pos-evidence.json`; no original MQL bytes are vendored.
+
 ## Later production release
 
 After source verification, implement a separate immutable `extrabiblical/0.3.0` OLiA `Verb` profile with new mapping/projection review digests and a one-item coverage successor, preserving the 0.2.0 profile and current denominator. Do not infer tense, voice or Semitic verbal stems.
