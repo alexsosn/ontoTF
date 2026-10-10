@@ -24,17 +24,17 @@ def load_builder():
 
 def blob_sha(raw: bytes) -> str:
     return hashlib.sha1(
-        b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+        b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
     ).hexdigest()
 
 
 def synthetic_mql():
     return bz2.compress(
-        b"CREATE ENUMERATION part_of_speech_t = {\\n"
-        b"  noun, verb, adjective\\n"
-        b"};\\n"
-        b"CREATE OBJECT TYPE [word]\\n"
-        b" sp: part_of_speech_t;\\n"
+        b"CREATE ENUMERATION part_of_speech_t = {\n"
+        b"  noun, verb, adjective\n"
+        b"};\n"
+        b"CREATE OBJECT TYPE [word]\n"
+        b" sp: part_of_speech_t;\n"
     )
 
 
@@ -79,7 +79,7 @@ class I027B3SourceEvidenceRedTests(unittest.TestCase):
             module.extract(
                 corrupt, expected_blob_sha=blob_sha(corrupt), expected_size=len(corrupt)
             )
-        bad_unicode = bz2.compress(b"part_of_speech_t = verb;\\xff")
+        bad_unicode = bz2.compress(b"part_of_speech_t = verb;\xff")
         with self.assertRaisesRegex(ValueError, "UTF-8"):
             module.extract(
                 bad_unicode, expected_blob_sha=blob_sha(bad_unicode),
@@ -89,7 +89,7 @@ class I027B3SourceEvidenceRedTests(unittest.TestCase):
     def test_excerpt_length_is_bounded(self):
         module = load_builder()
         raw = bz2.compress(
-            ("part_of_speech_t " + "X" * 30000 + " verb sp\\n").encode()
+            ("part_of_speech_t " + "X" * 30000 + " verb sp\n").encode()
         )
         report = module.extract(
             raw, expected_blob_sha=blob_sha(raw), expected_size=len(raw)
