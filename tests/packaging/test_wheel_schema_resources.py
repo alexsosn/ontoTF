@@ -185,6 +185,10 @@ class WheelSchemaResourceTests(unittest.TestCase):
             wheel = wheels[0]
 
             expected_resources = {f"tfont/schemas/{filename}" for filename in SCHEMA_FILES.values()}
+            expected_resources.update({
+                "tfont/resources/batch_pilots/i033a-olia-verb-and-stems.json",
+                "tfont/resources/batch_pilots/i033c-adj-adv-proposals.json",
+            })
             with zipfile.ZipFile(wheel) as archive:
                 wheel_names = set(archive.namelist())
             self.assertTrue(
@@ -208,6 +212,7 @@ from pathlib import Path
 
 import tfont
 from tfont.source_validation import validate_source
+from tfont.batch_proposals import load_ledger
 
 target = Path(sys.argv[1]).resolve()
 fixtures = Path(sys.argv[2])
@@ -217,6 +222,8 @@ if not package_file.is_relative_to(target):
 
 for schema_name, instance in json.loads(fixtures.read_text(encoding="utf-8")).items():
     validate_source(instance, schema_name)
+if load_ledger()["batch_id"] != "i033c-olia-bhsa-syriac-adjadv":
+    raise AssertionError("wheel omitted or corrupted the I-033C batch decision ledger")
 """
             env = os.environ.copy()
             env["PYTHONPATH"] = str(target)
