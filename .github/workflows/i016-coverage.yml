@@ -7,7 +7,6 @@ on:
       - "src/tfont/__init__.py"
       - "src/tfont/source_validation.py"
       - "src/tfont/schemas/coverage-manifest.schema.json"
-      - "src/tfont/resources/coverage/**"
       - "scripts/coverage/**"
       - "tests/i016/**"
       - "tests/i001/test_source_validation.py"
