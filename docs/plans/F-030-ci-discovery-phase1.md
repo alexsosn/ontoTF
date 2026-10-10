@@ -9,3 +9,5 @@
 5. Full/targeted tests: full suite Python 3.10/3.12; all triggered workflows. Contract assertions enforce exact policy for modified workflows. Check wheel resources and unchanged source-bound ontology digests.
 6. Logically-independent adversarial review: verify that each pruned workflow's unique checks remain covered and that broad-source changes cannot skip the mandatory full suite. Confirm new tests were discovered, not just importable in isolation.
 7. Only merge with all expected-head checks green. Measure workflow run count for the next ordinary mapping/loader PR compared to #294; continue migrating unique workflows only after proving parity.
+
+8. Actual RED discovered eight pytest-only research modules outside the previous unittest importer path. Install pytest and **execute** `pytest tests/research` in the same two-version full-suite job; confirm failures are genuine test failures, not missed discovery or uninstalled dependencies. No new standalone workflow.

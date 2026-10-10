@@ -46,6 +46,8 @@ class FullSuiteDiscoveryGate(unittest.TestCase):
         self.assertIn('"tests/**"',wf)
         self.assertIn("python -m unittest discover -s tests -v",wf)
         self.assertIn("python -m build --wheel --outdir dist",wf)
+        self.assertIn("python -m pip install build pytest",wf)
+        self.assertIn("python -m pytest tests/research -q",wf)
         self.assertIn('python-version: ["3.10", "3.12"]',wf)
 
     def test_pruning_applies_only_to_legacy_generic_source_triggers(self):

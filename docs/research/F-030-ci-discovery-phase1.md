@@ -28,3 +28,7 @@
 ## Risk
 
 Tests that were previously hidden may now legitimately fail. The PR remains unmergeable until all regressions pass; do not suppress failures or exclude the added test packages to make CI green.
+
+## Exact-head CI RED evidence: pytest research modules
+
+Once all seven missing package markers were installed, the *actual* Python 3.10 full suite discovered **1,264 unittest cases**, but failed importing eight previously invisible `tests/research/test_*.py` modules that depend on `pytest`. This is not a reason to hide them again. They are pytest-function tests, so importing under `unittest` is insufficient for coverage even if import succeeds. Install pytest in the canonical full-suite environment and execute `python -m pytest tests/research -q` as a second, named full-suite step on both Python versions. The existing single `python -m unittest discover -s tests -v` owner remains unique, and existing exact-head wheel-build verification remains. Review actual pytest failures rather than suppressing or marking skipped tests.
