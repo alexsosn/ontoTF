@@ -1,0 +1,51 @@
+# I-033E3 / #303: ONLY protected-base code executes with a GitHub API token.
+# pull_request_review runs on base workflow code; NEVER checkout PR-head.
+name: Protected ontology batch reviewer
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review, labeled]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ontology-batch-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  external-attestation:
+    if: >-
+      github.event.pull_request.state == 'open' &&
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      contains(github.event.pull_request.labels.*.name, 'ontology-batch-review')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted base only (never PR head)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install trusted code only
+        run: python -m pip install -e .
+      - name: Authenticate independent review of exact PR-head DATA
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          python scripts/mappings/check_external_review.py --from-pr-head | tee batch-review-attestation.json
+      - name: Archive non-signature provenance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ontology-batch-review-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          path: batch-review-attestation.json
+          if-no-files-found: error
+          retention-days: 30
