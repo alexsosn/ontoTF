@@ -1,0 +1,39 @@
+name: I-027B3 ExtraBiblical original MQL evidence
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/i027b3_extract_mql.py"
+      - "tests/i027b3/**"
+      - "docs/research/I-027B3-extrabiblical-mql-evidence.md"
+      - "docs/research/data/i027b3/**"
+      - "docs/plans/I-027B3-extrabiblical-mql-evidence.md"
+      - ".github/workflows/i027b3-extrabiblical-source.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Offline extractor unit and adversarial tests
+        run: python -m unittest tests.i027b3.test_source_red tests.i027b3.test_source_adversarial
+      - uses: actions/checkout@v5
+        with:
+          repository: ETCBC/extrabiblical
+          ref: 9a56288e6777bad6328856acf055c780e65dd5d9
+          path: upstream
+          persist-credentials: false
+      - name: Check pinned commit and extract bounded evidence
+        shell: bash
+        run: |
+          test "$(git -C upstream rev-parse HEAD)" = "9a56288e6777bad6328856acf055c780e65dd5d9"
+          python scripts/research/i027b3_extract_mql.py --input upstream/source/0.2/extraBiblical.mql.bz2 --verify-frozen docs/research/data/i027b3/extrabiblical-mql-pos-evidence.json
