@@ -80,8 +80,8 @@ def _api(path: str, token: str) -> Any:
 
 def _github_event() -> tuple[str, int, str]:
     env = os.environ
-    if env.get("GITHUB_EVENT_NAME") not in {"pull_request_target", "pull_request_review"}:
-        _abort("live gate requires a protected-base PR/review event")
+    if env.get("GITHUB_EVENT_NAME") != "pull_request_target":
+        _abort("live gate requires a trusted-base pull_request_target event")
     repo = env.get("GITHUB_REPOSITORY")
     event_path = env.get("GITHUB_EVENT_PATH")
     token = env.get("GITHUB_TOKEN")
