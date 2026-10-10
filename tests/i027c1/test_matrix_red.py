@@ -82,7 +82,13 @@ class PinnedPOSMatrixRedTests(unittest.TestCase):
 
     def test_frozen_matrix_rebuilt_byte_for_byte(self):
         mod = module()
-        self.assertEqual(OUTPUT.read_text(encoding="utf-8"), mod.serialized(mod.build_from_pinned_paths()))
+        source_paths = (mod.BHSA, mod.SYRIAC, mod.EXTRA)
+        if not all(path.exists() for path in source_paths):
+            self.skipTest("pinned original source checkouts are verified separately by focused CI")
+        self.assertEqual(
+            OUTPUT.read_text(encoding="utf-8"),
+            mod.serialized(mod.build_from_pinned_paths()),
+        )
 
 
 if __name__ == "__main__":
