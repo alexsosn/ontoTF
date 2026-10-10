@@ -1632,15 +1632,15 @@
           "assessments": [
             "exact"
           ],
-          "common_target": true,
-          "source_ids": [
-            "mapping:bhsa:olia-verb"
+          "capabilities": [
+            "linguistic.part-of-speech"
           ],
+          "common_target": true,
           "profiles": [
             "linguistic"
           ],
-          "capabilities": [
-            "linguistic.part-of-speech"
+          "source_ids": [
+            "mapping:bhsa:olia-verb"
           ]
         },
         "research": {
