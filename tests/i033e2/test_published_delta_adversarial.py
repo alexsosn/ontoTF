@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from dataclasses import replace
 import unittest
 from unittest.mock import patch
 
@@ -66,8 +67,10 @@ class PublishedDeltaAdversarial(unittest.TestCase):
                 elif mutation=="parent":
                     changed.expected_parent_manifest.data["manifest_id"]="forged"
                 elif mutation=="missing-evidence":
-                    changed.evidences=tuple(e for e in changed.evidences
-                        if e.data["evidence_id"]!="evidence:bhsa:word-sp-verb-code")
+                    changed=replace(changed, evidences=tuple(
+                        e for e in changed.evidences
+                        if e.data["evidence_id"]!="evidence:bhsa:word-sp-verb-code"
+                    ))
                 else:
                     changed.profile.data["profile_version"]="0.3.0"
                 with patch.object(core,"_published_release",
