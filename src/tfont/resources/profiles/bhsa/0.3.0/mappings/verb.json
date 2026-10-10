@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-verb-code",
+          "content_digest": "sha256:b160ad1ed8a3490c240c4674bf550e1b3089faa5e214371711e32dc8cd8671d0"
+        },
+        {
+          "evidence_id": "evidence:olia:verb-class",
+          "content_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-verb",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "verb"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:verb"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-verb-code",
+              "content_digest": "sha256:b160ad1ed8a3490c240c4674bf550e1b3089faa5e214371711e32dc8cd8671d0"
+            },
+            {
+              "evidence_id": "evidence:olia:verb-class",
+              "content_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "verb"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-verb",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Verb",
+          "projection_semantic_digest": "sha256:31e7277035fd4ee215fab38c4ecd0ddb8aee430b53d3562aaf5d0818c9036366",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "openai:gpt-6",
+            "reviewed_at": "2026-10-10T03:00:00Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/276",
+            "review_method": "independent semantic and corpus-evidence review of pinned OLiA Verb candidate",
+            "review_id": "review:bhsa:olia-verb:projection",
+            "reviewed_mapping_digest": "sha256:31e7277035fd4ee215fab38c4ecd0ddb8aee430b53d3562aaf5d0818c9036366"
+          }
+        }
+      ],
+      "rationale": "Exact BHSA word-level sp=verb POS annotation to OLiA Verb after pinned source and class review.",
+      "mapping_semantic_digest": "sha256:fea28524b19675bd8e9e6178a4256f86cae62775a14e097047c344813da3ee4f",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "openai:gpt-6",
+        "reviewed_at": "2026-10-10T03:00:00Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/276",
+        "review_method": "independent semantic and corpus-evidence review of pinned OLiA Verb candidate",
+        "review_id": "review:bhsa:olia-verb:mapping",
+        "reviewed_mapping_digest": "sha256:fea28524b19675bd8e9e6178a4256f86cae62775a14e097047c344813da3ee4f"
+      }
+    }
+  ]
+}
