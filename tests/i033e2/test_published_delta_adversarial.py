@@ -78,6 +78,9 @@ class PublishedDeltaAdversarial(unittest.TestCase):
                     build_published_delta("bhsa","0.3.0","0.4.0")
 
     def test_dropped_inherited_review_is_not_a_valid_overlay(self):
+        from tfont import published_deltas as core
+
+        base=load_profile("bhsa","0.3.0")
         source=load_profile("bhsa","0.4.0")
         changed=copy.deepcopy(source.mappings.data)
         old=next(x for x in changed["mappings"] if x["mapping_id"]=="mapping:bhsa:olia-verb")
@@ -89,11 +92,13 @@ class PublishedDeltaAdversarial(unittest.TestCase):
             ontology_locks=source.ontology_locks,
             evidences=source.evidences,
         )
-        # No injection of an unverified bundle is exposed by the published
-        # registry-only reader. The corruption must fail the ordinary validator.
-        from tfont.semantic_validation import SemanticValidationError,validate_semantic_bundle
-        with self.assertRaises(SemanticValidationError):
-            validate_semantic_bundle(corrupt)
+        # The legacy semantic validator validates digest/review *bindings*,
+        # not externally authenticated reviewer approval. A delta must still
+        # reject any mutation to an inherited reviewed record, even to fields
+        # that the canonical semantic projection intentionally excludes.
+        with patch.object(core,"_published_release",side_effect=[base,corrupt]):
+            with self.assertRaises(PublishedDeltaError):
+                build_published_delta("bhsa","0.3.0","0.4.0")
 
 
 if __name__=="__main__":
