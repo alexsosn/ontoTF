@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "registry_id": "tfont-release-catalog-v1",
+  "ontology_models": {
+    "olia": {
+      "ontology_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+      "root": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
+    }
+  },
+  "corpora": {
+    "bhsa": {
+      "current": "0.4.0",
+      "releases": {
+        "0.1.0": {
+          "profile": "resources/profiles/bhsa/0.1.0/profile.json",
+          "parent": "resources/profiles/bhsa/0.1.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/bhsa/0.1.0/evidence/native-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json"
+          ]
+        },
+        "0.2.0": {
+          "profile": "resources/profiles/bhsa/0.2.0/profile.json",
+          "parent": "resources/profiles/bhsa/0.2.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-number.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.2.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json"
+          ]
+        },
+        "0.3.0": {
+          "profile": "resources/profiles/bhsa/0.3.0/profile.json",
+          "parent": "resources/profiles/bhsa/0.3.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-number.json",
+            "resources/profiles/bhsa/0.3.0/evidence/native-verb-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.3.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json"
+          ]
+        },
+        "0.4.0": {
+          "profile": "resources/profiles/bhsa/0.4.0/profile.json",
+          "parent": "resources/profiles/bhsa/0.4.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-number.json",
+            "resources/profiles/bhsa/0.3.0/evidence/native-verb-pos.json",
+            "resources/profiles/bhsa/0.4.0/evidence/native-adj-adv-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.4.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adjective-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adverb-evidence.json"
+          ]
+        }
+      }
+    },
+    "syriac": {
+      "current": "0.4.0",
+      "releases": {
+        "0.1.0": {
+          "profile": "resources/profiles/syriac/0.1.0/profile.json",
+          "parent": "resources/profiles/syriac/0.1.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/syriac/0.1.0/evidence/native-pos.json",
+            "resources/profiles/syriac/0.1.0/evidence/proper-noun-encoding.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json"
+          ]
+        },
+        "0.2.0": {
+          "profile": "resources/profiles/syriac/0.2.0/profile.json",
+          "parent": "resources/profiles/syriac/0.2.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/syriac/0.2.0/evidence/native-pos.json",
+            "resources/profiles/syriac/0.2.0/evidence/proper-noun-encoding.json",
+            "resources/profiles/syriac/0.2.0/evidence/noun-morphology.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.2.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json"
+          ]
+        },
+        "0.3.0": {
+          "profile": "resources/profiles/syriac/0.3.0/profile.json",
+          "parent": "resources/profiles/syriac/0.3.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/syriac/0.2.0/evidence/native-pos.json",
+            "resources/profiles/syriac/0.2.0/evidence/proper-noun-encoding.json",
+            "resources/profiles/syriac/0.2.0/evidence/noun-morphology.json",
+            "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.3.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json"
+          ]
+        },
+        "0.4.0": {
+          "profile": "resources/profiles/syriac/0.4.0/profile.json",
+          "parent": "resources/profiles/syriac/0.4.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/syriac/0.2.0/evidence/native-pos.json",
+            "resources/profiles/syriac/0.2.0/evidence/proper-noun-encoding.json",
+            "resources/profiles/syriac/0.2.0/evidence/noun-morphology.json",
+            "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json",
+            "resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.4.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adjective-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adverb-evidence.json"
+          ]
+        }
+      }
+    },
+    "extrabiblical": {
+      "current": "0.3.0",
+      "releases": {
+        "0.1.0": {
+          "profile": "resources/profiles/extrabiblical/0.1.0/profile.json",
+          "parent": "resources/profiles/extrabiblical/0.1.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/extrabiblical/0.1.0/evidence/native-pos-enum.json",
+            "resources/profiles/extrabiblical/0.1.0/evidence/feature-authority.json",
+            "resources/profiles/bhsa/0.1.0/evidence/native-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json"
+          ]
+        },
+        "0.2.0": {
+          "profile": "resources/profiles/extrabiblical/0.2.0/profile.json",
+          "parent": "resources/profiles/extrabiblical/0.2.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/extrabiblical/0.2.0/evidence/native-pos-enum.json",
+            "resources/profiles/extrabiblical/0.2.0/evidence/feature-authority.json",
+            "resources/profiles/extrabiblical/0.2.0/evidence/native-gender-observed.json",
+            "resources/profiles/extrabiblical/0.2.0/evidence/native-number-observed.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-number.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.2.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json"
+          ]
+        },
+        "0.3.0": {
+          "profile": "resources/profiles/extrabiblical/0.3.0/profile.json",
+          "parent": "resources/profiles/extrabiblical/0.3.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/extrabiblical/0.2.0/evidence/native-pos-enum.json",
+            "resources/profiles/extrabiblical/0.2.0/evidence/feature-authority.json",
+            "resources/profiles/extrabiblical/0.2.0/evidence/native-gender-observed.json",
+            "resources/profiles/extrabiblical/0.2.0/evidence/native-number-observed.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-number.json",
+            "resources/profiles/extrabiblical/0.3.0/evidence/native-verb-pos.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.3.0.json",
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json"
+          ]
+        }
+      }
+    }
+  }
+}

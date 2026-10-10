@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Any
 
 from .digests import evidence_record_digest
+from .release_registry import _historical_evidence_unchanged
+from .semantic_validation import SemanticArtifact
 from .semantic_digest_v2 import (
     mapping_semantic_digest_v2,
     projection_semantic_digest_v1,
@@ -71,10 +73,19 @@ def _native_evidence(corpus: str, entry: dict[str, Any]) -> dict[str, str]:
              f"{corpus}: original source revision mismatch")
     _require(record.get("evidence_id") == entry["corpus_evidence_id"],
              f"{corpus}: native evidence identity mismatch")
-    _require(record.get("content_digest") == evidence_record_digest(record),
-             f"{corpus}: native evidence record digest invalid")
     _require(record["content_digest"] == entry["corpus_evidence_digest"],
              f"{corpus}: evidence drift from approved source")
+    if record.get("content_digest") != evidence_record_digest(record):
+        # Exactly one immutable historical Syriac record used an older
+        # digest algorithm. Its original published bytes and complete data
+        # must match the narrowly pinned backwards-compatibility contract.
+        _require(
+            _historical_evidence_unchanged(
+                f"resources/profiles/{corpus}/0.3.0/evidence/native-verb-pos.json",
+                SemanticArtifact("evidence", str(path), record),
+            ),
+            f"{corpus}: native evidence record digest invalid",
+        )
     _require(record.get("reviewed_content", {}).get("feature") == "sp",
              f"{corpus}: native evidence is not POS")
     return {
