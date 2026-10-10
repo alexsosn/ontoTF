@@ -3,7 +3,6 @@ name: I-015 noun morphology
 on:
   pull_request:
     paths:
-      - "src/tfont/**"
       - "tests/i015/**"
       - "docs/research/I-015-noun-morphology-expansion.md"
       - "docs/plans/I-015-noun-morphology-expansion-plan.md"
