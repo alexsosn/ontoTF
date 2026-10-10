@@ -1,0 +1,828 @@
+{
+  "accounting_gaps": [
+    {
+      "assessments": [
+        "exact"
+      ],
+      "authority": "production",
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "common_target": true,
+      "item_id": "node_value:ls=\"prop\"",
+      "kind": "node_value",
+      "profiles": [
+        "linguistic"
+      ],
+      "reason": "outside-denominator",
+      "source_ids": [
+        "mapping:syriac:olia-proper-noun"
+      ]
+    }
+  ],
+  "corpus_id": "syriac",
+  "denominator_basis": {
+    "bounded_node_features": [
+      "gn",
+      "nu",
+      "ps",
+      "sp",
+      "st",
+      "vo",
+      "vpm",
+      "vs",
+      "vt"
+    ],
+    "kind": "generated-r005-inventory",
+    "source": "docs/research/data/generated/r005/syriac.json"
+  },
+  "denominator_digest": "sha256:33ea9d6ce7b44dbdf7ed12e11971e229321efb3b422dbfd9cf0bc9131d5972f8",
+  "denominator_source_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+  "manifest_id": "coverage:p004-i027b2-syriac-verb-v1:syriac",
+  "repository": "ETCBC/syriac",
+  "schema_version": 1,
+  "scope_quality": "machine-exhaustive",
+  "semantic_items": [
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:book",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:chapter",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:emf",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_cons",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_cons_utf8",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_emf",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_nme",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_pfm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_pfx",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_vbe",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:g_vbs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "syriac-gloss"
+          ]
+        }
+      },
+      "item_id": "node_feature:gloss",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:gn",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "close"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "syriac-lex-entry"
+          ]
+        }
+      },
+      "item_id": "node_feature:lex",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ls",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:nme",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:nu",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pfm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:pfx",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:ps",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:sp",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:st",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:trailer",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vbe",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vbs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:verse",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vo",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vpm",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "syriac-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_feature:vs",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_feature:vt",
+      "kind": "node_feature"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:book",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:chapter",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:verse",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_type:word",
+      "kind": "node_type"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-feminine"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:gn=\"f\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-masculine"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "syriac-gender-m"
+          ]
+        }
+      },
+      "item_id": "node_value:gn=\"m\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:gn=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-dual"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:nu=\"du\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-plural"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "syriac-number-plural"
+          ]
+        }
+      },
+      "item_id": "node_value:nu=\"pl\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.morphology"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-singular"
+          ]
+        },
+        "research": null
+      },
+      "item_id": "node_value:nu=\"sg\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:nu=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "syriac-person-first"
+          ]
+        }
+      },
+      "item_id": "node_value:ps=\"first\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"second\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"third\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:ps=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"adjv\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"advb\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"conj\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"inrg\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"intj\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"nega\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"prep\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:sp=\"pron\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.part-of-speech"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-noun"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "syriac-pos-noun"
+          ]
+        }
+      },
+      "item_id": "node_value:sp=\"subs\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": {
+          "assessments": [
+            "exact"
+          ],
+          "capabilities": [
+            "linguistic.part-of-speech"
+          ],
+          "common_target": true,
+          "profiles": [
+            "linguistic"
+          ],
+          "source_ids": [
+            "mapping:syriac:olia-verb"
+          ]
+        },
+        "research": {
+          "assessments": [
+            "exact"
+          ],
+          "common_target": true,
+          "source_ids": [
+            "syriac-pos-verb"
+          ]
+        }
+      },
+      "item_id": "node_value:sp=\"verb\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"abs\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"c\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"cst\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"emph\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:st=\"unknown\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vo=\"act\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vo=\"pas\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vpm=\"d\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vpm=\"dp\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vpm=\"p\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "syriac-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"af\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "syriac-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"pa\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": {
+          "assessments": [
+            "native-only"
+          ],
+          "common_target": false,
+          "source_ids": [
+            "syriac-verbal-stem"
+          ]
+        }
+      },
+      "item_id": "node_value:vs=\"pe\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"imp\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"inf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"ipf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"pf\"",
+      "kind": "node_value"
+    },
+    {
+      "accounting": {
+        "production": null,
+        "research": null
+      },
+      "item_id": "node_value:vt=\"ptc\"",
+      "kind": "node_value"
+    }
+  ],
+  "target_corpus_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+  "technical_exclusions": [],
+  "tf_version": "0.9"
+}
