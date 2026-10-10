@@ -1,0 +1,27 @@
+{
+  "evidence_id": "evidence:extrabiblical:word-sp-verb-source",
+  "kind": "corpus-source-enumeration",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/extrabiblical/9a56288e6777bad6328856acf055c780e65dd5d9/source/0.2/extraBiblical.mql.bz2",
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "source_blob_sha": "4ba717b1716b747bb94d0359b950a55d8624b109",
+    "source_decompressed_sha256": "62540c8b4682121dd002f4c234c693259fb494c439ddfc06574537e5e398790e",
+    "source_type": "part_of_speech_t",
+    "feature": "sp",
+    "enum_value": "verb",
+    "enum_code": 1,
+    "enum_declaration_line": 163,
+    "enum_value_line": 165,
+    "feature_type_line": 501,
+    "example_word_assignment_lines": [
+      269073,
+      269212
+    ],
+    "target_corpus_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+    "target_tf_version": "0.2",
+    "target_node_type": "word",
+    "target_observed_sp_verb": 6100
+  },
+  "content_digest": "sha256:c4a1b0e8b81f3764dbc8350d3c10a214844df0cd5599e4ad78cfc01601cdc0d4"
+}
