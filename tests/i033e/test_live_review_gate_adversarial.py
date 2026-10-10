@@ -80,6 +80,25 @@ class LiveReviewBoundaryTests(unittest.TestCase):
         with patch.dict(os.environ,{"GITHUB_TOKEN":"fake-ci-token"}),              patch.object(self.gate,"_github_event",return_value=(REPO,299,SHA)),              patch.object(self.gate,"_api",side_effect=fake_api),              self.assertRaises(ExternalReviewError):
             self.gate.evaluate_live_gate(self.packet,self.ledger)
 
+    def test_pr_head_race_during_api_reads_fails_closed(self):
+        attempts = 0
+        def fake_api(path, token):
+            nonlocal attempts
+            if path.endswith("/pulls/299"):
+                attempts += 1
+                return pr_data() if attempts == 1 else pr_data(sha="b" * 40)
+            if "/reviews?" in path:
+                return [review(self.packet)]
+            if "/permission" in path:
+                return {"permission": "write"}
+            raise AssertionError(path)
+        with patch.dict(os.environ, {"GITHUB_TOKEN": "fake-ci-token"}), \
+             patch.object(self.gate, "_github_event", return_value=(REPO,299,SHA)), \
+             patch.object(self.gate, "_api", side_effect=fake_api), \
+             self.assertRaises(ExternalReviewError):
+            self.gate.evaluate_live_gate(self.packet,self.ledger)
+        self.assertEqual(attempts, 2)
+
     def test_review_api_pagination_fails_closed_when_truncated(self):
         page=[review(self.packet,review_id=i+1) for i in range(100)]
         def fake_api(path,token):
