@@ -121,7 +121,22 @@ def verify_review_packet(packet: dict[str, Any], ledger: dict[str, Any]) -> bool
         computed = build_review_packet(ledger)
     except (TypeError, ValueError, KeyError) as exc:
         raise BatchReviewPacketError("invalid source ledger") from exc
-    if packet != computed:
+    # Python considers False == 0 and True == 1, while a JSON integrity
+    # contract must not. JCS also represents 4 and 4.0 alike, so enforce
+    # the exact schema types before checking canonical JSON bytes.
+    if (
+        type(packet.get("schema_version")) is not int
+        or packet["schema_version"] != 1
+        or type(packet.get("release_authorized")) is not bool
+        or packet["release_authorized"] is not False
+        or type(packet.get("count")) is not int
+    ):
+        raise BatchReviewPacketError("packet schema or authorization value has wrong JSON type")
+    try:
+        match = canonical_json_bytes(packet) == canonical_json_bytes(computed)
+    except (TypeError, ValueError) as exc:
+        raise BatchReviewPacketError("review request is not valid canonical JSON") from exc
+    if not match:
         raise BatchReviewPacketError("packet differs from pinned unreviewed source decisions")
     return True
 

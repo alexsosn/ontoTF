@@ -67,6 +67,30 @@ class BatchReviewPacketAdversarialTests(unittest.TestCase):
         with self.assertRaises(BatchReviewPacketError):
             verify_review_packet(packet, self.ledger)
 
+    def test_python_bool_numeric_equality_cannot_bypass_review_gate(self):
+        # A plain dict equality check incorrectly accepts all these values:
+        # False == 0, True == 1, and 4 == 4.0.
+        for key, forged in (
+            ("release_authorized", 0),
+            ("schema_version", True),
+            ("count", 4.0),
+        ):
+            altered = copy.deepcopy(self.packet)
+            altered[key] = forged
+            with self.subTest(key=key), self.assertRaises(BatchReviewPacketError):
+                verify_review_packet(altered, self.ledger)
+
+    def test_source_binding_and_coverage_intent_cannot_be_replaced(self):
+        for key in ("source_pin", "coverage_item_ids"):
+            altered = copy.deepcopy(self.packet)
+            row = altered["rows"][0]
+            if key == "source_pin":
+                row[key]["target_corpus_revision"] = "0" * 40
+            else:
+                row[key] = ['node_value:sp="verb"']
+            with self.subTest(key=key), self.assertRaises(BatchReviewPacketError):
+                verify_review_packet(altered, self.ledger)
+
     def test_self_declared_approval_in_source_ledger_fails(self):
         changed = copy.deepcopy(self.ledger)
         changed["decisions"][0]["review"] = {"status":"reviewed"}
