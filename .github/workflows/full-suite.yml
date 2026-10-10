@@ -53,5 +53,39 @@ jobs:
       - name: Execute previously hidden pytest research contracts
         run: python -m pytest tests/research -q
 
+      - name: Verify immutable historical coverage and routing snapshots
+        run: |
+          python scripts/coverage/build_p004_r011_baseline.py --check
+          python scripts/coverage/build_i026_work_queue.py --check
+
       - name: Build exact-head distributable wheel
         run: python -m build --wheel --outdir dist
+
+      - name: Verify frozen seven-corpus coverage files inside wheel
+        if: matrix.python-version == '3.12'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          dist = tuple(Path("dist").glob("tfont-*.whl"))
+          if len(dist) != 1:
+              raise SystemExit("expected exactly one built wheel")
+          prefix = "tfont/resources/coverage/p004-r011-baseline-v1/"
+          expected = {
+              prefix + name for name in (
+                  "bhsa.json", "cuc.json", "syriac.json", "extrabiblical.json",
+                  "pseudepigrapha.json", "oracc.json", "tlhdig.json",
+              )
+          }
+          with ZipFile(dist[0]) as wheel:
+              present = {name for name in wheel.namelist() if name.startswith(prefix)}
+          if present != expected:
+              raise SystemExit("missing or unexpected frozen coverage resources in wheel")
+          PY
+
+      - name: Install reviewed profile wheel in isolated environment
+        if: matrix.python-version == '3.12'
+        env:
+          I009_WHEEL_TEST: "1"
+        run: python -m unittest tests.i009.test_wheel_install_red -v

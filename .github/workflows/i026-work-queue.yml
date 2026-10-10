@@ -9,7 +9,6 @@ on:
       - "docs/research/data/generated/i026/**"
       - "scripts/coverage/build_i026_work_queue.py"
       - "tests/i026/**"
-      - "src/tfont/resources/coverage/**"
       - ".github/workflows/i026-work-queue.yml"
   workflow_dispatch:
 

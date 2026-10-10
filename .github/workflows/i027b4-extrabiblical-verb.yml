@@ -5,7 +5,6 @@ on:
     paths:
       - "src/tfont/resources/profiles/extrabiblical/0.3.0/**"
       - "src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/**"
-      - "src/tfont/production_bundles.py"
       - "scripts/coverage/build_i027b4_extrabiblical_verb.py"
       - "docs/research/I-027B4-extrabiblical-verb.md"
       - "docs/plans/I-027B4-extrabiblical-verb.md"
