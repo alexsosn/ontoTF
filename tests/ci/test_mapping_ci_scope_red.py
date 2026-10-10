@@ -79,7 +79,12 @@ class CITriggerScopeRED(unittest.TestCase):
             src = (WORKFLOWS/workflow).read_text(encoding="utf-8")
             pr = pr_section(src)
             with self.subTest(workflow=workflow):
-                self.assertIn("workflow_dispatch:", src)
+                # I-009 historically uses a scoped implementation-branch
+                # push event, not workflow_dispatch. Do not invent a trigger.
+                if workflow != "i009-production-bundles.yml":
+                    self.assertIn("workflow_dispatch:", src)
+                else:
+                    self.assertIn("impl/i009-production-noun-bundles", src)
                 self.assertIn(retained, pr)
                 self.assertIn(workflow, pr)
                 for glob in removed:
