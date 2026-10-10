@@ -121,7 +121,6 @@ def _difference(
                  and canonical_json_bytes(next_dep[ident]) == canonical_json_bytes(old),
                  "published overlay replaced or removed inherited native dependency")
     added_dep = set(next_dep) - set(old_dep)
-    _require(bool(added_dep), "new mappings have no additional native dependencies")
 
     prev_ev={row.data["evidence_id"]:row for row in base.evidences}
     next_ev={row.data["evidence_id"]:row for row in target.evidences}
@@ -133,7 +132,6 @@ def _difference(
                      == canonical_json_bytes(original.data),
                  "inherited evidence changed or disappeared")
     added_ev=set(next_ev)-set(prev_ev)
-    _require(bool(added_ev),"added mappings have no new source/ontology evidence")
     # Only the actual published target lock can extend the set of terms.
     for original_lock in base.ontology_locks:
         candidates=[x for x in target.ontology_locks
@@ -145,13 +143,17 @@ def _difference(
                      <= set(candidates[0].data["terms_used"]),
                  "target ontology lock loses prior terms or changes revision")
 
-    new_dep_ids={ident for ident in added_dep}
+    referenced_dependencies: set[str] = set()
     for ident in new_ids:
         mapped = new_rows[ident]
-        _require(set(mapped["native_dependencies"]) <= new_dep_ids,
+        used = set(mapped["native_dependencies"])
+        _require(used <= set(next_dep),
                  "new mapping references an undeclared native dependency")
+        referenced_dependencies.update(used)
         refs={ref["evidence_id"] for ref in mapped["evidence"]}
         _require(refs <= set(next_ev), "new mapping lacks pinned published evidence")
+    _require(added_dep <= referenced_dependencies,
+             "published overlay introduces an unused native dependency")
 
     return {
         "schema_version": 1,
