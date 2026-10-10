@@ -137,6 +137,15 @@ class ExternalReviewRed(unittest.TestCase):
             with self.subTest(state=state), self.assertRaises(ExternalReviewError):
                 self.evaluate([early,later])
 
+    def test_case_variant_reviewer_later_retraction_invalidates_approval(self):
+        earlier = review(self.packet,user="independent-reviewer")
+        later = review(
+            self.packet, user="Independent-Reviewer", state="CHANGES_REQUESTED",
+            review_id=101, submitted="2026-10-10T15:01:00Z",
+        )
+        with self.assertRaises(ExternalReviewError):
+            self.evaluate([earlier,later])
+
     def test_rationale_or_digest_replay_rejected(self):
         changed=copy.deepcopy(self.packet)
         changed["rows"][0]["rationale"]="altered scholarly rationale"
