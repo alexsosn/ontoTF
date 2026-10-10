@@ -15,6 +15,20 @@ TFont is a semantic interoperability layer for Text-Fabric / Context-Fabric corp
 
 For zero-span textual data, follow the materialized corpus model rather than inventing a TFont storage workaround. In particular, current ORACC-TF architecture keeps independently positioned zero-span textual entities in the TF warp through explicit synthetic/empty slots. Such slots are technical positional anchors, not semantic cuneiform signs, and do not justify a TFont sidecar abstraction.
 
+## Data-first P-004 throughput policy (ADR-001)
+
+The current per-entity release ceremony is a **known architectural bottleneck**, documented in [ADR-001](docs/architecture/ADR-001-data-first-semantic-mapping.md) and tracked by #290 / #291. The explicit user priority to redesign this authoring and CI loop overrides default feature-backlog order until the architecture pilot is reviewed.
+
+- **Review each semantic assertion, not each file clone.** A mapping/coverage *row* is not intrinsically a separate GitHub ticket, branch, PR, Python generator, ontology snapshot, or profile release. Combine semantically homogeneous corpus items into source-grounded batches; maintain per-row dispositions and reasoned conservative alternatives.
+- **No unreviewed automation of scholarly meaning.** A source definition, an ontology term and a corpus-specific assessment are distinct. An original MQL enum code is not an authoritative English gloss. A code spelled like another corpus's code is not enough for exact equivalence.
+- **Research, plan, TDD and independent review remain mandatory for architecture/schema/compiler tickets.** For ordinary mapping records under a previously validated compiler, cite the frozen source/ontology evidence and exercise existing generated contract/negative tests. Do not create a purpose-built test suite just to demonstrate one more supported POS value unless the value exhibits a novel failure mode.
+- **Interim policy before the new compiler lands:** reuse pinned evidence, add several independently justified mappings per PR, derive hashes using the tested canonical digest functions, and avoid creating per-ticket GitHub Actions workflows. Keep immutable published profiles and coverage history unchanged.
+- **After compiler parity (#290):** edit a compact ledger and reviewed evidence; let a deterministic builder produce Mapping v2, dependency closures, profile catalogs, review-bound digests, semantic indexes and current coverage. Treat generated outputs as build artifacts, not hand-authored semantic truth. Never accept a proposed row as production authority solely because its JSON says `reviewed`.
+- **After CI consolidation (#291):** run one path-aware fast PR contract and a final exact-head full test/wheel gate. Preserve Python 3.10/3.12 compatibility, source/ontology locking, negative mutation tests and expected-head merge protection while removing redundant per-issue workflow owners.
+- **Track actual progress:** number of independently reviewed source items, valid shared-target mappings, conservative native-only/ambiguous/unsupported decisions, unresolved denominator items, and PR/CI cost. P-004's 934 items are not 934 automatic ontology equivalences; 100% coverage means all native item identities are accounted for with justified dispositions.
+
+Until these changes ship, **do not claim the planned CLI, evidence registry, generic loader or CI pipeline already exists**. They are migration deliverables. Maintain complete backward compatibility of validated historical releases and TF-native runtime behavior.
+
 ## Backlog selection and program priority
 
 The autonomous development loop must optimize for completion of the active project program, not for the mere existence of an open issue.
