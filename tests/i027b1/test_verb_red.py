@@ -53,6 +53,20 @@ class I027B1VerbRedTests(unittest.TestCase):
         self.assertNotEqual(native.node_type, "lex")
         self.assertIn(BASE + "Verb", bundle.ontology_locks[0].data["terms_used"])
 
+    def test_locked_olia_verb_is_real_reference_class(self):
+        snapshot = files("tfont").joinpath(
+            "resources", "ontologies", "olia",
+            "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+            "olia.owl",
+        ).read_text(encoding="utf-8")
+        declaration = '<owl:Class rdf:about="http://purl.org/olia/olia.owl#Verb">'
+        self.assertIn(declaration, snapshot)
+        start = snapshot.index(declaration)
+        self.assertIn(
+            "http://purl.org/olia/olia-top.owl#MorphosyntacticCategory",
+            snapshot[start : start + 450],
+        )
+
     def test_new_release_preserves_noun_and_morphology_semantics(self):
         loader = importlib.import_module("tfont.production_bundles")
         old = validate_semantic_bundle(loader.load_production_linguistic_bundle("bhsa"))
