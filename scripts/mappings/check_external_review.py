@@ -240,6 +240,22 @@ def evaluate_live_gate(packet: dict[str, Any], ledger: dict[str, Any]) -> dict[s
                 _abort("cannot establish current GitHub reviewer permission")
             permissions[login]=data["permission"]
 
+    # Review state can be dismissed/edited during collaborator-permission
+    # requests. An unchanged head alone does not prove approval still exists.
+    # Fail closed when the live reviewer snapshot has changed mid-verification.
+    current_reviews = []
+    for page in range(1, MAX_REVIEW_PAGES + 1):
+        chunk = _api(path + f"/pulls/{pr_number}/reviews?per_page=100&page={page}", token)
+        if type(chunk) is not list or len(chunk) > 100:
+            _abort("invalid second GitHub review page")
+        current_reviews.extend(chunk)
+        if len(chunk) < 100:
+            break
+    else:
+        _abort("second GitHub review pagination exceeds configured bound")
+    if current_reviews != reviews:
+        _abort("GitHub independent reviewer decisions changed during verification")
+
     # Re-read the PR after the review + permission API round trips. Otherwise
     # a force-push in this window could make a correct-looking approval stale.
     fresh_pr=_api(path+f"/pulls/{pr_number}",token)
