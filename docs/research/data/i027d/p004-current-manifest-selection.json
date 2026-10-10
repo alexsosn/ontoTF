@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "selection_id": "p004-current-v1",
+  "underlying_policy_id": "p004-routing-v1",
+  "underlying_policy_path": "docs/research/data/i026/p004-routing-policy.json",
+  "selected_manifests": {
+    "bhsa": "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
+    "cuc": "src/tfont/resources/coverage/p004-r011-baseline-v1/cuc.json",
+    "syriac": "src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json",
+    "extrabiblical": "src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json",
+    "pseudepigrapha": "src/tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
+    "oracc": "src/tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
+    "tlhdig": "src/tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json"
+  },
+  "selected_blob_shas": {
+    "bhsa": "d469f4893ef32a1226ecea6b56c84240da7f7e72",
+    "cuc": "a0da92428517178dd7cf5cc2c2d009b740b40d68",
+    "syriac": "e4d4801db76ce894e68fa2be4531d5b1bd0fbcfc",
+    "extrabiblical": "33a6ec40ef08c0040e7d835de51796c3e6c8b13c",
+    "pseudepigrapha": "7e3d3804aeb3469986a8ff0c58bff031c347dcdd",
+    "oracc": "6bcfd794557845f4e5afa56c9b1eb782b01f5f44",
+    "tlhdig": "df3db0042c5c7e0576da309be74d70ff7db1a75b"
+  },
+  "baseline_blob_shas": {
+    "bhsa": "02b070fa98cfbe6128bd975119ce8b4555536bae",
+    "cuc": "a0da92428517178dd7cf5cc2c2d009b740b40d68",
+    "syriac": "c2ee469d96276839635c247a0a0b3d639e4c7cb6",
+    "extrabiblical": "bee233e7dca1aeefa0106e4b98233c354400c393",
+    "pseudepigrapha": "7e3d3804aeb3469986a8ff0c58bff031c347dcdd",
+    "oracc": "6bcfd794557845f4e5afa56c9b1eb782b01f5f44",
+    "tlhdig": "df3db0042c5c7e0576da309be74d70ff7db1a75b"
+  },
+  "expected_production_by_corpus": {
+    "bhsa": {
+      "reviewed_items": 35,
+      "shared_target_items": 8,
+      "native_only_items": 27
+    },
+    "cuc": {
+      "reviewed_items": 0,
+      "shared_target_items": 0,
+      "native_only_items": 0
+    },
+    "syriac": {
+      "reviewed_items": 7,
+      "shared_target_items": 7,
+      "native_only_items": 0
+    },
+    "extrabiblical": {
+      "reviewed_items": 8,
+      "shared_target_items": 8,
+      "native_only_items": 0
+    },
+    "pseudepigrapha": {
+      "reviewed_items": 0,
+      "shared_target_items": 0,
+      "native_only_items": 0
+    },
+    "oracc": {
+      "reviewed_items": 0,
+      "shared_target_items": 0,
+      "native_only_items": 0
+    },
+    "tlhdig": {
+      "reviewed_items": 0,
+      "shared_target_items": 0,
+      "native_only_items": 0
+    }
+  }
+}

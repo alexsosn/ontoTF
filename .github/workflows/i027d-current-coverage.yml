@@ -1,0 +1,39 @@
+name: I-027D current P-004 coverage queue
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/I-027D-current-coverage-queue.md"
+      - "docs/plans/I-027D-current-coverage-queue.md"
+      - "docs/research/data/i027d/**"
+      - "docs/research/data/generated/i027d/**"
+      - "scripts/coverage/build_i027d_current_queue.py"
+      - "tests/i027d/**"
+      - ".github/workflows/i027d-current-coverage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-reconciled:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package
+        run: python -m pip install -e .
+      - name: Verify I-026 historical source unchanged
+        run: python scripts/coverage/build_i026_work_queue.py --check
+      - name: Validate immutable current queue successor
+        run: python scripts/coverage/build_i027d_current_queue.py --check
+      - name: Run focused and adversarial reconciliation tests
+        run: python -m unittest tests.i027d.test_current_red tests.i027d.test_current_adversarial
