@@ -1,0 +1,11 @@
+{
+  "algorithm": "tfont-parent-components-sha256-v1",
+  "components": [
+    {
+      "component_id": "extrabiblical-tf",
+      "content_digest": "sha256:d0ca9bdf90bfdefe19861c2c68e91071650ed511b8a79270490238b30274aee0",
+      "identity_algorithm": "tfont-tf-files-sha256-v1",
+      "kind": "tf-payload"
+    }
+  ]
+}
