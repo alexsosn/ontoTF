@@ -1,0 +1,617 @@
+{
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24",
+          "evidence_id": "evidence:extrabiblical:word-sp-enum"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+          "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-proper-noun",
+      "mapping_semantic_digest": "sha256:fdc7e83350198f79065eaf28e4204e66bd0b454d2d7fc336e14e5250748f0117",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "nmpr"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-sp:nmpr"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "content_digest": "sha256:d198fcc626a60fadecb7b6f167bcf9be728949732e99e660d32b1c7ee3b52a24",
+              "evidence_id": "evidence:extrabiblical:word-sp-enum"
+            },
+            {
+              "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+              "evidence_id": "evidence:extrabiblical:feature-authority"
+            },
+            {
+              "content_digest": "sha256:652e3d7bf24022db27d6b9659c079d151ce0ddc86d3cdc30a8a6e962d684bd17",
+              "evidence_id": "evidence:bhsa:word-sp-noun-codes"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "nmpr"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-proper-noun",
+          "projection_semantic_digest": "sha256:18b4cec4cc7d619bb4d71ecf6ae09173cb25b8835c3e6cde7cce545a05233250",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-proper-noun:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:18b4cec4cc7d619bb4d71ecf6ae09173cb25b8835c3e6cde7cce545a05233250",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#ProperNoun"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-proper-noun:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:fdc7e83350198f79065eaf28e4204e66bd0b454d2d7fc336e14e5250748f0117",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "content_digest": "sha256:119571ea2a08e31c3ed910879264c3ab484979c5be40e2c87df6fe6699bb36c7",
+          "evidence_id": "evidence:extrabiblical:word-gn-observed"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+          "evidence_id": "evidence:bhsa:word-gn-values"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-masculine",
+      "mapping_semantic_digest": "sha256:33f49811d5c5abd97f632bc819c9d7207570db0f03032e956b6c4a3c739f0b49",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "gn",
+        "node_type": "word",
+        "value": "m"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-gn:m"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:119571ea2a08e31c3ed910879264c3ab484979c5be40e2c87df6fe6699bb36c7",
+              "evidence_id": "evidence:extrabiblical:word-gn-observed"
+            },
+            {
+              "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+              "evidence_id": "evidence:extrabiblical:feature-authority"
+            },
+            {
+              "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+              "evidence_id": "evidence:bhsa:word-gn-values"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "gn",
+            "node_type": "word",
+            "value": "m"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-masculine",
+          "projection_semantic_digest": "sha256:45cfa5a7706db0d1fce76bbb7498f86f16c2141b7c2a53dc8723c0aa84e06e91",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-masculine:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:45cfa5a7706db0d1fce76bbb7498f86f16c2141b7c2a53dc8723c0aa84e06e91",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Masculine"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-masculine:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:33f49811d5c5abd97f632bc819c9d7207570db0f03032e956b6c4a3c739f0b49",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "content_digest": "sha256:119571ea2a08e31c3ed910879264c3ab484979c5be40e2c87df6fe6699bb36c7",
+          "evidence_id": "evidence:extrabiblical:word-gn-observed"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+          "evidence_id": "evidence:bhsa:word-gn-values"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-feminine",
+      "mapping_semantic_digest": "sha256:3242852ebfcd508fd40a66bfee6ec08b47787ad48a97cee78968882b4f7429b2",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "gn",
+        "node_type": "word",
+        "value": "f"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-gn:f"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:119571ea2a08e31c3ed910879264c3ab484979c5be40e2c87df6fe6699bb36c7",
+              "evidence_id": "evidence:extrabiblical:word-gn-observed"
+            },
+            {
+              "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+              "evidence_id": "evidence:extrabiblical:feature-authority"
+            },
+            {
+              "content_digest": "sha256:1391f2b24e36445a65f430c5d372d156810a8d02702f9202022b06583fce962b",
+              "evidence_id": "evidence:bhsa:word-gn-values"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "gn",
+            "node_type": "word",
+            "value": "f"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-feminine",
+          "projection_semantic_digest": "sha256:2d5bf1d9fc443482178e9677a72df160be8f8113f00efe8c2c21113f9c6cf596",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-feminine:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:2d5bf1d9fc443482178e9677a72df160be8f8113f00efe8c2c21113f9c6cf596",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Feminine"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-feminine:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:3242852ebfcd508fd40a66bfee6ec08b47787ad48a97cee78968882b4f7429b2",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+          "evidence_id": "evidence:extrabiblical:word-nu-observed"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+          "evidence_id": "evidence:bhsa:word-nu-values"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-singular",
+      "mapping_semantic_digest": "sha256:07ceeaa73f1a73d29222eb7f62b949c43feeac7e5c6a35e999a0f008bffb34d9",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "nu",
+        "node_type": "word",
+        "value": "sg"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-nu:sg"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+              "evidence_id": "evidence:extrabiblical:word-nu-observed"
+            },
+            {
+              "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+              "evidence_id": "evidence:extrabiblical:feature-authority"
+            },
+            {
+              "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+              "evidence_id": "evidence:bhsa:word-nu-values"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "nu",
+            "node_type": "word",
+            "value": "sg"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-singular",
+          "projection_semantic_digest": "sha256:e819a8c89752af510728bea01ac9af3383452a1817e00baf69b0a00af7fc9ae0",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-singular:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:e819a8c89752af510728bea01ac9af3383452a1817e00baf69b0a00af7fc9ae0",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Singular"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-singular:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:07ceeaa73f1a73d29222eb7f62b949c43feeac7e5c6a35e999a0f008bffb34d9",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+          "evidence_id": "evidence:extrabiblical:word-nu-observed"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+          "evidence_id": "evidence:bhsa:word-nu-values"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-plural",
+      "mapping_semantic_digest": "sha256:d5860139978c06585c015f3b5f5c060cda4473236b86d0702f2d87d8d325e15a",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "nu",
+        "node_type": "word",
+        "value": "pl"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-nu:pl"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+              "evidence_id": "evidence:extrabiblical:word-nu-observed"
+            },
+            {
+              "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+              "evidence_id": "evidence:extrabiblical:feature-authority"
+            },
+            {
+              "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+              "evidence_id": "evidence:bhsa:word-nu-values"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "nu",
+            "node_type": "word",
+            "value": "pl"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-plural",
+          "projection_semantic_digest": "sha256:c39d75c960ed99e563c79bbfdedb171daf1cee6fd2982083007d6f1393c28d3c",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-plural:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:c39d75c960ed99e563c79bbfdedb171daf1cee6fd2982083007d6f1393c28d3c",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Plural"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-plural:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:d5860139978c06585c015f3b5f5c060cda4473236b86d0702f2d87d8d325e15a",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "extrabiblical",
+      "evidence": [
+        {
+          "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+          "evidence_id": "evidence:extrabiblical:word-nu-observed"
+        },
+        {
+          "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+          "evidence_id": "evidence:extrabiblical:feature-authority"
+        },
+        {
+          "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+          "evidence_id": "evidence:bhsa:word-nu-values"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:extrabiblical:olia-dual",
+      "mapping_semantic_digest": "sha256:159f1025f2b17cd39bf78ec2e1f3515338489e2a8ae5657f0f7b6bc385ec6c8a",
+      "native_binding": {
+        "component_id": "extrabiblical-tf",
+        "execution_shape": "value-predicate",
+        "feature": "nu",
+        "node_type": "word",
+        "value": "du"
+      },
+      "native_dependencies": [
+        "dep:extrabiblical:word-nu:du"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:a1cd78766e4f7d5ee7fffe1e59419ff7814461c033d2cc31a1c0f43ca4faaab3",
+              "evidence_id": "evidence:extrabiblical:word-nu-observed"
+            },
+            {
+              "content_digest": "sha256:68b0bf2c062ff9a4d441cad4ec036c1b0589f6fd439a227838770953a34802c0",
+              "evidence_id": "evidence:extrabiblical:feature-authority"
+            },
+            {
+              "content_digest": "sha256:fce46fa701129f0f9933c9238e4e0fa86e9c1dedafb71c954d0b869aec2014bd",
+              "evidence_id": "evidence:bhsa:word-nu-values"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "extrabiblical-tf",
+            "execution_shape": "value-predicate",
+            "feature": "nu",
+            "node_type": "word",
+            "value": "du"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:extrabiblical:olia-dual",
+          "projection_semantic_digest": "sha256:eeab19593e9a3c9ce46a0a3f560c3c5239f54bd7f15d64b60c985112085a7702",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:extrabiblical:olia-dual:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:eeab19593e9a3c9ce46a0a3f560c3c5239f54bd7f15d64b60c985112085a7702",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Dual"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:extrabiblical:olia-dual:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:159f1025f2b17cd39bf78ec2e1f3515338489e2a8ae5657f0f7b6bc385ec6c8a",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    }
+  ],
+  "schema_version": 2
+}
