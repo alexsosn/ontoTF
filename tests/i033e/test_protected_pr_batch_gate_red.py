@@ -110,7 +110,7 @@ class ProtectedBatchGateRED(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             source=Path(temp)/"event.json"
             source.write_text(json.dumps(event),encoding="utf-8")
-            for event_name in ("pull_request_target","pull_request_review"):
+            for event_name in ("pull_request_target",):
                 with self.subTest(event=event_name),patch.dict(os.environ,{
                     "GITHUB_EVENT_NAME":event_name,
                     "GITHUB_REPOSITORY":REPO,
@@ -118,19 +118,20 @@ class ProtectedBatchGateRED(unittest.TestCase):
                     "GITHUB_TOKEN":"test-read-token",
                 },clear=True):
                     self.assertEqual(self.gate._github_event(),(REPO,299,SHA))
-            with patch.dict(os.environ,{
-                "GITHUB_EVENT_NAME":"pull_request",
+            for rejected in ("pull_request", "pull_request_review"):
+                with patch.dict(os.environ,{
+                    "GITHUB_EVENT_NAME":rejected,
                 "GITHUB_REPOSITORY":REPO,
                 "GITHUB_EVENT_PATH":str(source),
                 "GITHUB_TOKEN":"test-read-token",
-            },clear=True),self.assertRaises(ExternalReviewError):
-                self.gate._github_event()
+                },clear=True),self.assertRaises(ExternalReviewError):
+                    self.gate._github_event()
 
     def test_trusted_workflow_never_checks_out_or_executes_candidate_code(self):
         self.assertTrue(WORKFLOW.exists())
         source=WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("pull_request_target:",source)
-        self.assertIn("pull_request_review:",source)
+        self.assertNotIn("\n  pull_request_review:",source)
         self.assertIn("ontology-batch-review",source)
         self.assertIn("ref: main",source)
         self.assertIn("check_external_review.py --from-pr-head",source)
