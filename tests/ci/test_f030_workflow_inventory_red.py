@@ -58,6 +58,8 @@ class F030WorkflowInventoryRed(unittest.TestCase):
                         "replacement_job":"release-regression",
                         "retained_run_commands":["python -m unittest discover -s tests -v"],
                         "retained_checkout_pins":[],
+                        "retained_actions":["actions/checkout@v5"],
+                        "retained_called_workflows":[],
                     }
                 }
             }
@@ -67,6 +69,8 @@ class F030WorkflowInventoryRed(unittest.TestCase):
                 "replacement_job":"source-pins",
                 "retained_run_commands":[],
                 "retained_checkout_pins":[],
+                        "retained_actions":["actions/checkout@v5"],
+                        "retained_called_workflows":[],
             }
             with self.assertRaises(WorkflowOwnershipError):
                 validate_ownership(records,only_one)
@@ -78,6 +82,8 @@ class F030WorkflowInventoryRed(unittest.TestCase):
                 "retained_checkout_pins":[
                     "ETCBC/extrabiblical@9a56288e6777bad6328856acf055c780e65dd5d9"
                 ],
+                "retained_actions":["actions/checkout@v5"],
+                "retained_called_workflows":[],
             }
             validate_ownership(records,only_one)
             only_one["workflows"][".github/workflows/source.yml"]["retained_checkout_pins"]=[]
@@ -100,6 +106,38 @@ class F030WorkflowInventoryRed(unittest.TestCase):
         self.assertTrue(any(
             "unittest discover" in step["run"] for step in baseline["runs"]
         ))
+
+    def test_reusable_workflow_and_actions_cannot_be_silently_dropped(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            directory=root/".github/workflows"
+            directory.mkdir(parents=True)
+            (directory/"uses.yml").write_text(
+                'name: Reuse\\non: [pull_request]\\njobs:\\n'
+                '  downstream:\\n'
+                '    uses: ./.github/workflows/full-suite.yml\\n'
+                '  test:\\n    runs-on: ubuntu-latest\\n    steps:\\n'
+                '      - uses: vendor/custom-check@v1\\n',
+                encoding="utf-8",
+            )
+            records=collect_workflow_inventory(root)
+            self.assertEqual(records[0]["called_workflows"][0]["uses"],
+                             "./.github/workflows/full-suite.yml")
+            owners={"schema_version":1,"workflows":{
+                ".github/workflows/uses.yml":{
+                    "replacement_job":"release-regression",
+                    "retained_run_commands":[],
+                    "retained_checkout_pins":[],
+                    "retained_actions":[],
+                    "retained_called_workflows":[],
+                }
+            }}
+            with self.assertRaises(WorkflowOwnershipError):
+                validate_ownership(records,owners)
+            ownership=owners["workflows"][".github/workflows/uses.yml"]
+            ownership["retained_actions"]=["vendor/custom-check@v1"]
+            ownership["retained_called_workflows"]=["./.github/workflows/full-suite.yml"]
+            validate_ownership(records,owners)
 
     def test_inventory_fails_on_malformed_job_or_duplicate_ids(self):
         with tempfile.TemporaryDirectory() as folder:
