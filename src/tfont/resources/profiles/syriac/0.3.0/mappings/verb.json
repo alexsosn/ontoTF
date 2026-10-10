@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-verb-code",
+          "content_digest": "sha256:a220f482f37ebca0991cd0c073e7f7199e981f8961c89c9d46738dc1b01a9450"
+        },
+        {
+          "evidence_id": "evidence:olia:verb-class",
+          "content_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-verb",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "verb"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:verb"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-verb-code",
+              "content_digest": "sha256:a220f482f37ebca0991cd0c073e7f7199e981f8961c89c9d46738dc1b01a9450"
+            },
+            {
+              "evidence_id": "evidence:olia:verb-class",
+              "content_digest": "sha256:231c009fd1f41487518116d53a1fdd09a92376c02ca9b1e34259540247c5326f"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "verb"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-verb",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Verb",
+          "projection_semantic_digest": "sha256:14d2407b66300899adc803caf85e4d0d790b0ff5f29685b4894d51068704a926",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "openai:gpt-6",
+            "reviewed_at": "2026-10-10T04:20:00Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/278",
+            "review_method": "logically-independent corpus grammar and pinned OLiA class review",
+            "review_id": "review:syriac:olia-verb:projection",
+            "reviewed_mapping_digest": "sha256:14d2407b66300899adc803caf85e4d0d790b0ff5f29685b4894d51068704a926"
+          }
+        }
+      ],
+      "rationale": "Reviewed pinned Syriac word_grammar annotation category sp=verb as exact OLiA Verb; no stem, tense or voice equivalence.",
+      "mapping_semantic_digest": "sha256:3937a37c8a956b9a3124b2c4afca9d03c5a38bce27152449204958b1f8c4840b",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "openai:gpt-6",
+        "reviewed_at": "2026-10-10T04:20:00Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/278",
+        "review_method": "logically-independent corpus grammar and pinned OLiA class review",
+        "review_id": "review:syriac:olia-verb:mapping",
+        "reviewed_mapping_digest": "sha256:3937a37c8a956b9a3124b2c4afca9d03c5a38bce27152449204958b1f8c4840b"
+      }
+    }
+  ]
+}
