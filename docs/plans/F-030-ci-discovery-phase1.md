@@ -1,5 +1,7 @@
 # F-030 phase-1 research-plan-TDD-test gates
 
+**Issue:** #291
+
 1. Baseline exact-head runs: PR #294 triggered 24 workflows; a tree inventory identified seven missing test-package markers in addition to now-fixed I-033A.
 2. TDD RED: create `tests/ci/test_python_test_discovery.py` to discover importable test packages, reject missing `__init__.py` and verify that `tests/ci` itself runs under `unittest discover -s tests`. Confirm current seven omissions before fix.
 3. GREEN: add the seven package markers; do not change the original tests or their expected results. Analyze any newly observed errors.
