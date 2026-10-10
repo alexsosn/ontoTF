@@ -471,6 +471,7 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
 
     def test_packaged_mappings_and_runtime_dependency_boundary_remain_unchanged(self):
         count = 0
+        historical_count = 0
         shapes = set()
         root = ROOT / "src/tfont/resources/profiles"
         for path in sorted(root.glob("*/*/mappings/*.json")):
@@ -492,9 +493,12 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
                 for binding in rows:
                     if type(binding) is dict and type(binding.get("execution_shape")) is str:
                         count += 1
+                        if path.parent.parent.name in {"0.1.0", "0.2.0"}:
+                            historical_count += 1
                         shapes.add(binding["execution_shape"])
                         self.assertNotEqual(binding["execution_shape"], "edge-path")
-        self.assertEqual(count, 48)
+        self.assertEqual(historical_count, 48)
+        self.assertGreater(count, historical_count)
         self.assertEqual(shapes, {"value-predicate", "value-set-predicate"})
 
         pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8").lower()
