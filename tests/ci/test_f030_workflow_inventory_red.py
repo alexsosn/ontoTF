@@ -113,11 +113,11 @@ class F030WorkflowInventoryRed(unittest.TestCase):
             directory=root/".github/workflows"
             directory.mkdir(parents=True)
             (directory/"uses.yml").write_text(
-                'name: Reuse\\non: [pull_request]\\njobs:\\n'
-                '  downstream:\\n'
-                '    uses: ./.github/workflows/full-suite.yml\\n'
-                '  test:\\n    runs-on: ubuntu-latest\\n    steps:\\n'
-                '      - uses: vendor/custom-check@v1\\n',
+                'name: Reuse\non: [pull_request]\njobs:\n'
+                '  downstream:\n'
+                '    uses: ./.github/workflows/full-suite.yml\n'
+                '  test:\n    runs-on: ubuntu-latest\n    steps:\n'
+                '      - uses: vendor/custom-check@v1\n',
                 encoding="utf-8",
             )
             records=collect_workflow_inventory(root)
