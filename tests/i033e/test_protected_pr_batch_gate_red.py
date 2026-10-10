@@ -61,6 +61,19 @@ class ProtectedBatchGateRED(unittest.TestCase):
             answer=self.gate.fetch_pr_head_inputs()
         return answer,routes
 
+    def test_authenticated_github_api_rejects_redirects_without_token_forwarding(self):
+        from urllib.request import Request
+        handler=self.gate._NoRedirect()
+        request=Request(
+            "https://api.github.com/repos/alexsosn/ontoTF/pulls/299",
+            headers={"Authorization":"Bearer sensitive-token"}
+        )
+        self.assertIsNone(handler.redirect_request(
+            request,None,302,"Found",
+            {"Location":"https://untrusted.example/collect"},
+            "https://untrusted.example/collect",
+        ))
+
     def test_only_exact_head_proposal_and_packet_data_are_fetched(self):
         (packet,ledger),routes=self.load()
         self.assertEqual(packet,self.packet)
