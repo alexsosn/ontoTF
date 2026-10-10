@@ -99,6 +99,27 @@ class LiveReviewBoundaryTests(unittest.TestCase):
             self.gate.evaluate_live_gate(self.packet,self.ledger)
         self.assertEqual(attempts, 2)
 
+    def test_review_revoked_during_permissions_check_is_rejected(self):
+        call_count = 0
+        def fake_api(path,token):
+            nonlocal call_count
+            if path.endswith("/pulls/299"):
+                return pr_data()
+            if "/reviews?" in path:
+                call_count += 1
+                if call_count == 1:
+                    return [review(self.packet)]
+                return [review(self.packet,state="DISMISSED")]
+            if "/permission" in path:
+                return {"permission":"write"}
+            raise AssertionError(path)
+        with patch.dict(os.environ,{"GITHUB_TOKEN":"fake-ci-token"}), \
+             patch.object(self.gate,"_github_event",return_value=(REPO,299,SHA)), \
+             patch.object(self.gate,"_api",side_effect=fake_api), \
+             self.assertRaises(ExternalReviewError):
+            self.gate.evaluate_live_gate(self.packet,self.ledger)
+        self.assertEqual(call_count,2)
+
     def test_review_api_pagination_fails_closed_when_truncated(self):
         page=[review(self.packet,review_id=i+1) for i in range(100)]
         def fake_api(path,token):
