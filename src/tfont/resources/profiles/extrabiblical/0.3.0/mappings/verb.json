@@ -63,7 +63,7 @@
           "reference_kind": "semantic-pivot",
           "semantic_role": "annotation-value",
           "target": "http://purl.org/olia/olia.owl#Verb",
-          "projection_semantic_digest": "sha256:7dd102a1349da4bf882feb4f8348bc814ec2741cee90201156e55038f6a42688",
+          "projection_semantic_digest": "sha256:12d32dc8f58bd27ecc043100f5c8d55648983bf0898e660190900df0581a2d1c",
           "review": {
             "status": "reviewed",
             "reviewer_id": "openai:gpt-6",
@@ -71,12 +71,12 @@
             "review_source": "https://github.com/alexsosn/ontoTF/pull/282",
             "review_method": "independent original-MQL and vendored OLiA class review",
             "review_id": "review:extrabiblical:olia-verb:projection",
-            "reviewed_mapping_digest": "sha256:7dd102a1349da4bf882feb4f8348bc814ec2741cee90201156e55038f6a42688"
+            "reviewed_mapping_digest": "sha256:12d32dc8f58bd27ecc043100f5c8d55648983bf0898e660190900df0581a2d1c"
           }
         }
       ],
       "rationale": "Reviewed ExtraBiblical MQL part_of_speech_t verb=1 with sp:=verb as exact word-level OLiA Verb annotation category, without tense/stem/voice inference.",
-      "mapping_semantic_digest": "sha256:5f8fcab03d01be7186b81ccc9e6ff5d74cc539adf9f3aa7214c17cee711cf4e2",
+      "mapping_semantic_digest": "sha256:9361bb2a02bfeab79197f4ea4e3e68c562637356e259753cb86aa4a1f7fb880a",
       "review": {
         "status": "reviewed",
         "reviewer_id": "openai:gpt-6",
@@ -84,7 +84,7 @@
         "review_source": "https://github.com/alexsosn/ontoTF/pull/282",
         "review_method": "independent original-MQL and vendored OLiA class review",
         "review_id": "review:extrabiblical:olia-verb:mapping",
-        "reviewed_mapping_digest": "sha256:5f8fcab03d01be7186b81ccc9e6ff5d74cc539adf9f3aa7214c17cee711cf4e2"
+        "reviewed_mapping_digest": "sha256:9361bb2a02bfeab79197f4ea4e3e68c562637356e259753cb86aa4a1f7fb880a"
       }
     }
   ]
