@@ -67,7 +67,7 @@
           "review": {
             "status": "reviewed",
             "reviewer_id": "openai:gpt-6",
-            "reviewed_at": "2026-10-10T09:00:00Z",
+            "reviewed_at": "2026-10-10T09:13:00Z",
             "review_source": "https://github.com/alexsosn/ontoTF/pull/282",
             "review_method": "independent original-MQL and vendored OLiA class review",
             "review_id": "review:extrabiblical:olia-verb:projection",
@@ -80,7 +80,7 @@
       "review": {
         "status": "reviewed",
         "reviewer_id": "openai:gpt-6",
-        "reviewed_at": "2026-10-10T09:00:00Z",
+        "reviewed_at": "2026-10-10T09:13:00Z",
         "review_source": "https://github.com/alexsosn/ontoTF/pull/282",
         "review_method": "independent original-MQL and vendored OLiA class review",
         "review_id": "review:extrabiblical:olia-verb:mapping",
