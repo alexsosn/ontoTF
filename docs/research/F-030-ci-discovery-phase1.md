@@ -1,5 +1,7 @@
 # F-030 / #291 — phase 1: completeness before workflow pruning
 
+**Issue:** #291
+
 ## Evidence from repository and exact-head run
 
 - 83 workflow YAML files in `.github/workflows` at the current `main`.
