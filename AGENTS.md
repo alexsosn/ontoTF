@@ -15,6 +15,20 @@ TFont is a semantic interoperability layer for Text-Fabric / Context-Fabric corp
 
 For zero-span textual data, follow the materialized corpus model rather than inventing a TFont storage workaround. In particular, current ORACC-TF architecture keeps independently positioned zero-span textual entities in the TF warp through explicit synthetic/empty slots. Such slots are technical positional anchors, not semantic cuneiform signs, and do not justify a TFont sidecar abstraction.
 
+## Data-first P-004 throughput policy (ADR-001)
+
+The current per-entity release ceremony is a **known architectural bottleneck**, documented in [ADR-001](docs/architecture/ADR-001-data-first-semantic-mapping.md) and tracked by #290 / #291. The explicit user priority to redesign this authoring and CI loop overrides default feature-backlog order until the architecture pilot is reviewed.
+
+- **Review each semantic assertion, not each file clone.** A mapping/coverage *row* is not intrinsically a separate GitHub ticket, branch, PR, Python generator, ontology snapshot, or profile release. Combine semantically homogeneous corpus items into source-grounded batches; maintain per-row dispositions and reasoned conservative alternatives.
+- **No unreviewed automation of scholarly meaning.** A source definition, an ontology term and a corpus-specific assessment are distinct. An original MQL enum code is not an authoritative English gloss. A code spelled like another corpus's code is not enough for exact equivalence.
+- **Research, plan, TDD and independent review remain mandatory for architecture/schema/compiler tickets.** For ordinary mapping records under a previously validated compiler, cite the frozen source/ontology evidence and exercise existing generated contract/negative tests. Do not create a purpose-built test suite just to demonstrate one more supported POS value unless the value exhibits a novel failure mode.
+- **Interim policy before the new compiler lands:** reuse pinned evidence, add several independently justified mappings per PR, derive hashes using the tested canonical digest functions, and avoid creating per-ticket GitHub Actions workflows. Keep immutable published profiles and coverage history unchanged.
+- **After compiler parity (#290):** edit a compact ledger and reviewed evidence; let a deterministic builder produce Mapping v2, dependency closures, profile catalogs, review-bound digests, semantic indexes and current coverage. Treat generated outputs as build artifacts, not hand-authored semantic truth. Never accept a proposed row as production authority solely because its JSON says `reviewed`.
+- **After CI consolidation (#291):** run one path-aware fast PR contract and a final exact-head full test/wheel gate. Preserve Python 3.10/3.12 compatibility, source/ontology locking, negative mutation tests and expected-head merge protection while removing redundant per-issue workflow owners.
+- **Track actual progress:** number of independently reviewed source items, valid shared-target mappings, conservative native-only/ambiguous/unsupported decisions, unresolved denominator items, and PR/CI cost. P-004's 934 items are not 934 automatic ontology equivalences; 100% coverage means all native item identities are accounted for with justified dispositions.
+
+Until these changes ship, **do not claim the planned CLI, evidence registry, generic loader or CI pipeline already exists**. They are migration deliverables. Maintain complete backward compatibility of validated historical releases and TF-native runtime behavior.
+
 ## Backlog selection and program priority
 
 The autonomous development loop must optimize for completion of the active project program, not for the mere existence of an open issue.
@@ -96,25 +110,23 @@ A review that only summarizes the PR is insufficient. The reviewer should active
 
 If review finds a material defect, revise and repeat independent review until the PR is mergeable. Any material change after the final independent review invalidates that review and requires another independent pass over the new head.
 
-## Phase discipline
+## Phase discipline (current)
 
-The initial phase is **research only**. Do not open or implement production ontology/mapping code until research tickets R-001 through R-005 (distribution, ontology governance, ergonomics, documentation, and empirical corpus census) have been completed and reconciled into an approved design ticket.
+**Historical note, not a present work blocker:** R-001–R-011 initial research and P-003 common-ontology architecture reconciliation are already completed; P-003 #44 closed on 2026-09-08. The v0.1.1 package and subsequent reviewed development profiles exist. Do **not** restart the preimplementation "research only" phase or refuse production work by treating P-003 as pending.
 
-The current common-ontology reconciliation is governed by `docs/plans/P-001-common-ontology-roadmap-amendment.md`: R-006 through R-011 (#38–#43) feed P-003 #44. Until P-003 is accepted, generic infrastructure work may proceed only when it does not freeze the current single-target ontology shape as the final semantic contract.
+P-004 #202 is active. The current urgent architecture acceleration work is #290 (data-first semantic mapping compiler) and #291 (single owned CI pipeline), according to ADR-001 and the explicit user direction. Progress toward seven-model coverage must continue in dependency-safe batches; these architecture refactors should reduce semantic-work authoring cost rather than turn into another endless research-only program.
 
-## Artifact conventions
+Research and design gates still apply to **new architectural contracts**, source/ontology evidence versions and genuinely new semantic mechanisms. Their outputs can live in the **same implementation PR** as TDD RED→GREEN work as long as research and design are committed before implementation and reviewers can assess the sequence. Do not require a chain of separate research, plan, implementation and release PRs for a self-contained batch.
 
-- `docs/research/R-XXX-*.md` — evidence and conclusions from research tickets.
-- `docs/plans/P-XXX-*.md` — implementation/design plans derived from completed research.
-- `mappings/` — future corpus-specific mapping packages; format and layout are intentionally undecided until distribution research completes.
-- `schemas/` — future machine-readable contracts; do not create until design establishes them.
+## Artifact conventions (current versus planned)
 
-Research documents should distinguish:
+- `docs/research/`: original upstream scholarly evidence and uncertain/unsupported cases. Reuse already pinned facts across mapping rows; do not restate all upstream evidence in a new research document for every supported value.
+- `docs/plans/`: decisions on schemas, runtime behavior, compatibility and migration plans; include alternatives, rejection criteria, integrity and tests.
+- `src/tfont/resources/profiles/`, `src/tfont/resources/coverage/`, `src/tfont/resources/ontologies/`: current immutable released/bundled artifacts, which must remain readable and reproducible.
+- `docs/research/data/generated/`: existing frozen inventories and accounting snapshots. Do not edit past released snapshots to claim later progress.
+- `registry/`, `decisions/` and `tfont mappings ...`: **proposed ADR-001 target layout/API**, not yet implemented; introduce it through tested #290 compiler migration. Ensure installed Python and planned Agora plug-in consumers can load only the relevant corpus and ontology packs.
 
-- observed facts;
-- external standard requirements;
-- project decisions;
-- assumptions still requiring validation.
+Research documents and reviewer decisions must distinguish observed facts, external standards, explicit project choices and unresolved assumptions. Corpus-native TF annotations remain the authoritative source of meaning.
 
 ## Initial interoperability scope
 
