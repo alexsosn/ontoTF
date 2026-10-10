@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "batch_id": "i033c-olia-bhsa-syriac-adjadv",
+  "mode": "proposal-only",
+  "ontology_model": "olia",
+  "ontology_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "ontology_lock_resource": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.4.0.json",
+  "ontology_evidence_resources": {
+    "adjective": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adjective-evidence.json",
+    "adverb": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adverb-evidence.json"
+  },
+  "source_registry": {
+    "bhsa": {
+      "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "evidence_resource": "resources/profiles/bhsa/0.4.0/evidence/native-adj-adv-pos.json",
+      "component_id": "bhsa-tf",
+      "target_corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "syriac": {
+      "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+      "evidence_resource": "resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json",
+      "component_id": "syriac-tf",
+      "target_corpus_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
+    }
+  },
+  "defaults": {
+    "profile_id": "linguistic",
+    "capability_id": "linguistic.part-of-speech",
+    "semantic_role": "annotation-value",
+    "native_node_type": "word",
+    "feature": "sp"
+  },
+  "decisions": [
+    {
+      "corpus_id": "bhsa",
+      "value": "adjv",
+      "term_key": "adjective",
+      "assessment": "exact",
+      "rationale": "Source-reviewed bhsa word.sp=adjv POS category proposed for pinned OLiA adjective; this candidate is not independently approved by the compiler."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "advb",
+      "term_key": "adverb",
+      "assessment": "exact",
+      "rationale": "Source-reviewed bhsa word.sp=advb POS category proposed for pinned OLiA adverb; this candidate is not independently approved by the compiler."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "adjv",
+      "term_key": "adjective",
+      "assessment": "exact",
+      "rationale": "Source-reviewed syriac word.sp=adjv POS category proposed for pinned OLiA adjective; this candidate is not independently approved by the compiler."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "advb",
+      "term_key": "adverb",
+      "assessment": "exact",
+      "rationale": "Source-reviewed syriac word.sp=advb POS category proposed for pinned OLiA adverb; this candidate is not independently approved by the compiler."
+    }
+  ]
+}
