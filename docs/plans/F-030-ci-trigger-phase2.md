@@ -1,6 +1,8 @@
 # F-030 phase 2 — research / plan / TDD / test gates
 
-**Issue:** #291. **Research:** `docs/research/F-030-ci-trigger-phase2.md`.
+**Issue:** #291
+
+**Research:** `docs/research/F-030-ci-trigger-phase2.md`.
 
 1. RED: `tests/ci/test_mapping_ci_scope_red.py` requires canonical full suite preserving exact SHA, both Python versions, isolated wheel installation, baseline wheel seven-corpus membership, baseline generator --check and I-026 historical queue --check; it requires absence of broad old resource and generic loader triggers in eight named legacy YAML files.
 2. GREEN: add the *unique* wheel smoke + immutable baseline/queue checks to full suite. Only then prune PR broad path triggers in I-009/I-016/I-026/I-027B1/I-027B2/I-027B4/I-027C2; retain their own explicit source, tests and workflow triggers.
