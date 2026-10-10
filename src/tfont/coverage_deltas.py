@@ -20,8 +20,8 @@ class PublishedCoverageDeltaError(ValueError):
     """Invalid, non-additive or non-parity published coverage delta."""
 
 
-_RESOURCE = re.compile(r"p004-[a-zA-Z0-9._-]+-v[0-9]+\\Z")
-_CORPUS = re.compile(r"[a-z][a-z0-9_-]*\\Z")
+_RESOURCE = re.compile(r"p004-[a-zA-Z0-9._-]+-v[0-9]+\Z")
+_CORPUS = re.compile(r"[a-z][a-z0-9_-]*\Z")
 _AUTHORITY = "published-registry-parity-only"
 
 
