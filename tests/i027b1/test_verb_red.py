@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import importlib.util
 import json
 import unittest
 from importlib.resources import files
@@ -108,6 +109,20 @@ class I027B1VerbRedTests(unittest.TestCase):
         self.assertNotIn("vs", json.dumps(verb["native_binding"]))
         self.assertEqual(verb["projections"][0]["target"], BASE + "Verb")
         self.assertEqual(verb["projections"][0]["assessment"], "exact")
+
+    def test_coverage_successor_is_byte_for_byte_reproducible(self):
+        root = files("tfont").joinpath("resources", "coverage")
+        actual = root.joinpath("p004-i027b1-bhsa-verb-v1", "bhsa.json").read_text(
+            encoding="utf-8"
+        )
+        from pathlib import Path
+        script = Path(__file__).resolve().parents[2] / "scripts/coverage/build_i027b1_bhsa_verb.py"
+        self.assertTrue(script.is_file())
+        spec = importlib.util.spec_from_file_location("i027b1_coverage_builder", script)
+        assert spec is not None and spec.loader is not None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.assertEqual(actual, module.serialized(module.build_successor()))
 
 
 if __name__ == "__main__":
