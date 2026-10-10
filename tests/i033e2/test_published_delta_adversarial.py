@@ -51,6 +51,29 @@ class PublishedDeltaAdversarial(unittest.TestCase):
         with self.assertRaises(PublishedDeltaError):
             load_published_delta(altered)
 
+    def test_compiler_rejects_edited_inherited_release_or_component_identity(self):
+        from tfont import published_deltas as core
+        original=load_profile("bhsa","0.3.0")
+        next_release=load_profile("bhsa","0.4.0")
+        mutations=("inherited-review","parent","missing-evidence","source-revision")
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                changed=copy.deepcopy(next_release)
+                if mutation=="inherited-review":
+                    mapping=next(m for m in changed.mappings.data["mappings"]
+                                 if m["mapping_id"]=="mapping:bhsa:olia-verb")
+                    mapping["review"]["reviewer_id"]="forged-author"
+                elif mutation=="parent":
+                    changed.expected_parent_manifest.data["manifest_id"]="forged"
+                elif mutation=="missing-evidence":
+                    changed.evidences=tuple(e for e in changed.evidences
+                        if e.data["evidence_id"]!="evidence:bhsa:word-sp-verb-code")
+                else:
+                    changed.profile.data["profile_version"]="0.3.0"
+                with patch.object(core,"_published_release",
+                        side_effect=[original,changed]), self.assertRaises(PublishedDeltaError):
+                    build_published_delta("bhsa","0.3.0","0.4.0")
+
     def test_dropped_inherited_review_is_not_a_valid_overlay(self):
         source=load_profile("bhsa","0.4.0")
         changed=copy.deepcopy(source.mappings.data)
