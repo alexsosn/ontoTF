@@ -1,0 +1,10 @@
+# I-033E phase-1 plan — exact-head external review authority gate
+
+1. Research source/provenance and candidate packet semantics: merged #299, #297, ADR-001, GitHub PR + review + collaborator permission REST contracts. Do not assert that an author-authored receipt is signed.
+2. TDD RED: tests before module, with fake (injected) transport but no possibility of production authorization from an offline fixture. Include approved/rejected/needs-evidence partial review in one 4-row packet.
+3. GREEN: `src/tfont/external_review_gate.py`: exact typed parser, duplicate-key rejection, strict packet-row identity/batch digest binding, per-row dispositions, exact PR repository/number/author/head assertions, latest approved non-author human reviewer with write+ permissions, stale/revoked review rejection, conflict rejection, request size/page caps.
+4. Implement `scripts/mappings/check_external_review.py` as live GitHub REST CLI only. Require token, exact expected repository/PR/head and a locally recompiled I-033D review packet; read latest review + permission directly over HTTPS; return compact audit report, never write `release_authorized=true` into proposal data.
+5. Security hardening: prevent token-bearing release gate from executing PR-head code; document recommended `pull_request_target` use only with protected-base checkout and untrusted candidate artifact read-only, or protected manual release job; no new per-ticket workflow now (#291 is CI owner).
+6. Tests for forged in-packet reviewer flags, changed rationale/packet hash, incorrect head, author approval, outdated approval after push, later dismissed/COMMENTED review, duplicate IDs/JSON keys, missing row, noncollaborator, pagination failure, contradictory approvals, malformed token/URI.
+7. Exact-head Python 3.10/3.12 full suite + independent adversarial review of real code and four-row pinned packet; merge expected-head only if green.
+8. Phase 2 separately implements immutable delta-only profile/coverage overlay and installs the trusted release-gate integration. No runtime/coverage authority is awarded by this phase-1 PR alone.
