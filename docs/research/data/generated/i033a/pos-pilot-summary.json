@@ -1,0 +1,30 @@
+{
+  "authorizes_new_mappings": false,
+  "batch_id": "i033a-published-olia-verb-and-bhsa-stem-parity",
+  "counts": {
+    "positive_exact": 3,
+    "reviewed_native_only": 27,
+    "total_decisions": 30
+  },
+  "published_semantic_digests": [
+    {
+      "mapping_digest": "sha256:fea28524b19675bd8e9e6178a4256f86cae62775a14e097047c344813da3ee4f",
+      "mapping_id": "mapping:bhsa:olia-verb",
+      "projection_digest": "sha256:31e7277035fd4ee215fab38c4ecd0ddb8aee430b53d3562aaf5d0818c9036366"
+    },
+    {
+      "mapping_digest": "sha256:9361bb2a02bfeab79197f4ea4e3e68c562637356e259753cb86aa4a1f7fb880a",
+      "mapping_id": "mapping:extrabiblical:olia-verb",
+      "projection_digest": "sha256:12d32dc8f58bd27ecc043100f5c8d55648983bf0898e660190900df0581a2d1c"
+    },
+    {
+      "mapping_digest": "sha256:1cd78512783c81c9ed644ceafbbabad32d7050104981b8e1e8c813d05ce1ce78",
+      "mapping_id": "mapping:syriac:olia-verb",
+      "projection_digest": "sha256:b483d6e66b4f881a00105d06723fc7db4d83e9dec473170c5185b9eeaf54e811"
+    }
+  ],
+  "reviewed_native_only_source_ids": [
+    "i027a:bhsa-vs-pinned-source-review"
+  ],
+  "schema_version": 1
+}
