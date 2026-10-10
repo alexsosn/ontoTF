@@ -110,25 +110,23 @@ A review that only summarizes the PR is insufficient. The reviewer should active
 
 If review finds a material defect, revise and repeat independent review until the PR is mergeable. Any material change after the final independent review invalidates that review and requires another independent pass over the new head.
 
-## Phase discipline
+## Phase discipline (current)
 
-The initial phase is **research only**. Do not open or implement production ontology/mapping code until research tickets R-001 through R-005 (distribution, ontology governance, ergonomics, documentation, and empirical corpus census) have been completed and reconciled into an approved design ticket.
+**Historical note, not a present work blocker:** R-001–R-011 initial research and P-003 common-ontology architecture reconciliation are already completed; P-003 #44 closed on 2026-09-08. The v0.1.1 package and subsequent reviewed development profiles exist. Do **not** restart the preimplementation "research only" phase or refuse production work by treating P-003 as pending.
 
-The current common-ontology reconciliation is governed by `docs/plans/P-001-common-ontology-roadmap-amendment.md`: R-006 through R-011 (#38–#43) feed P-003 #44. Until P-003 is accepted, generic infrastructure work may proceed only when it does not freeze the current single-target ontology shape as the final semantic contract.
+P-004 #202 is active. The current urgent architecture acceleration work is #290 (data-first semantic mapping compiler) and #291 (single owned CI pipeline), according to ADR-001 and the explicit user direction. Progress toward seven-model coverage must continue in dependency-safe batches; these architecture refactors should reduce semantic-work authoring cost rather than turn into another endless research-only program.
 
-## Artifact conventions
+Research and design gates still apply to **new architectural contracts**, source/ontology evidence versions and genuinely new semantic mechanisms. Their outputs can live in the **same implementation PR** as TDD RED→GREEN work as long as research and design are committed before implementation and reviewers can assess the sequence. Do not require a chain of separate research, plan, implementation and release PRs for a self-contained batch.
 
-- `docs/research/R-XXX-*.md` — evidence and conclusions from research tickets.
-- `docs/plans/P-XXX-*.md` — implementation/design plans derived from completed research.
-- `mappings/` — future corpus-specific mapping packages; format and layout are intentionally undecided until distribution research completes.
-- `schemas/` — future machine-readable contracts; do not create until design establishes them.
+## Artifact conventions (current versus planned)
 
-Research documents should distinguish:
+- `docs/research/`: original upstream scholarly evidence and uncertain/unsupported cases. Reuse already pinned facts across mapping rows; do not restate all upstream evidence in a new research document for every supported value.
+- `docs/plans/`: decisions on schemas, runtime behavior, compatibility and migration plans; include alternatives, rejection criteria, integrity and tests.
+- `src/tfont/resources/profiles/`, `src/tfont/resources/coverage/`, `src/tfont/resources/ontologies/`: current immutable released/bundled artifacts, which must remain readable and reproducible.
+- `docs/research/data/generated/`: existing frozen inventories and accounting snapshots. Do not edit past released snapshots to claim later progress.
+- `registry/`, `decisions/` and `tfont mappings ...`: **proposed ADR-001 target layout/API**, not yet implemented; introduce it through tested #290 compiler migration. Ensure installed Python and planned Agora plug-in consumers can load only the relevant corpus and ontology packs.
 
-- observed facts;
-- external standard requirements;
-- project decisions;
-- assumptions still requiring validation.
+Research documents and reviewer decisions must distinguish observed facts, external standards, explicit project choices and unresolved assumptions. Corpus-native TF annotations remain the authoritative source of meaning.
 
 ## Initial interoperability scope
 
