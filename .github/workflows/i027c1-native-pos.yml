@@ -28,8 +28,6 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Native source parser and adversarial tests
-        run: python -m unittest tests.i027c1.test_matrix_red tests.i027c1.test_matrix_adversarial
       - uses: actions/checkout@v5
         with:
           repository: ETCBC/bhsa
@@ -56,5 +54,7 @@ jobs:
           test "$(git -C upstream-extra rev-parse HEAD)" = "9a56288e6777bad6328856acf055c780e65dd5d9"
       - name: Print exact-source reconciliation (research gate)
         run: python scripts/research/build_i027c1_pos_matrix.py --stdout
+      - name: Native source parser and adversarial tests
+        run: python -m unittest tests.i027c1.test_matrix_red tests.i027c1.test_matrix_adversarial
       - name: Reproduce frozen POS evidence matrix
         run: python scripts/research/build_i027c1_pos_matrix.py --check
