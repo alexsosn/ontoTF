@@ -1,12 +1,10 @@
 # I-033E3 / #303: ONLY protected-base code executes with a GitHub API token.
-# pull_request_review runs on base workflow code; NEVER checkout PR-head.
+# NEVER add pull_request_review: that event can run PR merge-commit workflow code.
 name: Protected ontology batch reviewer
 
 on:
   pull_request_target:
     types: [opened, reopened, synchronize, ready_for_review, labeled]
-  pull_request_review:
-    types: [submitted, edited, dismissed]
 
 permissions:
   contents: read
