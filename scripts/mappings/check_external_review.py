@@ -19,7 +19,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+
+from tfont.batch_proposals import packaged_resource
+from tfont.candidate_evidence import CandidateEvidenceResources, MAX_CANDIDATE_EVIDENCE
 
 from tfont.external_review_gate import (
     ExternalReviewError, evaluate_review_snapshot,
@@ -164,7 +167,9 @@ def _pr_head_file(repository: str, sha: str, name: str, token: str) -> dict[str,
     return value
 
 
-def fetch_pr_head_inputs() -> tuple[dict[str, Any], dict[str, Any]]:
+def fetch_pr_head_context() -> tuple[
+    dict[str, Any], dict[str, Any], Callable[[str], dict[str, Any]],
+]:
     """Read the only allowed manifest + packet/ledger from the exact PR HEAD.
 
     No PR script is imported, executed or checked out. The independently
@@ -190,11 +195,13 @@ def fetch_pr_head_inputs() -> tuple[dict[str, Any], dict[str, Any]]:
     if not correct:
         _abort("candidate PR head, author or repository changed before review fetch")
     meta = _pr_head_file(repository, sha, BATCH_INPUT_MANIFEST, token)
-    if (
-        set(meta) != {"schema_version", "ledger", "packet"}
-        or type(meta["schema_version"]) is not int
-        or meta["schema_version"] != 1
-    ):
+    version = meta.get("schema_version")
+    keys = {"schema_version", "ledger", "packet"}
+    if type(version) is not int or version not in {1, 2}:
+        _abort("candidate batch manifest version is invalid")
+    if version == 2:
+        keys.add("evidence_resources")
+    if set(meta) != keys:
         _abort("candidate batch manifest has unexpected or missing fields")
     ledger_path = _checked_candidate_path(
         meta["ledger"], "src/tfont/resources/batch_pilots"
@@ -204,17 +211,40 @@ def fetch_pr_head_inputs() -> tuple[dict[str, Any], dict[str, Any]]:
     )
     ledger = _pr_head_file(repository, sha, ledger_path, token)
     packet = _pr_head_file(repository, sha, packet_path, token)
+    read = packaged_resource
     try:
-        verify_review_packet(packet, ledger)
+        if version == 2:
+            paths = meta["evidence_resources"]
+            if type(paths) is not dict or not 1 <= len(paths) <= MAX_CANDIDATE_EVIDENCE:
+                _abort("candidate evidence manifest exceeds 1–32 resource bounds")
+            checked = {name: _checked_candidate_path(path, "docs/research/data/batch_review/evidence")
+                       for name, path in paths.items()}
+            if len(set(checked.values())) != len(checked):
+                _abort("candidate evidence manifest repeats an input path")
+            evidence = {name: _pr_head_file(repository, sha, path, token)
+                        for name, path in checked.items()}
+            read = CandidateEvidenceResources(ledger, evidence)
+        verify_review_packet(packet, ledger, resource_loader=read)
     except (KeyError, TypeError, ValueError) as exc:
         raise ExternalReviewError("PR-supplied batch packet does not reproduce pinned ledger") from exc
+    return packet, ledger, read
+
+
+def fetch_pr_head_inputs() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Legacy manifest-v1 interface; never silently discard evidence context."""
+    packet, ledger, read = fetch_pr_head_context()
+    if read is not packaged_resource:
+        _abort("candidate evidence requires the complete PR-head resource context")
     return packet, ledger
 
 
-def evaluate_live_gate(packet: dict[str, Any], ledger: dict[str, Any]) -> dict[str, Any]:
+def evaluate_live_gate(
+    packet: dict[str, Any], ledger: dict[str, Any], *,
+    resource_loader: Callable[[str], dict[str, Any]] = packaged_resource,
+) -> dict[str, Any]:
     """The **only** trusted data path. Cannot authorize using supplied snapshots."""
     try:
-        verify_review_packet(packet,ledger)
+        verify_review_packet(packet,ledger,resource_loader=resource_loader)
     except (KeyError, TypeError, ValueError) as exc:
         raise ExternalReviewError("packet does not reproduce pinned source ledger") from exc
     repository, pr_number, sha = _github_event()
@@ -300,11 +330,11 @@ def main() -> int:
     if args.packet is not None and args.ledger is None:
         parser.error("--packet requires --ledger")
     try:
-        packet, ledger = (
-            fetch_pr_head_inputs() if args.from_pr_head
-            else (_json_file(args.packet), _json_file(args.ledger))
+        packet, ledger, read = (
+            fetch_pr_head_context() if args.from_pr_head
+            else (_json_file(args.packet), _json_file(args.ledger), packaged_resource)
         )
-        result=evaluate_live_gate(packet, ledger)
+        result=evaluate_live_gate(packet, ledger, resource_loader=read)
     except (ExternalReviewError, KeyError, TypeError, ValueError) as exc:
         print(f"REJECTED: {exc}",file=sys.stderr)
         return 1

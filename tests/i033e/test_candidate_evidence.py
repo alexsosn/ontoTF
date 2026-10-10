@@ -95,13 +95,18 @@ class CandidateEvidenceTests(unittest.TestCase):
                 loader(ledger, evidence)
 
     def test_reject_shadow_lock_unused_record_and_unbound_citation(self):
-        for defect in ("shadow", "lock", "unused", "citation", "digest"):
+        for defect in ("shadow", "identity", "lock", "unused", "citation", "digest"):
             ledger, evidence = cohort()
             if defect == "shadow":
                 original = load_ledger()["source_registry"]["bhsa"]["evidence_resource"]
                 ledger["source_registry"]["bhsa"]["evidence_resource"] = original
                 record = evidence.pop(next(iter(evidence)))
                 evidence[original] = record
+            elif defect == "identity":
+                record = next(iter(evidence.values()))
+                original = load_ledger()["source_registry"]["bhsa"]["evidence_resource"]
+                record["evidence_id"] = packaged_resource(original)["evidence_id"]
+                record["content_digest"] = evidence_record_digest(record)
             elif defect == "lock":
                 key = ledger["ontology_lock_resource"]
                 evidence[key] = packaged_resource(key)
@@ -127,6 +132,13 @@ class CandidateEvidenceTests(unittest.TestCase):
         changed = loader(ledger, evidence)
         with self.assertRaises(ValueError):
             verify_review_packet(packet, ledger, resource_loader=changed)
+
+    def test_malformed_source_registry_fails_with_controlled_error(self):
+        for field in ("source_registry", "ontology_evidence_resources"):
+            ledger, evidence = cohort()
+            ledger[field] = []
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                loader(ledger, evidence)
 
 
 class ProtectedCandidateEvidenceTests(unittest.TestCase):
@@ -200,6 +212,31 @@ class ProtectedCandidateEvidenceTests(unittest.TestCase):
             records[MANIFEST] = blob(json.dumps(manifest).encode(), MANIFEST)
             with self.subTest(defect=defect), self.assertRaises(ExternalReviewError):
                 self.fetch(records)
+
+    def test_cli_retains_candidate_resources_through_live_revalidation(self):
+        records, packet = self.records()
+        context, _ = self.fetch(records)
+        gate = self.fixture.gate
+        import contextlib
+        import io
+        import os
+        def api(path, token):
+            if path.endswith("/pulls/299"):
+                return pr_data()
+            if "/reviews?" in path:
+                return [review(packet)]
+            if "/permission" in path:
+                return {"permission": "write"}
+            raise AssertionError(path)
+        output = io.StringIO()
+        with patch.dict(os.environ, {"GITHUB_TOKEN": "test"}), \
+             patch.object(gate, "_github_event", return_value=(REPO, 299, SHA)), \
+             patch.object(gate, "_api", side_effect=api), \
+             patch.object(gate, "fetch_pr_head_context", return_value=context), \
+             patch("sys.argv", ["check_external_review.py", "--from-pr-head"]), \
+             contextlib.redirect_stdout(output):
+            self.assertEqual(gate.main(), 0)
+        self.assertEqual(json.loads(output.getvalue())["counts"]["accept"], 1)
 
 
 if __name__ == "__main__":

@@ -41,7 +41,7 @@ does not prove a Git file mode. Only JSON data is interpreted, never executable
 content, URLs, downloads, imports, or arbitrary corpus files.
 
 Supplementary resource names must be used by that ledger. Never shadow an
-installed artifact or supply a new ontology lock. Validate each evidence schema
+installed artifact/evidence identity or supply a new ontology lock. Validate each evidence schema
 and canonical digest, reject outer citation, and retain bound source coordinates.
 Native source URI/revision/kind/word POS semantics and target revision must match
 an installed corpus-specific feature definition from a validated release.
@@ -69,3 +69,30 @@ Preserve manifest v1 and default packet bytes. New native-only/approximation
 templates, lock expansion, overlay publication and actual 10+ new-row production
 approval remain unfinished under #303. This slice unblocks data ingestion for
 the validated class/POS proposal contract, without claiming production coverage.
+
+## Candidate authoring and protected invocation
+
+Keep one ledger and generated packet per cohort. A manifest using new evidence
+names (not copies of immutable profile releases) can contain:
+
+```json
+{
+  "schema_version": 2,
+  "ledger": "src/tfont/resources/batch_pilots/cohort.json",
+  "packet": "docs/research/data/generated/i033d/cohort.json",
+  "evidence_resources": {
+    "resources/profiles/bhsa/batch-candidates/native-sp.json":
+      "docs/research/data/batch_review/evidence/native-sp.json"
+  }
+}
+```
+
+Those are example candidate paths, not installed/released resources. Authors can
+construct `CandidateEvidenceResources(ledger, evidence_objects)` in memory and
+pass it as `resource_loader` to `build_review_packet`/`verify_review_packet`.
+Each evidence_objects key is the resource name used by the ledger, and its value
+is the parsed evidence object. Put the manifest at the existing fixed
+`docs/research/data/batch_review/inputs.json`. Protected CLI `--from-pr-head`
+reads every referenced JSON blob at the same exact head and reconstructs that
+loader before the live approval pass. Local `--packet/--ledger` continues using
+installed resources only. Manifest v1 and frozen default packets remain intact.

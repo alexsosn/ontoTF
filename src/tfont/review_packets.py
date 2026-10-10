@@ -9,9 +9,9 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-from typing import Any
+from typing import Any, Callable
 
-from .batch_proposals import compile_candidate_batch
+from .batch_proposals import compile_candidate_batch, packaged_resource
 from .digests import canonical_json_bytes
 
 
@@ -28,14 +28,17 @@ def _require(ok: bool, detail: str) -> None:
         raise BatchReviewPacketError(detail)
 
 
-def build_review_packet(ledger: dict[str, Any]) -> dict[str, Any]:
+def build_review_packet(
+    ledger: dict[str, Any], *,
+    resource_loader: Callable[[str], dict[str, Any]] = packaged_resource,
+) -> dict[str, Any]:
     """Derive a new unreviewed request; do not trust stored review/digest flags.
 
     Every row binds the *whole compiler-produced candidate*, not a handpicked
     subset of semantic fields, along with the full original corpus-source pin,
     original batch identity and exact intended coverage ID.
     """
-    compilation = compile_candidate_batch(ledger)
+    compilation = compile_candidate_batch(ledger, resource_loader=resource_loader)
     _require(compilation["mode"] == "proposal-only"
              and compilation["release_authorized"] is False,
              "not an unreviewed batch proposal")
@@ -109,7 +112,10 @@ def build_review_packet(ledger: dict[str, Any]) -> dict[str, Any]:
     return packet
 
 
-def verify_review_packet(packet: dict[str, Any], ledger: dict[str, Any]) -> bool:
+def verify_review_packet(
+    packet: dict[str, Any], ledger: dict[str, Any], *,
+    resource_loader: Callable[[str], dict[str, Any]] = packaged_resource,
+) -> bool:
     """Fail closed on both checksum drift and compiler/ledger substitution.
 
     A writer cannot legitimize new source, target or rationale by recomputing
@@ -118,7 +124,7 @@ def verify_review_packet(packet: dict[str, Any], ledger: dict[str, Any]) -> bool
     """
     _require(type(packet) is dict, "packet must be a JSON object")
     try:
-        computed = build_review_packet(ledger)
+        computed = build_review_packet(ledger, resource_loader=resource_loader)
     except (TypeError, ValueError, KeyError) as exc:
         raise BatchReviewPacketError("invalid source ledger") from exc
     # Python considers False == 0 and True == 1, while a JSON integrity
