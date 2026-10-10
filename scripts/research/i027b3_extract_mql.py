@@ -93,13 +93,53 @@ def extract(
     }
 
 
+def verify_frozen(report: dict[str, object], frozen: dict[str, object]) -> None:
+    """Check the curated evidence against freshly extracted pinned source bytes."""
+    for key in (
+        "source_repository",
+        "source_revision",
+        "source_path",
+        "compressed_size",
+        "git_blob_sha",
+        "compressed_sha256",
+        "decompressed_size",
+        "decompressed_sha256",
+        "encoding",
+    ):
+        if report.get(key) != frozen.get(key):
+            raise ValueError(f"frozen source evidence identity mismatch: {key}")
+    if frozen.get("exact_mapping_authorized") is not False:
+        raise ValueError("source evidence must not activate an exact mapping")
+
+    excerpts = report["excerpts"]
+    for statement in frozen.get("statements", []):
+        if type(statement) is not dict:
+            raise ValueError("frozen evidence statement must be an object")
+        excerpt = statement.get("excerpt")
+        line = statement.get("line")
+        if type(excerpt) is not str or not excerpt or type(line) is not int:
+            raise ValueError("frozen evidence has invalid line/excerpt")
+        if not any(
+            abs(sample["line"] - line) <= 1 and excerpt in sample["context"]
+            for windows in excerpts.values()
+            for sample in windows
+        ):
+            raise ValueError(f"frozen evidence statement not reproduced: {line}")
+
+    if report["match_counts"]["part_of_speech_t"] == 0:
+        raise ValueError("original source has no part_of_speech_t evidence")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--json-output", type=Path)
+    parser.add_argument("--verify-frozen", type=Path)
     args = parser.parse_args()
     source = args.input.read_bytes()
     report = extract(source)
+    if args.verify_frozen is not None:
+        verify_frozen(report, json.loads(args.verify_frozen.read_text(encoding="utf-8")))
     result = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     print(result, end="")
     if args.json_output is not None:
