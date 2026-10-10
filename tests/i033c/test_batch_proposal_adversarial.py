@@ -61,6 +61,20 @@ class BatchProposalAdversarialTests(unittest.TestCase):
             compile_candidate_batch(self.ledger, resource_loader=forged)
         self.bad(lambda x: x["decisions"][0].__setitem__("term_key", "missing-target"))
 
+
+    def test_foreign_ontology_lock_and_term_key_alias_are_rejected(self):
+        from tfont.batch_proposals import packaged_resource
+        def forged(path):
+            value=copy.deepcopy(packaged_resource(path))
+            if path.endswith("/lock-linguistic-0.4.0.json"):
+                value["ontology_id"]="forged-other-model"
+            return value
+        with self.assertRaises(BatchProposalError):
+            compile_candidate_batch(self.ledger, resource_loader=forged)
+        self.bad(lambda x: x["ontology_evidence_resources"].__setitem__(
+            "adjective", x["ontology_evidence_resources"]["adverb"]
+        ))
+
     def test_row_order_does_not_change_generated_output(self):
         a = compile_candidate_batch(self.ledger)
         reversed_ledger = copy.deepcopy(self.ledger)

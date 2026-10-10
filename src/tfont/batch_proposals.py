@@ -120,6 +120,7 @@ def compile_candidate_batch(
         raise BatchProposalError("invalid pinned ontology lock") from exc
     _require(
         lock.get("source_revision") == revision
+        and lock.get("ontology_id") == model
         and type(lock.get("content_digest")) is str
         and type(lock.get("terms_used")) is list
         and type(lock.get("lock_id")) is str,
@@ -171,8 +172,9 @@ def compile_candidate_batch(
             and record.get("source_revision") == revision
             and content.get("rdf_type") == "owl:Class"
             and content.get("snapshot_digest") == lock["content_digest"]
-            and content.get("target") in lock["terms_used"],
-            f"ontology target {key} lacks pinned owl:Class evidence",
+            and content.get("target") in lock["terms_used"]
+            and content.get("target", "").rsplit("#", 1)[-1].lower() == key,
+            f"ontology target {key} lacks pinned owl:Class evidence or identity",
         )
         terms[key] = record
 
