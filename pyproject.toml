@@ -26,6 +26,7 @@ where = ["src"]
 tfont = [
   "schemas/*.json",
   "resources/coverage/*/*.json",
+  "resources/release_catalog/*.json",
   "resources/profiles/*/*/*.json",
   "resources/profiles/*/*/parent/*.json",
   "resources/profiles/*/*/mappings/*.json",
