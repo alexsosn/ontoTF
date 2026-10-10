@@ -84,6 +84,23 @@ class F030WorkflowInventoryRed(unittest.TestCase):
             with self.assertRaises(WorkflowOwnershipError):
                 validate_ownership(records,only_one)
 
+    def test_real_repository_keeps_source_integrity_commands_visible(self):
+        root = Path(__file__).resolve().parents[2]
+        inventory = {x["path"]: x for x in collect_workflow_inventory(root)}
+        self.assertGreaterEqual(len(inventory), 79)
+        original = inventory[".github/workflows/i027b3-extrabiblical-source.yml"]
+        self.assertTrue(any(
+            "--verify-frozen" in step["run"] for step in original["runs"]
+        ))
+        self.assertTrue(any(
+            source["repository"] == "ETCBC/extrabiblical"
+            for source in original["external_checkouts"]
+        ))
+        baseline = inventory[".github/workflows/full-suite.yml"]
+        self.assertTrue(any(
+            "unittest discover" in step["run"] for step in baseline["runs"]
+        ))
+
     def test_inventory_fails_on_malformed_job_or_duplicate_ids(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
