@@ -186,7 +186,7 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
     _require(type(observation["schema_version"]) is int
              and observation["schema_version"] == 1,
              "invalid review observation version")
-    parsed = parse_structured_review("ontoTF-batch-review-v1\\n" + json.dumps({
+    parsed = parse_structured_review("ontoTF-batch-review-v1\n" + json.dumps({
         "packet_digest": observation["batch_digest"],
         "rows": observation["rows"],
     }))
