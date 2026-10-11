@@ -209,7 +209,7 @@ class SingleAgentReviewRED(unittest.TestCase):
                             for row in sheet["rows"]))
         with self.assertRaises(ExternalReviewError):
             render_adversarial_body(self.packet, sheet)
-        submitted = json.loads(adversarial_body(self.packet).split("\\n",1)[1])
+        submitted = json.loads(adversarial_body(self.packet).split("\n",1)[1])
         formatted = render_adversarial_body(self.packet, submitted)
         self.assertEqual(parse_adversarial_report(formatted,self.packet),submitted)
 
@@ -224,12 +224,12 @@ class SingleAgentReviewRED(unittest.TestCase):
         packet = self.packet
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/"challenges.json"
-            challenge = json.loads(adversarial_body(packet).split("\\n",1)[1])
+            challenge = json.loads(adversarial_body(packet).split("\n",1)[1])
             path.write_text(json.dumps(challenge),encoding="utf-8")
             for args in (["--challenge-template"],["--review-challenges",str(path)]):
                 with patch.object(cli,"load_review_context",
-                                  return_value=(packet,self.source_reader)), \\
-                     patch.object(sys,"argv",["trusted-review",*args]), \\
+                                  return_value=(packet,self.source_reader)), \
+                     patch.object(sys,"argv",["trusted-review",*args]), \
                      contextlib.redirect_stdout(io.StringIO()) as output:
                     self.assertEqual(cli.main(),0)
                 if args[0]=="--challenge-template":
