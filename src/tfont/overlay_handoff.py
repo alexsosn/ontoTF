@@ -275,7 +275,7 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
             )
             _require(type(resource) is str
                      and resource.endswith(".json")
-                     and all(part not in {"", ".", ".."} and "\\\\" not in part
+                     and all(part not in {"", ".", ".."} and "\\" not in part
                              for part in resource.split("/"))
                      and (
                          resource.startswith(f"resources/profiles/{corpus}/")
@@ -297,6 +297,14 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
                          and content.get("rdf_type") == "owl:Class"
                          and content.get("target") in lock["terms_used"],
                          "new ontology evidence must be identical to protected pinned class")
+            else:
+                # Source-corpus evidence cannot impersonate an OLiA class:
+                # only the protected ontology namespace may contain classes.
+                _require(type(record) is dict
+                         and record.get("kind") == "corpus-feature-definition"
+                         and type(record.get("evidence_id")) is str
+                         and record["evidence_id"].startswith(f"evidence:{corpus}:"),
+                         "corpus evidence cannot impersonate ontology class")
 
             _require(type(record) is dict
                      and record.get("content_mode") == "normalized-record"
