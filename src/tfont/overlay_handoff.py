@@ -54,7 +54,8 @@ def build_overlay_handoff(
     _require(type(observation["counts"]) is dict and observation["counts"] == counts
              and all(type(n) is int for n in observation["counts"].values()), "observation count drift")
     accepted = {r["mapping_id"] for r in adjudication["rows"] if r["disposition"] == "accept"}
-    _require(10 <= len(accepted) <= 50, "handoff requires 10–50 accepted new decisions")
+    _require(10 <= len(expected) <= 50, "handoff requires 10–50 source-bound proposed decisions")
+    _require(1 <= len(accepted) <= 50, "handoff requires 1–50 accepted new decisions")
     # Installed locks/resources cannot be replaced via an arbitrary in-memory
     # loader. Supplementary records undergo the same protected anchor checks.
     lock_name = ledger["ontology_lock_resource"]
@@ -202,7 +203,8 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
              "unsealed observation row-count mismatch")
     accepted = {mapping_id: row for mapping_id, row in decisions.items()
                 if row["disposition"] == "accept"}
-    _require(10 <= len(accepted) <= 50, "unsealed batch must contain 10-50 accepts")
+    _require(10 <= len(decisions) <= 50, "unsealed batch requires 10–50 source-bound proposed decisions")
+    _require(1 <= len(accepted) <= 50, "unsealed batch must contain 1–50 accepts")
     _require(type(pack["batch_id"]) is str and pack["batch_id"]
              and observation["packet_id"] == "review-request:" + pack["batch_id"],
              "unsealed packet/batch identity drift")

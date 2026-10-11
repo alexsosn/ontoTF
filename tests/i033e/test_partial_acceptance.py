@@ -88,6 +88,10 @@ class PartialAcceptanceTests(unittest.TestCase):
                     self.assertEqual(cli.main(), 1)
                     self.assertEqual(gate.call_count, 2)
                     self.assertFalse(Path("batch-review-pack.json").exists())
+                Path("batch-review-pack.json").write_text("previous handoff")
+                with patch.object(cli, "evaluate_live_gate", return_value=report):
+                    self.assertEqual(cli.main(), 1)
+                    self.assertEqual(Path("batch-review-pack.json").read_text(), "previous handoff")
             finally:
                 os.chdir(previous)
         with self.assertRaisesRegex(ValueError, "accepted|accepts"):
@@ -95,7 +99,9 @@ class PartialAcceptanceTests(unittest.TestCase):
 
     def test_signing_and_mapping_upload_require_fixed_output(self):
         text = transport.WORKFLOW.read_text()
-        for marker in ("      - name: Bind pack bytes", "      - uses: actions/upload-artifact@v4\n        with:\n          name: ontology-overlay-handoff"):
+        for marker in ("      - name: Bind pack bytes", "          name: ontology-overlay-handoff"):
             start = text.index(marker)
+            if marker.startswith("          name:"):
+                start = text.rfind("      - uses:", 0, start)
             step = text[start:].split("\n      - ", 1)[0]
             self.assertIn("if: hashFiles('batch-review-pack.json') != ''", step)
