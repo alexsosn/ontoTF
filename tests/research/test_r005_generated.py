@@ -219,9 +219,11 @@ class GeneratedInventoryContractTests(unittest.TestCase):
             (ROOT / "scripts" / "research" / "r005_reconcile_report.py").exists()
         )
 
+        # The generated-only validation workflow was retired. Its test
+        # contract is now owned by the unfiltered exact-head full suite.
         for filename in (
             "r005-research-inventory.yml",
-            "r005-generated-validation.yml",
+            "full-suite.yml",
         ):
             workflow = (ROOT / ".github" / "workflows" / filename).read_text(
                 encoding="utf-8"
@@ -230,6 +232,15 @@ class GeneratedInventoryContractTests(unittest.TestCase):
                 self.assertIn("contents: read", workflow)
                 self.assertNotIn("contents: write", workflow)
                 self.assertNotIn("git push", workflow)
+
+        main_suite = (ROOT / ".github" / "workflows" / "full-suite.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("  pull_request:\n  workflow_dispatch:", main_suite)
+        self.assertIn("python -m unittest discover -s tests -v", main_suite)
+        self.assertIn(
+            "python -m pytest tests/research -q", main_suite
+        )
 
     def test_exact_generated_file_set(self):
         self.assertEqual(
