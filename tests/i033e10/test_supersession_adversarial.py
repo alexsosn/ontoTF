@@ -13,7 +13,7 @@ class NativeOnlyPromotionAdversarial(unittest.TestCase):
     def setUp(self):
         self.old,self.new,self.source,self.ontology,self.lock=synthetic_transition()
 
-    def ask(self, *, old=None,new=None,source=None,ontology=None,lock=None,release="bhsa/0.3.0"):
+    def ask(self, *, old=None,new=None,source=None,ontology=None,lock=None,release="bhsa/0.3.0",active=None):
         return plan_native_only_supersession(
             previous=self.old if old is None else old,
             candidate=self.new if new is None else new,
@@ -21,6 +21,7 @@ class NativeOnlyPromotionAdversarial(unittest.TestCase):
             ontology_evidence=self.ontology if ontology is None else ontology,
             ontology_lock=self.lock if lock is None else lock,
             base_release=release,
+            active_mappings=[self.old if old is None else old] if active is None else active,
         )
 
     def test_native_only_predecessor_must_remain_reviewed_and_unprojected(self):
@@ -87,6 +88,30 @@ class NativeOnlyPromotionAdversarial(unittest.TestCase):
         new["projections"][0]["projection_semantic_digest"]=projection_semantic_digest_v1(new["projections"][0])
         new["mapping_semantic_digest"]=mapping_semantic_digest_v2(new)
         with self.assertRaises(NativeSupersessionError):self.ask(new=new)
+
+    def test_inherited_index_duplicate_or_prior_identity_swap_fails_closed(self):
+        duplicate=copy.deepcopy(self.old)
+        duplicate["mapping_id"]="mapping:bhsa:other-native-review"
+        duplicate["mapping_semantic_digest"]=mapping_semantic_digest_v2(duplicate)
+        duplicate["review"]["reviewed_mapping_digest"]=duplicate["mapping_semantic_digest"]
+        with self.assertRaises(NativeSupersessionError):
+            self.ask(active=[self.old,duplicate])
+        altered=copy.deepcopy(self.old)
+        altered["rationale"]="forged historical release comment"
+        with self.assertRaises(NativeSupersessionError):
+            self.ask(active=[altered])
+        with self.assertRaises(NativeSupersessionError):
+            self.ask(active=[])
+        candidate=copy.deepcopy(self.new)
+        with self.assertRaises(NativeSupersessionError):
+            self.ask(active=[self.old,candidate])
+
+    def test_source_domain_cannot_claim_lex_only_as_word(self):
+        changed=copy.deepcopy(self.source)
+        changed["reviewed_content"]["production_scope"]["node_type"]="lex"
+        changed["content_digest"]=evidence_record_digest(changed)
+        with self.assertRaises(NativeSupersessionError):
+            self.ask(source=changed)
 
     def test_release_must_have_matching_corpus_version(self):
         for release in ("syriac/0.3.0","bhsa/current","bhsa/../0.3.0","bhsa/0.3.0/extra"):
