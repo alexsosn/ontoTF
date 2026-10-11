@@ -26,6 +26,7 @@ from tfont.batch_proposals import packaged_resource
 from tfont.reviewer_handoff import (
     reviewer_template, render_review_body, review_dossier,
 )
+from tfont.single_agent_review import adversarial_template, render_adversarial_body
 from tfont.source_validation import loads_source
 
 
@@ -61,6 +62,8 @@ def main() -> int:
     modes = parser.add_mutually_exclusive_group(required=True)
     modes.add_argument("--dossier", action="store_true")
     modes.add_argument("--template", action="store_true")
+    modes.add_argument("--challenge-template", action="store_true")
+    modes.add_argument("--review-challenges", type=Path, metavar="FILE")
     modes.add_argument("--review-decisions", type=Path, metavar="FILE")
     args = parser.parse_args()
     packet, reader = load_review_context(args.root)
@@ -69,6 +72,11 @@ def main() -> int:
     elif args.template:
         output = json.dumps(reviewer_template(packet), indent=2,
                             sort_keys=True, ensure_ascii=False)
+    elif args.challenge_template:
+        output = json.dumps(adversarial_template(packet), indent=2,
+                            sort_keys=True, ensure_ascii=False)
+    elif args.review_challenges:
+        output = render_adversarial_body(packet, _load_choices(args.review_challenges))
     else:
         output = render_review_body(packet, _load_choices(args.review_decisions))
     print(output)
