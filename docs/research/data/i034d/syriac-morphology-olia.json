@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "batch_id": "i034d-syriac-olia-morphology",
+  "authority": "unreviewed-semantic-proposals",
+  "corpus": {
+    "id": "syriac",
+    "source_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
+  },
+  "grammar": {
+    "uri": "https://raw.githubusercontent.com/ETCBC/linksyr/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/word_grammar",
+    "revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6"
+  },
+  "ontology_evidence": {
+    "source_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+    "snapshot_artifact": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/olia.owl",
+    "snapshot_digest": "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd",
+    "release_authorized": false
+  },
+  "denominator": {
+    "resource_set": "p004-i027c2-syriac-adj-adv-v1",
+    "denominator_digest": "sha256:33ea9d6ce7b44dbdf7ed12e11971e229321efb3b422dbfd9cf0bc9131d5972f8",
+    "source_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
+  },
+  "rows": [
+    {
+      "feature": "ps",
+      "value": "first",
+      "item_id": "node_value:ps=\"first\"",
+      "source_gloss": "first",
+      "source_line": 61,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#First",
+      "ontology_line": 4986,
+      "rationale": "The pinned Syriac word_grammar functions line 61 identifies ps=first as first-person inflection of a word. OLiA First is a generic grammatical PersonFeature, not FirstPersonPronoun and not a claim about lexical persons."
+    },
+    {
+      "feature": "ps",
+      "value": "second",
+      "item_id": "node_value:ps=\"second\"",
+      "source_gloss": "second",
+      "source_line": 61,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Second",
+      "ontology_line": 4976,
+      "rationale": "Syriac ps=second is explicitly the second-person grammatical function on the word, and pinned OLiA Second is an addressee-related grammatical PersonFeature. This aligns person categories without claiming that any word is a pronoun."
+    },
+    {
+      "feature": "ps",
+      "value": "third",
+      "item_id": "node_value:ps=\"third\"",
+      "source_gloss": "third",
+      "source_line": 61,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Third",
+      "ontology_line": 4963,
+      "rationale": "Syriac ps=third expresses third-person inflection as declared by the original word grammar. OLiA Third is a morphological PersonFeature, not ThirdPersonPronoun; no lexical identity or discourse referent is inferred."
+    },
+    {
+      "feature": "ps",
+      "value": "unknown",
+      "item_id": "node_value:ps=\"unknown\"",
+      "source_gloss": null,
+      "source_line": null,
+      "evidence_kind": "R005-observed-only",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "R-005 observes the Syriac ps=unknown value, but the pinned word_grammar function table only declares first, second, third. Unknown is an observed source condition with no verified grammatical person class."
+    },
+    {
+      "feature": "st",
+      "value": "abs",
+      "item_id": "node_value:st=\"abs\"",
+      "source_gloss": "absolute",
+      "source_line": 95,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The pinned Syriac word_grammar line 95 declares st=abs as nominal absolute state. No source-verified corresponding exact OLiA StatusAbsolutus class is pinned, and absolute should not be conflated with semantic indefiniteness."
+    },
+    {
+      "feature": "st",
+      "value": "c",
+      "item_id": "node_value:st=\"c\"",
+      "source_gloss": null,
+      "source_line": null,
+      "evidence_kind": "R005-observed-only",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The installed Syriac TF denominator reports st=c, but the pinned word_grammar lists cst rather than c for construct. No original definition for c has been verified, so equating it to cst would invent an alias."
+    },
+    {
+      "feature": "st",
+      "value": "cst",
+      "item_id": "node_value:st=\"cst\"",
+      "source_gloss": "construct",
+      "source_line": 95,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#StatusConstructus",
+      "ontology_line": 6712,
+      "rationale": "Syriac st=cst is explicitly the construct noun state at pinned grammar line 95. The original OLiA StatusConstructus rdf:ID class describes Semitic construct state including Syriac, matching this nominal morphology category."
+    },
+    {
+      "feature": "st",
+      "value": "emph",
+      "item_id": "node_value:st=\"emph\"",
+      "source_gloss": "emphatic",
+      "source_line": 95,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The source defines st=emph as the Syriac emphatic nominal state, which is not the same as OLiA Emphatic emphasis or prominence. Preserve its original code without projecting a false shared grammatical meaning."
+    },
+    {
+      "feature": "st",
+      "value": "unknown",
+      "item_id": "node_value:st=\"unknown\"",
+      "source_gloss": null,
+      "source_line": null,
+      "evidence_kind": "R005-observed-only",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The observed Syriac st=unknown value is not listed among cst, abs, emph in the pinned original grammar function definitions. Lack of state identification is not a fourth nominal state or an ontology class."
+    },
+    {
+      "feature": "vo",
+      "value": "act",
+      "item_id": "node_value:vo=\"act\"",
+      "source_gloss": "active",
+      "source_line": 97,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#ActiveVoice",
+      "ontology_line": 9254,
+      "rationale": "The pinned Syriac word_grammar at line 97 labels vo=act as grammatical active voice on the verb. OLiA ActiveVoice defines the corresponding diathesis category; this is a feature-value alignment, not a transitivity judgment."
+    },
+    {
+      "feature": "vo",
+      "value": "pas",
+      "item_id": "node_value:vo=\"pas\"",
+      "source_gloss": "passive",
+      "source_line": 97,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#PassiveVoice",
+      "ontology_line": 9272,
+      "rationale": "Syriac word_grammar at line 97 defines vo=pas as passive grammatical voice. OLiA PassiveVoice describes the subject as the patient or undergoer; the alignment does not claim a verb's textual subject is identified."
+    },
+    {
+      "feature": "vpm",
+      "value": "d",
+      "item_id": "node_value:vpm=\"d\"",
+      "source_gloss": null,
+      "source_line": null,
+      "evidence_kind": "R005-observed-only",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "R-005 observes Syriac vpm=d but the pinned word_grammar shows only the vowel pattern symbol p and supplies no definition of d. No morphology class may be inferred from the spelling of an undocumented pattern value."
+    },
+    {
+      "feature": "vpm",
+      "value": "dp",
+      "item_id": "node_value:vpm=\"dp\"",
+      "source_gloss": null,
+      "source_line": null,
+      "evidence_kind": "R005-observed-only",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The Syriac TF inventory contains vpm=dp but the upstream pinned grammar does not define this value, only the vowel pattern skeleton. Treat it as source-native until the later transformation step or grammar provenance is traced."
+    },
+    {
+      "feature": "vpm",
+      "value": "p",
+      "item_id": "node_value:vpm=\"p\"",
+      "source_gloss": null,
+      "source_line": 50,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The original Syriac word_grammar line 50 declares vpm=p as a vowel-pattern marker, but does not define a corresponding abstract OLiA class. A concrete phonological pattern marker is not automatically a tense or voice category."
+    },
+    {
+      "feature": "vs",
+      "value": "af",
+      "item_id": "node_value:vs=\"af\"",
+      "source_gloss": "afel",
+      "source_line": 99,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The grammar explicitly names Syriac verbal stem vs=af as afel. This is a Semitic derivational stem, and no matching exact OLiA class with documented morphology has been verified from the pinned source."
+    },
+    {
+      "feature": "vs",
+      "value": "pa",
+      "item_id": "node_value:vs=\"pa\"",
+      "source_gloss": "pael",
+      "source_line": 99,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "Syriac vs=pa is explicitly pael in the original grammar. Its morphological causative/intensive functions should not be equated automatically with a generic voice or aspect class solely from a traditional stem label."
+    },
+    {
+      "feature": "vs",
+      "value": "pe",
+      "item_id": "node_value:vs=\"pe\"",
+      "source_gloss": "peal",
+      "source_line": 99,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The pinned Syriac source identifies vs=pe as peal. Peal names a Semitic stem paradigm rather than a universal lexical POS or grammatical voice concept, so preserve the native value pending class evidence."
+    },
+    {
+      "feature": "vt",
+      "value": "imp",
+      "item_id": "node_value:vt=\"imp\"",
+      "source_gloss": "imperative",
+      "source_line": 101,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#ImperativeVerb",
+      "ontology_line": 1373,
+      "rationale": "The original Syriac grammar line 101 labels vt=imp as imperative verbal form, and OLiA ImperativeVerb defines the corresponding finite verbal imperative category. No imperative-to-command pragmatic equivalence is inferred."
+    },
+    {
+      "feature": "vt",
+      "value": "inf",
+      "item_id": "node_value:vt=\"inf\"",
+      "source_gloss": "infinitive",
+      "source_line": 102,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Infinitive",
+      "ontology_line": 1013,
+      "rationale": "Syriac vt=inf is the unspecialized infinitive verbal form at source line 102. OLiA Infinitive defines the matching nonfinite verb form without assuming an unobserved absolute/construct subtype."
+    },
+    {
+      "feature": "vt",
+      "value": "ipf",
+      "item_id": "node_value:vt=\"ipf\"",
+      "source_gloss": "imperfect",
+      "source_line": 101,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The Syriac vt=ipf label is imperfect, but OLiA Imperfect specifically defines incomplete or ongoing action in the past. The original Syriac grammar does not establish an equivalent tense interpretation for all ipf forms."
+    },
+    {
+      "feature": "vt",
+      "value": "pf",
+      "item_id": "node_value:vt=\"pf\"",
+      "source_gloss": "perfect",
+      "source_line": 101,
+      "evidence_kind": "grammar-defined",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The original grammar calls vt=pf perfect, yet OLiA Perfect is defined as completed action in the past. A traditional Semitic perfect stem label alone is not sufficient for exact cross-ontology temporal equivalence."
+    },
+    {
+      "feature": "vt",
+      "value": "ptc",
+      "item_id": "node_value:vt=\"ptc\"",
+      "source_gloss": "participle",
+      "source_line": 102,
+      "evidence_kind": "grammar-defined",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Participle",
+      "ontology_line": 1072,
+      "rationale": "The pinned Syriac word_grammar at line 102 calls vt=ptc participle, without a narrower active/passive subtype. OLiA Participle identifies the corresponding nonfinite participial verb form at the same category granularity."
+    }
+  ]
+}
