@@ -53,11 +53,18 @@ def build_review_packet(
         # Compiler source integrity and format tests already verified all
         # proposed native and ontology evidence and their canonical digests.
         _require("review" not in mapping, "mapping attempts self-review")
-        _require(type(mapping.get("projections")) is list
-                 and len(mapping["projections"]) == 1,
-                 "review packet requires exactly one supported projection")
-        projection = mapping["projections"][0]
-        _require("review" not in projection, "projection attempts self-review")
+        state = mapping.get("native_state")
+        projections = mapping.get("projections")
+        _require(type(projections) is list and (
+            (state == "positive" and len(projections) == 1)
+            or (compilation["schema_version"] == 2 and state == "native-only"
+                and len(projections) == 0
+                and not mapping.get("ambiguous_candidates")
+                and not mapping.get("external_references"))
+        ), "unsupported projection/native-only source for review packet")
+        projection = projections[0] if projections else None
+        if projection is not None:
+            _require("review" not in projection, "projection attempts self-review")
         native = mapping["native_binding"]
         _require(
             native["node_type"] == "word"
@@ -69,7 +76,7 @@ def build_review_packet(
         coverage_ids = [f'node_value:sp="{native["value"]}"']
         source_pin = copy.deepcopy(registry[corpus])
         commitment = {
-            "schema_version": 1,
+            "schema_version": compilation["schema_version"],
             "batch_id": batch_id,
             "ontology_model": model,
             "ontology_revision": ontology_revision,
@@ -81,23 +88,23 @@ def build_review_packet(
             "mapping_id": mapping["mapping_id"],
             "corpus_id": corpus,
             "native_binding": copy.deepcopy(native),
-            "ontology_target": projection["target"],
-            "formal_kind": projection["formal_kind"],
-            "semantic_role": projection["semantic_role"],
-            "assessment": projection["assessment"],
+            "ontology_target": projection["target"] if projection else None,
+            "formal_kind": projection["formal_kind"] if projection else None,
+            "semantic_role": projection["semantic_role"] if projection else "annotation-value",
+            "assessment": projection["assessment"] if projection else "native-only",
             "rationale": mapping["rationale"],
             "source_pin": source_pin,
             "evidence": copy.deepcopy(mapping["evidence"]),
             "coverage_item_ids": coverage_ids,
             "mapping_semantic_digest": mapping["mapping_semantic_digest"],
-            "projection_semantic_digest": projection["projection_semantic_digest"],
+            "projection_semantic_digest": projection["projection_semantic_digest"] if projection else None,
             "decision_digest": _digest(commitment),
         })
     rows.sort(key=lambda row: row["mapping_id"])
     ids = [row["mapping_id"] for row in rows]
     _require(len(ids) == len(set(ids)), "duplicate review decision")
     packet = {
-        "schema_version": 1,
+        "schema_version": compilation["schema_version"],
         "packet_id": f"review-request:{batch_id}",
         "authority": "unreviewed-proposal",
         "release_authorized": False,
@@ -132,7 +139,7 @@ def verify_review_packet(
     # the exact schema types before checking canonical JSON bytes.
     if (
         type(packet.get("schema_version")) is not int
-        or packet["schema_version"] != 1
+        or packet["schema_version"] not in (1, 2)
         or type(packet.get("release_authorized")) is not bool
         or packet["release_authorized"] is not False
         or type(packet.get("count")) is not int
