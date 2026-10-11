@@ -47,3 +47,38 @@ jobs:
           path: batch-review-attestation.json
           if-no-files-found: error
           retention-days: 30
+
+  publish-handoff:
+    needs: external-attestation
+    if: >-
+      needs.external-attestation.result == 'success' &&
+      contains(github.event.pull_request.labels.*.name, 'ontology-batch-publish')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - name: Freshly verify accepted-only handoff before exclusive write
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/mappings/check_external_review.py --from-pr-head --publish-handoff
+      - name: Bind pack bytes to protected workflow build provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: batch-review-pack.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ontology-overlay-handoff-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          path: batch-review-pack.json
+          if-no-files-found: error
+          retention-days: 30

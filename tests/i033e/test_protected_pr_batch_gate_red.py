@@ -162,10 +162,18 @@ class ProtectedBatchGateRED(unittest.TestCase):
             source,
         )
         self.assertEqual(checkouts, [("main", "false")])
-        self.assertEqual(source.count("uses: actions/checkout@"), 1)
+        # Audit job uses protected main; signing job pins the protected event
+        # base commit so signed provenance matches the code it executes.
+        self.assertEqual(source.count("uses: actions/checkout@"), 2)
+        self.assertEqual(source.count("ref: main"), 1)
+        self.assertEqual(source.count("ref: ${{ github.sha }}"), 1)
+        self.assertNotIn("\n  pull_request:", source)
+        self.assertNotIn("\n  workflow_dispatch:", source)
+        self.assertEqual(sorted(re.findall(r"(?m)^\s+ref:\s+([^\n]+)", source)),
+                         sorted(["main", "${{ github.sha }}"]))
         self.assertNotRegex(
             source,
-            r"(?m)^\s*ref:\s*.*(?:pull_request\.head|github\.sha|github\.head_ref)",
+            r"(?m)^\s*ref:\s*.*(?:pull_request\.head|github\.head_ref)",
         )
         self.assertNotIn("pull-requests: write",source)
         self.assertNotIn("contents: write",source)

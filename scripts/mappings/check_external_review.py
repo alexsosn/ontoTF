@@ -324,18 +324,37 @@ def main() -> int:
     mode.add_argument("--from-pr-head",action="store_true")
     mode.add_argument("--packet",type=Path)
     parser.add_argument("--ledger",type=Path)
+    parser.add_argument("--publish-handoff", action="store_true")
     args=parser.parse_args()
     if args.from_pr_head and args.ledger is not None:
         parser.error("--ledger cannot override PR-head protected source selection")
     if args.packet is not None and args.ledger is None:
         parser.error("--packet requires --ledger")
+    if args.publish_handoff and not args.from_pr_head:
+        parser.error("--publish-handoff requires protected --from-pr-head data")
     try:
         packet, ledger, read = (
             fetch_pr_head_context() if args.from_pr_head
             else (_json_file(args.packet), _json_file(args.ledger), packaged_resource)
         )
         result=evaluate_live_gate(packet, ledger, resource_loader=read)
-    except (ExternalReviewError, KeyError, TypeError, ValueError) as exc:
+        if args.publish_handoff:
+            from tfont.overlay_handoff import build_overlay_handoff
+            pack = build_overlay_handoff(packet, ledger, result, resource_loader=read)
+            encoded = json.dumps(pack, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+            fresh = evaluate_live_gate(packet, ledger, resource_loader=read)
+            if fresh != result:
+                _abort("review authority changed before handoff publication")
+            # Exclusive fixed output: no overwrite, symlink following, caller
+            # path or offline receipt. Signing is performed by the workflow.
+            with Path("batch-review-pack.json").open("x", encoding="utf-8") as output:
+                try:
+                    output.write(encoded)
+                    output.flush()
+                except OSError:
+                    Path("batch-review-pack.json").unlink()
+                    raise
+    except (ExternalReviewError, KeyError, TypeError, ValueError, OSError) as exc:
         print(f"REJECTED: {exc}",file=sys.stderr)
         return 1
     print(json.dumps(result,indent=2,sort_keys=True,ensure_ascii=False))
