@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import unittest
 from pathlib import Path
@@ -12,8 +13,8 @@ LEDGER = ROOT / "docs/research/data/i028a/bhsa-syriac-lexical-depth.json"
 QUEUE = ROOT / "docs/research/data/generated/i026/p004-work-queue.json"
 INVENTORY = {c: ROOT / f"docs/research/data/generated/r005/{c}.json" for c in ("bhsa", "syriac")}
 PINS = {
-    "bhsa": ("4db00e2157915495e1a4d3d57e41223df24775da", "5b179e543d9ce17f59c2902afdf3736d3803777f518ec92dd5f19fc14a96496d"),
-    "syriac": ("bb0eaa7e21b020a26b7566d2e495da9b1f84a919", "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb"),
+    "bhsa": ("4db00e2157915495e1a4d3d57e41223df24775da", "5b179e543d9ce17f59c2902afdf3736d3803777f518ec92dd5f19fc14a96496d", "f7f21b755b91877e83a33a5edf04494084439a41"),
+    "syriac": ("bb0eaa7e21b020a26b7566d2e495da9b1f84a919", "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb", "c572948a22e4ab16cee571726dad7e272e7d04ec"),
 }
 LAYERS = {"source-lexeme-node", "lexical-label", "lexical-representation", "token-surface", "gloss-literal", "corpus-statistic", "language-metadata", "named-entity-classification", "morphological-root"}
 ROW_FIELDS = {"corpus_id", "item_id", "layer", "source_description", "source_node_types", "source_value_type", "source_observed_unique_count", "rationale", "next_evidence_needed"}
@@ -34,10 +35,11 @@ def audit(ledger, queue, inventories):
     assert {(r["corpus_id"], r["item_id"]) for r in ledger["rows"]} == scoped
     for corpus, inv in inventories.items():
         pin = ledger["source_registry"][corpus]
-        assert set(pin) == {"repository", "revision", "tf_files_sha256", "tf_inventory"}
+        assert set(pin) == {"repository", "revision", "tf_files_sha256", "tf_inventory", "inventory_git_blob_sha"}
         assert pin["repository"] == f"ETCBC/{corpus}"
-        assert (pin["revision"], pin["tf_files_sha256"]) == PINS[corpus]
-        assert (inv["revision"], inv["tf_files_sha256"]) == PINS[corpus]
+        assert (pin["revision"], pin["tf_files_sha256"]) == PINS[corpus][:2]
+        assert (inv["revision"], inv["tf_files_sha256"]) == PINS[corpus][:2]
+        assert pin["inventory_git_blob_sha"] == PINS[corpus][2]
         assert pin["tf_inventory"] == f"docs/research/data/generated/r005/{corpus}.json"
     for row in ledger["rows"]:
         assert set(row) == ROW_FIELDS
@@ -79,6 +81,13 @@ class LexicalDepthTests(unittest.TestCase):
         cls.ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
         cls.queue = json.loads(QUEUE.read_text(encoding="utf-8"))
         cls.inventories = {c: json.loads(p.read_text(encoding="utf-8")) for c, p in INVENTORY.items()}
+
+    def test_packaged_inventory_blob_sha_matches_review_pin(self):
+        for corpus, path in INVENTORY.items():
+            with self.subTest(corpus=corpus):
+                raw = path.read_bytes()
+                git_blob = b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+                self.assertEqual(hashlib.sha1(git_blob).hexdigest(), PINS[corpus][2])
 
     def test_exact_denominator_and_pinned_source_semantics(self):
         audit(self.ledger, self.queue, self.inventories)
