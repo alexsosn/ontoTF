@@ -85,11 +85,18 @@ def build_overlay_handoff(
         coverage = load_packaged_coverage_manifest(coverage_set, corpus)
         item_index = {item["item_id"]: item for item in coverage["semantic_items"]}
         inherited_bindings = [m["native_binding"] for m in base.mappings.data["mappings"]]
+        inherited_mapping_ids = {m["mapping_id"] for m in base.mappings.data["mappings"]}
+        inherited_projection_ids = {p["projection_id"] for m in base.mappings.data["mappings"]
+                                    for p in m["projections"]}
         inherited_evidence = {e.data["evidence_id"]: e.data for e in base.evidences}
         inherited_dependencies = {d["dependency_id"]: d for d in base.profile.data["dependencies"]}
         mapping_additions, assignments = [], []
         dependencies, added_evidence, references = {}, {}, {}
         for mapping in (m for m in candidates if m["corpus_id"] == corpus):
+            _require(mapping["mapping_id"] not in inherited_mapping_ids,
+                     "cannot replace an inherited mapping identity")
+            _require(not any(p["projection_id"] in inherited_projection_ids for p in mapping["projections"]),
+                     "cannot replace an inherited projection identity")
             binding = mapping["native_binding"]
             _require(binding not in inherited_bindings, "cannot replace an inherited reviewed native selector")
             row = rows[mapping["mapping_id"]]
