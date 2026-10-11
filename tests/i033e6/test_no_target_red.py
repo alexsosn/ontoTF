@@ -96,7 +96,15 @@ class NoTargetBatchRed(unittest.TestCase):
                 expected_head_sha=SHA,pull_request=pr_data(),
                 reviews=[event],reviewer_permissions=permissions,
             )
-            self.assertEqual(result["counts"][verdict], 1)
+            native_row = next(
+                row for row in result["rows"]
+                if row["mapping_id"] == "mapping:bhsa:native-sp-prps"
+            )
+            self.assertEqual(native_row["disposition"], verdict)
+            self.assertEqual(
+                result["counts"][verdict],
+                5 if verdict == "needs-evidence" else 1,
+            )
             self.assertNotIn("release_authorized", result)
         self.assertFalse(packet["release_authorized"])
 
