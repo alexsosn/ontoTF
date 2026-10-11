@@ -239,6 +239,57 @@ class SingleAgentReviewRED(unittest.TestCase):
             module.evaluate_live_gate(self.packet, self.ledger,
                                       resource_loader=self.source_reader)
 
+    def test_changed_challenge_changes_the_observation_binding(self):
+        events = self.pair()
+        before = self.evaluate(events)
+        changed = copy.deepcopy(events)
+        report = json.loads(changed[0]["body"].split("\n", 1)[1])
+        report["rows"][0]["challenge"] += " Further source scrutiny is still required."
+        changed[0]["body"] = "ontoTF-adversarial-review-v1\n" + json.dumps(report)
+        self.assertNotEqual(before, self.evaluate(changed))
+
+    def test_publication_label_withdrawn_between_complete_checks_prevents_output(self):
+        from unittest.mock import patch
+        from tests.i033e.test_live_review_gate_adversarial import cli
+        import os
+        import tempfile
+        import io
+        from pathlib import Path
+        module = cli()
+        reads = 0
+        events = self.pair()
+        decisions = json.loads(events[1]["body"].split("\n", 1)[1])
+        for row in decisions["rows"]:
+            row["disposition"] = "accept"
+        events[1]["body"] = "ontoTF-batch-review-v1\n" + json.dumps(decisions)
+        def remote(path, token):
+            nonlocal reads
+            if path.endswith("/pulls/299"):
+                reads += 1
+                pr = candidate_pr()
+                if reads <= 2:
+                    pr["labels"].append({"name": "ontology-batch-publish"})
+                return pr
+            if "/reviews?" in path:
+                return events
+            if "/collaborators/" in path:
+                return {"permission": "admin"}
+            raise AssertionError(path)
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}), \
+             patch.object(module, "_github_event", return_value=(REPO,299,SHA)), \
+             patch.object(module, "_api", side_effect=remote), \
+             patch.object(module, "fetch_pr_head_context", return_value=(self.packet,self.ledger,self.source_reader)), \
+             patch("sys.argv", ["gate", "--from-pr-head", "--publish-handoff"]), \
+             patch("sys.stdout", new=io.StringIO()), patch("sys.stderr", new=io.StringIO()):
+            previous = os.getcwd()
+            try:
+                os.chdir(directory)
+                self.assertEqual(module.main(), 1)
+                self.assertFalse(Path("batch-review-pack.json").exists())
+            finally:
+                os.chdir(previous)
+
     def test_existing_cli_can_build_two_review_bodies_without_issuing_approval(self):
         import tempfile
         from pathlib import Path
