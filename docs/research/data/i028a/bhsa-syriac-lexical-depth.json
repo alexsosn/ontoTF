@@ -8,13 +8,15 @@
       "repository": "ETCBC/bhsa",
       "revision": "4db00e2157915495e1a4d3d57e41223df24775da",
       "tf_files_sha256": "5b179e543d9ce17f59c2902afdf3736d3803777f518ec92dd5f19fc14a96496d",
-      "tf_inventory": "docs/research/data/generated/r005/bhsa.json"
+      "tf_inventory": "docs/research/data/generated/r005/bhsa.json",
+      "inventory_git_blob_sha": "f7f21b755b91877e83a33a5edf04494084439a41"
     },
     "syriac": {
       "repository": "ETCBC/syriac",
       "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
       "tf_files_sha256": "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb",
-      "tf_inventory": "docs/research/data/generated/r005/syriac.json"
+      "tf_inventory": "docs/research/data/generated/r005/syriac.json",
+      "inventory_git_blob_sha": "c572948a22e4ab16cee571726dad7e272e7d04ec"
     }
   },
   "rows": [
