@@ -103,6 +103,33 @@ class OverlayHandoffTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "inherited|reviewed"):
             assemble(ledger, read, packet, report)
 
+    def test_rejected_and_needs_evidence_candidates_are_excluded(self):
+        ledger, read, _, report = cohort()
+        for corpus in ("bhsa", "syriac"):
+            ledger["decisions"].append({"corpus_id": corpus, "value": "adjv", "term_key": "adjective",
+                "assessment": "exact", "rationale": "Existing exact contract fixture, not accepted as a new release."})
+        packet = build_review_packet(ledger, resource_loader=read)
+        report.update(batch_digest=packet["batch_digest"], counts={"accept": 10, "reject": 1, "needs-evidence": 1})
+        report["rows"] = [{"mapping_id": r["mapping_id"], "decision_digest": r["decision_digest"],
+            "disposition": ("reject" if r["corpus_id"] == "bhsa" else "needs-evidence")
+            if r["assessment"] == "exact" else "accept"} for r in packet["rows"]]
+        pack = assemble(ledger, read, packet, report)
+        self.assertEqual(pack["counts"], {"exact": 0, "native-only": 10})
+        self.assertTrue(all(m["native_state"] == "native-only" for c in pack["corpora"] for m in c["mappings"]))
+        self.assertEqual(pack["review_observation"]["counts"], report["counts"])
+
+    def test_inherited_native_only_coverage_remains_authoritative(self):
+        from tfont.coverage import load_packaged_coverage_manifest
+        ledger, read, packet, report = cohort()
+        real = load_packaged_coverage_manifest("p004-i027c2-bhsa-adj-adv-v1", "bhsa")
+        native = next(item["accounting"]["production"] for item in real["semantic_items"]
+                      if item["accounting"]["production"] and item["accounting"]["production"]["assessments"] == ["native-only"])
+        next(item for item in real["semantic_items"] if item["item_id"] == 'node_value:sp="art"')["accounting"]["production"] = copy.deepcopy(native)
+        def coverage(name, corpus):
+            return real if corpus == "bhsa" else load_packaged_coverage_manifest(name, corpus)
+        with patch("tfont.overlay_handoff.load_packaged_coverage_manifest", side_effect=coverage), self.assertRaisesRegex(ValueError, "reviewed coverage"):
+            assemble(ledger, read, packet, report)
+
     def test_cli_final_revocation_no_write_and_exclusive_output(self):
         ledger, read, packet, report = cohort()
         cli = transport.cli()
@@ -136,3 +163,4 @@ class OverlayHandoffTests(unittest.TestCase):
         self.assertIn("subject-path: batch-review-pack.json", text)
         self.assertNotIn("contents: write", text)
         self.assertNotIn("ref: ${{ github.event.pull_request.head", text)
+        self.assertIn("ref: ${{ github.sha }}", text)

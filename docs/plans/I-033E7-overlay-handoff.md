@@ -18,7 +18,8 @@ evaluate live review, assemble, evaluate live review again and require identical
 observation. Exclusively create fixed batch-review-pack.json with no caller path;
 no write if any gate fails; no overwrite/symlink following. Normal CLI unchanged.
 4. Existing protected workflow gets an opt-in publish job requiring both
-ontology-batch-review and ontology-batch-publish labels. Protected main checkout,
+ontology-batch-review and ontology-batch-publish labels. Pin protected-base event
+commit github.sha so executed code matches signing source provenance;
 fresh live gate in that job, job-scoped id-token/attestations write only. Attest
 exact fixed pack bytes with pinned official action, then immutable upload.
 No contents-write, PR checkout, new workflow, local receipt or token forwarding.

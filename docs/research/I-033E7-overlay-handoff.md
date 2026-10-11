@@ -56,6 +56,11 @@ revocation. Attestation proves build origin, not an ontology equivalence.
 Opt-in existing-workflow publish label avoids changing ordinary review behavior.
 Separate publish job executes protected main only and has scoped signing rights;
 no contents-write rights. No network source dereferencing or PR execution.
+Pin signing-job checkout to github.sha: for pull_request_target it identifies
+the protected base event commit. A moving main checkout could execute a newer
+commit than the attestation's source digest. The event/workflow policy must remain
+pull_request_target-only with base main. See
+[GitHub event semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request_target).
 Next gates: verify signed handoff and registry trust policy, compose/install
 overlay releases and coverage, real independently attested 10+ cohort. None is
 claimed to exist by this slice. Local tests use mocked GitHub observations only.
