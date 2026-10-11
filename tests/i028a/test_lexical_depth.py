@@ -86,7 +86,7 @@ class LexicalDepthTests(unittest.TestCase):
         for corpus, path in INVENTORY.items():
             with self.subTest(corpus=corpus):
                 raw = path.read_bytes()
-                git_blob = b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+                git_blob = b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
                 self.assertEqual(hashlib.sha1(git_blob).hexdigest(), PINS[corpus][2])
 
     def test_exact_denominator_and_pinned_source_semantics(self):
