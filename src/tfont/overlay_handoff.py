@@ -155,7 +155,8 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
     This function is intentionally NOT approval, attestation verification, a
     trusted release builder, or an install/semantic bundle loader. A malicious
     author can recompute hashes: only the protected live GitHub review gate and
-    trusted workflow attestation can establish the external review principal.
+    trusted workflow attestation can bind the selected review policy and audit
+    events. It cannot establish cognitive independence or scholarly truth.
     """
     from .digests import evidence_record_digest
     from .semantic_digest_v2 import (

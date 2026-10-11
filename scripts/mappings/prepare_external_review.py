@@ -7,9 +7,10 @@ Examples (run trusted main code with untrusted PR checkout as DATA):
   # Independent reviewer replaces EVERY null with accept/reject/needs-evidence.
   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --review-decisions decisions.json
 
-An independent authorized GitHub account must paste the last output into the
-PR's "Approve" review field, not as an ordinary comment. The protected gate
-rechecks current PR head, GitHub reviewer permission, and all decision digests.
+In agent-review mode, submit an independently completed challenge report and
+then explicit decisions as two exact-head COMMENT PR reviews under the existing
+account. The protected gate rechecks head, labels, permissions and row digests.
+The optional legacy external-review mode uses a distinct APPROVED review.
 """
 from __future__ import annotations
 
@@ -26,6 +27,7 @@ from tfont.batch_proposals import packaged_resource
 from tfont.reviewer_handoff import (
     reviewer_template, render_review_body, review_dossier,
 )
+from tfont.single_agent_review import adversarial_template, render_adversarial_body
 from tfont.source_validation import loads_source
 
 
@@ -61,6 +63,8 @@ def main() -> int:
     modes = parser.add_mutually_exclusive_group(required=True)
     modes.add_argument("--dossier", action="store_true")
     modes.add_argument("--template", action="store_true")
+    modes.add_argument("--challenge-template", action="store_true")
+    modes.add_argument("--review-challenges", type=Path, metavar="FILE")
     modes.add_argument("--review-decisions", type=Path, metavar="FILE")
     args = parser.parse_args()
     packet, reader = load_review_context(args.root)
@@ -69,6 +73,11 @@ def main() -> int:
     elif args.template:
         output = json.dumps(reviewer_template(packet), indent=2,
                             sort_keys=True, ensure_ascii=False)
+    elif args.challenge_template:
+        output = json.dumps(adversarial_template(packet), indent=2,
+                            sort_keys=True, ensure_ascii=False)
+    elif args.review_challenges:
+        output = render_adversarial_body(packet, _load_choices(args.review_challenges))
     else:
         output = render_review_body(packet, _load_choices(args.review_decisions))
     print(output)

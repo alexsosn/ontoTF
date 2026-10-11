@@ -1,0 +1,13 @@
+# I-033E5 — TDD implementation plan for a single-agent verified batch
+
+**Research:** `docs/research/I-033E5-single-agent-review.md`. **Issues:** #325, #303, #290.
+
+1. RED `tests/i033e/test_single_agent_review_red.py`: a) old mode still rejects self-review; b) one author decision COMMENTED insufficient; c) two distinct exact-head chronological events required, full per-row challenges/source checks plus full decisions; d) reject empty/forged/stale/missing/duplicate report rows, foreign/dismissed states, unauthenticated/local/foreign commenter, absent explicit label, missing owner permissions, postdecision review comment, and contradictory/changed reviewer identities; e) live API must revalidate permission, reviewer JSON and PR identity.
+2. GREEN `src/tfont/single_agent_review.py` for strict report grammar and offline **UNAUTHENTICATED** predicate, `scripts/mappings/check_external_review.py` mode dispatch **only** when fresh PR has exact label `ontology-single-agent-review`; permission fetching includes candidate COMMENTED author. Preserve original external `evaluate_review_snapshot` intact. Reuse existing observation schema with truthful `single-agent` provenance, no assertion of separate identity. No GitHub review can be issued from a PR-head code path.
+3. `docs/reviewing-batches.md`: true single-agent two-pass procedure and explicit nonproof of cognitive independence; two authenticated COMMENTED PR reviews, then optional `/ontoTF verify-review` command for protected recheck.
+4. CI complete Python 3.10 + 3.12 exact-head suite, source-grounded logically independent adversarial review **after** code is complete, correct failures, rerun exact SHA and squash merge only when green.
+5. Then use existing PR #324 or successor to demonstrate real ten-row batch with actual challenge-first and decision reviews, verified accepted-only overlay; keep #303 open until attestation artifacts exist. No fake second principal.
+
+## Independent publication-race corrections
+
+Two verified RED regressions demonstrate that a valid challenge-body edit yields identical observations, and a publish-label withdrawal between complete live checks still permits output. Bind the challenge review ID and canonical SHA256 of its exact body, commit, actor, timestamp and state into deterministic provenance, preserving the closed observation schema. Preserve that binding when marking the observation live. Require the current live publication label on both publication evaluations, in addition to comparing policy labels/base ref inside each evaluation. Hash/event identity authenticates the audit trail, not the scholarly quality. Re-review the new exact head independently after these changes.
