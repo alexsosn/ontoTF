@@ -51,6 +51,19 @@ jobs:
           python scripts/coverage/build_p004_r011_baseline.py --check
           python scripts/coverage/build_i026_work_queue.py --check
 
+      # F-030: historical offline coverage reproducibility previously ran
+      # in seven duplicative I-026/I-027 per-ticket workflows. Full test
+      # discovery already covers their unit and adversarial suites.
+      - name: Verify pinned POS and current-queue coverage successors
+        run: |
+          python scripts/coverage/build_i027a_bhsa_verbal_stems.py --check
+          python scripts/coverage/build_i027b1_bhsa_verb.py --check
+          python scripts/coverage/build_i027b2_syriac_verb.py --check
+          python scripts/coverage/build_i027b4_extrabiblical_verb.py --check
+          python scripts/coverage/build_i027c2_bhsa_adj_adv.py --check
+          python scripts/coverage/build_i027c2_syriac_adj_adv.py --check
+          python scripts/coverage/build_i027d_current_queue.py --check
+
       - name: Build exact-head distributable wheel
         run: python -m build --wheel --outdir dist
 
