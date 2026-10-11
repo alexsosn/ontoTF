@@ -34,11 +34,29 @@ class MultiCorpusSupersessionAdversarial(unittest.TestCase):
             self.ask(groups)
 
     def test_cross_corpus_selector_or_ontology_provenance_substitution_rejected(self):
-        for key in ("previous","native_evidence","ontology_evidence","ontology_lock"):
+        for key in ("previous","native_evidence"):
             groups=copy.deepcopy(self.groups)
             groups[1]["transitions"][0][key]=copy.deepcopy(groups[0]["transitions"][0][key])
             with self.subTest(key=key),self.assertRaises(NativeSupersessionError):
                 self.ask(groups)
+
+    def test_ontology_evidence_is_legitimately_shared_across_corpora(self):
+        # OLiA Adjective is ONE pinned OWL Class, not corpus-specific.
+        # Copying identical ontology evidence/lock from BHSA to Syriac is
+        # allowed; native evidence and selector identity must remain separate.
+        groups=copy.deepcopy(self.groups)
+        groups[1]["transitions"][0]["ontology_evidence"]=copy.deepcopy(
+            groups[0]["transitions"][0]["ontology_evidence"])
+        groups[1]["transitions"][0]["ontology_lock"]=copy.deepcopy(
+            groups[0]["transitions"][0]["ontology_lock"])
+        self.assertEqual(self.ask(groups),self.ask())
+
+    def test_substituted_other_ontology_class_fails(self):
+        groups=copy.deepcopy(self.groups)
+        groups[1]["transitions"][0]["ontology_evidence"]=copy.deepcopy(
+            groups[1]["transitions"][1]["ontology_evidence"])
+        with self.assertRaises(NativeSupersessionError):
+            self.ask(groups)
 
     def test_no_unreviewed_self_approval_or_forged_cohort_review(self):
         for kind in ("candidate","cohort"):
