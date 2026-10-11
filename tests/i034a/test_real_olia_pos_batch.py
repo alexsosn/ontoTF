@@ -63,8 +63,16 @@ class RealOLiAPOSBatch(unittest.TestCase):
             (ROOT / "docs/research/data/batch_review/inputs.json").read_text()
         )
         evidence = {
-            key: json.loads((ROOT / name).read_text(encoding="utf-8"))
-            for key, name in old_inputs["evidence_resources"].items()
+            # Reuse frozen BHSA source definitions; Syriac's previous
+            # supplemental record lacked conj/inrg/intj/nega/prep and must
+            # be extended with original, pinned grammar coordinates.
+            cls.ledger["source_registry"]["bhsa"]["evidence_resource"]:
+                json.loads((ROOT / old_inputs["evidence_resources"][
+                    "resources/profiles/bhsa/batch-candidates/i033e3-word-sp-source.json"
+                ]).read_text(encoding="utf-8")),
+            cls.ledger["source_registry"]["syriac"]["evidence_resource"]:
+                json.loads((ROOT / "docs/research/data/batch_review/evidence/"
+                                  "i034a-syriac-word-sp.json").read_text(encoding="utf-8")),
         }
         cls.resource_loader = CandidateEvidenceResources(cls.ledger, evidence)
         cls.compiled = compile_candidate_batch(
