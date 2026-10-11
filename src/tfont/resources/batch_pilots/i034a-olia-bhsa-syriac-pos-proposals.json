@@ -1,0 +1,144 @@
+{
+  "batch_id": "i034a-bhsa-syriac-olia-full-pos",
+  "decisions": [
+    {
+      "corpus_id": "bhsa",
+      "value": "art",
+      "term_key": "article",
+      "assessment": "exact",
+      "rationale": "The original BHSA word.sp table explicitly defines art as article at line 17. OLiA Article at original XML line 1682 denotes the lexical article POS; this is a category-level exact alignment, not a claim about individual Hebrew token definiteness."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "prep",
+      "term_key": "preposition",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 22 explicitly assigns prep to preposition; OLiA Preposition at line 525 denotes preposed adpositions. Hebrew prepositions may attach graphically to words, but this TF POS value maps the lexical class rather than token segmentation."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "conj",
+      "term_key": "conjunction",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 23 describes conj generically as conjunction; OLiA Conjunction at line 356 is the generic connective POS. Do not narrow to coordinating or subordinating conjunction without a source feature."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "prps",
+      "assessment": "native-only",
+      "rationale": "BHSA sp.md line 24 says personal pronoun, but OLiA PersonalPronoun at line 2189 explicitly narrows the class to irreflexive personal pronouns; the BHSA source alone does not verify this exclusion. Retain native-only pending lexical inspection."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "prde",
+      "term_key": "demonstrativepronoun",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 25 explicitly defines prde as demonstrative pronoun; OLiA DemonstrativePronoun at line 1935 is the matching pronoun subclass. Do not conflate prde with a general determiner category or Syriac pron."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "prin",
+      "term_key": "interrogativepronoun",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 26 explicitly defines prin as interrogative pronoun, whereas inrg at line 29 is an interrogative particle. OLiA InterrogativePronoun at line 2135 denotes the corresponding pro-form subclass."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "intj",
+      "term_key": "interjection",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 27 explicitly glosses intj as interjection, and OLiA Interjection at XML line 307 defines the same morphosyntactic category. This is not a generalized assertion about discourse speech acts."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "nega",
+      "term_key": "negativeparticle",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 28 explicitly defines nega as negative particle. OLiA NegativeParticle at XML line 3684 means a particle expressing negation, not abstract logical negation or morphological polarity."
+    },
+    {
+      "corpus_id": "bhsa",
+      "value": "inrg",
+      "term_key": "interrogativeparticle",
+      "assessment": "exact",
+      "rationale": "BHSA sp.md line 29 explicitly defines inrg as interrogative particle, not interrogative pronoun prin. OLiA InterrogativeParticle at XML line 3812 defines a particle used to form a question."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "conj",
+      "term_key": "conjunction",
+      "assessment": "exact",
+      "rationale": "Pinned ETCBC linksyr word_grammar line 86 explicitly glosses Syriac sp=conj as conjunction. OLiA Conjunction line 356 is the matching generic class; no narrower coordination subtype is assumed."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "inrg",
+      "assessment": "native-only",
+      "rationale": "Pinned Syriac word_grammar line 87 glosses sp=inrg only as interrogative; it does not identify the expression as a particle versus an adverb or pronoun. No exact InterrogativeParticle target is asserted without more specific corpus evidence."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "intj",
+      "term_key": "interjection",
+      "assessment": "exact",
+      "rationale": "Pinned Syriac word_grammar line 88 explicitly glosses sp=intj as interjection. OLiA Interjection line 307 is the corresponding class and does not entail an extra pragmatic annotation."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "nega",
+      "assessment": "native-only",
+      "rationale": "Pinned Syriac word_grammar line 89 glosses sp=nega merely as negative; it does not establish that the class contains only particles rather than other polarity forms. No exact NegativeParticle class projection is justified by this source alone."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "prep",
+      "term_key": "preposition",
+      "assessment": "exact",
+      "rationale": "Pinned Syriac word_grammar line 90 explicitly calls sp=prep preposition; OLiA Preposition at original XML line 525 is a preposed adposition. No assumptions about bound morpheme boundaries are needed."
+    },
+    {
+      "corpus_id": "syriac",
+      "value": "pron",
+      "term_key": "pronoun",
+      "assessment": "exact",
+      "rationale": "Pinned Syriac word_grammar line 91 describes sp=pron as general pronoun; OLiA Pronoun at XML line 1860 is the corresponding unspecialized category. It must not be mapped to any particular BHSA personal, demonstrative or interrogative pronoun subclass."
+    }
+  ],
+  "defaults": {
+    "capability_id": "linguistic.part-of-speech",
+    "feature": "sp",
+    "native_node_type": "word",
+    "profile_id": "linguistic",
+    "semantic_role": "annotation-value"
+  },
+  "mode": "proposal-only",
+  "ontology_evidence_resources": {
+    "article": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-article-evidence.json",
+    "preposition": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-preposition-evidence.json",
+    "conjunction": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-conjunction-evidence.json",
+    "demonstrativepronoun": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-demonstrativepronoun-evidence.json",
+    "interrogativepronoun": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativepronoun-evidence.json",
+    "interjection": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interjection-evidence.json",
+    "negativeparticle": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-negativeparticle-evidence.json",
+    "interrogativeparticle": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativeparticle-evidence.json",
+    "pronoun": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-pronoun-evidence.json"
+  },
+  "ontology_lock_resource": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034a-pos.json",
+  "ontology_model": "olia",
+  "ontology_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "schema_version": 2,
+  "source_registry": {
+    "bhsa": {
+      "component_id": "bhsa-tf",
+      "evidence_resource": "resources/profiles/bhsa/batch-candidates/i033e3-word-sp-source.json",
+      "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "target_corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "syriac": {
+      "component_id": "syriac-tf",
+      "evidence_resource": "resources/profiles/syriac/batch-candidates/i034a-word-sp-source.json",
+      "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+      "target_corpus_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
+    }
+  }
+}

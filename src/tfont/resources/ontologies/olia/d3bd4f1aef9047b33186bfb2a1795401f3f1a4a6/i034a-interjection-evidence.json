@@ -1,0 +1,16 @@
+{
+  "evidence_id": "evidence:olia:i034a-interjection-class",
+  "kind": "ontology-definition",
+  "source_uri": "https://raw.githubusercontent.com/acoli-repo/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/owl/core/olia.owl",
+  "source_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "license_ref": "https://creativecommons.org/licenses/by/3.0/",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "target": "http://purl.org/olia/olia.owl#Interjection",
+    "rdf_type": "owl:Class",
+    "snapshot_digest": "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd",
+    "original_source_blob": "5c5e8bda93eaeab2940472a167ff8d3107be8d43",
+    "declaration_line": 307
+  },
+  "content_digest": "sha256:412c0c6dd31a967d5b71927a354a7b9d14bace52914c25dadaceb43233b08f0f"
+}
