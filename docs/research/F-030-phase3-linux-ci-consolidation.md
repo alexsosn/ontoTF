@@ -1,6 +1,8 @@
 # F-030 phase 3: consolidate redundant Linux-focused CI, preserve unique gates
 
-**Issue:** #336; parent #291, supports #290.
+**Issue:** #291
+
+**Implementation subissue:** #336; supports #290.
 
 ## Actual architecture audit (main @ 24213071f62e961df559db16a23a5a9f058dc3e2)
 
