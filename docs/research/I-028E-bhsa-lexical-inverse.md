@@ -20,3 +20,10 @@
 ## Negative cases
 
 Missing/unusable index, invalid literal type, nonlex matches, duplicate index nodes, malformed/out-of-range IDs, alien revision, mismatched feature value between index and `.v`, missing source text/language and forged source URI. Return empty tuple only when there genuinely are no qualifying lex nodes; fail closed on inconsistent claimed lex entries. Independently review code against the original TF feature/value boundaries.
+
+
+## Independent runtime implementation audit — correction before approval
+
+**Important correction:** Inspected `annotation/text-fabric/tf/core/nodefeature.py`, `NodeFeature.s`. Despite the public contract saying "query all nodes", its implementation computes `tuple(sorted([n for n in self.data if self.data[n] == val], key=lambda n: Crank[n-1]))`. It **does not maintain an inverse index**. Because `voc_lex_utf8` is present on 435,820 word+lex nodes, an `.s(value)` search touches the whole feature table on every query. Calling that fast or indexed would misrepresent real runtime behavior.
+
+**Revised decision:** Build a **separate, reusable local lookup over exactly 9,230 known BHSA lex-node IDs** in one pass, using the already validated `project_bhsa_lexical_form`. Each derived object is keyed by the original vocalized text in a dictionary mapping to a tuple of distinct lex-node source projections. Reject any incomplete or contradictory lex-node source record; do not use the global feature `.s` at all. Return a snapshot object with `lookup(written_rep)`, and a convenience wrapper `find_bhsa_lexical_forms` that builds a snapshot for one-off queries. Clients doing many lookups should build once and reuse. Cost is O(9,230) feature reads once, amortized O(1 + matches) per indexed query, rather than O(435,820) scan every call. A constructed index has **no external review authority** and must be rebuilt when TF data changes. Negative test should make native `.s` raise if touched.
