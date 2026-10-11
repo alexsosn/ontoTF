@@ -175,7 +175,8 @@ class SparseCoverageOverlayTDD(unittest.TestCase):
                 apply_sparse_coverage_delta(self.pack, delta)
 
     def test_real_committed_candidate_ledger_packet_and_supplemental_evidence(self):
-        meta = json.loads((ROOT/"docs/research/data/batch_review/inputs.json").read_text())
+        from tests.i033e.test_real_ten_source_batch import LEGACY_MANIFEST
+        meta = LEGACY_MANIFEST
         ledger = json.loads((ROOT/meta["ledger"]).read_text())
         packet = json.loads((ROOT/meta["packet"]).read_text())
         supplemental = {

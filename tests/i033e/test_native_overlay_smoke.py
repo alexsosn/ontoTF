@@ -120,7 +120,8 @@ class NativeOverlaySmokeTests(unittest.TestCase):
         from tfont.overlay_handoff import build_overlay_handoff
         from tfont.review_packets import verify_review_packet
         root = Path(__file__).resolve().parents[2]
-        meta = json.loads((root / "docs/research/data/batch_review/inputs.json").read_text())
+        from tests.i033e.test_real_ten_source_batch import LEGACY_MANIFEST
+        meta = LEGACY_MANIFEST
         ledger = json.loads((root / meta["ledger"]).read_text())
         packet = json.loads((root / meta["packet"]).read_text())
         evidence = {

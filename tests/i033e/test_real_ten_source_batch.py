@@ -5,15 +5,25 @@ import json
 from pathlib import Path
 import unittest
 
-from scripts.mappings.build_candidate_review_packet import build_packet
 from tfont.batch_proposals import compile_candidate_batch
 from tfont.candidate_evidence import CandidateEvidenceResources
 from tfont.digests import evidence_record_digest
-from tfont.review_packets import verify_review_packet
+from tfont.review_packets import build_review_packet, serialized, verify_review_packet
 
 
 ROOT = Path(__file__).resolve().parents[2]
-MANIFEST = ROOT / "docs/research/data/batch_review/inputs.json"
+LEGACY_MANIFEST = {
+    # A frozen historical cohort, not the mutable ACTIVE review manifest.
+    "schema_version": 2,
+    "ledger": "src/tfont/resources/batch_pilots/i033e3-ten-native-sp-candidates.json",
+    "packet": "docs/research/data/generated/i033d/i033e3-ten-native-sp-review-request.json",
+    "evidence_resources": {
+        "resources/profiles/bhsa/batch-candidates/i033e3-word-sp-source.json":
+            "docs/research/data/batch_review/evidence/i033e3-bhsa-word-sp.json",
+        "resources/profiles/syriac/batch-candidates/i033e3-word-sp-source.json":
+            "docs/research/data/batch_review/evidence/i033e3-syriac-word-sp.json",
+    },
+}
 SOURCE_LINES = {
     "bhsa": {
         "art": ("article", 17),
@@ -39,7 +49,7 @@ SOURCES = {
 class TenSourcePOSReviewCandidateTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.meta = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        cls.meta = LEGACY_MANIFEST
         cls.ledger = json.loads((ROOT / cls.meta["ledger"]).read_text(encoding="utf-8"))
         cls.evidence = {
             name: json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -90,7 +100,8 @@ class TenSourcePOSReviewCandidateTests(unittest.TestCase):
             self.assertNotIn("review", row)
 
     def test_generated_packet_recomputes_exactly_and_cannot_authorize(self):
-        encoded = build_packet(ROOT, mode="check")
+        encoded = serialized(build_review_packet(self.ledger, resource_loader=self.loader))
+        self.assertEqual(encoded, (ROOT / self.meta["packet"]).read_text(encoding="utf-8"))
         packet = json.loads(encoded)
         self.assertEqual(packet["count"], 10)
         self.assertEqual(packet["authority"], "unreviewed-proposal")
