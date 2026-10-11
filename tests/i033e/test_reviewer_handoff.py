@@ -125,7 +125,7 @@ class ReviewerHandoffTDD(unittest.TestCase):
                 with self.subTest(args=args), patch.object(
                     cli, "load_review_context",
                     return_value=(self.packet, self.source_reader),
-                ), patch.object(sys, "argv", ["prepare_external_review.py", *args]), \\
+                ), patch.object(sys, "argv", ["prepare_external_review.py", *args]), \
                         contextlib.redirect_stdout(io.StringIO()) as stream:
                     self.assertEqual(cli.main(), 0)
                     generated = stream.getvalue()
@@ -176,7 +176,7 @@ class ReviewerHandoffTDD(unittest.TestCase):
             build_packet(root, mode="write")
             for mode in ("--template", "--dossier"):
                 with patch.object(sys, "argv",
-                                  ["trusted-main/prepare_external_review.py", "--root", outside, mode]), \\
+                                  ["trusted-main/prepare_external_review.py", "--root", outside, mode]), \
                         contextlib.redirect_stdout(io.StringIO()) as output:
                     self.assertEqual(cli.main(), 0)
                 if mode == "--template":
