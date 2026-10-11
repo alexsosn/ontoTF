@@ -339,8 +339,13 @@ def main() -> int:
         )
         result=evaluate_live_gate(packet, ledger, resource_loader=read)
         if args.publish_handoff:
-            from tfont.overlay_handoff import build_overlay_handoff
+            from tfont.overlay_handoff import (
+                build_overlay_handoff, verify_overlay_handoff_integrity,
+            )
             pack = build_overlay_handoff(packet, ledger, result, resource_loader=read)
+            # Independent structural check does NOT issue review authority.
+            # Live GitHub approval is still fetched again immediately below.
+            verify_overlay_handoff_integrity(pack)
             encoded = json.dumps(pack, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
             fresh = evaluate_live_gate(packet, ledger, resource_loader=read)
             if fresh != result:
