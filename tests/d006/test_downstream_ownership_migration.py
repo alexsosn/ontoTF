@@ -58,7 +58,24 @@ RETIRED_FOCUSED_WORKFLOWS = (
     ".github/workflows/f003-digest-projection-key-errors.yml",
     ".github/workflows/f004-source-bundle-diagnostic-paths.yml",
     ".github/workflows/f005-utf16-diagnostic-paths.yml",
+    # F-030 phase 3: original regression modules remain in shared full suite.
+    ".github/workflows/f015-direct-validation-boundary.yml",
+    ".github/workflows/f016-custom-schema-recursion.yml",
+    ".github/workflows/f021-feature-id-ownership.yml",
+    ".github/workflows/f022-semantic-digest-json-boundary.yml",
+    ".github/workflows/f023-downstream-ownership-enforcement.yml",
+    ".github/workflows/f024-namespace-scan-failures.yml",
 )
+
+# These four paths were in the *original* frozen inventory. Their ownership
+# remains historically true even when they no longer exist as CI workflows.
+# Keep FROZEN_MISSING unchanged for audit; only the *active* expectation moves.
+RETIRED_FROZEN_CARRIERS = {
+    ".github/workflows/f015-direct-validation-boundary.yml": 87,
+    ".github/workflows/f016-custom-schema-recursion.yml": 88,
+    ".github/workflows/f021-feature-id-ownership.yml": 99,
+    ".github/workflows/f022-semantic-digest-json-boundary.yml": 103,
+}
 
 
 def markdown_owners(text: str) -> tuple[list[int], list[tuple[int, str]]]:
@@ -325,12 +342,24 @@ class RepositoryMigrationREDTests(unittest.TestCase):
         self.assertEqual(plan_matches | plan_missing, actual_plans)
 
     def test_intentionally_retired_f_series_workflow_carriers(self):
+        self.assertTrue(set(RETIRED_FROZEN_CARRIERS) <= set(RETIRED_FOCUSED_WORKFLOWS))
         for relative in RETIRED_FOCUSED_WORKFLOWS:
             with self.subTest(path=relative):
-                self.assertNotIn(relative, FROZEN_MISSING)
                 self.assertFalse((ROOT / relative).exists())
+                if relative in RETIRED_FROZEN_CARRIERS:
+                    self.assertEqual(
+                        FROZEN_MISSING[relative], RETIRED_FROZEN_CARRIERS[relative]
+                    )
+                else:
+                    self.assertNotIn(relative, FROZEN_MISSING)
+
     def test_frozen_carriers_are_missing_or_matching(self):
-        frozen = dict(sorted(FROZEN_MISSING.items()))
+        # Historical snapshot is immutable; retired CI owners are explicitly
+        # tombstoned rather than silently erasing original ownership metadata.
+        frozen = {
+            path: owner for path, owner in sorted(FROZEN_MISSING.items())
+            if path not in RETIRED_FOCUSED_WORKFLOWS
+        }
         unexpected_missing = set(self.missing) - set(frozen)
         self.assertEqual(unexpected_missing, set())
         for path, owner in self.missing.items():
