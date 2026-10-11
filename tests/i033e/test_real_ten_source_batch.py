@@ -4,8 +4,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
-from scripts.mappings.build_candidate_review_packet import build_packet
+from scripts.mappings import build_candidate_review_packet as packet_writer
 from tfont.batch_proposals import compile_candidate_batch
 from tfont.candidate_evidence import CandidateEvidenceResources
 from tfont.digests import evidence_record_digest
@@ -90,7 +91,14 @@ class TenSourcePOSReviewCandidateTests(unittest.TestCase):
             self.assertNotIn("review", row)
 
     def test_generated_packet_recomputes_exactly_and_cannot_authorize(self):
-        encoded = build_packet(ROOT, mode="check")
+        # The global input manifest now selects the new 15-row cohort.
+        # Recheck the historical ten-row packet using its frozen manifest,
+        # without redirecting any PR-head/protected reviewer defaults.
+        with patch.object(
+            packet_writer, "MANIFEST",
+            "docs/research/data/batch_review/i033e3-inputs.json",
+        ):
+            encoded = packet_writer.build_packet(ROOT, mode="check")
         packet = json.loads(encoded)
         self.assertEqual(packet["count"], 10)
         self.assertEqual(packet["authority"], "unreviewed-proposal")
