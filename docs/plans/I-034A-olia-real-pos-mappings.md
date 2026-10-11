@@ -1,0 +1,8 @@
+# I-034A — first substantive OLiA expansion batch: research → TDD → review
+
+**Parent tickets:** #283 / #264 / #290; research `docs/research/I-034A-olia-real-pos-mappings.md`.
+
+1. **RED (first committed code):** `tests/i034a/test_real_olia_pos_batch.py` asserts 9 genuinely declared OLiA `owl:Class` targets at the real original `olia.owl` source line, an additive immutable 19-URI term lock, unchanged v0.4.0 original lock, 15 real corpus selectors (BHSA nine, Syriac six), 12 exact positive mappings and 3 native-only, exact projection target/model/source evidence plus SHA-256, and conservative pronoun/particle distinctions. Test `release_authorized is False` and no installed production mutation.
+2. **GREEN (data, not architecture):** create one lock, nine normalized class evidence JSON files grounded in actual pinned XML and source blob, and one 15-row ledger in the existing generic batch-proposal schema. Reference existing digest-bound BHSA/Syriac supplemental source evidence. No new generator, CI workflow, per-entity PR, release registry or guessed target.
+3. **Run full exact-head Python 3.10/3.12 suite.** A skeptical independent second-pass review must challenge individual target decisions, note OLiA subclass restrictions, source line accuracy, license, source pin, immutable packaged release nonmutation and duplicate native-selector safety. Fix issues and repeat review on final SHA.
+4. **Merge guarded by exact SHA only if all checks green.** Next PR is the actual protected-reviewed 15-row ledger/packet input pointing to this locked class subset now on main, with a single batch approval/attestation and release test. Do not conflate mapping candidates with installed coverage.
