@@ -103,7 +103,8 @@ def compile_candidate_batch(
 ) -> dict[str, Any]:
     """Compile a bounded cohort; never import or synthesize a reviewed receipt."""
     obj = _closed(ledger, _TOP_KEYS, "batch")
-    _require(obj["schema_version"] == 1 and obj["mode"] == "proposal-only",
+    version = obj["schema_version"]
+    _require(type(version) is int and version in {1, 2} and obj["mode"] == "proposal-only",
              "only unreviewed proposal batches are supported")
     _require(type(obj["batch_id"]) is str and bool(IDENTITY.fullmatch(obj["batch_id"])),
              "invalid batch identity")
@@ -128,7 +129,7 @@ def compile_candidate_batch(
     )
     ontology_specs = obj["ontology_evidence_resources"]
     sources = obj["source_registry"]
-    _require(type(ontology_specs) is dict and bool(ontology_specs)
+    _require(type(ontology_specs) is dict and (bool(ontology_specs) or version == 2)
              and type(sources) is dict and bool(sources), "source registries missing")
     _require(_closed(obj["defaults"], set(_DEFAULTS), "POS defaults") == _DEFAULTS,
              "unsupported pilot template defaults")
@@ -187,13 +188,15 @@ def compile_candidate_batch(
     for decision in raw_decisions:
         row = _closed(decision, _DECISION_KEYS, "decision")
         corpus, value, key = row["corpus_id"], row["value"], row["term_key"]
+        native_only = version == 2 and row["assessment"] == "native-only"
         _require(type(corpus) is str and corpus in native_sources
-                 and type(value) is str and bool(IDENTITY.fullmatch(value))
-                 and type(key) is str and key in terms,
-                 "unregistered source corpus, native value or ontology target")
-        _require(row["assessment"] == "exact"
-                 and type(row["rationale"]) is str and row["rationale"].strip(),
-                 "only reasoned exact-class proposals supported by this pilot")
+                 and type(value) is str and bool(IDENTITY.fullmatch(value)),
+                 "unregistered source corpus or native value")
+        _require((native_only and key is None)
+                 or (row["assessment"] == "exact" and type(key) is str and key in terms),
+                 "native-only requires no target; exact requires a registered class term")
+        _require(type(row["rationale"]) is str and row["rationale"].strip(),
+                 "candidate decision requires a reasoned assessment")
         pair = (corpus, value)
         _require(pair not in seen_native, f"duplicate native selector: {pair}")
         seen_native.add(pair)
@@ -201,16 +204,17 @@ def compile_candidate_batch(
         native_content = source["reviewed_content"]
         _require(value in native_content["source_definitions"],
                  f"{corpus}: absent or unsupported original POS category {value}")
-        ontology = terms[key]
+        ontology = None if native_only else terms[key]
         source_binding = {
             "evidence_id": source["evidence_id"],
             "content_digest": source["content_digest"],
         }
-        ontology_binding = {
-            "evidence_id": ontology["evidence_id"],
-            "content_digest": ontology["content_digest"],
-        }
-        evidence = [source_binding, ontology_binding]
+        evidence = [source_binding]
+        if ontology is not None:
+            evidence.append({
+                "evidence_id": ontology["evidence_id"],
+                "content_digest": ontology["content_digest"],
+            })
         binding = {
             "component_id": spec["component_id"],
             "node_type": "word",
@@ -218,25 +222,29 @@ def compile_candidate_batch(
             "value": value,
             "execution_shape": "value-predicate",
         }
-        mapping_id = f"mapping:{corpus}:{model}-{key}"
+        suffix = f"native-sp-{value}" if native_only else key
+        mapping_id = f"mapping:{corpus}:{model}-{suffix}"
         _require(mapping_id not in seen_mappings, "two selectors claim one mapping identity")
         seen_mappings.add(mapping_id)
-        projection = {
-            "assessment": "exact",
-            "capability_id": _DEFAULTS["capability_id"],
-            "evidence": copy.deepcopy(evidence),
-            "formal_kind": "class",
-            "native_execution_binding": copy.deepcopy(binding),
-            "ontology_lock": lock["lock_id"],
-            "profile_id": _DEFAULTS["profile_id"],
-            "projection_id": f"projection:{corpus}:{model}-{key}",
-            "publication_relation": None,
-            "query_role": "semantic-constraint",
-            "reference_kind": "semantic-pivot",
-            "semantic_role": _DEFAULTS["semantic_role"],
-            "target": ontology["reviewed_content"]["target"],
-        }
-        projection["projection_semantic_digest"] = projection_semantic_digest_v1(projection)
+        projections = []
+        if not native_only:
+            projection = {
+                "assessment": "exact",
+                "capability_id": _DEFAULTS["capability_id"],
+                "evidence": copy.deepcopy(evidence),
+                "formal_kind": "class",
+                "native_execution_binding": copy.deepcopy(binding),
+                "ontology_lock": lock["lock_id"],
+                "profile_id": _DEFAULTS["profile_id"],
+                "projection_id": f"projection:{corpus}:{model}-{key}",
+                "publication_relation": None,
+                "query_role": "semantic-constraint",
+                "reference_kind": "semantic-pivot",
+                "semantic_role": _DEFAULTS["semantic_role"],
+                "target": ontology["reviewed_content"]["target"],
+            }
+            projection["projection_semantic_digest"] = projection_semantic_digest_v1(projection)
+            projections.append(projection)
         mapping = {
             "ambiguous_candidates": [],
             "capabilities": [_DEFAULTS["capability_id"]],
@@ -246,22 +254,28 @@ def compile_candidate_batch(
             "mapping_id": mapping_id,
             "native_binding": binding,
             "native_dependencies": [f"dep:{corpus}:word-sp:{value}"],
-            "native_state": "positive",
+            "native_state": "native-only" if native_only else "positive",
             "profiles": [_DEFAULTS["profile_id"]],
-            "projections": [projection],
+            "projections": projections,
             "rationale": row["rationale"],
         }
         mapping["mapping_semantic_digest"] = mapping_semantic_digest_v2(mapping)
         results.append(mapping)
     results.sort(key=lambda row: row["mapping_id"])
-    return {
-        "schema_version": 1,
+    compiled = {
+        "schema_version": version,
         "batch_id": obj["batch_id"],
         "mode": "proposal-only",
         "release_authorized": False,
         "count": len(results),
         "candidates": results,
     }
+    if version == 2:
+        compiled["disposition_counts"] = {
+            "exact": sum(m["native_state"] == "positive" for m in results),
+            "native-only": sum(m["native_state"] == "native-only" for m in results),
+        }
+    return compiled
 
 
 def serialized(value: dict[str, Any]) -> str:

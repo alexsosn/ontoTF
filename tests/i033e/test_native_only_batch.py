@@ -29,6 +29,10 @@ def conservative(ledger=None):
     return obj
 
 
+def native_row(packet):
+    return next(row for row in packet["rows"] if row["assessment"] == "native-only")
+
+
 def rehash(packet):
     packet["batch_digest"] = "sha256:" + hashlib.sha256(canonical_json_bytes(
         {k: v for k, v in packet.items() if k != "batch_digest"}
@@ -71,12 +75,12 @@ class NativeOnlyBatchTests(unittest.TestCase):
         changed["decisions"][0]["rationale"] += " Distinct scholarly caveat."
         revised = build_review_packet(changed)
         self.assertNotEqual(packet["batch_digest"], revised["batch_digest"])
-        self.assertNotEqual(packet["rows"][0]["decision_digest"], revised["rows"][0]["decision_digest"])
+        self.assertNotEqual(native_row(packet)["decision_digest"], native_row(revised)["decision_digest"])
         for field, value in (("assessment", "exact"), ("ontology_target", "http://purl.org/olia/olia.owl#Adjective"),
                              ("projection_semantic_digest", "sha256:" + "f" * 64), ("schema_version", 1)):
             altered = copy.deepcopy(packet)
             if field == "schema_version": altered[field] = value
-            else: altered["rows"][0][field] = value
+            else: native_row(altered)[field] = value
             rehash(altered)
             with self.subTest(field=field), self.assertRaises(ValueError):
                 verify_review_packet(altered, ledger)
@@ -100,15 +104,18 @@ class NativeOnlyBatchTests(unittest.TestCase):
     def test_external_dispositions_do_not_promote_native_only(self):
         packet = build_review_packet(conservative())
         for disposition in ("accept", "reject", "needs-evidence"):
-            event = reviews.review(packet, body=reviews.body_for(packet, first=disposition))
+            body = json.loads(reviews.body_for(packet).split("\n", 1)[1])
+            ident = native_row(packet)["mapping_id"]
+            next(row for row in body["rows"] if row["mapping_id"] == ident)["disposition"] = disposition
+            event = reviews.review(packet, body="ontoTF-batch-review-v1\n" + json.dumps(body))
             result = evaluate_review_snapshot(
                 packet=packet, repository=reviews.REPO, pr_number=299,
                 expected_head_sha=reviews.SHA, pull_request=reviews.pr_data(),
                 reviews=[event], reviewer_permissions={reviews.REVIEWER: "write"},
             )
-            self.assertEqual(result["rows"][0]["disposition"], disposition)
+            self.assertEqual(next(row for row in result["rows"] if row["mapping_id"] == ident)["disposition"], disposition)
             self.assertNotIn("release_authorized", result)
-            self.assertEqual(packet["rows"][0]["assessment"], "native-only")
+            self.assertEqual(native_row(packet)["assessment"], "native-only")
         with self.assertRaises(ExternalReviewError):
             evaluate_review_snapshot(
                 packet=packet, repository=reviews.REPO, pr_number=299,

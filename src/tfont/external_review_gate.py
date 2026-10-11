@@ -103,8 +103,8 @@ def _packet_rows(packet: dict[str, Any]) -> dict[str, str]:
              and type(packet.get("release_authorized")) is bool
              and packet.get("release_authorized") is False
              and type(packet.get("schema_version")) is int
-             and packet.get("schema_version") == 1,
-             "only unreviewed I-033D packets accepted")
+             and packet.get("schema_version") in {1, 2},
+             "only supported unreviewed batch packets accepted")
     rows=packet.get("rows")
     _require(type(rows) is list and 1 <= len(rows) <= 50,
              "candidate packet lacks bounded rows")

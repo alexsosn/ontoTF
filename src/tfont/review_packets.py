@@ -46,6 +46,7 @@ def build_review_packet(
     model = ledger["ontology_model"]
     ontology_revision = ledger["ontology_revision"]
     registry = ledger["source_registry"]
+    version = ledger["schema_version"]
     _require(type(registry) is dict, "missing source registry")
 
     rows: list[dict[str, Any]] = []
@@ -53,11 +54,12 @@ def build_review_packet(
         # Compiler source integrity and format tests already verified all
         # proposed native and ontology evidence and their canonical digests.
         _require("review" not in mapping, "mapping attempts self-review")
+        native_only = version == 2 and mapping["native_state"] == "native-only"
         _require(type(mapping.get("projections")) is list
-                 and len(mapping["projections"]) == 1,
-                 "review packet requires exactly one supported projection")
-        projection = mapping["projections"][0]
-        _require("review" not in projection, "projection attempts self-review")
+                 and len(mapping["projections"]) == (0 if native_only else 1),
+                 "review packet requires supported state/projection cardinality")
+        projection = None if native_only else mapping["projections"][0]
+        _require(projection is None or "review" not in projection, "projection attempts self-review")
         native = mapping["native_binding"]
         _require(
             native["node_type"] == "word"
@@ -69,7 +71,7 @@ def build_review_packet(
         coverage_ids = [f'node_value:sp="{native["value"]}"']
         source_pin = copy.deepcopy(registry[corpus])
         commitment = {
-            "schema_version": 1,
+            "schema_version": version,
             "batch_id": batch_id,
             "ontology_model": model,
             "ontology_revision": ontology_revision,
@@ -81,23 +83,23 @@ def build_review_packet(
             "mapping_id": mapping["mapping_id"],
             "corpus_id": corpus,
             "native_binding": copy.deepcopy(native),
-            "ontology_target": projection["target"],
-            "formal_kind": projection["formal_kind"],
-            "semantic_role": projection["semantic_role"],
-            "assessment": projection["assessment"],
+            "ontology_target": None if native_only else projection["target"],
+            "formal_kind": None if native_only else projection["formal_kind"],
+            "semantic_role": "annotation-value" if native_only else projection["semantic_role"],
+            "assessment": "native-only" if native_only else projection["assessment"],
             "rationale": mapping["rationale"],
             "source_pin": source_pin,
             "evidence": copy.deepcopy(mapping["evidence"]),
             "coverage_item_ids": coverage_ids,
             "mapping_semantic_digest": mapping["mapping_semantic_digest"],
-            "projection_semantic_digest": projection["projection_semantic_digest"],
+            "projection_semantic_digest": None if native_only else projection["projection_semantic_digest"],
             "decision_digest": _digest(commitment),
         })
     rows.sort(key=lambda row: row["mapping_id"])
     ids = [row["mapping_id"] for row in rows]
     _require(len(ids) == len(set(ids)), "duplicate review decision")
     packet = {
-        "schema_version": 1,
+        "schema_version": version,
         "packet_id": f"review-request:{batch_id}",
         "authority": "unreviewed-proposal",
         "release_authorized": False,
@@ -108,6 +110,8 @@ def build_review_packet(
         "count": len(rows),
         "rows": rows,
     }
+    if version == 2:
+        packet["disposition_counts"] = copy.deepcopy(compilation["disposition_counts"])
     packet["batch_digest"] = _digest(packet)
     return packet
 
@@ -132,7 +136,7 @@ def verify_review_packet(
     # the exact schema types before checking canonical JSON bytes.
     if (
         type(packet.get("schema_version")) is not int
-        or packet["schema_version"] != 1
+        or packet["schema_version"] not in {1, 2}
         or type(packet.get("release_authorized")) is not bool
         or packet["release_authorized"] is not False
         or type(packet.get("count")) is not int
