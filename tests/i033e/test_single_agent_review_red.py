@@ -173,8 +173,8 @@ class SingleAgentReviewRED(unittest.TestCase):
             if path.endswith("/collaborators/proposal-author/permission"):
                 return {"permission":"admin"}
             raise AssertionError("unexpected API request: "+path)
-        with patch.dict(os.environ,{"GITHUB_TOKEN":"protected-live-test-token"}), \\
-             patch.object(module,"_github_event",return_value=(REPO,299,SHA)), \\
+        with patch.dict(os.environ,{"GITHUB_TOKEN":"protected-live-test-token"}), \
+             patch.object(module,"_github_event",return_value=(REPO,299,SHA)), \
              patch.object(module,"_api",side_effect=remote):
             report=module.evaluate_live_gate(self.packet,self.ledger,
                                               resource_loader=self.source_reader)
@@ -193,9 +193,9 @@ class SingleAgentReviewRED(unittest.TestCase):
             if "/reviews?" in path:return [self.pair()[1]]
             if "/collaborators/" in path:return {"permission":"admin"}
             raise AssertionError(path)
-        with patch.dict(os.environ,{"GITHUB_TOKEN":"protected-live-test-token"}), \\
-             patch.object(module,"_github_event",return_value=(REPO,299,SHA)), \\
-             patch.object(module,"_api",side_effect=remote), \\
+        with patch.dict(os.environ,{"GITHUB_TOKEN":"protected-live-test-token"}), \
+             patch.object(module,"_github_event",return_value=(REPO,299,SHA)), \
+             patch.object(module,"_api",side_effect=remote), \
              self.assertRaises(ExternalReviewError):
             module.evaluate_live_gate(self.packet,self.ledger,
                                       resource_loader=self.source_reader)
