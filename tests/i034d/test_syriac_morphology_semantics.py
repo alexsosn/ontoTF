@@ -29,7 +29,7 @@ SOURCE = {
            ("unknown", None, None)],
     "vo": [("act", "active", 97), ("pas", "passive", 97)],
     "vpm": [("d", None, None), ("dp", None, None),
-            ("p", "vowel pattern", 50)],
+            ("p", None, 50)],
     "vs": [("af", "afel", 99), ("pa", "pael", 99), ("pe", "peal", 99)],
     "vt": [("imp", "imperative", 101), ("inf", "infinitive", 102),
            ("ipf", "imperfect", 101), ("pf", "perfect", 101),
