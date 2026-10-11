@@ -3,6 +3,9 @@ from __future__ import annotations
 
 import copy
 import unittest
+from tfont.digests import evidence_record_digest
+from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from tfont.mapping_supersession import plan_native_only_supersession_batch
 from tfont.mapping_supersession import (
     NativeSupersessionError,
     plan_multi_corpus_native_supersession,
@@ -57,6 +60,34 @@ class MultiCorpusSupersessionAdversarial(unittest.TestCase):
             groups[1]["transitions"][1]["ontology_evidence"])
         with self.assertRaises(NativeSupersessionError):
             self.ask(groups)
+
+    def test_individually_valid_alternate_ontology_revision_cannot_mix_in_release(self):
+        cohorts=copy.deepcopy(self.groups)
+        alternate=cohorts[1]["transitions"][1]
+        # A fabricated but internally self-consistent UNTRUSTED source snapshot
+        # can pass the per-row preflight. It must NOT join a release that
+        # otherwise uses the independently pinned actual OLiA revision.
+        revision="a"*40
+        alternate["ontology_lock"]["source_revision"]=revision
+        alt_evidence=alternate["ontology_evidence"]
+        alt_evidence["source_revision"]=revision
+        alt_evidence["content_digest"]=evidence_record_digest(alt_evidence)
+        new_ref={"evidence_id":alt_evidence["evidence_id"],
+                 "content_digest":alt_evidence["content_digest"]}
+        candidate=alternate["candidate"]
+        candidate["evidence"][1]=new_ref
+        projection=candidate["projections"][0]
+        projection["evidence"][1]=new_ref
+        projection["projection_semantic_digest"]=projection_semantic_digest_v1(projection)
+        candidate["mapping_semantic_digest"]=mapping_semantic_digest_v2(candidate)
+        # The source, category, class and digest are still self-consistent:
+        plan_native_only_supersession_batch(
+            transitions=cohorts[1]["transitions"],
+            base_release=cohorts[1]["base_release"],
+            active_mappings=cohorts[1]["active_mappings"],
+        )
+        with self.assertRaisesRegex(NativeSupersessionError,"ontology snapshot"):
+            self.ask(cohorts)
 
     def test_no_unreviewed_self_approval_or_forged_cohort_review(self):
         for kind in ("candidate","cohort"):
