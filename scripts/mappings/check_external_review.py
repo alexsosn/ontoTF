@@ -296,6 +296,7 @@ def fetch_pr_head_inputs() -> tuple[dict[str, Any], dict[str, Any]]:
 def evaluate_live_gate(
     packet: dict[str, Any], ledger: dict[str, Any], *,
     resource_loader: Callable[[str], dict[str, Any]] = packaged_resource,
+    require_publish: bool = False,
 ) -> dict[str, Any]:
     """The **only** trusted data path. Cannot authorize using supplied snapshots."""
     try:
@@ -307,6 +308,13 @@ def evaluate_live_gate(
     path="/repos/"+"/".join(urllib.parse.quote(x,safe="") for x in repository.split("/"))
     pr=_api(path+f"/pulls/{pr_number}",token)
     labels = pr.get("labels") if type(pr) is dict else None
+    if require_publish and not (
+        type(labels) is list and any(
+            type(item) is dict and item.get("name") == "ontology-batch-publish"
+            for item in labels
+        )
+    ):
+        _abort("current live PR lacks publication authorization label")
     single_agent = (
         type(labels) is list and
         "ontology-single-agent-review" in {
@@ -398,7 +406,10 @@ def evaluate_live_gate(
     # This is a live GitHub workflow observation, NOT an independent reviewer
     # signature. In single-agent mode the identity is intentionally the author.
     result["provenance"]=(
-        "github-live-rest-verified-single-agent-adversarial-two-pass;not-offline-signed"
+        result["provenance"].replace(
+            "untrusted-json-evaluation-only;",
+            "github-live-rest-verified-single-agent;not-offline-signed;", 1
+        )
         if single_agent else
         "github-live-rest-verified-at-this-run;not-offline-signed"
     )
@@ -424,7 +435,8 @@ def main() -> int:
             fetch_pr_head_context() if args.from_pr_head
             else (_json_file(args.packet), _json_file(args.ledger), packaged_resource)
         )
-        result=evaluate_live_gate(packet, ledger, resource_loader=read)
+        result=evaluate_live_gate(packet, ledger, resource_loader=read,
+                                  require_publish=args.publish_handoff)
         if args.publish_handoff:
             from tfont.overlay_handoff import (
                 build_overlay_handoff, verify_overlay_handoff_integrity,
@@ -434,7 +446,8 @@ def main() -> int:
             # Live GitHub approval is still fetched again immediately below.
             verify_overlay_handoff_integrity(pack)
             encoded = json.dumps(pack, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
-            fresh = evaluate_live_gate(packet, ledger, resource_loader=read)
+            fresh = evaluate_live_gate(packet, ledger, resource_loader=read,
+                                       require_publish=True)
             if fresh != result:
                 _abort("review authority changed before handoff publication")
             # Exclusive fixed output: no overwrite, symlink following, caller

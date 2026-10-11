@@ -8,6 +8,7 @@ opt-in labels, corpus source pins, row commitments and current head.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from typing import Any
 
@@ -188,6 +189,11 @@ def evaluate_single_agent_snapshot(
     ordered = sorted(parsed["rows"], key=lambda r:r["mapping_id"])
     counts = {d:sum(row["disposition"] == d for row in ordered)
               for d in ("accept", "reject", "needs-evidence")}
+    challenge_digest = hashlib.sha256(canonical_json_bytes({
+        "review_id": first[1], "submitted_at": challenge["submitted_at"],
+        "commit_id": challenge["commit_id"], "body": challenge["body"],
+        "login": challenge["user"]["login"], "state": challenge["state"],
+    })).hexdigest()
     return {
         "schema_version": 1,
         "packet_id": packet["packet_id"],
@@ -200,7 +206,10 @@ def evaluate_single_agent_snapshot(
         "submitted_at": decision["submitted_at"],
         "counts": counts,
         "rows": copy.deepcopy(ordered),
-        "provenance": "untrusted-json-evaluation-only;single-agent-adversarial-two-pass",
+        "provenance": (
+            "untrusted-json-evaluation-only;single-agent-adversarial-two-pass;"
+            f"challenge-review-id={first[1]};challenge-event-sha256={challenge_digest}"
+        ),
     }
 
 

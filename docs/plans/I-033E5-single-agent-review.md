@@ -7,3 +7,7 @@
 3. `docs/reviewing-batches.md`: true single-agent two-pass procedure and explicit nonproof of cognitive independence; two authenticated COMMENTED PR reviews, then optional `/ontoTF verify-review` command for protected recheck.
 4. CI complete Python 3.10 + 3.12 exact-head suite, source-grounded logically independent adversarial review **after** code is complete, correct failures, rerun exact SHA and squash merge only when green.
 5. Then use existing PR #324 or successor to demonstrate real ten-row batch with actual challenge-first and decision reviews, verified accepted-only overlay; keep #303 open until attestation artifacts exist. No fake second principal.
+
+## Independent publication-race corrections
+
+Two verified RED regressions demonstrate that a valid challenge-body edit yields identical observations, and a publish-label withdrawal between complete live checks still permits output. Bind the challenge review ID and canonical SHA256 of its exact body, commit, actor, timestamp and state into deterministic provenance, preserving the closed observation schema. Preserve that binding when marking the observation live. Require the current live publication label on both publication evaluations, in addition to comparing policy labels/base ref inside each evaluation. Hash/event identity authenticates the audit trail, not the scholarly quality. Re-review the new exact head independently after these changes.
