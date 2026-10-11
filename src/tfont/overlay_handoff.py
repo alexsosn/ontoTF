@@ -260,14 +260,19 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
         _require(type(corpus_pack["added_evidence"]) is list
                  and type(corpus_pack["inherited_evidence"]) is list,
                  "unsealed evidence lists malformed")
+        ontology_dir = pack["ontology_lock_resource"].rsplit("/", 1)[0] + "/"
         for entry in corpus_pack["added_evidence"]:
             _require(type(entry) is dict and set(entry) == {"resource", "record"}
                      and type(entry["resource"]) is str
-                     and entry["resource"].startswith(f"resources/profiles/{corpus}/")
                      and entry["resource"].endswith(".json")
                      and all(part not in {"", ".", ".."}
                              for part in entry["resource"].split("/")),
                      "unsealed new evidence path malformed")
+            name = entry["resource"]
+            in_corpus = name.startswith(f"resources/profiles/{corpus}/")
+            in_ontology = name.startswith(ontology_dir)
+            _require(in_corpus or in_ontology,
+                     "unsealed new evidence outside protected source namespaces")
             record = entry["record"]
             _require(type(record) is dict
                      and record.get("content_mode") == "normalized-record"
@@ -276,6 +281,25 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
                      and record["evidence_id"] not in added_evidence
                      and record["evidence_id"] not in original_evidence,
                      "unsealed new evidence invalid or shadows installed evidence")
+            if in_ontology:
+                # Real positive POS mappings reference ontology class evidence
+                # already shipped in protected main, not PR-authored source
+                # data. Recheck the exact lock revision, class and bytes; do
+                # not broaden this rule to arbitrary ontology/candidate paths.
+                content = record.get("reviewed_content")
+                _require(record.get("kind") == "ontology-definition"
+                         and record.get("evidence_id", "").startswith("evidence:olia:")
+                         and record.get("source_uri") == lock["source_uri"]
+                         and record.get("source_revision") == lock["source_revision"]
+                         and type(content) is dict
+                         and content.get("rdf_type") == "owl:Class"
+                         and content.get("snapshot_digest") == lock["content_digest"]
+                         and content.get("target") in lock["terms_used"]
+                         and record == packaged_resource(name),
+                         "unsealed ontology evidence differs from protected pinned class")
+            else:
+                _require(record.get("kind") != "ontology-definition",
+                         "ontology evidence must use protected ontology resource path")
             added_evidence[record["evidence_id"]] = record
         inherited = set()
         for ref in corpus_pack["inherited_evidence"]:
