@@ -441,24 +441,31 @@ def main() -> int:
             from tfont.overlay_handoff import (
                 build_overlay_handoff, verify_overlay_handoff_integrity,
             )
-            pack = build_overlay_handoff(packet, ledger, result, resource_loader=read)
-            # Independent structural check does NOT issue review authority.
-            # Live GitHub approval is still fetched again immediately below.
-            verify_overlay_handoff_integrity(pack)
-            encoded = json.dumps(pack, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+            if not 10 <= len(packet["rows"]) <= 50:
+                _abort("publication requires 10–50 source-bound proposed decisions")
+            # Zero acceptance is an audit-only outcome; never sign an empty
+            # release or an existing file left by another invocation.
+            encoded = None
+            if result["counts"]["accept"]:
+                pack = build_overlay_handoff(packet, ledger, result, resource_loader=read)
+                verify_overlay_handoff_integrity(pack)
+                encoded = json.dumps(pack, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+            elif Path("batch-review-pack.json").exists() or Path("batch-review-pack.json").is_symlink():
+                _abort("audit-only outcome cannot leave an existing handoff for signing")
             fresh = evaluate_live_gate(packet, ledger, resource_loader=read,
                                        require_publish=True)
             if fresh != result:
                 _abort("review authority changed before handoff publication")
-            # Exclusive fixed output: no overwrite, symlink following, caller
-            # path or offline receipt. Signing is performed by the workflow.
-            with Path("batch-review-pack.json").open("x", encoding="utf-8") as output:
-                try:
-                    output.write(encoded)
-                    output.flush()
-                except OSError:
-                    Path("batch-review-pack.json").unlink()
-                    raise
+            if encoded is not None:
+                # Exclusive fixed output: no overwrite, symlink following,
+                # caller path or offline receipt. Workflow performs signing.
+                with Path("batch-review-pack.json").open("x", encoding="utf-8") as output:
+                    try:
+                        output.write(encoded)
+                        output.flush()
+                    except OSError:
+                        Path("batch-review-pack.json").unlink()
+                        raise
     except (ExternalReviewError, KeyError, TypeError, ValueError, OSError) as exc:
         print(f"REJECTED: {exc}",file=sys.stderr)
         return 1

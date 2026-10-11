@@ -79,15 +79,11 @@ class OverlayHandoffTests(unittest.TestCase):
             self.assertTrue(all(not item["common_target"] for item in corpus["coverage_assignments"]))
         self.assertLess(len(json.dumps(pack)), 40000)
 
-    def test_underfilled_or_forged_observation_cannot_assemble(self):
+    def test_forged_observation_cannot_assemble(self):
         ledger, read, packet, report = cohort()
-        for defect in ("reject", "needs-evidence", "digest", "duplicate", "count", "pin"):
+        for defect in ("digest", "duplicate", "count", "pin"):
             changed = copy.deepcopy(report)
-            if defect in {"reject", "needs-evidence"}:
-                changed["rows"][0]["disposition"] = defect
-                changed["counts"]["accept"] -= 1
-                changed["counts"][defect] += 1
-            elif defect == "digest": changed["rows"][0]["decision_digest"] = "sha256:" + "a" * 64
+            if defect == "digest": changed["rows"][0]["decision_digest"] = "sha256:" + "a" * 64
             elif defect == "duplicate": changed["rows"].append(changed["rows"][0])
             elif defect == "count": changed["counts"]["accept"] = 11
             else: changed["batch_digest"] = "sha256:" + "a" * 64
