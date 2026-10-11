@@ -397,10 +397,89 @@ def verify_supersession_batch_preview(
         raise NativeSupersessionError("invalid untrusted batch preview JSON") from exc
 
 
+_MULTI_AUTHORITY = "untrusted-multi-corpus-supersession-preview"
+_MULTI_COHORT_FIELDS = frozenset({"base_release", "active_mappings", "transitions"})
+
+
+def plan_multi_corpus_native_supersession(
+    *, cohorts: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Compose 1–50 source-validated accepted promotions across corpus releases.
+
+    Each cohort is independently checked against its own immutable active
+    index. This is only an untrusted proposal preview. A protected, live,
+    separately reviewed publisher must still authenticate and apply it.
+    No corpus-to-corpus mapping equivalence or release authority is implied.
+    """
+    try:
+        _require(type(cohorts) is list and 1 <= len(cohorts) <= 50,
+                 "multi-corpus batch must have 1–50 nonempty cohorts")
+        records: list[dict[str, Any]] = []
+        seen_corpora: set[str] = set()
+        total = 0
+        for index, cohort in enumerate(cohorts):
+            _require(type(cohort) is dict and set(cohort) == _MULTI_COHORT_FIELDS,
+                     f"cohort {index}: invalid/authoritative-looking input fields")
+            proposal = plan_native_only_supersession_batch(
+                transitions=cohort["transitions"],
+                base_release=cohort["base_release"],
+                active_mappings=cohort["active_mappings"],
+            )
+            corpus = proposal["corpus_id"]
+            _require(corpus not in seen_corpora,
+                     "duplicate corpus release cohort in multi-corpus batch")
+            seen_corpora.add(corpus)
+            total += proposal["count"]
+            _require(total <= 50,
+                     "multi-corpus batch exceeds 50 proposed accepted promotions")
+            records.append({
+                "corpus_id": corpus,
+                "base_release": proposal["base_release"],
+                "count": proposal["count"],
+                "batch": proposal,
+            })
+        records.sort(key=lambda record: record["corpus_id"])
+        preview = {
+            "schema_version": 1,
+            "transition_kind": "native-only-to-exact-multi-corpus",
+            "authority": _MULTI_AUTHORITY,
+            "release_authorized": False,
+            "count": total,
+            "corpus_count": len(records),
+            "corpora": records,
+        }
+        preview["content_digest"] = _digest(preview)
+        return preview
+    except NativeSupersessionError:
+        raise
+    except (KeyError, IndexError, TypeError, ValueError, AttributeError, RecursionError) as exc:
+        raise NativeSupersessionError(
+            "invalid or untrusted multi-corpus supersession input"
+        ) from exc
+
+
+def verify_multi_corpus_native_supersession_preview(
+    preview: dict[str, Any], *, cohorts: list[dict[str, Any]],
+) -> None:
+    """Recompute the entire preview; never authenticate GitHub review or release."""
+    _require(type(preview) is dict, "multi-corpus preview must be an object")
+    expected = plan_multi_corpus_native_supersession(cohorts=cohorts)
+    try:
+        _require(canonical_json_bytes(preview) == canonical_json_bytes(expected),
+                 "multi-corpus preview differs from the source-backed cohorts")
+    except NativeSupersessionError:
+        raise
+    except (TypeError, ValueError, RecursionError) as exc:
+        raise NativeSupersessionError("invalid multi-corpus preview JSON") from exc
+
+
+
 __all__ = [
     "NativeSupersessionError",
     "plan_native_only_supersession",
     "verify_supersession_preview",
     "plan_native_only_supersession_batch",
     "verify_supersession_batch_preview",
+    "plan_multi_corpus_native_supersession",
+    "verify_multi_corpus_native_supersession_preview",
 ]
