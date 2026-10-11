@@ -16,7 +16,8 @@ Introduce one shared **pure, untrusted preview** `tfont.mapping_supersession.pla
 - predecessor is content-digest-bound `reviewed` native-only Mapping v2 with no projection;
 - proposed successor is a still-UNREVIEWED, digest-bound positive Mapping v2 with one exact target class;
 - corpus/native selector and source-bound dependencies, profile/capability scope are identical;
-- predecessor/source provenance remains intact, new ontology class evidence has a matching canonical digest, RDF type, target URI and immutable lock snapshot;
+- caller must also supply its *full active mapping index*; one and only one active mapping may own the native selector, it must be byte-identical to the predecessor, and no inherited active mapping/projection ID may collide with the replacement; a digest of that active-index identity set is part of the preview;
+- predecessor/source provenance remains intact, original category evidence explicitly supports word-level feature scope, and new ontology class evidence has a matching canonical digest, RDF type, target URI and immutable lock snapshot;
 - mapping IDs differ, so the old mapping remains addressable in release history and cannot be overwritten. A separate transition explicitly retires the old mapping from the *effective* active index and selects the new one. No active duplicate selector.
 - the returned closed-shape deterministic preview has a content digest and a literal non-authoritative marker. A caller-provided old `review.status=reviewed` is **not** an independently verified GitHub signoff and must NEVER be treated as authority by itself.
 
