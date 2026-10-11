@@ -13,7 +13,7 @@ from tfont.review_packets import verify_review_packet
 
 
 ROOT = Path(__file__).resolve().parents[2]
-MANIFEST = ROOT / "docs/research/data/batch_review/inputs.json"
+MANIFEST = ROOT / "docs/research/data/batch_review/i033e3-inputs.json"
 SOURCE_LINES = {
     "bhsa": {
         "art": ("article", 17),

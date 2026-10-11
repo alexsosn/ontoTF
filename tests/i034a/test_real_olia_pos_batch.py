@@ -60,7 +60,7 @@ class RealOLiAPOSBatch(unittest.TestCase):
         cls.ontology_lock = packaged_resource(LOCK)
         cls.old_lock = packaged_resource(BASE + "/lock-linguistic-0.4.0.json")
         old_inputs = json.loads(
-            (ROOT / "docs/research/data/batch_review/inputs.json").read_text()
+            (ROOT / "docs/research/data/batch_review/i033e3-inputs.json").read_text()
         )
         evidence = {
             # Reuse frozen BHSA source definitions; Syriac's previous
