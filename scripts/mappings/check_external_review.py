@@ -375,6 +375,11 @@ def evaluate_live_gate(
                 record["number"], record["state"], record["draft"],
                 record["head"]["sha"], record["head"]["repo"]["full_name"],
                 record["base"]["repo"]["full_name"], record["user"]["login"],
+                record["base"].get("ref"),
+                frozenset(item["name"] for item in record.get("labels", [])
+                          if item["name"] in {"ontology-batch-review",
+                                              "ontology-single-agent-review",
+                                              "ontology-batch-publish"}),
             )
         except (KeyError, TypeError) as exc:
             raise ExternalReviewError("GitHub PR changed or became unreadable") from exc

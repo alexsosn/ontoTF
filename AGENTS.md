@@ -96,6 +96,8 @@ Every PR that changes research conclusions, architecture, mappings, schemas, run
 
 **Independent means the final review is performed by a different person or a separately instantiated review agent/context that did not author the PR changes.** The authoring agent must not count its own reread or self-audit as the required independent review.
 
+The development agent is responsible for arranging and completing all reviews. A distinct GitHub account or external human reviewer is **not required**. Use a separately instantiated non-author review context for the adversarial pass and record its findings and per-row dispositions under the existing repository account. GitHub identity authenticates the audit trail; it does not establish logical independence or scholarly truth. For batch publication use the explicit agent-review policy and exact-head challenge/decision events, never impersonate a second principal or label these as external-person approval.
+
 The reviewer must check the PR against:
 
 - the parent issue acceptance criteria;

@@ -7,9 +7,10 @@ Examples (run trusted main code with untrusted PR checkout as DATA):
   # Independent reviewer replaces EVERY null with accept/reject/needs-evidence.
   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --review-decisions decisions.json
 
-An independent authorized GitHub account must paste the last output into the
-PR's "Approve" review field, not as an ordinary comment. The protected gate
-rechecks current PR head, GitHub reviewer permission, and all decision digests.
+In agent-review mode, submit an independently completed challenge report and
+then explicit decisions as two exact-head COMMENT PR reviews under the existing
+account. The protected gate rechecks head, labels, permissions and row digests.
+The optional legacy external-review mode uses a distinct APPROVED review.
 """
 from __future__ import annotations
 

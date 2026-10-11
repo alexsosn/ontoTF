@@ -6,7 +6,7 @@
 ## Observations from real repository code
 
 - Current `external_review_gate.evaluate_review_snapshot` requires GitHub `APPROVED`, a `User` distinct from PR author, and write/maintain/admin collaborator permission; it rejects author `COMMENTED` reviews. PR #324 consequently passed source-bound packet verification but the protected live workflow correctly rejected the missing external review.
-- In this repository, **one agent and one GitHub account (`alexsosn`) do all authoring and review**. A second identity must not be invented and the work must not deadlock on an unavailable human or App. GitHub prevents PR authors from approving their own PR; a PR review of type `COMMENTED` is possible and produces GitHub-authored immutable review ID, submitted timestamp and `commit_id`.
+- In this repository, **the development agent arranges all authoring and separately instantiated adversarial review contexts, using one GitHub account (`alexsosn`) for the audit trail**. A second identity must not be invented and the work must not deadlock on an unavailable human or App. GitHub prevents PR authors from approving their own PR; a PR review of type `COMMENTED` is possible and produces GitHub-authored immutable review ID, submitted timestamp and `commit_id`.
 - Existing `pull_request_target` / `issue_comment` protected workflow executes `main` code, fetches candidate ledger, packet and source evidence **only as JSON** at exact PR SHA, and re-fetches reviews, permissions, PR identity and revision before publishing. `overlay_handoff` accepts only the exact existing observation fields and >=10 accepted decisions; preserving the current schema avoids independent refactors.
 - Existing `ontoTF-batch-review-v1` row decisions and `reviewer_handoff.render_review_body` are reusable: one v1 `COMMENTED` author review can record explicit decisions, but **alone is never sufficient** to publish.
 
@@ -27,3 +27,9 @@ This is **process-level logical independence**, not distinct reviewer identity: 
 - Do not accept a single author comment, one self-supplied JSON receipt, blank boilerplate source checks or an unconditional `accept` list. Strict event headers, per-row commitments, and current SHA are mandatory.
 - A malicious author with protected repo admin privileges can still publish poorly reasoned mappings; the aim here is honest, auditable, adversarial single-agent review plus tests and preserved original corpus pins, not proof of a second trust principal.
 - No new per-entity PR, CLI workflow, or 10× CI tax.
+
+## User correction and primary API evidence
+
+On 2026-10-11 the user explicitly removed the distinct authorized reviewer prerequisite and assigned all review responsibility to the development agent, using subagents as needed. This supersedes the previous second-account requirement; it does not remove scholarly per-row scrutiny or the non-author review context gate. Record the actual review context and findings, rather than infer independence from prose length or two event IDs. GitHub's [review REST API](https://docs.github.com/en/rest/pulls/reviews#create-a-review-for-a-pull-request) defines COMMENT events and explicit commit_id binding; the list endpoint returns chronological reviews with actual submitted_at and state.
+
+A verified new RED test shows live publication-policy labels can change between PR reads without invalidating the prior identity check. Include the three policy labels and base ref in the compared snapshot. Unrelated labels do not affect the review policy.
