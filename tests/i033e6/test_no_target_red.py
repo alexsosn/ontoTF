@@ -147,9 +147,11 @@ class NoTargetBatchRed(unittest.TestCase):
             if path.endswith("/collaborators/" + REVIEWER + "/permission"):
                 return {"permission": "write"}
             raise AssertionError("Unexpected privileged route: " + path)
-        with patch.dict(os.environ, {"GITHUB_TOKEN": "test-read-token"}), \\
-             patch.object(gate, "_github_event", return_value=(REPO, 299, SHA)), \\
-             patch.object(gate, "_api", side_effect=api):
+        with (
+            patch.dict(os.environ, {"GITHUB_TOKEN": "test-read-token"}),
+            patch.object(gate, "_github_event", return_value=(REPO, 299, SHA)),
+            patch.object(gate, "_api", side_effect=api),
+        ):
             got_packet, got_ledger, verified = gate.fetch_pr_head_context()
             self.assertTrue(verify_review_packet(
                 got_packet, got_ledger, resource_loader=verified
