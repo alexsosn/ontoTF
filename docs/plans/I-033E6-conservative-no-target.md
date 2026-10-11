@@ -1,0 +1,12 @@
+# I-033E6 plan — one conservative batch contract, not per-item release
+
+Issue #312; research `docs/research/I-033E6-conservative-no-target.md`.
+
+1. RED: tests construct ledger v2 using existing real BHSA native source evidence and a reasoned no-target alternative. Assertions: no projections, no target, no ontology evidence, proposal not parseable as published mapping, packet/decision digest changes with rationale/pin, and old exact v1 frozen bytes unchanged.
+2. RED adversarial: term_key even null, self review, missing rationale, value not in verified original definitions, bad source revision/digest, duplicate same selector with exact, recomputed packet checksum with target injection, reviewer reject/needs-evidence not treated as publishing, schema and shape substitution.
+3. GREEN: extend `compile_candidate_batch` with exact v1/v2 and native-only v2 closed shapes. Reuse current verified source/ontology registries for exact, but native-only binds **only native evidence**. Use stable `mapping:{corpus}:native-sp-{value}` ID and canonical semantic digest; never create review or acceptance.
+4. Packet v2: allow 0 or 1 projection according to native_state, with null target/kind/projection digest for no-target; commitment contains complete compiler candidate. Existing v1 packet output identical; changed packet schema version is explicit, while reviewer wire protocol stays v1.
+5. Protected check: extend the existing `external_review_gate._packet_rows` schema acceptance from v1 to v2 while preserving packet self-digest, exact-head reviewer identity, all-row decisions and second-pass `verify_review_packet`. No new workflows or publisher.
+6. Supplementary candidate source evidence test: reproduce BHSA `prps` original-source line 24 and R-005 observed count via already pinned source/evidence mechanism; fail closed on altered source revision/source definition. If this is not representable with installed evidence only, use `CandidateEvidenceResources` with exact established source pin and new source definitions; do not widen accepted source features.
+7. Run focused parametric tests on PR head and full Python 3.10/3.12 regression + wheel. Independently review whether the new row is genuinely no-target in all rendered/compiler/reviewer paths and that historic 27 vs native-only dispositions stay immutable.
+8. Only merge expected head when all exact-head gates green. Do not close parent #303/#300: externally reviewed release writer remains missing; don't claim real >=10-row production coverage.
