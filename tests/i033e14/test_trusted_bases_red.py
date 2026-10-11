@@ -53,6 +53,11 @@ class TrustedHandoffBaseRed(unittest.TestCase):
                           side_effect=lambda name: mutated if name==REGISTRY else packaged_resource(name)),self.assertRaises(ValueError):
             overlay_handoff._trusted_handoff_base("bhsa")
         mutated=copy.deepcopy(original)
+        mutated["corpora"]["bhsa"]["coverage_git_blob"]="0"*40
+        with patch.object(overlay_handoff,"packaged_resource",
+                          side_effect=lambda name: mutated if name==REGISTRY else packaged_resource(name)),self.assertRaises(ValueError):
+            overlay_handoff._trusted_handoff_base("bhsa")
+        mutated=copy.deepcopy(original)
         mutated["corpora"]["bhsa"]["bogus_authentication"]="self-approved"
         with patch.object(overlay_handoff,"packaged_resource",
                           side_effect=lambda name: mutated if name==REGISTRY else packaged_resource(name)),self.assertRaises(ValueError):
@@ -66,6 +71,24 @@ class TrustedHandoffBaseRed(unittest.TestCase):
                           for x in pack["corpora"]},
                          {corpus:tuple(EXPECTED[corpus][:2]) for corpus in ("bhsa","syriac")})
         self.assertIsNone(overlay_handoff.verify_overlay_handoff_integrity(pack))
+
+    def test_forged_internally_consistent_historical_coverage_source_rejected(self):
+        ledger,read,packet,observation=cohort()
+        pack=assemble(ledger,read,packet,observation)
+        replaced=copy.deepcopy(pack)
+        corpus=next(c for c in replaced["corpora"] if c["corpus_id"]=="bhsa")
+        old=load_packaged_coverage_manifest("p004-r011-baseline-v1","bhsa")
+        corpus["coverage_base"]={
+            "resource_set":"p004-r011-baseline-v1",
+            "manifest_digest":overlay_handoff._digest(old),
+            "denominator_digest":old["denominator_digest"],
+        }
+        replaced["content_digest"]=overlay_handoff._digest({
+            k:v for k,v in replaced.items() if k!="content_digest"
+        })
+        # Hash consistency alone must never grant a stale selection.
+        with self.assertRaisesRegex(ValueError,"coverage base"):
+            overlay_handoff.verify_overlay_handoff_integrity(replaced)
 
     def test_rehashed_wrong_coverage_set_cannot_bypass_trusted_selection(self):
         ledger,read,packet,observation=cohort()
