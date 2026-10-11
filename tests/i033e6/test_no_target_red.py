@@ -100,6 +100,68 @@ class NoTargetBatchRed(unittest.TestCase):
             self.assertNotIn("release_authorized", result)
         self.assertFalse(packet["release_authorized"])
 
+    def test_protected_exact_head_fetch_and_live_review_v2(self):
+        import os
+        from urllib.parse import unquote
+        from unittest.mock import patch
+        from tests.i033e import test_protected_pr_batch_gate_red as transport
+
+        ledger, read = no_target_cohort()
+        packet = build_review_packet(ledger, resource_loader=read)
+        name = ledger["source_registry"]["bhsa"]["evidence_resource"]
+        source_path = "docs/research/data/batch_review/evidence/bhsa-prps.json"
+        manifest = {
+            "schema_version": 2,
+            "ledger": transport.LEDGER,
+            "packet": transport.PACKET,
+            "evidence_resources": {name: source_path},
+        }
+        records = {
+            transport.MANIFEST: transport.blob(
+                json.dumps(manifest).encode(), transport.MANIFEST
+            ),
+            transport.LEDGER: transport.blob(
+                json.dumps(ledger).encode(), transport.LEDGER
+            ),
+            transport.PACKET: transport.blob(
+                json.dumps(packet).encode(), transport.PACKET
+            ),
+            source_path: transport.blob(
+                json.dumps(read(name)).encode(), source_path
+            ),
+        }
+        fixture = transport.ProtectedBatchGateRED()
+        fixture.setUp()
+        gate = fixture.gate
+        routes = []
+        def api(path, token):
+            routes.append(path)
+            if path.endswith("/pulls/299"):
+                return pr_data()
+            if "/contents/" in path:
+                name_at_head, ref = path.split("/contents/", 1)[1].split("?ref=")
+                self.assertEqual(ref, SHA)
+                return records[unquote(name_at_head)]
+            if "/reviews?" in path:
+                return [review(packet)]
+            if path.endswith("/collaborators/" + REVIEWER + "/permission"):
+                return {"permission": "write"}
+            raise AssertionError("Unexpected privileged route: " + path)
+        with patch.dict(os.environ, {"GITHUB_TOKEN": "test-read-token"}), \\
+             patch.object(gate, "_github_event", return_value=(REPO, 299, SHA)), \\
+             patch.object(gate, "_api", side_effect=api):
+            got_packet, got_ledger, verified = gate.fetch_pr_head_context()
+            self.assertTrue(verify_review_packet(
+                got_packet, got_ledger, resource_loader=verified
+            ))
+            eligibility = gate.evaluate_live_gate(
+                got_packet, got_ledger, resource_loader=verified
+            )
+        self.assertEqual(got_packet["schema_version"], 2)
+        self.assertEqual(eligibility["counts"]["accept"], 1)
+        self.assertNotIn("release_authorized", eligibility)
+        self.assertEqual(sum("/contents/" in route for route in routes), 4)
+
     def test_v1_frozen_legacy_packet_and_candidates_unchanged(self):
         from pathlib import Path
         root = Path(__file__).resolve().parents[2]
