@@ -12,7 +12,7 @@
 
 ## Proposed disposition and counterexamples
 
-- Only **BHSA `node_type:lex`** may be a candidate `exact` **class** projection to OntoLex `LexicalEntry`; the underlying identity is the actual TF `lex` **node id**, not the `lex` or `lex0` text field. This is a proposal, not an approved per-node RDF publication.
+- Only **BHSA `node_type:lex`** may be a candidate `exact` **class** projection to OntoLex `LexicalEntry`; the underlying identity is the actual TF `lex` **node id**, not the `lex` or `lex0` text field. This is a proposal, not an approved per-node RDF publication. **Adversarial formal-model caveat:** the published OntoLex Core §3.1 specifies `lexicalForm min 1 Form` for every `LexicalEntry`. We have no independently evidenced BHSA lex-node-to-Form resource identity or entry→Form edge yet. RDF open-world existential inference cannot replace queryable, source-attested Form identity: the exact *class candidate* cannot become a production mapping until this condition and an OntoLex snapshot lock are reviewed.
 - All remaining 26 features are `native-only` **at this source/ontology evidence level**, i.e. keep queryable in TF, without a reviewed common-target projection *yet*. This is not a claim that no OntoLex, SKOS or complementary vocabulary property exists.
 - BHSA `lex_utf8`/`voc_lex_utf8` and other lexical spelling fields might later feed an identified OntoLex Form with `writtenRep`; first identify the Form and canonical/otherForm relationship. Rendering strings alone do not prove either.
 - Do not confuse BHSA `g_cons`/`g_word*` token surfaces with entry Forms, and do not identify lexical entries by normalized `lex0`.
