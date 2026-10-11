@@ -261,14 +261,43 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
                  and type(corpus_pack["inherited_evidence"]) is list,
                  "unsealed evidence lists malformed")
         for entry in corpus_pack["added_evidence"]:
-            _require(type(entry) is dict and set(entry) == {"resource", "record"}
-                     and type(entry["resource"]) is str
-                     and entry["resource"].startswith(f"resources/profiles/{corpus}/")
-                     and entry["resource"].endswith(".json")
-                     and all(part not in {"", ".", ".."}
-                             for part in entry["resource"].split("/")),
+            # Positive POS mappings cite OLiA class evidence from the immutable
+            # installed ontology snapshot, not just source-corpus evidence.
+            # Only the exact protected lock's namespace is eligible; a PR
+            # cannot introduce a self-authored ontology class through a
+            # handoff or change the existing locked class evidence record.
+            _require(type(entry) is dict and set(entry) == {"resource", "record"},
+                     "unsealed new evidence entry malformed")
+            resource = entry["resource"]
+            ontology_prefix = (
+                f"resources/ontologies/{lock['ontology_id']}/"
+                f"{lock['source_revision']}/"
+            )
+            _require(type(resource) is str
+                     and resource.endswith(".json")
+                     and all(part not in {"", ".", ".."} and "\\\\" not in part
+                             for part in resource.split("/"))
+                     and (
+                         resource.startswith(f"resources/profiles/{corpus}/")
+                         or resource.startswith(ontology_prefix)
+                     ),
                      "unsealed new evidence path malformed")
             record = entry["record"]
+            if resource.startswith(ontology_prefix):
+                # This is a protected-main packaged resource. A supplementary
+                # PR-head ontology record must NEVER substitute for it.
+                installed_ontology_evidence = packaged_resource(resource)
+                content = record.get("reviewed_content") if type(record) is dict else None
+                _require(record == installed_ontology_evidence
+                         and record.get("kind") == "ontology-definition"
+                         and record.get("source_revision") == lock["source_revision"]
+                         and record.get("source_uri") == lock["source_uri"]
+                         and type(content) is dict
+                         and content.get("snapshot_digest") == lock["content_digest"]
+                         and content.get("rdf_type") == "owl:Class"
+                         and content.get("target") in lock["terms_used"],
+                         "new ontology evidence must be identical to protected pinned class")
+
             _require(type(record) is dict
                      and record.get("content_mode") == "normalized-record"
                      and record.get("content_digest") == evidence_record_digest(record)
