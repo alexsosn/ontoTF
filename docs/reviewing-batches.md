@@ -1,6 +1,6 @@
 # Reviewing ontoTF ontology candidate batches
 
-The development agent performs all scholarly and code reviews. No second authorized GitHub account is required. A separately instantiated non-author review context must challenge every semantic assertion using original pinned corpus definitions, ontology specifications, and conservative alternatives. The existing repository account records this work; authenticated events are an audit trail, not proof of cognitive independence or scholarly truth.
+The development agent performs all scholarly and code reviews. No second authorized GitHub account is required. A logically independent adversarial review pass by the same agent (a separate context is optional) must challenge every semantic assertion using original pinned corpus definitions, ontology specifications, and conservative alternatives. The existing repository account records this work; authenticated events are an audit trail, not proof of cognitive independence or scholarly truth.
 
 ## Trusted tools, candidate data
 
@@ -15,7 +15,7 @@ The dossier is explicitly unreviewed. Inspect its primary source URI, immutable 
 
 ## Challenge, adjudicate, verify
 
-1. Arrange a non-author skeptical review context and give it the exact PR SHA, packet, source evidence, research/plan and ontology lock. It should try to disprove each proposed assertion and inspect the original sources. Record the reviewer context identity, methodology, findings, uncertainties and resolution in the report summary. Fill every worksheet challenge and source check from the actual completed review. Null entries deliberately cannot pass validation. Report text length and citation checks only enforce audit completeness; they cannot assess reasoning quality.
+1. Conduct a **separately reasoned**, skeptical review of the exact PR SHA, packet, source evidence, research/plan and ontology lock. Start from possible failure cases, attempt to disprove each assertion against the original sources, and avoid reusing the author's argument as your evidence. Record the actual review method, findings, uncertainties and resolution in the report summary; no additional agent/context identity is required. Fill every worksheet challenge and source check from the actual completed review. Null entries deliberately cannot pass validation. Report text length and citation checks only enforce audit completeness; they cannot assess reasoning quality.
 2. Render the completed report:
 
    ```bash
