@@ -117,11 +117,11 @@ def review_dossier(
         "Independently check the cited upstream immutable revision and original",
         "source line for each item before selecting any disposition.",
         "",
-        f"Packet digest: \`{packet['batch_digest']}\`",
-        f"Batch: \`{packet.get('batch_id', 'unknown')}\`",
+        f"Packet digest: `{packet['batch_digest']}`",
+        f"Batch: `{packet.get('batch_id', 'unknown')}`",
         f"Rows requiring independent decisions: **{len(expected)}**",
         "",
-        "Every row needs one explicit \`accept\`, \`reject\`, or \`needs-evidence\` decision.",
+        "Every row needs one explicit `accept`, `reject`, or `needs-evidence` decision.",
         "A native-only proposal does not establish the absence of ontology equivalents.",
         "",
     ]
@@ -156,14 +156,14 @@ def review_dossier(
         header.extend([
             f"### {row['mapping_id']}",
             "",
-            f"- Native selector: \`{native['node_type']}.{native['feature']}={native['value']}\`",
+            f"- Native selector: `{native['node_type']}.{native['feature']}={native['value']}`",
             f"- Source definition: **{gloss}**, line {line}",
             f"- Source: {record['source_uri']}",
-            f"- Pinned source revision: \`{record['source_revision']}\`",
-            f"- Proposal: \`{row['assessment']}\`; ontology target: "
-            + (f"\`{row['ontology_target']}\`" if row["ontology_target"] else "**none proposed**"),
+            f"- Pinned source revision: `{record['source_revision']}`",
+            f"- Proposal: `{row['assessment']}`; ontology target: "
+            + (f"`{row['ontology_target']}`" if row["ontology_target"] else "**none proposed**"),
             f"- Author's rationale (requires challenge): {row['rationale']}",
-            f"- Decision digest: \`{row['decision_digest']}\`",
+            f"- Decision digest: `{row['decision_digest']}`",
             "",
         ])
     return "\n".join(header)
