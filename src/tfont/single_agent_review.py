@@ -76,6 +76,33 @@ def parse_adversarial_report(body: str, packet: dict[str, Any]) -> dict[str, Any
     return obj
 
 
+def adversarial_template(packet: dict[str, Any]) -> dict[str, Any]:
+    """Unset challenge worksheet. It cannot pass the release gate as written."""
+    expected = _packet_rows(packet)
+    return {
+        "packet_digest": packet["batch_digest"],
+        "summary": None,
+        "rows": [
+            {
+                "mapping_id": row["mapping_id"],
+                "decision_digest": expected[row["mapping_id"]],
+                "challenge": None,
+                "source_check": None,
+            }
+            for row in sorted(packet["rows"], key=lambda x: x["mapping_id"])
+        ],
+    }
+
+
+def render_adversarial_body(packet: dict[str, Any], worksheet: dict[str, Any]) -> str:
+    """Format explicit challenge evidence only; never issue a GitHub review."""
+    _require(type(worksheet) is dict, "adversarial worksheet must be an object")
+    text = _HEADER + json.dumps(worksheet, ensure_ascii=False,
+                                sort_keys=True, separators=(",", ":"))
+    parse_adversarial_report(text, packet)
+    return text
+
+
 def evaluate_single_agent_snapshot(
     *,
     packet: dict[str, Any], repository: str, pr_number: int,
@@ -177,4 +204,7 @@ def evaluate_single_agent_snapshot(
     }
 
 
-__all__=["parse_adversarial_report", "evaluate_single_agent_snapshot"]
+__all__=[
+    "parse_adversarial_report", "adversarial_template",
+    "render_adversarial_body", "evaluate_single_agent_snapshot",
+]
