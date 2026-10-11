@@ -213,6 +213,32 @@ class SingleAgentReviewRED(unittest.TestCase):
         formatted = render_adversarial_body(self.packet, submitted)
         self.assertEqual(parse_adversarial_report(formatted,self.packet),submitted)
 
+    def test_live_policy_label_change_invalidates_the_snapshot(self):
+        from unittest.mock import patch
+        import os
+        from tests.i033e.test_live_review_gate_adversarial import cli
+        module = cli()
+        reads = 0
+        def remote(path, token):
+            nonlocal reads
+            if path.endswith("/pulls/299"):
+                reads += 1
+                pr = candidate_pr()
+                if reads == 2:
+                    pr["labels"].append({"name": "ontology-batch-publish"})
+                return pr
+            if "/reviews?" in path:
+                return self.pair()
+            if "/collaborators/" in path:
+                return {"permission": "admin"}
+            raise AssertionError(path)
+        with patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}), \
+             patch.object(module, "_github_event", return_value=(REPO,299,SHA)), \
+             patch.object(module, "_api", side_effect=remote), \
+             self.assertRaises(ExternalReviewError):
+            module.evaluate_live_gate(self.packet, self.ledger,
+                                      resource_loader=self.source_reader)
+
     def test_existing_cli_can_build_two_review_bodies_without_issuing_approval(self):
         import tempfile
         from pathlib import Path
