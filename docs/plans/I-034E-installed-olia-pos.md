@@ -1,0 +1,8 @@
+# I-034E — research-plan-TDD-release
+
+1. Research actual protected run `38172147473`, archive `11714296834`, pack `sha256:9379981e...`, and old registered 0.4.0 profile/map/evidence/parent. Verify 15 accepted rows, 12 with exact classes and 3 native-only; original #343 GitHub challenge and decision events are real.
+2. **RED** add `tests/i034e/test_installed_olia_pos_release.py`: explicit `load_profile(corpus, release_id="0.5.0")` retains all older mappings, adds 9 BHSA/6 Syriac word.sp selectors, 12 positive total, 3 native-only, correct reviewed original semantic digests and zero duplicate native selectors; historic `current` must remain 0.4, 0.5 unavailable for ExtraBiblical; semantic IR exact OLiA targets; negative drift tests and wheel/package file presence.
+3. **GREEN** add versioned immutable 0.5 profiles, existing 0.4 mapping/parent blobs copied byte-for-byte into new release resource paths, two actual source evidence records, 15 real accepted mapping resources with review metadata, release-catalog registration and minimal additive dual-lock loader support.
+4. Validate against actual protected attested positive pack checksum/reviewer provenance, not fabricated labels or an untrusted test fixture. No autopublish based on local pack JSON alone.
+5. Full Python 3.10/3.12 exact-head CI, independent failure-seeking original source/schema code review for all 15 decisions, fix/report, SHA-guarded merge only when green. Retain historical 0.1–0.4 artifacts and current alias.
+6. Remaining after install: separately compute signed sparse production coverage successor and verify **real** TF word-node execution with a trusted loaded corpus. Do not claim complete seven-model coverage.
