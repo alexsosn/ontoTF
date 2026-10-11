@@ -23,6 +23,7 @@ class NativeOnlySupersessionRed(unittest.TestCase):
             "ontology_evidence":self.ontology,
             "ontology_lock":self.lock,
             "base_release":"bhsa/0.3.0",
+            "active_mappings":[self.old],
         }
         args.update(kwargs)
         return plan_native_only_supersession(**args)
@@ -37,6 +38,7 @@ class NativeOnlySupersessionRed(unittest.TestCase):
         self.assertEqual(preview["transition_kind"],"native-only-to-exact")
         self.assertEqual(preview["base_release"],"bhsa/0.3.0")
         self.assertEqual(preview["corpus_id"],"bhsa")
+        self.assertTrue(preview["active_base_digest"].startswith("sha256:"))
         self.assertEqual(preview["retired"]["mapping_id"],self.old["mapping_id"])
         self.assertEqual(preview["retired"]["semantic_digest"],self.old["mapping_semantic_digest"])
         self.assertEqual(preview["candidate"]["mapping_id"],self.new["mapping_id"])
@@ -50,6 +52,7 @@ class NativeOnlySupersessionRed(unittest.TestCase):
             preview,previous=self.old,candidate=self.new,
             native_evidence=self.source,ontology_evidence=self.ontology,
             ontology_lock=self.lock,base_release="bhsa/0.3.0",
+            active_mappings=[self.old],
         ))
 
     def test_not_equivalent_to_approving_a_release(self):
@@ -84,6 +87,7 @@ class NativeOnlySupersessionRed(unittest.TestCase):
                         forged,previous=self.old,candidate=self.new,
                         native_evidence=self.source,ontology_evidence=self.ontology,
                         ontology_lock=self.lock,base_release="bhsa/0.3.0",
+                        active_mappings=[self.old],
                     )
 
 
