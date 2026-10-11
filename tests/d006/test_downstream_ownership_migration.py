@@ -329,14 +329,6 @@ class RepositoryMigrationREDTests(unittest.TestCase):
             with self.subTest(path=relative):
                 self.assertNotIn(relative, FROZEN_MISSING)
                 self.assertFalse((ROOT / relative).exists())
-        for module in (
-            "test_projection_key_error_boundary.py",
-            "test_source_bundle_diagnostic_paths.py",
-            "test_utf16_diagnostic_paths.py",
-        ):
-            with self.subTest(module=module):
-                self.assertTrue((ROOT / "tests" / "i002" / module).is_file())
-
     def test_frozen_carriers_are_missing_or_matching(self):
         frozen = dict(sorted(FROZEN_MISSING.items()))
         unexpected_missing = set(self.missing) - set(frozen)

@@ -12,14 +12,9 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 TESTS=ROOT/"tests"
 WORKFLOWS=ROOT/".github/workflows"
-REDUNDANT=(
-    "i001-validation.yml",
-    "i002-validation.yml",
-    "i003-validation.yml",
-    "i004-semantic-validation.yml",
-    "i005-semantic-ir.yml",
-    "i006-semantic-resolver.yml",
-    "i015-noun-morphology.yml",
+# Only the still-active historical focused owner needs a path-filter contract.
+# Retired I-001–I-007/I-015 owners are checked by the dedicated F-030 test.
+ACTIVE_SCOPED=(
     "f002-wheel-schema-resources.yml",
 )
 
@@ -49,8 +44,8 @@ class FullSuiteDiscoveryGate(unittest.TestCase):
         self.assertIn("python -m pytest tests/research -q",wf)
         self.assertIn('python-version: ["3.10", "3.12"]',wf)
 
-    def test_pruning_applies_only_to_legacy_generic_source_triggers(self):
-        for name in REDUNDANT:
+    def test_remaining_focused_workflow_avoids_generic_source_triggers(self):
+        for name in ACTIVE_SCOPED:
             with self.subTest(workflow=name):
                 source=(WORKFLOWS/name).read_text(encoding="utf-8")
                 self.assertIn("  pull_request:",source)
