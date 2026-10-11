@@ -110,6 +110,43 @@ class NativeOverlaySmokeTests(unittest.TestCase):
         self.assertEqual(result["selectors"][0]["sample_nodes"],[2,4])
         self.assertEqual(result["shared_target_count"],0)
 
+    def test_actual_committed_ten_row_candidate_source_and_ledger_can_be_scanned(self):
+        # Real candidate JSON checked into main (PR #324), not only the
+        # synthetic test_overlay_handoff cohort. Reviewer metadata here is
+        # deliberately an UNAUTHENTICATED test fixture, not GitHub approval.
+        import json
+        from pathlib import Path
+        from tfont.candidate_evidence import CandidateEvidenceResources
+        from tfont.overlay_handoff import build_overlay_handoff
+        from tfont.review_packets import verify_review_packet
+        root = Path(__file__).resolve().parents[2]
+        meta = json.loads((root / "docs/research/data/batch_review/inputs.json").read_text())
+        ledger = json.loads((root / meta["ledger"]).read_text())
+        packet = json.loads((root / meta["packet"]).read_text())
+        evidence = {
+            name: json.loads((root / filename).read_text())
+            for name, filename in meta["evidence_resources"].items()
+        }
+        reader = CandidateEvidenceResources(ledger, evidence)
+        verify_review_packet(packet, ledger, resource_loader=reader)
+        mock = copy.deepcopy(self.observation)
+        mock.update(
+            packet_id=packet["packet_id"],
+            batch_digest=packet["batch_digest"],
+            rows=[{"mapping_id": r["mapping_id"],
+                   "decision_digest": r["decision_digest"],
+                   "disposition": "accept"} for r in packet["rows"]],
+            counts={"accept": 10, "reject": 0, "needs-evidence": 0},
+            provenance="UNAUTHENTICATED-TEST-FIXTURE-NOT-LIVE-APPROVAL",
+        )
+        staged = build_overlay_handoff(packet, ledger, mock, resource_loader=reader)
+        self.assertEqual(staged["counts"], {"exact": 0, "native-only": 10})
+        api = _API((1,2,3,4), {1:"prde",2:"inrg",3:"art",4:"word"})
+        result = inspect_native_overlay(staged, self.context("bhsa",api))
+        self.assertEqual(result["shared_target_count"], 0)
+        self.assertEqual({r["value"]:r["count"] for r in result["selectors"]}["prde"], 1)
+        self.assertEqual(len(result["selectors"]), 9)
+
     def test_wrong_corpus_parent_or_component_digest_fail_closed(self):
         api=_API((1,),{1:"art"})
         base=self.context("bhsa",api)
