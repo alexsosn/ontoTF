@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from tfont.review_packets import serialized
 from tests.i033e.test_overlay_handoff import cohort
@@ -71,6 +72,13 @@ class GenericCandidatePacketWriterTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             writer.build_packet(self.root, mode="check")
 
+    def test_failed_atomic_publish_does_not_leave_partial_final_packet(self):
+        with patch("os.link", side_effect=OSError("simulated publish failure")):
+            with self.assertRaises(OSError):
+                writer.build_packet(self.root, mode="write")
+        self.assertFalse((self.root / PACKET).exists())
+        self.assertEqual(list((self.root / PACKET).parent.glob(".ontotf-packet-*")), [])
+
     def test_rejects_evidence_mutation_even_when_source_paths_are_valid(self):
         local = next(iter(self.manifest["evidence_resources"].values()))
         altered = copy.deepcopy(self.loader(next(iter(self.manifest["evidence_resources"]))))
@@ -85,6 +93,8 @@ class GenericCandidatePacketWriterTests(unittest.TestCase):
             {"packet": "/tmp/untrusted.json"},
             {"packet": "docs/research/data/generated/i033d/../injection.json"},
             {"evidence_resources": []},
+            {"evidence_resources": {next(iter(self.manifest["evidence_resources"])): ["not", "a", "path"]}},
+            {"evidence_resources": {next(iter(self.manifest["evidence_resources"])): {"foreign": "value"}}},
             {"evidence_resources": {next(iter(self.manifest["evidence_resources"])): "/tmp/evil.json"}},
             {"schema_version": 1},  # supplementary evidence requires v2
         ]
