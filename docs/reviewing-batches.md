@@ -27,7 +27,7 @@ The candidate checkout's exact HEAD SHA must match the PR head in the GitHub UI.
 1. Verify the source evidence and candidate scope. For readability, emit the dossier:
 
    ```bash
-   python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --dossier > review-dossier.md
+   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --dossier > review-dossier.md
    ```
 
    It lists mapping IDs, selectors, original pinned source URI/revision and proposed source-definition line, target (if any), reason and source-bound SHA. **Review the pinned original source and current ontology lock yourself.** Candidate source line citations and `native-only` decisions are not automatically correct.
@@ -35,7 +35,7 @@ The candidate checkout's exact HEAD SHA must match the PR head in the GitHub UI.
 2. Produce an **unset** worksheet:
 
    ```bash
-   python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --template > decisions.json
+   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --template > decisions.json
    ```
 
    Every `"disposition": null` is intentionally invalid for final GitHub approval. Edit each row yourself to precisely one `accept`, `reject` or `needs-evidence`; none is inferred. No missing or extra rows allowed. For PR #324, examine the distinction between BHSA pronoun subtypes and generic Syriac `pron`, and do not infer ontology absence merely from the limited installed OLiA terms.
@@ -43,7 +43,7 @@ The candidate checkout's exact HEAD SHA must match the PR head in the GitHub UI.
 3. Create the exact structured GitHub review body **after** reviewing and filling every row:
 
    ```bash
-   python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --review-decisions decisions.json > github-review-body.txt
+   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --review-decisions decisions.json > github-review-body.txt
    ```
 
    This validates the packet digest, exactly all row IDs and individual explicit dispositions, then copies in the reviewed packet's per-row decision digests. It does **not** authenticate the reviewer, does not invoke GitHub, and does **not** grant release authority. The handoff body has `ontoTF-batch-review-v1` header and JSON, ready to paste; it is NOT a self-authored receipt.

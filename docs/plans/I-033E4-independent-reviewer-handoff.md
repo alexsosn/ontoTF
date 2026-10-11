@@ -6,3 +6,7 @@
 4. Test `python -m unittest tests.i033e.test_reviewer_handoff -v` plus full exact-head Python 3.10/3.12 CI; inspect real PR #324 packet in review instructions without adding it to main.
 5. Independently challenge authority leakage, stale digests, foreign row IDs, unreviewed dispositions, evidence source drift, resource path handling, and JSON parser edge cases. Fix failures using fresh RED tests and rerun final-head CI; squash merge only after skeptical review posted and green checks.
 6. Keep #325 open until the user/repository installs or invites a genuinely independent authorized reviewer and #324 receives a real approved review. No self-approval or published mapping change in this PR.
+
+## Independent-review CLI correction
+
+The subprocess regression reproduced `ModuleNotFoundError: scripts` for the documented direct script command under Python 3.10. In-process tests had hidden this import-path failure. Use `python -m scripts.mappings.prepare_external_review` from the trusted repository root, which resolves the repository scripts package without importing candidate checkout code. Verify the command copied from the documentation in a fresh Python process before rerunning the full gate.
