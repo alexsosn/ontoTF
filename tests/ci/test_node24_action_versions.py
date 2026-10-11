@@ -10,7 +10,7 @@ CHECKOUT = re.compile(r'uses:\s*actions/checkout@(v\d+)')
 SETUP_PYTHON = re.compile(r'uses:\s*actions/setup-python@(v\d+)')
 EXACT_HEAD_REF = 'ref: ${{ github.event.pull_request.head.sha || github.sha }}'
 EXACT_HEAD_WORKFLOWS = (
-    'a001-tf-native-boundary.yml',
+    'full-suite.yml',
     'f008-p001-design-scope.yml',
     'f009-deep-digest-nesting.yml',
 )

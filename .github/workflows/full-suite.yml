@@ -46,6 +46,9 @@ jobs:
       - name: Execute previously hidden pytest research contracts
         run: python -m pytest tests/research -q
 
+      - name: Run TF-native architecture guards
+        run: python -m pytest tests/architecture -q
+
       - name: Verify immutable historical coverage and routing snapshots
         run: |
           python scripts/coverage/build_p004_r011_baseline.py --check
