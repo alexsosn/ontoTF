@@ -1,0 +1,10 @@
+# I-033E9 — partial acceptance implementation plan
+
+Inputs remain verified candidate ledger/packet, pinned source/ontology resources and a fully joined review observation. The proposal must contain 10–50 rows; every row has exactly one accept/reject/needs-evidence disposition. Accepted-only handoff fields and schema_version=1 remain unchanged. Previously valid ten-accept artifacts remain valid; the accepted cardinality widens to 1–50.
+
+1. RED: use the ten real-source BHSA/Syriac fixture with nine accepted and one rejected, mixed accept/reject/needs-evidence, and one accepted corpus. Require integrity-valid sparse mappings/assignments, full audit counts, and no unaccepted IDs or dependencies. Test a recomputed nine-proposal packet fails despite positive accepts. Test zero acceptance returns a live rechecked audit without writing a handoff, including revocation after the first check.
+2. GREEN: separately enforce proposal cardinality and positive accepted cardinality in builder/validator. Preserve exact row/digest joins and all inherited/evidence/coverage checks. For zero acceptance the protected CLI skips assembly/signable output, rechecks the same live authority and returns the observation. Nonzero path retains validation and exclusive file creation.
+3. The existing protected workflow signs and uploads only when the fixed handoff exists. No new workflow or permissions. The audit job/artifact remains available for zero acceptance. Contract tests require both publish steps to have the fixed-file existence condition.
+4. Negative tests: altered counts/digests, omitted/duplicate rows, unaccepted mapping injection with recomputed checksum, zero-accept pack, underfilled proposal, stale live authority, inherited collisions. Run existing handoff/gate suites on Python 3.10/3.12 and canonical exact-head full tests/wheel before merge. Independent skeptical review must assess real-source fixture and fail-closed boundaries.
+
+No installed coverage increment or native-only promotion is claimed. Keep #329 open for its remaining acceptance criteria and #303/#300 for trusted installation.
