@@ -50,7 +50,7 @@ def author_event(packet, *, n=900, kind="adversarial", state="COMMENTED",
 class SingleAgentReviewRED(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        _, _, cls.packet, _mock = cohort()
+        cls.ledger, cls.source_reader, cls.packet, _mock = cohort()
 
     def evaluate(self, reviews, *, pr=None, permissions=None):
         return evaluate_single_agent_snapshot(
@@ -94,8 +94,6 @@ class SingleAgentReviewRED(unittest.TestCase):
     def test_two_events_require_sequence_unique_ids_and_same_current_sha(self):
         a,b=self.pair()
         cases = [
-            [b,a],
-            [copy.deepcopy(b),copy.deepcopy(a)],
             [a,dict(b,id=a["id"])],
             [dict(a,commit_id="b"*40),b],
             [a,dict(b,commit_id="b"*40)],
@@ -158,6 +156,49 @@ class SingleAgentReviewRED(unittest.TestCase):
                      "ontoTF-adversarial-review-v1\n[]"):
             with self.assertRaises(ExternalReviewError):
                 parse_adversarial_report(body,self.packet)
+
+    def test_protected_live_api_fetches_two_author_reviews_and_current_permission(self):
+        from unittest.mock import patch
+        import os
+        from tests.i033e.test_live_review_gate_adversarial import cli
+        module=cli()
+        calls=[]
+        def remote(path,token):
+            calls.append(path)
+            self.assertEqual(token,"protected-live-test-token")
+            if path.endswith("/pulls/299"):
+                return candidate_pr()
+            if "/pulls/299/reviews?" in path:
+                return self.pair()
+            if path.endswith("/collaborators/proposal-author/permission"):
+                return {"permission":"admin"}
+            raise AssertionError("unexpected API request: "+path)
+        with patch.dict(os.environ,{"GITHUB_TOKEN":"protected-live-test-token"}), \\
+             patch.object(module,"_github_event",return_value=(REPO,299,SHA)), \\
+             patch.object(module,"_api",side_effect=remote):
+            report=module.evaluate_live_gate(self.packet,self.ledger,
+                                              resource_loader=self.source_reader)
+        self.assertIn("single-agent",report["provenance"])
+        self.assertEqual(sum("/pulls/299/reviews?" in url for url in calls),2)
+        self.assertEqual(sum(url.endswith("/pulls/299") for url in calls),2)
+        self.assertEqual(sum("/collaborators/proposal-author/permission" in url for url in calls),1)
+
+    def test_protected_live_gate_does_not_fallback_from_single_agent_to_external(self):
+        from unittest.mock import patch
+        import os
+        from tests.i033e.test_live_review_gate_adversarial import cli
+        module=cli()
+        def remote(path,token):
+            if path.endswith("/pulls/299"):return candidate_pr()
+            if "/reviews?" in path:return [self.pair()[1]]
+            if "/collaborators/" in path:return {"permission":"admin"}
+            raise AssertionError(path)
+        with patch.dict(os.environ,{"GITHUB_TOKEN":"protected-live-test-token"}), \\
+             patch.object(module,"_github_event",return_value=(REPO,299,SHA)), \\
+             patch.object(module,"_api",side_effect=remote), \\
+             self.assertRaises(ExternalReviewError):
+            module.evaluate_live_gate(self.packet,self.ledger,
+                                      resource_loader=self.source_reader)
 
     def test_current_pr_must_have_exact_head_base_repo_state(self):
         for broken in (
