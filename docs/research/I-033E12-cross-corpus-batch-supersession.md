@@ -17,7 +17,7 @@ Published `syriac/0.4.0` also has reviewed `word.sp=adjv` and `word.sp=advb` wit
 ## Decision / trust boundary
 
 - Bundle 1–50 accepted upgrades across 1–7 corpus cohorts. Each cohort has its own exact `corpus/version`, immutable active base and 1–50 proposed transitions. Rerun the existing **single-corpus** batch validator for each cohort, don't reinvent source/ontology/review policy.
-- Assert global total <=50 and unique corpus cohorts. Sort by corpus and stable predecessor IDs and compute a canonical digest independent of input permutations.
+- Assert global total <=50 and unique corpus cohorts. Require the same pinned ontology model/lock/revision/snapshot digest for **every** transition in the multi-corpus batch; merely individually valid but mutually incompatible ontology snapshots cannot share one release. Sort by corpus and stable predecessor IDs and compute a canonical digest independent of input permutations.
 - Emit only `authority=untrusted-multi-corpus-supersession-preview`, `release_authorized=false`, per-corpus source-bound preview data, and digest. Do **not** create a new `SemanticSourceBundle`, overwrite installed profiles, edit coverage, use GitHub approvals, or publish an active registry.
 - Provide exact-input verification by recomputing the full record. If base releases collide, a corpus is repeated or any single transition is altered, fail closed.
 - The genuine missing capability after this stage remains the protected authenticated *publisher* (#303) that resolves former active selectors and writes validated immutable release overlays. This PR must not be counted as production OLiA coverage.
