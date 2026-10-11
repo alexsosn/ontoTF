@@ -1,142 +1,122 @@
-"""I-028E: reverse source-index lookup never merges identical BHSA lexical strings."""
+"""I-028E: actual lexical collisions and a reusable lex-only TF lookup index."""
 from __future__ import annotations
 
-from dataclasses import FrozenInstanceError
 from types import SimpleNamespace
 import unittest
 
 from tfont.bhsa_lexical_preview import (
-    BHSA_SOURCE_REVISION,
-    LexicalProjectionError,
+    BHSA_SOURCE_REVISION, LexicalProjectionError,
     project_bhsa_lexical_form,
     resolve_bhsa_lexical_uri,
+    build_bhsa_lexical_form_index,
     find_bhsa_lexical_forms,
 )
 
-A = 1437729
-B = 1437796
-W = 17
-WRITTEN = "אַף"  # actual shared vocalized value in the two source lex nodes
+A, B, W = 1437729, 1437796, 17
+FIRST, LAST = 1437602, 1446831
+WRITTEN = "אַף"  # two distinct lex nodes in original ETCBC BHSA
 SOURCE = BHSA_SOURCE_REVISION
 
 
 class FakeFeature:
-    def __init__(self, data, *, search=None):
-        self.data = data
-        self.search = search
+    def __init__(self, fallback, overrides=None):
+        self.fallback = fallback
+        self.overrides = dict(overrides or {})
+        self.calls = []
 
     def v(self, node):
-        return self.data.get(node)
+        self.calls.append(node)
+        return self.overrides.get(node, self.fallback(node))
 
-    def s(self, value):
-        if self.search is not None:
-            return self.search(value)
-        return [node for node, got in self.data.items() if got == value]
+    def s(self, _value):
+        raise AssertionError("TF NodeFeature.s performs a 435820-entry linear scan")
 
 
 class FakeTF:
-    def __init__(self, *, typed=None, lex=None, vocal=None, languages=None, search=None):
-        otype = {A: "lex", B: "lex", W: "word", 1446832: "word"}
-        spelled = {A: ">P/", B: ">P"}
-        vocalized = {A: WRITTEN, B: WRITTEN, W: WRITTEN}
-        lang = {A: "hbo", B: "hbo"}
-        for target, override in ((otype, typed), (spelled, lex),
-                                 (vocalized, vocal), (lang, languages)):
-            if override:
-                target.update(override)
+    """Full 9,230-node contract stub; only named collision values are source copies."""
+
+    def __init__(self, *, type_overrides=None, lexical=None, vocal=None, languages=None):
+        def otype(n):
+            return "lex" if FIRST <= n <= LAST else "word"
         self.F = SimpleNamespace(
-            otype=FakeFeature(otype),
-            lex=FakeFeature(spelled),
-            voc_lex_utf8=FakeFeature(vocalized, search=search),
-            languageISO=FakeFeature(lang),
+            otype=FakeFeature(otype, type_overrides),
+            lex=FakeFeature(lambda n: f"L{n}/", {A: ">P/", B: ">P", **(lexical or {})}),
+            voc_lex_utf8=FakeFeature(lambda n: f"source-form-{n}",
+                                    {A: WRITTEN, B: WRITTEN, W: WRITTEN, **(vocal or {})}),
+            languageISO=FakeFeature(lambda n: "hbo", languages),
         )
 
 
 class BHSAInverseContractTests(unittest.TestCase):
-    def test_original_vocalization_collision_retains_two_entry_form_identities(self):
+    def test_real_duplicate_vocalization_stays_two_distinct_source_identities(self):
         api = FakeTF()
-        matches = find_bhsa_lexical_forms(api, WRITTEN, source_revision=SOURCE)
-        self.assertIsInstance(matches, tuple)
-        self.assertEqual([m.source_node_id for m in matches], [A, B])
-        self.assertEqual([m.source_lexeme for m in matches], [">P/", ">P"])
-        self.assertEqual([m.written_rep for m in matches], [WRITTEN, WRITTEN])
-        self.assertEqual(len({m.entry_iri for m in matches}), 2)
-        self.assertEqual(len({m.form_iri for m in matches}), 2)
-        self.assertEqual({m.authority for m in matches}, {"unreviewed-derived-preview"})
-        self.assertFalse(any(m.source_node_id == W for m in matches))
+        index = build_bhsa_lexical_form_index(api, source_revision=SOURCE)
+        hits = index.lookup(WRITTEN)
+        self.assertEqual([x.source_node_id for x in hits], [A, B])
+        self.assertEqual([x.source_lexeme for x in hits], [">P/", ">P"])
+        self.assertEqual([x.written_rep for x in hits], [WRITTEN, WRITTEN])
+        self.assertEqual(len({x.entry_iri for x in hits}), 2)
+        self.assertEqual(len({x.form_iri for x in hits}), 2)
+        self.assertEqual({x.authority for x in hits}, {"unreviewed-derived-preview"})
+        self.assertEqual(index.source_revision, SOURCE)
+        self.assertEqual(index.lexeme_count, 9230)
+        self.assertEqual(index.lookup("nonexistent"), ())
+        self.assertEqual(
+            [m.source_node_id for m in find_bhsa_lexical_forms(api, WRITTEN, source_revision=SOURCE)],
+            [A, B],
+        )
 
-    def test_inverse_uris_reverify_against_runtime_features(self):
+    def test_index_only_inspects_source_lexeme_nodes_and_supports_fast_reuse(self):
+        api = FakeTF()
+        index = build_bhsa_lexical_form_index(api, source_revision=SOURCE)
+        for f in (api.F.otype, api.F.lex, api.F.voc_lex_utf8, api.F.languageISO):
+            self.assertEqual(len(f.calls), 9230)
+            self.assertEqual(f.calls[0], FIRST)
+            self.assertEqual(f.calls[-1], LAST)
+            self.assertNotIn(W, f.calls)  # word-scoped TF data are never scanned
+        old_calls = len(api.F.voc_lex_utf8.calls)
+        for _ in range(100):
+            self.assertEqual(len(index.lookup(WRITTEN)), 2)
+        self.assertEqual(len(api.F.voc_lex_utf8.calls), old_calls)
+        self.assertEqual(index.lookup("source-form-1437602")[0].source_node_id, FIRST)
+        # A snapshot must be rebuilt after corpus data changes, not silently cached globally.
+        with self.assertRaises(TypeError):
+            index.by_written_rep[WRITTEN] = ()
+
+    def test_inverse_uris_revalidate_actual_tf_source_not_only_urn_syntax(self):
         api = FakeTF()
         for node in (A, B):
-            direct = project_bhsa_lexical_form(api, node, source_revision=SOURCE)
-            for uri, kind in ((direct.entry_iri, "entry"), (direct.form_iri, "form")):
-                with self.subTest(node=node, kind=kind):
-                    parsed_kind, resolved = resolve_bhsa_lexical_uri(
-                        api, uri, source_revision=SOURCE
-                    )
-                    self.assertEqual(parsed_kind, kind)
-                    self.assertEqual(resolved, direct)
+            actual = project_bhsa_lexical_form(api, node, source_revision=SOURCE)
+            for uri, want in ((actual.entry_iri, "entry"), (actual.form_iri, "form")):
+                with self.subTest(node=node, kind=want):
+                    kind, result = resolve_bhsa_lexical_uri(api, uri, source_revision=SOURCE)
+                    self.assertEqual(kind, want)
+                    self.assertEqual(result, actual)
         with self.assertRaises(LexicalProjectionError):
-            resolve_bhsa_lexical_uri(api, direct.form_iri, source_revision="0" * 40)
+            resolve_bhsa_lexical_uri(api, actual.form_iri, source_revision="0" * 40)
+        with self.assertRaises(LexicalProjectionError):
+            resolve_bhsa_lexical_uri(FakeTF(type_overrides={B: "word"}), actual.form_iri,
+                                    source_revision=SOURCE)
 
-    def test_index_query_order_is_deterministic_and_empty_result_is_unambiguous(self):
-        backwards = lambda query: [B, W, A] if query == WRITTEN else []
-        hits = find_bhsa_lexical_forms(FakeTF(search=backwards), WRITTEN, source_revision=SOURCE)
-        self.assertEqual([x.source_node_id for x in hits], [A, B])
-        self.assertEqual(
-            find_bhsa_lexical_forms(FakeTF(search=backwards), "nonexistent", source_revision=SOURCE),
-            (),
-        )
-        self.assertEqual(
-            find_bhsa_lexical_forms(FakeTF(search=lambda _: [W]), WRITTEN, source_revision=SOURCE),
-            (),
-        )
-
-    def test_adversarial_malformed_index_rejected(self):
-        cases = (
-            ("bad-duplicate", lambda _: [A, A]),
-            ("out-of-scope-lex", lambda _: [1446832]),
-            ("wrong-feature-value", lambda _: [B]),
-            ("index-bool", lambda _: [True]),
-            ("index-string", lambda _: [str(A)]),
-            ("not-an-index", lambda _: WRITTEN),
-        )
-        for name, search in cases:
+    def test_full_index_fails_closed_on_corrupted_source_or_wrong_pinned_revision(self):
+        for name, overrides in (
+            ("missing-lex-node", {"type_overrides": {B: "word"}}),
+            ("missing-lexical-value", {"lexical": {B: ""}}),
+            ("missing-vocal", {"vocal": {B: None}}),
+            ("invalid-language", {"languages": {B: "xx"}}),
+        ):
             with self.subTest(name=name):
-                api = FakeTF(search=search)
-                if name == "out-of-scope-lex":
-                    api.F.otype.data[1446832] = "lex"
-                if name == "wrong-feature-value":
-                    api.F.voc_lex_utf8.data[B] = "different source label"
                 with self.assertRaises(LexicalProjectionError):
-                    find_bhsa_lexical_forms(api, WRITTEN, source_revision=SOURCE)
-        missing_method = FakeTF()
-        missing_method.F.voc_lex_utf8.s = None
+                    build_bhsa_lexical_form_index(FakeTF(**overrides), source_revision=SOURCE)
         with self.assertRaises(LexicalProjectionError):
-            find_bhsa_lexical_forms(missing_method, WRITTEN, source_revision=SOURCE)
-
-    def test_valid_scope_with_invalid_source_details_stays_closed(self):
-        scenarios = (
-            {"lex": {B: None}},
-            {"languages": {B: "xx"}},
-            {"vocal": {B: None}},
-        )
-        for delta in scenarios:
-            with self.subTest(delta=delta):
-                api = FakeTF(**delta, search=lambda _: [A, B])
-                with self.assertRaises(LexicalProjectionError):
-                    find_bhsa_lexical_forms(api, WRITTEN, source_revision=SOURCE)
+            build_bhsa_lexical_form_index(FakeTF(), source_revision="0" * 40)
         for value in (None, b"x", "", True, 123):
             with self.subTest(value=value):
                 with self.assertRaises(LexicalProjectionError):
                     find_bhsa_lexical_forms(FakeTF(), value, source_revision=SOURCE)
         with self.assertRaises(LexicalProjectionError):
-            find_bhsa_lexical_forms(FakeTF(), WRITTEN, source_revision="0" * 40)
-        with self.assertRaises(LexicalProjectionError):
-            resolve_bhsa_lexical_uri(FakeTF(), "urn:tfont:derived:bhsa:wrong", source_revision=SOURCE)
-        forged = project_bhsa_lexical_form(FakeTF(), B, source_revision=SOURCE).form_iri
-        with self.assertRaises(LexicalProjectionError):
-            resolve_bhsa_lexical_uri(FakeTF(typed={B: "word"}), forged, source_revision=SOURCE)
+            resolve_bhsa_lexical_uri(FakeTF(), "urn:tfont:derived:bhsa:wrong",
+                                    source_revision=SOURCE)
 
 
 if __name__ == "__main__":
