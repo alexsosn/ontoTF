@@ -32,6 +32,7 @@ def api_for(a=True, b=True, overrides=None):
     data = {
         "otype": {A: "lex", B: "lex", 1: "word"},
         "lex": {A: "DC>[", B: "DC>/"},
+        "lex0": {A: "DC>", B: "DC>"},
         "voc_lex_utf8": {A: "דשׁא", B: "דֶּשֶׁא"},
         "languageISO": {A: "hbo", B: "hbo"},
     }
@@ -44,6 +45,7 @@ def api_for(a=True, b=True, overrides=None):
 class BHSADerivedLexicalFormTests(unittest.TestCase):
     def test_real_distinct_lex_nodes_same_lex0_are_distinct_entries_and_forms(self):
         tf = api_for()
+        self.assertEqual(tf.F.lex0.v(A), tf.F.lex0.v(B), "real source collision is the negative control")
         left = project_bhsa_lexical_form(tf, A, source_revision=SOURCE)
         right = project_bhsa_lexical_form(tf, B, source_revision=SOURCE)
         self.assertEqual(left.source_lexeme, "DC>[")
