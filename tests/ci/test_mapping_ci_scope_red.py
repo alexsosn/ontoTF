@@ -11,6 +11,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOWS = ROOT / ".github/workflows"
 
+# This map contains ONLY still-active focused PR owners. F-030 POS successors
+# were retired in favor of full-suite exact-head invariant checks; the
+# removed owners are enforced by test_ci_consolidation_pos_pilot.py.
 SCOPES = {
     "i009-production-bundles.yml": (
         ('"src/tfont/resources/**"', "'src/tfont/resources/**'"),
@@ -20,27 +23,7 @@ SCOPES = {
         ('"src/tfont/resources/coverage/**"', "'src/tfont/resources/coverage/**'"),
         "tests/i016/**",
     ),
-    "i026-work-queue.yml": (
-        ('"src/tfont/resources/coverage/**"', "'src/tfont/resources/coverage/**'"),
-        "tests/i026/**",
-    ),
-    "i027b1-bhsa-verb.yml": (
-        ('"src/tfont/production_bundles.py"', "'src/tfont/production_bundles.py'"),
-        "tests/i027b1/**",
-    ),
-    "i027b2-syriac-verb.yml": (
-        ('"src/tfont/production_bundles.py"', "'src/tfont/production_bundles.py'"),
-        "tests/i027b2/**",
-    ),
-    "i027b4-extrabiblical-verb.yml": (
-        ('"src/tfont/production_bundles.py"', "'src/tfont/production_bundles.py'"),
-        "tests/i027b4/**",
-    ),
-    "i027c2-adj-adv.yml": (
-        ('"src/tfont/production_bundles.py"', "'src/tfont/production_bundles.py'",
-         '"src/tfont/__init__.py"', "'src/tfont/__init__.py'"),
-        "tests/i027c2/**",
-    ),
+
 }
 
 
@@ -74,7 +57,7 @@ class CITriggerScopeRED(unittest.TestCase):
             with self.subTest(corpus=corpus):
                 self.assertIn('"' + corpus + '.json"', full)
 
-    def test_legacy_sources_only_keep_scoped_pr_triggers(self):
+    def test_remaining_legacy_sources_only_keep_scoped_pr_triggers(self):
         for workflow, (removed, retained) in SCOPES.items():
             src = (WORKFLOWS/workflow).read_text(encoding="utf-8")
             pr = pr_section(src)
