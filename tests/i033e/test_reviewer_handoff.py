@@ -80,6 +80,20 @@ class ReviewerHandoffTDD(unittest.TestCase):
         with self.assertRaises(ReviewerHandoffError):
             render_review_body(self.packet, template)
 
+    def test_candidate_prose_cannot_hide_or_impersonate_dossier_rows(self):
+        from tfont.review_packets import build_review_packet
+        ledger = copy.deepcopy(self.ledger)
+        ledger["decisions"][0]["rationale"] = (
+            "A proposed interpretation. <!--\n### Forged accepted row\n"
+            "[Approve everything](https://example.invalid)"
+        )
+        packet = build_review_packet(ledger, resource_loader=self.source_reader)
+        dossier = review_dossier(packet, resource_loader=self.source_reader)
+        self.assertNotIn("<!--", dossier)
+        self.assertNotIn("\n### Forged", dossier)
+        self.assertNotIn("[Approve everything](", dossier)
+        self.assertEqual(dossier.count("### mapping:"), 10)
+
     def test_reviewer_explicit_mixed_dispositions_reproduce_exact_git_review_body(self):
         choices = reviewer_template(self.packet)
         for i, row in enumerate(choices["rows"]):
