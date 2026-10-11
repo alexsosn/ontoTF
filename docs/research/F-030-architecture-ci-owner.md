@@ -1,5 +1,7 @@
 # F-030 / #327 — architecture guard discovery and ownership
 
+**Issue:** #291
+
 Observed at bc9f248 (parent #291): tests/architecture/test_tf_native_boundary.py has nine top-level pytest functions. unittest runs zero; pytest runs nine successfully. The canonical full-suite executes unittest discovery and a separate research pytest step, so it omits these architecture checks. The A-001 workflow executes the nine only on filtered AGENTS/schema/documentation/test paths; arbitrary runtime changes do not trigger them. There is no unique runner environment: it installs the same editable package, pytest and build as canonical CI and uses Python3.12. The tests read committed TF-native principles, ORACC/R007 supersession, P001 amendments and legacy v1 schema labels; they neither fetch a corpus nor grant outside-TF runtime capabilities.
 
 Options: retaining the focused job plus adding shared execution duplicates its work; widening focused source triggers preserves a redundant workflow and misses unrelated changed paths. Recommendation: explicit unfiltered architecture pytest step in the existing Python3.10/3.12 matrix, retire A-001 workflow and migrate its active exact-head action-version owner to full-suite. Preserve all nine tests and frozen source/research artifacts unchanged.
