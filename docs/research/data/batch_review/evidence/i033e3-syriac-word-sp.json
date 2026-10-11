@@ -1,0 +1,33 @@
+{
+  "content_digest": "sha256:0d40c17bbbc5631d082f0fbbcbb49e80d6b749cb65131a25b3e2013d6da4c86c",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:syriac:word-sp-batch-i033e3",
+  "kind": "corpus-feature-definition",
+  "reviewed_content": {
+    "documented_node_types": [
+      "word"
+    ],
+    "feature": "sp",
+    "feature_semantics": "part-of-speech",
+    "production_node_type": "word",
+    "source_definitions": {
+      "adjv": {
+        "featureObservations": 9001,
+        "gloss": "adjective",
+        "line": 84
+      },
+      "advb": {
+        "featureObservations": 5290,
+        "gloss": "adverb",
+        "line": 85
+      },
+      "pron": {
+        "gloss": "pronoun",
+        "line": 91
+      }
+    },
+    "target_tf_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
+  },
+  "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/linksyr/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/word_grammar"
+}
