@@ -151,7 +151,7 @@ class SingleAgentReviewRED(unittest.TestCase):
         for idx,v in enumerate(variants):
             with self.subTest(idx=idx), self.assertRaises(ExternalReviewError):
                 self.evaluate([dict(a,body="ontoTF-adversarial-review-v1\n"+json.dumps(v)),b])
-        for body in ("ontoTF-adversarial-review-v1\n{"x":1,"x":2}",
+        for body in ('ontoTF-adversarial-review-v1\n{"x":1,"x":2}',
                      "ontoTF-adversarial-review-v1\nNaN",
                      "ontoTF-adversarial-review-v1\n[]"):
             with self.assertRaises(ExternalReviewError):
