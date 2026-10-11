@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Offline candidate-review worksheet; output is NEVER GitHub approval.
 
-Examples (run on the exact candidate PR checkout, never in trusted CI):
-  python scripts/mappings/prepare_external_review.py --dossier
-  python scripts/mappings/prepare_external_review.py --template > decisions.json
-  # Reviewer deliberately replaces EVERY null with accept/reject/needs-evidence.
-  python scripts/mappings/prepare_external_review.py --review-decisions decisions.json
+Examples (run trusted main code with untrusted PR checkout as DATA):
+  python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --dossier
+  python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --template > decisions.json
+  # Independent reviewer replaces EVERY null with accept/reject/needs-evidence.
+  python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --review-decisions decisions.json
 
 An independent authorized GitHub account must paste the last output into the
 PR's "Approve" review field, not as an ordinary comment. The protected gate
