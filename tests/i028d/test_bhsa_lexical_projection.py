@@ -32,7 +32,7 @@ def api_for(a=True, b=True, overrides=None):
     data = {
         "otype": {A: "lex", B: "lex", 1: "word"},
         "lex": {A: "DC>[", B: "DC>/"},
-        "voc_lex_utf8": {A: "דשא", B: "דֶּשֶׁא"},
+        "voc_lex_utf8": {A: "דשׁא", B: "דֶּשֶׁא"},
         "languageISO": {A: "hbo", B: "hbo"},
     }
     if overrides:
@@ -48,7 +48,7 @@ class BHSADerivedLexicalFormTests(unittest.TestCase):
         right = project_bhsa_lexical_form(tf, B, source_revision=SOURCE)
         self.assertEqual(left.source_lexeme, "DC>[")
         self.assertEqual(right.source_lexeme, "DC>/")
-        self.assertEqual(left.written_rep, "דשא")
+        self.assertEqual(left.written_rep, "דשׁא")
         self.assertEqual(right.written_rep, "דֶּשֶׁא")
         self.assertEqual((left.language_tag, right.language_tag), ("hbo", "hbo"))
         self.assertNotEqual(left.entry_iri, right.entry_iri)
