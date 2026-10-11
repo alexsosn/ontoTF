@@ -141,6 +141,50 @@ class ReviewerHandoffTDD(unittest.TestCase):
                     else:
                         self.assertIn("line 17", generated)
 
+    def test_trusted_cli_reads_foreign_candidate_checkout_data_only(self):
+        from scripts.mappings import prepare_external_review as cli
+        from scripts.mappings.build_candidate_review_packet import build_packet
+        with tempfile.TemporaryDirectory() as outside:
+            root = Path(outside)
+            ledger = copy.deepcopy(self.ledger)
+            manifest = {
+                "schema_version": 2,
+                "ledger": "src/tfont/resources/batch_pilots/reviewer-foreign.json",
+                "packet": "docs/research/data/generated/i033d/reviewer-foreign-packet.json",
+                "evidence_resources": {},
+            }
+            for i, spec in enumerate(ledger["source_registry"].values()):
+                name = spec["evidence_resource"]
+                target = f"docs/research/data/batch_review/evidence/reviewer-{i}.json"
+                manifest["evidence_resources"][name] = target
+                resource = root / target
+                resource.parent.mkdir(parents=True, exist_ok=True)
+                resource.write_text(json.dumps(self.source_reader(name)), encoding="utf-8")
+            paths = [
+                ("docs/research/data/batch_review/inputs.json", manifest),
+                (manifest["ledger"], ledger),
+            ]
+            for name, data in paths:
+                file = root / name
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text(json.dumps(data), encoding="utf-8")
+            # The candidate checkout may contain untrusted Python. Neither
+            # the trusted authoring verifier nor the reviewer CLI imports it.
+            bad = root / "scripts/mappings/prepare_external_review.py"
+            bad.parent.mkdir(parents=True, exist_ok=True)
+            bad.write_text("raise RuntimeError('untrusted candidate code executed')", encoding="utf-8")
+            build_packet(root, mode="write")
+            for mode in ("--template", "--dossier"):
+                with patch.object(sys, "argv",
+                                  ["trusted-main/prepare_external_review.py", "--root", outside, mode]), \\
+                        contextlib.redirect_stdout(io.StringIO()) as output:
+                    self.assertEqual(cli.main(), 0)
+                if mode == "--template":
+                    self.assertEqual(json.loads(output.getvalue())["packet_digest"],
+                                     self.packet["batch_digest"])
+                else:
+                    self.assertIn("line 91", output.getvalue())
+
     def test_cli_rejects_duplicate_key_and_corrupt_decision_json(self):
         from scripts.mappings import prepare_external_review as cli
         with tempfile.TemporaryDirectory() as temp:
