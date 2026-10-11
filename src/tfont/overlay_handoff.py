@@ -336,17 +336,35 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
             dep_id = f'dep:{corpus}:word-sp:{binding["value"]}'
             _require(m.get("native_dependencies") == [dep_id],
                      "unsealed candidate dependency join invalid")
+            native_refs = [ref for ref in m.get("evidence", [])
+                           if type(ref) is dict and type(ref.get("evidence_id")) is str
+                           and ref["evidence_id"].startswith(f"evidence:{corpus}:")]
+            _require(len(native_refs) == 1,
+                     "unsealed candidate lacks unique corpus source authority")
+            native_ref = native_refs[0]
+            source_record = added_evidence.get(native_ref["evidence_id"],
+                                                original_evidence.get(native_ref["evidence_id"]))
+            source_content = source_record.get("reviewed_content", {}) if source_record else {}
+            _require(type(source_content) is dict
+                     and source_content.get("feature") == "sp"
+                     and source_content.get("production_node_type") == "word"
+                     and type(source_content.get("source_definitions")) is dict
+                     and binding["value"] in source_content["source_definitions"],
+                     "unsealed candidate selector has no pinned source definition")
             if dep_id in added_deps:
                 dep = added_deps[dep_id]
                 _require(dep["component_id"] == binding["component_id"]
                          and dep["assertion"] == {
                              "feature": "sp", "node_type": "word",
                              "value": binding["value"], "value_semantics": "semantic",
-                         }, "unsealed candidate native dependency mismatches selector")
+                         }
+                         and dep["evidence"] == [native_ref],
+                         "unsealed candidate native dependency mismatches selector or source")
                 used_deps.add(dep_id)
             else:
-                _require(dep_id in original_deps,
-                         "unsealed candidate lacks native dependency")
+                _require(dep_id in original_deps
+                         and original_deps[dep_id]["evidence"] == [native_ref],
+                         "unsealed inherited native dependency/evidence drift")
             _require(type(m.get("evidence")) is list and m["evidence"],
                      "unsealed candidate source evidence missing")
             for ref in m["evidence"]:
@@ -379,6 +397,7 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
                 _require(type(proj) is dict and "review" not in proj
                          and proj.get("assessment") == "exact"
                          and proj.get("native_execution_binding") == binding
+                         and proj.get("evidence") == m["evidence"]
                          and proj.get("target") in lock.get("terms_used", [])
                          and proj.get("projection_semantic_digest") == projection_semantic_digest_v1(proj),
                          "unsealed positive projection invalid or outside locked terms")
