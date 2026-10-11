@@ -4,6 +4,8 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import re
+from importlib.resources import files
 from typing import Any, Callable
 
 from .batch_proposals import compile_candidate_batch, packaged_resource
@@ -23,6 +25,66 @@ def _require(ok: bool, message: str) -> None:
 
 def _digest(value: Any) -> str:
     return "sha256:" + hashlib.sha256(canonical_json_bytes(value)).hexdigest()
+
+
+_PROTECTED_BASE_RESOURCE = "resources/batch_release_bases/v1.json"
+_PROTECTED_BASE_ID = "tfont-protected-batch-handoff-bases-v1"
+
+
+def _trusted_handoff_base(corpus: str) -> tuple[str, str]:
+    """Resolve an installed, byte-pinned base; never use author-supplied names.
+
+    The protected workflow imports this code from main, not from a PR checkout.
+    Registry selection remains release metadata, not GitHub review authority.
+    """
+    _require(type(corpus) is str and re.fullmatch(r"[a-z][a-z0-9_-]*", corpus) is not None,
+             "invalid handoff corpus identity")
+    registry = packaged_resource(_PROTECTED_BASE_RESOURCE)
+    _require(type(registry) is dict
+             and set(registry) == {"schema_version", "registry_id", "corpora"}
+             and type(registry["schema_version"]) is int
+             and registry["schema_version"] == 1
+             and registry["registry_id"] == _PROTECTED_BASE_ID
+             and type(registry["corpora"]) is dict
+             and bool(registry["corpora"]),
+             "invalid protected batch release base registry")
+    definitions = registry["corpora"]
+    _require(all(type(key) is str
+                 and re.fullmatch(r"[a-z][a-z0-9_-]*", key) is not None
+                 and type(value) is dict
+                 and set(value) == {
+                     "base_release", "coverage_resource_set", "coverage_git_blob",
+                 }
+                 for key, value in definitions.items()),
+             "invalid protected release base entries")
+    entry = definitions.get(corpus)
+    _require(entry is not None, "unsupported protected handoff corpus")
+    version, resource = entry["base_release"], entry["coverage_resource_set"]
+    _require(type(version) is str and re.fullmatch(r"[0-9]+\\.[0-9]+\\.[0-9]+", version)
+             and type(resource) is str
+             and re.fullmatch(r"p004-[a-zA-Z0-9._-]+-v[0-9]+", resource)
+             and type(entry["coverage_git_blob"]) is str
+             and re.fullmatch(r"[0-9a-f]{40}", entry["coverage_git_blob"]),
+             "invalid protected release base identity/pin")
+    # Current must be explicitly rotated by a reviewed registry change.
+    # A previous valid profile version is not an automatically acceptable base.
+    base = load_profile(corpus)
+    _require(base.profile.data["profile_version"] == version,
+             "protected handoff base release is stale relative to installed current")
+    coverage = load_packaged_coverage_manifest(resource, corpus)
+    _require(coverage["corpus_id"] == corpus
+             and coverage["manifest_id"] == f"coverage:{resource}:{corpus}",
+             "protected handoff coverage corpus/manifest mismatch")
+    try:
+        raw = files("tfont").joinpath("resources", "coverage", resource, f"{corpus}.json").read_bytes()
+    except (OSError, ValueError) as exc:
+        raise ValueError("protected handoff coverage source unavailable") from exc
+    blob = hashlib.sha1(
+        b"blob " + str(len(raw)).encode("ascii") + b"\\x00" + raw
+    ).hexdigest()
+    _require(blob == entry["coverage_git_blob"],
+             "protected handoff coverage source Git blob changed")
+    return version, resource
 
 
 def build_overlay_handoff(
@@ -78,11 +140,8 @@ def build_overlay_handoff(
     rows = {r["mapping_id"]: r for r in packet["rows"]}
     corpora = []
     for corpus in sorted({m["corpus_id"] for m in candidates}):
-        _require(corpus in {"bhsa", "syriac"}, "unsupported protected handoff corpus template")
+        version, coverage_set = _trusted_handoff_base(corpus)
         base = load_profile(corpus)
-        version = base.profile.data["profile_version"]
-        _require(version == "0.4.0", "pilot base release changed; explicit migration required")
-        coverage_set = f"p004-i027c2-{corpus}-adj-adv-v1"
         coverage = load_packaged_coverage_manifest(coverage_set, corpus)
         item_index = {item["item_id"]: item for item in coverage["semantic_items"]}
         inherited_bindings = [m["native_binding"] for m in base.mappings.data["mappings"]]
@@ -219,8 +278,11 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
     _require(type(pack["counts"]) is dict and set(pack["counts"]) == {
         "exact", "native-only",
     }, "unsealed mapping counts malformed")
-    _require(type(pack["corpora"]) is list and 1 <= len(pack["corpora"]) <= 2,
-             "unsupported unsealed pilot corpus count")
+    _require(type(pack["corpora"]) is list
+             and 1 <= len(pack["corpora"]) <= len(
+                 packaged_resource(_PROTECTED_BASE_RESOURCE)["corpora"]
+             ),
+             "unsupported unsealed corpus count")
     corpora_seen, mapping_ids, coverage_keys = set(), set(), set()
     counts = {"exact": 0, "native-only": 0}
     for corpus_pack in pack["corpora"]:
@@ -230,17 +292,15 @@ def verify_overlay_handoff_integrity(pack: dict[str, Any]) -> None:
             "inherited_evidence", "coverage_assignments",
         }, "unsealed per-corpus fields malformed")
         corpus = corpus_pack["corpus_id"]
-        _require(type(corpus) is str and corpus in {"bhsa", "syriac"}
-                 and corpus not in corpora_seen,
+        _require(type(corpus) is str and corpus not in corpora_seen,
                  "duplicate or unsupported unsealed corpus identity")
+        corpus_version, coverage_set = _trusted_handoff_base(corpus)
         corpora_seen.add(corpus)
         base = load_profile(corpus)
-        _require(corpus_pack["base_release"] == "0.4.0"
-                 and base.profile.data["profile_version"] == "0.4.0"
+        _require(corpus_pack["base_release"] == corpus_version
                  and corpus_pack["base_bundle_digest"] == _source_bundle_signature(base),
                  "unsealed installed base bundle mismatch")
 
-        coverage_set = f"p004-i027c2-{corpus}-adj-adv-v1"
         coverage = load_packaged_coverage_manifest(coverage_set, corpus)
         spec = corpus_pack["coverage_base"]
         _require(type(spec) is dict and set(spec) == {
