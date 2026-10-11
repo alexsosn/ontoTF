@@ -104,6 +104,18 @@ class OverlayHandoffTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "inherited|reviewed"):
             assemble(ledger, read, packet, report)
 
+    def test_new_selector_cannot_reuse_inherited_mapping_or_projection_identity(self):
+        ledger, read, _, report = cohort()
+        # Deliberately conflicting proposal, not a scholarly equivalence:
+        # new art selector would reuse the installed adjv mapping identity.
+        ledger["decisions"][0].update(assessment="exact", term_key="adjective")
+        packet = build_review_packet(ledger, resource_loader=read)
+        report["batch_digest"] = packet["batch_digest"]
+        report["rows"] = [{"mapping_id": r["mapping_id"], "decision_digest": r["decision_digest"],
+                           "disposition": "accept"} for r in packet["rows"]]
+        with self.assertRaisesRegex(ValueError, "inherited.*identity"):
+            assemble(ledger, read, packet, report)
+
     def test_rejected_and_needs_evidence_candidates_are_excluded(self):
         ledger, read, _, report = cohort()
         for corpus in ("bhsa", "syriac"):
