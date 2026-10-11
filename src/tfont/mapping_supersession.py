@@ -416,6 +416,7 @@ def plan_multi_corpus_native_supersession(
                  "multi-corpus batch must have 1–50 nonempty cohorts")
         records: list[dict[str, Any]] = []
         seen_corpora: set[str] = set()
+        ontology_snapshot: dict[str, str] | None = None
         total = 0
         for index, cohort in enumerate(cohorts):
             _require(type(cohort) is dict and set(cohort) == _MULTI_COHORT_FIELDS,
@@ -429,6 +430,23 @@ def plan_multi_corpus_native_supersession(
             _require(corpus not in seen_corpora,
                      "duplicate corpus release cohort in multi-corpus batch")
             seen_corpora.add(corpus)
+            # One staged ontology-model release must not silently combine
+            # different revisions of the same target model. The individual
+            # source-bound per-row validator deliberately does not authenticate
+            # a remote ontology snapshot; this guards *consistency*, not trust.
+            for transition in proposal["transitions"]:
+                ontology = transition["ontology"]
+                pinned = {
+                    "model": ontology["model"],
+                    "lock_id": ontology["lock_id"],
+                    "source_revision": ontology["source_revision"],
+                    "snapshot_digest": ontology["snapshot_digest"],
+                }
+                _require(
+                    ontology_snapshot is None or ontology_snapshot == pinned,
+                    "mixed ontology snapshot revisions in multi-corpus batch",
+                )
+                ontology_snapshot = pinned
             total += proposal["count"]
             _require(total <= 50,
                      "multi-corpus batch exceeds 50 proposed accepted promotions")
@@ -446,6 +464,7 @@ def plan_multi_corpus_native_supersession(
             "release_authorized": False,
             "count": total,
             "corpus_count": len(records),
+            "ontology_snapshot": ontology_snapshot,
             "corpora": records,
         }
         preview["content_digest"] = _digest(preview)
