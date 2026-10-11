@@ -1,7 +1,8 @@
 """Offline scholarly review handoff; NEVER an approval or release capability.
 
-The reviewer's explicit decisions are put into an authenticated GitHub
-APPROVED review by a separate privileged principal, not by this module.
+Explicit decisions become a GitHub review event outside this module. Agent
+mode uses separate challenge and decision COMMENT events under one account;
+the optional legacy external mode uses a distinct APPROVED reviewer.
 """
 from __future__ import annotations
 
@@ -61,8 +62,8 @@ def reviewer_template(packet: dict[str, Any]) -> dict[str, Any]:
 def render_review_body(packet: dict[str, Any], choices: dict[str, Any]) -> str:
     """Prepare a GitHub review BODY, never a GitHub APPROVED review event.
 
-    Only an authenticated, distinct, authorized GitHub reviewer can submit
-    that event; authors cannot turn this body into release authority.
+    The protected live gate checks the selected review policy. This body alone
+    cannot establish a completed challenge pass or grant release authority.
     """
     expected = _source_rows(packet)
     _require(type(choices) is dict and set(choices) == {"packet_digest", "rows"},
