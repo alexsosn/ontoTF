@@ -9,7 +9,7 @@ Repository `ETCBC/bhsa@4db00e2157915495e1a4d3d57e41223df24775da` (BHSA 2021):
 - `tf/2021/voc_lex_utf8.tf`, blob `d7fa9fde95d08a3fa05bcacbfaec43abfb688301`: exactly **435,820 source feature values**, first 426,590 on word nodes, last 9,230 on lex nodes. The TF feature jumps to `1437602\tבְּ`; all 9,230 lexeme records have **nonempty** vocalized Hebrew-script representation.
 - `tf/2021/languageISO.tf`, blob `fca3749ffdc8c281fe2dc40b9fe33ef68c50af93`: same 435,820 record count, languages in lex-node slice `hbo` and `arc`, no missing entry in this slice.
 - `tf/2021/lex.tf`, blob `234224440026af0b2da9ece3dbeebfbf8da9ad6c`, and `tf/2021/lex0.tf`, blob `fa2e0ae11bdb7707f4a1c8d63cd3e5385d2de3a6`: each has 435,820 populated values, including all 9,230 lex nodes.
-- Concrete homograph/collision: node **1437649** `lex=DC>[`, `lex0=DC>`, `voc_lex_utf8=דשא`, `languageISO=hbo`; node **1437650** `lex=DC>/`, `lex0=DC>`, `voc_lex_utf8=דֶּשֶׁא`, `languageISO=hbo`. Their `lex0` equality cannot merge their entry or derived Form identity.
+- Concrete homograph/collision: node **1437649** `lex=DC>[`, `lex0=DC>`, `voc_lex_utf8=דשׁא`, `languageISO=hbo`; node **1437650** `lex=DC>/`, `lex0=DC>`, `voc_lex_utf8=דֶּשֶׁא`, `languageISO=hbo`. Their `lex0` equality cannot merge their entry or derived Form identity.
 
 Source parser check: each of the four lexical feature files has exactly 435,820 logical node values and a single explicit node jump to 1437602 after the word values. `otype.tf` independently establishes that lex node range. This is considerably stronger than matching R-005 unique counts.
 
