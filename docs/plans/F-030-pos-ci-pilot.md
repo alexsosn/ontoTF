@@ -1,6 +1,8 @@
 # F-030 / #291: exact-head CI POS-pilot plan
 
-**Issue:** #291; research: `docs/research/F-030-pos-ci-pilot.md`.
+**Issue:** #291
+
+Research: `docs/research/F-030-pos-ci-pilot.md`.
 
 ## Contract
 1. Preserve `full-suite.yml` as the single unconditional PR regression owner on the exact SHA for Python 3.10 and 3.12, `unittest`, `pytest`, both existing frozen generator checks, wheel and wheel-install checks.
