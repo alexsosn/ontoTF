@@ -20,9 +20,6 @@ FROZEN_MISSING = {
     "docs/plans/F-014-windows-exact-file-paths-plan.md": 84,
     "docs/plans/F-015-error-precedence-amendment.md": 87,
     ".github/workflows/f002-wheel-schema-resources.yml": 21,
-    ".github/workflows/f003-digest-projection-key-errors.yml": 26,
-    ".github/workflows/f004-source-bundle-diagnostic-paths.yml": 28,
-    ".github/workflows/f005-utf16-diagnostic-paths.yml": 30,
     ".github/workflows/f006-deep-source-nesting.yml": 32,
     ".github/workflows/f007-ci-full-suite-dedup.yml": 34,
     ".github/workflows/f008-p001-design-scope.yml": 66,
@@ -52,6 +49,16 @@ FROZEN_MISSING = {
     "tests/f021/issue-owner.txt": 99,
     "tests/f022/issue-owner.txt": 103,
 }
+
+
+# These historical carrier paths were intentionally retired by F-030 / #291,
+# with executable tests retained in tests/i002 and the unconditional full suite.
+# Do not count deletion of a workflow as a missing owner declaration.
+RETIRED_FOCUSED_WORKFLOWS = (
+    ".github/workflows/f003-digest-projection-key-errors.yml",
+    ".github/workflows/f004-source-bundle-diagnostic-paths.yml",
+    ".github/workflows/f005-utf16-diagnostic-paths.yml",
+)
 
 
 def markdown_owners(text: str) -> tuple[list[int], list[tuple[int, str]]]:
@@ -316,6 +323,19 @@ class RepositoryMigrationREDTests(unittest.TestCase):
         }
         self.assertTrue(plan_matches.isdisjoint(plan_missing))
         self.assertEqual(plan_matches | plan_missing, actual_plans)
+
+    def test_intentionally_retired_f_series_workflow_carriers(self):
+        for relative in RETIRED_FOCUSED_WORKFLOWS:
+            with self.subTest(path=relative):
+                self.assertNotIn(relative, FROZEN_MISSING)
+                self.assertFalse((ROOT / relative).exists())
+        for module in (
+            "test_projection_key_error_boundary.py",
+            "test_source_bundle_diagnostic_paths.py",
+            "test_utf16_diagnostic_paths.py",
+        ):
+            with self.subTest(module=module):
+                self.assertTrue((ROOT / "tests" / "i002" / module).is_file())
 
     def test_frozen_carriers_are_missing_or_matching(self):
         frozen = dict(sorted(FROZEN_MISSING.items()))
