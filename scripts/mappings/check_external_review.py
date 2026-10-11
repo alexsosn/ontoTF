@@ -27,6 +27,7 @@ from tfont.candidate_evidence import CandidateEvidenceResources, MAX_CANDIDATE_E
 from tfont.external_review_gate import (
     ExternalReviewError, evaluate_review_snapshot,
 )
+from tfont.single_agent_review import evaluate_single_agent_snapshot
 from tfont.review_packets import verify_review_packet
 from tfont.source_validation import loads_source
 
@@ -305,6 +306,13 @@ def evaluate_live_gate(
     token=os.environ["GITHUB_TOKEN"]
     path="/repos/"+"/".join(urllib.parse.quote(x,safe="") for x in repository.split("/"))
     pr=_api(path+f"/pulls/{pr_number}",token)
+    labels = pr.get("labels") if type(pr) is dict else None
+    single_agent = (
+        type(labels) is list and
+        "ontology-single-agent-review" in {
+            item.get("name") for item in labels if type(item) is dict
+        }
+    )
     reviews=[]
     for page in range(1,MAX_REVIEW_PAGES+1):
         chunk=_api(path+f"/pulls/{pr_number}/reviews?per_page=100&page={page}",token)
@@ -319,9 +327,20 @@ def evaluate_live_gate(
     for review in reviews:
         if type(review) is not dict or type(review.get("user")) is not dict:
             _abort("review has invalid user data")
-        if review.get("state")!="APPROVED":
-            continue
+        state = review.get("state")
         login=review["user"].get("login")
+        # A sole author cannot use GitHub APPROVED on their own PR. Under
+        # explicit single-agent opt-in, two COMMENTED exact-head reviews by
+        # the author must record challenge-first scrutiny and later decisions.
+        # The external APPROVED route is still the default and unchanged.
+        author_login = pr.get("user", {}).get("login")
+        if not (
+            state == "APPROVED" or
+            (single_agent and state == "COMMENTED"
+             and type(login) is str and type(author_login) is str
+             and login.casefold() == author_login.casefold())
+        ):
+            continue
         if type(login) is not str or not login:
             _abort("reviewer account identity missing")
         if login not in permissions:
@@ -361,14 +380,23 @@ def evaluate_live_gate(
             raise ExternalReviewError("GitHub PR changed or became unreadable") from exc
     if type(fresh_pr) is not dict or identity(pr)!=identity(fresh_pr):
         _abort("PR head/author/state changed while verifying review authority")
-    result=evaluate_review_snapshot(
+    reviewer = (
+        evaluate_single_agent_snapshot if single_agent else evaluate_review_snapshot
+    )
+    # No mode fallback. If the explicit label is present, fail closed unless
+    # two source-bound, chronological author COMMENTED review events exist.
+    result=reviewer(
         packet=packet,repository=repository,pr_number=pr_number,
         expected_head_sha=sha,pull_request=fresh_pr,reviews=reviews,
         reviewer_permissions=permissions,
     )
-    # Not a cryptographic signature. Offline packages may validate the
-    # digest and provenance but MUST NOT re-use this as live approval.
-    result["provenance"]="github-live-rest-verified-at-this-run;not-offline-signed"
+    # This is a live GitHub workflow observation, NOT an independent reviewer
+    # signature. In single-agent mode the identity is intentionally the author.
+    result["provenance"]=(
+        "github-live-rest-verified-single-agent-adversarial-two-pass;not-offline-signed"
+        if single_agent else
+        "github-live-rest-verified-at-this-run;not-offline-signed"
+    )
     return result
 
 
