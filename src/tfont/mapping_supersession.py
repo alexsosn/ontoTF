@@ -55,6 +55,7 @@ def _plan(
     ontology_evidence: dict[str, Any],
     ontology_lock: dict[str, Any],
     base_release: str,
+    active_mappings: list[dict[str, Any]],
 ) -> dict[str, Any]:
     _require(type(previous) is dict and type(candidate) is dict,
              "supersession needs mapping objects")
@@ -103,6 +104,30 @@ def _plan(
              and type(binding.get("value")) is str
              and bool(binding["value"]),
              "old selector must be a pinned word-level native POS value")
+    _require(type(active_mappings) is list and bool(active_mappings),
+             "pinned base must supply a nonempty active mapping index")
+    active_ids: set[str] = set()
+    active_projection_ids: set[str] = set()
+    matches: list[dict[str, Any]] = []
+    for existing in active_mappings:
+        _require(type(existing) is dict and type(existing.get("mapping_id")) is str
+                 and existing["mapping_id"] not in active_ids
+                 and existing.get("mapping_semantic_digest")
+                     == mapping_semantic_digest_v2(existing),
+                 "inherited active mappings contain duplicates or stale digests")
+        active_ids.add(existing["mapping_id"])
+        if existing.get("native_binding") == binding:
+            matches.append(existing)
+        for existing_projection in existing.get("projections", []):
+            _require(type(existing_projection) is dict
+                     and type(existing_projection.get("projection_id")) is str
+                     and existing_projection["projection_id"] not in active_projection_ids,
+                     "duplicate active projection ID")
+            active_projection_ids.add(existing_projection["projection_id"])
+    _require(len(matches) == 1
+             and canonical_json_bytes(matches[0]) == canonical_json_bytes(previous)
+             and old_id in active_ids and new_id not in active_ids,
+             "previous mapping must uniquely own active selector and successor ID must be new")
     _require(candidate.get("corpus_id") == corpus
              and candidate.get("native_binding") == binding
              and candidate.get("native_dependencies") == previous.get("native_dependencies")
@@ -124,6 +149,8 @@ def _plan(
              and source_content.get("feature") == binding["feature"],
              "native source record does not define the selector feature")
     if "source_definitions" in source_content:
+        _require(source_content.get("production_node_type") == "word",
+                 "native source definitions do not authorize word-level feature scope")
         _require(type(source_content["source_definitions"]) is dict
                  and binding["value"] in source_content["source_definitions"],
                  "native category not in original source-defined feature domain")
@@ -163,6 +190,8 @@ def _plan(
              and type(projections[0]) is dict,
              "positive supersession needs exactly one class projection")
     projection = projections[0]
+    _require(projection.get("projection_id") not in active_projection_ids,
+             "candidate projection ID collides with inherited active index")
     _require("review" not in projection
              and projection.get("assessment") == "exact"
              and projection.get("target") == definition["target"]
@@ -181,12 +210,18 @@ def _plan(
              and projection.get("projection_semantic_digest") ==
                  projection_semantic_digest_v1(projection),
              "new class projection is invalid, misbound or has a stale digest")
+    active_fingerprint = [
+        {"mapping_id": m["mapping_id"], "semantic_digest": m["mapping_semantic_digest"],
+         "native_binding": copy.deepcopy(m["native_binding"])}
+        for m in sorted(active_mappings, key=lambda row: row["mapping_id"])
+    ]
     record = {
         "schema_version": 1,
         "transition_kind": "native-only-to-exact",
         "authority": _AUTHORITY,
         "release_authorized": False,
         "base_release": base_release,
+        "active_base_digest": _digest(active_fingerprint),
         "corpus_id": corpus,
         "native_binding": copy.deepcopy(binding),
         "retired": {
@@ -218,12 +253,13 @@ def plan_native_only_supersession(
     *, previous: dict[str, Any], candidate: dict[str, Any],
     native_evidence: dict[str, Any], ontology_evidence: dict[str, Any],
     ontology_lock: dict[str, Any], base_release: str,
+    active_mappings: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """Build NON-AUTHORITATIVE upgrade lineage; never modify the active index."""
     try:
         return _plan(
             previous, candidate, native_evidence, ontology_evidence,
-            ontology_lock, base_release,
+            ontology_lock, base_release, active_mappings,
         )
     except NativeSupersessionError:
         raise
@@ -235,7 +271,7 @@ def verify_supersession_preview(
     preview: dict[str, Any], *, previous: dict[str, Any],
     candidate: dict[str, Any], native_evidence: dict[str, Any],
     ontology_evidence: dict[str, Any], ontology_lock: dict[str, Any],
-    base_release: str,
+    base_release: str, active_mappings: list[dict[str, Any]],
 ) -> None:
     """Recompute a preview. This is NOT authenticated review/release verification."""
     _require(type(preview) is dict, "transition preview must be an object")
@@ -243,6 +279,7 @@ def verify_supersession_preview(
         previous=previous, candidate=candidate,
         native_evidence=native_evidence, ontology_evidence=ontology_evidence,
         ontology_lock=ontology_lock, base_release=base_release,
+        active_mappings=active_mappings,
     )
     try:
         _require(canonical_json_bytes(preview) == canonical_json_bytes(expected),
