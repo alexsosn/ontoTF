@@ -60,7 +60,7 @@ def _trusted_handoff_base(corpus: str) -> tuple[str, str]:
     entry = definitions.get(corpus)
     _require(entry is not None, "unsupported protected handoff corpus")
     version, resource = entry["base_release"], entry["coverage_resource_set"]
-    _require(type(version) is str and re.fullmatch(r"[0-9]+\\.[0-9]+\\.[0-9]+", version)
+    _require(type(version) is str and re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", version)
              and type(resource) is str
              and re.fullmatch(r"p004-[a-zA-Z0-9._-]+-v[0-9]+", resource)
              and type(entry["coverage_git_blob"]) is str
@@ -80,7 +80,7 @@ def _trusted_handoff_base(corpus: str) -> tuple[str, str]:
     except (OSError, ValueError) as exc:
         raise ValueError("protected handoff coverage source unavailable") from exc
     blob = hashlib.sha1(
-        b"blob " + str(len(raw)).encode("ascii") + b"\\x00" + raw
+        b"blob " + str(len(raw)).encode("ascii") + b"\x00" + raw
     ).hexdigest()
     _require(blob == entry["coverage_git_blob"],
              "protected handoff coverage source Git blob changed")
