@@ -1,0 +1,23 @@
+{
+  "lock_id": "ontolex-core-reference-model",
+  "ontology_id": "ontolex",
+  "support_tier": "source-pinned-research",
+  "term_namespace": "http://www.w3.org/ns/lemon/ontolex#",
+  "release": "git-snapshot-d6f840f40a05b76cbd8c10b9472ddd097371d610",
+  "upstream_release_status": "git-snapshot",
+  "source_uri": "https://raw.githubusercontent.com/ontolex/ontolex/d6f840f40a05b76cbd8c10b9472ddd097371d610/Ontologies/ontolex.owl",
+  "source_revision": "d6f840f40a05b76cbd8c10b9472ddd097371d610",
+  "content_digest": "sha256:76e4c74fae4013944f60701df83828836c22a7f19c8cc8f72f994e321d12efd9",
+  "license": "CC0-1.0",
+  "redistribution_policy": "public-domain-dedication",
+  "snapshot_artifact": "resources/ontologies/ontolex/d6f840f40a05b76cbd8c10b9472ddd097371d610/ontolex.owl",
+  "terms_used": [
+    "http://www.w3.org/ns/lemon/ontolex#LexicalEntry",
+    "http://www.w3.org/ns/lemon/ontolex#Form",
+    "http://www.w3.org/ns/lemon/ontolex#LexicalSense",
+    "http://www.w3.org/ns/lemon/ontolex#LexicalConcept",
+    "http://www.w3.org/ns/lemon/ontolex#lexicalForm",
+    "http://www.w3.org/ns/lemon/ontolex#canonicalForm",
+    "http://www.w3.org/ns/lemon/ontolex#writtenRep"
+  ]
+}

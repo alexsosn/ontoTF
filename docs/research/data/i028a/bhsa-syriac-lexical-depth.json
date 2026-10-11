@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "batch_id": "i028a-bhsa-syriac-lexical-depth",
+  "mode": "research-proposal-only",
+  "workstream": "D",
+  "source_registry": {
+    "bhsa": {
+      "repository": "ETCBC/bhsa",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "tf_files_sha256": "5b179e543d9ce17f59c2902afdf3736d3803777f518ec92dd5f19fc14a96496d",
+      "tf_inventory": "docs/research/data/generated/r005/bhsa.json",
+      "inventory_git_blob_sha": "f7f21b755b91877e83a33a5edf04494084439a41"
+    },
+    "syriac": {
+      "repository": "ETCBC/syriac",
+      "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "tf_files_sha256": "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb",
+      "tf_inventory": "docs/research/data/generated/r005/syriac.json",
+      "inventory_git_blob_sha": "c572948a22e4ab16cee571726dad7e272e7d04ec"
+    }
+  },
+  "rows": [
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:freq_lex",
+      "layer": "corpus-statistic",
+      "source_description": "✅ frequency of lexemes",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "int",
+      "source_observed_unique_count": 372,
+      "rationale": "This is a lexeme frequency statistic on both lexeme and word nodes, not a lexical sense, form, or a cross-corpus shared frequency.",
+      "next_evidence_needed": "Review whether a source-defined statistic vocabulary/property is needed; preserve corpus counting scope."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:freq_occ",
+      "layer": "corpus-statistic",
+      "source_description": "✅ frequency of occurrences",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "int",
+      "source_observed_unique_count": 366,
+      "rationale": "The occurrence-frequency integer is attached to word nodes and measures source tokens; it is not a lexical-entry identifier or a semantic relation.",
+      "next_evidence_needed": "Review unit, scope and statistics vocabulary before ontology property mapping."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_cons",
+      "layer": "token-surface",
+      "source_description": "✅ word consonantal-transliterated (B R>CJT BR> >LHJM ...)",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 24438,
+      "rationale": "The consonantal transliteration is a word-surface rendering, so its value cannot establish an OntoLex lexical Form identity or a lemma key.",
+      "next_evidence_needed": "Review representation predicates and relation to explicit lexeme objects."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_cons_utf8",
+      "layer": "token-surface",
+      "source_description": "✅ word consonantal-Hebrew (ב ראשׁית ברא אלהים)",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 24438,
+      "rationale": "The Hebrew-script consonantal rendering of a word is a written surface representation, not a separate lexical entry or sense.",
+      "next_evidence_needed": "Review script/lang metadata and lexical-form representation predicates."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_lex",
+      "layer": "lexical-representation",
+      "source_description": "✅ lexeme pointed-transliterated (B.:- R;>CIJT B.@R@> >:ELOH ...)",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 21155,
+      "rationale": "The pointed-transliterated lexeme realization occurs on word nodes; repeated text by itself is not a persistent Form object.",
+      "next_evidence_needed": "Verify linkage to the existing lexeme node and an OntoLex representation predicate."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_lex_utf8",
+      "layer": "lexical-representation",
+      "source_description": "✅ lexeme pointed-Hebrew (בְּ רֵאשִׁית בָּרָא אֱלֹה)",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 21133,
+      "rationale": "The pointed Hebrew realization of a lexeme is a representation string on words, not a separately identified lexical Form.",
+      "next_evidence_needed": "Verify lexical node relation, script and representation predicate against source."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_word",
+      "layer": "token-surface",
+      "source_description": "✅ word pointed-transliterated (B.:- R;>CI73JT B.@R@74> >:ELOHI92JM)",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 92756,
+      "rationale": "The pointed-transliterated word is token-specific (including reading details); treating it as canonical lexical Form would erase token versus lexeme scope.",
+      "next_evidence_needed": "Review token-to-lexeme relations and language/script-aware representation."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_word_utf8",
+      "layer": "token-surface",
+      "source_description": "✅ word pointed-Hebrew (בְּ רֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים)",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 92473,
+      "rationale": "This fully pointed Hebrew word is a token rendering; identical Unicode strings cannot be assumed to identify one source Form.",
+      "next_evidence_needed": "Review normalized/token-specific form semantics and script metadata."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:gloss",
+      "layer": "gloss-literal",
+      "source_description": "🆗 english translation of lexeme (beginning create god(s))",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 6132,
+      "rationale": "BHSA calls this an English translation of the lexeme, repeated on lex/word; the English text does not identify a lexical Sense or Concept.",
+      "next_evidence_needed": "Require independent source sense identity and concept authority before semantic promotion."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:language",
+      "layer": "language-metadata",
+      "source_description": "✅ of word or lexeme (Hebrew; Aramaic.)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 2,
+      "rationale": "The source records Hebrew or Aramaic on word and lexeme nodes; a language label is not a LexicalEntry or a SKOS lexical concept.",
+      "next_evidence_needed": "Verify BCP47/ISO identity and suitable OntoLex linguistic metadata property."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:languageISO",
+      "layer": "language-metadata",
+      "source_description": "✅ of word or lexeme in ISO code (hbo arc.)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 2,
+      "rationale": "The feature contains hbo/arc language codes, which are metadata for the source object rather than evidence of lexical equivalence.",
+      "next_evidence_needed": "Review standard code registry, scope and ontology language-property selection."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lex",
+      "layer": "lexical-label",
+      "source_description": "✅ lexeme consonantal-transliterated (B R>CJT/ BR>[ >LHJM/)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 8769,
+      "rationale": "BHSA supplies a consonantal transliterated lexeme string on lex and word nodes; this field is not itself the lex-node identity.",
+      "next_evidence_needed": "Review explicit otype=lex identity binding and textual representation predicate."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lex0",
+      "layer": "lexical-label",
+      "source_description": "✅ lexeme consonantal-transliterated without disambiguation (B R>CJT BR> >LHJM)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 6461,
+      "rationale": "The native description explicitly removes lexeme disambiguation; source values collapse distinctions and cannot serve as stable LexicalEntry identities.",
+      "next_evidence_needed": "Retain lexeme disambiguation and document source identity before any linking."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lex_utf8",
+      "layer": "lexical-label",
+      "source_description": "✅ lexeme consonantal-Hebrew (ב ראשׁית֜ ברא אלהים֜)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 12132,
+      "rationale": "Hebrew consonantal lexeme text is recorded on lex and word nodes; shared spelling is insufficient to equate lexeme entities.",
+      "next_evidence_needed": "Verify association with lex nodes and lexical-label/form representation."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lexeme_count",
+      "layer": "corpus-statistic",
+      "source_description": "✅ on words: the number of occurrences of its lexeme",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "int",
+      "source_observed_unique_count": 372,
+      "rationale": "The source defines this word-level integer as the number of its lexeme occurrences, not a semantic category or lexical identity.",
+      "next_evidence_needed": "Review counting definition and provenance before shared statistical publication."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:nametype",
+      "layer": "named-entity-classification",
+      "source_description": "⚠️ named entity type (pers; mens; gens; topo; ppde.)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 10,
+      "rationale": "This source named-entity category on word/lexeme nodes (pers/mens/gens/topo/ppde) is not by itself a defined SKOS scheme.",
+      "next_evidence_needed": "Review category definitions and whether an authoritative concept scheme exists."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:rank_lex",
+      "layer": "corpus-statistic",
+      "source_description": "✅ ranking of lexemes based on freqnuecy",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "int",
+      "source_observed_unique_count": 374,
+      "rationale": "The rank integer orders lexemes by frequency in this corpus; it must not become a cross-corpus lexical equivalence or semantic class.",
+      "next_evidence_needed": "Review tie handling, ranking scope and property semantics if represented."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:rank_occ",
+      "layer": "corpus-statistic",
+      "source_description": "✅ ranking of occurrences based on frequency",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "int",
+      "source_observed_unique_count": 367,
+      "rationale": "The word occurrence frequency ranking is a corpus-local number, not an entry identity or shared lexical concept.",
+      "next_evidence_needed": "Verify ranking algorithm and source statistics semantics before promotion."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:root",
+      "layer": "morphological-root",
+      "source_description": "⚠️ root of word or lexeme (R>C CMH XCK <unknown>)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 757,
+      "rationale": "The source calls this a morphological root of a word/lexeme and includes an unknown marker; it is not an OntoLex entry, sense or Decomp relation.",
+      "next_evidence_needed": "Require explicit root identity/association semantics and missing-value handling."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:voc_lex",
+      "layer": "lexical-representation",
+      "source_description": "✅ vocalized lexeme pointed-transliterated (B.: R;>CIJT BR> >:ELOHIJM)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 8091,
+      "rationale": "The pointed-transliterated vocalized lexeme is a spelling/realization string on lexeme and word nodes, not a new Form identity.",
+      "next_evidence_needed": "Review language/script-specific representation and lex-node linkage."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:voc_lex_utf8",
+      "layer": "lexical-representation",
+      "source_description": "✅ vocalized lexeme pointed-Hebrew (בְּ רֵאשִׁית ברא אֱלֹהִים)",
+      "source_node_types": [
+        "lex",
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 8091,
+      "rationale": "The pointed Hebrew vocalized lexeme represents lexical material in Hebrew script; string equality cannot manufacture Form IDs.",
+      "next_evidence_needed": "Review written representation semantics and native lexeme node identity."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_type:lex",
+      "layer": "source-lexeme-node",
+      "source_description": null,
+      "source_node_types": [
+        "lex"
+      ],
+      "source_value_type": null,
+      "source_observed_unique_count": 9230,
+      "rationale": "The R-005 inventory includes 9,230 lex nodes, an explicit TF lexeme entity kind distinct from word-level string features; this is a candidate OntoLex LexicalEntry.",
+      "next_evidence_needed": "Verify lex-node identity and linked slot occurrence semantics against pinned OntoLex LexicalEntry class."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:g_cons",
+      "layer": "token-surface",
+      "source_description": "The text of a word in ETCBC transcription",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 13630,
+      "rationale": "The source defines this as word text in ETCBC transcription; it is a token rendering, not a lexical-entry or sense identity.",
+      "next_evidence_needed": "Review token-specific written representation against OntoLex semantics."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:g_cons_utf8",
+      "layer": "token-surface",
+      "source_description": "The text of a word in estrangela script",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 13630,
+      "rationale": "The Estrangela-script feature records the word text; a script variant cannot independently create a lexical Form object.",
+      "next_evidence_needed": "Review script metadata and token-to-lexical-form linkage."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:g_lex",
+      "layer": "lexical-representation",
+      "source_description": "Realization of the lexeme in ETCBC transcription",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 4997,
+      "rationale": "The source explicitly calls this a lexeme realization in ETCBC transcription on word nodes, not an independent lexeme entity.",
+      "next_evidence_needed": "Verify repeated-lexeme identity key before assigning form/entry relations."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:gloss",
+      "layer": "gloss-literal",
+      "source_description": "English gloss, not intended to be used for translation purposes",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 4796,
+      "rationale": "The Syriac feature explicitly says English gloss is not intended for translation purposes; it cannot identify a sense or VarTrans translation.",
+      "next_evidence_needed": "Verify independent native sense IDs before any sense, concept, or translation assertion."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:lex",
+      "layer": "lexical-label",
+      "source_description": "Lexeme in ETCBC transcription",
+      "source_node_types": [
+        "word"
+      ],
+      "source_value_type": "str",
+      "source_observed_unique_count": 5065,
+      "rationale": "The Syriac lexical string belongs to word nodes and no lex node is in the released TF version; equal lex strings alone do not prove entry identity.",
+      "next_evidence_needed": "Verify a stable source-sanctioned grouping rule and canonical lexeme key."
+    }
+  ]
+}

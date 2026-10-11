@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "batch_id": "i028b-bhsa-syriac-lexical-dispositions",
+  "authority": "unreviewed-semantic-proposals",
+  "source_ledger": "docs/research/data/i028a/bhsa-syriac-lexical-depth.json",
+  "source_registry": {
+    "bhsa": {
+      "repository": "ETCBC/bhsa",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "tf_files_sha256": "5b179e543d9ce17f59c2902afdf3736d3803777f518ec92dd5f19fc14a96496d",
+      "tf_inventory": "docs/research/data/generated/r005/bhsa.json",
+      "inventory_git_blob_sha": "f7f21b755b91877e83a33a5edf04494084439a41"
+    },
+    "syriac": {
+      "repository": "ETCBC/syriac",
+      "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "tf_files_sha256": "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb",
+      "tf_inventory": "docs/research/data/generated/r005/syriac.json",
+      "inventory_git_blob_sha": "c572948a22e4ab16cee571726dad7e272e7d04ec"
+    }
+  },
+  "ontology_evidence": {
+    "model": "ontolex-core",
+    "final_report": "https://www.w3.org/2016/05/ontolex/",
+    "report_date": "2016-05-10",
+    "snapshot_lock": null,
+    "candidate_class": "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"
+  },
+  "rows": [
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:freq_lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "This is a lexeme frequency statistic on both lexeme and word nodes, not a lexical sense, form, or a cross-corpus shared frequency. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:freq_occ",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The occurrence-frequency integer is attached to word nodes and measures source tokens; it is not a lexical-entry identifier or a semantic relation. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_cons",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The consonantal transliteration is a word-surface rendering, so its value cannot establish an OntoLex lexical Form identity or a lemma key. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_cons_utf8",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The Hebrew-script consonantal rendering of a word is a written surface representation, not a separate lexical entry or sense. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The pointed-transliterated lexeme realization occurs on word nodes; repeated text by itself is not a persistent Form object. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_lex_utf8",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The pointed Hebrew realization of a lexeme is a representation string on words, not a separately identified lexical Form. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_word",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The pointed-transliterated word is token-specific (including reading details); treating it as canonical lexical Form would erase token versus lexeme scope. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:g_word_utf8",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "This fully pointed Hebrew word is a token rendering; identical Unicode strings cannot be assumed to identify one source Form. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:gloss",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The original English BHSA gloss repeats on word and lex nodes, without a source LexicalSense, SKOS Concept, or attested reference. A shared translation text does not establish semantic identity; this field is native-only pending sense authority."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:language",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The source records Hebrew or Aramaic on word and lexeme nodes; a language label is not a LexicalEntry or a SKOS lexical concept. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:languageISO",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The hbo/arc feature values are corpus language metadata on word and lex nodes. OntoLex language annotations require correct entity scope and language-tag policy; never infer lexical identity or common concept from those codes."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "BHSA lex is a disambiguated consonantal transliteration available on word and lex nodes, not the lex-node ID. A lexical string can be displayed on a reviewed entry, but it does not by itself instantiate an OntoLex Form or provide its identity."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lex0",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "BHSA lex0 intentionally removes lexeme disambiguation; the inventory has 6,461 distinct lex0 strings versus 8,769 lex strings. Treating lex0 as entry identity would merge distinct source lexemes; preserve it only as a native display/search field."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lex_utf8",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "BHSA lex_utf8 is a Hebrew-script lexical spelling on both lex and word nodes. It may serve as a representation of a separately identified lexical Form after review, but identical text alone cannot supply a Form URI or canonicalForm edge."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:lexeme_count",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The source defines this word-level integer as the number of its lexeme occurrences, not a semantic category or lexical identity. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:nametype",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "BHSA nametype is a source category distinguishing native named-entity types, not a published SKOS concept URI or ConceptScheme. A future categorical ontology alignment needs independently reviewed term definitions; native-only for this snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:rank_lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The rank integer orders lexemes by frequency in this corpus; it must not become a cross-corpus lexical equivalence or semantic class. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:rank_occ",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The word occurrence frequency ranking is a corpus-local number, not an entry identity or shared lexical concept. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:root",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "BHSA root is a word/lexeme morphological root string, sometimes the literal <unknown>. It has no independent root entity identity or explicit OntoLex Decomp edge; do not convert unknown into a resource or assert a decomposition relation."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:voc_lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The pointed-transliterated vocalized lexeme is a spelling/realization string on lexeme and word nodes, not a new Form identity. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_feature:voc_lex_utf8",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "BHSA voc_lex_utf8 is the pointed Hebrew-script spelling of a lexeme, recorded on lex and word nodes. A writtenRep proposal needs an identified Form and a reviewed entry-form relation; neither follows from the literal alone."
+    },
+    {
+      "corpus_id": "bhsa",
+      "item_id": "node_type:lex",
+      "assessment": "exact",
+      "target": "http://www.w3.org/ns/lemon/ontolex#LexicalEntry",
+      "target_kind": "class",
+      "rationale": "BHSA R-005 observes 9,230 distinct, addressable Text-Fabric nodes of type lex. An identified lex node is a plausible OntoLex LexicalEntry under the published 2016 OntoLex Core definition. Only the native node ID, not its lex/lex0 string, can carry that proposed entry identity; it asserts no sense, concept, form, or cross-corpus equivalence. The OntoLex class requires at least one lexical Form, but an attested BHSA lex-node-to-Form identity/relationship has not yet been established; this class candidate must not be promoted until that condition is reviewed."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:g_cons",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The source defines this as word text in ETCBC transcription; it is a token rendering, not a lexical-entry or sense identity. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:g_cons_utf8",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The Estrangela-script feature records the word text; a script variant cannot independently create a lexical Form object. Without a verified OntoLex entity identity or ontology property-domain binding, it stays native-only in this proposed release snapshot."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:g_lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "Syriac g_lex carries a transliterated lexical realization on word nodes, not a source LexicalEntry or Form node. Do not infer canonicalForm, cross-language equivalence, or a distinct lexeme object from matching lexical strings."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:gloss",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "The original Syriac metadata says the English gloss is not intended for translation purposes. It contains no source sense ID, target lexical entity or relation; mapping it to OntoLex LexicalSense, SKOS Concept or VarTrans translation would be an invention."
+    },
+    {
+      "corpus_id": "syriac",
+      "item_id": "node_feature:lex",
+      "assessment": "native-only",
+      "target": null,
+      "target_kind": null,
+      "rationale": "R-005 assigns Syriac lex exclusively to word nodes and reports no independently addressable lexeme entity. Identical word-level labels cannot establish an ontolex:LexicalEntry, even as a weaker close identity. Supersede the historical research-only close hypothesis conservatively; retain the literal feature until a reviewed construction rule exists."
+    }
+  ]
+}
