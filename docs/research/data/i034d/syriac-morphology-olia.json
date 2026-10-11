@@ -182,7 +182,7 @@
       "feature": "vpm",
       "value": "p",
       "item_id": "node_value:vpm=\"p\"",
-      "source_gloss": "vowel pattern",
+      "source_gloss": null,
       "source_line": 50,
       "evidence_kind": "grammar-defined",
       "assessment": "native-only",
