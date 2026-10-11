@@ -8,6 +8,12 @@ from __future__ import annotations
 import copy
 import json
 import unittest
+import io
+import sys
+import tempfile
+import contextlib
+from pathlib import Path
+from unittest.mock import patch
 
 from tests.i033e.test_overlay_handoff import cohort
 from tfont.external_review_gate import parse_structured_review, ExternalReviewError
@@ -104,6 +110,49 @@ class ReviewerHandoffTDD(unittest.TestCase):
         ).hexdigest()
         with self.assertRaises(ReviewerHandoffError):
             render_review_body(altered, reviewer_template(self.packet))
+
+
+    def test_cli_requires_explicit_json_and_never_submits_review(self):
+        from scripts.mappings import prepare_external_review as cli
+        decisions = reviewer_template(self.packet)
+        for row in decisions["rows"]:
+            row["disposition"] = "needs-evidence"
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "reviewer.json"
+            source.write_text(json.dumps(decisions), encoding="utf-8")
+            for args in (["--dossier"], ["--template"],
+                         ["--review-decisions", str(source)]):
+                with self.subTest(args=args), patch.object(
+                    cli, "load_review_context",
+                    return_value=(self.packet, self.source_reader),
+                ), patch.object(sys, "argv", ["prepare_external_review.py", *args]), \\
+                        contextlib.redirect_stdout(io.StringIO()) as stream:
+                    self.assertEqual(cli.main(), 0)
+                    generated = stream.getvalue()
+                    self.assertTrue(generated.strip())
+                    if args[0] == "--review-decisions":
+                        self.assertEqual(
+                            parse_structured_review(generated.rstrip("\\n"))["rows"],
+                            parse_structured_review(
+                                render_review_body(self.packet, decisions))["rows"],
+                        )
+                    elif args[0] == "--template":
+                        self.assertIsNone(json.loads(generated)["rows"][0]["disposition"])
+                    else:
+                        self.assertIn("line 17", generated)
+
+    def test_cli_rejects_duplicate_key_and_corrupt_decision_json(self):
+        from scripts.mappings import prepare_external_review as cli
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "choices.json"
+            for payload in (
+                '{"packet_digest":"x","packet_digest":"x","rows":[]}',
+                '{"rows":[],"packet_digest":NaN}',
+                '[]',
+            ):
+                path.write_text(payload, encoding="utf-8")
+                with self.subTest(payload=payload), self.assertRaises(ValueError):
+                    cli._load_choices(path)
 
 
 if __name__ == "__main__":
