@@ -12,6 +12,9 @@ import io
 import sys
 import tempfile
 import contextlib
+import os
+import shlex
+import subprocess
 from pathlib import Path
 from unittest.mock import patch
 
@@ -23,6 +26,22 @@ from tfont.reviewer_handoff import (
     review_dossier,
     render_review_body,
 )
+
+
+class DocumentedReviewerCommand(unittest.TestCase):
+    def test_documented_command_starts_in_a_fresh_python_process(self):
+        root = Path(__file__).resolve().parents[2]
+        documentation = (root / "docs/reviewing-batches.md").read_text()
+        command = next(line for line in documentation.splitlines()
+                       if line.strip().startswith("python ") and "--dossier" in line)
+        invocation = shlex.split(command.strip())
+        invocation = invocation[:invocation.index("--root")]
+        environment = dict(os.environ, PYTHONPATH=str(root / "src"))
+        result = subprocess.run([sys.executable, *invocation[1:], "--help"],
+                                cwd=root, env=environment, text=True,
+                                capture_output=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("--review-decisions", result.stdout)
 
 
 class ReviewerHandoffTDD(unittest.TestCase):
