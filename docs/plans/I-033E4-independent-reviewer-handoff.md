@@ -10,3 +10,5 @@
 ## Independent-review CLI correction
 
 The subprocess regression reproduced `ModuleNotFoundError: scripts` for the documented direct script command under Python 3.10. In-process tests had hidden this import-path failure. Use `python -m scripts.mappings.prepare_external_review` from the trusted repository root, which resolves the repository scripts package without importing candidate checkout code. Verify the command copied from the documentation in a fresh Python process before rerunning the full gate.
+
+A second independent finding reproduced candidate rationale `<!--` hiding subsequent dossier rows in a Markdown preview. A verified RED regression also includes a forged heading and link. The renderer now escapes HTML and Markdown controls and flattens embedded line breaks in free candidate text; original ledger, packet, evidence and decision digests are unchanged. This is display safety, not source validation or scholarly approval.

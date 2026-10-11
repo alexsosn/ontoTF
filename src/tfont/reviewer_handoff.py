@@ -6,6 +6,8 @@ APPROVED review by a separate privileged principal, not by this module.
 from __future__ import annotations
 
 import json
+import html
+import re
 from typing import Any, Callable
 
 from .batch_proposals import packaged_resource
@@ -21,6 +23,13 @@ class ReviewerHandoffError(ValueError):
 
 _CHOICES = frozenset({"accept", "reject", "needs-evidence"})
 _HEADER = "ontoTF-batch-review-v1\n"
+
+
+def _markdown_text(value: str) -> str:
+    """Display candidate text literally without HTML or Markdown structure."""
+    text = " ".join(value.splitlines())
+    text = re.sub(r"([\\`*_{}\[\]()#+.!|>~-])", r"\\\1", text)
+    return html.escape(text, quote=True)
 
 
 def _require(ok: bool, explanation: str) -> None:
@@ -118,7 +127,7 @@ def review_dossier(
         "source line for each item before selecting any disposition.",
         "",
         f"Packet digest: `{packet['batch_digest']}`",
-        f"Batch: `{packet.get('batch_id', 'unknown')}`",
+        f"Batch: {_markdown_text(packet.get('batch_id', 'unknown'))}",
         f"Rows requiring independent decisions: **{len(expected)}**",
         "",
         "Every row needs one explicit `accept`, `reject`, or `needs-evidence` decision.",
@@ -157,12 +166,12 @@ def review_dossier(
             f"### {row['mapping_id']}",
             "",
             f"- Native selector: `{native['node_type']}.{native['feature']}={native['value']}`",
-            f"- Source definition: **{gloss}**, line {line}",
-            f"- Source: {record['source_uri']}",
+            f"- Source definition: **{_markdown_text(gloss)}**, line {line}",
+            f"- Source: {_markdown_text(record['source_uri'])}",
             f"- Pinned source revision: `{record['source_revision']}`",
             f"- Proposal: `{row['assessment']}`; ontology target: "
             + (f"`{row['ontology_target']}`" if row["ontology_target"] else "**none proposed**"),
-            f"- Author's rationale (requires challenge): {row['rationale']}",
+            f"- Author's rationale (requires challenge): {_markdown_text(row['rationale'])}",
             f"- Decision digest: `{row['decision_digest']}`",
             "",
         ])
