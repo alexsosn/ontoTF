@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import tempfile
 import re
 from pathlib import Path
 from typing import Any
@@ -97,11 +99,15 @@ def build_packet(root: Path, *, mode: str) -> str:
                               for p in k.split("/"))
                       for k in paths),
                   "candidate evidence identity is malformed")
-        _required(len(set(paths.values())) == len(paths),
+        checked_paths = {
+            key: _relative_path(value, EVIDENCE_PREFIX)
+            for key, value in paths.items()
+        }
+        _required(len(set(checked_paths.values())) == len(checked_paths),
                   "candidate evidence paths must be unique")
         records = {
-            key: _read_json(root, _relative_path(value, EVIDENCE_PREFIX))
-            for key, value in paths.items()
+            key: _read_json(root, path)
+            for key, path in checked_paths.items()
         }
         loader = CandidateEvidenceResources(ledger, records)
 
@@ -126,10 +132,19 @@ def build_packet(root: Path, *, mode: str) -> str:
                   "candidate review packet changed or is not reproducible")
         return content
     output.parent.mkdir(parents=True, exist_ok=True)
-    # Exclusive write prevents silent mutation of a packet someone may
-    # already have reviewed. A changed packet must use a new path/revision.
-    with output.open("x", encoding="utf-8") as handle:
-        handle.write(content)
+    # Publish only fully written, flushed bytes. A failed write/link never
+    # leaves a partial final packet, while hard-linking is atomic and refuses
+    # to replace an existing (possibly already reviewed) packet. Temporary
+    # and final files share a directory/filesystem, including on Windows NTFS.
+    fd, temporary = tempfile.mkstemp(prefix=".ontotf-packet-", dir=output.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.link(temporary, output)
+    finally:
+        Path(temporary).unlink(missing_ok=True)
     return content
 
 
