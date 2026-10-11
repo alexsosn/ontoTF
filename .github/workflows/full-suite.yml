@@ -49,6 +49,11 @@ jobs:
       - name: Run TF-native architecture guards
         run: python -m pytest tests/architecture -q
 
+      # F-030 phase 3: retain repository-wide F-series research/workflow
+      # ownership enforcement while retiring six duplicated Linux jobs.
+      - name: Check F-series repository ownership
+        run: python scripts/check_f_series_ownership.py .
+
       - name: Verify immutable historical coverage and routing snapshots
         run: |
           python scripts/coverage/build_p004_r011_baseline.py --check
