@@ -1,9 +1,9 @@
 {
   "evidence_resources": {
     "resources/profiles/bhsa/batch-candidates/i033e3-word-sp-source.json": "docs/research/data/batch_review/evidence/i033e3-bhsa-word-sp.json",
-    "resources/profiles/syriac/batch-candidates/i033e3-word-sp-source.json": "docs/research/data/batch_review/evidence/i033e3-syriac-word-sp.json"
+    "resources/profiles/syriac/batch-candidates/i034a-word-sp-source.json": "docs/research/data/batch_review/evidence/i034a-syriac-word-sp.json"
   },
-  "ledger": "src/tfont/resources/batch_pilots/i033e3-ten-native-sp-candidates.json",
-  "packet": "docs/research/data/generated/i033d/i033e3-ten-native-sp-review-request.json",
+  "ledger": "src/tfont/resources/batch_pilots/i034a-olia-bhsa-syriac-pos-proposals.json",
+  "packet": "docs/research/data/generated/i033d/i034a-pos-review-request.json",
   "schema_version": 2
 }
