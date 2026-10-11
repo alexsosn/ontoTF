@@ -10,12 +10,24 @@ Official GitHub UI: [reviewing proposed changes](https://docs.github.com/en/pull
 
 ## Per-batch workflow
 
-Check out the **exact current candidate PR head** locally, e.g. PR #324 (`gh pr checkout 324`), and install the ontoTF package in your normal isolated environment. Do not execute PR-authored code with privileged GitHub credentials; the separate protected release workflow reads candidate files as data only. Before trusting any local tool, inspect its provenance against protected `main` (the reviewer-handoff tool is intended to be installed from a vetted ontoTF version).
+**Keep code and untrusted candidate data in separate checkouts.** First install ontoTF from vetted protected `main` in an isolated environment, then retain the current PR #324 exact-head checkout **only as JSON data** in a different directory. For example:
+
+```bash
+git clone https://github.com/alexsosn/ontoTF.git ontoTF-trusted
+git -C ontoTF-trusted switch main
+python -m pip install -e ./ontoTF-trusted
+git clone https://github.com/alexsosn/ontoTF.git ontoTF-candidate
+cd ontoTF-candidate
+gh pr checkout 324
+cd ../ontoTF-trusted
+```
+
+The candidate checkout's exact HEAD SHA must match the PR head in the GitHub UI. **Run the commands below from `ontoTF-trusted`, never from the candidate checkout**, with `--root ../ontoTF-candidate` selecting the candidate JSON files. Neither the tool nor any imported module should come from the PR-head checkout. After the reviewer-handoff CLI merges into `main`, it is available in the trusted directory even though the older candidate PR #324 does not contain it. No privileged GitHub token is needed for any local review command.
 
 1. Verify the source evidence and candidate scope. For readability, emit the dossier:
 
    ```bash
-   python scripts/mappings/prepare_external_review.py --dossier > review-dossier.md
+   python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --dossier > review-dossier.md
    ```
 
    It lists mapping IDs, selectors, original pinned source URI/revision and proposed source-definition line, target (if any), reason and source-bound SHA. **Review the pinned original source and current ontology lock yourself.** Candidate source line citations and `native-only` decisions are not automatically correct.
@@ -23,7 +35,7 @@ Check out the **exact current candidate PR head** locally, e.g. PR #324 (`gh pr 
 2. Produce an **unset** worksheet:
 
    ```bash
-   python scripts/mappings/prepare_external_review.py --template > decisions.json
+   python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --template > decisions.json
    ```
 
    Every `"disposition": null` is intentionally invalid for final GitHub approval. Edit each row yourself to precisely one `accept`, `reject` or `needs-evidence`; none is inferred. No missing or extra rows allowed. For PR #324, examine the distinction between BHSA pronoun subtypes and generic Syriac `pron`, and do not infer ontology absence merely from the limited installed OLiA terms.
@@ -31,7 +43,7 @@ Check out the **exact current candidate PR head** locally, e.g. PR #324 (`gh pr 
 3. Create the exact structured GitHub review body **after** reviewing and filling every row:
 
    ```bash
-   python scripts/mappings/prepare_external_review.py --review-decisions decisions.json > github-review-body.txt
+   python scripts/mappings/prepare_external_review.py --root ../ontoTF-candidate --review-decisions decisions.json > github-review-body.txt
    ```
 
    This validates the packet digest, exactly all row IDs and individual explicit dispositions, then copies in the reviewed packet's per-row decision digests. It does **not** authenticate the reviewer, does not invoke GitHub, and does **not** grant release authority. The handoff body has `ontoTF-batch-review-v1` header and JSON, ready to paste; it is NOT a self-authored receipt.
