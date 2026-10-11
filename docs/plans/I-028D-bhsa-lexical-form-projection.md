@@ -1,0 +1,9 @@
+# I-028D — TF-native preview projection implementation and TDD gate
+
+**Issue:** #352. **Research:** `docs/research/I-028D-bhsa-lexical-form-primary-data.md`.
+
+1. **RED:** Commit `tests/i028d/test_bhsa_lexical_projection.py` that imports an absent `tfont.bhsa_lexical_preview` module and expects a queryable, round-trip, revision-scoped lexical entry→virtual Form view. Use exact TF node IDs **1437649/1437650** and source values from the four upstream `.tf` blobs; assert their shared `lex0=DC>` never collapses identity. Tests reject words, wrong revision, absent values/language, malformed IRIs, token/sense/concept claims and canonicalForm overclaim.
+2. **GREEN:** Add one small, dependency-free module `src/tfont/bhsa_lexical_preview.py`. Input: pinned source revision, real TF API `api.F.*.v(node_id)`, explicit integer lex node ID. Output: immutable or defensive-copy self-describing, **unapproved-derived-preview** representation of candidate `LexicalEntry`/one per-node derived `Form` with `lexicalForm` and `writtenRep`, original language code, primary-source feature identity, source node identity. Return parseable edition/node IRIs; never claim an OntoLex mapping was authorized by the runtime view.
+3. No generic adapter, runtime release registry entry, mutable profile, constructed sense/concept, external network access or RDF materialization. Do not assume `lex0` equality is lexical-entry identity.
+4. Full exact-head CI on Python 3.10/3.12; independent first-principles adversarial review using primary `.tf` files and actual TFont API/mapping boundaries, not the author narrative. Fix and re-review material changes.
+5. Only after a reviewed source-specific publication contract and protected #303 gate may ontology coverage counters reflect this execution capability. Until then the functional preview is useful for validating actual BHSA→OntoLex data semantics but has no release authority.
