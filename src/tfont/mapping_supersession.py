@@ -290,8 +290,117 @@ def verify_supersession_preview(
         raise NativeSupersessionError("invalid supersession preview JSON") from exc
 
 
+_BATCH_AUTHORITY = "untrusted-supersession-batch-preview"
+_TRANSITION_FIELDS = frozenset({
+    "previous", "candidate", "native_evidence",
+    "ontology_evidence", "ontology_lock",
+})
+
+
+def plan_native_only_supersession_batch(
+    *, transitions: list[dict[str, Any]], base_release: str,
+    active_mappings: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Plan 1–50 *accepted* promotions in one immutable-base cohort.
+
+    The 10–50 *candidate* review-packet rule is enforced upstream. This
+    preflight explicitly has no GitHub review or release authority, and never
+    modifies the active mapping index or installed resources.
+    """
+    try:
+        _require(
+            type(transitions) is list and 1 <= len(transitions) <= 50,
+            "batch must contain 1–50 proposed accepted supersessions",
+        )
+        _require(type(active_mappings) is list and bool(active_mappings),
+                 "batch must have a nonempty pinned active base")
+        previews: list[dict[str, Any]] = []
+        retired: set[str] = set()
+        next_ids: set[str] = set()
+        projections: set[str] = set()
+        native_bindings: set[bytes] = set()
+        base_digest: str | None = None
+        corpus_id: str | None = None
+        for i, transition in enumerate(transitions):
+            _require(
+                type(transition) is dict
+                and set(transition) == _TRANSITION_FIELDS,
+                f"transition {i}: non-source-backed or extraneous fields",
+            )
+            preview = plan_native_only_supersession(
+                previous=transition["previous"],
+                candidate=transition["candidate"],
+                native_evidence=transition["native_evidence"],
+                ontology_evidence=transition["ontology_evidence"],
+                ontology_lock=transition["ontology_lock"],
+                base_release=base_release,
+                active_mappings=active_mappings,
+            )
+            old_id = preview["retired"]["mapping_id"]
+            new_id = preview["candidate"]["mapping_id"]
+            projection_id = transition["candidate"]["projections"][0]["projection_id"]
+            binding = canonical_json_bytes(preview["native_binding"])
+            _require(old_id not in retired, "duplicate retired mapping/selector in batch")
+            _require(new_id not in next_ids, "duplicate promoted mapping ID in batch")
+            _require(projection_id not in projections, "duplicate promoted projection ID in batch")
+            _require(binding not in native_bindings, "duplicate native selector in batch")
+            _require(base_digest in (None, preview["active_base_digest"]),
+                     "mixed inherited active index in batch")
+            _require(corpus_id in (None, preview["corpus_id"]),
+                     "batch cannot mix corpus release identities")
+            retired.add(old_id)
+            next_ids.add(new_id)
+            projections.add(projection_id)
+            native_bindings.add(binding)
+            base_digest = preview["active_base_digest"]
+            corpus_id = preview["corpus_id"]
+            previews.append(preview)
+        _require(not (retired & next_ids),
+                 "batch promotion reuses a retired mapping ID")
+        previews.sort(key=lambda row: row["retired"]["mapping_id"])
+        record = {
+            "schema_version": 1,
+            "transition_kind": "native-only-to-exact-batch",
+            "authority": _BATCH_AUTHORITY,
+            "release_authorized": False,
+            "base_release": base_release,
+            "corpus_id": corpus_id,
+            "active_base_digest": base_digest,
+            "count": len(previews),
+            "transitions": previews,
+        }
+        record["content_digest"] = _digest(record)
+        return record
+    except NativeSupersessionError:
+        raise
+    except (KeyError, IndexError, TypeError, ValueError, AttributeError, RecursionError) as exc:
+        raise NativeSupersessionError("invalid or untrusted batch supersession input") from exc
+
+
+def verify_supersession_batch_preview(
+    preview: dict[str, Any], *, transitions: list[dict[str, Any]],
+    base_release: str, active_mappings: list[dict[str, Any]],
+) -> None:
+    """Recompute the entire untrusted batch plan (NOT a review/approval gate)."""
+    _require(type(preview) is dict, "batch preview must be an object")
+    expected = plan_native_only_supersession_batch(
+        transitions=transitions,
+        base_release=base_release,
+        active_mappings=active_mappings,
+    )
+    try:
+        _require(canonical_json_bytes(preview) == canonical_json_bytes(expected),
+                 "batch preview differs from exact source-bound input")
+    except NativeSupersessionError:
+        raise
+    except (TypeError, ValueError, RecursionError) as exc:
+        raise NativeSupersessionError("invalid untrusted batch preview JSON") from exc
+
+
 __all__ = [
     "NativeSupersessionError",
     "plan_native_only_supersession",
     "verify_supersession_preview",
+    "plan_native_only_supersession_batch",
+    "verify_supersession_batch_preview",
 ]
