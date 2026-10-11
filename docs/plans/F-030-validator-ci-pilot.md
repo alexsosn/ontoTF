@@ -13,3 +13,7 @@ Research: `docs/research/F-030-validator-ci-pilot.md`
 5. Independently challenge coverage, workflow event boundaries, test discovery, packaging and branch-protection assumptions on the exact final head. Merge only after all active CI workflows pass and a fresh independent skeptical review is recorded.
 
 No release artifact is built or promoted in this change; closing #291 is out of scope. Expected reduction: 77 → 66 workflow files.
+
+## CI-discovered migration dependency
+
+The first PR head correctly failed D-006's repository test `test_frozen_carriers_are_missing_or_matching`: its historical F-series carrier inventory still expected F-003/F-004/F-005 workflows to exist. The correction updates that *active-path inventory*, explicitly classifies the three removed workflows as intentional retirements, and adds a test that requires their deletion while retaining their three `tests/i002` regression modules. All immutable research ownership documents and the F-series issue IDs remain intact; absence is not reclassified as a false owner declaration. This prevents a green result from merely bypassing D-006.
