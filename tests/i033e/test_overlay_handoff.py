@@ -1,5 +1,6 @@
 """Real-source conservative handoff fixtures; mocked reviews are not authority."""
 import copy
+import io
 import json
 import os
 import tempfile
@@ -134,7 +135,7 @@ class OverlayHandoffTests(unittest.TestCase):
         ledger, read, packet, report = cohort()
         cli = transport.cli()
         report["provenance"] = "github-live-rest-verified-at-this-run;not-offline-signed"
-        with tempfile.TemporaryDirectory() as directory, patch.object(cli, "fetch_pr_head_context", return_value=(packet, ledger, read)), \
+        with patch("sys.stdout", new=io.StringIO()), patch("sys.stderr", new=io.StringIO()), tempfile.TemporaryDirectory() as directory, patch.object(cli, "fetch_pr_head_context", return_value=(packet, ledger, read)), \
              patch.object(cli, "evaluate_live_gate", side_effect=[report, dict(report, review_id=101)]), \
              patch("sys.argv", ["gate", "--from-pr-head", "--publish-handoff"]):
             previous = os.getcwd()
