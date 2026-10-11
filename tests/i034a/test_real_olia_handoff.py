@@ -81,7 +81,7 @@ class ProtectedOLiAClassEvidenceTDD(unittest.TestCase):
             "resources/ontologies/olia/0000000000000000000000000000000000000000/fake.json",
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/../fake.json",
             "resources/ontologies/other/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/fake.json",
-            "resources/profiles/bhsa/candidate\\\\ontology.json",
+            "resources/profiles/bhsa/candidate\\ontology.json",
         ):
             clone = copy.deepcopy(self.pack)
             found = next(c for c in clone["corpora"] if
