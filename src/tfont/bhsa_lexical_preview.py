@@ -8,7 +8,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
-from typing import Any
+from types import MappingProxyType
+from typing import Any, Mapping
 
 
 BHSA_SOURCE_REVISION = "4db00e2157915495e1a4d3d57e41223df24775da"
@@ -137,49 +138,68 @@ def resolve_bhsa_lexical_uri(
     return kind, projection
 
 
+
+@dataclass(frozen=True)
+class BHSAFormIndex:
+    """Immutable source-revision-scoped snapshot, not reviewed RDF authority.
+
+    Build again if the caller changes or reloads the materialized TF corpus.
+    The index contains every lexeme node of the one pinned BHSA 2021 release.
+    """
+    source_revision: str
+    lexeme_count: int
+    by_written_rep: Mapping[str, tuple[DerivedBHSAForm, ...]]
+
+    def lookup(self, written_rep: str) -> tuple[DerivedBHSAForm, ...]:
+        """Return *all* lexeme/Form identities for this exact source string."""
+        if type(written_rep) is not str or not written_rep:
+            raise LexicalProjectionError("written representation must be nonempty text")
+        return self.by_written_rep.get(written_rep, ())
+
+
+def build_bhsa_lexical_form_index(
+    tf_api: Any,
+    *,
+    source_revision: str,
+) -> BHSAFormIndex:
+    """Build a reusable Form index from 9,230 genuine BHSA lex nodes only.
+
+    Text-Fabric NodeFeature.s() *scans the whole feature dictionary*; it is
+    not an inverted index. This builder performs one bounded validation pass
+    over the pinned lex-node ID range, never over the 426,590 word nodes.
+    """
+    if source_revision != BHSA_SOURCE_REVISION:
+        raise LexicalProjectionError("BHSA source revision is not pinned release")
+    lookup: dict[str, list[DerivedBHSAForm]] = {}
+    for node in range(_LEX_FIRST, _LEX_LAST + 1):
+        projection = project_bhsa_lexical_form(
+            tf_api, node, source_revision=source_revision
+        )
+        lookup.setdefault(projection.written_rep, []).append(projection)
+    frozen = MappingProxyType({
+        value: tuple(projections) for value, projections in lookup.items()
+    })
+    return BHSAFormIndex(
+        source_revision=BHSA_SOURCE_REVISION,
+        lexeme_count=_LEX_LAST - _LEX_FIRST + 1,
+        by_written_rep=frozen,
+    )
+
+
 def find_bhsa_lexical_forms(
     tf_api: Any,
     written_rep: str,
     *,
     source_revision: str,
 ) -> tuple[DerivedBHSAForm, ...]:
-    """Resolve all BHSA *lexeme-node* Form previews for an indexed writtenRep.
+    """One-off exact-source lookup; reuse an index for many lookups instead.
 
-    Uses Text-Fabric's F.voc_lex_utf8.s(value) native inverted feature index:
-    never scans all words, and never collapses lexeme homographs by text.
-    Source feature values are rechecked independently against each index hit.
+    This deliberately does NOT call F.voc_lex_utf8.s(), which performs an
+    O(435,820) scan. Build a BHSAFormIndex once for amortized constant-time
+    lookups over just the 9,230 lexical records.
     """
-    if source_revision != BHSA_SOURCE_REVISION:
-        raise LexicalProjectionError("BHSA source revision is not pinned release")
     if type(written_rep) is not str or not written_rep:
         raise LexicalProjectionError("written representation must be nonempty text")
-    try:
-        candidates = tf_api.F.voc_lex_utf8.s(written_rep)
-    except (AttributeError, TypeError, KeyError, ValueError) as exc:
-        raise LexicalProjectionError("Text-Fabric inverse voc_lex_utf8 index unavailable") from exc
-    if type(candidates) not in (list, tuple, set, frozenset):
-        raise LexicalProjectionError("invalid Text-Fabric inverse index results")
-    # The pinned source has 435,820 feature-bearing nodes in total.
-    if len(candidates) > 435820:
-        raise LexicalProjectionError("inverted feature index exceeds pinned source scope")
-    result: list[DerivedBHSAForm] = []
-    seen: set[int] = set()
-    for node in candidates:
-        if type(node) is not int or node <= 0:
-            raise LexicalProjectionError("inverted feature index returned invalid node")
-        kind = _get(tf_api, "otype", node)
-        if kind != "lex":
-            continue  # The same TF feature also occurs on actual word nodes.
-        _lex_id(node)
-        if node in seen:
-            raise LexicalProjectionError("inverted feature index duplicated a lexeme node")
-        seen.add(node)
-        projection = project_bhsa_lexical_form(
-            tf_api, node, source_revision=source_revision
-        )
-        if projection.written_rep != written_rep:
-            raise LexicalProjectionError(
-                "inverted feature index disagrees with pinned lexical representation"
-            )
-        result.append(projection)
-    return tuple(sorted(result, key=lambda projection: projection.source_node_id))
+    return build_bhsa_lexical_form_index(
+        tf_api, source_revision=source_revision
+    ).lookup(written_rep)
