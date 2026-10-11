@@ -67,6 +67,11 @@ class IntegrityRedTests(unittest.TestCase):
             "fabricated_evidence": lambda p: p["corpora"][0]["added_evidence"][0]["record"].update(
                 source_revision="b"*40
             ),
+            "bad_dependency_evidence": lambda p: p["corpora"][0]["added_dependencies"][0].update(
+                evidence=[{"evidence_id":"evidence:forged:unknown",
+                           "content_digest":"sha256:"+"2"*64}]
+            ),
+            "bad_source_definition": lambda p: p["corpora"][0]["added_evidence"][0]["record"]["reviewed_content"]["source_definitions"].pop("art"),
             "wrong_native_scope": lambda p: p["corpora"][0]["mappings"][0]["native_binding"].update(
                 node_type="lex"
             ),
