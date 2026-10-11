@@ -1,0 +1,174 @@
+"""I-033E5 RED: same-account review needs two independent *passes*, not an invented person."""
+from __future__ import annotations
+
+import copy
+import json
+import unittest
+
+from tests.i033e.test_overlay_handoff import cohort
+from tests.i033e.test_external_review_red import (
+    REPO, SHA, body_for, pr_data, review,
+)
+from tfont.external_review_gate import ExternalReviewError, evaluate_review_snapshot
+from tfont.single_agent_review import (
+    evaluate_single_agent_snapshot, parse_adversarial_report,
+)
+
+AUTHOR = "proposal-author"
+LABEL = "ontology-single-agent-review"
+
+
+def candidate_pr():
+    result = pr_data(author=AUTHOR)
+    result["base"]["ref"] = "main"
+    result["labels"] = [{"name": LABEL}, {"name": "ontology-batch-review"}]
+    return result
+
+
+def adversarial_body(packet):
+    return "ontoTF-adversarial-review-v1\n" + json.dumps({
+        "packet_digest": packet["batch_digest"],
+        "summary": "Independently challenge each native-only category against the pinned primary source, the limited reviewed OLiA lock and the distinction between a native feature definition and a validated ontology class target.",
+        "rows": [{
+            "mapping_id": row["mapping_id"],
+            "decision_digest": row["decision_digest"],
+            "challenge": f"Reassess {row['native_binding']['value']} independently: the native part-of-speech definition may not justify treating it as unmatched by any ontology; demand precise target evidence.",
+            "source_check": f"Primary original source check: pinned revision {row['source_pin']['source_revision']} identifies {row['native_binding']['value']} in the documented word.sp domain; compare the ontology lock before adjudication.",
+        } for row in packet["rows"]],
+    }, ensure_ascii=False)
+
+
+def author_event(packet, *, n=900, kind="adversarial", state="COMMENTED",
+                 sha=SHA, at="2026-10-11T11:00:00Z", author=AUTHOR):
+    event = review(packet, user=author, state=state, commit=sha,
+                   submitted=at, review_id=n,
+                   body=adversarial_body(packet) if kind=="adversarial"
+                   else body_for(packet, first="accept"))
+    return event
+
+
+class SingleAgentReviewRED(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        _, _, cls.packet, _mock = cohort()
+
+    def evaluate(self, reviews, *, pr=None, permissions=None):
+        return evaluate_single_agent_snapshot(
+            packet=self.packet, repository=REPO, pr_number=299,
+            expected_head_sha=SHA, pull_request=pr or candidate_pr(),
+            reviews=reviews,
+            reviewer_permissions=permissions or {AUTHOR: "admin"},
+        )
+
+    def pair(self):
+        return [
+            author_event(self.packet, n=900),
+            author_event(self.packet, n=901, kind="decision",
+                         at="2026-10-11T12:00:00Z"),
+        ]
+
+    def test_two_separate_commit_bound_events_authorize_only_single_agent_provenance(self):
+        report=self.evaluate(self.pair())
+        self.assertEqual(report["counts"], {"accept": 1, "reject": 0, "needs-evidence": 9})
+        self.assertEqual(report["approved_head_sha"], SHA)
+        self.assertEqual(report["reviewer_login"], AUTHOR)
+        self.assertEqual(report["review_id"], 901)
+        self.assertIn("single-agent", report["provenance"])
+        self.assertNotIn("independent-person", report["provenance"])
+        self.assertNotIn("release_authorized", report)
+        self.assertEqual(len(report["rows"]), 10)
+
+    def test_external_review_mode_still_rejects_author_comments(self):
+        with self.assertRaises(ExternalReviewError):
+            evaluate_review_snapshot(
+                packet=self.packet, repository=REPO, pr_number=299,
+                expected_head_sha=SHA, pull_request=candidate_pr(),
+                reviews=self.pair(), reviewer_permissions={AUTHOR: "admin"},
+            )
+
+    def test_author_decision_alone_or_adversarial_alone_cannot_authorize(self):
+        for events in ([self.pair()[0]], [self.pair()[1]], []):
+            with self.subTest(size=len(events)), self.assertRaises(ExternalReviewError):
+                self.evaluate(events)
+
+    def test_two_events_require_sequence_unique_ids_and_same_current_sha(self):
+        a,b=self.pair()
+        cases = [
+            [b,a],
+            [copy.deepcopy(b),copy.deepcopy(a)],
+            [a,dict(b,id=a["id"])],
+            [dict(a,commit_id="b"*40),b],
+            [a,dict(b,commit_id="b"*40)],
+            [a,dict(b,submitted_at=a["submitted_at"],id=899)],
+            [a,dict(b,user={"login":"external-reviewer","type":"User"})],
+            [a,dict(b,state="APPROVED")],
+            [dict(a,state="APPROVED"),b],
+            [a,b,dict(b,id=902,body="An unrelated later COMMENT",
+                      submitted_at="2026-10-11T13:00:00Z")],
+            [a,b,dict(b,id=903,state="DISMISSED",
+                      submitted_at="2026-10-11T13:01:00Z")],
+        ]
+        for idx,events in enumerate(cases):
+            with self.subTest(idx=idx), self.assertRaises(ExternalReviewError):
+                self.evaluate(events)
+
+    def test_explicit_live_opt_in_and_permission_are_required(self):
+        for label in ([], [{"name":"ontology-batch-review"}]):
+            with self.subTest(labels=label), self.assertRaises(ExternalReviewError):
+                self.evaluate(self.pair(),pr=dict(candidate_pr(), labels=label))
+        for role in ("read", "triage", "unknown"):
+            with self.subTest(role=role), self.assertRaises(ExternalReviewError):
+                self.evaluate(self.pair(), permissions={AUTHOR: role})
+        with self.assertRaises(ExternalReviewError):
+            self.evaluate(self.pair(), permissions={"OTHER": "admin"})
+        with self.assertRaises(ExternalReviewError):
+            self.evaluate(self.pair(),pr=pr_data(author=AUTHOR))
+
+    def test_different_github_account_and_forged_fields_are_rejected(self):
+        a,b=self.pair()
+        for change in (
+            {"user":{"login":"other","type":"User"}},
+            {"user":{"login":AUTHOR,"type":"Bot"}},
+            {"commit_id":"c"*40},
+            {"state":"CHANGES_REQUESTED"},
+        ):
+            with self.subTest(change=change), self.assertRaises(ExternalReviewError):
+                self.evaluate([dict(a,**change),b])
+
+    def test_strict_adversarial_report_rejects_empty_copied_or_missing_row_evidence(self):
+        a,b=self.pair()
+        source=json.loads(a["body"].split("\n",1)[1])
+        variants=[]
+        x=copy.deepcopy(source);x["rows"].pop();variants.append(x)
+        x=copy.deepcopy(source);x["rows"].append(copy.deepcopy(x["rows"][0]));variants.append(x)
+        x=copy.deepcopy(source);x["rows"][0]["challenge"]="ok";variants.append(x)
+        x=copy.deepcopy(source);x["rows"][0]["source_check"]="source";variants.append(x)
+        x=copy.deepcopy(source);x["rows"][0]["challenge"]=self.packet["rows"][0]["rationale"];variants.append(x)
+        x=copy.deepcopy(source);x["rows"][0]["decision_digest"]="sha256:"+"e"*64;variants.append(x)
+        x=copy.deepcopy(source);x["rows"][0]["mapping_id"]="mapping:forged";variants.append(x)
+        x=copy.deepcopy(source);x["packet_digest"]="sha256:"+"e"*64;variants.append(x)
+        x=copy.deepcopy(source);x["summary"]="";variants.append(x)
+        x=copy.deepcopy(source);x["reviewer_login"]="independent";variants.append(x)
+        x=copy.deepcopy(source);x["rows"][0]["accepted"]=True;variants.append(x)
+        for idx,v in enumerate(variants):
+            with self.subTest(idx=idx), self.assertRaises(ExternalReviewError):
+                self.evaluate([dict(a,body="ontoTF-adversarial-review-v1\n"+json.dumps(v)),b])
+        for body in ("ontoTF-adversarial-review-v1\n{"x":1,"x":2}",
+                     "ontoTF-adversarial-review-v1\nNaN",
+                     "ontoTF-adversarial-review-v1\n[]"):
+            with self.assertRaises(ExternalReviewError):
+                parse_adversarial_report(body,self.packet)
+
+    def test_current_pr_must_have_exact_head_base_repo_state(self):
+        for broken in (
+            {"state":"closed"}, {"draft":True},
+            {"number":300}, {"head":{"sha":"c"*40,"repo":{"full_name":REPO}}},
+            {"base":{"ref":"other","repo":{"full_name":REPO}}},
+            {"base":{"ref":"main","repo":{"full_name":"other/repo"}}},
+        ):
+            with self.subTest(change=broken), self.assertRaises(ExternalReviewError):
+                self.evaluate(self.pair(),pr=dict(candidate_pr(),**broken))
+
+
+if __name__ == "__main__":
+    unittest.main()
