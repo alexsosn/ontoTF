@@ -5,23 +5,37 @@ name: Protected ontology batch reviewer
 on:
   pull_request_target:
     types: [opened, reopened, synchronize, ready_for_review, labeled]
+  # GitHub executes issue_comment workflow code from the DEFAULT branch,
+  # unlike pull_request_review (which uses an unsafe PR merge ref).
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: ontology-batch-review-${{ github.event.pull_request.number }}
+  group: ontology-batch-review-${{ github.event.pull_request.number || github.event.issue.number }}
   cancel-in-progress: true
 
 jobs:
   external-attestation:
     if: >-
-      github.event.pull_request.state == 'open' &&
-      github.event.pull_request.draft == false &&
-      github.event.pull_request.base.ref == 'main' &&
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      contains(github.event.pull_request.labels.*.name, 'ontology-batch-review')
+      (
+        github.event_name == 'pull_request_target' &&
+        github.event.pull_request.state == 'open' &&
+        github.event.pull_request.draft == false &&
+        github.event.pull_request.base.ref == 'main' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        contains(github.event.pull_request.labels.*.name, 'ontology-batch-review')
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        github.event.comment.body == '/ontoTF verify-review' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
+        contains(github.event.issue.labels.*.name, 'ontology-batch-review')
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout trusted base only (never PR head)
@@ -43,7 +57,7 @@ jobs:
       - name: Archive non-signature provenance report
         uses: actions/upload-artifact@v4
         with:
-          name: ontology-batch-review-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          name: ontology-batch-review-${{ github.event.pull_request.number || github.event.issue.number }}-${{ github.run_id }}
           path: batch-review-attestation.json
           if-no-files-found: error
           retention-days: 30
@@ -52,7 +66,10 @@ jobs:
     needs: external-attestation
     if: >-
       needs.external-attestation.result == 'success' &&
-      contains(github.event.pull_request.labels.*.name, 'ontology-batch-publish')
+      (
+        contains(github.event.pull_request.labels.*.name, 'ontology-batch-publish') ||
+        contains(github.event.issue.labels.*.name, 'ontology-batch-publish')
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -78,7 +95,7 @@ jobs:
           subject-path: batch-review-pack.json
       - uses: actions/upload-artifact@v4
         with:
-          name: ontology-overlay-handoff-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          name: ontology-overlay-handoff-${{ github.event.pull_request.number || github.event.issue.number }}-${{ github.run_id }}
           path: batch-review-pack.json
           if-no-files-found: error
           retention-days: 30

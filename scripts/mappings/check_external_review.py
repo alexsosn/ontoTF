@@ -91,21 +91,75 @@ def _api(path: str, token: str) -> Any:
 
 def _github_event() -> tuple[str, int, str]:
     env = os.environ
-    if env.get("GITHUB_EVENT_NAME") != "pull_request_target":
-        _abort("live gate requires a trusted-base pull_request_target event")
+    kind = env.get("GITHUB_EVENT_NAME")
+    if kind not in {"pull_request_target", "issue_comment"}:
+        _abort("live gate requires a trusted-base PR or authorized PR-comment event")
     repo = env.get("GITHUB_REPOSITORY")
     event_path = env.get("GITHUB_EVENT_PATH")
     token = env.get("GITHUB_TOKEN")
-    if not token or not repo or not event_path:
+    if (not token or not repo or not event_path
+            or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo)):
         _abort("trusted GitHub event, repository or read token not available")
     event = _json_file(Path(event_path))
-    pr = event.get("pull_request")
-    if type(pr) is not dict or type(pr.get("head")) is not dict:
-        _abort("GitHub event contains no PR head")
-    n = pr.get("number",event.get("number"))
-    sha = pr["head"].get("sha")
-    if type(n) is not int or type(sha) is not str:
-        _abort("GitHub event PR number / SHA invalid")
+    if kind == "pull_request_target":
+        pr = event.get("pull_request")
+        if type(pr) is not dict or type(pr.get("head")) is not dict:
+            _abort("GitHub event contains no PR head")
+        n = pr.get("number", event.get("number"))
+        sha = pr["head"].get("sha")
+        if type(n) is not int or type(sha) is not str:
+            _abort("GitHub event PR number / SHA invalid")
+        return repo, n, sha
+
+    # GitHub's issue_comment workflow file and GITHUB_SHA are on the default
+    # branch. The comment is only a request to RECHECK: it is not approval.
+    # Read the current PR head from GitHub, never from the comment/issue JSON.
+    if env.get("GITHUB_REF") != "refs/heads/main" or event.get("action") != "created":
+        _abort("PR review-refresh comment is not on protected default branch")
+    issue, comment = event.get("issue"), event.get("comment")
+    if type(issue) is not dict or type(comment) is not dict:
+        _abort("PR review-refresh requires real issue and comment objects")
+    n = issue.get("number")
+    user = comment.get("user")
+    if (type(n) is not int or n <= 0 or type(issue.get("pull_request")) is not dict
+            or type(user) is not dict or not isinstance(user.get("login"), str)
+            or not user["login"]):
+        _abort("PR review-refresh comment is not a valid pull request comment")
+    expected_url = f"https://api.github.com/repos/{repo}/pulls/{n}"
+    if issue["pull_request"].get("url") != expected_url:
+        _abort("PR comment does not identify the current repository pull request")
+    if (comment.get("body") != "/ontoTF verify-review"
+            or comment.get("author_association") not in {"OWNER", "MEMBER", "COLLABORATOR"}):
+        _abort("PR comment lacks a maintainer review-refresh request")
+    labels = issue.get("labels")
+    if (type(labels) is not list
+            or "ontology-batch-review" not in {
+                item.get("name") for item in labels if type(item) is dict
+            }):
+        _abort("PR review label missing from trusted comment event")
+    path = "/repos/" + "/".join(urllib.parse.quote(part, safe="") for part in repo.split("/"))
+    current = _api(path + f"/pulls/{n}", token)
+    if type(current) is not dict:
+        _abort("GitHub current PR metadata unavailable")
+    head, base = current.get("head"), current.get("base")
+    current_labels = current.get("labels")
+    try:
+        sha = head["sha"]
+        valid = (
+            type(current.get("number")) is int and current["number"] == n
+            and current.get("state") == "open" and current.get("draft") is False
+            and type(sha) is str and re.fullmatch(r"[0-9a-f]{40}", sha) is not None
+            and head["repo"]["full_name"] == repo
+            and base["repo"]["full_name"] == repo and base["ref"] == "main"
+            and type(current_labels) is list
+            and "ontology-batch-review" in {
+                item.get("name") for item in current_labels if type(item) is dict
+            }
+        )
+    except (KeyError, TypeError):
+        valid = False
+    if not valid:
+        _abort("PR review-refresh current head, base, state, or label invalid")
     return repo, n, sha
 
 
