@@ -1,20 +1,22 @@
-# Reviewing ontoTF ontology candidate batches
+# Reviewing ontoTF batches in a single-agent repository
 
-This document explains the **reviewer's** one-time workflow, reused for each new 10–50-row mapping batch. The CLI generates no approval and **never** publishes ontology mappings.
+ontoTF has **one development/review agent and one GitHub account**. It cannot use GitHub's `Approve` action on its own PR. The repository therefore supports **two distinct, auditable modes** without inventing a second reviewer.
 
-## One-time reviewer setup
+## Single-agent mode (explicit opt-in)
 
-The PR author cannot approve their own GitHub PR. Ask the repository owner to invite a **different independent scholarly reviewer** with write, maintain or admin access; a reviewer with only read/triage access will **not** pass ontoTF's authenticated release gate. GitHub App or author-controlled secondary account approval is not implemented or accepted as a shortcut. The reviewer must evaluate the cited original source and its interpretation rather than rubber-stamp the batch's proposals.
+For a 10–50-row source-grounded batch, the same GitHub author completes **two logically separate adversarial passes** on the exact same candidate commit:
 
-Official GitHub UI: [reviewing proposed changes](https://docs.github.com/en/pull-requests/how-tos/review-pull-requests/approving-a-pull-request-with-required-reviews).
+1. **Challenge first.** Examine every proposed category against the pinned original corpus source, consider alternate ontology targets and attempted counterexamples. Post a structured `ontoTF-adversarial-review-v1` report as a GitHub **COMMENTED pull-request review**, not an ordinary issue comment. Each row needs a separately written `challenge` and `source_check` containing the original source revision and selector. Do not copy the proposal rationale as the counterargument.
+2. **Decide second.** Re-evaluate the original source, code, tests, uncertainties and previous skeptical findings without assuming the proposal is correct. Explicitly select `accept`, `reject` or `needs-evidence` for **every** row. Post the `ontoTF-batch-review-v1` body as a **second GitHub COMMENTED PR review** at that exact SHA. The data code never preselects `accept`.
 
-## Per-batch workflow
+GitHub review IDs/times and commit SHAs establish two distinct events; their existence **does not prove cognitive independence** or a separate reviewer. Protected-main CI only verifies the evidence, chronology, same real author, GitHub permissions, canonical packet/row commitments and current PR head, and records `single-agent-adversarial` provenance rather than claiming external independent approval. The existing external distinct-user `APPROVED` path remains available for projects that actually have such people, but is not required for ontoTF.
 
-**Keep code and untrusted candidate data in separate checkouts.** First install ontoTF from vetted protected `main` in an isolated environment, then retain the current PR #324 exact-head checkout **only as JSON data** in a different directory. For example:
+### Trusted tools and candidate data in two directories
+
+Run vetted policy and helper code from current protected `main`; the candidate PR checkout contains **untrusted JSON data**, not code to execute:
 
 ```bash
 git clone https://github.com/alexsosn/ontoTF.git ontoTF-trusted
-git -C ontoTF-trusted switch main
 python -m pip install -e ./ontoTF-trusted
 git clone https://github.com/alexsosn/ontoTF.git ontoTF-candidate
 cd ontoTF-candidate
@@ -22,40 +24,50 @@ gh pr checkout 324
 cd ../ontoTF-trusted
 ```
 
-The candidate checkout's exact HEAD SHA must match the PR head in the GitHub UI. **Run the commands below from `ontoTF-trusted`, never from the candidate checkout**, with `--root ../ontoTF-candidate` selecting the candidate JSON files. Neither the tool nor any imported module should come from the PR-head checkout. After the reviewer-handoff CLI merges into `main`, it is available in the trusted directory even though the older candidate PR #324 does not contain it. No privileged GitHub token is needed for any local review command.
+Confirm the candidate checkout's exact HEAD SHA matches the GitHub PR.
 
-1. Verify the source evidence and candidate scope. For readability, emit the dossier:
+Produce a readable dossier, with per-row original source claims and digest:
 
-   ```bash
-   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --dossier > review-dossier.md
-   ```
+```bash
+python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --dossier > review-dossier.md
+```
 
-   It lists mapping IDs, selectors, original pinned source URI/revision and proposed source-definition line, target (if any), reason and source-bound SHA. **Review the pinned original source and current ontology lock yourself.** Candidate source line citations and `native-only` decisions are not automatically correct.
+In a separate skeptical pass, create an **unfilled** challenge worksheet:
 
-2. Produce an **unset** worksheet:
+```bash
+python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --challenge-template > challenges.json
+```
 
-   ```bash
-   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --template > decisions.json
-   ```
+Every `challenge`, `source_check` and overall `summary` initially equals `null`. Research and fill each item individually; the validator requires a nontrivial counterargument, the exact native selector, and its source revision. Format only your *completed* report:
 
-   Every `"disposition": null` is intentionally invalid for final GitHub approval. Edit each row yourself to precisely one `accept`, `reject` or `needs-evidence`; none is inferred. No missing or extra rows allowed. For PR #324, examine the distinction between BHSA pronoun subtypes and generic Syriac `pron`, and do not infer ontology absence merely from the limited installed OLiA terms.
+```bash
+python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --review-challenges challenges.json > adversarial-review.txt
+gh pr review 324 --repo alexsosn/ontoTF --comment --body-file adversarial-review.txt
+```
 
-3. Create the exact structured GitHub review body **after** reviewing and filling every row:
+Perform the second pass, independently judging each challenge, and create the (also **unset**) decision worksheet:
 
-   ```bash
-   python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --review-decisions decisions.json > github-review-body.txt
-   ```
+```bash
+python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --template > decisions.json
+```
 
-   This validates the packet digest, exactly all row IDs and individual explicit dispositions, then copies in the reviewed packet's per-row decision digests. It does **not** authenticate the reviewer, does not invoke GitHub, and does **not** grant release authority. The handoff body has `ontoTF-batch-review-v1` header and JSON, ready to paste; it is NOT a self-authored receipt.
+Manually select `accept`, `reject` or `needs-evidence` for each candidate; do not infer an exact OLiA mapping or permanent lack of one merely from its source gloss.
 
-4. Open the **same exact-head** GitHub PR in your **own distinct authorized** account, inspect Files changed, choose **Review changes → Approve** (not Comment), paste the entire body, submit the review. If the PR head or evidence changes, re-run the tools and review again against the new SHA. An ordinary comment, author-supplied JSON, and old-commit approval cannot pass ontoTF's protected gate.
+```bash
+python -m scripts.mappings.prepare_external_review --root ../ontoTF-candidate --review-decisions decisions.json > decision-review.txt
+gh pr review 324 --repo alexsosn/ontoTF --comment --body-file decision-review.txt
+```
 
-5. Ask a repository maintainer to comment exactly `/ontoTF verify-review` on the labeled PR. With `ontology-batch-review` label, the protected default-branch workflow re-fetches GitHub head/reviews/permissions and independently verifies the review event and all digests; only a separately applied `ontology-batch-publish` label permits the accepted-only handoff job. A CLI-generated body alone is not a signed release; publication remains gated on live GitHub attestation.
+These are **GitHub PR COMMENTED reviews**; a simple `gh pr comment` or a GitHub issue comment will not count as either reviewed event. After the two distinct ordered review events, add both `ontology-batch-review` and `ontology-single-agent-review` labels to the candidate PR. The first label already exists on #324. To request a fresh protected run, comment exactly `/ontoTF verify-review` on the PR as a maintainer; this command **triggers re-evaluation, never counts as approval**. On success, separately add `ontology-batch-publish` only to request an accepted-only pack (10–50 accepted decisions in the current handoff implementation).
 
-## Current tracked acceptance
+The gate re-fetches the current PR SHA, GitHub-authenticated review events, permissions, and all immutable ledger/packet/source data using protected `main` code. No PR code executes with a release token. A stale review, missing challenge, missing decision, unauthorized author, missing opt-in label, or contradictory current event **fails closed**. Any PR head change requires both passes to be redone.
 
-- Candidate PR: [#324](https://github.com/alexsosn/ontoTF/pull/324), ten unreviewed native POS selectors, full-suite Python 3.10/3.12 green.
-- Blocker: [#325](https://github.com/alexsosn/ontoTF/issues/325), provision a truly independent privileged reviewer.
-- Protected release integration: [#303](https://github.com/alexsosn/ontoTF/issues/303); no ontology-coverage or released-mapping increase can be claimed until reviewer authentication and accepted-only overlay verification succeed.
+## Distinct-human mode (optional for other deployments)
 
-The workflow is batch-oriented: one dossier, one review, one final-head verifier, no per-item CI/PR machinery.
+Without `ontology-single-agent-review`, the original external review gate still requires a different privileged GitHub `User` to submit an exact-head `APPROVED` review with all `ontoTF-batch-review-v1` per-row decisions. GitHub prevents PR author self-approval. Never simulate an external reviewer by renaming the author account, inventing a service principal or writing reviewer JSON locally.
+
+## Candidate #324 / remaining release work
+
+[PR #324](https://github.com/alexsosn/ontoTF/pull/324) holds ten **unreviewed** BHSA/Syriac POS candidates; nine BHSA original definitions are from pinned `sp.md` lines 17 and 22–29, and Syriac general `pron` from pinned `word_grammar` line 91. `native-only` is a scoped claim under today's OLiA lock, not proof that no corresponding ontology concept exists. The review process must independently challenge those ten decisions.
+
+[#325](https://github.com/alexsosn/ontoTF/issues/325) records the architecture correction from second-person to single-agent review; [#303](https://github.com/alexsosn/ontoTF/issues/303) covers accepted-only protected handoff, attestation and release parity. CI/review success does **not** itself increase installed ontology coverage: an actual attested release artifact and registry update must be verified.
