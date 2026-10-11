@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "batch_id": "i034c-bhsa-olia-morphology",
+  "authority": "unreviewed-semantic-proposals",
+  "source_registry": {
+    "ps": {
+      "uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/ps.md",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "prs_ps": {
+      "uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "prs_gn": {
+      "uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_gn.md",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "prs_nu": {
+      "uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "st": {
+      "uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/st.md",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    },
+    "vt": {
+      "uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/vt.md",
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+    }
+  },
+  "ontology_evidence": {
+    "ontology_id": "olia",
+    "source_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+    "snapshot_digest": "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd",
+    "snapshot_artifact": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/olia.owl",
+    "release_authorized": false
+  },
+  "denominator": {
+    "corpus_id": "bhsa",
+    "resource_set": "p004-i027c2-bhsa-adj-adv-v1",
+    "denominator_digest": "sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03",
+    "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+  },
+  "rows": [
+    {
+      "feature": "ps",
+      "value": "p1",
+      "item_id": "node_value:ps=\"p1\"",
+      "source_line": 14,
+      "source_gloss": "first person",
+      "native_subject": "word-morphology",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#First",
+      "ontology_line": 4986,
+      "rationale": "The BHSA word.ps documentation explicitly records first person as p1 on the word's own inflection. The pinned OLiA First is a PersonFeature, not FirstPersonPronoun; exact category-value alignment does not assert that the word is a pronoun."
+    },
+    {
+      "feature": "ps",
+      "value": "p2",
+      "item_id": "node_value:ps=\"p2\"",
+      "source_line": 15,
+      "source_gloss": "second person",
+      "native_subject": "word-morphology",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Second",
+      "ontology_line": 4976,
+      "rationale": "The original BHSA word.ps p2 value denotes second person of the inflected host word. OLiA Second is a PersonFeature applying to addressee deixis, not only second-person pronouns; the relationship is category-level."
+    },
+    {
+      "feature": "ps",
+      "value": "p3",
+      "item_id": "node_value:ps=\"p3\"",
+      "source_line": 16,
+      "source_gloss": "third person",
+      "native_subject": "word-morphology",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Third",
+      "ontology_line": 4963,
+      "rationale": "BHSA word.ps=p3 describes third person marking of the host word and is distinct from the pronominal suffix person. Pinned OLiA Third models third-person morphology, not a third-person-pronoun-only class."
+    },
+    {
+      "feature": "ps",
+      "value": "NA",
+      "item_id": "node_value:ps=\"NA\"",
+      "source_line": 17,
+      "source_gloss": "not applicable",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The source describes NA as not applicable where a word lacks person. This is absence of a source-relevant grammatical person value and must not become an ontology First, Second or Third class."
+    },
+    {
+      "feature": "ps",
+      "value": "unknown",
+      "item_id": "node_value:ps=\"unknown\"",
+      "source_line": 18,
+      "source_gloss": "unknown",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The source says unknown when grammatical person exists but its form does not reveal which person. Unknown is epistemic uncertainty, not an additional fourth OLiA grammatical person."
+    },
+    {
+      "feature": "prs_ps",
+      "value": "p1",
+      "item_id": "node_value:prs_ps=\"p1\"",
+      "source_line": 15,
+      "source_gloss": "first person",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#First",
+      "ontology_line": 4986,
+      "rationale": "BHSA prs_ps=p1 describes first person of a pronominal suffix attached to a word, not the host word's ps feature. OLiA First is a general PersonFeature, so the value alignment is valid only under the explicit suffix-qualified native binding."
+    },
+    {
+      "feature": "prs_ps",
+      "value": "p2",
+      "item_id": "node_value:prs_ps=\"p2\"",
+      "source_line": 16,
+      "source_gloss": "second person",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Second",
+      "ontology_line": 4976,
+      "rationale": "The pinned BHSA prs_ps=p2 means the attached pronominal suffix marks second person, regardless of the host's own person. Mapping the suffix feature value to OLiA Second must not change or infer the host word.ps value."
+    },
+    {
+      "feature": "prs_ps",
+      "value": "p3",
+      "item_id": "node_value:prs_ps=\"p3\"",
+      "source_line": 17,
+      "source_gloss": "third person",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Third",
+      "ontology_line": 4963,
+      "rationale": "The source's prs_ps=p3 reports third-person information belonging to an attached pronominal suffix. OLiA Third is the corresponding PersonFeature; it does not imply the verbal host itself is third person."
+    },
+    {
+      "feature": "prs_ps",
+      "value": "NA",
+      "item_id": "node_value:prs_ps=\"NA\"",
+      "source_line": 18,
+      "source_gloss": "not applicable",
+      "native_subject": "pronominal-suffix",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "In BHSA prs_ps, NA means a pronominal suffix person value is not applicable. It does not denote an OLiA person category and must not be conflated with an unknown but existing suffix person."
+    },
+    {
+      "feature": "prs_gn",
+      "value": "m",
+      "item_id": "node_value:prs_gn=\"m\"",
+      "source_line": 12,
+      "source_gloss": "masculine",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Masculine",
+      "ontology_line": 5151,
+      "rationale": "BHSA prs_gn=m is masculine gender of the attached pronominal suffix, not of the word or head noun. OLiA Masculine is a grammatical gender category; reuse is scoped exclusively to this suffix-qualified feature."
+    },
+    {
+      "feature": "prs_gn",
+      "value": "f",
+      "item_id": "node_value:prs_gn=\"f\"",
+      "source_line": 13,
+      "source_gloss": "feminine",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Feminine",
+      "ontology_line": 5123,
+      "rationale": "BHSA prs_gn=f records feminine gender of a pronominal suffix. OLiA Feminine is a morphological gender class, but this annotation must remain attached to the source's suffix feature and not to the host's own gn."
+    },
+    {
+      "feature": "prs_gn",
+      "value": "NA",
+      "item_id": "node_value:prs_gn=\"NA\"",
+      "source_line": 14,
+      "source_gloss": "not applicable",
+      "native_subject": "pronominal-suffix",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA prs_gn=NA indicates suffix gender is not applicable; it does not mean a gender-neutral noun, a neuter grammatical class, or a reviewed OLiA gender target."
+    },
+    {
+      "feature": "prs_gn",
+      "value": "unknown",
+      "item_id": "node_value:prs_gn=\"unknown\"",
+      "source_line": 15,
+      "source_gloss": "unknown",
+      "native_subject": "pronominal-suffix",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The BHSA source marks suffix gender as unknown when the information is insufficient to derive it. This is missing knowledge, not an OLiA gender category or a substantive third gender."
+    },
+    {
+      "feature": "prs_nu",
+      "value": "sg",
+      "item_id": "node_value:prs_nu=\"sg\"",
+      "source_line": 15,
+      "source_gloss": "singular",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Singular",
+      "ontology_line": 4183,
+      "rationale": "The BHSA source specifies prs_nu=sg as singular number of the pronominal suffix, not of the word stem. OLiA Singular is the corresponding NumberFeature, limited here to the suffix's own feature binding."
+    },
+    {
+      "feature": "prs_nu",
+      "value": "pl",
+      "item_id": "node_value:prs_nu=\"pl\"",
+      "source_line": 17,
+      "source_gloss": "plural",
+      "native_subject": "pronominal-suffix",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#Plural",
+      "ontology_line": 4157,
+      "rationale": "The original prs_nu=pl code identifies plural number of an attached pronominal suffix, not plural agreement of the host word. OLiA Plural is a generic grammatical number class and must retain that scoped native subject."
+    },
+    {
+      "feature": "prs_nu",
+      "value": "NA",
+      "item_id": "node_value:prs_nu=\"NA\"",
+      "source_line": 18,
+      "source_gloss": "not applicable",
+      "native_subject": "pronominal-suffix",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The BHSA prs_nu=NA value represents non-applicability of pronominal suffix number. No shared OLiA number value is asserted; the source documents dual but the frozen observed denominator does not contain prs_nu=du."
+    },
+    {
+      "feature": "st",
+      "value": "a",
+      "item_id": "node_value:st=\"a\"",
+      "source_line": 17,
+      "source_gloss": "absolute",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA st=a denotes nominal absolute state, but the frozen OLiA target subset lacks a verified exact StatusAbsolutus concept. The original source warns that Semitic state terminology needs further definition; retain its native code."
+    },
+    {
+      "feature": "st",
+      "value": "c",
+      "item_id": "node_value:st=\"c\"",
+      "source_line": 18,
+      "source_gloss": "construct",
+      "native_subject": "word-morphology",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#StatusConstructus",
+      "ontology_line": 6712,
+      "rationale": "BHSA st=c explicitly means nominal construct state in the Semitic grammatical paradigm. The pinned OLiA StatusConstructus rdf:ID class describes exactly Semitic construct-state morphology, not European genitive case."
+    },
+    {
+      "feature": "st",
+      "value": "e",
+      "item_id": "node_value:st=\"e\"",
+      "source_line": 19,
+      "source_gloss": "emphatic",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The source explicitly calls st=e emphatic nominal state, a Semitic status form. OLiA Emphatic is instead emphatic/pragmatic emphasis of a word, so treating the two as synonymous would be a semantic category error."
+    },
+    {
+      "feature": "st",
+      "value": "NA",
+      "item_id": "node_value:st=\"NA\"",
+      "source_line": 21,
+      "source_gloss": "not applicable",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The BHSA documentation mentions NA for non-applicable nominal state with a likely wording typo about person. Preserve that observed native sentinel without inventing an OLiA grammatical-state class."
+    },
+    {
+      "feature": "vt",
+      "value": "NA",
+      "item_id": "node_value:vt=\"NA\"",
+      "source_line": 14,
+      "source_gloss": "not applicable",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "The BHSA vt document specifies that nouns and other non-verbal forms may have verbal tense not applicable. NA is not a mood or tense class and should not be projected to any shared ontology term."
+    },
+    {
+      "feature": "vt",
+      "value": "perf",
+      "item_id": "node_value:vt=\"perf\"",
+      "source_line": 20,
+      "source_gloss": "perfect",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "Although BHSA calls vt=perf perfect, its Hebrew qatal paradigm does not mean uniformly completed past tense; OLiA Perfect defines a past-completed temporal category. Gloss identity is insufficient for an exact alignment."
+    },
+    {
+      "feature": "vt",
+      "value": "impf",
+      "item_id": "node_value:vt=\"impf\"",
+      "source_line": 21,
+      "source_gloss": "imperfect",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA vt=impf is the Biblical Hebrew imperfect/yiqtol category and does not universally mean past ongoing action. OLiA Imperfect explicitly specializes past progressive or incomplete action, so retain native-only."
+    },
+    {
+      "feature": "vt",
+      "value": "wayq",
+      "item_id": "node_value:vt=\"wayq\"",
+      "source_line": 22,
+      "source_gloss": "wayyiqtol",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA vt=wayq distinguishes Biblical Hebrew wayyiqtol, a discourse and verbal construction not captured by a generic past or perfect aspect category. No exact pinned OLiA class is asserted."
+    },
+    {
+      "feature": "vt",
+      "value": "impv",
+      "item_id": "node_value:vt=\"impv\"",
+      "source_line": 23,
+      "source_gloss": "imperative",
+      "native_subject": "word-morphology",
+      "assessment": "exact",
+      "ontology_target": "http://purl.org/olia/olia.owl#ImperativeVerb",
+      "ontology_line": 1373,
+      "rationale": "BHSA vt=impv denotes imperative verb morphology, and the pinned OLiA ImperativeVerb class denotes finite verbal imperative form used for commands. This is an exact source category correspondence, not a claim every command is imperative."
+    },
+    {
+      "feature": "vt",
+      "value": "infa",
+      "item_id": "node_value:vt=\"infa\"",
+      "source_line": 24,
+      "source_gloss": "infinitive (absolute)",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA vt=infa means infinitive absolute, a special Biblical Hebrew infinitive construction with discourse functions. OLiA Infinitive is a broader form class; an exact one-to-one mapping needs subtype research first."
+    },
+    {
+      "feature": "vt",
+      "value": "infc",
+      "item_id": "node_value:vt=\"infc\"",
+      "source_line": 25,
+      "source_gloss": "infinitive (construct)",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA vt=infc is infinitive construct, which has specifically Semitic syntactic functions. OLiA Infinitive is a broad nonfinite verb class, but the exact subtype cannot be inferred from the surface label alone."
+    },
+    {
+      "feature": "vt",
+      "value": "ptca",
+      "item_id": "node_value:vt=\"ptca\"",
+      "source_line": 26,
+      "source_gloss": "participle",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA vt=ptca denotes an active participle category. OLiA Participle is a broad superclass that also includes passive values; asserting exact equality between active subtype and that broad class would overclaim."
+    },
+    {
+      "feature": "vt",
+      "value": "ptcp",
+      "item_id": "node_value:vt=\"ptcp\"",
+      "source_line": 27,
+      "source_gloss": "participle (passive)",
+      "native_subject": "word-morphology",
+      "assessment": "native-only",
+      "ontology_target": null,
+      "ontology_line": null,
+      "rationale": "BHSA vt=ptcp means passive participle, narrower than the generic OLiA Participle concept. Preserve the native voice distinction instead of pretending the broader class is an exact synonym."
+    }
+  ]
+}
