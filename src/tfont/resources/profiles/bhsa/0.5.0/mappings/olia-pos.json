@@ -1,0 +1,734 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:native-sp-prps",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "prps",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:prps"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA sp.md line 24 says personal pronoun, but OLiA PersonalPronoun at line 2189 explicitly narrows the class to irreflexive personal pronouns; the BHSA source alone does not verify this exclusion. Retain native-only pending lexical inspection.",
+      "mapping_semantic_digest": "sha256:241f694efe632b59ddbe5036c9c45a49704c9dbd49ea18ed72678ee948f86ca4",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:native-sp-prps:mapping",
+        "reviewed_mapping_digest": "sha256:241f694efe632b59ddbe5036c9c45a49704c9dbd49ea18ed72678ee948f86ca4"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-article-class",
+          "content_digest": "sha256:8167c780621a12135a3420c7ec18c07a99a15888313662f425dfe19d515a0491"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-article",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "art",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:art"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-article-class",
+              "content_digest": "sha256:8167c780621a12135a3420c7ec18c07a99a15888313662f425dfe19d515a0491"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "art",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-article",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Article",
+          "projection_semantic_digest": "sha256:d729913509e88ec3409415b201090a15158830f142fb31d028cba11bc918d8d1",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-article:projection",
+            "reviewed_mapping_digest": "sha256:d729913509e88ec3409415b201090a15158830f142fb31d028cba11bc918d8d1"
+          }
+        }
+      ],
+      "rationale": "The original BHSA word.sp table explicitly defines art as article at line 17. OLiA Article at original XML line 1682 denotes the lexical article POS; this is a category-level exact alignment, not a claim about individual Hebrew token definiteness.",
+      "mapping_semantic_digest": "sha256:02fed6919bb55a9c0e3599acfcc70e7e97c1371a6c028b699209d2630d428c46",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-article:mapping",
+        "reviewed_mapping_digest": "sha256:02fed6919bb55a9c0e3599acfcc70e7e97c1371a6c028b699209d2630d428c46"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-conjunction-class",
+          "content_digest": "sha256:939cac0f00d0f7a3491803b6ce90c13d88227781c40014cbb73f45317c77b687"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-conjunction",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "conj",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:conj"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-conjunction-class",
+              "content_digest": "sha256:939cac0f00d0f7a3491803b6ce90c13d88227781c40014cbb73f45317c77b687"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "conj",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-conjunction",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Conjunction",
+          "projection_semantic_digest": "sha256:55a7ac3c69f4ef0e74fc6dd443ff8334485322cb8c838708c612221c17bf4b5e",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-conjunction:projection",
+            "reviewed_mapping_digest": "sha256:55a7ac3c69f4ef0e74fc6dd443ff8334485322cb8c838708c612221c17bf4b5e"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 23 describes conj generically as conjunction; OLiA Conjunction at line 356 is the generic connective POS. Do not narrow to coordinating or subordinating conjunction without a source feature.",
+      "mapping_semantic_digest": "sha256:c00c41e474fff58d62827330d29a9448869ca666c4b73c9b37ea84316c787c35",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-conjunction:mapping",
+        "reviewed_mapping_digest": "sha256:c00c41e474fff58d62827330d29a9448869ca666c4b73c9b37ea84316c787c35"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-demonstrativepronoun-class",
+          "content_digest": "sha256:a9b14424a7e9a816bd791461d698264d1c1152897fd54bd57886459385704613"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-demonstrativepronoun",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "prde",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:prde"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-demonstrativepronoun-class",
+              "content_digest": "sha256:a9b14424a7e9a816bd791461d698264d1c1152897fd54bd57886459385704613"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "prde",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-demonstrativepronoun",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#DemonstrativePronoun",
+          "projection_semantic_digest": "sha256:a2785bdfbd332ee1c54b2fc841a5cb497880c64c64d8371bfa7d3d005a6265ca",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-demonstrativepronoun:projection",
+            "reviewed_mapping_digest": "sha256:a2785bdfbd332ee1c54b2fc841a5cb497880c64c64d8371bfa7d3d005a6265ca"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 25 explicitly defines prde as demonstrative pronoun; OLiA DemonstrativePronoun at line 1935 is the matching pronoun subclass. Do not conflate prde with a general determiner category or Syriac pron.",
+      "mapping_semantic_digest": "sha256:302a7540fe34f33466da1156c54a04c1a7c3b22c0c273690ee53c054ec34fb24",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-demonstrativepronoun:mapping",
+        "reviewed_mapping_digest": "sha256:302a7540fe34f33466da1156c54a04c1a7c3b22c0c273690ee53c054ec34fb24"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-interjection-class",
+          "content_digest": "sha256:412c0c6dd31a967d5b71927a354a7b9d14bace52914c25dadaceb43233b08f0f"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-interjection",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "intj",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:intj"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-interjection-class",
+              "content_digest": "sha256:412c0c6dd31a967d5b71927a354a7b9d14bace52914c25dadaceb43233b08f0f"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "intj",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-interjection",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Interjection",
+          "projection_semantic_digest": "sha256:bbf93414c0631aaec8b6b1c2b96434b56056db4ce93d00e4cc0e9c84d68ac171",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-interjection:projection",
+            "reviewed_mapping_digest": "sha256:bbf93414c0631aaec8b6b1c2b96434b56056db4ce93d00e4cc0e9c84d68ac171"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 27 explicitly glosses intj as interjection, and OLiA Interjection at XML line 307 defines the same morphosyntactic category. This is not a generalized assertion about discourse speech acts.",
+      "mapping_semantic_digest": "sha256:3b0e1a03ee69b134407e8e0aa57c8df6a6f973ec3a7dc0f46637dbf9f0b7ea04",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-interjection:mapping",
+        "reviewed_mapping_digest": "sha256:3b0e1a03ee69b134407e8e0aa57c8df6a6f973ec3a7dc0f46637dbf9f0b7ea04"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-interrogativeparticle-class",
+          "content_digest": "sha256:12f9c91caf6c7877c2a412cf1a06ddd891a0c53ede3aa229d62cbca8d8a74a00"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-interrogativeparticle",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "inrg",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:inrg"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-interrogativeparticle-class",
+              "content_digest": "sha256:12f9c91caf6c7877c2a412cf1a06ddd891a0c53ede3aa229d62cbca8d8a74a00"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "inrg",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-interrogativeparticle",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#InterrogativeParticle",
+          "projection_semantic_digest": "sha256:fe1e94043fa3c2ca7cfc149f6edb2de8094d89456f9dd836d74e462f48dda32c",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-interrogativeparticle:projection",
+            "reviewed_mapping_digest": "sha256:fe1e94043fa3c2ca7cfc149f6edb2de8094d89456f9dd836d74e462f48dda32c"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 29 explicitly defines inrg as interrogative particle, not interrogative pronoun prin. OLiA InterrogativeParticle at XML line 3812 defines a particle used to form a question.",
+      "mapping_semantic_digest": "sha256:3d09ca6fa601ff1d131ed4b8bcc0784d95e06c27bf6d2c19212b063e2e4fcc09",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-interrogativeparticle:mapping",
+        "reviewed_mapping_digest": "sha256:3d09ca6fa601ff1d131ed4b8bcc0784d95e06c27bf6d2c19212b063e2e4fcc09"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-interrogativepronoun-class",
+          "content_digest": "sha256:ba17a44706da8906421ff05b26fdf156a0839cf6ed7759057617b0a1708a3814"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-interrogativepronoun",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "prin",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:prin"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-interrogativepronoun-class",
+              "content_digest": "sha256:ba17a44706da8906421ff05b26fdf156a0839cf6ed7759057617b0a1708a3814"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "prin",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-interrogativepronoun",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#InterrogativePronoun",
+          "projection_semantic_digest": "sha256:0b3de572f1b0c2c847d7cfb55789fadf0866dc0b8452ac2060debc24498b8488",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-interrogativepronoun:projection",
+            "reviewed_mapping_digest": "sha256:0b3de572f1b0c2c847d7cfb55789fadf0866dc0b8452ac2060debc24498b8488"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 26 explicitly defines prin as interrogative pronoun, whereas inrg at line 29 is an interrogative particle. OLiA InterrogativePronoun at line 2135 denotes the corresponding pro-form subclass.",
+      "mapping_semantic_digest": "sha256:ea4d645bb0d7656c1a8f68eee6988ea8061ce27dc286a4537ffbe136b0fa1c59",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-interrogativepronoun:mapping",
+        "reviewed_mapping_digest": "sha256:ea4d645bb0d7656c1a8f68eee6988ea8061ce27dc286a4537ffbe136b0fa1c59"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-negativeparticle-class",
+          "content_digest": "sha256:5bd25bdc43605ba6dbce6af989916da110797e6d1e084646180043d155a49c08"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-negativeparticle",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "nega",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:nega"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-negativeparticle-class",
+              "content_digest": "sha256:5bd25bdc43605ba6dbce6af989916da110797e6d1e084646180043d155a49c08"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "nega",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-negativeparticle",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#NegativeParticle",
+          "projection_semantic_digest": "sha256:72769c2aba385fc85147f59ef39f9969cb7cb31acb7366a4b2afe44547ea4710",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-negativeparticle:projection",
+            "reviewed_mapping_digest": "sha256:72769c2aba385fc85147f59ef39f9969cb7cb31acb7366a4b2afe44547ea4710"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 28 explicitly defines nega as negative particle. OLiA NegativeParticle at XML line 3684 means a particle expressing negation, not abstract logical negation or morphological polarity.",
+      "mapping_semantic_digest": "sha256:1ed8b68558ea894d15b6952b080b4bbda6701e89a12b735518e80c2e3bab6e25",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-negativeparticle:mapping",
+        "reviewed_mapping_digest": "sha256:1ed8b68558ea894d15b6952b080b4bbda6701e89a12b735518e80c2e3bab6e25"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+          "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-preposition-class",
+          "content_digest": "sha256:6fad4393c30f58bf47cd53a6896c54b9152163a675b703c59da8ec66866d5645"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:olia-preposition",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "prep",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-sp:prep"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+              "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-preposition-class",
+              "content_digest": "sha256:6fad4393c30f58bf47cd53a6896c54b9152163a675b703c59da8ec66866d5645"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "prep",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:olia-preposition",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Preposition",
+          "projection_semantic_digest": "sha256:84a52c030aa792f8b078aa664c20fd2f432bb47a9e2a8a134733bf33b5fd3507",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:bhsa:olia-preposition:projection",
+            "reviewed_mapping_digest": "sha256:84a52c030aa792f8b078aa664c20fd2f432bb47a9e2a8a134733bf33b5fd3507"
+          }
+        }
+      ],
+      "rationale": "BHSA sp.md line 22 explicitly assigns prep to preposition; OLiA Preposition at line 525 denotes preposed adpositions. Hebrew prepositions may attach graphically to words, but this TF POS value maps the lexical class rather than token segmentation.",
+      "mapping_semantic_digest": "sha256:bb284edf51cc0da2811663a9a06f559dd51c0c031e88855f2d067eefd7a45506",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:bhsa:olia-preposition:mapping",
+        "reviewed_mapping_digest": "sha256:bb284edf51cc0da2811663a9a06f559dd51c0c031e88855f2d067eefd7a45506"
+      }
+    }
+  ]
+}

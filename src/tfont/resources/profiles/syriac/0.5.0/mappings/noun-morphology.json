@@ -1,0 +1,529 @@
+{
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+          "evidence_id": "evidence:syriac:word-noun-morphology"
+        },
+        {
+          "content_digest": "sha256:c237ccac53cb3061caca6b3f8d93360ec97a57ed41dab1f73790203c01d31468",
+          "evidence_id": "evidence:syriac:proper-inside-subs"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-proper-noun",
+      "mapping_semantic_digest": "sha256:612ef07e228488f161a70f8463d757f55d511e145406db5b4be085884fe4562b",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "ls",
+        "node_type": "word",
+        "value": "prop"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-ls:prop"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+              "evidence_id": "evidence:syriac:word-noun-morphology"
+            },
+            {
+              "content_digest": "sha256:c237ccac53cb3061caca6b3f8d93360ec97a57ed41dab1f73790203c01d31468",
+              "evidence_id": "evidence:syriac:proper-inside-subs"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "ls",
+            "node_type": "word",
+            "value": "prop"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-proper-noun",
+          "projection_semantic_digest": "sha256:e1e31983664fc88f10b18b1a97cc5b376314d23ab288821f37fab7db60d5b5c8",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:syriac:olia-proper-noun:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:e1e31983664fc88f10b18b1a97cc5b376314d23ab288821f37fab7db60d5b5c8",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#ProperNoun"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:syriac:olia-proper-noun:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:612ef07e228488f161a70f8463d757f55d511e145406db5b4be085884fe4562b",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+          "evidence_id": "evidence:syriac:word-noun-morphology"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-masculine",
+      "mapping_semantic_digest": "sha256:78f221ce077d353e5a0c9e20d455ceb71a8d123f88d8e744b40a6e643e400cfd",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "gn",
+        "node_type": "word",
+        "value": "m"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-gn:m"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+              "evidence_id": "evidence:syriac:word-noun-morphology"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "gn",
+            "node_type": "word",
+            "value": "m"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-masculine",
+          "projection_semantic_digest": "sha256:9a370eb23e88cdcc86b8bf97cda5db8729ff12df54ae79e194e76e5d34c5402d",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:syriac:olia-masculine:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:9a370eb23e88cdcc86b8bf97cda5db8729ff12df54ae79e194e76e5d34c5402d",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Masculine"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:syriac:olia-masculine:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:78f221ce077d353e5a0c9e20d455ceb71a8d123f88d8e744b40a6e643e400cfd",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+          "evidence_id": "evidence:syriac:word-noun-morphology"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-feminine",
+      "mapping_semantic_digest": "sha256:18c4e18509c69c4e90b36fca5145e6ae168ac0537da66d6251605f6799061a34",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "gn",
+        "node_type": "word",
+        "value": "f"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-gn:f"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+              "evidence_id": "evidence:syriac:word-noun-morphology"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "gn",
+            "node_type": "word",
+            "value": "f"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-feminine",
+          "projection_semantic_digest": "sha256:6c7de02de1d70c7c1989d3ccce9649fd915f7b560a9b5dfbaca8880125ed784f",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:syriac:olia-feminine:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:6c7de02de1d70c7c1989d3ccce9649fd915f7b560a9b5dfbaca8880125ed784f",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Feminine"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:syriac:olia-feminine:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:18c4e18509c69c4e90b36fca5145e6ae168ac0537da66d6251605f6799061a34",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+          "evidence_id": "evidence:syriac:word-noun-morphology"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-singular",
+      "mapping_semantic_digest": "sha256:214ec90e41467a73f435f4d05288e3e7c5257dbd9c36d43f4ebe68ad4c9c97c2",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "nu",
+        "node_type": "word",
+        "value": "sg"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-nu:sg"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+              "evidence_id": "evidence:syriac:word-noun-morphology"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "nu",
+            "node_type": "word",
+            "value": "sg"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-singular",
+          "projection_semantic_digest": "sha256:b78a1af63937d5702170771bc6b750a501027b44ddacb77cb60c89a69eb2ee00",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:syriac:olia-singular:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:b78a1af63937d5702170771bc6b750a501027b44ddacb77cb60c89a69eb2ee00",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Singular"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:syriac:olia-singular:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:214ec90e41467a73f435f4d05288e3e7c5257dbd9c36d43f4ebe68ad4c9c97c2",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+          "evidence_id": "evidence:syriac:word-noun-morphology"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-plural",
+      "mapping_semantic_digest": "sha256:41ccc821c8e58757f1fdcd66890c47c02af6c7c7c199fccc8167eecb20e601ac",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "nu",
+        "node_type": "word",
+        "value": "pl"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-nu:pl"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+              "evidence_id": "evidence:syriac:word-noun-morphology"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "nu",
+            "node_type": "word",
+            "value": "pl"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-plural",
+          "projection_semantic_digest": "sha256:1373000f4fcd8f78666c4e8762262b369e594ec972b2ea1a51fcb84998d4a57d",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:syriac:olia-plural:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:1373000f4fcd8f78666c4e8762262b369e594ec972b2ea1a51fcb84998d4a57d",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Plural"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:syriac:olia-plural:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:41ccc821c8e58757f1fdcd66890c47c02af6c7c7c199fccc8167eecb20e601ac",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+          "evidence_id": "evidence:syriac:word-noun-morphology"
+        },
+        {
+          "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+          "evidence_id": "evidence:olia:noun-morphology-classes"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-dual",
+      "mapping_semantic_digest": "sha256:72775f747862a642e07f67a353b20850081c9b46641f466ca6ac96633265eb83",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "nu",
+        "node_type": "word",
+        "value": "du"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-nu:du"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "content_digest": "sha256:e6b84ffceb7e96ce9a277216a279a2446d57fc0852c1f540f5fb338219580c19",
+              "evidence_id": "evidence:syriac:word-noun-morphology"
+            },
+            {
+              "content_digest": "sha256:11172bf669d55a3c70f2e275753e8077567249c8d8f94baf1305fe9ad5ea25e3",
+              "evidence_id": "evidence:olia:noun-morphology-classes"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "nu",
+            "node_type": "word",
+            "value": "du"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-dual",
+          "projection_semantic_digest": "sha256:ef595005e4ea4253b0fc30be08ccf04b3bea3d56e22e817ccf788e877fe1c349",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "review": {
+            "review_id": "review:syriac:olia-dual:projection",
+            "status": "reviewed",
+            "reviewed_mapping_digest": "sha256:ef595005e4ea4253b0fc30be08ccf04b3bea3d56e22e817ccf788e877fe1c349",
+            "reviewer_id": "openai:gpt-5.6-sol",
+            "reviewed_at": "2026-09-27T08:12:41Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+            "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+          },
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Dual"
+        }
+      ],
+      "rationale": "Reviewed production projection for the I-015 noun morphology expansion.",
+      "review": {
+        "review_id": "review:syriac:olia-dual:mapping",
+        "status": "reviewed",
+        "reviewed_mapping_digest": "sha256:72775f747862a642e07f67a353b20850081c9b46641f466ca6ac96633265eb83",
+        "reviewer_id": "openai:gpt-5.6-sol",
+        "reviewed_at": "2026-09-27T08:12:41Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/197#pullrequestreview-5329479084",
+        "review_method": "logically-independent I-015 semantic/evidence review against pinned research evidence"
+      }
+    }
+  ],
+  "schema_version": 2
+}
