@@ -81,6 +81,7 @@ class ProtectedOLiAClassEvidenceTDD(unittest.TestCase):
             "resources/ontologies/olia/0000000000000000000000000000000000000000/fake.json",
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/../fake.json",
             "resources/ontologies/other/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/fake.json",
+            "resources/profiles/bhsa/candidate\\\\ontology.json",
         ):
             clone = copy.deepcopy(self.pack)
             found = next(c for c in clone["corpora"] if
@@ -92,6 +93,17 @@ class ProtectedOLiAClassEvidenceTDD(unittest.TestCase):
             pin_digest(clone)
             with self.subTest(path=forged), self.assertRaises(ValueError):
                 verify_overlay_handoff_integrity(clone)
+
+
+    def test_ontology_evidence_cannot_masquerade_as_corpus_source(self):
+        clone = copy.deepcopy(self.pack)
+        corpus = next(c for c in clone["corpora"] if c["corpus_id"] == "bhsa")
+        entry = next(e for e in corpus["added_evidence"]
+                     if e["resource"].startswith(LOCK_ROOT))
+        entry["resource"] = "resources/profiles/bhsa/fake-class-evidence.json"
+        pin_digest(clone)
+        with self.assertRaises(ValueError):
+            verify_overlay_handoff_integrity(clone)
 
     def test_ontology_record_replacement_under_protected_path_fails_closed(self):
         clone = copy.deepcopy(self.pack)
