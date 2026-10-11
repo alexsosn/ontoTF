@@ -201,7 +201,7 @@
       "assessment": "exact",
       "target": "http://www.w3.org/ns/lemon/ontolex#LexicalEntry",
       "target_kind": "class",
-      "rationale": "BHSA R-005 observes 9,230 distinct, addressable Text-Fabric nodes of type lex. An identified lex node is a plausible OntoLex LexicalEntry under the published 2016 OntoLex Core definition. Only the native node ID, not its lex/lex0 string, can carry that proposed entry identity; it asserts no sense, concept, form, or cross-corpus equivalence."
+      "rationale": "BHSA R-005 observes 9,230 distinct, addressable Text-Fabric nodes of type lex. An identified lex node is a plausible OntoLex LexicalEntry under the published 2016 OntoLex Core definition. Only the native node ID, not its lex/lex0 string, can carry that proposed entry identity; it asserts no sense, concept, form, or cross-corpus equivalence. The OntoLex class requires at least one lexical Form, but an attested BHSA lex-node-to-Form identity/relationship has not yet been established; this class candidate must not be promoted until that condition is reviewed."
     },
     {
       "corpus_id": "syriac",
