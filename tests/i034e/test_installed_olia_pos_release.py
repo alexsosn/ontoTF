@@ -116,6 +116,37 @@ class InstalledRealOLiAPOS(unittest.TestCase):
                         self.assertEqual(p["review"]["status"],"reviewed")
         self.assertEqual((positive,native_only),(12,3))
 
+    def test_installed_positive_classes_compile_into_cross_corpus_semantic_ir(self):
+        from tfont.semantic_ir import SemanticKey, compile_semantic_ir
+        releases = tuple(validate_semantic_bundle(load_profile(corpus, "0.5.0"))
+                         for corpus in ("bhsa", "syriac"))
+        ir = compile_semantic_ir(releases)
+        index = dict(ir.semantic_index)
+        def key(target):
+            return SemanticKey(
+                profile_id="linguistic",
+                capability_id="linguistic.part-of-speech",
+                target=OLIA + target,
+                formal_kind="class",
+                semantic_role="annotation-value",
+            )
+        for concept in ("Conjunction", "Interjection", "Preposition"):
+            with self.subTest(olia=concept):
+                rows = index[key(concept)]
+                self.assertEqual([row.corpus_id for row in rows],
+                                 ["bhsa", "syriac"])
+                self.assertTrue(all(row.assessment == "exact" for row in rows))
+                self.assertTrue(all(row.native_execution_binding.feature == "sp"
+                                    for row in rows))
+        for concept in ("Article", "DemonstrativePronoun",
+                        "InterrogativePronoun", "NegativeParticle",
+                        "InterrogativeParticle"):
+            with self.subTest(olia=concept):
+                self.assertEqual([r.corpus_id for r in index[key(concept)]],
+                                 ["bhsa"])
+        self.assertEqual([r.corpus_id for r in index[key("Pronoun")]],
+                         ["syriac"])
+
     def test_new_release_is_packaged_and_preserves_old_source_bytes(self):
         root=files("tfont")
         for corpus in POS:
