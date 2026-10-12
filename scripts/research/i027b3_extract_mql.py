@@ -41,6 +41,7 @@ _ENUM_OPEN = re.compile(
 _ENUM_VALUE = re.compile(r"^\s*([a-z][a-z0-9_]*)\s*=\s*(\d+)\s*,?\s*$", re.IGNORECASE)
 _ENUM_CLOSE = re.compile(r"^\s*\}\s*;?\s*$")
 _SP_TYPE = re.compile(r"^\s*sp\s*:\s*part_of_speech_t\s*;\s*$", re.IGNORECASE)
+_OBJECT_TYPE_OPEN = re.compile(r"^\s*CREATE\s+OBJECT\s+TYPE\s+\[\s*([a-z][a-z0-9_]*)\s*\]", re.IGNORECASE)
 
 
 def extract_pos_enum(text: str) -> dict[str, object]:
@@ -57,6 +58,15 @@ def extract_pos_enum(text: str) -> dict[str, object]:
     word_feature = [i for i, line in enumerate(lines) if _SP_TYPE.fullmatch(line)]
     if len(word_feature) != 1:
         raise ValueError("sp must use exactly one part_of_speech_t declaration")
+    # A declaration of sp on a non-word object must not be mistaken for
+    # original word.sp corpus semantics. Resolve the containing object from
+    # the nearest preceding MQL object-type declaration.
+    object_types = [(i, kind.group(1).lower())
+                    for i, line in enumerate(lines)
+                    if (kind := _OBJECT_TYPE_OPEN.match(line)) is not None
+                    and i < word_feature[0]]
+    if not object_types or object_types[-1][1] != "word":
+        raise ValueError("part_of_speech_t sp must be declared for word object")
     start = openings[0]
     values: list[dict[str, object]] = []
     seen_names: set[str] = set()
