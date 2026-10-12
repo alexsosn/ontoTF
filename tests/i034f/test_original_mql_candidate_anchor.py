@@ -89,6 +89,16 @@ class PinnedOriginalMQLCandidateEvidence(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(BatchProposalError):
                 CandidateEvidenceResources(self.ledger, {self.name: changed})
 
+    def test_original_zero_article_enum_code_is_valid(self):
+        # Pinned primary MQL declaration: art = 0 at one-based line 164.
+        changed = self.source()
+        changed["reviewed_content"]["source_definitions"]["art"] = {
+            "gloss": "article", "line": 164, "enum_code": 0,
+        }
+        changed["content_digest"] = evidence_record_digest(changed)
+        reader = CandidateEvidenceResources(self.ledger, {self.name: changed})
+        self.assertIn("art", reader(self.name)["reviewed_content"]["source_definitions"])
+
     def test_rejects_malformed_or_forged_mql_enum_coordinates(self):
         # Source SHA alone must not make malformed newly authored coordinates
         # acceptable: these are original one-based declaration lines and codes.
