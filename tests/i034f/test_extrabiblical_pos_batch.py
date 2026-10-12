@@ -58,13 +58,14 @@ class ExtraBiblicalRealPOSBatch(unittest.TestCase):
         self.assertEqual(feature["applies_to"], ["word"])
         self.assertEqual(feature["observation_count"], 39862)
         self.assertEqual(len(feature["observed_values"]), 14)
-        self.assertEqual(len(self.frozen["values"]), 14)
+        enum = self.frozen["part_of_speech_enum"]
+        self.assertEqual(len(enum["values"]), 14)
         self.assertEqual(self.frozen["source_revision"], REV)
         self.assertEqual(self.frozen["git_blob_sha"], BLOB)
         self.assertEqual(self.frozen["decompressed_sha256"], MQL_SHA256)
-        self.assertEqual(self.frozen["enum_declaration_line"], 163)
-        self.assertEqual(self.frozen["feature_type_line"], 501)
-        by_value = {row["value"]: row for row in self.frozen["values"]}
+        self.assertEqual(enum["enum_declaration_line"], 163)
+        self.assertEqual(enum["feature_type_line"], 501)
+        by_value = {row["value"]: row for row in enum["values"]}
         self.assertEqual(len(by_value), 14)
         self.assertEqual(set(by_value), set(feature["observed_values"]))
         self.assertEqual(by_value["art"]["line"], 164)
@@ -86,7 +87,7 @@ class ExtraBiblicalRealPOSBatch(unittest.TestCase):
         self.assertEqual(self.source["reviewed_content"]["feature"], "sp")
         self.assertEqual(self.source["reviewed_content"]["production_node_type"], "word")
         defs = self.source["reviewed_content"]["source_definitions"]
-        actual = {row["value"]: row for row in self.frozen["values"]}
+        actual = {row["value"]: row for row in self.frozen["part_of_speech_enum"]["values"]}
         self.assertEqual(set(defs), set(actual))
         for value, row in defs.items():
             with self.subTest(value=value):
