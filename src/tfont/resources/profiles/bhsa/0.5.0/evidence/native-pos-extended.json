@@ -1,0 +1,66 @@
+{
+  "content_digest": "sha256:37f6462cc5e18da6f0c6fea8f2b13274ad20eefd147173c06c8986a9f3effaa6",
+  "content_mode": "normalized-record",
+  "evidence_id": "evidence:bhsa:word-sp-batch-i033e3",
+  "kind": "corpus-feature-definition",
+  "reviewed_content": {
+    "documented_node_types": [
+      "word",
+      "lex"
+    ],
+    "feature": "sp",
+    "feature_semantics": "part-of-speech",
+    "production_node_type": "word",
+    "source_definitions": {
+      "adjv": {
+        "featureObservations": 10141,
+        "gloss": "adjective",
+        "line": 30
+      },
+      "advb": {
+        "featureObservations": 4603,
+        "gloss": "adverb",
+        "line": 21
+      },
+      "art": {
+        "gloss": "article",
+        "line": 17
+      },
+      "conj": {
+        "gloss": "conjunction",
+        "line": 23
+      },
+      "inrg": {
+        "gloss": "interrogative particle",
+        "line": 29
+      },
+      "intj": {
+        "gloss": "interjection",
+        "line": 27
+      },
+      "nega": {
+        "gloss": "negative particle",
+        "line": 28
+      },
+      "prde": {
+        "gloss": "demonstrative pronoun",
+        "line": 25
+      },
+      "prep": {
+        "gloss": "preposition",
+        "line": 22
+      },
+      "prin": {
+        "gloss": "interrogative pronoun",
+        "line": 26
+      },
+      "prps": {
+        "gloss": "personal pronoun",
+        "line": 24
+      }
+    },
+    "target_tf_revision": "4db00e2157915495e1a4d3d57e41223df24775da"
+  },
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/bhsa/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/sp.md"
+}

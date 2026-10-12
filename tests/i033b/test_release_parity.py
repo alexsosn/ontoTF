@@ -29,7 +29,10 @@ RELEASES = {
 class GenericReleaseCatalogRed(unittest.TestCase):
     def test_all_eleven_historical_bundle_contracts_are_unchanged(self):
         for corpus, versions in RELEASES.items():
-            self.assertEqual(list_profile_releases(corpus), versions)
+            # Historical releases must remain an unchanged prefix,
+            # while BHSA/Syriac may append the explicit opt-in 0.5.0.
+            expected = versions + (("0.5.0",) if corpus in {"bhsa", "syriac"} else ())
+            self.assertEqual(list_profile_releases(corpus), expected)
             for version in versions:
                 with self.subTest(corpus=corpus, version=version):
                     old = LEGACY[version](corpus)

@@ -118,12 +118,14 @@ def _validate_catalogue(value: Any) -> dict[str, Any]:
         for version, rel in releases.items():
             if type(version) is not str or not _VERSION.fullmatch(version):
                 _fail(f"{corpus}: invalid release identifier")
-            _object(
-                rel,
-                {"profile", "parent", "native_evidence", "ontology_model",
-                 "ontology_lock", "ontology_evidence"},
-                f"{corpus}/{version}",
-            )
+            legacy_fields = {
+                "profile", "parent", "native_evidence", "ontology_model",
+                "ontology_lock", "ontology_evidence",
+            }
+            allowed = legacy_fields | ({"ontology_locks"} if version == "0.5.0"
+                                       and corpus in {"bhsa", "syriac"} else set())
+            if set(rel) not in (legacy_fields, allowed):
+                _fail(f"{corpus}/{version}: unexpected release fields")
             base = f"resources/profiles/{corpus}/{version}"
             if rel["profile"] != f"{base}/profile.json":
                 _fail(f"{corpus}/{version}: wrong-corpus profile resource")
@@ -134,6 +136,10 @@ def _validate_catalogue(value: Any) -> dict[str, Any]:
                 _fail(f"{corpus}/{version}: unknown ontology model")
             ontology_root = models[model]["root"]
             _path(rel["ontology_lock"], ontology_root, "ontology lock")
+            if "ontology_locks" in rel:
+                locks = _source_list(rel["ontology_locks"], ontology_root, "ontology locks")
+                if len(locks) != 2 or locks[-1] != rel["ontology_lock"]:
+                    _fail(f"{corpus}/{version}: multiple ontology locks are not pinned")
             _source_list(rel["native_evidence"], "resources/profiles", "native evidence")
             _source_list(rel["ontology_evidence"], ontology_root, "ontology evidence")
     return catalog
@@ -198,17 +204,17 @@ def _load_from_catalogue(
                 if artifact.data.get("content_digest") != evidence_record_digest(artifact.data):
                     if not _historical_evidence_unchanged(name, artifact):
                         _fail(f"{name}: evidence content digest is not canonical")
-        lock = _artifact(
-            "ontology-lock", "ontology-lock", release["ontology_lock"]
-        )
+        lock_names = release.get("ontology_locks", [release["ontology_lock"]])
+        locks = tuple(_artifact("ontology-lock", "ontology-lock", name)
+                      for name in lock_names)
         expected_ontology_revision = catalog["ontology_models"][models[0]]["ontology_revision"]
-        if lock.data.get("source_revision") != expected_ontology_revision:
+        if any(lock.data.get("source_revision") != expected_ontology_revision for lock in locks):
             _fail(f"{corpus_id}: ontology source pin does not match catalogue")
         bundle = SemanticSourceBundle(
             profile=profile,
             expected_parent_manifest=parent,
             mappings=_mapping_artifact(root, profile),
-            ontology_locks=(lock,),
+            ontology_locks=locks,
             evidences=evidences,
         )
         validate_semantic_bundle(bundle)
