@@ -98,7 +98,8 @@
     </root>
     <record>
       Each &lt;map&gt; has kind and relation. A positive relation needs an
-      absolute target IRI; ambiguous/native-only/unsupported have no target.
+      absolute target IRI. Ambiguous rows may contain a target as a non-executable
+      candidate; native-only and unsupported have no target.
       'node' maps an annotation node type; 'feature' maps a native feature;
       'value' maps a feature/value selector on a node type; 'edge' maps a
       TF edge feature, optionally restricted by from/to node types; and
@@ -110,11 +111,11 @@
     <validation>
       No per-row UUID or digest. The validator checks filename equals corpus,
       one-to-one required selector fields for each kind, relation/target
-      consistency, absolute target IRI, repeated identical rows and contradictory
-      exact assertions to clearly incompatible targets. It does not pronounce
-      an ontology claim true because a URL or checksum is well formed.
+      consistency, absolute target IRI and repeated identical rows. Multiple
+      exact identity links from one native selector warrant human inspection;
+      this validator cannot prove ontology inconsistency from strings.
     </validation>
-    <example description="Two corpus category mappings and one conservative disposition">
+    <example description="Illustration, not production-reviewed mapping data">
       <mappings corpus="bhsa" source="ETCBC/bhsa" corpusVersion="2021">
         <map kind="value" node="word" feature="sp" value="subs"
              relation="exact" target="http://purl.org/olia/olia.owl#Noun"
