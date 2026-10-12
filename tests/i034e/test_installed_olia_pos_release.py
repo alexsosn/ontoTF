@@ -11,6 +11,7 @@ import unittest
 
 from tfont.release_registry import _load_catalogue, _load_from_catalogue, load_profile, list_profile_releases
 from tfont.semantic_validation import validate_semantic_bundle
+from tfont.digests import canonical_json_bytes
 
 
 POS = {
@@ -83,7 +84,7 @@ class InstalledRealOLiAPOS(unittest.TestCase):
                 new = [m for m in installed.mappings.data["mappings"]
                        if m["mapping_id"] not in {r["mapping_id"] for r in old.mappings.data["mappings"]}]
                 bindings = [m["native_binding"] for m in installed.mappings.data["mappings"]]
-                self.assertEqual(len(bindings),len({tuple(sorted(b.items())) for b in bindings}))
+                self.assertEqual(len(bindings), len({canonical_json_bytes(b) for b in bindings}))
                 self.assertEqual({m["native_binding"]["value"] for m in new},set(expected))
                 self.assertEqual({m["mapping_id"].split(":", 2)[2] for m in new},
                                  set(SIGNED_ROW_DIGESTS[corpus]))
