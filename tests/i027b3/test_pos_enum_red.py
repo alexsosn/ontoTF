@@ -83,7 +83,7 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
         source = SOURCE.replace("CREATE OBJECT TYPE [word]",
                                 "CREATE OBJECT TYPE\n[word")
         self.assertEqual(extract_pos_enum(source)["feature_type_line"], 13)
-        wrong = source.replace("\n[word", "\\n[phrase")
+        wrong = source.replace("\n[word", "\n[phrase")
         with self.assertRaisesRegex(ValueError, "word object"):
             extract_pos_enum(wrong)
 
