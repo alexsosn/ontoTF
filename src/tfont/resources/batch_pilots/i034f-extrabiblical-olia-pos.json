@@ -1,0 +1,109 @@
+{
+  "schema_version": 2,
+  "mode": "proposal-only",
+  "batch_id": "i034f-extrabiblical-olia-sp-remaining",
+  "ontology_model": "olia",
+  "ontology_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+  "ontology_lock_resource": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034a-pos.json",
+  "ontology_evidence_resources": {
+    "adjective": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adjective-evidence.json",
+    "adverb": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adverb-evidence.json",
+    "article": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-article-evidence.json",
+    "conjunction": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-conjunction-evidence.json",
+    "interjection": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interjection-evidence.json",
+    "demonstrativepronoun": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-demonstrativepronoun-evidence.json",
+    "preposition": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-preposition-evidence.json",
+    "interrogativepronoun": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativepronoun-evidence.json"
+  },
+  "source_registry": {
+    "extrabiblical": {
+      "component_id": "extrabiblical-tf",
+      "evidence_resource": "resources/profiles/extrabiblical/batch-candidates/i034f-word-sp.json",
+      "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+      "target_corpus_revision": "9a56288e6777bad6328856acf055c780e65dd5d9"
+    }
+  },
+  "defaults": {
+    "capability_id": "linguistic.part-of-speech",
+    "feature": "sp",
+    "native_node_type": "word",
+    "profile_id": "linguistic",
+    "semantic_role": "annotation-value"
+  },
+  "decisions": [
+    {
+      "corpus_id": "extrabiblical",
+      "value": "adjv",
+      "term_key": "adjective",
+      "assessment": "exact",
+      "rationale": "OLiA Adjective covers the lexical adjective POS and the ExtraBiblical original MQL declares adjv as a word.sp part-of-speech enum member, with a nonzero value in the exact TF inventory. The shared ETCBC BHSA tagset also defines adjv as adjective; pending direct original MQL code/line validation, this is a proposed category-level match."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "advb",
+      "term_key": "adverb",
+      "assessment": "exact",
+      "rationale": "OLiA Adverb is the generic adverb morphosyntactic class. The ExtraBiblical pinned word.sp TF inventory contains advb, while related ETCBC BHSA documentation defines that code as adverb. This is a proposed annotation-category correspondence, not a claim about every token's syntactic adjunct behavior; verify original MQL discriminant."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "art",
+      "term_key": "article",
+      "assessment": "exact",
+      "rationale": "The ExtraBiblical original POS enum and pinned TF inventory identify art. Shared ETCBC/BHSA feature documentation glosses this POS code as article, matching OLiA Article as a determiner subtype. The annotation category is being mapped, not definiteness of any individual article; verify its actual MQL declaration."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "conj",
+      "term_key": "conjunction",
+      "assessment": "exact",
+      "rationale": "The native ExtraBiblical TF word.sp domain includes conj and its type is defined in the original part_of_speech_t enumeration. In the shared ETCBC category vocabulary conj means conjunction. OLiA Conjunction is deliberately the generic POS, not a coordinating or subordinating subtype."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "inrg",
+      "assessment": "native-only",
+      "rationale": "The ExtraBiblical word.sp code inrg is attested in the native TF inventory but its original MQL enumerator gives no documented particle-vs-adverb-vs-pronoun definition. Despite BHSA's interrogative particle gloss, retain native-only rather than declare an exact OLiA InterrogativeParticle equivalence solely from a shared code name."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "intj",
+      "term_key": "interjection",
+      "assessment": "exact",
+      "rationale": "The ExtraBiblical original MQL word.sp enum and exact pinned TF domain include intj. The closely related ETCBC BHSA part-of-speech vocabulary defines this category as interjection, corresponding to the OLiA Interjection class. This maps grammatical annotation type, not independent discourse or emotion semantics."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "nega",
+      "assessment": "native-only",
+      "rationale": "The ExtraBiblical original MQL enum and TF inventory include nega, but the source abbreviation by itself does not prove that every occurrence is a negative particle rather than another type of negative expression. Inherited BHSA glosses are supporting evidence only; do not assert exact OLiA NegativeParticle yet."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "prde",
+      "term_key": "demonstrativepronoun",
+      "assessment": "exact",
+      "rationale": "The ExtraBiblical word.sp category prde follows the shared ETCBC part-of-speech vocabulary for demonstrative pronouns and occurs in the pinned TF inventory. OLiA DemonstrativePronoun specifically models the pronoun class, not all demonstrative determiners; the original MQL enumeration and relationship must be checked."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "prep",
+      "term_key": "preposition",
+      "assessment": "exact",
+      "rationale": "The ExtraBiblical source POS enum contains prep, and the exact TF inventory counts many word.sp=prep occurrences. Shared ETCBC/BHSA documentation defines prep as preposition, matching the OLiA Preposition lexical category without inventing tokenization or prepositional phrase semantics."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "prin",
+      "term_key": "interrogativepronoun",
+      "assessment": "exact",
+      "rationale": "The original ExtraBiblical POS inventory identifies prin, whose shared ETCBC/BHSA classification is interrogative pronoun. OLiA InterrogativePronoun is this pronoun subtype. Distinguish it from word.sp=inrg and do not infer equivalence merely because both involve questions."
+    },
+    {
+      "corpus_id": "extrabiblical",
+      "value": "prps",
+      "assessment": "native-only",
+      "rationale": "The ExtraBiblical native POS inventory contains prps, associated in BHSA's related ETCBC feature vocabulary with personal pronouns. OLiA PersonalPronoun explicitly narrows to irreflexive personal pronouns; the ExtraBiblical original MQL enum does not establish irreflexivity for this category, so keep native-only."
+    }
+  ]
+}
