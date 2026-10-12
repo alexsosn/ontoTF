@@ -47,6 +47,7 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
     def test_requires_typed_sp_and_one_real_enum_not_a_stray_string(self):
         for bad in (
             SOURCE.replace("sp : part_of_speech_t;", "sp : other_type;"),
+            SOURCE.replace("CREATE OBJECT TYPE [word]", "CREATE OBJECT TYPE [phrase]"),
             SOURCE.replace("CREATE ENUMERATION part_of_speech_t", "CREATE ENUMERATION unrelated_sp_t"),
             SOURCE + "\nCREATE ENUMERATION part_of_speech_t = {\n  art = 14,\n};",
             SOURCE.replace("  art = 14,\n};", "  art = 14,\n"),
