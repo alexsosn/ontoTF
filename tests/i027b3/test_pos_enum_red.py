@@ -3,9 +3,10 @@ from __future__ import annotations
 
 import bz2
 import hashlib
+import json
 import unittest
 
-from scripts.research.i027b3_extract_mql import extract, extract_pos_enum
+from scripts.research.i027b3_extract_mql import extract, extract_pos_enum, verify_frozen
 
 
 SOURCE = """-- unrelated decoy
@@ -77,6 +78,42 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             extract_pos_enum(excess)
+
+    def test_legacy_bounded_scan_still_accepts_unrelated_mql(self):
+        # Earlier I-027B3 research API intentionally scanned unrelated / partial
+        # MQL sources without claiming any executable POS mapping.
+        raw = bz2.compress(b"CREATE OBJECT TYPE [other]\\n name: string;\\nEND;\\n")
+        expected_blob = hashlib.sha1(
+            b"blob " + str(len(raw)).encode() + b"\\0" + raw
+        ).hexdigest()
+        report = extract(raw, expected_blob_sha=expected_blob, expected_size=len(raw))
+        self.assertIsNone(report["part_of_speech_enum"])
+        self.assertEqual(report["match_counts"]["part_of_speech_t"], 0)
+        self.assertFalse(report["exact_mapping_authorized"])
+
+    def test_frozen_v2_requires_exact_original_enum_not_just_source_digests(self):
+        raw = bz2.compress(SOURCE.encode("utf-8"))
+        expected_blob = hashlib.sha1(
+            b"blob " + str(len(raw)).encode() + b"\\0" + raw
+        ).hexdigest()
+        report = extract(raw, expected_blob_sha=expected_blob, expected_size=len(raw))
+        frozen = {key: report[key] for key in (
+            "source_repository", "source_revision", "source_path",
+            "compressed_size", "git_blob_sha", "compressed_sha256",
+            "decompressed_size", "decompressed_sha256", "encoding",
+        )}
+        frozen.update(schema_version=2, exact_mapping_authorized=False,
+                      part_of_speech_enum=json.loads(json.dumps(report["part_of_speech_enum"])))
+        verify_frozen(report, frozen)
+        forged = json.loads(json.dumps(frozen))
+        forged["part_of_speech_enum"]["values"][0]["code"] = 999
+        with self.assertRaisesRegex(ValueError, "POS enum"):
+            verify_frozen(report, forged)
+        forged = dict(frozen)
+        del forged["part_of_speech_enum"]
+        with self.assertRaisesRegex(ValueError, "POS enum"):
+            verify_frozen(report, forged)
+
 
 
 if __name__ == "__main__":
