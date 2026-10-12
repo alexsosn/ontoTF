@@ -19,11 +19,6 @@ SCOPES = {
         ('"src/tfont/resources/**"', "'src/tfont/resources/**'"),
         "tests/i009/**",
     ),
-    "i016-coverage.yml": (
-        ('"src/tfont/resources/coverage/**"', "'src/tfont/resources/coverage/**'"),
-        "tests/i016/**",
-    ),
-
 }
 
 
@@ -52,6 +47,16 @@ class CITriggerScopeRED(unittest.TestCase):
             with self.subTest(required=name):
                 self.assertIn(name, full)
         self.assertIn("python-version == '3.12'", full)
+        for retired in ("i016-coverage.yml", "i017-pseudepigrapha-coverage.yml", "i018-oracc-coverage.yml", "i019-tlhdig-coverage.yml"):
+            with self.subTest(retired=retired):
+                self.assertFalse((WORKFLOWS / retired).exists())
+        for script in (
+            "build_i017_pseudepigrapha_v1.py",
+            "build_i018_oracc_current.py",
+            "build_i019_tlhdig_current.py",
+        ):
+            with self.subTest(coverage_script=script):
+                self.assertEqual(full.count("python scripts/coverage/" + script + " --check"), 1)
         for corpus in ("bhsa", "cuc", "syriac", "extrabiblical",
                        "pseudepigrapha", "oracc", "tlhdig"):
             with self.subTest(corpus=corpus):

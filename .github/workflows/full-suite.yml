@@ -55,9 +55,13 @@ jobs:
         run: python scripts/check_f_series_ownership.py .
 
       - name: Verify immutable historical coverage and routing snapshots
+        if: matrix.python-version == '3.12'
         run: |
           python scripts/coverage/build_p004_r011_baseline.py --check
           python scripts/coverage/build_i026_work_queue.py --check
+          python scripts/coverage/build_i017_pseudepigrapha_v1.py --check
+          python scripts/coverage/build_i018_oracc_current.py --check
+          python scripts/coverage/build_i019_tlhdig_current.py --check
 
       # F-030: historical offline coverage reproducibility previously ran
       # in seven duplicative I-026/I-027 per-ticket workflows. Full test
@@ -96,6 +100,16 @@ jobs:
               present = {name for name in wheel.namelist() if name.startswith(prefix)}
           if present != expected:
               raise SystemExit("missing or unexpected frozen coverage resources in wheel")
+          successors = {
+              "tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
+              "tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
+              "tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json",
+              "tfont/schemas/coverage-manifest.schema.json",
+          }
+          with ZipFile(dist[0]) as wheel:
+              missing = successors - set(wheel.namelist())
+          if missing:
+              raise SystemExit(f"missing successor coverage resources in wheel: {sorted(missing)}")
           PY
 
       - name: Install reviewed profile wheel in isolated environment

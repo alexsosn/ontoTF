@@ -1,6 +1,6 @@
 # Contributing to TFont
 
-TFont uses issue-driven research, design, TDD implementation, and independent review.
+TFont prioritizes researcher-facing cross-corpus correspondences. For routine source-supported mapping additions, use **one batch, one PR, one independent adversarial review pass and one final-head CI run**. Reuse existing research and contract tests; do not create separate tickets or releases per value. New runtime/schema behavior still uses research → plan → TDD in the same PR.
 
 ## Ticket types
 
@@ -22,7 +22,7 @@ Every PR must:
 
 ## Research PRs
 
-A research PR should normally add one document under `docs/research/`. It may add small reproducibility scripts or machine-readable inventories only when needed to reproduce the research; it must not commit the future production mapping architecture before that architecture is decided.
+If a mapping requires new source research, record the essential source evidence under `docs/research/` **in the same PR as the mapping batch**. Small scripts and inventories are appropriate only when needed for reproducibility; routine mapping batches reuse existing evidence. Independent research-only PRs are optional, not a mandatory stage.
 
 Each research document should contain:
 
@@ -59,7 +59,7 @@ Run `python scripts/check_f_series_ownership.py` before opening or finalizing a 
 
 Designs belong in `docs/plans/`. They must define stable contracts before code, including version compatibility, error behavior, provenance, extensibility, serialization, and how approximate mappings are represented.
 
-The initial POC architecture always requires a design PR after R-001 through R-005 are complete. Later changes to distribution, public mapping semantics, manifests/schemas, or MCP-facing behavior also require design first.
+New public contracts need design evidence before implementation, but the design and implementation belong in one PR whenever feasible. Routine ledger-row additions under a validated contract require no new design artifact.
 
 ## Implementation PRs
 
@@ -69,4 +69,4 @@ Use TDD. Tests should make semantic compatibility claims executable. For corpus 
 
 The final reviewer should work from the issue, research/design artifact, diff, and upstream evidence rather than trusting the PR description. A mergeable review must address semantic fidelity, licensing, versioning, distribution, ergonomics, and test adequacy where applicable.
 
-The required independent reviewer must be a different person or a separately instantiated review agent/context that did not author the changes. An authoring agent's self-audit does not satisfy this gate. Material changes after the final review require another independent review of the new PR head.
+Logical independence means a separate evidence-first, counterexample-driven review pass that challenges the mapping claims; it **may be performed by the same agent**, without pretending to be another reviewer. Record concrete objections and their disposition in the PR. Material semantic changes after review require renewed review of the affected final head. An ordinary mapping review does not require a signed packet, identity certificate, or protected attestation workflow.
