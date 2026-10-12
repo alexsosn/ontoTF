@@ -82,9 +82,9 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
     def test_legacy_bounded_scan_still_accepts_unrelated_mql(self):
         # Earlier I-027B3 research API intentionally scanned unrelated / partial
         # MQL sources without claiming any executable POS mapping.
-        raw = bz2.compress(b"CREATE OBJECT TYPE [other]\\n name: string;\\nEND;\\n")
+        raw = bz2.compress(b"CREATE OBJECT TYPE [other]\n name: string;\nEND;\n")
         expected_blob = hashlib.sha1(
-            b"blob " + str(len(raw)).encode() + b"\\0" + raw
+            b"blob " + str(len(raw)).encode() + b"\0" + raw
         ).hexdigest()
         report = extract(raw, expected_blob_sha=expected_blob, expected_size=len(raw))
         self.assertIsNone(report["part_of_speech_enum"])
@@ -94,7 +94,7 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
     def test_frozen_v2_requires_exact_original_enum_not_just_source_digests(self):
         raw = bz2.compress(SOURCE.encode("utf-8"))
         expected_blob = hashlib.sha1(
-            b"blob " + str(len(raw)).encode() + b"\\0" + raw
+            b"blob " + str(len(raw)).encode() + b"\0" + raw
         ).hexdigest()
         report = extract(raw, expected_blob_sha=expected_blob, expected_size=len(raw))
         frozen = {key: report[key] for key in (
