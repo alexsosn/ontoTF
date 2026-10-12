@@ -1,0 +1,281 @@
+{
+  "evidence_id": "evidence:bhsa:word-morphology-i034g",
+  "kind": "corpus-feature-definition",
+  "source_uri": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features",
+  "source_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "target_tf_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+    "production_node_type": "word",
+    "documented_node_types": [
+      "word"
+    ],
+    "feature": "multiple-morphology-features",
+    "feature_semantics": "pinned-corpus-grammatical-categories",
+    "source_research": "i034c/bhsa-morphology-olia.json",
+    "source_definitions": {
+      "ps:p1": {
+        "feature": "ps",
+        "value": "p1",
+        "item_id": "node_value:ps=\"p1\"",
+        "source_line": 14,
+        "source_gloss": "first person",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "ps:p2": {
+        "feature": "ps",
+        "value": "p2",
+        "item_id": "node_value:ps=\"p2\"",
+        "source_line": 15,
+        "source_gloss": "second person",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "ps:p3": {
+        "feature": "ps",
+        "value": "p3",
+        "item_id": "node_value:ps=\"p3\"",
+        "source_line": 16,
+        "source_gloss": "third person",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "ps:NA": {
+        "feature": "ps",
+        "value": "NA",
+        "item_id": "node_value:ps=\"NA\"",
+        "source_line": 17,
+        "source_gloss": "not applicable",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "ps:unknown": {
+        "feature": "ps",
+        "value": "unknown",
+        "item_id": "node_value:ps=\"unknown\"",
+        "source_line": 18,
+        "source_gloss": "unknown",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "prs_ps:p1": {
+        "feature": "prs_ps",
+        "value": "p1",
+        "item_id": "node_value:prs_ps=\"p1\"",
+        "source_line": 15,
+        "source_gloss": "first person",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_ps:p2": {
+        "feature": "prs_ps",
+        "value": "p2",
+        "item_id": "node_value:prs_ps=\"p2\"",
+        "source_line": 16,
+        "source_gloss": "second person",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_ps:p3": {
+        "feature": "prs_ps",
+        "value": "p3",
+        "item_id": "node_value:prs_ps=\"p3\"",
+        "source_line": 17,
+        "source_gloss": "third person",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_ps:NA": {
+        "feature": "prs_ps",
+        "value": "NA",
+        "item_id": "node_value:prs_ps=\"NA\"",
+        "source_line": 18,
+        "source_gloss": "not applicable",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_gn:m": {
+        "feature": "prs_gn",
+        "value": "m",
+        "item_id": "node_value:prs_gn=\"m\"",
+        "source_line": 12,
+        "source_gloss": "masculine",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_gn:f": {
+        "feature": "prs_gn",
+        "value": "f",
+        "item_id": "node_value:prs_gn=\"f\"",
+        "source_line": 13,
+        "source_gloss": "feminine",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_gn:NA": {
+        "feature": "prs_gn",
+        "value": "NA",
+        "item_id": "node_value:prs_gn=\"NA\"",
+        "source_line": 14,
+        "source_gloss": "not applicable",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_gn:unknown": {
+        "feature": "prs_gn",
+        "value": "unknown",
+        "item_id": "node_value:prs_gn=\"unknown\"",
+        "source_line": 15,
+        "source_gloss": "unknown",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_nu:sg": {
+        "feature": "prs_nu",
+        "value": "sg",
+        "item_id": "node_value:prs_nu=\"sg\"",
+        "source_line": 15,
+        "source_gloss": "singular",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_nu:pl": {
+        "feature": "prs_nu",
+        "value": "pl",
+        "item_id": "node_value:prs_nu=\"pl\"",
+        "source_line": 17,
+        "source_gloss": "plural",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "prs_nu:NA": {
+        "feature": "prs_nu",
+        "value": "NA",
+        "item_id": "node_value:prs_nu=\"NA\"",
+        "source_line": 18,
+        "source_gloss": "not applicable",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "pronominal-suffix"
+      },
+      "st:a": {
+        "feature": "st",
+        "value": "a",
+        "item_id": "node_value:st=\"a\"",
+        "source_line": 17,
+        "source_gloss": "absolute",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "st:c": {
+        "feature": "st",
+        "value": "c",
+        "item_id": "node_value:st=\"c\"",
+        "source_line": 18,
+        "source_gloss": "construct",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "st:e": {
+        "feature": "st",
+        "value": "e",
+        "item_id": "node_value:st=\"e\"",
+        "source_line": 19,
+        "source_gloss": "emphatic",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "st:NA": {
+        "feature": "st",
+        "value": "NA",
+        "item_id": "node_value:st=\"NA\"",
+        "source_line": 21,
+        "source_gloss": "not applicable",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:NA": {
+        "feature": "vt",
+        "value": "NA",
+        "item_id": "node_value:vt=\"NA\"",
+        "source_line": 14,
+        "source_gloss": "not applicable",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:perf": {
+        "feature": "vt",
+        "value": "perf",
+        "item_id": "node_value:vt=\"perf\"",
+        "source_line": 20,
+        "source_gloss": "perfect",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:impf": {
+        "feature": "vt",
+        "value": "impf",
+        "item_id": "node_value:vt=\"impf\"",
+        "source_line": 21,
+        "source_gloss": "imperfect",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:wayq": {
+        "feature": "vt",
+        "value": "wayq",
+        "item_id": "node_value:vt=\"wayq\"",
+        "source_line": 22,
+        "source_gloss": "wayyiqtol",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:impv": {
+        "feature": "vt",
+        "value": "impv",
+        "item_id": "node_value:vt=\"impv\"",
+        "source_line": 23,
+        "source_gloss": "imperative",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:infa": {
+        "feature": "vt",
+        "value": "infa",
+        "item_id": "node_value:vt=\"infa\"",
+        "source_line": 24,
+        "source_gloss": "infinitive (absolute)",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:infc": {
+        "feature": "vt",
+        "value": "infc",
+        "item_id": "node_value:vt=\"infc\"",
+        "source_line": 25,
+        "source_gloss": "infinitive (construct)",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:ptca": {
+        "feature": "vt",
+        "value": "ptca",
+        "item_id": "node_value:vt=\"ptca\"",
+        "source_line": 26,
+        "source_gloss": "participle",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      },
+      "vt:ptcp": {
+        "feature": "vt",
+        "value": "ptcp",
+        "item_id": "node_value:vt=\"ptcp\"",
+        "source_line": 27,
+        "source_gloss": "participle (passive)",
+        "evidence_kind": "source-feature-documentation",
+        "native_subject": "word-morphology"
+      }
+    }
+  },
+  "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+}

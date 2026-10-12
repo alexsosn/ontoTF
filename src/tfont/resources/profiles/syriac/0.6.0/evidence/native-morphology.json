@@ -1,0 +1,218 @@
+{
+  "evidence_id": "evidence:syriac:word-morphology-i034g",
+  "kind": "corpus-feature-definition",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/linksyr/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/word_grammar",
+  "source_revision": "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "target_tf_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+    "production_node_type": "word",
+    "documented_node_types": [
+      "word"
+    ],
+    "feature": "multiple-morphology-features",
+    "feature_semantics": "pinned-corpus-grammatical-categories",
+    "source_research": "i034d/syriac-morphology-olia.json",
+    "source_definitions": {
+      "ps:first": {
+        "feature": "ps",
+        "value": "first",
+        "item_id": "node_value:ps=\"first\"",
+        "source_line": 61,
+        "source_gloss": "first",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "ps:second": {
+        "feature": "ps",
+        "value": "second",
+        "item_id": "node_value:ps=\"second\"",
+        "source_line": 61,
+        "source_gloss": "second",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "ps:third": {
+        "feature": "ps",
+        "value": "third",
+        "item_id": "node_value:ps=\"third\"",
+        "source_line": 61,
+        "source_gloss": "third",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "ps:unknown": {
+        "feature": "ps",
+        "value": "unknown",
+        "item_id": "node_value:ps=\"unknown\"",
+        "source_line": null,
+        "source_gloss": null,
+        "evidence_kind": "R005-observed-only",
+        "native_subject": "word-morphology"
+      },
+      "st:abs": {
+        "feature": "st",
+        "value": "abs",
+        "item_id": "node_value:st=\"abs\"",
+        "source_line": 95,
+        "source_gloss": "absolute",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "st:c": {
+        "feature": "st",
+        "value": "c",
+        "item_id": "node_value:st=\"c\"",
+        "source_line": null,
+        "source_gloss": null,
+        "evidence_kind": "R005-observed-only",
+        "native_subject": "word-morphology"
+      },
+      "st:cst": {
+        "feature": "st",
+        "value": "cst",
+        "item_id": "node_value:st=\"cst\"",
+        "source_line": 95,
+        "source_gloss": "construct",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "st:emph": {
+        "feature": "st",
+        "value": "emph",
+        "item_id": "node_value:st=\"emph\"",
+        "source_line": 95,
+        "source_gloss": "emphatic",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "st:unknown": {
+        "feature": "st",
+        "value": "unknown",
+        "item_id": "node_value:st=\"unknown\"",
+        "source_line": null,
+        "source_gloss": null,
+        "evidence_kind": "R005-observed-only",
+        "native_subject": "word-morphology"
+      },
+      "vo:act": {
+        "feature": "vo",
+        "value": "act",
+        "item_id": "node_value:vo=\"act\"",
+        "source_line": 97,
+        "source_gloss": "active",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vo:pas": {
+        "feature": "vo",
+        "value": "pas",
+        "item_id": "node_value:vo=\"pas\"",
+        "source_line": 97,
+        "source_gloss": "passive",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vpm:d": {
+        "feature": "vpm",
+        "value": "d",
+        "item_id": "node_value:vpm=\"d\"",
+        "source_line": null,
+        "source_gloss": null,
+        "evidence_kind": "R005-observed-only",
+        "native_subject": "word-morphology"
+      },
+      "vpm:dp": {
+        "feature": "vpm",
+        "value": "dp",
+        "item_id": "node_value:vpm=\"dp\"",
+        "source_line": null,
+        "source_gloss": null,
+        "evidence_kind": "R005-observed-only",
+        "native_subject": "word-morphology"
+      },
+      "vpm:p": {
+        "feature": "vpm",
+        "value": "p",
+        "item_id": "node_value:vpm=\"p\"",
+        "source_line": 50,
+        "source_gloss": null,
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vs:af": {
+        "feature": "vs",
+        "value": "af",
+        "item_id": "node_value:vs=\"af\"",
+        "source_line": 99,
+        "source_gloss": "afel",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vs:pa": {
+        "feature": "vs",
+        "value": "pa",
+        "item_id": "node_value:vs=\"pa\"",
+        "source_line": 99,
+        "source_gloss": "pael",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vs:pe": {
+        "feature": "vs",
+        "value": "pe",
+        "item_id": "node_value:vs=\"pe\"",
+        "source_line": 99,
+        "source_gloss": "peal",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vt:imp": {
+        "feature": "vt",
+        "value": "imp",
+        "item_id": "node_value:vt=\"imp\"",
+        "source_line": 101,
+        "source_gloss": "imperative",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vt:inf": {
+        "feature": "vt",
+        "value": "inf",
+        "item_id": "node_value:vt=\"inf\"",
+        "source_line": 102,
+        "source_gloss": "infinitive",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vt:ipf": {
+        "feature": "vt",
+        "value": "ipf",
+        "item_id": "node_value:vt=\"ipf\"",
+        "source_line": 101,
+        "source_gloss": "imperfect",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vt:pf": {
+        "feature": "vt",
+        "value": "pf",
+        "item_id": "node_value:vt=\"pf\"",
+        "source_line": 101,
+        "source_gloss": "perfect",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      },
+      "vt:ptc": {
+        "feature": "vt",
+        "value": "ptc",
+        "item_id": "node_value:vt=\"ptc\"",
+        "source_line": 102,
+        "source_gloss": "participle",
+        "evidence_kind": "grammar-defined",
+        "native_subject": "word-morphology"
+      }
+    }
+  },
+  "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+}

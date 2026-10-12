@@ -122,7 +122,7 @@ def _validate_catalogue(value: Any) -> dict[str, Any]:
                 "profile", "parent", "native_evidence", "ontology_model",
                 "ontology_lock", "ontology_evidence",
             }
-            allowed = legacy_fields | ({"ontology_locks"} if version == "0.5.0"
+            allowed = legacy_fields | ({"ontology_locks"} if version in {"0.5.0", "0.6.0"}
                                        and corpus in {"bhsa", "syriac"} else set())
             if set(rel) not in (legacy_fields, allowed):
                 _fail(f"{corpus}/{version}: unexpected release fields")
@@ -138,7 +138,7 @@ def _validate_catalogue(value: Any) -> dict[str, Any]:
             _path(rel["ontology_lock"], ontology_root, "ontology lock")
             if "ontology_locks" in rel:
                 locks = _source_list(rel["ontology_locks"], ontology_root, "ontology locks")
-                if len(locks) != 2 or locks[-1] != rel["ontology_lock"]:
+                if len(locks) != (3 if version == "0.6.0" else 2) or locks[-1] != rel["ontology_lock"]:
                     _fail(f"{corpus}/{version}: multiple ontology locks are not pinned")
             _source_list(rel["native_evidence"], "resources/profiles", "native evidence")
             _source_list(rel["ontology_evidence"], ontology_root, "ontology evidence")

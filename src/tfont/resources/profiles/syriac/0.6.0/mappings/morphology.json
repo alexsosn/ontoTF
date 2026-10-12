@@ -1,0 +1,1312 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-first-class",
+          "content_digest": "sha256:06ea04336fc37227da175c3291c14a23070bd1afde6b51148e5e2fa803c5cc96"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-ps-first",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "first",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-ps-first"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-first-class",
+              "content_digest": "sha256:06ea04336fc37227da175c3291c14a23070bd1afde6b51148e5e2fa803c5cc96"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "ps",
+            "value": "first",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-ps-first",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#First",
+          "projection_semantic_digest": "sha256:06198857dc7ae23855e11404e5f6c4cd97778a80683e086ab83c9021b4bc1810",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-ps-first",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:06198857dc7ae23855e11404e5f6c4cd97778a80683e086ab83c9021b4bc1810"
+          }
+        }
+      ],
+      "rationale": "The pinned Syriac word_grammar functions line 61 identifies ps=first as first-person inflection of a word. OLiA First is a generic grammatical PersonFeature, not FirstPersonPronoun and not a claim about lexical persons.",
+      "mapping_semantic_digest": "sha256:39f036626cde51129a7e69696b3288d636f99505bce67e3cc29406d32dc7dda1",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-ps-first",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:39f036626cde51129a7e69696b3288d636f99505bce67e3cc29406d32dc7dda1"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-second-class",
+          "content_digest": "sha256:1f1e1b8eca293852bb75a01dc0b9e6635ae5b67d16cb654fb68312cfbfb8faea"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-ps-second",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "second",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-ps-second"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-second-class",
+              "content_digest": "sha256:1f1e1b8eca293852bb75a01dc0b9e6635ae5b67d16cb654fb68312cfbfb8faea"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "ps",
+            "value": "second",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-ps-second",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Second",
+          "projection_semantic_digest": "sha256:1d2f868d9ea4a8993b1557676b5e0f5afaeb5b3c33810bafb782a24d6318ac53",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-ps-second",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:1d2f868d9ea4a8993b1557676b5e0f5afaeb5b3c33810bafb782a24d6318ac53"
+          }
+        }
+      ],
+      "rationale": "Syriac ps=second is explicitly the second-person grammatical function on the word, and pinned OLiA Second is an addressee-related grammatical PersonFeature. This aligns person categories without claiming that any word is a pronoun.",
+      "mapping_semantic_digest": "sha256:811fc1613d0a39bea876ebef11eb632b605a172f8ae8cee2eeefe5b6a7e94836",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-ps-second",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:811fc1613d0a39bea876ebef11eb632b605a172f8ae8cee2eeefe5b6a7e94836"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-third-class",
+          "content_digest": "sha256:004d33c204a598f37e159b4ce5c63bcc316b2c7dc43a4f4a56f584816d8c8df7"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-ps-third",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "third",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-ps-third"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-third-class",
+              "content_digest": "sha256:004d33c204a598f37e159b4ce5c63bcc316b2c7dc43a4f4a56f584816d8c8df7"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "ps",
+            "value": "third",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-ps-third",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Third",
+          "projection_semantic_digest": "sha256:01b1a6ece3bd9524e897a3bbe89ce728e92269b9c64618493ddeef68f10845e6",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-ps-third",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:01b1a6ece3bd9524e897a3bbe89ce728e92269b9c64618493ddeef68f10845e6"
+          }
+        }
+      ],
+      "rationale": "Syriac ps=third expresses third-person inflection as declared by the original word grammar. OLiA Third is a morphological PersonFeature, not ThirdPersonPronoun; no lexical identity or discourse referent is inferred.",
+      "mapping_semantic_digest": "sha256:ce1a9e2618da49dfe0d3ed3d2edac79374e03491368ac0df65bc4c4a1fbd0164",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-ps-third",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:ce1a9e2618da49dfe0d3ed3d2edac79374e03491368ac0df65bc4c4a1fbd0164"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-ps-unknown",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "unknown",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-ps-unknown"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "R-005 observes the Syriac ps=unknown value, but the pinned word_grammar function table only declares first, second, third. Unknown is an observed source condition with no verified grammatical person class.",
+      "mapping_semantic_digest": "sha256:fa02433e895f97c26356b1f99e6569be3e9a584f0429079d245f5f5a73a2404c",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-ps-unknown",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:fa02433e895f97c26356b1f99e6569be3e9a584f0429079d245f5f5a73a2404c"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-st-abs",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "abs",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-st-abs"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The pinned Syriac word_grammar line 95 declares st=abs as nominal absolute state. No source-verified corresponding exact OLiA StatusAbsolutus class is pinned, and absolute should not be conflated with semantic indefiniteness.",
+      "mapping_semantic_digest": "sha256:bf13ff78bafa4b2d065206f4373437613b04ee90209bb70ddbf72c1f010e7d13",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-st-abs",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:bf13ff78bafa4b2d065206f4373437613b04ee90209bb70ddbf72c1f010e7d13"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-st-c",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "c",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-st-c"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The installed Syriac TF denominator reports st=c, but the pinned word_grammar lists cst rather than c for construct. No original definition for c has been verified, so equating it to cst would invent an alias.",
+      "mapping_semantic_digest": "sha256:01b11fbbd47f0325de57f27de81db8b0b3e085401a7272d953ff747538aabf1a",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-st-c",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:01b11fbbd47f0325de57f27de81db8b0b3e085401a7272d953ff747538aabf1a"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-statusconstructus-class",
+          "content_digest": "sha256:9fb763a03984bb60445e76126c4c62fa6071d2e07d102e2d1a188678c70f02cf"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-st-cst",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "cst",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-st-cst"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-statusconstructus-class",
+              "content_digest": "sha256:9fb763a03984bb60445e76126c4c62fa6071d2e07d102e2d1a188678c70f02cf"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "st",
+            "value": "cst",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-st-cst",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#StatusConstructus",
+          "projection_semantic_digest": "sha256:3e655089c52b850d0d1235793f25e58d9af1193687c443663d368ffd60c09a85",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-st-cst",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:3e655089c52b850d0d1235793f25e58d9af1193687c443663d368ffd60c09a85"
+          }
+        }
+      ],
+      "rationale": "Syriac st=cst is explicitly the construct noun state at pinned grammar line 95. The original OLiA StatusConstructus rdf:ID class describes Semitic construct state including Syriac, matching this nominal morphology category.",
+      "mapping_semantic_digest": "sha256:beeb757588f5337a55ce41413e07e06df6d31a0c3602fdbea878830dcbb211f8",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-st-cst",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:beeb757588f5337a55ce41413e07e06df6d31a0c3602fdbea878830dcbb211f8"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-st-emph",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "emph",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-st-emph"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The source defines st=emph as the Syriac emphatic nominal state, which is not the same as OLiA Emphatic emphasis or prominence. Preserve its original code without projecting a false shared grammatical meaning.",
+      "mapping_semantic_digest": "sha256:932fb3bb362b5b6c6a3f5f9a299d8907d3db98b4fb9d2aa7a2fe8347bc082ea7",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-st-emph",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:932fb3bb362b5b6c6a3f5f9a299d8907d3db98b4fb9d2aa7a2fe8347bc082ea7"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-st-unknown",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "unknown",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-st-unknown"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The observed Syriac st=unknown value is not listed among cst, abs, emph in the pinned original grammar function definitions. Lack of state identification is not a fourth nominal state or an ontology class.",
+      "mapping_semantic_digest": "sha256:8f9401189012d6b29d802a6c2546d5e3b8d633066d7f281bd10d4292dfa17dd0",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-st-unknown",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:8f9401189012d6b29d802a6c2546d5e3b8d633066d7f281bd10d4292dfa17dd0"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-activevoice-class",
+          "content_digest": "sha256:362e0081c32d60b0c36254d86c7d7711f171ce3ff07b867ef59b9fa70cc36859"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vo-act",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vo",
+        "value": "act",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vo-act"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-activevoice-class",
+              "content_digest": "sha256:362e0081c32d60b0c36254d86c7d7711f171ce3ff07b867ef59b9fa70cc36859"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "vo",
+            "value": "act",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-vo-act",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#ActiveVoice",
+          "projection_semantic_digest": "sha256:b13b78f7495313f424344435d4eab9471a36373bd1b75fca783655dca903d751",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-vo-act",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:b13b78f7495313f424344435d4eab9471a36373bd1b75fca783655dca903d751"
+          }
+        }
+      ],
+      "rationale": "The pinned Syriac word_grammar at line 97 labels vo=act as grammatical active voice on the verb. OLiA ActiveVoice defines the corresponding diathesis category; this is a feature-value alignment, not a transitivity judgment.",
+      "mapping_semantic_digest": "sha256:181ed1544855e952d26c806afb0eea82030e420a953db1c177316850bd7d49be",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vo-act",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:181ed1544855e952d26c806afb0eea82030e420a953db1c177316850bd7d49be"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-passivevoice-class",
+          "content_digest": "sha256:3901afddd38299035473c6abeec062a2914d22a1c1a9804dd878edd6c1d820b4"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vo-pas",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vo",
+        "value": "pas",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vo-pas"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-passivevoice-class",
+              "content_digest": "sha256:3901afddd38299035473c6abeec062a2914d22a1c1a9804dd878edd6c1d820b4"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "vo",
+            "value": "pas",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-vo-pas",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#PassiveVoice",
+          "projection_semantic_digest": "sha256:f52daa2e6995c35340faac35e2752b94de5b898fab679120ad39608df7ba44a7",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-vo-pas",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:f52daa2e6995c35340faac35e2752b94de5b898fab679120ad39608df7ba44a7"
+          }
+        }
+      ],
+      "rationale": "Syriac word_grammar at line 97 defines vo=pas as passive grammatical voice. OLiA PassiveVoice describes the subject as the patient or undergoer; the alignment does not claim a verb's textual subject is identified.",
+      "mapping_semantic_digest": "sha256:81f610226e5ad28c3b8aab176a2457e0621d4cb43875c765d0d35359d9e4b36a",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vo-pas",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:81f610226e5ad28c3b8aab176a2457e0621d4cb43875c765d0d35359d9e4b36a"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vpm-d",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vpm",
+        "value": "d",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vpm-d"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "R-005 observes Syriac vpm=d but the pinned word_grammar shows only the vowel pattern symbol p and supplies no definition of d. No morphology class may be inferred from the spelling of an undocumented pattern value.",
+      "mapping_semantic_digest": "sha256:595f4ea67d0d640e3f484cdf80d022a0e034602f75190378e2abfc53abf92543",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vpm-d",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:595f4ea67d0d640e3f484cdf80d022a0e034602f75190378e2abfc53abf92543"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vpm-dp",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vpm",
+        "value": "dp",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vpm-dp"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The Syriac TF inventory contains vpm=dp but the upstream pinned grammar does not define this value, only the vowel pattern skeleton. Treat it as source-native until the later transformation step or grammar provenance is traced.",
+      "mapping_semantic_digest": "sha256:2f75271cf88866367762534712b23d652ce90c0412307ee8ffe816ad0669526c",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vpm-dp",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:2f75271cf88866367762534712b23d652ce90c0412307ee8ffe816ad0669526c"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vpm-p",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vpm",
+        "value": "p",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vpm-p"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The original Syriac word_grammar line 50 declares vpm=p as a vowel-pattern marker, but does not define a corresponding abstract OLiA class. A concrete phonological pattern marker is not automatically a tense or voice category.",
+      "mapping_semantic_digest": "sha256:950c9c59906faf2099a79514f8128ddbfbf10046c69987480f4c6f77e4b14ba4",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vpm-p",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:950c9c59906faf2099a79514f8128ddbfbf10046c69987480f4c6f77e4b14ba4"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vs-af",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vs",
+        "value": "af",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vs-af"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The grammar explicitly names Syriac verbal stem vs=af as afel. This is a Semitic derivational stem, and no matching exact OLiA class with documented morphology has been verified from the pinned source.",
+      "mapping_semantic_digest": "sha256:86db3236df11f69dd5a9ea3004a81257bdc66c29c6b5b56d001cd7a17d62eb05",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vs-af",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:86db3236df11f69dd5a9ea3004a81257bdc66c29c6b5b56d001cd7a17d62eb05"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vs-pa",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vs",
+        "value": "pa",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vs-pa"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "Syriac vs=pa is explicitly pael in the original grammar. Its morphological causative/intensive functions should not be equated automatically with a generic voice or aspect class solely from a traditional stem label.",
+      "mapping_semantic_digest": "sha256:645ddbe7c715b1464b7170e7cd83f56621dd2563d09b89a60935216c61dfe9e0",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vs-pa",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:645ddbe7c715b1464b7170e7cd83f56621dd2563d09b89a60935216c61dfe9e0"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vs-pe",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vs",
+        "value": "pe",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vs-pe"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The pinned Syriac source identifies vs=pe as peal. Peal names a Semitic stem paradigm rather than a universal lexical POS or grammatical voice concept, so preserve the native value pending class evidence.",
+      "mapping_semantic_digest": "sha256:a517ab5e5104150ea03b84c2fea60d440dde884e9592978f7cdaecf71669ab63",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vs-pe",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:a517ab5e5104150ea03b84c2fea60d440dde884e9592978f7cdaecf71669ab63"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-imperativeverb-class",
+          "content_digest": "sha256:e3024b7439434234cdf2609c56e9fb3d7863951502269468c633272a23fd4a73"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vt-imp",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "imp",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vt-imp"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-imperativeverb-class",
+              "content_digest": "sha256:e3024b7439434234cdf2609c56e9fb3d7863951502269468c633272a23fd4a73"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "vt",
+            "value": "imp",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-vt-imp",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#ImperativeVerb",
+          "projection_semantic_digest": "sha256:13c7aeb41556890bccf14698cb63eba0966f01bd624cae1b39ea9e4a7c7c61c9",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-vt-imp",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:13c7aeb41556890bccf14698cb63eba0966f01bd624cae1b39ea9e4a7c7c61c9"
+          }
+        }
+      ],
+      "rationale": "The original Syriac grammar line 101 labels vt=imp as imperative verbal form, and OLiA ImperativeVerb defines the corresponding finite verbal imperative category. No imperative-to-command pragmatic equivalence is inferred.",
+      "mapping_semantic_digest": "sha256:460d57fa43b9e8e73026e2a8f3942a41fe337554d373dc2b12b06aa094804ee9",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vt-imp",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:460d57fa43b9e8e73026e2a8f3942a41fe337554d373dc2b12b06aa094804ee9"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-infinitive-class",
+          "content_digest": "sha256:ac1af8ca262048bd592b8ac81809f9da1e855af5235edd3a015af59867ea3e3b"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vt-inf",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "inf",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vt-inf"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-infinitive-class",
+              "content_digest": "sha256:ac1af8ca262048bd592b8ac81809f9da1e855af5235edd3a015af59867ea3e3b"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "vt",
+            "value": "inf",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-vt-inf",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Infinitive",
+          "projection_semantic_digest": "sha256:8ab7cc142a4272a2c260f748badd9bb81f28b39d7087e99db474e3457789695f",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-vt-inf",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:8ab7cc142a4272a2c260f748badd9bb81f28b39d7087e99db474e3457789695f"
+          }
+        }
+      ],
+      "rationale": "Syriac vt=inf is the unspecialized infinitive verbal form at source line 102. OLiA Infinitive defines the matching nonfinite verb form without assuming an unobserved absolute/construct subtype.",
+      "mapping_semantic_digest": "sha256:e280468ab5a0ae19f45c23152f77ff7469023074f2c4e037c9fcb8f65cba1bca",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vt-inf",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:e280468ab5a0ae19f45c23152f77ff7469023074f2c4e037c9fcb8f65cba1bca"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vt-ipf",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "ipf",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vt-ipf"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The Syriac vt=ipf label is imperfect, but OLiA Imperfect specifically defines incomplete or ongoing action in the past. The original Syriac grammar does not establish an equivalent tense interpretation for all ipf forms.",
+      "mapping_semantic_digest": "sha256:e19a8ef701fab04006b73afc6392faacf7f65fdf7d667271e1556a03ff47382c",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vt-ipf",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:e19a8ef701fab04006b73afc6392faacf7f65fdf7d667271e1556a03ff47382c"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vt-pf",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "pf",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vt-pf"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The original grammar calls vt=pf perfect, yet OLiA Perfect is defined as completed action in the past. A traditional Semitic perfect stem label alone is not sufficient for exact cross-ontology temporal equivalence.",
+      "mapping_semantic_digest": "sha256:7cd04f302b85da7491b9d7ca2cdbd4d2d03627292bc0a01ea3f6b349a0c03114",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vt-pf",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:7cd04f302b85da7491b9d7ca2cdbd4d2d03627292bc0a01ea3f6b349a0c03114"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-morphology-i034g",
+          "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-participle-class",
+          "content_digest": "sha256:712d6c3362801a8f342f34897835cc3af0c55a21504805d14ace8505b98f1536"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:morph-vt-ptc",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "ptc",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-morph-vt-ptc"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-morphology-i034g",
+              "content_digest": "sha256:173cff3235b3c967c978ba5104afd042c517a11a169c0521344ccd3e5519e93c"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-participle-class",
+              "content_digest": "sha256:712d6c3362801a8f342f34897835cc3af0c55a21504805d14ace8505b98f1536"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "vt",
+            "value": "ptc",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:morph-vt-ptc",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Participle",
+          "projection_semantic_digest": "sha256:82a33d04ec195219420798209377b74508adc170f5fd958dd159ef898262803d",
+          "review": {
+            "review_id": "review:i034g:syriac:projection-vt-ptc",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:82a33d04ec195219420798209377b74508adc170f5fd958dd159ef898262803d"
+          }
+        }
+      ],
+      "rationale": "The pinned Syriac word_grammar at line 102 calls vt=ptc participle, without a narrower active/passive subtype. OLiA Participle identifies the corresponding nonfinite participial verb form at the same category granularity.",
+      "mapping_semantic_digest": "sha256:c882546a1e2a2c52368f38b703147987ec68a31351e02642c4f47163c507acda",
+      "review": {
+        "review_id": "review:i034g:syriac:mapping-vt-ptc",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:c882546a1e2a2c52368f38b703147987ec68a31351e02642c4f47163c507acda"
+      }
+    }
+  ]
+}

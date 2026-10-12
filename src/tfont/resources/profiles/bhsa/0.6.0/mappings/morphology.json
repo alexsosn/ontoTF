@@ -1,0 +1,1419 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-first-class",
+          "content_digest": "sha256:06ea04336fc37227da175c3291c14a23070bd1afde6b51148e5e2fa803c5cc96"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-ps-p1",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "p1",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-ps-p1"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-morphology-i034g",
+              "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-first-class",
+              "content_digest": "sha256:06ea04336fc37227da175c3291c14a23070bd1afde6b51148e5e2fa803c5cc96"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "ps",
+            "value": "p1",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:morph-ps-p1",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#First",
+          "projection_semantic_digest": "sha256:fdd1c355a7ca76208d55bdb95b00c4b76e848104313cee0dec2ba71fc910f9e9",
+          "review": {
+            "review_id": "review:i034g:bhsa:projection-ps-p1",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:fdd1c355a7ca76208d55bdb95b00c4b76e848104313cee0dec2ba71fc910f9e9"
+          }
+        }
+      ],
+      "rationale": "The BHSA word.ps documentation explicitly records first person as p1 on the word's own inflection. The pinned OLiA First is a PersonFeature, not FirstPersonPronoun; exact category-value alignment does not assert that the word is a pronoun.",
+      "mapping_semantic_digest": "sha256:e6c1f1fe8d214338905c4cc69b7d0dacea25b87c9eba993f44fa65d134f5839a",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-ps-p1",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:e6c1f1fe8d214338905c4cc69b7d0dacea25b87c9eba993f44fa65d134f5839a"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-second-class",
+          "content_digest": "sha256:1f1e1b8eca293852bb75a01dc0b9e6635ae5b67d16cb654fb68312cfbfb8faea"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-ps-p2",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "p2",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-ps-p2"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-morphology-i034g",
+              "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-second-class",
+              "content_digest": "sha256:1f1e1b8eca293852bb75a01dc0b9e6635ae5b67d16cb654fb68312cfbfb8faea"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "ps",
+            "value": "p2",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:morph-ps-p2",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Second",
+          "projection_semantic_digest": "sha256:c7996c0eb9359684861de7441a20442a6f91575bd4381f41fd32826ef6c00323",
+          "review": {
+            "review_id": "review:i034g:bhsa:projection-ps-p2",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:c7996c0eb9359684861de7441a20442a6f91575bd4381f41fd32826ef6c00323"
+          }
+        }
+      ],
+      "rationale": "The original BHSA word.ps p2 value denotes second person of the inflected host word. OLiA Second is a PersonFeature applying to addressee deixis, not only second-person pronouns; the relationship is category-level.",
+      "mapping_semantic_digest": "sha256:52e796fc5cbbe126dd100f50f898156ccb8c1bab4b3c29c4a240156f1cf06fa6",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-ps-p2",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:52e796fc5cbbe126dd100f50f898156ccb8c1bab4b3c29c4a240156f1cf06fa6"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-third-class",
+          "content_digest": "sha256:004d33c204a598f37e159b4ce5c63bcc316b2c7dc43a4f4a56f584816d8c8df7"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-ps-p3",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "p3",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-ps-p3"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-morphology-i034g",
+              "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-third-class",
+              "content_digest": "sha256:004d33c204a598f37e159b4ce5c63bcc316b2c7dc43a4f4a56f584816d8c8df7"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "ps",
+            "value": "p3",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:morph-ps-p3",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Third",
+          "projection_semantic_digest": "sha256:fac1a06916535f68aa63e9f82096f0ff7e5aa49f299f636bdbea4096caf59e68",
+          "review": {
+            "review_id": "review:i034g:bhsa:projection-ps-p3",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:fac1a06916535f68aa63e9f82096f0ff7e5aa49f299f636bdbea4096caf59e68"
+          }
+        }
+      ],
+      "rationale": "BHSA word.ps=p3 describes third person marking of the host word and is distinct from the pronominal suffix person. Pinned OLiA Third models third-person morphology, not a third-person-pronoun-only class.",
+      "mapping_semantic_digest": "sha256:26f233f20bba1aa4dfdf8bcb2b5c41574c4529ae74311ec7f4422873438bdfe8",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-ps-p3",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:26f233f20bba1aa4dfdf8bcb2b5c41574c4529ae74311ec7f4422873438bdfe8"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-ps-na",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "NA",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-ps-na"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The source describes NA as not applicable where a word lacks person. This is absence of a source-relevant grammatical person value and must not become an ontology First, Second or Third class.",
+      "mapping_semantic_digest": "sha256:02b71b27ed2a102c12aca229a1cb38ae0c2a22348cc0eca34e7f51dfb0885971",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-ps-na",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:02b71b27ed2a102c12aca229a1cb38ae0c2a22348cc0eca34e7f51dfb0885971"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-ps-unknown",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "ps",
+        "value": "unknown",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-ps-unknown"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The source says unknown when grammatical person exists but its form does not reveal which person. Unknown is epistemic uncertainty, not an additional fourth OLiA grammatical person.",
+      "mapping_semantic_digest": "sha256:fa2c0d63691b850b8b0ce9473c84ad524900b188426c4374fa16d63f54d096a0",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-ps-unknown",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:fa2c0d63691b850b8b0ce9473c84ad524900b188426c4374fa16d63f54d096a0"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_ps-p1",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_ps",
+        "value": "p1",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_ps-p1"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA prs_ps=p1 describes first person of a pronominal suffix attached to a word, not the host word's ps feature. OLiA First is a general PersonFeature, so the value alignment is valid only under the explicit suffix-qualified native binding. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:afe42298e76a5e5e109b4a9690b2f4fcee7e407679e4bf97b3d846bb56148993",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_ps-p1",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:afe42298e76a5e5e109b4a9690b2f4fcee7e407679e4bf97b3d846bb56148993"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_ps-p2",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_ps",
+        "value": "p2",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_ps-p2"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The pinned BHSA prs_ps=p2 means the attached pronominal suffix marks second person, regardless of the host's own person. Mapping the suffix feature value to OLiA Second must not change or infer the host word.ps value. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:19fea8dc721d4f2705f0d967aec4cead786b8f6845460e933cc81dd0917009ea",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_ps-p2",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:19fea8dc721d4f2705f0d967aec4cead786b8f6845460e933cc81dd0917009ea"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_ps-p3",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_ps",
+        "value": "p3",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_ps-p3"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The source's prs_ps=p3 reports third-person information belonging to an attached pronominal suffix. OLiA Third is the corresponding PersonFeature; it does not imply the verbal host itself is third person. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:09d879ac3010f946bb61dbd3d57974722fe2e3004bea4d6f434ed0f4a0ef592d",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_ps-p3",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:09d879ac3010f946bb61dbd3d57974722fe2e3004bea4d6f434ed0f4a0ef592d"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_ps-na",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_ps",
+        "value": "NA",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_ps-na"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "In BHSA prs_ps, NA means a pronominal suffix person value is not applicable. It does not denote an OLiA person category and must not be conflated with an unknown but existing suffix person.",
+      "mapping_semantic_digest": "sha256:015827fa11f3669129ab24632b894ed528e0a159b2ebac533b8e9dccf1737a5f",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_ps-na",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:015827fa11f3669129ab24632b894ed528e0a159b2ebac533b8e9dccf1737a5f"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_gn-m",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_gn",
+        "value": "m",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_gn-m"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA prs_gn=m is masculine gender of the attached pronominal suffix, not of the word or head noun. OLiA Masculine is a grammatical gender category; reuse is scoped exclusively to this suffix-qualified feature. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:2696df3422b555897d0a9ceffc72358c2e6eaf2a986f311e4c11686bafee5a2b",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_gn-m",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:2696df3422b555897d0a9ceffc72358c2e6eaf2a986f311e4c11686bafee5a2b"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_gn-f",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_gn",
+        "value": "f",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_gn-f"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA prs_gn=f records feminine gender of a pronominal suffix. OLiA Feminine is a morphological gender class, but this annotation must remain attached to the source's suffix feature and not to the host's own gn. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:a5ce55c0916ae3f10dc93b2e3fd5f562880e72d61cab1e704fd98437da0a2bd5",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_gn-f",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:a5ce55c0916ae3f10dc93b2e3fd5f562880e72d61cab1e704fd98437da0a2bd5"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_gn-na",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_gn",
+        "value": "NA",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_gn-na"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA prs_gn=NA indicates suffix gender is not applicable; it does not mean a gender-neutral noun, a neuter grammatical class, or a reviewed OLiA gender target.",
+      "mapping_semantic_digest": "sha256:bba1a015f2268ff357a932262691417286ab7dfd22014db893b36986f7141968",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_gn-na",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:bba1a015f2268ff357a932262691417286ab7dfd22014db893b36986f7141968"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_gn-unknown",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_gn",
+        "value": "unknown",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_gn-unknown"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The BHSA source marks suffix gender as unknown when the information is insufficient to derive it. This is missing knowledge, not an OLiA gender category or a substantive third gender.",
+      "mapping_semantic_digest": "sha256:1803af87966744e09e107f755e76c099d8841809f8c4fa1a266b4affd2129577",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_gn-unknown",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:1803af87966744e09e107f755e76c099d8841809f8c4fa1a266b4affd2129577"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_nu-sg",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_nu",
+        "value": "sg",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_nu-sg"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The BHSA source specifies prs_nu=sg as singular number of the pronominal suffix, not of the word stem. OLiA Singular is the corresponding NumberFeature, limited here to the suffix's own feature binding. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:c5c7495455361dc00806625764ba9a76c962d3676cea7a140b6f91e0db767cd8",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_nu-sg",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:c5c7495455361dc00806625764ba9a76c962d3676cea7a140b6f91e0db767cd8"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_nu-pl",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_nu",
+        "value": "pl",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_nu-pl"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The original prs_nu=pl code identifies plural number of an attached pronominal suffix, not plural agreement of the host word. OLiA Plural is a generic grammatical number class and must retain that scoped native subject. I-034G adversarial correction: exact projection withheld because SemanticKey lacks the suffix-subject scope; native-only until typed query semantics exist.",
+      "mapping_semantic_digest": "sha256:1a3f603d553ca4ab6144cc01a47e90f425de789b9079470c3c0356282da74765",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_nu-pl",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:1a3f603d553ca4ab6144cc01a47e90f425de789b9079470c3c0356282da74765"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-prs_nu-na",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "prs_nu",
+        "value": "NA",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-prs_nu-na"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The BHSA prs_nu=NA value represents non-applicability of pronominal suffix number. No shared OLiA number value is asserted; the source documents dual but the frozen observed denominator does not contain prs_nu=du.",
+      "mapping_semantic_digest": "sha256:d126da6b7741c17fb13108b549f03f8f1961c6db2810ad41f8efac62fe39bd31",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-prs_nu-na",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:d126da6b7741c17fb13108b549f03f8f1961c6db2810ad41f8efac62fe39bd31"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-st-a",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "a",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-st-a"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA st=a denotes nominal absolute state, but the frozen OLiA target subset lacks a verified exact StatusAbsolutus concept. The original source warns that Semitic state terminology needs further definition; retain its native code.",
+      "mapping_semantic_digest": "sha256:8b1371bbdfc121ae595a8ecfd0519b3e489dac1e9a13df54fa9b0c26d42826f4",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-st-a",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:8b1371bbdfc121ae595a8ecfd0519b3e489dac1e9a13df54fa9b0c26d42826f4"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-statusconstructus-class",
+          "content_digest": "sha256:9fb763a03984bb60445e76126c4c62fa6071d2e07d102e2d1a188678c70f02cf"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-st-c",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "c",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-st-c"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-morphology-i034g",
+              "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-statusconstructus-class",
+              "content_digest": "sha256:9fb763a03984bb60445e76126c4c62fa6071d2e07d102e2d1a188678c70f02cf"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "st",
+            "value": "c",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:morph-st-c",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#StatusConstructus",
+          "projection_semantic_digest": "sha256:714b48f238a1bf959a729f42bbc09484f33a2c8afee61cfeea17d39365e4814b",
+          "review": {
+            "review_id": "review:i034g:bhsa:projection-st-c",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:714b48f238a1bf959a729f42bbc09484f33a2c8afee61cfeea17d39365e4814b"
+          }
+        }
+      ],
+      "rationale": "BHSA st=c explicitly means nominal construct state in the Semitic grammatical paradigm. The pinned OLiA StatusConstructus rdf:ID class describes exactly Semitic construct-state morphology, not European genitive case.",
+      "mapping_semantic_digest": "sha256:59c90183424b307f89ed4fc6378b50447bfb8010f2981d8914dd2139624b7481",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-st-c",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:59c90183424b307f89ed4fc6378b50447bfb8010f2981d8914dd2139624b7481"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-st-e",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "e",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-st-e"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The source explicitly calls st=e emphatic nominal state, a Semitic status form. OLiA Emphatic is instead emphatic/pragmatic emphasis of a word, so treating the two as synonymous would be a semantic category error.",
+      "mapping_semantic_digest": "sha256:abdb0c85445082fa7a3bc5e01052d5f105783ae2b377e8140e17b8d640e5801d",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-st-e",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:abdb0c85445082fa7a3bc5e01052d5f105783ae2b377e8140e17b8d640e5801d"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-st-na",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "st",
+        "value": "NA",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-st-na"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The BHSA documentation mentions NA for non-applicable nominal state with a likely wording typo about person. Preserve that observed native sentinel without inventing an OLiA grammatical-state class.",
+      "mapping_semantic_digest": "sha256:c1333c1ab137d0685e6bd1c7b3f75a0f4e4ee299e9e79fe5cb1ec18eb4013bcd",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-st-na",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:c1333c1ab137d0685e6bd1c7b3f75a0f4e4ee299e9e79fe5cb1ec18eb4013bcd"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-na",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "NA",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-na"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "The BHSA vt document specifies that nouns and other non-verbal forms may have verbal tense not applicable. NA is not a mood or tense class and should not be projected to any shared ontology term.",
+      "mapping_semantic_digest": "sha256:83441aa8dcbc66990dcf1ad4bf925f60f407942a7c53f4dc62e8290187035316",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-na",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:83441aa8dcbc66990dcf1ad4bf925f60f407942a7c53f4dc62e8290187035316"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-perf",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "perf",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-perf"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "Although BHSA calls vt=perf perfect, its Hebrew qatal paradigm does not mean uniformly completed past tense; OLiA Perfect defines a past-completed temporal category. Gloss identity is insufficient for an exact alignment.",
+      "mapping_semantic_digest": "sha256:a8da6938ad3464c919825755727b87729054041e658e17291a07eb1fd62d3ad1",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-perf",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:a8da6938ad3464c919825755727b87729054041e658e17291a07eb1fd62d3ad1"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-impf",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "impf",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-impf"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA vt=impf is the Biblical Hebrew imperfect/yiqtol category and does not universally mean past ongoing action. OLiA Imperfect explicitly specializes past progressive or incomplete action, so retain native-only.",
+      "mapping_semantic_digest": "sha256:6f588d9aab2cf5d1d0980b0799ce16c56be3cc8ddd6bbd8086168587884b44b2",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-impf",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:6f588d9aab2cf5d1d0980b0799ce16c56be3cc8ddd6bbd8086168587884b44b2"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-wayq",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "wayq",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-wayq"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA vt=wayq distinguishes Biblical Hebrew wayyiqtol, a discourse and verbal construction not captured by a generic past or perfect aspect category. No exact pinned OLiA class is asserted.",
+      "mapping_semantic_digest": "sha256:b78a912a4aeb269930e11d40eb21b5c8c34dd2631b74d715a85d34bc3c23f531",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-wayq",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:b78a912a4aeb269930e11d40eb21b5c8c34dd2631b74d715a85d34bc3c23f531"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        },
+        {
+          "evidence_id": "evidence:olia:i034g-imperativeverb-class",
+          "content_digest": "sha256:e3024b7439434234cdf2609c56e9fb3d7863951502269468c633272a23fd4a73"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-impv",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "impv",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-impv"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.morphology",
+          "evidence": [
+            {
+              "evidence_id": "evidence:bhsa:word-morphology-i034g",
+              "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+            },
+            {
+              "evidence_id": "evidence:olia:i034g-imperativeverb-class",
+              "content_digest": "sha256:e3024b7439434234cdf2609c56e9fb3d7863951502269468c633272a23fd4a73"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "bhsa-tf",
+            "node_type": "word",
+            "feature": "vt",
+            "value": "impv",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034g-morphology",
+          "profile_id": "linguistic",
+          "projection_id": "projection:bhsa:morph-vt-impv",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#ImperativeVerb",
+          "projection_semantic_digest": "sha256:eb2d5734f9559610e1b3596356bcbee5a5b88d2b20ac44255d115c6ea5cba5af",
+          "review": {
+            "review_id": "review:i034g:bhsa:projection-vt-impv",
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-12T13:41:52Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+            "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+            "reviewed_mapping_digest": "sha256:eb2d5734f9559610e1b3596356bcbee5a5b88d2b20ac44255d115c6ea5cba5af"
+          }
+        }
+      ],
+      "rationale": "BHSA vt=impv denotes imperative verb morphology, and the pinned OLiA ImperativeVerb class denotes finite verbal imperative form used for commands. This is an exact source category correspondence, not a claim every command is imperative.",
+      "mapping_semantic_digest": "sha256:49a433e343ba433c3624509b097dee330d4c851e7421efc00306b521b2c0f878",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-impv",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:49a433e343ba433c3624509b097dee330d4c851e7421efc00306b521b2c0f878"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-infa",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "infa",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-infa"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA vt=infa means infinitive absolute, a special Biblical Hebrew infinitive construction with discourse functions. OLiA Infinitive is a broader form class; an exact one-to-one mapping needs subtype research first.",
+      "mapping_semantic_digest": "sha256:18b0aac6d84b1c2fe194c94273fc62e4ca0303accd954f6ca9a6513b7aba8736",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-infa",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:18b0aac6d84b1c2fe194c94273fc62e4ca0303accd954f6ca9a6513b7aba8736"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-infc",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "infc",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-infc"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA vt=infc is infinitive construct, which has specifically Semitic syntactic functions. OLiA Infinitive is a broad nonfinite verb class, but the exact subtype cannot be inferred from the surface label alone.",
+      "mapping_semantic_digest": "sha256:518039a8e021865857514421892b3ed06ce5f04f035cee9e2f7a3b9780104b39",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-infc",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:518039a8e021865857514421892b3ed06ce5f04f035cee9e2f7a3b9780104b39"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-ptca",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "ptca",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-ptca"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA vt=ptca denotes an active participle category. OLiA Participle is a broad superclass that also includes passive values; asserting exact equality between active subtype and that broad class would overclaim.",
+      "mapping_semantic_digest": "sha256:b851bf014443a5c30d6927dc9fabf1d160f49976a9fe9a02d7ab949b7b96059a",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-ptca",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:b851bf014443a5c30d6927dc9fabf1d160f49976a9fe9a02d7ab949b7b96059a"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.morphology"
+      ],
+      "corpus_id": "bhsa",
+      "evidence": [
+        {
+          "evidence_id": "evidence:bhsa:word-morphology-i034g",
+          "content_digest": "sha256:18804ad14e0ba99bdc4080221ba34515fb488fe4844f4b856520b7f86a7b27a0"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:bhsa:morph-vt-ptcp",
+      "native_binding": {
+        "component_id": "bhsa-tf",
+        "node_type": "word",
+        "feature": "vt",
+        "value": "ptcp",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:bhsa:word-morph-vt-ptcp"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "BHSA vt=ptcp means passive participle, narrower than the generic OLiA Participle concept. Preserve the native voice distinction instead of pretending the broader class is an exact synonym.",
+      "mapping_semantic_digest": "sha256:b89fa5dd0f151e794a3e8da2a51665d48fafa29b770d1e0aad64609c5eedee59",
+      "review": {
+        "review_id": "review:i034g:bhsa:mapping-vt-ptcp",
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-12T13:41:52Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/365#pullrequestreview-5491610094",
+        "review_method": "single-agent source/semantic GitHub review 5491610094, not cryptographic attestation",
+        "reviewed_mapping_digest": "sha256:b89fa5dd0f151e794a3e8da2a51665d48fafa29b770d1e0aad64609c5eedee59"
+      }
+    }
+  ]
+}

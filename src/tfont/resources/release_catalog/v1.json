@@ -108,6 +108,51 @@
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativeparticle-evidence.json",
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-pronoun-evidence.json"
           ]
+        },
+        "0.6.0": {
+          "profile": "resources/profiles/bhsa/0.6.0/profile.json",
+          "parent": "resources/profiles/bhsa/0.6.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/bhsa/0.2.0/evidence/native-pos.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-gender.json",
+            "resources/profiles/bhsa/0.2.0/evidence/native-number.json",
+            "resources/profiles/bhsa/0.3.0/evidence/native-verb-pos.json",
+            "resources/profiles/bhsa/0.4.0/evidence/native-adj-adv-pos.json",
+            "resources/profiles/bhsa/0.5.0/evidence/native-pos-extended.json",
+            "resources/profiles/bhsa/0.6.0/evidence/native-morphology.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034g-morphology.json",
+          "ontology_locks": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.4.0.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034a-pos.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034g-morphology.json"
+          ],
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adjective-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adverb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-article-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-preposition-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-conjunction-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-demonstrativepronoun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativepronoun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interjection-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-negativeparticle-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativeparticle-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-pronoun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-activevoice-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-first-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-imperativeverb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-infinitive-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-participle-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-passivevoice-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-second-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-statusconstructus-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-third-evidence.json"
+          ]
         }
       }
     },
@@ -211,6 +256,51 @@
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-negativeparticle-evidence.json",
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativeparticle-evidence.json",
             "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-pronoun-evidence.json"
+          ]
+        },
+        "0.6.0": {
+          "profile": "resources/profiles/syriac/0.6.0/profile.json",
+          "parent": "resources/profiles/syriac/0.6.0/parent/expected-components.json",
+          "native_evidence": [
+            "resources/profiles/syriac/0.2.0/evidence/native-pos.json",
+            "resources/profiles/syriac/0.2.0/evidence/proper-noun-encoding.json",
+            "resources/profiles/syriac/0.2.0/evidence/noun-morphology.json",
+            "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json",
+            "resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json",
+            "resources/profiles/syriac/0.5.0/evidence/native-pos-extended.json",
+            "resources/profiles/syriac/0.6.0/evidence/native-morphology.json"
+          ],
+          "ontology_model": "olia",
+          "ontology_lock": "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034g-morphology.json",
+          "ontology_locks": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-0.4.0.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034a-pos.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock-linguistic-i034g-morphology.json"
+          ],
+          "ontology_evidence": [
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-morphology-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/verb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adjective-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/adverb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-article-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-preposition-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-conjunction-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-demonstrativepronoun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativepronoun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interjection-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-negativeparticle-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-interrogativeparticle-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034a-pronoun-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-activevoice-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-first-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-imperativeverb-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-infinitive-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-participle-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-passivevoice-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-second-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-statusconstructus-evidence.json",
+            "resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/i034g-third-evidence.json"
           ]
         }
       }
