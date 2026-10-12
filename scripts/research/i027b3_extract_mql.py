@@ -93,6 +93,7 @@ def extract(
     *,
     expected_blob_sha: str = PINNED_BLOB_SHA,
     expected_size: int = PINNED_COMPRESSED_SIZE,
+    require_pos_enum: bool = False,
 ) -> dict[str, object]:
     if type(raw) is not bytes:
         raise ValueError("source must be exact bytes")
@@ -131,6 +132,16 @@ def extract(
             samples.append({"line": i + 1, "context": snippet})
         excerpts[category] = samples
 
+    # Legacy research callers also inspect partial/unrelated MQL. Preserve
+    # their bounded occurrence scan without claiming an extracted POS enum.
+    # Exact pinned-source verification opts into strict parsing below.
+    try:
+        pos_enum = extract_pos_enum(text)
+    except ValueError:
+        if require_pos_enum:
+            raise
+        pos_enum = None
+
     return {
         "schema_version": 1,
         "source_repository": "ETCBC/extrabiblical",
@@ -144,7 +155,7 @@ def extract(
         "encoding": "UTF-8",
         "match_counts": counts,
         "excerpts": excerpts,
-        "part_of_speech_enum": extract_pos_enum(text),
+        "part_of_speech_enum": pos_enum,
         "exact_mapping_authorized": False,
     }
 
@@ -166,6 +177,13 @@ def verify_frozen(report: dict[str, object], frozen: dict[str, object]) -> None:
             raise ValueError(f"frozen source evidence identity mismatch: {key}")
     if frozen.get("exact_mapping_authorized") is not False:
         raise ValueError("source evidence must not activate an exact mapping")
+    if frozen.get("schema_version") == 2:
+        # A digest-bound source pin without bytewise enum comparison would
+        # allow invented value codes or original source line coordinates.
+        actual = report.get("part_of_speech_enum")
+        declared = frozen.get("part_of_speech_enum")
+        if type(actual) is not dict or type(declared) is not dict or actual != declared:
+            raise ValueError("frozen POS enum differs from original source declaration")
 
     excerpts = report["excerpts"]
     for statement in frozen.get("statements", []):
@@ -193,7 +211,7 @@ def main() -> int:
     parser.add_argument("--verify-frozen", type=Path)
     args = parser.parse_args()
     source = args.input.read_bytes()
-    report = extract(source)
+    report = extract(source, require_pos_enum=True)
     if args.verify_frozen is not None:
         verify_frozen(report, json.loads(args.verify_frozen.read_text(encoding="utf-8")))
     result = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
