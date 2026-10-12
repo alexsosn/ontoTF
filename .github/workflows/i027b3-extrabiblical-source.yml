@@ -36,4 +36,24 @@ jobs:
         shell: bash
         run: |
           test "$(git -C upstream rev-parse HEAD)" = "9a56288e6777bad6328856acf055c780e65dd5d9"
+          # Bounded original-schema diagnostic, even when strict parser fails.
+          # Never emit corpus tokens or the large MQL payload.
+          python - <<'PY'
+          import bz2
+          import hashlib
+          from pathlib import Path
+          from scripts.research.i027b3_extract_mql import git_blob_sha, PINNED_BLOB_SHA
+          raw = Path("upstream/source/0.2/extraBiblical.mql.bz2").read_bytes()
+          assert git_blob_sha(raw) == PINNED_BLOB_SHA
+          lines = bz2.decompress(raw).decode("utf-8").splitlines()
+          enum_start = next(i for i, line in enumerate(lines) if line.strip().upper() == "CREATE ENUMERATION PART_OF_SPEECH_T = {")
+          for i in range(enum_start, min(len(lines), enum_start + 24)):
+              if lines[i].strip().startswith("}"):
+                  break
+              print("MQL_POS_ENUM", i + 1, lines[i].strip()[:64])
+          sp = next(i for i, line in enumerate(lines) if line.strip().lower() == "sp : part_of_speech_t;")
+          headers = [(i + 1, line.strip()[:100]) for i, line in enumerate(lines[:sp])
+                     if "CREATE OBJECT TYPE" in line.upper()]
+          print("MQL_SP_SCHEMA_HEADER", headers[-3:], "FEATURE_LINE", sp + 1)
+          PY
           python scripts/research/i027b3_extract_mql.py --input upstream/source/0.2/extraBiblical.mql.bz2 --verify-frozen docs/research/data/i027b3/extrabiblical-mql-pos-evidence.json
