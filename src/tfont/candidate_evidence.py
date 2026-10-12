@@ -90,7 +90,7 @@ class CandidateEvidenceResources:
                    and type(a.data.get("reviewed_content")) is dict
                    and a.data["reviewed_content"].get("production_node_type") == "word"
                    and a.data["reviewed_content"].get("feature") == "sp"]
-        _require(any(
+        trusted_definition = any(
             record.get("kind") == anchor["kind"]
             and record.get("source_uri") == anchor["source_uri"]
             and record.get("source_revision") == spec["source_revision"] == anchor["source_revision"]
@@ -99,7 +99,41 @@ class CandidateEvidenceResources:
                 == anchor["reviewed_content"]["target_tf_revision"]
             and all(content.get(k) == anchor["reviewed_content"].get(k) for k in (
                 "feature", "feature_semantics", "production_node_type", "documented_node_types"))
-            for anchor in anchors), "candidate native source pin, URI or semantics differ from protected evidence")
+            for anchor in anchors
+        )
+        # ExtraBiblical's original MQL source is installed as a
+        # corpus-source-enumeration (not the BHSA/Syriac feature-definition
+        # format). Require the EXACT installed compressed-Git-blob and
+        # decompressed SHA-256 pins before allowing new category assertions.
+        # Individual enum coordinates still need original-source adjudication.
+        if corpus == "extrabiblical" and not trusted_definition:
+            original_mql = [
+                a.data for a in bundle.evidences
+                if a.data.get("evidence_id") ==
+                    "evidence:extrabiblical:word-sp-verb-source"
+                and a.data.get("kind") == "corpus-source-enumeration"
+            ]
+            trusted_definition = any(
+                record.get("kind") == "corpus-feature-definition"
+                and record.get("source_uri") == original.get("source_uri")
+                and record.get("source_revision") == spec["source_revision"]
+                    == original.get("source_revision")
+                and content.get("target_tf_revision") == spec["target_corpus_revision"]
+                    == original["reviewed_content"].get("target_corpus_revision")
+                and content.get("original_mql_blob")
+                    == original["reviewed_content"].get("source_blob_sha")
+                and content.get("decompressed_sha256")
+                    == original["reviewed_content"].get("source_decompressed_sha256")
+                and content.get("feature") == original["reviewed_content"].get("feature") == "sp"
+                and content.get("feature_semantics") == "part-of-speech"
+                and content.get("production_node_type")
+                    == original["reviewed_content"].get("target_node_type") == "word"
+                and content.get("documented_node_types") == ["word"]
+                and record.get("license_ref") is None
+                for original in original_mql
+            )
+        _require(trusted_definition,
+                 "candidate native source pin, URI or semantics differ from protected evidence")
         definitions = content.get("source_definitions")
         _require(type(definitions) is dict and bool(definitions), "candidate source definitions absent")
         for definition in definitions.values():
