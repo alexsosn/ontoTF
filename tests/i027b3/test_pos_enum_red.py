@@ -90,6 +90,9 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
         self.assertIsNone(report["part_of_speech_enum"])
         self.assertEqual(report["match_counts"]["part_of_speech_t"], 0)
         self.assertFalse(report["exact_mapping_authorized"])
+        with self.assertRaisesRegex(ValueError, "part_of_speech_t"):
+            extract(raw, expected_blob_sha=expected_blob, expected_size=len(raw),
+                    require_pos_enum=True)
 
     def test_frozen_v2_requires_exact_original_enum_not_just_source_digests(self):
         raw = bz2.compress(SOURCE.encode("utf-8"))
