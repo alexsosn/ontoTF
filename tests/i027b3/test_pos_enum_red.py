@@ -71,6 +71,14 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
         self.assertEqual(report["decompressed_sha256"],
                          hashlib.sha256(SOURCE.encode("utf-8")).hexdigest())
 
+    def test_unclosed_bracket_object_header_is_valid_mql_scope(self):
+        # MQL object declarations may open their bracket before field lines.
+        source = SOURCE.replace("CREATE OBJECT TYPE [word]", "CREATE OBJECT TYPE [word")
+        self.assertEqual(extract_pos_enum(source)["feature_type_line"], 12)
+        with self.assertRaisesRegex(ValueError, "word object"):
+            extract_pos_enum(source.replace("CREATE OBJECT TYPE [word",
+                                            "CREATE OBJECT TYPE [phrase"))
+
     def test_original_mql_zero_valued_article_enum_is_valid(self):
         # Independently observed in original-source GitHub Actions run 38039463508:
         # source line 164 is 'art = 0,' before verb = 1 on line 165.
