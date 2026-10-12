@@ -81,9 +81,9 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
 
     def test_original_separate_mql_create_object_type_header(self):
         source = SOURCE.replace("CREATE OBJECT TYPE [word]",
-                                "CREATE OBJECT TYPE\\n[word")
+                                "CREATE OBJECT TYPE\n[word")
         self.assertEqual(extract_pos_enum(source)["feature_type_line"], 13)
-        wrong = source.replace("\\n[word", "\\n[phrase")
+        wrong = source.replace("\n[word", "\\n[phrase")
         with self.assertRaisesRegex(ValueError, "word object"):
             extract_pos_enum(wrong)
 
