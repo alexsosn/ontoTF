@@ -33,6 +33,61 @@ def git_blob_sha(raw: bytes) -> str:
     ).hexdigest()
 
 
+
+_ENUM_OPEN = re.compile(
+    r"^\s*CREATE\s+ENUMERATION\s+part_of_speech_t\s*=\s*\{\s*$",
+    re.IGNORECASE,
+)
+_ENUM_VALUE = re.compile(r"^\s*([a-z][a-z0-9_]*)\s*=\s*(\d+)\s*,?\s*$", re.IGNORECASE)
+_ENUM_CLOSE = re.compile(r"^\s*\}\s*;?\s*$")
+_SP_TYPE = re.compile(r"^\s*sp\s*:\s*part_of_speech_t\s*;\s*$", re.IGNORECASE)
+
+
+def extract_pos_enum(text: str) -> dict[str, object]:
+    """Extract the original MQL POS enum and original one-based source lines.
+
+    No BHSA gloss inference, fabricated target class, or source corpus payload.
+    """
+    if type(text) is not str:
+        raise ValueError("decoded MQL must be text")
+    lines = text.splitlines()
+    openings = [i for i, line in enumerate(lines) if _ENUM_OPEN.fullmatch(line)]
+    if len(openings) != 1:
+        raise ValueError("expected exactly one part_of_speech_t enumeration")
+    word_feature = [i for i, line in enumerate(lines) if _SP_TYPE.fullmatch(line)]
+    if len(word_feature) != 1:
+        raise ValueError("sp must use exactly one part_of_speech_t declaration")
+    start = openings[0]
+    values: list[dict[str, object]] = []
+    seen_names: set[str] = set()
+    seen_codes: set[int] = set()
+    for i in range(start + 1, len(lines)):
+        line = lines[i]
+        if _ENUM_CLOSE.fullmatch(line):
+            if not 1 <= len(values) <= 64:
+                raise ValueError("part_of_speech_t enumeration has invalid bounded size")
+            return {
+                "enum_declaration_line": start + 1,
+                "feature_type_line": word_feature[0] + 1,
+                "values": values,
+            }
+        if not line.strip():
+            continue
+        value = _ENUM_VALUE.fullmatch(line)
+        if value is None:
+            raise ValueError(f"invalid POS enum declaration on original line {i + 1}")
+        name, code_text = value.groups()
+        code = int(code_text)
+        if name in seen_names or code in seen_codes:
+            raise ValueError("duplicate POS category name or integer code")
+        seen_names.add(name)
+        seen_codes.add(code)
+        values.append({"value": name, "code": code, "line": i + 1})
+        if len(values) > 64:
+            raise ValueError("POS enumeration exceeds 64 records")
+    raise ValueError("unterminated POS enum declaration")
+
+
 def extract(
     raw: bytes,
     *,
@@ -89,6 +144,7 @@ def extract(
         "encoding": "UTF-8",
         "match_counts": counts,
         "excerpts": excerpts,
+        "part_of_speech_enum": extract_pos_enum(text),
         "exact_mapping_authorized": False,
     }
 
