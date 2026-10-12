@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-10-12).** This document records a proposed architecture that was rejected due to authoring and review overhead. It is not the current development contract. See [researcher-first XML contract](researcher-first-xml-contract.xml) and [removal plan](researcher-first-removal-plan.xml). Do not implement its registries, signed review digests, release overlays or version-per-batch protocols.
+
 # ADR-001 — Data-first ontology mapping, batched review and release generation
 
 **Status:** Proposed for architecture review, 2026-10-10  

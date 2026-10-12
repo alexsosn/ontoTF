@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+  <!-- Minimal syntax contract. Cross-field semantics are checked by the loader. -->
+  <xs:simpleType name="mappingKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="node"/>
+      <xs:enumeration value="feature"/>
+      <xs:enumeration value="value"/>
+      <xs:enumeration value="edge"/>
+      <xs:enumeration value="entity"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="mappingRelation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="exact"/>
+      <xs:enumeration value="close"/>
+      <xs:enumeration value="broader"/>
+      <xs:enumeration value="narrower"/>
+      <xs:enumeration value="related"/>
+      <xs:enumeration value="ambiguous"/>
+      <xs:enumeration value="native-only"/>
+      <xs:enumeration value="unsupported"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="mappings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="map" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="kind" type="mappingKind" use="required"/>
+            <xs:attribute name="node" type="xs:string"/>
+            <xs:attribute name="feature" type="xs:string"/>
+            <xs:attribute name="value" type="xs:string"/>
+            <xs:attribute name="from" type="xs:string"/>
+            <xs:attribute name="to" type="xs:string"/>
+            <xs:attribute name="relation" type="mappingRelation" use="required"/>
+            <xs:attribute name="target" type="xs:anyURI"/>
+            <xs:attribute name="corpusVersion" type="xs:string"/>
+            <xs:attribute name="evidence" type="xs:string"/>
+            <xs:attribute name="note" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="corpus" type="xs:string" use="required"/>
+      <xs:attribute name="source" type="xs:string" use="required"/>
+      <xs:attribute name="corpusVersion" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
