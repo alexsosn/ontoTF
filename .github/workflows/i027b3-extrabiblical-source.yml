@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Offline extractor unit and adversarial tests
-        run: python -m unittest tests.i027b3.test_source_red tests.i027b3.test_source_adversarial
+        run: python -m unittest tests.i027b3.test_source_red tests.i027b3.test_source_adversarial tests.i027b3.test_pos_enum_red
       - uses: actions/checkout@v5
         with:
           repository: ETCBC/extrabiblical
