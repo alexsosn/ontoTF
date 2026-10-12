@@ -12,6 +12,8 @@ Unlike BHSA, ExtraBiblical **does not publish a readable `sp.md` vocabulary**. T
 - decompressed SHA256 `62540c8b4682121dd002f4c234c693259fb494c439ddfc06574537e5e398790e`,
 - MQL `part_of_speech_t` declared at line 163, `verb = 1,` at line 165, `sp : part_of_speech_t;` at line 501.
 
+The [successful original-source verifier run 38039463508](https://github.com/alexsosn/ontoTF/actions/runs/38039463508), job 114176641170, also exposes the *original neighboring declaration*: `CREATE ENUMERATION part_of_speech_t = {` at line 163, **`art = 0,` at line 164**, `verb = 1,` at line 165 and `subs = 2,` at line 166. Zero is a legitimate original enum discriminant; source parsers and candidate checks must accept nonnegative integers and may not treat `0` as “missing”. This is a partial original-source fact, **not** proof of the remaining ten unobserved codes or all eleven semantic correspondences.
+
 The existing extractor `scripts/research/i027b3_extract_mql.py` only captured `verb`. **Do not invent line numbers or POS classes by borrowing the BHSA document**, even though ExtraBiblical shares ETCBC heritage. Before projecting these eleven categories we must inspect the **entire original `CREATE ENUMERATION part_of_speech_t`**: exact identifiers, discriminants and one-based declaration lines, and bind them to the already pinned original MQL bytes and independently observed TF domain.
 
 ## OLiA choices (only after source validation)
