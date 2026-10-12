@@ -1,72 +1,13 @@
-# Contributing to TFont
+# Contributing to ontoTF
 
-TFont uses issue-driven research, design, TDD implementation, and independent review.
+The target is a researcher-friendly XML mapping catalog. Read the [XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml). The XML reader has not yet shipped; the old JSON runtime is transitional.
 
-## Ticket types
+## Mapping contribution (target workflow)
 
-- **Research (`R`)** — evidence gathering and an explicit recommendation; no production implementation.
-- **Plan/design (`P`)** — architecture and contracts derived from completed research.
-- **Implementation (`I`)** — TDD changes against an approved plan or sufficiently narrow existing contract.
-- **Review/follow-up** — defects or questions found by independent review.
+Edit `src/tfont/mappings/<corpus>.xml`, or create it for a new corpus. Add or revise as many mappings as needed. Use the shared `src/tfont/mappings/schema.xsd` syntax; do not edit the schema for ordinary new values, nor write a registry entry or per-corpus Python adapter. Add an evidence URL and short note when the assertion needs explanation.
 
-## Pull-request contract
+Open one PR. The review checks the native definition, target meaning, direction/strength of the relation and at least one plausible false equivalence. A logically independent adversarial pass can be done by the same agent. One CI workflow parses the XML, checks selectors and bidirectional lookup and tests wheel packaging. No signed receipts, protected review handoffs, per-row versioning or external reviewer identity.
 
-Every PR must:
+A new runtime capability may require Python and test edits with research/plan/TDD in that same PR. Ordinary mapping data additions do not. Never fabricate target mappings to improve coverage counts. Approximate results must remain clearly qualified. Native-only is a legitimate result.
 
-1. name its parent issue;
-2. state the gate it satisfies (research, design, implementation);
-3. list acceptance criteria and evidence that each is satisfied;
-4. preserve native corpus semantics and provenance;
-5. document unsupported or approximate mappings rather than hiding them;
-6. receive independent skeptical review before merge when it changes research conclusions, architecture, mappings, schemas, runtime behavior, or public documentation.
-
-## Research PRs
-
-A research PR should normally add one document under `docs/research/`. It may add small reproducibility scripts or machine-readable inventories only when needed to reproduce the research; it must not commit the future production mapping architecture before that architecture is decided.
-
-Each research document should contain:
-
-- scope and question;
-- sources/evidence inspected, including exact corpus/ontology versions where possible;
-- observed requirements and constraints;
-- alternatives considered;
-- licensing and redistribution implications;
-- effects on agent and human users;
-- recommendation;
-- rejected alternatives;
-- unresolved questions;
-- acceptance-criteria traceability.
-
-## F-series research ownership
-
-F-series research metadata is the sole allocation authority; plans, workflows, and test packages only claim an existing allocation.
-
-Every `docs/research/F-NNN-*.md` artifact must include exactly one canonical ownership line in its metadata header: `**Issue:** #N`.
-
-Multiple research, evidence, or amendment artifacts may use the same `F-NNN` only when they all declare the same issue owner.
-
-Every F-series plan under `docs/plans/F-NNN-*.md` must repeat the allocated issue in its metadata header as `**Issue:** #N`.
-
-Every focused F-series workflow under `.github/workflows/fNNN-*.yml` or `.github/workflows/fNNN-*.yaml` must carry `# Issue: #N` within its first 12 physical lines. The workflow claim must match the issue allocated by F-series research metadata.
-
-Every present `tests/fNNN` package must contain `tests/fNNN/issue-owner.txt` with exactly `Issue: #N` (an optional final newline is allowed). A test-module comment or package filename does not substitute for the sidecar.
-
-Research-only F-series features are valid: a research allocation does not require a plan, focused workflow, or test package. Conversely, a downstream plan, workflow, or test package does not allocate a feature ID by itself.
-
-Run `python scripts/check_f_series_ownership.py` before opening or finalizing a PR that adds or changes F-series ownership metadata. For an explicit repository root, run `python scripts/check_f_series_ownership.py .`. The checker validates research authority first, then rejects missing, malformed, unknown, or conflicting downstream claims.
-
-## Design PRs
-
-Designs belong in `docs/plans/`. They must define stable contracts before code, including version compatibility, error behavior, provenance, extensibility, serialization, and how approximate mappings are represented.
-
-The initial POC architecture always requires a design PR after R-001 through R-005 are complete. Later changes to distribution, public mapping semantics, manifests/schemas, or MCP-facing behavior also require design first.
-
-## Implementation PRs
-
-Use TDD. Tests should make semantic compatibility claims executable. For corpus mappings, include negative tests proving that non-equivalent native concepts are not accidentally treated as exact equivalents.
-
-## Review
-
-The final reviewer should work from the issue, research/design artifact, diff, and upstream evidence rather than trusting the PR description. A mergeable review must address semantic fidelity, licensing, versioning, distribution, ergonomics, and test adequacy where applicable.
-
-The required independent reviewer must be a different person or a separately instantiated review agent/context that did not author the changes. An authoring agent's self-audit does not satisfy this gate. Material changes after the final review require another independent review of the new PR head.
+This policy supersedes the old ticket ownership and separate research/design/release PR ritual for new mapping contributions. During migration, keep historical APIs usable where needed but do not copy old release machinery.

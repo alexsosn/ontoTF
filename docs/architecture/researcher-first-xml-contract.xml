@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contract title="ontoTF: researcher-first XML mappings" status="proposed" date="2026-10-12">
+  <purpose>
+    Help a researcher find justified correspondences between native Text-Fabric or
+    Context-Fabric annotations and entities in other corpora, with an explicit
+    distinction between category mappings and entity identity.
+  </purpose>
+
+  <authority>
+    This document supersedes ADR-001's planned data registries, per-batch release
+    protocols and attestation workflow. It is a target contract, not a claim that
+    current Python code already reads XML. Historical releases remain historical;
+    new development must not expand their authoring machinery.
+  </authority>
+
+  <requirements>
+    <requirement name="one-file-contribution">
+      The sole editable source of active mappings for corpus X is
+      src/tfont/mappings/X.xml. A contributor edits that file, or creates it for
+      a new corpus. No manifest, Python switch, import list, version registry,
+      review packet, generated JSON, code file or workflow needs editing.
+      A second file is optional only for genuinely separate evidence supplied
+      voluntarily by the contributor, never as part of the publication protocol.
+    </requirement>
+    <requirement name="repository-xml">
+      All new authoritative mapping records and their optional annotations are
+      checked into this repository as XML. Historical JSON artifacts may remain
+      temporarily for compatibility but never become another source of truth.
+      Do not introduce a database, hosted mapping service, YAML/JSON ledger,
+      triplestore or generated committed mapping mirror.
+    </requirement>
+    <requirement name="semantics">
+      Native corpus annotations remain authoritative. Exact, close, broader,
+      narrower, related, ambiguous, native-only and unsupported are distinct.
+      "Broader" means the native meaning is broader than the target; "narrower"
+      means the native meaning is narrower than the target. Approximate links are
+      opt-in and never silently promoted to exact equivalence.
+    </requirement>
+    <requirement name="identity-vs-class">
+      A shared ontology class maps native annotation categories, not individual
+      token identities. An entity-level mapping needs a native identifier and
+      a common external entity IRI. No corpus-to-corpus individual equivalence
+      may be inferred only from a shared class or matching gloss.
+    </requirement>
+    <requirement name="provenance">
+      Store the source corpus name in the XML root and, where known, its release
+      or source revision. An optional evidence URI and note on a mapping may
+      point to definitions. Reviewers verify scholarly assertions against
+      actual source definitions. No signatures, checksums, attestations,
+      certificate chains, lock registries or per-row review receipts.
+    </requirement>
+    <requirement name="automatic-discovery">
+      The Python package discovers corpus XML files by filename, not hardcoded
+      corpus enumerations. Each file is independently loaded: adding a corpus
+      requires no edits to central Python, release catalogs or other XML files.
+      Packaged wheels contain the same XML mapping data as the source tree.
+    </requirement>
+    <requirement name="runtime">
+      Read XML with Python's standard library, construct in-memory native-to-target
+      and target-to-native indexes from the same records, and execute selectors
+      using already-loaded TF/Context-Fabric APIs. No RDF conversion, ontology
+      HTTP fetch or external service is required to answer a query.
+      Do not create intermediate release files in the repository.
+    </requirement>
+    <requirement name="review">
+      One PR may contain any coherent number of mapping decisions.
+      One logically independent, counterexample-seeking adversarial review pass
+      is required before merge and may be performed by the authoring agent
+      in a separate pass. Review the semantic claims and negative examples.
+      Git's diff and normal PR discussion are the audit trail. No separate
+      reviewer identity, challenge-response protocol or cryptographic approval.
+    </requirement>
+    <requirement name="testing">
+      For mapping-only changes use one CI workflow that parses XML, validates
+      basic syntax and selector requirements, detects conflicting duplicates,
+      tests representative forward and reverse lookups, and builds a wheel.
+      No per-corpus/per-feature workflows, research tickets, design PRs,
+      frozen coverage manifests or profile releases. New runtime behavior
+      requires appropriate TDD and review in the same PR.
+    </requirement>
+    <requirement name="growth">
+      Support additional corpora and ontology IRIs as data, not as hardcoded
+      switches. Retain essential native provenance and licensing notices.
+      Prefer a missing/uncertain result over a fabricated correspondence.
+      No arbitrary quota of rows, ontology families or mandatory coverage
+      denominator gates.
+    </requirement>
+  </requirements>
+
+  <xml-format>
+    <location>src/tfont/mappings/{corpus}.xml</location>
+    <schema>src/tfont/mappings/schema.xsd</schema>
+    <root>
+      &lt;mappings corpus="..." source="..." corpusVersion="..."&gt;
+      Optional corpusVersion identifies the actual native source release.
+      It is not an ontoTF profile version. An individual map may override
+      corpusVersion when the source interpretation differs between releases.
+    </root>
+    <record>
+      Each &lt;map&gt; has kind and relation. A positive relation needs an
+      absolute target IRI; ambiguous/native-only/unsupported have no target.
+      'node' maps an annotation node type; 'feature' maps a native feature;
+      'value' maps a feature/value selector on a node type; 'edge' maps a
+      TF edge feature, optionally restricted by from/to node types; and
+      'entity' resolves an individual through a native node type plus a
+      feature/value identifier and maps to an external identity IRI.
+      For entity mappings, the selector must uniquely resolve the individual
+      before an exact identity claim is returned.
+    </record>
+    <validation>
+      No per-row UUID or digest. The validator checks filename equals corpus,
+      one-to-one required selector fields for each kind, relation/target
+      consistency, absolute target IRI, repeated identical rows and contradictory
+      exact assertions to clearly incompatible targets. It does not pronounce
+      an ontology claim true because a URL or checksum is well formed.
+    </validation>
+    <example description="Two corpus category mappings and one conservative disposition">
+      <mappings corpus="bhsa" source="ETCBC/bhsa" corpusVersion="2021">
+        <map kind="value" node="word" feature="sp" value="subs"
+             relation="exact" target="http://purl.org/olia/olia.owl#Noun"
+             evidence="https://github.com/ETCBC/bhsa"/>
+        <map kind="value" node="word" feature="vs" value="qal"
+             relation="native-only" note="No unambiguous class equivalence asserted"/>
+      </mappings>
+      <mappings corpus="syriac" source="ETCBC/syriac" corpusVersion="0.9">
+        <map kind="value" node="word" feature="sp" value="subs"
+             relation="exact" target="http://purl.org/olia/olia.owl#Noun"
+             evidence="https://github.com/ETCBC/syriac"/>
+      </mappings>
+    </example>
+  </xml-format>
+
+  <query-contract>
+    <operation name="list_corpora">List discovered XML corpora; do not require a registry.</operation>
+    <operation name="map_native">Return target IRIs, relation and optional evidence for one native selector.</operation>
+    <operation name="find_correspondences">
+      Given source corpus, native selector and destination corpus, match through
+      a common target IRI. Exact mappings produce exact CATEGORY correspondences,
+      not individual token alignments. Entity identity requires entity mappings.
+      Approximate paths are returned only when explicitly requested and keep
+      relation and direction. If no justified mapping exists, return an empty
+      result with an intelligible diagnostic.
+    </operation>
+    <operation name="resolve_nodes">
+      When a target corpus TF dataset is already loaded and its selector is
+      supported, execute the native query to return matching nodes. Otherwise
+      return a mapping recommendation rather than inventing node matches.
+    </operation>
+  </query-contract>
+
+  <acceptance>
+    <check>Adding five or fifty mappings to an existing corpus changes exactly one authored XML file, with no generated files committed.</check>
+    <check>Adding a new corpus requires one XML file and zero Python/CI/registry edits.</check>
+    <check>Both directions of BHSA Noun and Syriac Noun lookup work from installed wheel XML.</check>
+    <check>The runtime never infers that two noun tokens are the same individual merely because both map to OLiA Noun.</check>
+    <check>Approximate/non-target rows never masquerade as exact counterparts.</check>
+    <check>Invalid XML and structurally invalid native selectors fail with the source file and mapping location; one bad corpus does not hide healthy corpora.</check>
+    <check>Every substantive mapping PR receives an evidence-first adversarial review once; ordinary PRs use one nonduplicated CI workflow.</check>
+  </acceptance>
+
+  <non-requirements>
+    <item>Cryptographic provenance, signed review receipts, protected handoffs and GitHub identity attestation.</item>
+    <item>Immutable copy-forward profiles, semantic release versions per batch or profile-specific package builds.</item>
+    <item>Mandatory research-plan-TDD paperwork for another value of an already supported selector type.</item>
+    <item>Download all seven ontologies, pre-enumerate all features or reach a fixed coverage target before usable search works.</item>
+    <item>Run a separate CI job or workflow for every corpus, feature, ontology or historical issue.</item>
+    <item>Convert TF corpora to RDF or distribute upstream corpus data.</item>
+  </non-requirements>
+</contract>

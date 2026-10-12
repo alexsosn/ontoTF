@@ -1,5 +1,8 @@
 # TFont
 
+> **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The currently released wheel and development code still use legacy resources; XML loading is a planned change, not a shipped feature. New contributions will target one `src/tfont/mappings/<corpus>.xml` file per corpus.
+
+
 TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
 
 ## What is shipped

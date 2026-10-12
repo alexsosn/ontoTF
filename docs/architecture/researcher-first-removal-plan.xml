@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration title="Delete publication ceremony; keep researcher-facing ontology lookup" date="2026-10-12">
+  <status>Plan only. No source files listed below are claimed deleted by this document.</status>
+  <principles>
+    <item>Deliver working XML lookup before deleting runtime dependencies.</item>
+    <item>Preserve existing published wheel/tag behavior; compatibility does not force new XML mapping authors into historical release mechanics.</item>
+    <item>Prefer removing modules and checks to building adapters around them.</item>
+    <item>Each implementation PR must show user-facing lookup improvement or an actual reduction in code/tests/workflows. Avoid one PR per file and avoid a new metadata migration program.</item>
+    <item>Do not reproduce archived JSON/coverage snapshots as generated committed XML clones.</item>
+  </principles>
+
+  <phases>
+    <phase order="1" name="Freeze old release machinery">
+      <action>Adopt the XML contract; mark ADR-001 and protected handoff/release architecture as superseded.</action>
+      <action>Stop opening work to harden digests, attestation, locks, release overlays or new issue-specific CI.</action>
+      <action>Continue semantic research and mapping work in batches, without manufacturing new per-batch versions.</action>
+      <done>Only one document defines the new contribution contract; historical workflows no longer set feature-development priorities.</done>
+    </phase>
+    <phase order="2" name="Implement one working XML path">
+      <action>Add stdlib ElementTree reader for src/tfont/mappings/*.xml with filename-based discovery and actionable parse errors.</action>
+      <action>Add in-memory forward and inverse indexes; implement native-to-target and corpus-to-corpus lookup for value/node mappings first.</action>
+      <action>Demonstrate two actual checked corpora (BHSA and Syriac, OLiA Noun), including reverse lookup and explicit non-identity of words.</action>
+      <action>Package the same XML files in a wheel and test the wheel rather than a checkout-only loader.</action>
+      <done>A scholar can install ontoTF and resolve a supported BHSA category in Syriac directly from XML, without touching JSON release artifacts.</done>
+    </phase>
+    <phase order="3" name="Migrate semantic content, not ceremony">
+      <action>Translate supported existing mappings to per-corpus XML, retaining target relations and relevant source links; native-only and ambiguous decisions remain explicit when useful.</action>
+      <action>Extend selector execution only as real current data requires (features, TF edge types, entity identifiers), testing each new kind with real TF behavior.</action>
+      <action>Give new corpora and ontology models the same one-file discovery path, without a release registry update or custom loader branch.</action>
+      <action>Ensure missing/unknown target, conflicting mappings, source-version mismatch, approximate direction and entity-vs-class distinction have regression tests.</action>
+      <done>New substantive mappings require edits to one corpus XML and can be used immediately by the new default loader.</done>
+    </phase>
+    <phase order="4" name="Delete obsolete machinery by dependency">
+      <action>Switch default public lookup to XML and update CLI/package/docs to the new interface. Preserve a small historical compatibility adapter only where an actually used public API requires it.</action>
+      <action>Remove protected batch reviewer workflow and per-issue overlapping workflows after replacing any genuinely unique tests in the single CI owner.</action>
+      <action>Remove handoff, attestation, packet, batch-publication and overlay modules once callers and tests have been moved to the XML path.</action>
+      <action>Delete duplicated versioned resource trees, release catalogs, batch-pilot JSON and copied coverage snapshots from the active package once the new runtime no longer imports them. Git history and released wheels preserve historical artifacts.</action>
+      <action>Remove old CI tests that require obsolete workflows or release mechanisms to exist, replacing them only with user-facing XML acceptance tests.</action>
+      <done>One canonical XML catalog per corpus, one loader/resolver, one CI path; no legacy publisher on the default lookup path.</done>
+    </phase>
+    <phase order="5" name="Researcher E2E and contribution test">
+      <action>Have an independent adversarial pass map a native BHSA selector to Syriac and back, including a false-equivalence counterexample.</action>
+      <action>Simulate an external author adding a new corpus with exactly one XML file; verify wheel installation and discovery with no Python edits.</action>
+      <action>Report actual categories and entity IDs resolvable between corpora, and distinguish these from reviewed-but-unmapped native annotations.</action>
+      <done>Documented one-file submission succeeds and the end-to-end researcher query works on accessible real corpora.</done>
+    </phase>
+  </phases>
+
+  <removals>
+    <group name="Publication and review bureaucracy" timing="after XML reader parity">
+      <path action="delete">src/tfont/review_packets.py</path>
+      <path action="delete">src/tfont/reviewer_handoff.py</path>
+      <path action="delete">src/tfont/single_agent_review.py</path>
+      <path action="delete">src/tfont/external_review_gate.py</path>
+      <path action="delete">src/tfont/overlay_handoff.py</path>
+      <path action="delete">scripts/mappings/build_candidate_review_packet.py</path>
+      <path action="delete">scripts/mappings/build_review_packet.py</path>
+      <path action="delete">scripts/mappings/check_external_review.py</path>
+      <path action="delete">scripts/mappings/prepare_external_review.py</path>
+      <path action="delete">.github/workflows/i033e3-protected-batch-review.yml</path>
+    </group>
+    <group name="JSON batch and release adapters" timing="after XML production migration">
+      <path action="delete-or-fold-into-xml-loader">src/tfont/batch_compiler.py</path>
+      <path action="delete-or-fold-into-xml-loader">src/tfont/batch_proposals.py</path>
+      <path action="delete-or-fold-into-xml-loader">src/tfont/candidate_evidence.py</path>
+      <path action="delete-or-fold-into-xml-loader">src/tfont/published_deltas.py</path>
+      <path action="delete-or-fold-into-xml-loader">src/tfont/coverage_deltas.py</path>
+      <path action="delete-or-fold-into-xml-loader">src/tfont/coverage_overlay.py</path>
+      <path action="delete-or-fold-into-xml-loader">src/tfont/mapping_supersession.py</path>
+      <path action="replace">src/tfont/release_registry.py</path>
+      <path action="replace-hardcoded-switches">src/tfont/production_bundles.py</path>
+      <path action="delete">scripts/mappings/build_parity_pilot.py</path>
+      <path action="delete">scripts/mappings/build_proposals.py</path>
+      <path action="delete">src/tfont/resources/batch_pilots/</path>
+      <path action="delete">src/tfont/resources/batch_release_bases/</path>
+      <path action="delete">src/tfont/resources/release_catalog/</path>
+      <path action="delete-when-unreferenced">src/tfont/resources/profiles/</path>
+      <path action="delete-derived-json-only-when-unreferenced">src/tfont/resources/coverage/</path>
+    </group>
+    <group name="Duplicated checks and paperwork" timing="after regression coverage comparison">
+      <path action="consolidate">.github/workflows/ (issue-specific focused duplicate workflows)</path>
+      <path action="delete-or-archive">docs/research/ and docs/plans/ documents created solely for obsolete release ceremonies</path>
+      <path action="delete-or-rewrite">tests that assert a retired workflow or review receipt must exist</path>
+      <path action="retire-as-design-authority">docs/architecture/ADR-001-data-first-semantic-mapping.md</path>
+    </group>
+  </removals>
+
+  <retentions>
+    <component path="src/tfont/semantic_execution.py">Native Text-Fabric execution; simplify plans only when behavior is preserved.</component>
+    <component path="src/tfont/semantic_resolver.py">Actual lookup logic; remove needless fingerprints/release coupling after XML parity.</component>
+    <component path="src/tfont/semantic_ir.py">Useful semantic types/indexes; simplify instead of generating complex bundle graph.</component>
+    <component path="src/tfont/runtime_tf_observation.py">Existing loaded TF observation when useful to execute selectors.</component>
+    <component path="src/tfont/resources/ontologies/">Optional original permissively distributable ontology sources/evidence; RDF/XML OWL allowed, no JSON term locks needed for routine lookup.</component>
+    <component path="pyproject.toml">Python packaging; include XML resources without creating copied source-of-truth files in Git.</component>
+    <component path=".github/workflows/full-suite.yml">Single nonduplicated CI owner, or replace with a simpler single CI workflow.</component>
+    <component path="src/tfont/mappings/">One authoritative corpus XML file per corpus, plus one shared basic schema.</component>
+    <component>Existing published releases remain available as Git tags/wheels; no retroactive rewriting or cryptographic verification requirement.</component>
+  </retentions>
+
+  <stop-rules>
+    <rule>Do not create a replacement attestation layer, certificate, digest registry, release lock catalog or review-ticket hierarchy.</rule>
+    <rule>Do not require schema version increments for ordinary mapping additions.</rule>
+    <rule>Do not block useful category lookup on unrelated ontology imports, CI refactors or complete corpus inventory accounting.</rule>
+    <rule>Do not add fake example mappings to production; examples must remain clearly nonauthoritative until checked against actual corpus data.</rule>
+    <rule>Do not delete a module before checking its active imports and preserving truly user-facing behavior; the end state should have less code than the starting state.</rule>
+  </stop-rules>
+</migration>
