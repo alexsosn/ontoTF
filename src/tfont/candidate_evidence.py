@@ -154,7 +154,7 @@ class CandidateEvidenceResources:
                 code = definition.get("enum_code")
                 line = definition.get("line")
                 _require(type(name) is str and re.fullmatch(r"[a-z][a-z0-9_]*", name) is not None
-                         and type(code) is int and code > 0
+                         and type(code) is int and code >= 0
                          and type(line) is int
                          and anchor["enum_declaration_line"] < line < anchor["feature_type_line"],
                          "candidate MQL enum code/name/coordinate is malformed")
