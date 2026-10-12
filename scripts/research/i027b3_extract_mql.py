@@ -44,7 +44,7 @@ _SP_TYPE = re.compile(r"^\s*sp\s*:\s*part_of_speech_t\s*;\s*$", re.IGNORECASE)
 # The MQL header may have its closing ']' after the field declarations.
 # Match the object type token, not a completed [type] header line.
 _OBJECT_TYPE_OPEN = re.compile(
-    r"^\\s*CREATE\\s+OBJECT\\s+TYPE\\s+\\[\\s*([a-z][a-z0-9_]*)(?=\\s|\\]|$)",
+    r"^\s*CREATE\s+OBJECT\s+TYPE\s+\[\s*([a-z][a-z0-9_]*)(?=\s|\]|$)",
     re.IGNORECASE,
 )
 
