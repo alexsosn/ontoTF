@@ -141,6 +141,32 @@ class CandidateEvidenceResources:
                      and type(definition.get("gloss")) is str and bool(definition["gloss"].strip())
                      and type(definition.get("line")) is int and definition["line"] > 0,
                      "candidate native definition lacks bound gloss/coordinate")
+        if corpus == "extrabiblical" and "original_mql_blob" in content:
+            pinned = [a.data["reviewed_content"] for a in bundle.evidences
+                      if a.data.get("evidence_id") ==
+                      "evidence:extrabiblical:word-sp-verb-source"
+                      and a.data.get("kind") == "corpus-source-enumeration"]
+            _require(len(pinned) == 1, "missing unique protected ExtraBiblical MQL anchor")
+            anchor = pinned[0]
+            codes: list[int] = []
+            lines: list[int] = []
+            for name, definition in definitions.items():
+                code = definition.get("enum_code")
+                line = definition.get("line")
+                _require(type(name) is str and re.fullmatch(r"[a-z][a-z0-9_]*", name) is not None
+                         and type(code) is int and code > 0
+                         and type(line) is int
+                         and anchor["enum_declaration_line"] < line < anchor["feature_type_line"],
+                         "candidate MQL enum code/name/coordinate is malformed")
+                codes.append(code)
+                lines.append(line)
+            _require(len(set(codes)) == len(codes) and len(set(lines)) == len(lines),
+                     "candidate MQL enum repeats a code or original source line")
+            if anchor["enum_value"] in definitions:
+                original = definitions[anchor["enum_value"]]
+                _require(original["enum_code"] == anchor["enum_code"]
+                         and original["line"] == anchor["enum_value_line"],
+                         "candidate MQL enum conflicts with protected original Verb declaration")
 
     def _ontology(self, record: dict[str, Any], ledger: dict[str, Any]) -> None:
         lock = packaged_resource(ledger["ontology_lock_resource"])
