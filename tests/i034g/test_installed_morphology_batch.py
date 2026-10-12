@@ -5,19 +5,16 @@ These tests intentionally fail until release resources exist.
 """
 from __future__ import annotations
 
-import copy
 import json
 import unittest
-from importlib.resources import files
 
 from tfont.release_registry import load_profile, list_profile_releases
-from tfont.semantic_validation import validate_semantic_bundle, SemanticValidationError
+from tfont.semantic_validation import validate_semantic_bundle
 from tfont.digests import canonical_json_bytes
 
 OLIA = "http://purl.org/olia/olia.owl#"
-RESOURCE = files("tfont").joinpath("resources")
 CANDIDATES = {
-    "bhsa": ("docs/research/data/i034c/bhsa-morphology-olia.json", 29, 12),
+    "bhsa": ("docs/research/data/i034c/bhsa-morphology-olia.json", 29, 5),
     "syriac": ("docs/research/data/i034d/syriac-morphology-olia.json", 22, 9),
 }
 
@@ -62,8 +59,8 @@ class ReleasedMorphologyBatch(unittest.TestCase):
                     self.assertEqual(m["review"]["status"], "reviewed")
                     self.assertEqual(m["review"]["reviewed_mapping_digest"], m["mapping_semantic_digest"])
                     self.assertTrue(m["evidence"])
-                    self.assertEqual(bool(m["projections"]), row["assessment"] == "exact")
-                    if row["assessment"] == "exact":
+                    self.assertEqual(bool(m["projections"]), row["assessment"] == "exact" and not (corpus == "bhsa" and m["native_binding"]["feature"] in {"prs_ps", "prs_gn", "prs_nu"}))
+                    if row["assessment"] == "exact" and not (corpus == "bhsa" and m["native_binding"]["feature"] in {"prs_ps", "prs_gn", "prs_nu"}):
                         self.assertEqual(m["projections"][0]["target"], row["ontology_target"])
                         self.assertEqual(m["projections"][0]["review"]["status"], "reviewed")
                     else:
@@ -73,6 +70,8 @@ class ReleasedMorphologyBatch(unittest.TestCase):
                     ps = next(m for m in additions if (m["native_binding"]["feature"], m["native_binding"]["value"]) == ("ps", "p1"))
                     suffix = next(m for m in additions if (m["native_binding"]["feature"], m["native_binding"]["value"]) == ("prs_ps", "p1"))
                     self.assertNotEqual(ps["native_binding"], suffix["native_binding"])
+                    self.assertEqual(suffix["native_state"], "native-only")
+                    self.assertEqual(suffix["projections"], [])
                 self.assertIsNotNone(new)
     
     def test_historical_aliases_not_mutated(self):
