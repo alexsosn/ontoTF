@@ -89,6 +89,35 @@ class PinnedOriginalMQLCandidateEvidence(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(BatchProposalError):
                 CandidateEvidenceResources(self.ledger, {self.name: changed})
 
+    def test_rejects_malformed_or_forged_mql_enum_coordinates(self):
+        # Source SHA alone must not make malformed newly authored coordinates
+        # acceptable: these are original one-based declaration lines and codes.
+        for key, bad in (
+            ("enum_code", -1),
+            ("enum_code", True),
+            ("enum_code", "1"),
+            ("enum_code", None),
+            ("line", 163),  # enum opens here; values appear afterwards
+            ("line", 501),  # sp feature binding, not an enum member
+            ("line", True),
+        ):
+            changed = self.source()
+            changed["reviewed_content"]["source_definitions"]["verb"][key] = bad
+            changed["content_digest"] = evidence_record_digest(changed)
+            with self.subTest(key=key, bad=bad), self.assertRaises(BatchProposalError):
+                CandidateEvidenceResources(self.ledger, {self.name: changed})
+
+        for changed_row in (
+            {"gloss": "another category", "line": 166, "enum_code": 1},
+            {"gloss": "another category", "line": 165, "enum_code": 2},
+        ):
+            changed = self.source()
+            changed["reviewed_content"]["source_definitions"]["subs"] = changed_row
+            changed["content_digest"] = evidence_record_digest(changed)
+            with self.subTest(row=changed_row), self.assertRaises(BatchProposalError):
+                CandidateEvidenceResources(self.ledger, {self.name: changed})
+
+
 
 if __name__ == "__main__":
     unittest.main()
