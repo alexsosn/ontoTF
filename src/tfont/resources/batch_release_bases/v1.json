@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "registry_id": "tfont-protected-batch-handoff-bases-v1",
+  "corpora": {
+    "bhsa": {
+      "base_release": "0.4.0",
+      "coverage_resource_set": "p004-i027c2-bhsa-adj-adv-v1",
+      "coverage_git_blob": "2e981e309d20e38cadb6ecfaefcddd19fbb3b927"
+    },
+    "syriac": {
+      "base_release": "0.4.0",
+      "coverage_resource_set": "p004-i027c2-syriac-adj-adv-v1",
+      "coverage_git_blob": "27950ce2ea7851ce98bb96479f52738ee17a1a56"
+    },
+    "extrabiblical": {
+      "base_release": "0.3.0",
+      "coverage_resource_set": "p004-i027b4-extrabiblical-verb-v1",
+      "coverage_git_blob": "33a6ec40ef08c0040e7d835de51796c3e6c8b13c"
+    }
+  }
+}

@@ -188,6 +188,7 @@ class WheelSchemaResourceTests(unittest.TestCase):
             expected_resources.update({
                 "tfont/resources/batch_pilots/i033a-olia-verb-and-stems.json",
                 "tfont/resources/batch_pilots/i033c-adj-adv-proposals.json",
+                "tfont/resources/batch_release_bases/v1.json",
             })
             with zipfile.ZipFile(wheel) as archive:
                 wheel_names = set(archive.namelist())
@@ -213,6 +214,7 @@ from pathlib import Path
 import tfont
 from tfont.source_validation import validate_source
 from tfont.batch_proposals import load_ledger
+from tfont.overlay_handoff import _trusted_handoff_base
 
 target = Path(sys.argv[1]).resolve()
 fixtures = Path(sys.argv[2])
@@ -224,6 +226,10 @@ for schema_name, instance in json.loads(fixtures.read_text(encoding="utf-8")).it
     validate_source(instance, schema_name)
 if load_ledger()["batch_id"] != "i033c-olia-bhsa-syriac-adjadv":
     raise AssertionError("wheel omitted or corrupted the I-033C batch decision ledger")
+if _trusted_handoff_base("extrabiblical") != (
+    "0.3.0", "p004-i027b4-extrabiblical-verb-v1"
+):
+    raise AssertionError("non-editable wheel omitted protected third-corpus handoff base")
 """
             env = os.environ.copy()
             env["PYTHONPATH"] = str(target)

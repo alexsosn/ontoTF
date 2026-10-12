@@ -28,6 +28,7 @@ tfont = [
   "resources/coverage/*/*.json",
   "resources/batch_pilots/*.json",
   "resources/release_catalog/*.json",
+  "resources/batch_release_bases/*.json",
   "resources/profiles/*/*/*.json",
   "resources/profiles/*/*/parent/*.json",
   "resources/profiles/*/*/mappings/*.json",
