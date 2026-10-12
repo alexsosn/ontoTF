@@ -47,6 +47,8 @@ _OBJECT_TYPE_OPEN = re.compile(
     r"^\s*CREATE\s+OBJECT\s+TYPE\s+\[\s*([a-z][a-z0-9_]*)(?=\s|\]|$)",
     re.IGNORECASE,
 )
+_OBJECT_TYPE_HEADER = re.compile(r"^\s*CREATE\s+OBJECT\s+TYPE\s*$", re.IGNORECASE)
+_OBJECT_BRACKET = re.compile(r"^\s*\[\s*([a-z][a-z0-9_]*)(?=\s|\]|$)", re.IGNORECASE)
 
 
 def extract_pos_enum(text: str) -> dict[str, object]:
@@ -66,10 +68,22 @@ def extract_pos_enum(text: str) -> dict[str, object]:
     # A declaration of sp on a non-word object must not be mistaken for
     # original word.sp corpus semantics. Resolve the containing object from
     # the nearest preceding MQL object-type declaration.
-    object_types = [(i, kind.group(1).lower())
-                    for i, line in enumerate(lines)
-                    if (kind := _OBJECT_TYPE_OPEN.match(line)) is not None
-                    and i < word_feature[0]]
+    object_types: list[tuple[int, str]] = []
+    for i, line in enumerate(lines[:word_feature[0]]):
+        kind = _OBJECT_TYPE_OPEN.match(line)
+        if kind is not None:
+            object_types.append((i, kind.group(1).lower()))
+        elif _OBJECT_TYPE_HEADER.fullmatch(line):
+            # Original ExtraBiblical writes "CREATE OBJECT TYPE" on its own
+            # line, followed by a [name] line; do not accept a stale earlier
+            # object header when this declaration cannot be parsed.
+            following = next(
+                (lines[j] for j in range(i + 1, min(i + 5, word_feature[0]))
+                 if lines[j].strip()), ""
+            )
+            bracket = _OBJECT_BRACKET.match(following)
+            object_types.append((i, bracket.group(1).lower()
+                                 if bracket is not None else "<unknown>"))
     if not object_types or object_types[-1][1] != "word":
         raise ValueError("part_of_speech_t sp must be declared for word object")
     start = openings[0]
