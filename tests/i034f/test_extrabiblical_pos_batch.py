@@ -96,7 +96,8 @@ class ExtraBiblicalRealPOSBatch(unittest.TestCase):
                 self.assertTrue(row["gloss"].strip())
                 self.assertNotIn("featureObservations", row)
         self.assertTrue(all(
-            feature["observed_frequencies"][v] > 0 for v in EXPECTED
+            self.inventory["node_features"]["sp"]["observed_frequencies"][v] > 0
+            for v in EXPECTED
         ))
 
     def test_fifteen_corpus_classes_include_only_eleven_new_candidates(self):
@@ -108,8 +109,17 @@ class ExtraBiblicalRealPOSBatch(unittest.TestCase):
             {x["value"] for x in self.ledger["decisions"]}, set(EXPECTED)
         )
         old = load_profile("extrabiblical", release_id="0.3.0")
-        active = {m["native_binding"]["value"] for m in old.mappings.data["mappings"]
-                  if m["native_binding"]["feature"] == "sp"}
+        active = set()
+        for mapping in old.mappings.data["mappings"]:
+            binding = mapping["native_binding"]
+            if binding["feature"] != "sp":
+                continue
+            if binding["execution_shape"] == "value-predicate":
+                active.add(binding["value"])
+            elif binding["execution_shape"] == "value-set-predicate":
+                active.update(binding["values"])
+            else:
+                self.fail(f"unexpected production sp binding: {binding!r}")
         self.assertTrue(EXISTING.issubset(active))
         self.assertTrue(set(EXPECTED).isdisjoint(active))
         lock = packaged_resource(LOCK)
