@@ -85,8 +85,8 @@
       }
     ]
   },
-  "source_check_run": "https://github.com/alexsosn/ontoTF/actions/runs/38240977724",
-  "source_check_job": 114783210754,
+  "source_check_run": "https://github.com/alexsosn/ontoTF/actions/runs/38241464739",
+  "source_check_job": 114784826913,
   "interpretation": "Machine-readable bounded enumeration coordinates extracted from the original pinned MQL Git blob; original-source schema alone does not approve exact ontology mappings.",
   "exact_mapping_authorized": false
 }
