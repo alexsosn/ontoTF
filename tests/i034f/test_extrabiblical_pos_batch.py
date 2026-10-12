@@ -67,11 +67,13 @@ class ExtraBiblicalRealPOSBatch(unittest.TestCase):
         by_value = {row["value"]: row for row in self.frozen["values"]}
         self.assertEqual(len(by_value), 14)
         self.assertEqual(set(by_value), set(feature["observed_values"]))
+        self.assertEqual(by_value["art"]["line"], 164)
+        self.assertEqual(by_value["art"]["code"], 0)
         self.assertEqual(by_value["verb"]["line"], 165)
         self.assertEqual(by_value["verb"]["code"], 1)
         self.assertEqual(by_value["subs"]["code"], 2)
         self.assertEqual(by_value["nmpr"]["code"], 3)
-        self.assertTrue(all(type(item["code"]) is int and item["code"] > 0
+        self.assertTrue(all(type(item["code"]) is int and item["code"] >= 0
                             and type(item["line"]) is int and item["line"] > 163
                             for item in by_value.values()))
 
