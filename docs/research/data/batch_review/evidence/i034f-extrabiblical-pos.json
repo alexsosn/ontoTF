@@ -1,0 +1,91 @@
+{
+  "evidence_id": "evidence:extrabiblical:word-sp-i034f",
+  "kind": "corpus-feature-definition",
+  "source_uri": "https://raw.githubusercontent.com/ETCBC/extrabiblical/9a56288e6777bad6328856acf055c780e65dd5d9/source/0.2/extraBiblical.mql.bz2",
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "content_mode": "normalized-record",
+  "reviewed_content": {
+    "feature": "sp",
+    "feature_semantics": "part-of-speech",
+    "production_node_type": "word",
+    "documented_node_types": [
+      "word"
+    ],
+    "target_tf_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+    "original_mql_blob": "4ba717b1716b747bb94d0359b950a55d8624b109",
+    "decompressed_sha256": "62540c8b4682121dd002f4c234c693259fb494c439ddfc06574537e5e398790e",
+    "source_definitions": {
+      "art": {
+        "gloss": "MQL part_of_speech_t enum member art",
+        "line": 164,
+        "enum_code": 0
+      },
+      "verb": {
+        "gloss": "MQL part_of_speech_t enum member verb",
+        "line": 165,
+        "enum_code": 1
+      },
+      "subs": {
+        "gloss": "MQL part_of_speech_t enum member subs",
+        "line": 166,
+        "enum_code": 2
+      },
+      "nmpr": {
+        "gloss": "MQL part_of_speech_t enum member nmpr",
+        "line": 167,
+        "enum_code": 3
+      },
+      "advb": {
+        "gloss": "MQL part_of_speech_t enum member advb",
+        "line": 168,
+        "enum_code": 4
+      },
+      "prep": {
+        "gloss": "MQL part_of_speech_t enum member prep",
+        "line": 169,
+        "enum_code": 5
+      },
+      "conj": {
+        "gloss": "MQL part_of_speech_t enum member conj",
+        "line": 170,
+        "enum_code": 6
+      },
+      "prps": {
+        "gloss": "MQL part_of_speech_t enum member prps",
+        "line": 171,
+        "enum_code": 7
+      },
+      "prde": {
+        "gloss": "MQL part_of_speech_t enum member prde",
+        "line": 172,
+        "enum_code": 8
+      },
+      "prin": {
+        "gloss": "MQL part_of_speech_t enum member prin",
+        "line": 173,
+        "enum_code": 9
+      },
+      "intj": {
+        "gloss": "MQL part_of_speech_t enum member intj",
+        "line": 174,
+        "enum_code": 10
+      },
+      "nega": {
+        "gloss": "MQL part_of_speech_t enum member nega",
+        "line": 175,
+        "enum_code": 11
+      },
+      "inrg": {
+        "gloss": "MQL part_of_speech_t enum member inrg",
+        "line": 176,
+        "enum_code": 12
+      },
+      "adjv": {
+        "gloss": "MQL part_of_speech_t enum member adjv",
+        "line": 177,
+        "enum_code": 13
+      }
+    }
+  },
+  "content_digest": "sha256:a4ee9c72f56bc349d70243dc7368d2a03387a4b5cdf14dfed9ae2fea24538bf0"
+}

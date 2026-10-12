@@ -33,11 +33,96 @@ def git_blob_sha(raw: bytes) -> str:
     ).hexdigest()
 
 
+
+_ENUM_OPEN = re.compile(
+    r"^\s*CREATE\s+ENUMERATION\s+part_of_speech_t\s*=\s*\{\s*$",
+    re.IGNORECASE,
+)
+_ENUM_VALUE = re.compile(r"^\s*([a-z][a-z0-9_]*)\s*=\s*(\d+)\s*,?\s*$", re.IGNORECASE)
+_ENUM_CLOSE = re.compile(r"^\s*\}\s*;?\s*$")
+_SP_TYPE = re.compile(r"^\s*sp\s*:\s*part_of_speech_t\s*;\s*$", re.IGNORECASE)
+# The MQL header may have its closing ']' after the field declarations.
+# Match the object type token, not a completed [type] header line.
+_OBJECT_TYPE_OPEN = re.compile(
+    r"^\s*CREATE\s+OBJECT\s+TYPE\s+\[\s*([a-z][a-z0-9_]*)(?=\s|\]|$)",
+    re.IGNORECASE,
+)
+_OBJECT_TYPE_HEADER = re.compile(r"^\s*CREATE\s+OBJECT\s+TYPE\s*$", re.IGNORECASE)
+_OBJECT_BRACKET = re.compile(r"^\s*\[\s*([a-z][a-z0-9_]*)(?=\s|\]|$)", re.IGNORECASE)
+
+
+def extract_pos_enum(text: str) -> dict[str, object]:
+    """Extract the original MQL POS enum and original one-based source lines.
+
+    No BHSA gloss inference, fabricated target class, or source corpus payload.
+    """
+    if type(text) is not str:
+        raise ValueError("decoded MQL must be text")
+    lines = text.splitlines()
+    openings = [i for i, line in enumerate(lines) if _ENUM_OPEN.fullmatch(line)]
+    if len(openings) != 1:
+        raise ValueError("expected exactly one part_of_speech_t enumeration")
+    word_feature = [i for i, line in enumerate(lines) if _SP_TYPE.fullmatch(line)]
+    if len(word_feature) != 1:
+        raise ValueError("sp must use exactly one part_of_speech_t declaration")
+    # A declaration of sp on a non-word object must not be mistaken for
+    # original word.sp corpus semantics. Resolve the containing object from
+    # the nearest preceding MQL object-type declaration.
+    object_types: list[tuple[int, str]] = []
+    for i, line in enumerate(lines[:word_feature[0]]):
+        kind = _OBJECT_TYPE_OPEN.match(line)
+        if kind is not None:
+            object_types.append((i, kind.group(1).lower()))
+        elif _OBJECT_TYPE_HEADER.fullmatch(line):
+            # Original ExtraBiblical writes "CREATE OBJECT TYPE" on its own
+            # line, followed by a [name] line; do not accept a stale earlier
+            # object header when this declaration cannot be parsed.
+            following = next(
+                (lines[j] for j in range(i + 1, min(i + 5, word_feature[0]))
+                 if lines[j].strip()), ""
+            )
+            bracket = _OBJECT_BRACKET.match(following)
+            object_types.append((i, bracket.group(1).lower()
+                                 if bracket is not None else "<unknown>"))
+    if not object_types or object_types[-1][1] != "word":
+        raise ValueError("part_of_speech_t sp must be declared for word object")
+    start = openings[0]
+    values: list[dict[str, object]] = []
+    seen_names: set[str] = set()
+    seen_codes: set[int] = set()
+    for i in range(start + 1, len(lines)):
+        line = lines[i]
+        if _ENUM_CLOSE.fullmatch(line):
+            if not 1 <= len(values) <= 64:
+                raise ValueError("part_of_speech_t enumeration has invalid bounded size")
+            return {
+                "enum_declaration_line": start + 1,
+                "feature_type_line": word_feature[0] + 1,
+                "values": values,
+            }
+        if not line.strip():
+            continue
+        value = _ENUM_VALUE.fullmatch(line)
+        if value is None:
+            raise ValueError(f"invalid POS enum declaration on original line {i + 1}")
+        name, code_text = value.groups()
+        code = int(code_text)
+        if name in seen_names or code in seen_codes:
+            raise ValueError("duplicate POS category name or integer code")
+        seen_names.add(name)
+        seen_codes.add(code)
+        values.append({"value": name, "code": code, "line": i + 1})
+        if len(values) > 64:
+            raise ValueError("POS enumeration exceeds 64 records")
+    raise ValueError("unterminated POS enum declaration")
+
+
 def extract(
     raw: bytes,
     *,
     expected_blob_sha: str = PINNED_BLOB_SHA,
     expected_size: int = PINNED_COMPRESSED_SIZE,
+    require_pos_enum: bool = False,
 ) -> dict[str, object]:
     if type(raw) is not bytes:
         raise ValueError("source must be exact bytes")
@@ -76,6 +161,16 @@ def extract(
             samples.append({"line": i + 1, "context": snippet})
         excerpts[category] = samples
 
+    # Legacy research callers also inspect partial/unrelated MQL. Preserve
+    # their bounded occurrence scan without claiming an extracted POS enum.
+    # Exact pinned-source verification opts into strict parsing below.
+    try:
+        pos_enum = extract_pos_enum(text)
+    except ValueError:
+        if require_pos_enum:
+            raise
+        pos_enum = None
+
     return {
         "schema_version": 1,
         "source_repository": "ETCBC/extrabiblical",
@@ -89,6 +184,7 @@ def extract(
         "encoding": "UTF-8",
         "match_counts": counts,
         "excerpts": excerpts,
+        "part_of_speech_enum": pos_enum,
         "exact_mapping_authorized": False,
     }
 
@@ -110,6 +206,13 @@ def verify_frozen(report: dict[str, object], frozen: dict[str, object]) -> None:
             raise ValueError(f"frozen source evidence identity mismatch: {key}")
     if frozen.get("exact_mapping_authorized") is not False:
         raise ValueError("source evidence must not activate an exact mapping")
+    if frozen.get("schema_version") == 2:
+        # A digest-bound source pin without bytewise enum comparison would
+        # allow invented value codes or original source line coordinates.
+        actual = report.get("part_of_speech_enum")
+        declared = frozen.get("part_of_speech_enum")
+        if type(actual) is not dict or type(declared) is not dict or actual != declared:
+            raise ValueError("frozen POS enum differs from original source declaration")
 
     excerpts = report["excerpts"]
     for statement in frozen.get("statements", []):
@@ -137,7 +240,7 @@ def main() -> int:
     parser.add_argument("--verify-frozen", type=Path)
     args = parser.parse_args()
     source = args.input.read_bytes()
-    report = extract(source)
+    report = extract(source, require_pos_enum=True)
     if args.verify_frozen is not None:
         verify_frozen(report, json.loads(args.verify_frozen.read_text(encoding="utf-8")))
     result = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"

@@ -90,7 +90,7 @@ class CandidateEvidenceResources:
                    and type(a.data.get("reviewed_content")) is dict
                    and a.data["reviewed_content"].get("production_node_type") == "word"
                    and a.data["reviewed_content"].get("feature") == "sp"]
-        _require(any(
+        trusted_definition = any(
             record.get("kind") == anchor["kind"]
             and record.get("source_uri") == anchor["source_uri"]
             and record.get("source_revision") == spec["source_revision"] == anchor["source_revision"]
@@ -99,7 +99,41 @@ class CandidateEvidenceResources:
                 == anchor["reviewed_content"]["target_tf_revision"]
             and all(content.get(k) == anchor["reviewed_content"].get(k) for k in (
                 "feature", "feature_semantics", "production_node_type", "documented_node_types"))
-            for anchor in anchors), "candidate native source pin, URI or semantics differ from protected evidence")
+            for anchor in anchors
+        )
+        # ExtraBiblical's original MQL source is installed as a
+        # corpus-source-enumeration (not the BHSA/Syriac feature-definition
+        # format). Require the EXACT installed compressed-Git-blob and
+        # decompressed SHA-256 pins before allowing new category assertions.
+        # Individual enum coordinates still need original-source adjudication.
+        if corpus == "extrabiblical" and not trusted_definition:
+            original_mql = [
+                a.data for a in bundle.evidences
+                if a.data.get("evidence_id") ==
+                    "evidence:extrabiblical:word-sp-verb-source"
+                and a.data.get("kind") == "corpus-source-enumeration"
+            ]
+            trusted_definition = any(
+                record.get("kind") == "corpus-feature-definition"
+                and record.get("source_uri") == original.get("source_uri")
+                and record.get("source_revision") == spec["source_revision"]
+                    == original.get("source_revision")
+                and content.get("target_tf_revision") == spec["target_corpus_revision"]
+                    == original["reviewed_content"].get("target_corpus_revision")
+                and content.get("original_mql_blob")
+                    == original["reviewed_content"].get("source_blob_sha")
+                and content.get("decompressed_sha256")
+                    == original["reviewed_content"].get("source_decompressed_sha256")
+                and content.get("feature") == original["reviewed_content"].get("feature") == "sp"
+                and content.get("feature_semantics") == "part-of-speech"
+                and content.get("production_node_type")
+                    == original["reviewed_content"].get("target_node_type") == "word"
+                and content.get("documented_node_types") == ["word"]
+                and record.get("license_ref") is None
+                for original in original_mql
+            )
+        _require(trusted_definition,
+                 "candidate native source pin, URI or semantics differ from protected evidence")
         definitions = content.get("source_definitions")
         _require(type(definitions) is dict and bool(definitions), "candidate source definitions absent")
         for definition in definitions.values():
@@ -107,6 +141,32 @@ class CandidateEvidenceResources:
                      and type(definition.get("gloss")) is str and bool(definition["gloss"].strip())
                      and type(definition.get("line")) is int and definition["line"] > 0,
                      "candidate native definition lacks bound gloss/coordinate")
+        if corpus == "extrabiblical" and "original_mql_blob" in content:
+            pinned = [a.data["reviewed_content"] for a in bundle.evidences
+                      if a.data.get("evidence_id") ==
+                      "evidence:extrabiblical:word-sp-verb-source"
+                      and a.data.get("kind") == "corpus-source-enumeration"]
+            _require(len(pinned) == 1, "missing unique protected ExtraBiblical MQL anchor")
+            anchor = pinned[0]
+            codes: list[int] = []
+            lines: list[int] = []
+            for name, definition in definitions.items():
+                code = definition.get("enum_code")
+                line = definition.get("line")
+                _require(type(name) is str and re.fullmatch(r"[a-z][a-z0-9_]*", name) is not None
+                         and type(code) is int and code >= 0
+                         and type(line) is int
+                         and anchor["enum_declaration_line"] < line < anchor["feature_type_line"],
+                         "candidate MQL enum code/name/coordinate is malformed")
+                codes.append(code)
+                lines.append(line)
+            _require(len(set(codes)) == len(codes) and len(set(lines)) == len(lines),
+                     "candidate MQL enum repeats a code or original source line")
+            if anchor["enum_value"] in definitions:
+                original = definitions[anchor["enum_value"]]
+                _require(original["enum_code"] == anchor["enum_code"]
+                         and original["line"] == anchor["enum_value_line"],
+                         "candidate MQL enum conflicts with protected original Verb declaration")
 
     def _ontology(self, record: dict[str, Any], ledger: dict[str, Any]) -> None:
         lock = packaged_resource(ledger["ontology_lock_resource"])
