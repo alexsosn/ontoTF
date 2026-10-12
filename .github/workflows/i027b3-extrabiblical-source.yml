@@ -7,6 +7,7 @@ on:
       - "tests/i027b3/**"
       - "docs/research/I-027B3-extrabiblical-mql-evidence.md"
       - "docs/research/data/i027b3/**"
+      - "docs/research/data/i034f/**"
       - "docs/plans/I-027B3-extrabiblical-mql-evidence.md"
       - ".github/workflows/i027b3-extrabiblical-source.yml"
   workflow_dispatch:
@@ -57,3 +58,4 @@ jobs:
           print("MQL_SP_SCHEMA_HEADER", headers[-3:], "FEATURE_LINE", sp + 1)
           PY
           python scripts/research/i027b3_extract_mql.py --input upstream/source/0.2/extraBiblical.mql.bz2 --verify-frozen docs/research/data/i027b3/extrabiblical-mql-pos-evidence.json
+          python scripts/research/i027b3_extract_mql.py --input upstream/source/0.2/extraBiblical.mql.bz2 --verify-frozen docs/research/data/i034f/extrabiblical-mql-pos-enum.json >/dev/null
