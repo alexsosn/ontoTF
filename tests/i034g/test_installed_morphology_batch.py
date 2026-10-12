@@ -32,8 +32,10 @@ class ReleasedMorphologyBatch(unittest.TestCase):
         for corpus, (_, total, exact) in CANDIDATES.items():
             with self.subTest(corpus=corpus):
                 self.assertIn("0.6.0", list_profile_releases(corpus))
-                old = validate_semantic_bundle(load_profile(corpus, "0.5.0"))
-                new = validate_semantic_bundle(load_profile(corpus, "0.6.0"))
+                old = load_profile(corpus, "0.5.0")
+                new = load_profile(corpus, "0.6.0")
+                validate_semantic_bundle(old)
+                validate_semantic_bundle(new)
                 old_ids = {m["mapping_id"] for m in old.mappings.data["mappings"]}
                 self.assertEqual(
                     {m["mapping_id"]: m["mapping_semantic_digest"] for m in old.mappings.data["mappings"]},
