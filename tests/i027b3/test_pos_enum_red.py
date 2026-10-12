@@ -71,6 +71,13 @@ class OriginalPOSDeclarationsRED(unittest.TestCase):
         self.assertEqual(report["decompressed_sha256"],
                          hashlib.sha256(SOURCE.encode("utf-8")).hexdigest())
 
+    def test_original_mql_zero_valued_article_enum_is_valid(self):
+        # Independently observed in original-source GitHub Actions run 38039463508:
+        # source line 164 is 'art = 0,' before verb = 1 on line 165.
+        source = SOURCE.replace("  art = 14,", "  art = 0,")
+        actual = extract_pos_enum(source)
+        self.assertEqual(actual["values"][3], {"value": "art", "code": 0, "line": 9})
+
     def test_enumeration_is_bounded(self):
         excess = (
             "CREATE ENUMERATION part_of_speech_t = {\n"
