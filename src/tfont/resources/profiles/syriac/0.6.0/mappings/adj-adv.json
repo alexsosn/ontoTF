@@ -1,0 +1,177 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-adj-adv-source",
+          "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649"
+        },
+        {
+          "evidence_id": "evidence:olia:adjective-class",
+          "content_digest": "sha256:eb4d1fe23aaa3d8a5809db09a1f8601c8d92fa02bd8d303d04664b5ffa591890"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-adjective",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "adjv"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:adjv"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-adj-adv-source",
+              "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649"
+            },
+            {
+              "evidence_id": "evidence:olia:adjective-class",
+              "content_digest": "sha256:eb4d1fe23aaa3d8a5809db09a1f8601c8d92fa02bd8d303d04664b5ffa591890"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "adjv"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-adjective",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Adjective",
+          "projection_semantic_digest": "sha256:4869ff84ae191bc7764ae77ab54ec48d66b96ae10b0fa25ad7a0d5a9455fc92c",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "openai:gpt-6",
+            "reviewed_at": "2026-10-10T12:15:00Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/289",
+            "review_method": "independent pinned corpus and OLiA class review",
+            "review_id": "review:syriac:olia-adjective:projection",
+            "reviewed_mapping_digest": "sha256:4869ff84ae191bc7764ae77ab54ec48d66b96ae10b0fa25ad7a0d5a9455fc92c"
+          }
+        }
+      ],
+      "rationale": "Exact syriac native word.sp=adjv POS annotation category, independently source-reviewed against OLiA Adjective OWL Class; no lexeme or feature-level semantics inferred.",
+      "mapping_semantic_digest": "sha256:ee75e32a08e9f48fd12a6daa82ddf0dc9e0fbf8d09e658b80eec48ed3d2cf5c9",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "openai:gpt-6",
+        "reviewed_at": "2026-10-10T12:15:00Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/289",
+        "review_method": "independent pinned corpus and OLiA class review",
+        "review_id": "review:syriac:olia-adjective:mapping",
+        "reviewed_mapping_digest": "sha256:ee75e32a08e9f48fd12a6daa82ddf0dc9e0fbf8d09e658b80eec48ed3d2cf5c9"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-adj-adv-source",
+          "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649"
+        },
+        {
+          "evidence_id": "evidence:olia:adverb-class",
+          "content_digest": "sha256:bf331dcd3a8982eb75bbe9f26ec71c6871e001206030961ed6f41c1fc445db19"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-adverb",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "execution_shape": "value-predicate",
+        "feature": "sp",
+        "node_type": "word",
+        "value": "advb"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:advb"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-adj-adv-source",
+              "content_digest": "sha256:42aaa63ed1049b3f6e8fb77bdc466229d7877e361b0e5843aeff9201882fd649"
+            },
+            {
+              "evidence_id": "evidence:olia:adverb-class",
+              "content_digest": "sha256:bf331dcd3a8982eb75bbe9f26ec71c6871e001206030961ed6f41c1fc445db19"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "execution_shape": "value-predicate",
+            "feature": "sp",
+            "node_type": "word",
+            "value": "advb"
+          },
+          "ontology_lock": "olia-reference-model",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-adverb",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Adverb",
+          "projection_semantic_digest": "sha256:d1234c5cf3636ab58e6d52cdb464087e4aae42d5338da62b0ca4287d9979027c",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "openai:gpt-6",
+            "reviewed_at": "2026-10-10T12:15:00Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/289",
+            "review_method": "independent pinned corpus and OLiA class review",
+            "review_id": "review:syriac:olia-adverb:projection",
+            "reviewed_mapping_digest": "sha256:d1234c5cf3636ab58e6d52cdb464087e4aae42d5338da62b0ca4287d9979027c"
+          }
+        }
+      ],
+      "rationale": "Exact syriac native word.sp=advb POS annotation category, independently source-reviewed against OLiA Adverb OWL Class; no lexeme or feature-level semantics inferred.",
+      "mapping_semantic_digest": "sha256:10640902a1b0af61e0de0bfd06849948c1b287494580f10dbc5774b411b927ec",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "openai:gpt-6",
+        "reviewed_at": "2026-10-10T12:15:00Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/289",
+        "review_method": "independent pinned corpus and OLiA class review",
+        "review_id": "review:syriac:olia-adverb:mapping",
+        "reviewed_mapping_digest": "sha256:10640902a1b0af61e0de0bfd06849948c1b287494580f10dbc5774b411b927ec"
+      }
+    }
+  ]
+}

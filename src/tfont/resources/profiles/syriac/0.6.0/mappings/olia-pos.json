@@ -1,0 +1,431 @@
+{
+  "schema_version": 2,
+  "mappings": [
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+          "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:native-sp-inrg",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "inrg",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:inrg"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "Pinned Syriac word_grammar line 87 glosses sp=inrg only as interrogative; it does not identify the expression as a particle versus an adverb or pronoun. No exact InterrogativeParticle target is asserted without more specific corpus evidence.",
+      "mapping_semantic_digest": "sha256:aa0c3e868573120f2f99e2d690f7b580d07840e004890a8b5058b2ef3f47be8e",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:syriac:native-sp-inrg:mapping",
+        "reviewed_mapping_digest": "sha256:aa0c3e868573120f2f99e2d690f7b580d07840e004890a8b5058b2ef3f47be8e"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+          "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:native-sp-nega",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "nega",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:nega"
+      ],
+      "native_state": "native-only",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [],
+      "rationale": "Pinned Syriac word_grammar line 89 glosses sp=nega merely as negative; it does not establish that the class contains only particles rather than other polarity forms. No exact NegativeParticle class projection is justified by this source alone.",
+      "mapping_semantic_digest": "sha256:5dc63376b36e26fc686169f6ca47407e351e6a798d62ecd63775479d75816872",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:syriac:native-sp-nega:mapping",
+        "reviewed_mapping_digest": "sha256:5dc63376b36e26fc686169f6ca47407e351e6a798d62ecd63775479d75816872"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+          "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-conjunction-class",
+          "content_digest": "sha256:939cac0f00d0f7a3491803b6ce90c13d88227781c40014cbb73f45317c77b687"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-conjunction",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "conj",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:conj"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+              "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-conjunction-class",
+              "content_digest": "sha256:939cac0f00d0f7a3491803b6ce90c13d88227781c40014cbb73f45317c77b687"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "conj",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-conjunction",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Conjunction",
+          "projection_semantic_digest": "sha256:23a45bc2f8dcc7348895657e62d177d3929699a098b5dfa5a13fe5dda372209f",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:syriac:olia-conjunction:projection",
+            "reviewed_mapping_digest": "sha256:23a45bc2f8dcc7348895657e62d177d3929699a098b5dfa5a13fe5dda372209f"
+          }
+        }
+      ],
+      "rationale": "Pinned ETCBC linksyr word_grammar line 86 explicitly glosses Syriac sp=conj as conjunction. OLiA Conjunction line 356 is the matching generic class; no narrower coordination subtype is assumed.",
+      "mapping_semantic_digest": "sha256:56eca7b622ed794ee20324cf10720805a6c3f1f487907814429093b3ed74c044",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:syriac:olia-conjunction:mapping",
+        "reviewed_mapping_digest": "sha256:56eca7b622ed794ee20324cf10720805a6c3f1f487907814429093b3ed74c044"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+          "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-interjection-class",
+          "content_digest": "sha256:412c0c6dd31a967d5b71927a354a7b9d14bace52914c25dadaceb43233b08f0f"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-interjection",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "intj",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:intj"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+              "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-interjection-class",
+              "content_digest": "sha256:412c0c6dd31a967d5b71927a354a7b9d14bace52914c25dadaceb43233b08f0f"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "intj",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-interjection",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Interjection",
+          "projection_semantic_digest": "sha256:6f8ff108e40c22032baa265e106be8a141c64c3a6cfd675ec5bc027e565ebd4b",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:syriac:olia-interjection:projection",
+            "reviewed_mapping_digest": "sha256:6f8ff108e40c22032baa265e106be8a141c64c3a6cfd675ec5bc027e565ebd4b"
+          }
+        }
+      ],
+      "rationale": "Pinned Syriac word_grammar line 88 explicitly glosses sp=intj as interjection. OLiA Interjection line 307 is the corresponding class and does not entail an extra pragmatic annotation.",
+      "mapping_semantic_digest": "sha256:ade77ba1e4189915c8182ae5a1e9243b51cfc8257bab638c3b49e4864e9f0888",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:syriac:olia-interjection:mapping",
+        "reviewed_mapping_digest": "sha256:ade77ba1e4189915c8182ae5a1e9243b51cfc8257bab638c3b49e4864e9f0888"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+          "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-preposition-class",
+          "content_digest": "sha256:6fad4393c30f58bf47cd53a6896c54b9152163a675b703c59da8ec66866d5645"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-preposition",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "prep",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:prep"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+              "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-preposition-class",
+              "content_digest": "sha256:6fad4393c30f58bf47cd53a6896c54b9152163a675b703c59da8ec66866d5645"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "prep",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-preposition",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Preposition",
+          "projection_semantic_digest": "sha256:86db5ca26f6c45e62a6301bba7bf1023c28fe33c82ae0c568ad672d6de96b57e",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:syriac:olia-preposition:projection",
+            "reviewed_mapping_digest": "sha256:86db5ca26f6c45e62a6301bba7bf1023c28fe33c82ae0c568ad672d6de96b57e"
+          }
+        }
+      ],
+      "rationale": "Pinned Syriac word_grammar line 90 explicitly calls sp=prep preposition; OLiA Preposition at original XML line 525 is a preposed adposition. No assumptions about bound morpheme boundaries are needed.",
+      "mapping_semantic_digest": "sha256:210700f975267e078fe518b87ec407a84db9872b63dabf6079a75dcd08e831c2",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:syriac:olia-preposition:mapping",
+        "reviewed_mapping_digest": "sha256:210700f975267e078fe518b87ec407a84db9872b63dabf6079a75dcd08e831c2"
+      }
+    },
+    {
+      "ambiguous_candidates": [],
+      "capabilities": [
+        "linguistic.part-of-speech"
+      ],
+      "corpus_id": "syriac",
+      "evidence": [
+        {
+          "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+          "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+        },
+        {
+          "evidence_id": "evidence:olia:i034a-pronoun-class",
+          "content_digest": "sha256:21d0f7c5be171eae2fceb2024b2c6342599f86a89421e2a3a7fa7acd88c63de1"
+        }
+      ],
+      "external_references": [],
+      "mapping_id": "mapping:syriac:olia-pronoun",
+      "native_binding": {
+        "component_id": "syriac-tf",
+        "node_type": "word",
+        "feature": "sp",
+        "value": "pron",
+        "execution_shape": "value-predicate"
+      },
+      "native_dependencies": [
+        "dep:syriac:word-sp:pron"
+      ],
+      "native_state": "positive",
+      "profiles": [
+        "linguistic"
+      ],
+      "projections": [
+        {
+          "assessment": "exact",
+          "capability_id": "linguistic.part-of-speech",
+          "evidence": [
+            {
+              "evidence_id": "evidence:syriac:word-sp-batch-i034a",
+              "content_digest": "sha256:33c7815d10ece46715e950a94c7d2dbef6265b0d17e70e20571e0b72a82aba38"
+            },
+            {
+              "evidence_id": "evidence:olia:i034a-pronoun-class",
+              "content_digest": "sha256:21d0f7c5be171eae2fceb2024b2c6342599f86a89421e2a3a7fa7acd88c63de1"
+            }
+          ],
+          "formal_kind": "class",
+          "native_execution_binding": {
+            "component_id": "syriac-tf",
+            "node_type": "word",
+            "feature": "sp",
+            "value": "pron",
+            "execution_shape": "value-predicate"
+          },
+          "ontology_lock": "olia-reference-model-i034a-pos",
+          "profile_id": "linguistic",
+          "projection_id": "projection:syriac:olia-pronoun",
+          "publication_relation": null,
+          "query_role": "semantic-constraint",
+          "reference_kind": "semantic-pivot",
+          "semantic_role": "annotation-value",
+          "target": "http://purl.org/olia/olia.owl#Pronoun",
+          "projection_semantic_digest": "sha256:c9baca70aac1f8d1ef96a7fe2d3b5396968de51247374c9d8859c3c0751ca390",
+          "review": {
+            "status": "reviewed",
+            "reviewer_id": "github:alexsosn",
+            "reviewed_at": "2026-10-11T20:03:36Z",
+            "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+            "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+            "review_id": "review:i034a:syriac:olia-pronoun:projection",
+            "reviewed_mapping_digest": "sha256:c9baca70aac1f8d1ef96a7fe2d3b5396968de51247374c9d8859c3c0751ca390"
+          }
+        }
+      ],
+      "rationale": "Pinned Syriac word_grammar line 91 describes sp=pron as general pronoun; OLiA Pronoun at XML line 1860 is the corresponding unspecialized category. It must not be mapped to any particular BHSA personal, demonstrative or interrogative pronoun subclass.",
+      "mapping_semantic_digest": "sha256:e350e41b4b403f9f57599504e4da05eb271ddbe18bbd4ef097033c91ade942d2",
+      "review": {
+        "status": "reviewed",
+        "reviewer_id": "github:alexsosn",
+        "reviewed_at": "2026-10-11T20:03:36Z",
+        "review_source": "https://github.com/alexsosn/ontoTF/pull/343",
+        "review_method": "independent source-grounded adversarial and decision reviews authenticated by GitHub protected run 38172147473",
+        "review_id": "review:i034a:syriac:olia-pronoun:mapping",
+        "reviewed_mapping_digest": "sha256:e350e41b4b403f9f57599504e4da05eb271ddbe18bbd4ef097033c91ade942d2"
+      }
+    }
+  ]
+}
