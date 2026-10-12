@@ -27,3 +27,31 @@ ExtraBiblical `README.md` explicitly refers to BHSA family feature documentation
 Reuse the **existing, read-only, no-secret** `i027b3-extrabiblical-source.yml` source-validation workflow, which checks out exact pinned upstream Git revision and runs `i027b3_extract_mql.py`. Extend the deterministic offline extractor to return a bounded 14-value declaration-only record with code and actual source line; test parser with malicious/truncated fixtures **before implementation**, then run it on real pinned original 2MB source under GitHub CI. Do not vendor the MQL data (upstream repository CC-BY-NC-4.0). The resulting original-source proof must precede exact mappings and dedicated candidate evidence.
 
 After extracting and verifying, commit **one** data-first corpus POS candidate batch for eleven native selectors, using already vetted OLiA target locks and source evidence, a logically independent skeptical mapping review, and a single batch PR/release path. Do not open eleven per-entity issues, duplicate old mappings, or spend time on generic release tooling. New installed OLiA mappings count stays zero until installed release verification.
+
+
+## Completed original enumeration research (2026-10-12)
+
+The pinned ETCBC repository was checked out at `9a56288e6777bad6328856acf055c780e65dd5d9`; the compressed Git blob was verified against `4ba717b1716b747bb94d0359b950a55d8624b109` *before* listing the following declaration-only metadata. The [original-source job 114784826913](https://github.com/alexsosn/ontoTF/actions/runs/38241464739) completed successfully with the corrected multiline MQL header parser. Independent source diagnostic output from [job 114783210754](https://github.com/alexsosn/ontoTF/actions/runs/38240977724) enumerated all fourteen values:
+
+| MQL line | Value | Integer code | Planned disposition |
+| ---: | --- | ---: | --- |
+| 164 | `art` | 0 | Proposed exact OLiA Article |
+| 165 | `verb` | 1 | Already installed in 0.3.0 |
+| 166 | `subs` | 2 | Already installed in 0.3.0 |
+| 167 | `nmpr` | 3 | Already installed in 0.3.0 |
+| 168 | `advb` | 4 | Proposed exact OLiA Adverb |
+| 169 | `prep` | 5 | Proposed exact OLiA Preposition |
+| 170 | `conj` | 6 | Proposed exact OLiA Conjunction |
+| 171 | `prps` | 7 | Native-only (OLiA irreflexivity not proved) |
+| 172 | `prde` | 8 | Proposed exact OLiA DemonstrativePronoun |
+| 173 | `prin` | 9 | Proposed exact OLiA InterrogativePronoun |
+| 174 | `intj` | 10 | Proposed exact OLiA Interjection |
+| 175 | `nega` | 11 | Native-only (particle subtype not proved) |
+| 176 | `inrg` | 12 | Native-only (particle subtype not proved) |
+| 177 | `adjv` | 13 | Proposed exact OLiA Adjective |
+
+The original enum header is line 163 and the `word.sp : part_of_speech_t` feature's declaration is line 501. The corresponding 14 TF observed-value frequencies sum to **39,862** words. These are **value declaration coordinates**, not MQL corpus-example token references. A zero-valued `art` is a legitimate enumerator, not a null/missing value.
+
+**Independent category interpretation:** The pinned BHSA family `docs/features/sp.md` directly supplies ETCBC glosses for these same fourteen codes, and ExtraBiblical's pinned README explicitly identifies the corpus as part of the BHSA family with BHSA as its core feature documentation. That family relationship supports, but cannot by itself prove, the OLiA equivalence of every ExtraBiblical token. The pinned RDF class identities are independently backed by the installed 19-term OLiA lock. The eight mappings are therefore **proposal-only** until reviewed per-row and formally published; the three conservative native-only cases remain without shared targets.
+
+The machine-verifiable minimal record is `docs/research/data/i034f/extrabiblical-mql-pos-enum.json` (14 original category values/codes/lines) and the digest-bound candidate native source evidence is `docs/research/data/batch_review/evidence/i034f-extrabiblical-pos.json`. Neither metadata file redistributes original 41 MB MQL corpus content.
