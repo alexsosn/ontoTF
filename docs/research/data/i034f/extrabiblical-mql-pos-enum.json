@@ -1,0 +1,92 @@
+{
+  "schema_version": 2,
+  "source_repository": "ETCBC/extrabiblical",
+  "source_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "source_path": "source/0.2/extraBiblical.mql.bz2",
+  "git_blob_sha": "4ba717b1716b747bb94d0359b950a55d8624b109",
+  "compressed_size": 1992719,
+  "compressed_sha256": "9b60ef03d18785257e80bc199acb7f348c20177b273e9c47b20a868ab7e07073",
+  "decompressed_size": 41353107,
+  "decompressed_sha256": "62540c8b4682121dd002f4c234c693259fb494c439ddfc06574537e5e398790e",
+  "encoding": "UTF-8",
+  "part_of_speech_enum": {
+    "enum_declaration_line": 163,
+    "feature_type_line": 501,
+    "values": [
+      {
+        "value": "art",
+        "code": 0,
+        "line": 164
+      },
+      {
+        "value": "verb",
+        "code": 1,
+        "line": 165
+      },
+      {
+        "value": "subs",
+        "code": 2,
+        "line": 166
+      },
+      {
+        "value": "nmpr",
+        "code": 3,
+        "line": 167
+      },
+      {
+        "value": "advb",
+        "code": 4,
+        "line": 168
+      },
+      {
+        "value": "prep",
+        "code": 5,
+        "line": 169
+      },
+      {
+        "value": "conj",
+        "code": 6,
+        "line": 170
+      },
+      {
+        "value": "prps",
+        "code": 7,
+        "line": 171
+      },
+      {
+        "value": "prde",
+        "code": 8,
+        "line": 172
+      },
+      {
+        "value": "prin",
+        "code": 9,
+        "line": 173
+      },
+      {
+        "value": "intj",
+        "code": 10,
+        "line": 174
+      },
+      {
+        "value": "nega",
+        "code": 11,
+        "line": 175
+      },
+      {
+        "value": "inrg",
+        "code": 12,
+        "line": 176
+      },
+      {
+        "value": "adjv",
+        "code": 13,
+        "line": 177
+      }
+    ]
+  },
+  "source_check_run": "https://github.com/alexsosn/ontoTF/actions/runs/38240977724",
+  "source_check_job": 114783210754,
+  "interpretation": "Machine-readable bounded enumeration coordinates extracted from the original pinned MQL Git blob; original-source schema alone does not approve exact ontology mappings.",
+  "exact_mapping_authorized": false
+}
