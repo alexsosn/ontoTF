@@ -73,7 +73,7 @@ def _iri(value: str) -> bool:
     return bool(parts.scheme and value[len(parts.scheme) + 1:])
 
 
-def _checked(name: str, text: str, version: str | None) -> tuple[Mapping, ...]:
+def _checked(name: str, text: str) -> tuple[Mapping, ...]:
     try:
         root = ET.fromstring(text)
     except ET.ParseError as exc:
@@ -132,8 +132,7 @@ def _checked(name: str, text: str, version: str | None) -> tuple[Mapping, ...]:
             raise MappingError(f"{where}: duplicate mapping")
         seen.add(fingerprint)
         rows.append(row)
-    return tuple(row for row in rows if version is None or
-                 row.corpus_version is None or row.corpus_version == version)
+    return tuple(rows)
 
 
 class MappingCatalog:
@@ -156,7 +155,7 @@ class MappingCatalog:
             path = self.directory.joinpath(filename)
             if not path.is_file():
                 raise MappingError(f"unknown corpus: {corpus}")
-            self._loaded[corpus] = _checked(filename, path.read_text(encoding="utf-8"), None)
+            self._loaded[corpus] = _checked(filename, path.read_text(encoding="utf-8"))
         return self._loaded[corpus]
 
     def map_native(
@@ -229,6 +228,8 @@ def resolve_nodes(api: Any, mapping: Mapping, *,
     try:
         nodes = api.F.otype.s(mapping.node)
         feature = api.Fs(mapping.feature)
-        return tuple(n for n in nodes if str(feature.v(n)) == mapping.value)
+        return tuple(n for n in nodes
+                     if (observed := feature.v(n)) is not None
+                     and str(observed) == mapping.value)
     except (AttributeError, KeyError, TypeError) as exc:
         raise MappingError(f"{mapping.corpus}: required TF feature or node type unavailable") from exc
