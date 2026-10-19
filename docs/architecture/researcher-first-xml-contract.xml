@@ -137,8 +137,10 @@
     <operation name="find_correspondences">
       Given source corpus, native selector and destination corpus, match through
       a common target IRI. Exact mappings produce exact CATEGORY correspondences,
-      not individual token alignments. Entity identity requires entity mappings.
-      Approximate paths are returned only when explicitly requested and keep
+      not individual token alignments. Entity identity requires entity mappings
+      and uniqueness checks on loaded corpus identifiers. Without such checks,
+      an entity-level IRI match is an unverified candidate, never an exact
+      individual identity claim. Approximate paths are returned only when explicitly requested and keep
       relation and direction. If no justified mapping exists, return an empty
       result with an intelligible diagnostic.
     </operation>

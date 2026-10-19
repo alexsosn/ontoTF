@@ -59,11 +59,14 @@ class Correspondence:
 
     @property
     def scope(self) -> str:
-        return "entity" if self.source.kind == "entity" else "category"
+        return "entity-candidate" if self.source.kind == "entity" else "category"
 
     @property
     def relation(self) -> str:
-        # A mixed or approximate path does not establish a direct equivalence.
+        # An entity IRI match without a uniqueness check is only a candidate.
+        if self.source.kind == "entity":
+            return "unverified"
+        # A mixed or approximate category path is not a direct equivalence.
         return ("exact" if self.source.relation == self.destination.relation == "exact"
                 else "approximate-via-target")
 

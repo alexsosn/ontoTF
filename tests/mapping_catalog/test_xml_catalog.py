@@ -95,7 +95,8 @@ class XMLMappingContractTests(unittest.TestCase):
             file(root, "other", '<map kind="entity" node="lexeme" feature="id" value="11" relation="exact" target="urn:thing:42"/>')
             cat = MappingCatalog(root)
             rows = cat.find_correspondences("wrong", "other", kind="entity", node="word", feature="id", value="42")
-            self.assertEqual(rows[0].scope, "entity")
+            self.assertEqual(rows[0].scope, "entity-candidate")
+            self.assertEqual(rows[0].relation, "unverified"
             self.assertEqual(cat.find_correspondences("wrong", "other", node="word", feature="id", value="42"), ())
 
     def test_loaded_tf_execution_and_version_mismatch(self):
