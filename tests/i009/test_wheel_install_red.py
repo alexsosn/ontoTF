@@ -33,6 +33,10 @@ class I009WheelInstallTests(unittest.TestCase):
             wheel = wheels[0]
 
             expected_entries = {
+                "tfont/mappings/schema.xsd",
+                "tfont/mappings/bhsa.xml",
+                "tfont/mappings/syriac.xml",
+                "tfont/mappings/extrabiblical.xml",
                 "tfont/resources/profiles/bhsa/0.1.0/profile.json",
                 "tfont/resources/profiles/bhsa/0.1.0/parent/expected-components.json",
                 "tfont/resources/profiles/bhsa/0.1.0/mappings/noun.json",
@@ -66,6 +70,11 @@ from tfont.semantic_ir import compile_semantic_ir
 from tfont.semantic_validation import validate_semantic_bundle
 
 assert tfont.PRODUCTION_NOUN_CORPORA == ("bhsa", "syriac", "extrabiblical")
+assert set(tfont.list_corpora()) == {"bhsa", "syriac", "extrabiblical"}
+links = tfont.find_correspondences(
+    "bhsa", "syriac", node="word", feature="sp", value="nmpr")
+assert any(x.destination.feature == "ls" and x.destination.value == "prop"
+           and x.target.endswith("#ProperNoun") for x in links)
 bundles = tfont.load_production_noun_bundles()
 assert len(bundles) == 3
 validated = tuple(validate_semantic_bundle(bundle) for bundle in bundles)
