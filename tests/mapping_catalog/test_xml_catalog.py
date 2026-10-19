@@ -40,6 +40,19 @@ class XMLMappingContractTests(unittest.TestCase):
                             and r.destination.value == "prop" for r in proper))
         self.assertEqual(map_native("syriac", node="word", feature="sp", value="inrg")[0].relation, "native-only")
         self.assertFalse(find_correspondences("syriac", "bhsa", node="word", feature="sp", value="inrg"))
+        construct = find_correspondences(
+            "bhsa", "syriac", node="word", feature="st", value="c")
+        self.assertEqual({r.destination.value for r in construct}, {"cst"})
+        self.assertEqual(
+            find_correspondences("syriac", "bhsa", node="word", feature="st", value="c"), ())
+        first = find_correspondences(
+            "bhsa", "syriac", node="word", feature="ps", value="p1")
+        self.assertEqual({r.destination.value for r in first}, {"first"})
+        self.assertEqual(
+            find_correspondences("bhsa", "syriac", node="word", feature="prs_ps", value="p1"), ())
+        self.assertEqual(
+            find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf"), ())
+
 
     def test_single_file_new_corpus_and_lazy_corruption_isolation(self):
         with tempfile.TemporaryDirectory() as directory:
