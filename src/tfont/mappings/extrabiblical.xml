@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings corpus="extrabiblical" source="ETCBC/extrabiblical" corpusVersion="0.2">
+  <map kind="value" node="word" feature="sp" value="subs" relation="exact" target="http://purl.org/olia/olia.owl#Noun" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="sp" value="nmpr" relation="exact" target="http://purl.org/olia/olia.owl#Noun" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="sp" value="nmpr" relation="exact" target="http://purl.org/olia/olia.owl#ProperNoun" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="gn" value="m" relation="exact" target="http://purl.org/olia/olia.owl#Masculine" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="gn" value="f" relation="exact" target="http://purl.org/olia/olia.owl#Feminine" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="nu" value="sg" relation="exact" target="http://purl.org/olia/olia.owl#Singular" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="nu" value="pl" relation="exact" target="http://purl.org/olia/olia.owl#Plural" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="nu" value="du" relation="exact" target="http://purl.org/olia/olia.owl#Dual" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+  <map kind="value" node="word" feature="sp" value="verb" relation="exact" target="http://purl.org/olia/olia.owl#Verb" evidence="https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9"/>
+</mappings>

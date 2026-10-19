@@ -14,8 +14,10 @@ def _read(path: str) -> str:
 def test_agents_pins_tf_native_materializer_boundary():
     text = _read("AGENTS.md")
     assert "TF-native runtime boundary" in text
-    assert "materializer" in text.lower()
-    assert "at least two independent real corpus cases" in text.lower()
+    assert "already materialized Text-Fabric" in text
+    assert "corpus materializer" in text
+    assert "not an instruction to dereference it" in text
+    assert "Do not add a generic sidecar" in " ".join(text.split())
 
 
 def test_r005_supersession_amendment_preserves_history_and_corrects_oracc_boundary():

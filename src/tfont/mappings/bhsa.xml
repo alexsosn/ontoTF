@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings corpus="bhsa" source="ETCBC/bhsa" corpusVersion="2021">
+  <map kind="value" node="word" feature="sp" value="subs" relation="exact" target="http://purl.org/olia/olia.owl#Noun" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="nmpr" relation="exact" target="http://purl.org/olia/olia.owl#Noun" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="nmpr" relation="exact" target="http://purl.org/olia/olia.owl#ProperNoun" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="gn" value="m" relation="exact" target="http://purl.org/olia/olia.owl#Masculine" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="gn" value="f" relation="exact" target="http://purl.org/olia/olia.owl#Feminine" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="nu" value="sg" relation="exact" target="http://purl.org/olia/olia.owl#Singular" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="nu" value="pl" relation="exact" target="http://purl.org/olia/olia.owl#Plural" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="nu" value="du" relation="exact" target="http://purl.org/olia/olia.owl#Dual" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="verb" relation="exact" target="http://purl.org/olia/olia.owl#Verb" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="adjv" relation="exact" target="http://purl.org/olia/olia.owl#Adjective" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="advb" relation="exact" target="http://purl.org/olia/olia.owl#Adverb" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="art" relation="exact" target="http://purl.org/olia/olia.owl#Article" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="conj" relation="exact" target="http://purl.org/olia/olia.owl#Conjunction" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="prde" relation="exact" target="http://purl.org/olia/olia.owl#DemonstrativePronoun" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="intj" relation="exact" target="http://purl.org/olia/olia.owl#Interjection" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="inrg" relation="exact" target="http://purl.org/olia/olia.owl#InterrogativeParticle" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="prin" relation="exact" target="http://purl.org/olia/olia.owl#InterrogativePronoun" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="nega" relation="exact" target="http://purl.org/olia/olia.owl#NegativeParticle" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="prep" relation="exact" target="http://purl.org/olia/olia.owl#Preposition" evidence="https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da"/>
+  <map kind="value" node="word" feature="sp" value="prps" relation="native-only"/>
+  <map kind="value" node="word" feature="ps" value="p1" relation="exact" target="http://purl.org/olia/olia.owl#First" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
+  <map kind="value" node="word" feature="ps" value="p2" relation="exact" target="http://purl.org/olia/olia.owl#Second" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
+  <map kind="value" node="word" feature="ps" value="p3" relation="exact" target="http://purl.org/olia/olia.owl#Third" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
+  <map kind="value" node="word" feature="ps" value="NA" relation="native-only"/>
+  <map kind="value" node="word" feature="ps" value="unknown" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_ps" value="p1" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_ps" value="p2" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_ps" value="p3" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_ps" value="NA" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_gn" value="m" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_gn" value="f" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_gn" value="NA" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_gn" value="unknown" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_nu" value="sg" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_nu" value="pl" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_nu" value="NA" relation="native-only"/>
+  <map kind="value" node="word" feature="st" value="a" relation="native-only"/>
+  <map kind="value" node="word" feature="st" value="c" relation="exact" target="http://purl.org/olia/olia.owl#StatusConstructus" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
+  <map kind="value" node="word" feature="st" value="e" relation="native-only"/>
+  <map kind="value" node="word" feature="st" value="NA" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="NA" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="perf" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="impf" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="wayq" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="impv" relation="exact" target="http://purl.org/olia/olia.owl#ImperativeVerb" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
+  <map kind="value" node="word" feature="vt" value="infa" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="infc" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="ptca" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="ptcp" relation="native-only"/>
+</mappings>
