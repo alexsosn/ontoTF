@@ -6,6 +6,17 @@
 
 Researchers need correct and quick corpus-to-corpus mapping discovery. A mapped CATEGORY is not necessarily a mapped TOKEN or a shared entity identity. Preserve the original corpus semantics, evidence and mapping relation (`exact`, `close`, `broader`, `narrower`, `related`, `ambiguous`, `native-only`, `unsupported`). Never infer semantic identity from identical labels.
 
+## TF-native runtime boundary
+
+ontoTF resolves annotations on already materialized Text-Fabric / Context-Fabric
+nodes, features, and edges. Corpus-specific ingestion and conversion of upstream
+formats belongs to the corpus materializer; a URI in a mapping is a semantic
+identifier or evidence link, not an instruction to dereference it. Do not add
+a generic sidecar, file-record adapter, external database or network-fetching
+runtime for ordinary XML correspondence queries. Any genuinely needed new
+carrier or runtime behavior must be justified by an actual corpus example,
+a user-facing query, and tests, not by an arbitrary required number of corpora.
+
 ## Contribution invariant
 
 A new or extended corpus must require editing **one XML file at `src/tfont/mappings/<corpus>.xml`**, optionally a second source-evidence file; no new Python file, manifest, registry, release snapshot, ontology lock or CI workflow. XML in this repository is the source of truth. No intermediary YAML/JSON mapping ledger or external database.
