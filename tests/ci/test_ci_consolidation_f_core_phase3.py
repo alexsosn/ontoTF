@@ -36,7 +36,6 @@ PRESERVED_INDEPENDENT_GATES = (
     "i008-exact-execution.yml",
     "i027b3-extrabiblical-source.yml",
     "i027c1-native-pos.yml",
-    "i033e3-protected-batch-review.yml",
 )
 
 
@@ -84,17 +83,14 @@ class SharedFCoreConsolidation(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, steps)
 
-    def test_windows_and_source_and_protected_gates_retained(self):
+    def test_windows_and_source_gates_retained(self):
         for filename in PRESERVED_PLATFORM_RUNNERS:
             content = (CI / filename).read_text(encoding="utf-8")
             self.assertIn("windows-latest", content, filename)
             self.assertIn("pull_request:", content, filename)
         for filename in PRESERVED_INDEPENDENT_GATES:
             self.assertTrue((CI / filename).is_file(), filename)
-        trusted = (CI / "i033e3-protected-batch-review.yml").read_text(encoding="utf-8")
-        self.assertIn("pull_request_target:", trusted)
-        self.assertIn("ref: main", trusted)
-        self.assertNotIn("pull_request_review:\n", trusted)
+        self.assertFalse((CI / "i033e3-protected-batch-review.yml").exists())
         for name in ("i027b3-extrabiblical-source.yml", "i027c1-native-pos.yml"):
             pinned = (CI / name).read_text(encoding="utf-8")
             self.assertIn("repository: ETCBC/", pinned)

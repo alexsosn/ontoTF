@@ -32,16 +32,14 @@ class I016PackagingAndCIContractTests(unittest.TestCase):
             "RED: generated coverage manifests are absent from wheel package-data",
         )
 
-    def test_i016_exact_head_workflow_exists_and_checks_resources(self):
-        path = ROOT / ".github" / "workflows" / "i016-coverage.yml"
-        self.assertTrue(path.is_file(), "RED: I-016 focused workflow is absent")
-        if not path.is_file():
-            return
+    def test_shared_exact_head_suite_owns_i016_regressions(self):
+        path = ROOT / ".github" / "workflows" / "full-suite.yml"
         text = path.read_text(encoding="utf-8")
         self.assertIn("github.event.pull_request.head.sha || github.sha", text)
-        self.assertIn("tests/i016", text)
+        self.assertIn("python -m unittest discover -s tests -v", text)
         self.assertIn("build_p004_r011_baseline.py --check", text)
         self.assertIn("python-version: [\"3.10\", \"3.12\"]", text)
+        self.assertFalse((path.parent / "i016-coverage.yml").exists())
 
 
 if __name__ == "__main__":

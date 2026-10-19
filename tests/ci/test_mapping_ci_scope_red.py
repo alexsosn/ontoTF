@@ -19,11 +19,6 @@ SCOPES = {
         ('"src/tfont/resources/**"', "'src/tfont/resources/**'"),
         "tests/i009/**",
     ),
-    "i016-coverage.yml": (
-        ('"src/tfont/resources/coverage/**"', "'src/tfont/resources/coverage/**'"),
-        "tests/i016/**",
-    ),
-
 }
 
 
@@ -58,6 +53,14 @@ class CITriggerScopeRED(unittest.TestCase):
                 self.assertIn('"' + corpus + '.json"', full)
 
     def test_remaining_legacy_sources_only_keep_scoped_pr_triggers(self):
+        for filename in (
+            "i016-coverage.yml",
+            "i017-pseudepigrapha-coverage.yml",
+            "i018-oracc-coverage.yml",
+            "i019-tlhdig-coverage.yml",
+            "i033e3-protected-batch-review.yml",
+        ):
+            self.assertFalse((WORKFLOWS / filename).exists(), filename)
         for workflow, (removed, retained) in SCOPES.items():
             src = (WORKFLOWS/workflow).read_text(encoding="utf-8")
             pr = pr_section(src)

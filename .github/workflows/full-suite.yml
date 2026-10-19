@@ -40,14 +40,19 @@ jobs:
           python -m pip install -e .
           python -m pip install build pytest
 
-      - name: Run repository test suite
-        run: python -m unittest discover -s tests -v
+      - name: Fast Python syntax preflight
+        run: python -m compileall -q src/tfont tests
+
+      # Fast independent semantic/runtime architecture checks first, before
+      # the long full-suite run. Invalid contracts should fail quickly.
+      - name: Run TF-native architecture guards
+        run: python -m pytest tests/architecture -q
 
       - name: Execute previously hidden pytest research contracts
         run: python -m pytest tests/research -q
 
-      - name: Run TF-native architecture guards
-        run: python -m pytest tests/architecture -q
+      - name: Run repository test suite
+        run: python -m unittest discover -s tests -v
 
       # F-030 phase 3: retain repository-wide F-series research/workflow
       # ownership enforcement while retiring six duplicated Linux jobs.
@@ -71,6 +76,14 @@ jobs:
           python scripts/coverage/build_i027c2_bhsa_adj_adv.py --check
           python scripts/coverage/build_i027c2_syriac_adj_adv.py --check
           python scripts/coverage/build_i027d_current_queue.py --check
+
+      # Unique data-reproducibility checks from I-017..I-019; do not re-run
+      # the entire test suite and wheel build in four separate workflows.
+      - name: Verify current coverage successors
+        run: |
+          python scripts/coverage/build_i017_pseudepigrapha_v1.py --check
+          python scripts/coverage/build_i018_oracc_current.py --check
+          python scripts/coverage/build_i019_tlhdig_current.py --check
 
       - name: Build exact-head distributable wheel
         run: python -m build --wheel --outdir dist
@@ -96,6 +109,16 @@ jobs:
               present = {name for name in wheel.namelist() if name.startswith(prefix)}
           if present != expected:
               raise SystemExit("missing or unexpected frozen coverage resources in wheel")
+          successors = {
+              "tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
+              "tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
+              "tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json",
+              "tfont/schemas/coverage-manifest.schema.json",
+          }
+          with ZipFile(dist[0]) as wheel:
+              missing = successors - set(wheel.namelist())
+          if missing:
+              raise SystemExit(f"missing current coverage resources in wheel: {sorted(missing)}")
           PY
 
       - name: Install reviewed profile wheel in isolated environment
