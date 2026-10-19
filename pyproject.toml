@@ -25,6 +25,8 @@ where = ["src"]
 [tool.setuptools.package-data]
 tfont = [
   "schemas/*.json",
+  "mappings/*.xml",
+  "mappings/*.xsd",
   "resources/coverage/*/*.json",
   "resources/batch_pilots/*.json",
   "resources/release_catalog/*.json",

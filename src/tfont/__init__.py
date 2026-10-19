@@ -436,3 +436,13 @@ __all__ = [
     "validate_semantic_bundle",
     "validate_source",
 ]
+
+# Current XML mappings coexist with frozen historical profile APIs during migration.
+from .xml_mappings import (
+    Correspondence, Mapping, MappingCatalog, MappingError,
+    find_correspondences, list_corpora, map_native, resolve_nodes,
+)
+__all__.extend([
+    "Correspondence", "Mapping", "MappingCatalog", "MappingError",
+    "find_correspondences", "list_corpora", "map_native", "resolve_nodes",
+])

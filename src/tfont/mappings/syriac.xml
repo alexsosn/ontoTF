@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings corpus="syriac" source="ETCBC/syriac" corpusVersion="0.9">
+  <map kind="value" node="word" feature="sp" value="subs" relation="exact" target="http://purl.org/olia/olia.owl#Noun" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="ls" value="prop" relation="exact" target="http://purl.org/olia/olia.owl#ProperNoun" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="gn" value="m" relation="exact" target="http://purl.org/olia/olia.owl#Masculine" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="gn" value="f" relation="exact" target="http://purl.org/olia/olia.owl#Feminine" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="nu" value="sg" relation="exact" target="http://purl.org/olia/olia.owl#Singular" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="nu" value="pl" relation="exact" target="http://purl.org/olia/olia.owl#Plural" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="nu" value="du" relation="exact" target="http://purl.org/olia/olia.owl#Dual" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="verb" relation="exact" target="http://purl.org/olia/olia.owl#Verb" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="adjv" relation="exact" target="http://purl.org/olia/olia.owl#Adjective" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="advb" relation="exact" target="http://purl.org/olia/olia.owl#Adverb" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="conj" relation="exact" target="http://purl.org/olia/olia.owl#Conjunction" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="intj" relation="exact" target="http://purl.org/olia/olia.owl#Interjection" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="prep" relation="exact" target="http://purl.org/olia/olia.owl#Preposition" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="pron" relation="exact" target="http://purl.org/olia/olia.owl#Pronoun" evidence="https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919"/>
+  <map kind="value" node="word" feature="sp" value="inrg" relation="native-only"/>
+  <map kind="value" node="word" feature="sp" value="nega" relation="native-only"/>
+</mappings>
