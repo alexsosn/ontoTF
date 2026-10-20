@@ -194,7 +194,19 @@ class XMLMappingContractTests(unittest.TestCase):
                 '<map kind="value" node="word" feature="sp" value="x" relation="native-only" corpusVersion="1"/>'
                 f'<map kind="value" node="word" feature="sp" value="x" relation="exact" corpusVersion="2" target="{NOUN}"/>'
             ))
-            self.assertEqual(len(MappingCatalog(root).load("a")), 2)
+            file(root, "b", f'<map kind="value" node="word" feature="sp" value="y" relation="exact" target="{NOUN}"/>')
+            catalog = MappingCatalog(root)
+            self.assertEqual(len(catalog.load("a")), 2)
+            self.assertEqual([row.relation for row in catalog.map_native(
+                "a", node="word", feature="sp", value="x", corpus_version="1")],
+                ["native-only"])
+            self.assertEqual([row.relation for row in catalog.map_native(
+                "a", node="word", feature="sp", value="x", corpus_version="2")],
+                ["exact"])
+            self.assertEqual(catalog.find_correspondences(
+                "a", "b", node="word", feature="sp", value="x", source_version="1"), ())
+            self.assertEqual(len(catalog.find_correspondences(
+                "a", "b", node="word", feature="sp", value="x", source_version="2")), 1)
 
     def test_loaded_tf_execution_and_version_mismatch(self):
         mapping = map_native("syriac", node="word", feature="sp", value="subs")[0]
