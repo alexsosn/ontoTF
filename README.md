@@ -46,15 +46,19 @@ The historical [I-026 work queue](docs/research/data/generated/i026/p004-work-qu
 The current development branch reads `src/tfont/mappings/<corpus>.xml` directly. It does not generate a release profile for each new mapping. For example:
 
 ```python
-from tfont import find_correspondences, list_corpora
+from tfont import find_by_target, find_correspondences, list_corpora
 
-print(list_corpora())  # ('bhsa', 'extrabiblical', 'syriac')
+print(list_corpora())  # discovered automatically from packaged XML files
 matches = find_correspondences(
     "bhsa", "syriac", node="word", feature="sp", value="nmpr"
 )
 for match in matches:
     print(match.target, match.destination.feature, match.destination.value,
           match.relation, match.scope)
+
+# Search an ontology class in every installed corpus without knowing native names.
+for mapping in find_by_target("http://purl.org/olia/olia.owl#Noun"):
+    print(mapping.corpus, mapping.node, mapping.feature, mapping.value)
 ```
 
 This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, match.destination)` can execute a positive feature-value selector against an already loaded matching TF corpus. For a new corpus, create one `src/tfont/mappings/<newcorpus>.xml` file; no Python edits or registry updates are needed. The installed wheel reads the same XML files as the repository.
