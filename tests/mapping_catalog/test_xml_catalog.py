@@ -330,7 +330,7 @@ class XMLMappingContractTests(unittest.TestCase):
         self.assertEqual(
             catalog.find_correspondences(
                 "assyrian-royal-inscriptions", "syrnt",
-                node="word", feature="pos", value="N"
+                kind="entity", node="word", feature="pos", value="N"
             ),
             (),
         )
