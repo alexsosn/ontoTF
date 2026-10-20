@@ -32,6 +32,12 @@ class I009WheelInstallTests(unittest.TestCase):
             self.assertEqual(len(wheels), 1)
             wheel = wheels[0]
 
+            corpus_xml_files = {
+                f"tfont/mappings/{path.name}"
+                for path in (repo / "src/tfont/mappings").glob("*.xml")
+            }
+            expected_corpora = {Path(name).stem for name in corpus_xml_files}
+            self.assertTrue({"bhsa", "syriac", "extrabiblical"} <= expected_corpora)
             expected_entries = {
                 "tfont/mappings/schema.xsd",
                 "tfont/mappings/bhsa.xml",
@@ -50,7 +56,10 @@ class I009WheelInstallTests(unittest.TestCase):
             }
             with zipfile.ZipFile(wheel) as archive:
                 names = set(archive.namelist())
+            expected_entries.update(corpus_xml_files)
             self.assertTrue(expected_entries <= names, f"missing wheel resources: {sorted(expected_entries - names)}")
+            wheel_xml = {name for name in names if name.startswith("tfont/mappings/") and name.endswith(".xml")}
+            self.assertEqual(wheel_xml, corpus_xml_files, "wheel must include exactly the authored XML corpus catalog")
             self.assertFalse(any(name.endswith(".tf") for name in names), "I-009 wheel must not bundle corpus TF payloads")
             self.assertFalse(any(name.endswith(".mql") or name.endswith(".mql.gz") for name in names), "I-009 wheel must not bundle corpus MQL payloads")
 
@@ -70,11 +79,17 @@ from tfont.semantic_ir import compile_semantic_ir
 from tfont.semantic_validation import validate_semantic_bundle
 
 assert tfont.PRODUCTION_NOUN_CORPORA == ("bhsa", "syriac", "extrabiblical")
-assert set(tfont.list_corpora()) == {"bhsa", "syriac", "extrabiblical"}
+assert set(tfont.list_corpora()) == set(json.loads(os.environ["I009_EXPECTED_XML_CORPORA"]))
 links = tfont.find_correspondences(
     "bhsa", "syriac", node="word", feature="sp", value="nmpr")
 assert any(x.destination.feature == "ls" and x.destination.value == "prop"
            and x.target.endswith("#ProperNoun") for x in links)
+# The new corpus is installed as XML without release registry updates.
+if "syrnt" in tfont.list_corpora():
+    correspondences = tfont.find_correspondences(
+        "syrnt", "bhsa", node="word", feature="sp", value="noun")
+    assert any(link.target.endswith("#Noun") and link.destination.value == "subs"
+               for link in correspondences)
 bundles = tfont.load_production_noun_bundles()
 assert len(bundles) == 3
 validated = tuple(validate_semantic_bundle(bundle) for bundle in bundles)
@@ -84,6 +99,7 @@ print(json.dumps({"corpora": [row.key.corpus_id for row in ir.variants]}))
             env = os.environ.copy()
             env.pop("PYTHONPATH", None)
             env["I009_INSTALLED_TARGET"] = str(target)
+            env["I009_EXPECTED_XML_CORPORA"] = json.dumps(sorted(expected_corpora))
             result = subprocess.run(
                 [sys.executable, "-I", "-c", script],
                 cwd=outside,
