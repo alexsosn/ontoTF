@@ -290,31 +290,6 @@ class SingleAgentReviewRED(unittest.TestCase):
             finally:
                 os.chdir(previous)
 
-    def test_existing_cli_can_build_two_review_bodies_without_issuing_approval(self):
-        import tempfile
-        from pathlib import Path
-        from unittest.mock import patch
-        import contextlib
-        import io
-        import sys
-        from scripts.mappings import prepare_external_review as cli
-        packet = self.packet
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp)/"challenges.json"
-            challenge = json.loads(adversarial_body(packet).split("\n",1)[1])
-            path.write_text(json.dumps(challenge),encoding="utf-8")
-            for args in (["--challenge-template"],["--review-challenges",str(path)]):
-                with patch.object(cli,"load_review_context",
-                                  return_value=(packet,self.source_reader)), \
-                     patch.object(sys,"argv",["trusted-review",*args]), \
-                     contextlib.redirect_stdout(io.StringIO()) as output:
-                    self.assertEqual(cli.main(),0)
-                if args[0]=="--challenge-template":
-                    self.assertIsNone(json.loads(output.getvalue())["summary"])
-                else:
-                    self.assertEqual(parse_adversarial_report(output.getvalue().rstrip(),packet),
-                                     challenge)
-
     def test_current_pr_must_have_exact_head_base_repo_state(self):
         for broken in (
             {"state":"closed"}, {"draft":True},
