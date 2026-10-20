@@ -54,6 +54,46 @@ class XMLMappingContractTests(unittest.TestCase):
             find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf"), ())
 
 
+    def test_reverse_ontology_lookup_discovers_all_corpora(self):
+        from tfont import find_by_target
+
+        rows = find_by_target(NOUN)
+        self.assertTrue({"bhsa", "syriac", "extrabiblical", "syrnt"}
+                        <= {row.corpus for row in rows})
+        self.assertTrue(all(row.target == NOUN and row.relation == "exact"
+                            and row.kind == "value" for row in rows))
+        self.assertEqual(
+            {(row.feature, row.value) for row in find_by_target(NOUN, corpus="syriac")},
+            {("sp", "subs")},
+        )
+        self.assertEqual(find_by_target("urn:unmapped:unknown-class"), ())
+        with self.assertRaisesRegex(MappingError, "absolute"):
+            find_by_target("not-an-ontology-IRI")
+
+    def test_reverse_lookup_excludes_ambiguous_and_opt_in_approximate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            file(root, "a", (
+                f'<map kind="value" node="word" feature="sp" value="close" relation="close" target="{NOUN}"/>'
+                f'<map kind="value" node="word" feature="sp" value="guess" relation="ambiguous" target="{NOUN}"/>'
+                '<map kind="value" node="word" feature="sp" value="native" relation="native-only"/>'
+            ))
+            file(root, "b", (
+                f'<map kind="value" node="word" feature="pos" value="N" relation="exact" target="{NOUN}"/>'
+            ))
+            cat = MappingCatalog(root)
+            self.assertEqual([(r.corpus, r.value) for r in cat.find_by_target(NOUN)], [("b", "N")])
+            self.assertEqual(
+                [(r.corpus, r.value, r.relation)
+                 for r in cat.find_by_target(NOUN, include_approximate=True)],
+                [("a", "close", "close"), ("b", "N", "exact")],
+            )
+            self.assertEqual(
+                [(r.corpus, r.value) for r in cat.find_by_target(NOUN, corpus="a",
+                                                                  include_approximate=True)],
+                [("a", "close")],
+            )
+
     def test_single_file_new_corpus_and_lazy_corruption_isolation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
