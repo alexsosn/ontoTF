@@ -142,42 +142,10 @@ class ProtectedBatchGateRED(unittest.TestCase):
                 },clear=True),self.assertRaises(ExternalReviewError):
                     self.gate._github_event()
 
-    def test_trusted_workflow_never_checks_out_or_executes_candidate_code(self):
-        self.assertTrue(WORKFLOW.exists())
-        source=WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("pull_request_target:",source)
-        self.assertNotIn("\n  pull_request_review:",source)
-        self.assertIn("ontology-batch-review",source)
-        self.assertIn("ref: main",source)
-        self.assertIn("check_external_review.py --from-pr-head",source)
-        # An exact PR head SHA is safe in an audit artifact name. It is NOT
-        # safe as the checkout ref for executable review-gate code.
-        import re
-        checkouts = re.findall(
-            r"(?m)^\s*-\s+name:\s+Checkout trusted base only[^\n]*\n"
-            r"\s+uses:\s+actions/checkout@[^\n]+\n"
-            r"\s+with:\s*\n"
-            r"\s+ref:\s+([^\n]+)\n"
-            r"\s+persist-credentials:\s+([^\n]+)",
-            source,
-        )
-        self.assertEqual(checkouts, [("main", "false")])
-        # Audit job uses protected main; signing job pins the protected event
-        # base commit so signed provenance matches the code it executes.
-        self.assertEqual(source.count("uses: actions/checkout@"), 2)
-        self.assertEqual(source.count("ref: main"), 1)
-        self.assertEqual(source.count("ref: ${{ github.sha }}"), 1)
-        self.assertNotIn("\n  pull_request:", source)
-        self.assertNotIn("\n  workflow_dispatch:", source)
-        self.assertEqual(sorted(re.findall(r"(?m)^\s+ref:\s+([^\n]+)", source)),
-                         sorted(["main", "${{ github.sha }}"]))
-        self.assertNotRegex(
-            source,
-            r"(?m)^\s*ref:\s*.*(?:pull_request\.head|github\.head_ref)",
-        )
-        self.assertNotIn("pull-requests: write",source)
-        self.assertNotIn("contents: write",source)
-
+    def test_obsolete_review_workflow_is_retired(self):
+        # The XML-first contribution contract uses ordinary PR review, without
+        # a privileged attestation job or a release handoff.
+        self.assertFalse(WORKFLOW.exists())
 
 if __name__=="__main__":
     unittest.main()

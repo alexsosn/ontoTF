@@ -42,7 +42,6 @@ ORIGINAL_SOURCE_AND_REVIEW = (
     "r020-denotational-semantics.yml",
     "i027b3-extrabiblical-source.yml",
     "i027c1-native-pos.yml",
-    "i033e3-protected-batch-review.yml",
 )
 
 
@@ -76,7 +75,7 @@ class ResearchWorkflowRetirementContracts(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, ci)
 
-    def test_unique_original_corpus_measurement_and_review_jobs_stay_active(self):
+    def test_unique_original_corpus_measurement_jobs_stay_active(self):
         for name in ORIGINAL_SOURCE_AND_REVIEW:
             with self.subTest(workflow=name):
                 self.assertTrue((WORKFLOWS / name).is_file())
@@ -96,9 +95,7 @@ class ResearchWorkflowRetirementContracts(unittest.TestCase):
                       (WORKFLOWS / "r011-report-validation.yml").read_text(encoding="utf-8"))
         self.assertIn("diff -u docs/research/data/generated/r020",
                       (WORKFLOWS / "r020-denotational-semantics.yml").read_text(encoding="utf-8"))
-        trusted = (WORKFLOWS / "i033e3-protected-batch-review.yml").read_text(encoding="utf-8")
-        self.assertIn("pull_request_target:", trusted)
-        self.assertIn("ref: main", trusted)
+        self.assertFalse((WORKFLOWS / "i033e3-protected-batch-review.yml").exists())
 
 
 if __name__ == "__main__":
