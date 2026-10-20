@@ -177,6 +177,32 @@ class MappingCatalog:
                 raise MappingError(f"{corpus}: selector not verified for corpus version {corpus_version}")
         return found
 
+    def find_by_target(
+        self, target: str, *, corpus: str | None = None,
+        kind: str = "value", include_approximate: bool = False,
+    ) -> tuple[Mapping, ...]:
+        """Find native category selectors mapped to a known ontology IRI.
+
+        Only positive category links are returned. An ambiguous candidate
+        cannot be used as an ontology match, even with approximate lookup.
+        To examine individual identity assertions, explicitly request
+        kind="entity"; those rows are *not* verified token identities.
+        """
+        if not isinstance(target, str) or not _iri(target):
+            raise MappingError("target must be an absolute ontology IRI")
+        if kind not in _KINDS:
+            raise MappingError(f"unknown mapping kind: {kind!r}")
+        corpora = self.list_corpora() if corpus is None else (corpus,)
+        return tuple(
+            row
+            for name in corpora
+            for row in self.load(name)
+            if row.kind == kind
+            and row.target == target
+            and row.relation not in _NON_MATCHING
+            and (include_approximate or row.relation == "exact")
+        )
+
     def find_correspondences(
         self, source_corpus: str, target_corpus: str, *,
         kind: str = "value", node: str | None = None,
@@ -214,6 +240,10 @@ def list_corpora() -> tuple[str, ...]:
 
 def map_native(corpus: str, **selector: Any) -> tuple[Mapping, ...]:
     return MappingCatalog().map_native(corpus, **selector)
+
+
+def find_by_target(target: str, **query: Any) -> tuple[Mapping, ...]:
+    return MappingCatalog().find_by_target(target, **query)
 
 
 def find_correspondences(source_corpus: str, target_corpus: str,
