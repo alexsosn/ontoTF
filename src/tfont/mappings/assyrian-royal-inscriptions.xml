@@ -64,4 +64,6 @@
   <map kind="value" node="lex" feature="pos" value="EN" relation="native-only" evidence="https://cdli.earth/docs/linguistic-annotations" note="Ethnos-name category; no assertion of an identified ethnic group"/>
   <map kind="value" node="lex" feature="pos" value="PN" relation="native-only" evidence="https://cdli.earth/docs/linguistic-annotations" note="Personal-name category; no assertion of an identified person"/>
   <map kind="value" node="lex" feature="pos" value="TN" relation="native-only" evidence="https://cdli.earth/docs/linguistic-annotations" note="Temple-name category; no assertion of an identified physical temple"/>
+  <!-- OntoLex category correspondence only; source nodes are NOT cross-corpus identical lexical entries. -->
+  <map kind="node" node="lex" relation="exact" target="http://www.w3.org/ns/lemon/ontolex#LexicalEntry" evidence="https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/words-and-lexemes.md" note="Canonical ORACC lexeme keyed by (language,citation form,guide word,POS) corresponds at category level to an OntoLex lexical entry; no sense/lexeme identity between corpora"/>
 </mappings>
