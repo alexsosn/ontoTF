@@ -183,6 +183,11 @@ class MappingCatalog:
     ) -> tuple[Mapping, ...]:
         selector = (kind, node, feature, value, from_node, to_node)
         found = tuple(row for row in self.load(corpus) if row.selector == selector)
+        if corpus_version is None and len({row.corpus_version for row in found}) > 1:
+            raise MappingError(
+                f"{corpus}: selector spans multiple source versions; "
+                "specify corpus_version explicitly"
+            )
         if corpus_version is not None:
             incompatible = [row for row in found if row.corpus_version is not None
                             and row.corpus_version != corpus_version]
