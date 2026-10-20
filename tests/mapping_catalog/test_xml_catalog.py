@@ -197,6 +197,11 @@ class XMLMappingContractTests(unittest.TestCase):
             file(root, "b", f'<map kind="value" node="word" feature="sp" value="y" relation="exact" target="{NOUN}"/>')
             catalog = MappingCatalog(root)
             self.assertEqual(len(catalog.load("a")), 2)
+            with self.assertRaisesRegex(MappingError, "multiple source versions"):
+                catalog.map_native("a", node="word", feature="sp", value="x")
+            with self.assertRaisesRegex(MappingError, "multiple source versions"):
+                catalog.find_correspondences(
+                    "a", "b", node="word", feature="sp", value="x")
             self.assertEqual([row.relation for row in catalog.map_native(
                 "a", node="word", feature="sp", value="x", corpus_version="1")],
                 ["native-only"])
