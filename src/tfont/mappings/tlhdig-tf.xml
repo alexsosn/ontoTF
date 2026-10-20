@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings corpus="tlhdig-tf" source="alexsosn/TLHdig-TF" corpusVersion="0.4.0">
+  <!-- POS belongs to alternative analysis nodes, not words. No chosen analysis is inferred. -->
+  <map kind="value" node="analysis" feature="pos" value="ADV" relation="exact" target="http://purl.org/olia/olia.owl#Adverb" evidence="https://github.com/alexsosn/TLHdig-TF/tree/e954600d9f9cc7f16570729813cf6bf3954b8f6d" note="Adverb category; not a lexical-word identity"/>
+  <map kind="value" node="analysis" feature="pos" value="ADV POSP PREV" relation="native-only" note="Compound potential roles include adverb, postposition and preverb; no exact single POS class"/>
+  <map kind="value" node="analysis" feature="pos" value="CNJ" relation="exact" target="http://purl.org/olia/olia.owl#Conjunction" evidence="https://github.com/alexsosn/TLHdig-TF/tree/e954600d9f9cc7f16570729813cf6bf3954b8f6d" note="Conjunction category in HFR/TLHdig closed POS vocabulary"/>
+  <map kind="value" node="analysis" feature="pos" value="DEMadv" relation="native-only" note="Demonstrative adverb subtype; no target verified independently"/>
+  <map kind="value" node="analysis" feature="pos" value="INDCL" relation="native-only" note="Indefinite clitic category; not equivalent to a generic pronoun"/>
+  <map kind="value" node="analysis" feature="pos" value="INDadv" relation="native-only" note="Indefinite adverb subtype; no exact target verified independently"/>
+  <map kind="value" node="analysis" feature="pos" value="INTJ" relation="exact" target="http://purl.org/olia/olia.owl#Interjection" evidence="https://github.com/alexsosn/TLHdig-TF/tree/e954600d9f9cc7f16570729813cf6bf3954b8f6d" note="Interjection category in HFR/TLHdig closed POS vocabulary"/>
+  <map kind="value" node="analysis" feature="pos" value="INTadv" relation="native-only" note="Interrogative adverb subtype; not an interrogative pronoun"/>
+  <map kind="value" node="analysis" feature="pos" value="NEG" relation="native-only" note="Negation code is not necessarily OLiA NegativeParticle"/>
+  <map kind="value" node="analysis" feature="pos" value="POSP" relation="native-only" note="Postpositional use; do not classify as Preposition without an exact target"/>
+  <map kind="value" node="analysis" feature="pos" value="POSP ADV PREV" relation="native-only" note="Compound potential roles; no exact single POS class"/>
+  <map kind="value" node="analysis" feature="pos" value="PREV" relation="native-only" note="Preverb category; not a generic Verb or Preposition"/>
+  <map kind="value" node="analysis" feature="pos" value="QUANcar" relation="native-only" note="Cardinal quantifier; no exact verified OLiA class"/>
+  <map kind="value" node="analysis" feature="pos" value="QUANmul" relation="native-only" note="Multiplicative quantifier; no exact verified OLiA class"/>
+  <map kind="value" node="analysis" feature="pos" value="QUANord" relation="native-only" note="Ordinal quantifier; no exact verified OLiA class"/>
+</mappings>
