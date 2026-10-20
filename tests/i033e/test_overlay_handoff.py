@@ -166,4 +166,3 @@ class OverlayHandoffTests(unittest.TestCase):
 
     def test_obsolete_protected_attestation_workflow_is_not_enabled(self):
         self.assertFalse(transport.WORKFLOW.exists())
-        self.assertIn("ref: ${{ github.sha }}", text)

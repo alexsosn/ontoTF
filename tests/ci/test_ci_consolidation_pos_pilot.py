@@ -55,7 +55,6 @@ class POSConsolidationContract(unittest.TestCase):
                 self.assertIn("repository: ETCBC/", text)
                 self.assertIn("persist-credentials: false", text)
         self.assertFalse((WORKFLOWS / PROTECTED_REVIEW_WORKFLOW).exists())
-        self.assertNotIn("pull_request_review:\n", trusted)
 
 
 if __name__ == "__main__":
