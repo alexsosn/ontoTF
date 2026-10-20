@@ -187,6 +187,17 @@ class XMLMappingContractTests(unittest.TestCase):
             self.assertEqual(len(updated.find_correspondences(
                 "a", "b", node="word", feature="sp", value="nmpr")), 1)
 
+    def test_unversioned_disposition_conflicts_with_specific_version(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            wildcard = '<map kind="value" node="word" feature="sp" value="x" relation="native-only"/>'
+            pinned = f'<map kind="value" node="word" feature="sp" value="x" relation="exact" corpusVersion="2" target="{NOUN}"/>'
+            for xml in (wildcard + pinned, pinned + wildcard):
+                file(root, "a", xml)
+                with self.subTest(wildcard_first=xml.startswith(wildcard)):
+                    with self.assertRaisesRegex(MappingError, "conflicting.*dispositions"):
+                        MappingCatalog(root).load("a")
+
     def test_version_scopes_are_not_conflicting_dispositions(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
