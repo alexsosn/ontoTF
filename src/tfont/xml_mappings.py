@@ -91,7 +91,7 @@ def _checked(name: str, text: str) -> tuple[Mapping, ...]:
         raise MappingError(f"{name}: nonempty source is required")
     rows: list[Mapping] = []
     seen: set[tuple[object, ...]] = set()
-    dispositions: dict[tuple[object, ...], str] = {}
+    dispositions: dict[tuple[object, ...], list[tuple[str | None, str]]] = {}
     for index, item in enumerate(root, start=1):
         where = f"{name}: map #{index}"
         if item.tag != "map" or set(item.attrib) - _ALLOWED_MAP or len(item):
@@ -134,19 +134,24 @@ def _checked(name: str, text: str) -> tuple[Mapping, ...]:
         fingerprint = (row.selector, row.relation, row.target, row.corpus_version)
         if fingerprint in seen:
             raise MappingError(f"{where}: duplicate mapping")
-        disposition_key = (row.selector, row.corpus_version)
-        previous = dispositions.get(disposition_key)
-        if previous is not None and (previous in _NON_MATCHING or relation in _NON_MATCHING):
-            # Multiple positive class targets are valid (e.g. BHSA nmpr).
-            # Multiple candidate IRIs for an ambiguous decision may coexist;
-            # conservative and positive decisions must never coexist.
-            if previous != "ambiguous" or relation != "ambiguous":
-                raise MappingError(
-                    f"{where}: conflicting dispositions for {corpus} "
-                    f"selector {row.selector!r} version {row.corpus_version!r}: "
-                    f"{previous} vs {relation}"
-                )
-        dispositions.setdefault(disposition_key, relation)
+        # A missing corpusVersion is a wildcard applying to every version.
+        # Therefore a global native-only row conflicts with a version-specific
+        # positive target just as two rows with the same version do.
+        for previous_version, previous in dispositions.get(row.selector, ()):
+            if (previous_version is not None and row.corpus_version is not None
+                    and previous_version != row.corpus_version):
+                continue
+            if previous in _NON_MATCHING or relation in _NON_MATCHING:
+                # Multiple real ontology targets are allowed for one category,
+                # as are multiple unresolved IRI candidates for an ambiguous one.
+                if previous != "ambiguous" or relation != "ambiguous":
+                    raise MappingError(
+                        f"{where}: conflicting dispositions for {corpus} "
+                        f"selector {row.selector!r} versions "
+                        f"{previous_version!r}/{row.corpus_version!r}: "
+                        f"{previous} vs {relation}"
+                    )
+        dispositions.setdefault(row.selector, []).append((row.corpus_version, relation))
         seen.add(fingerprint)
         rows.append(row)
     return tuple(rows)
