@@ -61,6 +61,53 @@ class XMLMappingContractTests(unittest.TestCase):
             find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf"), ())
 
 
+    def test_all_corpora_mapping_joins_different_native_node_kinds(self):
+        from tfont import find_across_corpora
+
+        # TLHdig has analysis-level POS; BHSA/Syriac/ExtraBiblical have
+        # word-level POS. The join is about class, never token identity.
+        hits = find_across_corpora(
+            "tlhdig-tf", node="analysis", feature="pos", value="ADV"
+        )
+        observed = {(x.destination.corpus, x.destination.node,
+                     x.destination.feature, x.destination.value)
+                    for x in hits}
+        self.assertTrue({
+            ("bhsa", "word", "sp", "advb"),
+            ("syriac", "word", "sp", "advb"),
+            ("extrabiblical", "word", "sp", "advb"),
+            ("syrnt", "word", "sp", "adverb"),
+        } <= observed)
+        self.assertTrue(all(x.source.corpus == "tlhdig-tf"
+                            and x.destination.corpus != "tlhdig-tf"
+                            and x.target.endswith("#Adverb")
+                            and x.scope == "category" for x in hits))
+        self.assertEqual(
+            find_across_corpora(
+                "tlhdig-tf", node="analysis", feature="pos", value="PREV"
+            ), ()
+        )
+        with self.assertRaisesRegex(MappingError, "not verified"):
+            find_across_corpora(
+                "tlhdig-tf", node="analysis", feature="pos",
+                value="ADV", source_version="wrong",
+            )
+
+    def test_all_corpora_lookup_without_source_target_false_identity(self):
+        from tfont.xml_mappings import MappingCatalog
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            file(root, "a", f'<map kind="value" node="token" feature="p" value="N" relation="exact" target="{NOUN}"/>')
+            file(root, "b", f'<map kind="value" node="word" feature="sp" value="n" relation="exact" target="{NOUN}"/>')
+            file(root, "c", '<map kind="value" node="analysis" feature="pos" value="N" relation="native-only"/>')
+            cat = MappingCatalog(root)
+            got = cat.find_across_corpora("a", node="token", feature="p", value="N")
+            self.assertEqual([(x.source.corpus, x.destination.corpus, x.scope)
+                              for x in got], [("a", "b", "category")])
+            self.assertEqual(cat.find_across_corpora("c", node="analysis",
+                                                     feature="pos", value="N"), ())
+
     def test_reverse_ontology_lookup_discovers_all_corpora(self):
         from tfont import find_by_target
 

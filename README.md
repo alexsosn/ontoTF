@@ -46,7 +46,7 @@ The historical [I-026 work queue](docs/research/data/generated/i026/p004-work-qu
 The source checkout reads `src/tfont/mappings/<corpus>.xml` directly. It does not generate a release profile for each new mapping. For example:
 
 ```python
-from tfont import find_by_target, find_correspondences, list_corpora
+from tfont import find_across_corpora, find_by_target, find_correspondences, list_corpora
 
 print(list_corpora())  # discovered automatically from packaged XML files
 matches = find_correspondences(
@@ -55,6 +55,13 @@ matches = find_correspondences(
 for match in matches:
     print(match.target, match.destination.feature, match.destination.value,
           match.relation, match.scope)
+
+# Given one native category, find equivalent categories in every OTHER corpus.
+for match in find_across_corpora(
+    "tlhdig-tf", node="analysis", feature="pos", value="ADV"
+):
+    print(match.destination.corpus, match.destination.node,
+          match.destination.feature, match.destination.value)
 
 # Search an ontology class in every installed corpus without knowing native names.
 for mapping in find_by_target("http://purl.org/olia/olia.owl#Noun"):

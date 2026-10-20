@@ -440,9 +440,10 @@ __all__ = [
 # Current XML mappings coexist with frozen historical profile APIs during migration.
 from .xml_mappings import (
     Correspondence, Mapping, MappingCatalog, MappingError,
-    find_by_target, find_correspondences, list_corpora, map_native, resolve_nodes,
+    find_across_corpora, find_by_target, find_correspondences, list_corpora, map_native, resolve_nodes,
 )
 __all__.extend([
     "Correspondence", "Mapping", "MappingCatalog", "MappingError",
-    "find_by_target", "find_correspondences", "list_corpora", "map_native", "resolve_nodes",
+    "find_across_corpora", "find_by_target", "find_correspondences",
+    "list_corpora", "map_native", "resolve_nodes",
 ])

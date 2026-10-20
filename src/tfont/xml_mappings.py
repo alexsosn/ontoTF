@@ -234,6 +234,38 @@ class MappingCatalog:
         return tuple(result)
 
 
+    def find_across_corpora(
+        self, source_corpus: str, *, kind: str = "value",
+        node: str | None = None, feature: str | None = None,
+        value: str | None = None, from_node: str | None = None,
+        to_node: str | None = None, include_approximate: bool = False,
+        source_version: str | None = None,
+    ) -> tuple[Correspondence, ...]:
+        """Find shared ontology-category mappings in every *other* corpus.
+
+        Each destination keeps its native selector and source provenance.
+        An ontology-category link never asserts that source and destination
+        nodes refer to the same individual token.
+        """
+        self.load(source_corpus)  # Validate even when no other corpora exist.
+        return tuple(
+            match
+            for destination in self.list_corpora()
+            if destination != source_corpus
+            for match in self.find_correspondences(
+                source_corpus, destination, kind=kind, node=node,
+                feature=feature, value=value,
+                from_node=from_node, to_node=to_node,
+                include_approximate=include_approximate,
+                source_version=source_version,
+            )
+        )
+
+
+def find_across_corpora(source_corpus: str, **query: Any) -> tuple[Correspondence, ...]:
+    return MappingCatalog().find_across_corpora(source_corpus, **query)
+
+
 def list_corpora() -> tuple[str, ...]:
     return MappingCatalog().list_corpora()
 
