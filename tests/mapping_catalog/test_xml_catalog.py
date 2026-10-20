@@ -193,6 +193,91 @@ class XMLMappingContractTests(unittest.TestCase):
             self.assertEqual(rows[0].relation, "unverified")
             self.assertEqual(cat.find_correspondences("wrong", "other", node="word", feature="id", value="42"), ())
 
+    def test_reject_conflicting_conservative_and_exact_same_selector(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            exact = f'<map kind="value" node="word" feature="sp" value="x" relation="exact" target="{NOUN}"/>'
+            for disposition in ("native-only", "unsupported", "ambiguous"):
+                negative = (f'<map kind="value" node="word" feature="sp" value="x" '
+                            f'relation="{disposition}"/>')
+                for content in (negative + exact, exact + negative):
+                    file(root, "a", content)
+                    with self.subTest(relation=disposition, negative_first=content.startswith(negative)):
+                        with self.assertRaisesRegex(MappingError, "conflicting.*dispositions"):
+                            MappingCatalog(root).load("a")
+
+    def test_multiple_ambiguous_candidates_do_not_create_a_positive_match(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            proper = "http://purl.org/olia/olia.owl#ProperNoun"
+            file(root, "a", (
+                f'<map kind="value" node="word" feature="sp" value="x" relation="ambiguous" target="{NOUN}"/>'
+                f'<map kind="value" node="word" feature="sp" value="x" relation="ambiguous" target="{proper}"/>'
+            ))
+            file(root, "b", f'<map kind="value" node="word" feature="sp" value="y" relation="exact" target="{NOUN}"/>')
+            catalog = MappingCatalog(root)
+            self.assertEqual(len(catalog.load("a")), 2)
+            self.assertEqual(catalog.find_correspondences(
+                "a", "b", node="word", feature="sp", value="x",
+                include_approximate=True), ())
+
+    def test_one_file_edit_promotes_native_only_and_multitarget_is_valid(self):
+        proper = "http://purl.org/olia/olia.owl#ProperNoun"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            file(root, "a", '<map kind="value" node="word" feature="sp" value="nmpr" relation="native-only"/>')
+            file(root, "b", f'<map kind="value" node="word" feature="pos" value="noun" relation="exact" target="{NOUN}"/>')
+            first = MappingCatalog(root)
+            self.assertEqual(first.find_correspondences(
+                "a", "b", node="word", feature="sp", value="nmpr"), ())
+            # Author changes ONE XML file; Git history is the revision record.
+            file(root, "a", (
+                f'<map kind="value" node="word" feature="sp" value="nmpr" relation="exact" target="{NOUN}"/>'
+                f'<map kind="value" node="word" feature="sp" value="nmpr" relation="exact" target="{proper}"/>'
+            ))
+            updated = MappingCatalog(root)
+            rows = updated.map_native("a", node="word", feature="sp", value="nmpr")
+            self.assertEqual({r.target for r in rows}, {NOUN, proper})
+            self.assertEqual(len(updated.find_correspondences(
+                "a", "b", node="word", feature="sp", value="nmpr")), 1)
+
+    def test_unversioned_disposition_conflicts_with_specific_version(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            wildcard = '<map kind="value" node="word" feature="sp" value="x" relation="native-only"/>'
+            pinned = f'<map kind="value" node="word" feature="sp" value="x" relation="exact" corpusVersion="2" target="{NOUN}"/>'
+            for xml in (wildcard + pinned, pinned + wildcard):
+                file(root, "a", xml)
+                with self.subTest(wildcard_first=xml.startswith(wildcard)):
+                    with self.assertRaisesRegex(MappingError, "conflicting.*dispositions"):
+                        MappingCatalog(root).load("a")
+
+    def test_version_scopes_are_not_conflicting_dispositions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            file(root, "a", (
+                '<map kind="value" node="word" feature="sp" value="x" relation="native-only" corpusVersion="1"/>'
+                f'<map kind="value" node="word" feature="sp" value="x" relation="exact" corpusVersion="2" target="{NOUN}"/>'
+            ))
+            file(root, "b", f'<map kind="value" node="word" feature="sp" value="y" relation="exact" target="{NOUN}"/>')
+            catalog = MappingCatalog(root)
+            self.assertEqual(len(catalog.load("a")), 2)
+            with self.assertRaisesRegex(MappingError, "multiple source versions"):
+                catalog.map_native("a", node="word", feature="sp", value="x")
+            with self.assertRaisesRegex(MappingError, "multiple source versions"):
+                catalog.find_correspondences(
+                    "a", "b", node="word", feature="sp", value="x")
+            self.assertEqual([row.relation for row in catalog.map_native(
+                "a", node="word", feature="sp", value="x", corpus_version="1")],
+                ["native-only"])
+            self.assertEqual([row.relation for row in catalog.map_native(
+                "a", node="word", feature="sp", value="x", corpus_version="2")],
+                ["exact"])
+            self.assertEqual(catalog.find_correspondences(
+                "a", "b", node="word", feature="sp", value="x", source_version="1"), ())
+            self.assertEqual(len(catalog.find_correspondences(
+                "a", "b", node="word", feature="sp", value="x", source_version="2")), 1)
+
     def test_loaded_tf_execution_and_version_mismatch(self):
         mapping = map_native("syriac", node="word", feature="sp", value="subs")[0]
 

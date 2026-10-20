@@ -91,6 +91,7 @@ def _checked(name: str, text: str) -> tuple[Mapping, ...]:
         raise MappingError(f"{name}: nonempty source is required")
     rows: list[Mapping] = []
     seen: set[tuple[object, ...]] = set()
+    dispositions: dict[tuple[object, ...], list[tuple[str | None, str]]] = {}
     for index, item in enumerate(root, start=1):
         where = f"{name}: map #{index}"
         if item.tag != "map" or set(item.attrib) - _ALLOWED_MAP or len(item):
@@ -133,6 +134,24 @@ def _checked(name: str, text: str) -> tuple[Mapping, ...]:
         fingerprint = (row.selector, row.relation, row.target, row.corpus_version)
         if fingerprint in seen:
             raise MappingError(f"{where}: duplicate mapping")
+        # A missing corpusVersion is a wildcard applying to every version.
+        # Therefore a global native-only row conflicts with a version-specific
+        # positive target just as two rows with the same version do.
+        for previous_version, previous in dispositions.get(row.selector, ()):
+            if (previous_version is not None and row.corpus_version is not None
+                    and previous_version != row.corpus_version):
+                continue
+            if previous in _NON_MATCHING or relation in _NON_MATCHING:
+                # Multiple real ontology targets are allowed for one category,
+                # as are multiple unresolved IRI candidates for an ambiguous one.
+                if previous != "ambiguous" or relation != "ambiguous":
+                    raise MappingError(
+                        f"{where}: conflicting dispositions for {corpus} "
+                        f"selector {row.selector!r} versions "
+                        f"{previous_version!r}/{row.corpus_version!r}: "
+                        f"{previous} vs {relation}"
+                    )
+        dispositions.setdefault(row.selector, []).append((row.corpus_version, relation))
         seen.add(fingerprint)
         rows.append(row)
     return tuple(rows)
@@ -169,6 +188,11 @@ class MappingCatalog:
     ) -> tuple[Mapping, ...]:
         selector = (kind, node, feature, value, from_node, to_node)
         found = tuple(row for row in self.load(corpus) if row.selector == selector)
+        if corpus_version is None and len({row.corpus_version for row in found}) > 1:
+            raise MappingError(
+                f"{corpus}: selector spans multiple source versions; "
+                "specify corpus_version explicitly"
+            )
         if corpus_version is not None:
             incompatible = [row for row in found if row.corpus_version is not None
                             and row.corpus_version != corpus_version]
