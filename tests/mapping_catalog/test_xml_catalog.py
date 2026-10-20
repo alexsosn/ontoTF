@@ -139,16 +139,33 @@ class XMLMappingContractTests(unittest.TestCase):
             self.assertEqual(rows[0].relation, "unverified")
             self.assertEqual(cat.find_correspondences("wrong", "other", node="word", feature="id", value="42"), ())
 
-    def test_reject_conflicting_native_only_and_exact_same_selector(self):
+    def test_reject_conflicting_conservative_and_exact_same_selector(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             exact = f'<map kind="value" node="word" feature="sp" value="x" relation="exact" target="{NOUN}"/>'
-            native_only = '<map kind="value" node="word" feature="sp" value="x" relation="native-only"/>'
-            for content in (native_only + exact, exact + native_only):
-                file(root, "a", content)
-                with self.subTest(order=content[:45]), self.assertRaisesRegex(
-                        MappingError, "conflicting.*dispositions"):
-                    MappingCatalog(root).load("a")
+            for disposition in ("native-only", "unsupported", "ambiguous"):
+                negative = (f'<map kind="value" node="word" feature="sp" value="x" '
+                            f'relation="{disposition}"/>')
+                for content in (negative + exact, exact + negative):
+                    file(root, "a", content)
+                    with self.subTest(relation=disposition, negative_first=content.startswith(negative)):
+                        with self.assertRaisesRegex(MappingError, "conflicting.*dispositions"):
+                            MappingCatalog(root).load("a")
+
+    def test_multiple_ambiguous_candidates_do_not_create_a_positive_match(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            proper = "http://purl.org/olia/olia.owl#ProperNoun"
+            file(root, "a", (
+                f'<map kind="value" node="word" feature="sp" value="x" relation="ambiguous" target="{NOUN}"/>'
+                f'<map kind="value" node="word" feature="sp" value="x" relation="ambiguous" target="{proper}"/>'
+            ))
+            file(root, "b", f'<map kind="value" node="word" feature="sp" value="y" relation="exact" target="{NOUN}"/>')
+            catalog = MappingCatalog(root)
+            self.assertEqual(len(catalog.load("a")), 2)
+            self.assertEqual(catalog.find_correspondences(
+                "a", "b", node="word", feature="sp", value="x",
+                include_approximate=True), ())
 
     def test_one_file_edit_promotes_native_only_and_multitarget_is_valid(self):
         proper = "http://purl.org/olia/olia.owl#ProperNoun"
