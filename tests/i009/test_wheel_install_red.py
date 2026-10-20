@@ -80,6 +80,8 @@ from tfont.semantic_validation import validate_semantic_bundle
 
 assert tfont.PRODUCTION_NOUN_CORPORA == ("bhsa", "syriac", "extrabiblical")
 assert set(tfont.list_corpora()) == set(json.loads(os.environ["I009_EXPECTED_XML_CORPORA"]))
+for corpus in tfont.list_corpora():
+    tfont.MappingCatalog().load(corpus)  # all authored XML must parse after installation
 links = tfont.find_correspondences(
     "bhsa", "syriac", node="word", feature="sp", value="nmpr")
 assert any(x.destination.feature == "ls" and x.destination.value == "prop"

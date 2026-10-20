@@ -20,6 +20,13 @@ def file(root: Path, corpus: str, rows: str) -> None:
 
 
 class XMLMappingContractTests(unittest.TestCase):
+    def test_every_packaged_corpus_xml_is_validated_without_per_corpus_tests(self):
+        # Every XML added by a contributor participates automatically in CI.
+        catalog = MappingCatalog()
+        for corpus in catalog.list_corpora():
+            with self.subTest(corpus=corpus):
+                catalog.load(corpus)
+
     def test_real_reviewed_bhsa_syriac_extrabiblical_equivalences(self):
         self.assertTrue({"bhsa", "syriac", "extrabiblical"} <= set(list_corpora()))
         forward = find_correspondences(
