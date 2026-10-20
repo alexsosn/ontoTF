@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings corpus="syrnt" source="ETCBC/syrnt" corpusVersion="0.1">
+  <!-- part-of-speech (sp), TF feature values observed on word nodes -->
+  <map kind="value" node="word" feature="sp" value="adjective" relation="exact" target="http://purl.org/olia/olia.owl#Adjective" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="sp" value="adverb" relation="exact" target="http://purl.org/olia/olia.owl#Adverb" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="sp" value="idiom" relation="native-only" note="Source calls this an idiom, not an OLiA word-level POS"/>
+  <map kind="value" node="word" feature="sp" value="noun" relation="exact" target="http://purl.org/olia/olia.owl#Noun" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="sp" value="numeral" relation="native-only" note="No source-checked matching OLiA numeral subtype"/>
+  <map kind="value" node="word" feature="sp" value="particle" relation="native-only" note="Native particle category is too broad for a specific particle class"/>
+  <map kind="value" node="word" feature="sp" value="pronoun" relation="exact" target="http://purl.org/olia/olia.owl#Pronoun" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="sp" value="verb" relation="exact" target="http://purl.org/olia/olia.owl#Verb" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <!-- gender (gn), TF feature values observed on word nodes -->
+  <map kind="value" node="word" feature="gn" value="NA" relation="native-only" note="Missing or not applicable, not a grammatical gender"/>
+  <map kind="value" node="word" feature="gn" value="c" relation="native-only" note="Common gender lacks verified exact target"/>
+  <map kind="value" node="word" feature="gn" value="f" relation="exact" target="http://purl.org/olia/olia.owl#Feminine" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="gn" value="m" relation="exact" target="http://purl.org/olia/olia.owl#Masculine" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <!-- number (nu), TF feature values observed on word nodes -->
+  <map kind="value" node="word" feature="nu" value="NA" relation="native-only" note="Missing or not applicable, not a grammatical number"/>
+  <map kind="value" node="word" feature="nu" value="p" relation="exact" target="http://purl.org/olia/olia.owl#Plural" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="nu" value="s" relation="exact" target="http://purl.org/olia/olia.owl#Singular" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <!-- person (ps), TF feature values observed on word nodes -->
+  <map kind="value" node="word" feature="ps" value="1" relation="exact" target="http://purl.org/olia/olia.owl#First" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="ps" value="2" relation="exact" target="http://purl.org/olia/olia.owl#Second" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="ps" value="3" relation="exact" target="http://purl.org/olia/olia.owl#Third" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="ps" value="NA" relation="native-only" note="Missing or not applicable, not a grammatical person"/>
+  <!-- verbal-form (vt), TF feature values observed on word nodes -->
+  <map kind="value" node="word" feature="vt" value="NA" relation="native-only" note="Missing or not applicable, not a verbal form"/>
+  <map kind="value" node="word" feature="vt" value="imperative" relation="exact" target="http://purl.org/olia/olia.owl#ImperativeVerb" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="vt" value="imperfect" relation="native-only" note="Syriac imperfect does not automatically mean past or generic imperfective aspect"/>
+  <map kind="value" node="word" feature="vt" value="infinitive" relation="exact" target="http://purl.org/olia/olia.owl#Infinitive" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="vt" value="participle" relation="exact" target="http://purl.org/olia/olia.owl#Participle" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="vt" value="perfect" relation="native-only" note="Syriac perfect does not automatically mean past or generic perfective aspect"/>
+  <!-- state (st), TF feature values observed on word nodes -->
+  <map kind="value" node="word" feature="st" value="NA" relation="native-only" note="Missing or not applicable, not a grammatical state"/>
+  <map kind="value" node="word" feature="st" value="absolute" relation="native-only" note="Exact OLiA equivalent not confirmed"/>
+  <map kind="value" node="word" feature="st" value="construct" relation="exact" target="http://purl.org/olia/olia.owl#StatusConstructus" evidence="https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce"/>
+  <map kind="value" node="word" feature="st" value="emphatic" relation="native-only" note="Exact OLiA equivalent not confirmed"/>
+</mappings>
