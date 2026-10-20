@@ -242,6 +242,10 @@ def map_native(corpus: str, **selector: Any) -> tuple[Mapping, ...]:
     return MappingCatalog().map_native(corpus, **selector)
 
 
+def find_by_target(target: str, **query: Any) -> tuple[Mapping, ...]:
+    return MappingCatalog().find_by_target(target, **query)
+
+
 def find_correspondences(source_corpus: str, target_corpus: str,
                          **query: Any) -> tuple[Correspondence, ...]:
     return MappingCatalog().find_correspondences(source_corpus, target_corpus, **query)
