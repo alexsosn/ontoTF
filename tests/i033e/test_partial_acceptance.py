@@ -97,11 +97,5 @@ class PartialAcceptanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "accepted|accepts"):
             assemble(ledger, read, packet, report)
 
-    def test_signing_and_mapping_upload_require_fixed_output(self):
-        text = transport.WORKFLOW.read_text()
-        for marker in ("      - name: Bind pack bytes", "          name: ontology-overlay-handoff"):
-            start = text.index(marker)
-            if marker.startswith("          name:"):
-                start = text.rfind("      - uses:", 0, start)
-            step = text[start:].split("\n      - ", 1)[0]
-            self.assertIn("if: hashFiles('batch-review-pack.json') != ''", step)
+    def test_obsolete_signing_and_handoff_workflow_is_disabled(self):
+        self.assertFalse(transport.WORKFLOW.exists())

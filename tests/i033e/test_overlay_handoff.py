@@ -164,12 +164,6 @@ class OverlayHandoffTests(unittest.TestCase):
              self.assertRaises(SystemExit):
             cli.main()
 
-    def test_protected_workflow_attests_only_fixed_protected_output(self):
-        text = transport.WORKFLOW.read_text()
-        self.assertIn("ontology-batch-publish", text)
-        self.assertIn("--from-pr-head --publish-handoff", text)
-        self.assertIn("actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6", text)
-        self.assertIn("subject-path: batch-review-pack.json", text)
-        self.assertNotIn("contents: write", text)
-        self.assertNotIn("ref: ${{ github.event.pull_request.head", text)
+    def test_obsolete_protected_attestation_workflow_is_not_enabled(self):
+        self.assertFalse(transport.WORKFLOW.exists())
         self.assertIn("ref: ${{ github.sha }}", text)

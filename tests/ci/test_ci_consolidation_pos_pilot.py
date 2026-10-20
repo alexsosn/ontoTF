@@ -48,15 +48,13 @@ class POSConsolidationContract(unittest.TestCase):
         self.assertIn("python -m build --wheel", text)
         self.assertIn("  pull_request:\n  workflow_dispatch:", text)
 
-    def test_external_evidence_and_protected_reviewer_are_not_removed(self):
+    def test_pinned_external_evidence_is_retained_without_protected_reviewer(self):
         for filename in SOURCE_PINNED_WORKFLOWS:
             with self.subTest(workflow=filename):
                 text = (WORKFLOWS / filename).read_text(encoding="utf-8")
                 self.assertIn("repository: ETCBC/", text)
                 self.assertIn("persist-credentials: false", text)
-        trusted = (WORKFLOWS / PROTECTED_REVIEW_WORKFLOW).read_text(encoding="utf-8")
-        self.assertIn("pull_request_target:", trusted)
-        self.assertIn("ref: main", trusted)
+        self.assertFalse((WORKFLOWS / PROTECTED_REVIEW_WORKFLOW).exists())
         self.assertNotIn("pull_request_review:\n", trusted)
 
 

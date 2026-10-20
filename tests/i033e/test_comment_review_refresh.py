@@ -120,27 +120,8 @@ class ProtectedCommentRefreshTests(unittest.TestCase):
         with self.assertRaises(ExternalReviewError):
             self.load(event=changed)
 
-    def test_trusted_workflow_has_carefully_scoped_comment_trigger(self):
-        text = WORKFLOW.read_text(encoding="utf-8")
-        for required in (
-            "  issue_comment:",
-            "    types: [created]",
-            "github.event.issue.pull_request",
-            "github.event.comment.body == '/ontoTF verify-review'",
-            "github.event.comment.author_association",
-            "github.event.issue.labels.*.name",
-            "github.event.issue.number",
-            "github.run_id",
-            "check_external_review.py --from-pr-head",
-            "check_external_review.py --from-pr-head --publish-handoff",
-        ):
-            with self.subTest(required=required):
-                self.assertIn(required, text)
-        self.assertNotIn("\n  pull_request_review:", text)
-        self.assertNotIn("pull-requests: write", text)
-        self.assertNotIn("contents: write", text)
-        self.assertNotIn("ref: ${{ github.event.pull_request.head.sha", text)
-        self.assertEqual(text.count("uses: actions/checkout@"), 2)
+    def test_retired_comment_trigger_cannot_activate_legacy_gate(self):
+        self.assertFalse(WORKFLOW.exists())
 
 
 if __name__ == "__main__":

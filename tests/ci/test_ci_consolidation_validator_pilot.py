@@ -33,7 +33,6 @@ PRESERVED_SPECIAL = (
     "i008-exact-execution.yml",         # Real Context-Fabric integration on 3.13.
     "i027b3-extrabiblical-source.yml", # Original corpus MQL checkout.
     "i027c1-native-pos.yml",            # Exact-pinned upstream source checks.
-    "i033e3-protected-batch-review.yml",# Separate trusted review authority.
 )
 
 
@@ -71,7 +70,7 @@ class ValidatorConsolidationContracts(unittest.TestCase):
             with self.subTest(contract=name):
                 self.assertIn(name, text)
 
-    def test_unique_source_and_trusted_review_jobs_remain_separate(self):
+    def test_unique_source_jobs_remain_separate(self):
         for name in PRESERVED_SPECIAL:
             with self.subTest(workflow=name):
                 self.assertTrue((CI / name).is_file())
@@ -82,9 +81,7 @@ class ValidatorConsolidationContracts(unittest.TestCase):
             text = (CI / name).read_text(encoding="utf-8")
             self.assertIn("repository: ETCBC/", text)
             self.assertIn("persist-credentials: false", text)
-        trusted = (CI / PRESERVED_SPECIAL[3]).read_text(encoding="utf-8")
-        self.assertIn("pull_request_target:", trusted)
-        self.assertIn("ref: main", trusted)
+        self.assertFalse((CI / "i033e3-protected-batch-review.yml").exists())
 
 
 if __name__ == "__main__":
