@@ -72,7 +72,7 @@ This finds shared **category** mappings, not word-token alignments. `resolve_nod
 
 ## Installation
 
-Python 3.10 or newer. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
+Python 3.12 or newer (Python 3.14 recommended for development; CI tests 3.12–3.15). Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
 
 ```bash
 python -m pip install ./tfont-0.1.1-py3-none-any.whl
