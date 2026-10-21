@@ -43,6 +43,10 @@ jobs:
       - name: Fast Python syntax preflight
         run: python -m compileall -q src/tfont tests
 
+      # Detect stale interpreter pins before the slower full regression suite.
+      - name: Guard supported Python versions
+        run: python -m unittest tests.ci.test_python_support_policy -v
+
       # Fast independent semantic/runtime architecture checks first, before
       # the long full-suite run. Invalid contracts should fail quickly.
       - name: Run TF-native architecture guards
