@@ -54,13 +54,13 @@ class SharedFCoreConsolidation(unittest.TestCase):
         self.assertTrue((ROOT / "tests/packaging/test_schema_authority.py").is_file())
         self.assertTrue((ROOT / "scripts/check_f_series_ownership.py").is_file())
 
-    def test_two_version_canonical_job_always_executes_ownership_checker(self):
+    def test_four_version_canonical_job_always_executes_ownership_checker(self):
         yaml = YAML(typ="safe")
         workflow = yaml.load((CI / "full-suite.yml").read_text(encoding="utf-8"))
         self.assertIsNone(workflow["on"]["pull_request"])
         self.assertEqual(workflow["permissions"], {"contents": "read"})
         job = workflow["jobs"]["validate"]
-        self.assertEqual(job["strategy"]["matrix"], {"python-version": ["3.10", "3.12"]})
+        self.assertEqual(job["strategy"]["matrix"], {"python-version": ["3.12", "3.13", "3.14", "3.15"]})
         self.assertFalse(job["strategy"]["fail-fast"])
         self.assertNotIn("if", job)
         self.assertNotIn("continue-on-error", job)
