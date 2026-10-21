@@ -59,7 +59,7 @@ class ValidatorConsolidationContracts(unittest.TestCase):
         for name in (
             "  pull_request:\n  workflow_dispatch:",
             "github.event.pull_request.head.sha || github.sha",
-            'python-version: ["3.10", "3.12"]',
+            'python-version: ["3.12", "3.13", "3.14", "3.15"]',
             "python -m unittest discover -s tests -v",
             "python -m pytest tests/research -q",
             "python scripts/coverage/build_p004_r011_baseline.py --check",
