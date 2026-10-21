@@ -64,4 +64,9 @@
   <map kind="value" node="lex" feature="pos" value="EN" relation="native-only" evidence="https://cdli.earth/docs/linguistic-annotations" note="Ethnos-name category; no assertion of an identified ethnic group"/>
   <map kind="value" node="lex" feature="pos" value="PN" relation="native-only" evidence="https://cdli.earth/docs/linguistic-annotations" note="Personal-name category; no assertion of an identified person"/>
   <map kind="value" node="lex" feature="pos" value="TN" relation="native-only" evidence="https://cdli.earth/docs/linguistic-annotations" note="Temple-name category; no assertion of an identified physical temple"/>
+  <!-- Source-attested top-20 POS/EPOS residuals; unlexicalized n is deliberately not the NU numeral category. -->
+  <map kind="value" node="word" feature="pos" value="u" relation="native-only" evidence="https://oracc.museum.upenn.edu/doc/help/lemmatising/primer/index.html" note="Conventional unlemmatisable/broken form, not a lexical part-of-speech class"/>
+  <map kind="value" node="word" feature="pos" value="n" relation="native-only" evidence="https://oracc.museum.upenn.edu/doc/help/lemmatising/primer/index.html" note="Conventional non-lexicalized numeral placeholder, distinct from lexically analysed NU; do not map to OLiA Numeral"/>
+  <map kind="value" node="word" feature="epos" value="WN" relation="native-only" evidence="https://oracc.museum.upenn.edu/doc/help/languages/propernouns/index.html" note="Watercourse Name source annotation type; no individual river identity, proper-noun subtype or OLiA exact class asserted"/>
+  <map kind="value" node="word" feature="epos" value="XP" relation="exact" target="http://purl.org/olia/olia.owl#IndefinitePronoun" evidence="https://oracc.museum.upenn.edu/doc/help/languages/akkadian/index.html" note="ORACC XP indefinite pronoun, category only; not a referent identity"/>
 </mappings>
