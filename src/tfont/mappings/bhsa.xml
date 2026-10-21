@@ -25,16 +25,16 @@
   <map kind="value" node="word" feature="ps" value="p3" relation="exact" target="http://purl.org/olia/olia.owl#Third" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
   <map kind="value" node="word" feature="ps" value="NA" relation="native-only"/>
   <map kind="value" node="word" feature="ps" value="unknown" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_ps" value="p1" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_ps" value="p2" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_ps" value="p3" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_ps" value="p1" relation="exact" target="http://purl.org/olia/olia.owl#First" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md" note="Pronominal suffix person category; never infer main-word morphology"/>
+  <map kind="value" node="word" feature="prs_ps" value="p2" relation="exact" target="http://purl.org/olia/olia.owl#Second" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md" note="Pronominal suffix person category; never infer main-word morphology"/>
+  <map kind="value" node="word" feature="prs_ps" value="p3" relation="exact" target="http://purl.org/olia/olia.owl#Third" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md" note="Pronominal suffix person category; never infer main-word morphology"/>
   <map kind="value" node="word" feature="prs_ps" value="NA" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_gn" value="m" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_gn" value="f" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_gn" value="m" relation="exact" target="http://purl.org/olia/olia.owl#Masculine" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_gn.md" note="Pronominal suffix gender category; never infer main-word morphology"/>
+  <map kind="value" node="word" feature="prs_gn" value="f" relation="exact" target="http://purl.org/olia/olia.owl#Feminine" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_gn.md" note="Pronominal suffix gender category; never infer main-word morphology"/>
   <map kind="value" node="word" feature="prs_gn" value="NA" relation="native-only"/>
   <map kind="value" node="word" feature="prs_gn" value="unknown" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_nu" value="sg" relation="native-only"/>
-  <map kind="value" node="word" feature="prs_nu" value="pl" relation="native-only"/>
+  <map kind="value" node="word" feature="prs_nu" value="sg" relation="exact" target="http://purl.org/olia/olia.owl#Singular" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Pronominal suffix number category; never infer main-word morphology"/>
+  <map kind="value" node="word" feature="prs_nu" value="pl" relation="exact" target="http://purl.org/olia/olia.owl#Plural" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Pronominal suffix number category; never infer main-word morphology"/>
   <map kind="value" node="word" feature="prs_nu" value="NA" relation="native-only"/>
   <map kind="value" node="word" feature="st" value="a" relation="native-only"/>
   <map kind="value" node="word" feature="st" value="c" relation="exact" target="http://purl.org/olia/olia.owl#StatusConstructus" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
@@ -49,4 +49,8 @@
   <map kind="value" node="word" feature="vt" value="infc" relation="native-only"/>
   <map kind="value" node="word" feature="vt" value="ptca" relation="native-only"/>
   <map kind="value" node="word" feature="vt" value="ptcp" relation="native-only"/>
+  <!-- Source-documented suffix categories absent from earlier XML; presence in actual token sample is not assumed. -->
+  <map kind="value" node="word" feature="prs_nu" value="du" relation="exact" target="http://purl.org/olia/olia.owl#Dual" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Source-allowed dual pronominal suffix number; no observed frequency claimed"/>
+  <map kind="value" node="word" feature="prs_ps" value="unknown" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md" note="Undetermined suffix person; no positive ontology category"/>
+  <map kind="value" node="word" feature="prs_nu" value="unknown" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Undetermined suffix number; no positive ontology category"/>
 </mappings>

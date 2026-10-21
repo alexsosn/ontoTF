@@ -55,8 +55,20 @@ class XMLMappingContractTests(unittest.TestCase):
         first = find_correspondences(
             "bhsa", "syriac", node="word", feature="ps", value="p1")
         self.assertEqual({r.destination.value for r in first}, {"first"})
+        # Suffix person and host-word person share the OLiA category, but
+        # the returned selectors retain their different grammatical carriers.
+        suffix_person = find_correspondences(
+            "bhsa", "syriac", node="word", feature="prs_ps", value="p1")
         self.assertEqual(
-            find_correspondences("bhsa", "syriac", node="word", feature="prs_ps", value="p1"), ())
+            {(r.source.feature, r.destination.feature, r.target, r.scope)
+             for r in suffix_person},
+            {("prs_ps", "ps", "http://purl.org/olia/olia.owl#First", "category")})
+        self.assertTrue(all(r.source.node == r.destination.node == "word"
+                            and r.relation == "exact" for r in suffix_person))
+        # No equivalence of an individual pronoun or word token is inferred.
+        self.assertEqual(
+            find_correspondences("bhsa", "syriac", kind="entity",
+                                 node="word", feature="prs_ps", value="p1"), ())
         self.assertEqual(
             find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf"), ())
 
