@@ -31,7 +31,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
             "push:",
             "pull_request:",
             "workflow_dispatch:",
-            'python-version: ["3.10", "3.12"]',
+            'python-version: ["3.12", "3.13", "3.14", "3.15"]',
             "fail-fast: false",
             SOURCE_REPOSITORY,
             SOURCE_BRANCH,
@@ -97,7 +97,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
                 "pyproject.toml",
                 EXACT_HEAD,
                 "python-version:",
-                "3.10",
+                "3.14",
                 "3.12",
                 "python -m build --wheel",
                 "scripts/acceptance/v01_noun.py",
@@ -114,7 +114,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
                 "docs/releases/v0.1.1.md",
                 EXACT_HEAD,
                 "python-version:",
-                "3.10",
+                "3.14",
                 "3.12",
                 "python -m unittest discover -s tests/docs -v",
             ):
@@ -141,7 +141,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
             "tests/docs/**",
             EXACT_HEAD,
             "python-version:",
-            "3.10",
+            "3.14",
             "3.12",
             "python -m unittest discover -s tests/docs -v",
         )
@@ -159,7 +159,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
         text = (WORKFLOW_DIR / "f006-deep-source-nesting.yml").read_text(encoding="utf-8")
         required_tokens = (
             "python-version:",
-            "3.10",
+            "3.14",
             "3.12",
             EXACT_HEAD,
             "python -m pip install build",
@@ -174,7 +174,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
         text = (WORKFLOW_DIR / "f009-deep-digest-nesting.yml").read_text(encoding="utf-8")
         required_tokens = (
             "python-version:",
-            "3.10",
+            "3.14",
             "3.12",
             EXACT_HEAD,
             "python -m pip install build",
@@ -189,7 +189,7 @@ class FullSuiteWorkflowContractTests(unittest.TestCase):
         text = (WORKFLOW_DIR / "p002-i004-source-contract.yml").read_text(encoding="utf-8")
         required_tokens = (
             "python-version:",
-            "3.10",
+            "3.14",
             "3.12",
             "python -m pip install -e . build",
             "python -m unittest discover -s tests/p002 -v",
