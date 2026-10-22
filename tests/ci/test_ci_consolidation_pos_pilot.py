@@ -41,7 +41,7 @@ class POSConsolidationContract(unittest.TestCase):
             with self.subTest(script=script):
                 self.assertTrue((ROOT / script).is_file())
                 self.assertEqual(text.count("python " + script + " --check"), 1)
-        self.assertIn('python-version: ["3.10", "3.12"]', text)
+        self.assertIn('python-version: ["3.12", "3.13", "3.14", "3.15"]', text)
         self.assertIn("github.event.pull_request.head.sha || github.sha", text)
         self.assertIn("python -m unittest discover -s tests -v", text)
         self.assertIn("python -m pytest tests/research -q", text)

@@ -65,7 +65,7 @@ class ResearchWorkflowRetirementContracts(unittest.TestCase):
             "  push:\n    branches: [main]",
             "  pull_request:\n  workflow_dispatch:",
             "github.event.pull_request.head.sha || github.sha",
-            'python-version: ["3.10", "3.12"]',
+            'python-version: ["3.12", "3.13", "3.14", "3.15"]',
             "python -m unittest discover -s tests -v",
             "python -m pytest tests/research -q",
             "python scripts/coverage/build_p004_r011_baseline.py --check",
@@ -91,7 +91,7 @@ class ResearchWorkflowRetirementContracts(unittest.TestCase):
             "git diff --exit-code -- docs/research/data/generated/r005",
         ):
             self.assertIn(required, source)
-        self.assertIn("python-version: '3.11'",
+        self.assertIn("python-version: '3.14'",
                       (WORKFLOWS / "r011-report-validation.yml").read_text(encoding="utf-8"))
         self.assertIn("diff -u docs/research/data/generated/r020",
                       (WORKFLOWS / "r020-denotational-semantics.yml").read_text(encoding="utf-8"))
