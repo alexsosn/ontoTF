@@ -347,5 +347,37 @@ class XMLMappingContractTests(unittest.TestCase):
             (),
         )
 
+    def test_tlhdig_lexical_entry_nodes_are_category_only(self):
+        from tfont.xml_mappings import MappingCatalog
+
+        catalog = MappingCatalog()
+        target = "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"
+        native = catalog.map_native("tlhdig-tf", kind="node", node="lex")
+        self.assertEqual(len(native), 1)
+        self.assertEqual((native[0].relation, native[0].target),
+                         ("exact", target))
+        matches = catalog.find_across_corpora(
+            "tlhdig-tf", kind="node", node="lex"
+        )
+        self.assertEqual(
+            {(m.destination.corpus, m.destination.node,
+              m.target, m.scope, m.relation) for m in matches},
+            {
+                ("assyrian-royal-inscriptions", "lex", target,
+                 "category", "exact"),
+                ("syrnt", "lexeme", target, "category", "exact"),
+            },
+        )
+        # A lexeme grouping is not a selected word's morphology, a shared
+        # lexical sense, a citation-form export or an individual identity.
+        self.assertEqual(
+            catalog.find_across_corpora(
+                "tlhdig-tf", kind="entity", node="lex",
+                feature="lemma", value="unknown"
+            ),
+            (),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
