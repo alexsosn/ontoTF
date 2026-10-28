@@ -58,4 +58,6 @@
   <!-- Source word feature sfnu; values are source-specific, no implied token identity or feature inheritance. -->
   <map kind="value" node="word" feature="sfnu" value="p" relation="exact" target="http://purl.org/olia/olia.owl#Plural" evidence="https://github.com/ETCBC/syrnt/blob/dae3eb6ff62b9b272fb503646796c25d248175ce/docs/transcription.md" note="Number of suffix, not necessarily the word's number"/>
   <map kind="value" node="word" feature="sfnu" value="NA" relation="native-only" evidence="https://github.com/ETCBC/syrnt/blob/dae3eb6ff62b9b272fb503646796c25d248175ce/docs/transcription.md" note="Original source explicitly says singular OR not applicable; not exact OLiA Singular"/>
+  <!-- OntoLex category correspondence only; source nodes are NOT cross-corpus identical lexical entries. -->
+  <map kind="node" node="lexeme" relation="exact" target="http://www.w3.org/ns/lemon/ontolex#LexicalEntry" evidence="https://github.com/ETCBC/syrnt/blob/dae3eb6ff62b9b272fb503646796c25d248175ce/docs/transcription.md" note="Lexeme node groups morphologically related occurrences, consistent with lexical entry; no OntoLex Form or LexicalSense is manufactured"/>
 </mappings>

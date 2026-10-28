@@ -317,5 +317,35 @@ class XMLMappingContractTests(unittest.TestCase):
             map_native("syriac", node="word", feature="sp", value="subs", corpus_version="wrong")
 
 
+    def test_real_oracc_syrnt_ontolex_lexical_entry_node_correspondence(self):
+        from tfont.xml_mappings import MappingCatalog
+
+        catalog = MappingCatalog()
+        iri = "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"
+        oracc = catalog.map_native(
+            "assyrian-royal-inscriptions", kind="node", node="lex"
+        )
+        syrnt = catalog.map_native("syrnt", kind="node", node="lexeme")
+        self.assertEqual(len(oracc), 1)
+        self.assertEqual(len(syrnt), 1)
+        self.assertEqual((oracc[0].relation, oracc[0].target), ("exact", iri))
+        self.assertEqual((syrnt[0].relation, syrnt[0].target), ("exact", iri))
+        forward = catalog.find_correspondences(
+            "assyrian-royal-inscriptions", "syrnt", kind="node", node="lex"
+        )
+        self.assertEqual(len(forward), 1)
+        self.assertEqual(forward[0].destination.node, "lexeme")
+        self.assertEqual(forward[0].target, iri)
+        self.assertEqual((forward[0].scope, forward[0].relation), ("category", "exact"))
+        # A shared lexical-entry CLASS is not an identity alignment, translation,
+        # linked lexical sense, or assertion about the form of any occurrence.
+        self.assertEqual(
+            catalog.find_correspondences(
+                "assyrian-royal-inscriptions", "syrnt",
+                kind="entity", node="word", feature="pos", value="N"
+            ),
+            (),
+        )
+
 if __name__ == "__main__":
     unittest.main()
