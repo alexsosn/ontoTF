@@ -376,12 +376,15 @@ class XMLMappingContractTests(unittest.TestCase):
                     ),
                     (),
                 )
+                syriac = catalog.find_correspondences(
+                    "bhsa", "syriac", node="word", feature="vt",
+                    value=value, include_approximate=True
+                )
                 self.assertEqual(
-                    catalog.find_correspondences(
-                        "bhsa", "syriac", node="word", feature="vt",
-                        value=value, include_approximate=True
-                    ),
-                    (),
+                    {(m.destination.value, m.relation, m.scope)
+                     for m in syriac},
+                    {("inf" if cls == "Infinitive" else "ptc",
+                      "approximate-via-target", "category")},
                 )
                 syrnt = catalog.find_correspondences(
                     "bhsa", "syrnt", node="word", feature="vt",
