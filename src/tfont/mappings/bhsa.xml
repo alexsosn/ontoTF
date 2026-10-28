@@ -45,10 +45,10 @@
   <map kind="value" node="word" feature="vt" value="impf" relation="native-only"/>
   <map kind="value" node="word" feature="vt" value="wayq" relation="native-only"/>
   <map kind="value" node="word" feature="vt" value="impv" relation="exact" target="http://purl.org/olia/olia.owl#ImperativeVerb" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
-  <map kind="value" node="word" feature="vt" value="infa" relation="native-only"/>
-  <map kind="value" node="word" feature="vt" value="infc" relation="native-only"/>
-  <map kind="value" node="word" feature="vt" value="ptca" relation="native-only"/>
-  <map kind="value" node="word" feature="vt" value="ptcp" relation="native-only"/>
+  <map kind="value" node="word" feature="vt" value="infa" relation="narrower" target="http://purl.org/olia/olia.owl#Infinitive" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/vt.md" note="Infinitive absolute is a subtype of broad OLiA Infinitive; narrower not exact, no participial voice or infinitival state fabricated"/>
+  <map kind="value" node="word" feature="vt" value="infc" relation="narrower" target="http://purl.org/olia/olia.owl#Infinitive" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/vt.md" note="Infinitive construct is a subtype of broad OLiA Infinitive; narrower not exact, no participial voice or infinitival state fabricated"/>
+  <map kind="value" node="word" feature="vt" value="ptca" relation="narrower" target="http://purl.org/olia/olia.owl#Participle" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/vt.md" note="Participle is a subtype of broad OLiA Participle; narrower not exact, no participial voice or infinitival state fabricated"/>
+  <map kind="value" node="word" feature="vt" value="ptcp" relation="narrower" target="http://purl.org/olia/olia.owl#Participle" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/vt.md" note="Passive participle is a subtype of broad OLiA Participle; narrower not exact, no participial voice or infinitival state fabricated"/>
   <!-- Source-documented suffix categories absent from earlier XML; presence in actual token sample is not assumed. -->
   <map kind="value" node="word" feature="prs_nu" value="du" relation="exact" target="http://purl.org/olia/olia.owl#Dual" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Source-allowed dual pronominal suffix number; no observed frequency claimed"/>
   <map kind="value" node="word" feature="prs_ps" value="unknown" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md" note="Undetermined suffix person; no positive ontology category"/>
