@@ -347,5 +347,61 @@ class XMLMappingContractTests(unittest.TestCase):
             (),
         )
 
+    def test_bhsa_nonfinite_subtypes_require_approximate_opt_in(self):
+        # BHSA tense/form labels carry narrower morphology than OLiA's
+        # general Infinitive / Participle classes. Do not assert equivalence.
+        from tfont.xml_mappings import MappingCatalog
+
+        catalog = MappingCatalog()
+        cases = {
+            "infa": "Infinitive",
+            "infc": "Infinitive",
+            "ptca": "Participle",
+            "ptcp": "Participle",
+        }
+        for value, cls in cases.items():
+            with self.subTest(value=value):
+                native = catalog.map_native(
+                    "bhsa", node="word", feature="vt", value=value
+                )
+                self.assertEqual(len(native), 1)
+                self.assertEqual(native[0].relation, "narrower")
+                self.assertEqual(
+                    native[0].target, f"http://purl.org/olia/olia.owl#{cls}"
+                )
+                self.assertEqual(
+                    catalog.find_correspondences(
+                        "bhsa", "syriac", node="word", feature="vt",
+                        value=value
+                    ),
+                    (),
+                )
+                self.assertEqual(
+                    catalog.find_correspondences(
+                        "bhsa", "syriac", node="word", feature="vt",
+                        value=value, include_approximate=True
+                    ),
+                    (),
+                )
+                syrnt = catalog.find_correspondences(
+                    "bhsa", "syrnt", node="word", feature="vt",
+                    value=value, include_approximate=True
+                )
+                self.assertEqual(
+                    {(m.destination.value, m.relation, m.scope)
+                     for m in syrnt},
+                    {("infinitive" if cls == "Infinitive" else "participle",
+                      "approximate-via-target", "category")},
+                )
+        # Finite perfect/imperfect/wayyiqtol remain native-only.
+        for value in ("perf", "impf", "wayq"):
+            self.assertEqual(
+                [r.relation for r in catalog.map_native(
+                    "bhsa", node="word", feature="vt", value=value
+                )],
+                ["native-only"],
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
