@@ -309,13 +309,18 @@ def find_correspondences(source_corpus: str, target_corpus: str,
 
 def resolve_nodes(api: Any, mapping: Mapping, *,
                   corpus_version: str | None = None) -> tuple[int, ...]:
-    """Execute one mapped value selector against an *already loaded* TF API."""
-    if mapping.kind != "value" or mapping.target is None or mapping.relation in _NON_MATCHING:
-        raise MappingError("only a positive word/node feature-value mapping can select TF nodes")
+    """Execute a reviewed node-kind or feature-value category on a loaded TF API."""
+    if (mapping.kind not in {"node", "value"} or mapping.target is None
+            or mapping.relation in _NON_MATCHING):
+        raise MappingError("only positive node-kind or feature-value mappings can select TF nodes")
     if corpus_version is not None and mapping.corpus_version is not None and corpus_version != mapping.corpus_version:
         raise MappingError("loaded corpus version differs from the mapped source version")
     try:
         nodes = api.F.otype.s(mapping.node)
+        if mapping.kind == "node":
+            # A type selector returns the source's actual TF nodes. It never
+            # asserts cross-corpus identity or follows an oslots anchor.
+            return tuple(nodes)
         feature = api.Fs(mapping.feature)
         return tuple(n for n in nodes
                      if (observed := feature.v(n)) is not None
