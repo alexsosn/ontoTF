@@ -23,11 +23,19 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
             ("exact", TOKEN, TF_VERSION),
         )
         self.assertIn(PIN, rows[0].evidence)
-        self.assertEqual(
-            catalog.find_by_target(TOKEN, corpus="pseudepigrapha",
-                                   kind="node"),
-            rows,
+        # The reverse category lookup includes both source-backed forms:
+        # alternative variant_word tokens and text-bearing primary words.
+        found = catalog.find_by_target(
+            TOKEN, corpus="pseudepigrapha", kind="node"
         )
+        self.assertEqual(
+            {(m.node, m.feature, m.relation, m.target) for m in found},
+            {
+                ("variant_word", None, "exact", TOKEN),
+                ("word", "g_word_utf8", "exact", TOKEN),
+            },
+        )
+        self.assertIn(rows[0], found)
         self.assertEqual(
             catalog.map_native("pseudepigrapha", kind="entity",
                                node="variant_word", feature="g_word_utf8",
