@@ -415,6 +415,7 @@ class XMLMappingContractTests(unittest.TestCase):
                 ("assyrian-royal-inscriptions", "lex", target,
                  "category", "exact"),
                 ("syrnt", "lexeme", target, "category", "exact"),
+                ("bhsa", "lex", target, "category", "exact"),
             },
         )
         # A lexeme grouping is not a selected word's morphology, a shared
@@ -424,6 +425,41 @@ class XMLMappingContractTests(unittest.TestCase):
                 "tlhdig-tf", kind="entity", node="lex",
                 feature="lemma", value="unknown"
             ),
+            (),
+        )
+
+
+    def test_bhsa_lexeme_node_is_ontolex_category_not_lex0_identity(self):
+        catalog = MappingCatalog()
+        target = "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"
+        native = catalog.map_native("bhsa", kind="node", node="lex")
+        self.assertEqual(
+            [(r.relation, r.target) for r in native],
+            [("exact", target)]
+        )
+        matches = catalog.find_across_corpora(
+            "bhsa", kind="node", node="lex"
+        )
+        self.assertEqual(
+            {(r.destination.corpus, r.destination.node, r.scope,
+              r.relation, r.target) for r in matches},
+            {
+                ("assyrian-royal-inscriptions", "lex", "category", "exact", target),
+                ("tlhdig-tf", "lex", "category", "exact", target),
+                ("syrnt", "lexeme", "category", "exact", target),
+            },
+        )
+        # BHSA lex0 without final disambiguators is NOT a lexeme ID;
+        # class discovery never aligns individual lexemes across corpora.
+        self.assertEqual(
+            catalog.find_across_corpora(
+                "bhsa", kind="entity", node="lex", feature="lex0",
+                value="ABC"
+            ),
+            (),
+        )
+        self.assertEqual(
+            catalog.map_native("bhsa", kind="node", node="word"),
             (),
         )
 
