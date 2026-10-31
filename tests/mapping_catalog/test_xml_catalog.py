@@ -428,5 +428,54 @@ class XMLMappingContractTests(unittest.TestCase):
         )
 
 
+    def test_extrabiblical_observed_verbal_and_lexical_subtypes(self):
+        catalog = MappingCatalog()
+        base = "http://purl.org/olia/olia.owl#"
+        candidates = {
+            ("vt", "impv"): "ImperativeVerb",
+            ("vt", "infa"): "Infinitive",
+            ("vt", "infc"): "Infinitive",
+            ("vt", "ptca"): "Participle",
+            ("vt", "ptcp"): "Participle",
+            ("ls", "card"): "CardinalNumber",
+            ("ls", "ordn"): "OrdinalNumber",
+        }
+        for (feature, value), cls in candidates.items():
+            with self.subTest(feature=feature, value=value):
+                rows = catalog.map_native(
+                    "extrabiblical", node="word",
+                    feature=feature, value=value
+                )
+                self.assertEqual(
+                    [(r.relation, r.target) for r in rows],
+                    [("exact", base + cls)],
+                )
+        for value in ("NA", "perf", "impf", "wayq"):
+            with self.subTest(conservative=value):
+                self.assertEqual(
+                    [r.relation for r in catalog.map_native(
+                        "extrabiblical", node="word",
+                        feature="vt", value=value
+                    )],
+                    ["native-only"],
+                )
+        self.assertEqual(
+            {(r.destination.corpus, r.destination.feature,
+              r.destination.value, r.scope)
+             for r in catalog.find_correspondences(
+                "extrabiblical", "syrnt",
+                node="word", feature="ls", value="card"
+             )},
+            {("syrnt", "nmtyp", "cardinal", "category")},
+        )
+        self.assertEqual(
+            catalog.find_correspondences(
+                "extrabiblical", "syrnt",
+                node="word", feature="vt", value="perf"
+            ),
+            (),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
