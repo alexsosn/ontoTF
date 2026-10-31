@@ -16,4 +16,6 @@
   <map kind="value" node="analysis" feature="pos" value="QUANcar" relation="native-only" note="Cardinal quantifier; no exact verified OLiA class"/>
   <map kind="value" node="analysis" feature="pos" value="QUANmul" relation="native-only" note="Multiplicative quantifier; no exact verified OLiA class"/>
   <map kind="value" node="analysis" feature="pos" value="QUANord" relation="native-only" note="Ordinal quantifier; no exact verified OLiA class"/>
+  <!-- TLHdig lexical grouping of candidate analyses by (lemma, gloss); oslots is an anchor, not all occurrences. -->
+  <map kind="node" node="lex" relation="exact" target="http://www.w3.org/ns/lemon/ontolex#LexicalEntry" evidence="https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/data-model.md" note="Lexical-entry category only: analysis-to-lex grouping by lemma and gloss; do not infer same sense, selected analysis, word identity or containment from anchor slots"/>
 </mappings>
