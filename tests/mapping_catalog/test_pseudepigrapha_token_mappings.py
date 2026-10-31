@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 TOKEN = "http://purl.org/olia/olia.owl#Token"
@@ -124,6 +125,13 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
             )
         with self.assertRaisesRegex(MappingError, "loaded corpus version"):
             resolve_nodes(api, token, corpus_version="0.9")
+
+        # Approximate/related category associations cannot silently become
+        # executable node-set equivalence without explicit opt-in semantics.
+        with self.assertRaisesRegex(MappingError, "exact"):
+            resolve_nodes(api, replace(token, relation="related"))
+        with self.assertRaisesRegex(MappingError, "exact"):
+            resolve_nodes(api, replace(token, relation="narrower"))
 
         class NoOtype:
             class F:
