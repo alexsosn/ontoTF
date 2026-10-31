@@ -428,5 +428,59 @@ class XMLMappingContractTests(unittest.TestCase):
         )
 
 
+    def test_source_attested_tlhdig_numeral_subtypes_are_specific_categories(self):
+        catalog = MappingCatalog()
+        cases = {
+            "QUANcar": "CardinalNumber",
+            "QUANord": "OrdinalNumber",
+            "QUANmul": "MultipleNumeral",
+        }
+        for code, name in cases.items():
+            with self.subTest(code=code):
+                rows = catalog.map_native(
+                    "tlhdig-tf", node="analysis",
+                    feature="pos", value=code
+                )
+                self.assertEqual(len(rows), 1)
+                self.assertEqual(
+                    (rows[0].relation, rows[0].target),
+                    ("exact", "http://purl.org/olia/olia.owl#" + name)
+                )
+                self.assertTrue(rows[0].evidence)
+
+        cross = catalog.find_correspondences(
+            "tlhdig-tf", "syrnt",
+            node="analysis", feature="pos", value="QUANcar"
+        )
+        self.assertEqual(
+            {(c.source.node, c.destination.node, c.destination.feature,
+              c.destination.value, c.scope, c.relation) for c in cross},
+            {("analysis", "word", "nmtyp", "cardinal", "category", "exact")}
+        )
+        # Numeral is a supercategory, not an exact target-equivalence:
+        # do not confuse ORACC NU with more-specific TLHdig QUANcar.
+        self.assertEqual(
+            catalog.find_correspondences(
+                "tlhdig-tf", "assyrian-royal-inscriptions",
+                node="analysis", feature="pos", value="QUANcar"
+            ),
+            ()
+        )
+        # Do not infer a preferred word-level analysis or selected lexeme.
+        self.assertEqual(
+            catalog.map_native(
+                "tlhdig-tf", node="word", feature="pos", value="QUANcar"
+            ),
+            ()
+        )
+        for code in ("ADV POSP PREV", "POSP ADV PREV", "PREV", "NEG"):
+            self.assertEqual(
+                [r.relation for r in catalog.map_native(
+                    "tlhdig-tf", node="analysis", feature="pos", value=code
+                )],
+                ["native-only"]
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
