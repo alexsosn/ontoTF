@@ -428,5 +428,53 @@ class XMLMappingContractTests(unittest.TestCase):
         )
 
 
+    def test_syrnt_participle_type_voice_to_syriac(self):
+        catalog = MappingCatalog()
+        base = "http://purl.org/olia/olia.owl#"
+        for src, cls, destination in (
+            ("active", "ActiveVoice", "act"),
+            ("passive", "PassiveVoice", "pas"),
+        ):
+            with self.subTest(participle_voice=src):
+                native = catalog.map_native(
+                    "syrnt", node="word", feature="ptctyp", value=src
+                )
+                self.assertEqual(
+                    [(m.relation, m.target) for m in native],
+                    [("exact", base + cls)]
+                )
+                joins = catalog.find_correspondences(
+                    "syrnt", "syriac",
+                    node="word", feature="ptctyp", value=src
+                )
+                self.assertEqual(
+                    {(x.destination.feature, x.destination.value,
+                      x.scope, x.relation) for x in joins},
+                    {("vo", destination, "category", "exact")}
+                )
+        self.assertEqual(
+            [x.relation for x in catalog.map_native(
+                "syrnt", node="word", feature="ptctyp", value="NA"
+            )],
+            ["native-only"],
+        )
+        self.assertEqual(
+            catalog.find_correspondences(
+                "syrnt", "syriac",
+                node="word", feature="ptctyp", value="NA"
+            ),
+            (),
+        )
+        # Participle voice is NOT evidence for a chosen participle reading,
+        # the identity of a source token, or a distinct ActiveParticiple class.
+        self.assertEqual(
+            catalog.map_native(
+                "syrnt", kind="entity", node="word",
+                feature="ptctyp", value="active"
+            ),
+            (),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
