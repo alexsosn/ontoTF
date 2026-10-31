@@ -53,4 +53,6 @@
   <map kind="value" node="word" feature="prs_nu" value="du" relation="exact" target="http://purl.org/olia/olia.owl#Dual" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Source-allowed dual pronominal suffix number; no observed frequency claimed"/>
   <map kind="value" node="word" feature="prs_ps" value="unknown" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_ps.md" note="Undetermined suffix person; no positive ontology category"/>
   <map kind="value" node="word" feature="prs_nu" value="unknown" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/prs_nu.md" note="Undetermined suffix number; no positive ontology category"/>
+  <!-- BHSA lexeme objects span all lexical occurrences; this is a class correspondence, not a lexical-identity alignment. -->
+  <map kind="node" node="lex" relation="exact" target="http://www.w3.org/ns/lemon/ontolex#LexicalEntry" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/otype.md" note="BHSA lex is a lexeme dictionary-entry node; distinct lexemes can share lex0 and require lex disambiguation; never align lexical individuals from class alone"/>
 </mappings>
