@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import unittest
+import json
+from pathlib import Path
 from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 TOKEN = "http://purl.org/olia/olia.owl#Token"
@@ -43,6 +45,21 @@ class EtcSourceTokensTests(unittest.TestCase):
                 ), ())
                 self.assertGreater(count, 0)
                 self.assertLessEqual(count, total)
+
+    def test_release_census_agrees_with_each_pinned_source_selector(self):
+        repo_root = Path(__file__).resolve().parents[2]
+        for corpus, version, feature, pin, observed, total in CASES:
+            with self.subTest(corpus=corpus):
+                path = (repo_root / "docs" / "research" / "data" /
+                        "generated" / "r005" / f"{corpus}.json")
+                record = json.loads(path.read_text(encoding="utf-8"))
+                self.assertEqual(record["revision"], pin)
+                self.assertEqual(record["tf_version"], version)
+                self.assertEqual(record["slot_type"], "word")
+                self.assertEqual(record["node_types"]["word"], total)
+                native = record["node_features"][feature]
+                self.assertIn("word", native["applies_to"])
+                self.assertEqual(native["nodes_with_value"], observed)
 
     def test_native_tf_execution_only_selects_populated_carriers(self):
         catalog = MappingCatalog()
