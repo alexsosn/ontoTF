@@ -108,8 +108,11 @@ def _checked(name: str, text: str) -> tuple[Mapping, ...]:
             "edge": {"feature"},
             "entity": {"node", "feature", "value"},
         }[kind]
-        optional = {"node"} if kind == "feature" else (
-            {"from", "to"} if kind == "edge" else set())
+        # For a node category, feature (if supplied) is a required populated
+        # native annotation on that node, not an ontology data-property claim.
+        optional = ({"node"} if kind == "feature" else
+                    {"feature"} if kind == "node" else
+                    {"from", "to"} if kind == "edge" else set())
         if not required <= given or given - (required | optional):
             raise MappingError(f"{where}: invalid {kind} selector fields")
         if any(not item.get(key, "").strip() for key in given):
@@ -320,9 +323,15 @@ def resolve_nodes(api: Any, mapping: Mapping, *,
     try:
         nodes = api.F.otype.s(mapping.node)
         if mapping.kind == "node":
-            # A type selector returns the source's actual TF nodes. It never
-            # asserts cross-corpus identity or follows an oslots anchor.
-            return tuple(nodes)
+            # Category selection never follows a technical oslots anchor.
+            # An optional verified native feature narrows the node category
+            # to its populated carriers (e.g. real word tokens vs empty gaps).
+            if mapping.feature is None:
+                return tuple(nodes)
+            feature = api.Fs(mapping.feature)
+            return tuple(n for n in nodes
+                         if (observed := feature.v(n)) is not None
+                         and str(observed) != "")
         feature = api.Fs(mapping.feature)
         return tuple(n for n in nodes
                      if (observed := feature.v(n)) is not None
