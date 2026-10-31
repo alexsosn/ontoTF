@@ -38,4 +38,6 @@
   <map kind="value" node="word" feature="vt" value="ipf" relation="native-only"/>
   <map kind="value" node="word" feature="vt" value="pf" relation="native-only"/>
   <map kind="value" node="word" feature="vt" value="ptc" relation="exact" target="http://purl.org/olia/olia.owl#Participle" evidence="https://github.com/alexsosn/ontoTF/pull/365"/>
+  <!-- Pinned native Unicode/transliteration surface presence identifies an actual orthographic token. -->
+  <map kind="node" node="word" feature="g_cons_utf8" relation="exact" target="http://purl.org/olia/olia.owl#Token" evidence="https://github.com/ETCBC/syriac/blob/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9/g_cons_utf8.tf" note="Estrangela-script word text observed for 359508 of 360193 word nodes; no category asserted for 685 lacking surface"/>
 </mappings>

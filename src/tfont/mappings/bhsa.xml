@@ -88,4 +88,6 @@
   <map kind="value" node="lex" feature="ls" value="ques" relation="exact" target="http://purl.org/olia/olia.owl#InterrogativeParticle" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/ls.md" note="Interrogative particle lexical-set category, not a pronoun or interrogative adverb"/>
   <map kind="value" node="lex" feature="ls" value="quot" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/ls.md" note="Quotation verb subtype; no exact verified quotation-verb OWL class"/>
   <map kind="value" node="lex" feature="ls" value="vbcp" relation="native-only" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/ls.md" note="Copulative verb subtype; no exact verified OLiA subclass"/>
+  <!-- Pinned native Unicode/transliteration surface presence identifies an actual orthographic token. -->
+  <map kind="node" node="word" feature="g_word" relation="exact" target="http://purl.org/olia/olia.owl#Token" evidence="https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/g_word.md" note="Pointed-transliterated word occurrence on native word slots, source feature observed for all 426590 word slots; orthographic token class, not lexeme identity"/>
 </mappings>
