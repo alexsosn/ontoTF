@@ -1,6 +1,6 @@
 # TFont
 
-> **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The published v0.1.1 wheel still uses legacy resources. The current main branch implements an auto-discovered XML catalog for five corpora; that XML functionality has not yet shipped in a tagged wheel. New contributions edit only `src/tfont/mappings/<corpus>.xml`.
+> **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The published v0.1.1 wheel still uses legacy resources. The development source implements an auto-discovered XML catalog (the current corpus roster comes from the XML files, not a hard-coded list); that XML functionality has not yet shipped in a tagged wheel. New contributions edit only `src/tfont/mappings/<corpus>.xml`.
 
 
 TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
@@ -68,7 +68,23 @@ for mapping in find_by_target("http://purl.org/olia/olia.owl#Noun"):
     print(mapping.corpus, mapping.node, mapping.feature, mapping.value)
 ```
 
-This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, match.destination)` can execute a positive feature-value selector against an already loaded matching TF corpus. For a new corpus, create one `src/tfont/mappings/<newcorpus>.xml` file; no Python edits or registry updates are needed. The installed wheel reads the same XML files as the repository.
+This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, mapping)` can execute an **exact** native node category or a positive feature-value selector against an already loaded, source-version-compatible TF API. A node-category mapping can have an optional **native surface-feature presence** condition. For example, the source-pinned BHSA `word.g_word` category includes only text-bearing native word nodes, not inferred lexical or cross-corpus token identities:
+
+```python
+from tfont import MappingCatalog, resolve_nodes
+
+def bhsa_source_word_token_ids(loaded_bhsa_api):
+    catalog = MappingCatalog()
+    mapping, = catalog.map_native(
+        "bhsa", kind="node", node="word", feature="g_word",
+        corpus_version="2021",
+    )
+    return resolve_nodes(loaded_bhsa_api, mapping, corpus_version="2021")
+```
+
+The caller must independently load the pinned BHSA TF corpus; TFont does not download it. The returned IDs are **native BHSA node IDs only**. Other corpora may use different surface feature names, and an empty or missing source surface is excluded by the condition. Do not infer token alignment, source word identity, lexical sense or physical inscription from an ontology-category match.
+
+To add a new corpus or a reviewed category, edit its authoritative `src/tfont/mappings/<corpus>.xml`; no per-corpus registration or generated release ledger is required. A **wheel built from the current development source** packages the same XML mapping files. The published `v0.1.1` wheel predates this XML runtime.
 
 ## Installation
 
