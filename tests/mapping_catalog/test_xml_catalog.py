@@ -415,6 +415,7 @@ class XMLMappingContractTests(unittest.TestCase):
                 ("assyrian-royal-inscriptions", "lex", target,
                  "category", "exact"),
                 ("syrnt", "lexeme", target, "category", "exact"),
+                ("bhsa", "lex", target, "category", "exact"),
             },
         )
         # A lexeme grouping is not a selected word's morphology, a shared
@@ -424,6 +425,95 @@ class XMLMappingContractTests(unittest.TestCase):
                 "tlhdig-tf", kind="entity", node="lex",
                 feature="lemma", value="unknown"
             ),
+            (),
+        )
+
+
+    def test_source_attested_tlhdig_numeral_subtypes_are_specific_categories(self):
+        catalog = MappingCatalog()
+        cases = {
+            "QUANcar": "CardinalNumber",
+            "QUANord": "OrdinalNumber",
+            "QUANmul": "MultipleNumeral",
+        }
+        for code, name in cases.items():
+            with self.subTest(code=code):
+                rows = catalog.map_native(
+                    "tlhdig-tf", node="analysis",
+                    feature="pos", value=code
+                )
+                self.assertEqual(len(rows), 1)
+                self.assertEqual(
+                    (rows[0].relation, rows[0].target),
+                    ("exact", "http://purl.org/olia/olia.owl#" + name)
+                )
+                self.assertTrue(rows[0].evidence)
+
+        cross = catalog.find_correspondences(
+            "tlhdig-tf", "syrnt",
+            node="analysis", feature="pos", value="QUANcar"
+        )
+        self.assertEqual(
+            {(c.source.node, c.destination.node, c.destination.feature,
+              c.destination.value, c.scope, c.relation) for c in cross},
+            {("analysis", "word", "nmtyp", "cardinal", "category", "exact")}
+        )
+        # Numeral is a supercategory, not an exact target-equivalence:
+        # do not confuse ORACC NU with more-specific TLHdig QUANcar.
+        self.assertEqual(
+            catalog.find_correspondences(
+                "tlhdig-tf", "assyrian-royal-inscriptions",
+                node="analysis", feature="pos", value="QUANcar"
+            ),
+            ()
+        )
+        # Do not infer a preferred word-level analysis or selected lexeme.
+        self.assertEqual(
+            catalog.map_native(
+                "tlhdig-tf", node="word", feature="pos", value="QUANcar"
+            ),
+            ()
+        )
+        for code in ("ADV POSP PREV", "POSP ADV PREV", "PREV", "NEG"):
+            self.assertEqual(
+                [r.relation for r in catalog.map_native(
+                    "tlhdig-tf", node="analysis", feature="pos", value=code
+                )],
+                ["native-only"]
+            )
+
+
+    def test_bhsa_lexeme_node_is_ontolex_category_not_lex0_identity(self):
+        catalog = MappingCatalog()
+        target = "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"
+        native = catalog.map_native("bhsa", kind="node", node="lex")
+        self.assertEqual(
+            [(r.relation, r.target) for r in native],
+            [("exact", target)]
+        )
+        matches = catalog.find_across_corpora(
+            "bhsa", kind="node", node="lex"
+        )
+        self.assertEqual(
+            {(r.destination.corpus, r.destination.node, r.scope,
+              r.relation, r.target) for r in matches},
+            {
+                ("assyrian-royal-inscriptions", "lex", "category", "exact", target),
+                ("tlhdig-tf", "lex", "category", "exact", target),
+                ("syrnt", "lexeme", "category", "exact", target),
+            },
+        )
+        # BHSA lex0 without final disambiguators is NOT a lexeme ID;
+        # class discovery never aligns individual lexemes across corpora.
+        self.assertEqual(
+            catalog.find_across_corpora(
+                "bhsa", kind="entity", node="lex", feature="lex0",
+                value="ABC"
+            ),
+            (),
+        )
+        self.assertEqual(
+            catalog.map_native("bhsa", kind="node", node="word"),
             (),
         )
 
