@@ -41,4 +41,6 @@
   <map kind="value" node="sign" feature="sign" value="…" relation="native-only" evidence="https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md" note="Ellipsis/damaged-text marker, not a positively read alphabetic letter"/>
   <!-- Two further observed technical layout values (ASCII space and NBSP) are intentionally excluded: XML selector validation rejects whitespace-only values. They are not letters and must not be promoted. -->
   <map kind="value" node="word" feature="language" value="Ugaritic" relation="native-only" evidence="https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md" note="Source language name is not an OLiA Letter/class or cross-corpus identifier; no shared language-class mapping established"/>
+  <!-- Pinned native transliteration surface presence, not material glyph or lexical-identity equivalence. -->
+  <map kind="node" node="word" feature="g_cons" relation="exact" target="http://purl.org/olia/olia.owl#Token" evidence="https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md" note="Only 27242 source word nodes with recorded consonantal Latin transliteration out of 27770 word nodes; absent readings remain unclassified as orthographic tokens; no physical cuneiform glyph identity"/>
 </mappings>
