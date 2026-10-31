@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import unittest
-from tfont.xml_mappings import MappingCatalog, MappingError
+from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 TOKEN = "http://purl.org/olia/olia.owl#Token"
 PIN = "7c4b757bb543a110ae9a252d1281835859136852"
@@ -85,6 +85,52 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
                     [(r.relation, r.target) for r in rows],
                     [("native-only", None)],
                 )
+
+
+    def test_execute_reviewed_node_kind_on_real_tf_api_shape(self):
+        catalog = MappingCatalog()
+
+        class Otype:
+            def s(self, kind):
+                if kind == "variant_word":
+                    return (101, 103, 107)
+                if kind == "lex":
+                    return (400, 401)
+                return ()
+
+        class API:
+            class F:
+                otype = Otype()
+
+            def Fs(self, feature):
+                raise AssertionError("node category must not request a feature")
+
+        api = API()
+        token = catalog.map_native(
+            "pseudepigrapha", kind="node", node="variant_word"
+        )[0]
+        self.assertEqual(
+            resolve_nodes(api, token, corpus_version="1.0"),
+            (101, 103, 107),
+        )
+        entry = catalog.map_native("bhsa", kind="node", node="lex")[0]
+        self.assertEqual(resolve_nodes(api, entry), (400, 401))
+        # A TF node type is a category, never lexical/token identity.
+        with self.assertRaisesRegex(MappingError, "positive"):
+            resolve_nodes(
+                api, catalog.map_native(
+                    "pseudepigrapha", kind="node", node="word"
+                )[0],
+            )
+        with self.assertRaisesRegex(MappingError, "loaded corpus version"):
+            resolve_nodes(api, token, corpus_version="0.9")
+
+        class NoOtype:
+            class F:
+                pass
+
+        with self.assertRaisesRegex(MappingError, "required TF"):
+            resolve_nodes(NoOtype(), token)
 
 
 if __name__ == "__main__":
