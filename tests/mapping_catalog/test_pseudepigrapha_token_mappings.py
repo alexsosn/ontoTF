@@ -141,5 +141,58 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
             resolve_nodes(NoOtype(), token)
 
 
+    def test_surface_bearing_primary_word_nodes_exclude_empty_gaps(self):
+        catalog = MappingCatalog()
+        positive = catalog.map_native(
+            "pseudepigrapha", kind="node",
+            node="word", feature="g_word_utf8"
+        )
+        self.assertEqual(
+            [(m.relation, m.target) for m in positive],
+            [("exact", TOKEN)],
+        )
+        self.assertEqual(
+            {x.node for x in catalog.find_by_target(
+                TOKEN, kind="node", corpus="pseudepigrapha"
+            )},
+            {"word", "variant_word"},
+        )
+
+        class Otype:
+            def s(self, kind):
+                assert kind == "word"
+                return (1, 2, 3, 4)
+
+        class Surface:
+            def v(self, n):
+                return {1: "λόγος", 2: None, 3: "ܡܠܬܐ", 4: ""}[n]
+
+        class API:
+            class F:
+                otype = Otype()
+
+            def Fs(self, name):
+                assert name == "g_word_utf8"
+                return Surface()
+
+        self.assertEqual(resolve_nodes(API(), positive[0], corpus_version="1.0"),
+                         (1, 3))
+        # The unconditional word kind includes empty source anchors and cannot
+        # be promoted without the verified feature-presence precondition.
+        self.assertEqual(
+            [(m.relation, m.target) for m in catalog.map_native(
+                "pseudepigrapha", kind="node", node="word"
+            )],
+            [("native-only", None)],
+        )
+        with self.assertRaisesRegex(MappingError, "loaded corpus version"):
+            resolve_nodes(API(), positive[0], corpus_version="0.9")
+        with self.assertRaisesRegex(MappingError, "required TF"):
+            class MissingSurface(API):
+                def Fs(self, name):
+                    raise KeyError(name)
+            resolve_nodes(MissingSurface(), positive[0])
+
+
 if __name__ == "__main__":
     unittest.main()
