@@ -73,6 +73,55 @@ class XMLMappingContractTests(unittest.TestCase):
             find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf"), ())
 
 
+    def test_bhsa_nonfinite_verbal_forms_share_only_general_olia_categories(self):
+        # ETCBC/bhsa@4db00e2 docs/features/vt.md calls infa/infc
+        # infinitives and ptca/ptcp participles. The subtype survives in
+        # the returned native selector; no subtype/tense/voice is fabricated.
+        target_base = "http://purl.org/olia/olia.owl#"
+        source_forms = {
+            "infa": "Infinitive", "infc": "Infinitive",
+            "ptca": "Participle", "ptcp": "Participle",
+        }
+        for value, concept in source_forms.items():
+            with self.subTest(value=value):
+                rows = map_native("bhsa", node="word", feature="vt", value=value)
+                self.assertEqual(
+                    [(row.relation, row.target) for row in rows],
+                    [("exact", target_base + concept)],
+                )
+                matches = find_correspondences(
+                    "bhsa", "syriac", node="word", feature="vt", value=value
+                )
+                self.assertEqual(
+                    {(row.destination.feature, row.destination.value,
+                      row.target, row.scope) for row in matches},
+                    {("vt", "inf" if concept == "Infinitive" else "ptc",
+                      target_base + concept, "category")},
+                )
+        # SyrNT uses lexical verbal-form names; no word token is equated.
+        for native, label in (("infa", "infinitive"), ("ptcp", "participle")):
+            cross = find_correspondences(
+                "bhsa", "syrnt", node="word", feature="vt", value=native
+            )
+            self.assertEqual(
+                {(row.destination.feature, row.destination.value,
+                  row.scope) for row in cross},
+                {("vt", label, "category")},
+            )
+        # No reinterpretation of Biblical Hebrew finite forms as modern
+        # tense or aspect categories.
+        for native in ("perf", "impf", "wayq"):
+            self.assertEqual(
+                [(row.relation, row.target) for row in
+                 map_native("bhsa", node="word", feature="vt", value=native)],
+                [("native-only", None)],
+            )
+            self.assertEqual(
+                find_correspondences(
+                    "bhsa", "syriac", node="word", feature="vt", value=native
+                ), (),
+            )
+
     def test_all_corpora_mapping_joins_different_native_node_kinds(self):
         from tfont import find_across_corpora
 
