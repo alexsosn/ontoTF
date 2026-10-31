@@ -38,7 +38,7 @@ class I016PackagingAndCIContractTests(unittest.TestCase):
         self.assertIn("github.event.pull_request.head.sha || github.sha", text)
         self.assertIn("python -m unittest discover -s tests -v", text)
         self.assertIn("build_p004_r011_baseline.py --check", text)
-        self.assertIn("python-version: [\"3.10\", \"3.12\"]", text)
+        self.assertIn("python-version: [\"3.12\", \"3.13\", \"3.14\", \"3.15\"]", text)
         self.assertFalse((path.parent / "i016-coverage.yml").exists())
 
 

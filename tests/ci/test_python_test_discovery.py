@@ -42,7 +42,7 @@ class FullSuiteDiscoveryGate(unittest.TestCase):
         self.assertIn("python -m build --wheel --outdir dist",wf)
         self.assertIn("python -m pip install build pytest",wf)
         self.assertIn("python -m pytest tests/research -q",wf)
-        self.assertIn('python-version: ["3.10", "3.12"]',wf)
+        self.assertIn('python-version: ["3.12", "3.13", "3.14", "3.15"]',wf)
 
     def test_remaining_focused_workflow_avoids_generic_source_triggers(self):
         for name in ACTIVE_SCOPED:

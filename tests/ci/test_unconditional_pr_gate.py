@@ -34,7 +34,7 @@ class CanonicalPREventTests(unittest.TestCase):
         self.assertNotIn("if", job)
         self.assertNotIn("needs", job)
         self.assertNotIn("continue-on-error", job)
-        self.assertEqual(job["strategy"]["matrix"], {"python-version": ["3.10", "3.12"]})
+        self.assertEqual(job["strategy"]["matrix"], {"python-version": ["3.12", "3.13", "3.14", "3.15"]})
         self.assertFalse(job["strategy"]["fail-fast"])
         self.assertEqual(self.workflow["permissions"], {"contents": "read"})
         checkout = job["steps"][0]
