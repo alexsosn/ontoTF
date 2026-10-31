@@ -313,6 +313,8 @@ def resolve_nodes(api: Any, mapping: Mapping, *,
     if (mapping.kind not in {"node", "value"} or mapping.target is None
             or mapping.relation in _NON_MATCHING):
         raise MappingError("only positive node-kind or feature-value mappings can select TF nodes")
+    if mapping.kind == "node" and mapping.relation != "exact":
+        raise MappingError("node-kind selection requires an exact category mapping")
     if corpus_version is not None and mapping.corpus_version is not None and corpus_version != mapping.corpus_version:
         raise MappingError("loaded corpus version differs from the mapped source version")
     try:
