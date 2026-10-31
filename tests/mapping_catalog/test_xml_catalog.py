@@ -518,5 +518,102 @@ class XMLMappingContractTests(unittest.TestCase):
         )
 
 
+    def test_syrnt_participle_type_voice_to_syriac(self):
+        catalog = MappingCatalog()
+        base = "http://purl.org/olia/olia.owl#"
+        for src, cls, destination in (
+            ("active", "ActiveVoice", "act"),
+            ("passive", "PassiveVoice", "pas"),
+        ):
+            with self.subTest(participle_voice=src):
+                native = catalog.map_native(
+                    "syrnt", node="word", feature="ptctyp", value=src
+                )
+                self.assertEqual(
+                    [(m.relation, m.target) for m in native],
+                    [("exact", base + cls)]
+                )
+                joins = catalog.find_correspondences(
+                    "syrnt", "syriac",
+                    node="word", feature="ptctyp", value=src
+                )
+                self.assertEqual(
+                    {(x.destination.feature, x.destination.value,
+                      x.scope, x.relation) for x in joins},
+                    {("vo", destination, "category", "exact")}
+                )
+        self.assertEqual(
+            [x.relation for x in catalog.map_native(
+                "syrnt", node="word", feature="ptctyp", value="NA"
+            )],
+            ["native-only"],
+        )
+        self.assertEqual(
+            catalog.find_correspondences(
+                "syrnt", "syriac",
+                node="word", feature="ptctyp", value="NA"
+            ),
+            (),
+        )
+        # Participle voice is NOT evidence for a chosen participle reading,
+        # the identity of a source token, or a distinct ActiveParticiple class.
+        self.assertEqual(
+            catalog.map_native(
+                "syrnt", kind="entity", node="word",
+                feature="ptctyp", value="active"
+            ),
+            (),
+        )
+
+
+    def test_extrabiblical_observed_verbal_and_lexical_subtypes(self):
+        catalog = MappingCatalog()
+        base = "http://purl.org/olia/olia.owl#"
+        candidates = {
+            ("vt", "impv"): "ImperativeVerb",
+            ("vt", "infa"): "Infinitive",
+            ("vt", "infc"): "Infinitive",
+            ("vt", "ptca"): "Participle",
+            ("vt", "ptcp"): "Participle",
+            ("ls", "card"): "CardinalNumber",
+            ("ls", "ordn"): "OrdinalNumber",
+        }
+        for (feature, value), cls in candidates.items():
+            with self.subTest(feature=feature, value=value):
+                rows = catalog.map_native(
+                    "extrabiblical", node="word",
+                    feature=feature, value=value
+                )
+                self.assertEqual(
+                    [(r.relation, r.target) for r in rows],
+                    [("exact", base + cls)],
+                )
+        for value in ("NA", "perf", "impf", "wayq"):
+            with self.subTest(conservative=value):
+                self.assertEqual(
+                    [r.relation for r in catalog.map_native(
+                        "extrabiblical", node="word",
+                        feature="vt", value=value
+                    )],
+                    ["native-only"],
+                )
+        self.assertEqual(
+            {(r.destination.corpus, r.destination.feature,
+              r.destination.value, r.scope)
+             for r in catalog.find_correspondences(
+                "extrabiblical", "syrnt",
+                node="word", feature="ls", value="card"
+             )},
+            {("syrnt", "nmtyp", "cardinal", "category")},
+        )
+        self.assertEqual(
+            catalog.find_correspondences(
+                "extrabiblical", "syrnt",
+                node="word", feature="vt", value="perf"
+            ),
+            (),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
