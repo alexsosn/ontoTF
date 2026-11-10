@@ -43,13 +43,21 @@ class ExtraBiblicalPersonMappingsTests(unittest.TestCase):
                         "extrabiblical", other,
                         kind="value", node="word", feature="ps", value=code,
                     )
-                    self.assertEqual(len(matches), 1)
-                    match, = matches
-                    self.assertEqual(match.target, OLIA + target)
-                    self.assertEqual((match.destination.feature,
-                                      match.destination.value), ("ps", other_code))
-                    self.assertEqual((match.scope, match.relation),
-                                     ("category", "exact"))
+                    # BHSA has both word person (ps) and the distinct
+                    # pronominal-suffix person (prs_ps) category. A shared
+                    # ontology class must not erase this native distinction.
+                    expected_destinations = {("ps", other_code)}
+                    if other == "bhsa":
+                        expected_destinations.add(("prs_ps", code))
+                    self.assertEqual(
+                        {(m.destination.feature, m.destination.value)
+                         for m in matches},
+                        expected_destinations,
+                    )
+                    for match in matches:
+                        self.assertEqual(match.target, OLIA + target)
+                        self.assertEqual((match.scope, match.relation),
+                                         ("category", "exact"))
         self.assertEqual(
             catalog.map_native("extrabiblical", kind="entity",
                                node="word", feature="ps", value="p1"), (),
