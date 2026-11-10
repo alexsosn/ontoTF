@@ -6,6 +6,8 @@ from dataclasses import replace
 from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 TOKEN = "http://purl.org/olia/olia.owl#Token"
+LRMOO_F2 = "http://iflastandards.info/ns/lrm/lrmoo/F2_Expression"
+LRMOO_R76 = "http://iflastandards.info/ns/lrm/lrmoo/R76_is_derivative_of"
 PIN = "7c4b757bb543a110ae9a252d1281835859136852"
 TF_VERSION = "1.0"
 
@@ -46,15 +48,23 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
             catalog.map_native("pseudepigrapha", kind="node",
                                node="variant_word", corpus_version="0.9")
 
-    def test_gap_anchor_and_nontext_carriers_do_not_become_tokens(self):
+    def test_gap_anchor_witnesses_and_text_expressions_do_not_become_tokens(self):
         catalog = MappingCatalog()
-        for node in ("word", "reading", "manuscript", "book"):
+        for node in ("word", "reading", "manuscript"):
             with self.subTest(node=node):
                 rows = catalog.map_native(
                     "pseudepigrapha", kind="node", node=node)
                 self.assertEqual(len(rows), 1)
                 self.assertEqual((rows[0].relation, rows[0].target),
                                  ("native-only", None))
+        # A source-version text is a qualified F2 Expression category,
+        # but it is neither a word Token nor a physical witness.
+        book, = catalog.map_native("pseudepigrapha", kind="node", node="book")
+        self.assertEqual((book.relation, book.target), ("exact", LRMOO_F2))
+        self.assertNotIn(
+            book,
+            catalog.find_by_target(TOKEN, corpus="pseudepigrapha", kind="node"),
+        )
         rows = catalog.map_native(
             "pseudepigrapha", kind="value", node="word",
             feature="is_gap", value="1"
@@ -81,9 +91,18 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
                     [(r.relation, r.target) for r in rows],
                     [("native-only", None)]
                 )
-        for edge, source, target in (
-            ("translation_of", "book", "book"),
-            ("variant_word_of", "variant_word", "reading"),
+        # A directed expression derivation property is not an entity-identity
+        # link; apparatus membership still has no justified LRMoo target.
+        self.assertEqual(
+            catalog.map_native(
+                "pseudepigrapha", kind="entity", node="book",
+                feature="version_kind", value="source",
+            ), (),
+        )
+        for edge, source, target, expected in (
+            ("translation_of", "book", "book", ("exact", LRMOO_R76)),
+            ("variant_word_of", "variant_word", "reading",
+             ("native-only", None)),
         ):
             with self.subTest(edge=edge):
                 rows = catalog.map_native(
@@ -92,7 +111,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
                 )
                 self.assertEqual(
                     [(r.relation, r.target) for r in rows],
-                    [("native-only", None)],
+                    [expected],
                 )
 
 
