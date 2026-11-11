@@ -127,9 +127,15 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
             {("sp", "pron", base_pronoun, "narrower",
               "approximate-via-target", "category")},
         )
-        self.assertNotIn(
-            base_pronoun + "al",
-            {x.target for x in catalog.find_by_target(
+        self.assertEqual(
+            catalog.find_by_target(
+                "http://purl.org/olia/olia.owl#PersonalPronoun",
+                corpus="syrnt", include_approximate=True),
+            (),
+        )
+        self.assertIn(
+            ("prtyp", "personal", "narrower"),
+            {(x.feature, x.value, x.relation) for x in catalog.find_by_target(
                 base_pronoun, corpus="syrnt", include_approximate=True)},
         )
         for feature in ("prtyp", "demcat"):
