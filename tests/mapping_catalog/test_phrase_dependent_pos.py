@@ -57,15 +57,22 @@ class PhraseDependentPartOfSpeechMappingsTests(unittest.TestCase):
                         and m.feature == "pdp"]
                 self.assertEqual(len(rows), 15)
                 self.assertEqual({r.value for r in rows}, NATIVE_VALUES)
+                conservative = ({"prps", "nega", "inrg"} if
+                                corpus == "extrabiblical" else {"prps"})
                 self.assertEqual(
-                    {r.value for r in rows if r.relation != "exact"}, {"prps"})
+                    {r.value for r in rows if r.relation != "exact"},
+                    conservative)
                 for value in NATIVE_VALUES:
                     matches = catalog.map_native(
                         corpus, node="word", feature="pdp", value=value,
                         corpus_version=version)
-                    expected = ({("exact", OLIA + cls) for cls in POS[value]}
-                                if value in POS else
-                                {("narrower", OLIA + "Pronoun")})
+                    if corpus == "extrabiblical" and value in {"nega", "inrg"}:
+                        expected = {("native-only", None)}
+                    elif value == "prps":
+                        expected = {("narrower", OLIA + "Pronoun")}
+                    else:
+                        expected = {("exact", OLIA + cls)
+                                    for cls in POS[value]}
                     self.assertEqual(
                         {(m.relation, m.target) for m in matches}, expected)
                     self.assertTrue(all(
@@ -136,6 +143,17 @@ class PhraseDependentPartOfSpeechMappingsTests(unittest.TestCase):
             and r.scope == "category"
             for r in mapped
         ))
+
+    def test_extra_contextual_negation_and_interrogative_particle_stay_native_only(self):
+        catalog = MappingCatalog()
+        for value in ("nega", "inrg"):
+            with self.subTest(value=value):
+                self.assertEqual(catalog.find_correspondences(
+                    "extrabiblical", "bhsa", node="word", feature="pdp",
+                    value=value, include_approximate=True), ())
+                self.assertEqual(catalog.map_native(
+                    "extrabiblical", kind="entity", node="word",
+                    feature="pdp", value=value), ())
 
     def test_exact_contextual_selector_selects_words_not_lexemes(self):
         m, = MappingCatalog().map_native(
