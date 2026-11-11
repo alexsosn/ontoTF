@@ -13,7 +13,6 @@ from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 OLIA = "http://purl.org/olia/olia.owl#DemonstrativePronoun"
 PIN = "dae3eb6ff62b9b272fb503646796c25d248175ce"
-SOURCE = ("https://github.com/ETCBC/syrnt/blob/" + PIN + "/tf/0.1/")
 
 
 class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
@@ -93,11 +92,30 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
                         {("sp", "prde", "approximate-via-target",
                           "narrower", "category")},
                     )
-        for value in ("NA",):
-            for feature in ("prtyp", "demcat"):
-                self.assertEqual(catalog.find_correspondences(
-                    "syrnt", "bhsa", node="word", feature=feature, value=value,
-                    include_approximate=True), ())
+        # Inverse lookup must retain the same strength/direction; a
+        # narrower destination is not silently promoted to exact.
+        inverse = catalog.find_correspondences(
+            "bhsa", "syrnt", node="word", feature="sp", value="prde")
+        self.assertEqual(
+            {(x.destination.feature, x.destination.value, x.relation)
+             for x in inverse},
+            {("prtyp", "demonstrative", "exact")},
+        )
+        inverse_approximate = catalog.find_correspondences(
+            "bhsa", "syrnt", node="word", feature="sp", value="prde",
+            include_approximate=True)
+        self.assertEqual(
+            {(x.destination.feature, x.destination.value,
+              x.destination.relation, x.relation)
+             for x in inverse_approximate},
+            {("prtyp", "demonstrative", "exact", "exact"),
+             ("demcat", "near", "narrower", "approximate-via-target"),
+             ("demcat", "far", "narrower", "approximate-via-target")},
+        )
+        for feature in ("prtyp", "demcat"):
+            self.assertEqual(catalog.find_correspondences(
+                "syrnt", "bhsa", node="word", feature=feature, value="NA",
+                include_approximate=True), ())
 
     def test_non_exact_value_mappings_cannot_execute_without_authority(self):
         catalog = MappingCatalog()
