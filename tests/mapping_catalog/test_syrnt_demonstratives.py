@@ -74,12 +74,23 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
                 full = catalog.find_correspondences(
                     "syrnt", destination, node="word",
                     feature="prtyp", value="demonstrative")
-                self.assertEqual(
-                    {(x.destination.feature, x.destination.value, x.relation,
-                      x.scope) for x in full},
-                    {("sp", "prde", "exact", "category"),
-                     ("pdp", "prde", "exact", "category")},
-                )
+                # The earlier BHSA lexeme-POS mapping legitimately adds
+                # lex.sp=prde as a third category destination, whereas
+                # ExtraBiblical has only word nodes. Keep both source paths.
+                observed = {
+                    (x.destination.node, x.destination.feature,
+                     x.destination.value, x.relation, x.scope)
+                    for x in full
+                }
+                required = {
+                    ("word", "sp", "prde", "exact", "category"),
+                    ("word", "pdp", "prde", "exact", "category"),
+                }
+                permitted = required | ({
+                    ("lex", "sp", "prde", "exact", "category")
+                } if destination == "bhsa" else set())
+                self.assertTrue(required <= observed)
+                self.assertTrue(observed <= permitted)
                 for distance in ("near", "far"):
                     self.assertEqual(catalog.find_correspondences(
                         "syrnt", destination, node="word",
@@ -87,14 +98,24 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
                     tentative = catalog.find_correspondences(
                         "syrnt", destination, node="word", feature="demcat",
                         value=distance, include_approximate=True)
-                    self.assertEqual(
-                        {(x.destination.feature, x.destination.value, x.relation,
-                          x.source.relation, x.scope) for x in tentative},
-                        {("sp", "prde", "approximate-via-target",
-                          "narrower", "category"),
-                         ("pdp", "prde", "approximate-via-target",
-                          "narrower", "category")},
-                    )
+                    observed_approx = {
+                        (x.destination.node, x.destination.feature,
+                         x.destination.value, x.relation,
+                         x.source.relation, x.scope)
+                        for x in tentative
+                    }
+                    required_approx = {
+                        ("word", "sp", "prde", "approximate-via-target",
+                         "narrower", "category"),
+                        ("word", "pdp", "prde", "approximate-via-target",
+                         "narrower", "category"),
+                    }
+                    permitted_approx = required_approx | ({
+                        ("lex", "sp", "prde", "approximate-via-target",
+                         "narrower", "category")
+                    } if destination == "bhsa" else set())
+                    self.assertTrue(required_approx <= observed_approx)
+                    self.assertTrue(observed_approx <= permitted_approx)
         # Inverse lookup must retain the same strength/direction; a
         # narrower destination is not silently promoted to exact.
         inverse = catalog.find_correspondences(
