@@ -77,12 +77,25 @@ class BHSALexemePartOfSpeechTests(unittest.TestCase):
             with self.subTest(other=other):
                 rows = catalog.find_correspondences(
                     "bhsa", other, node="lex", feature="sp", value="verb")
-                self.assertEqual(
-                    {(x.source.node, x.destination.node,
-                      x.destination.feature, x.destination.value,
-                      x.relation, x.scope) for x in rows},
-                    {("lex", "word", "sp", other_value, "exact", "category")},
+                got = {
+                    (x.source.node, x.destination.node,
+                     x.destination.feature, x.destination.value,
+                     x.relation, x.scope) for x in rows
+                }
+                self.assertIn(
+                    ("lex", "word", "sp", other_value, "exact", "category"),
+                    got,
                 )
+                # Contextual pdp, if independently mapped later, may
+                # legitimately provide a second word POS selector. Do not
+                # force one native feature per ontology category.
+                self.assertTrue(all(
+                    x.source.node == "lex"
+                    and x.destination.node == "word"
+                    and x.target == OLIA + "Verb"
+                    and x.relation == "exact" and x.scope == "category"
+                    for x in rows
+                ))
         proper = catalog.map_native(
             "bhsa", node="lex", feature="sp", value="nmpr")
         self.assertEqual(
