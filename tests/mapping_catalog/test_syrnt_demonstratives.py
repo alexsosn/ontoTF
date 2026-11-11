@@ -77,7 +77,8 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
                 self.assertEqual(
                     {(x.destination.feature, x.destination.value, x.relation,
                       x.scope) for x in full},
-                    {("sp", "prde", "exact", "category")},
+                    {("sp", "prde", "exact", "category"),
+                     ("pdp", "prde", "exact", "category")},
                 )
                 for distance in ("near", "far"):
                     self.assertEqual(catalog.find_correspondences(
@@ -90,6 +91,8 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
                         {(x.destination.feature, x.destination.value, x.relation,
                           x.source.relation, x.scope) for x in tentative},
                         {("sp", "prde", "approximate-via-target",
+                          "narrower", "category"),
+                         ("pdp", "prde", "approximate-via-target",
                           "narrower", "category")},
                     )
         # Inverse lookup must retain the same strength/direction; a
@@ -100,6 +103,16 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
             {(x.destination.feature, x.destination.value, x.relation)
              for x in inverse},
             {("prtyp", "demonstrative", "exact")},
+        )
+        # Contextual BHSA pdp is an additional SOURCE category, not
+        # identical to lexical sp or to a particular SyrNT word token.
+        contextual_inverse = catalog.find_correspondences(
+            "bhsa", "syrnt", node="word", feature="pdp", value="prde")
+        self.assertEqual(
+            {(x.source.feature, x.destination.feature,
+              x.destination.value, x.relation, x.scope)
+             for x in contextual_inverse},
+            {("pdp", "prtyp", "demonstrative", "exact", "category")},
         )
         inverse_approximate = catalog.find_correspondences(
             "bhsa", "syrnt", node="word", feature="sp", value="prde",
