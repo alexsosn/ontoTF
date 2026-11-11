@@ -37,7 +37,7 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
             ("prtyp", "demonstrative"): ("exact", OLIA),
             ("prtyp", "interrogative"): (
                 "exact", "http://purl.org/olia/olia.owl#InterrogativePronoun"),
-            ("prtyp", "personal"): ("native-only", None),
+            ("prtyp", "personal"): ("narrower", "http://purl.org/olia/olia.owl#Pronoun"),
             ("prtyp", "NA"): ("native-only", None),
             ("demcat", "near"): ("narrower", OLIA),
             ("demcat", "far"): ("narrower", OLIA),
@@ -111,6 +111,26 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
             {("prtyp", "demonstrative", "exact", "exact"),
              ("demcat", "near", "narrower", "approximate-via-target"),
              ("demcat", "far", "narrower", "approximate-via-target")},
+        )
+        # The 3,173 observed personal-pronoun occurrences are a subset of
+        # Pronoun. They do NOT satisfy unverified OLiA PersonalPronoun
+        # irreflexivity or entitle callers to exact equivalence.
+        base_pronoun = "http://purl.org/olia/olia.owl#Pronoun"
+        self.assertEqual(catalog.find_correspondences(
+            "syrnt", "syriac", node="word", feature="prtyp", value="personal"), ())
+        limited = catalog.find_correspondences(
+            "syrnt", "syriac", node="word", feature="prtyp", value="personal",
+            include_approximate=True)
+        self.assertEqual(
+            {(x.destination.feature, x.destination.value, x.target,
+              x.source.relation, x.relation, x.scope) for x in limited},
+            {("sp", "pron", base_pronoun, "narrower",
+              "approximate-via-target", "category")},
+        )
+        self.assertNotIn(
+            base_pronoun + "al",
+            {x.target for x in catalog.find_by_target(
+                base_pronoun, corpus="syrnt", include_approximate=True)},
         )
         for feature in ("prtyp", "demcat"):
             self.assertEqual(catalog.find_correspondences(
