@@ -437,6 +437,11 @@ __all__ = [
     "validate_source",
 ]
 
+# The BHSA source-bound lexical link reuses the existing Form preview and
+# resolves native word→lex membership without fabricating sense identities.
+from .bhsa_lexical_preview import BHSAWordLexemeLink, resolve_bhsa_word_lexeme
+__all__.extend(["BHSAWordLexemeLink", "resolve_bhsa_word_lexeme"])
+
 # Current XML mappings coexist with frozen historical profile APIs during migration.
 from .xml_mappings import (
     Correspondence, Mapping, MappingCatalog, MappingError,
