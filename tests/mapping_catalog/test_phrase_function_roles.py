@@ -143,12 +143,21 @@ class PhraseFunctionMappingsTests(unittest.TestCase):
                     "bhsa", "extrabiblical", node="phrase",
                     feature="function", value=code,
                     include_approximate=True)
+                destinations = {
+                    "Adju": {"Adju": "narrower", "PrAd": "narrower"},
+                    "Modi": {"Modi": "narrower"},
+                    "PreC": {"Cmpl": "exact", "PreC": "narrower"},
+                    "PrAd": {"Adju": "narrower", "PrAd": "narrower"},
+                }[code]
                 self.assertEqual(
-                    {(x.destination.value, x.target, x.relation, x.scope,
+                    {(x.destination.node, x.destination.feature,
+                      x.destination.value, x.target, x.relation, x.scope,
                       x.source.relation, x.destination.relation)
                      for x in links},
-                    {(code, BASE + target, "approximate-via-target",
-                      "category", "narrower", "narrower")},
+                    {("phrase", "function", dest, BASE + target,
+                      "approximate-via-target", "category",
+                      "narrower", relation)
+                     for dest, relation in destinations.items()},
                 )
         # OLiA itself equates Modifier with SyntacticAdjunct. Its ontology
         # equivalence must NOT silently erase the source's native contrast.
