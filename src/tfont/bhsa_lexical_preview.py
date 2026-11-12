@@ -140,6 +140,73 @@ def resolve_bhsa_lexical_uri(
 
 
 @dataclass(frozen=True)
+class BHSAWordLexemeLink:
+    """Source TF word-to-lex membership with an existing derived Form preview.
+
+    The relationship comes from BHSA lex-node oslots, queried in reverse
+    through Text-Fabric L.u(word, otype="lex"). It is NOT a cross-corpus
+    lexical identity, OntoLex LexicalSense, or verified RDF authority.
+    """
+
+    word_node_id: int
+    lex_node_id: int
+    source_revision: str
+    source_edge_feature: str
+    lexical_form: DerivedBHSAForm
+
+
+def resolve_bhsa_word_lexeme(
+    tf_api: Any,
+    word_node: int,
+    *,
+    source_revision: str,
+) -> BHSAWordLexemeLink:
+    """Resolve one BHSA 2021 word slot to its actual source lexeme.
+
+    Read the Text-Fabric native reverse oslots relation rather than joining
+    by lex0, written form, gloss, or transliteration. A missing or ambiguous
+    source membership is an error. The word's language and disambiguated lex
+    must also match the selected native lex node. The caller must load and
+    authenticate the pinned corpus independently: the source_revision
+    argument alone does NOT attest to the provenance of an arbitrary API.
+    """
+    if source_revision != BHSA_SOURCE_REVISION:
+        raise LexicalProjectionError("BHSA source revision is not pinned release")
+    if type(word_node) is not int or not 1 <= word_node <= 426590:
+        raise LexicalProjectionError("word ID is outside pinned BHSA 2021 word scope")
+    if _get(tf_api, "otype", word_node) != "word":
+        raise LexicalProjectionError("source node is not a BHSA word slot")
+
+    try:
+        lex_nodes = tuple(tf_api.L.u(word_node, otype="lex"))
+    except (AttributeError, TypeError, KeyError, ValueError) as exc:
+        raise LexicalProjectionError("required native Text-Fabric lex membership unavailable") from exc
+    if len(lex_nodes) != 1:
+        raise LexicalProjectionError("BHSA word has zero or multiple native lex memberships")
+
+    lex_node = _lex_id(lex_nodes[0])
+    form = project_bhsa_lexical_form(
+        tf_api, lex_node, source_revision=source_revision
+    )
+    word_lex = _get(tf_api, "lex", word_node)
+    word_language = _get(tf_api, "languageISO", word_node)
+    if (type(word_lex) is not str
+            or word_lex != form.source_lexeme
+            or type(word_language) is not str
+            or word_language != form.language_tag):
+        raise LexicalProjectionError(
+            "BHSA word lexical identity differs from its native lex node"
+        )
+    return BHSAWordLexemeLink(
+        word_node_id=word_node,
+        lex_node_id=lex_node,
+        source_revision=BHSA_SOURCE_REVISION,
+        source_edge_feature="oslots",
+        lexical_form=form,
+    )
+
+
+@dataclass(frozen=True)
 class BHSAFormIndex:
     """Immutable source-revision-scoped snapshot, not reviewed RDF authority.
 
