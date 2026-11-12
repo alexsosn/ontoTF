@@ -86,6 +86,35 @@ The caller must independently load the pinned BHSA TF corpus; TFont does not dow
 
 To add a new corpus or a reviewed category, edit its authoritative `src/tfont/mappings/<corpus>.xml`; no per-corpus registration or generated release ledger is required. A **wheel built from the current development source** packages the same XML mapping files. The published `v0.1.1` wheel predates this XML runtime.
 
+## BHSA native word-to-lexeme lookup (development source only)
+
+The pinned [BHSA 2021](https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da) Text-Fabric corpus contains **426,590 word slots** and **9,230 lexeme nodes**. Each `lex` node covers its occurrences through `oslots`. The official ETCBC [lexicon program](https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/programs/lexicon.py) uses `L.u(word, otype="lex")` to find the lexical node. The new development-source API provides this lookup without equating lexical entries by shared spelling or English gloss.
+
+Load your own **exact pinned TF 2021 source**, including the lexical features, before calling:
+
+```python
+from tf.fabric import Fabric
+from tfont import resolve_bhsa_word_lexeme
+
+tf = Fabric(locations="/path/to/pinned/bhsa/tf/2021", silent="deep")
+api = tf.load("lex voc_lex_utf8 languageISO")  # otype/oslots and TF L are standard
+if api is None or api is False:
+    raise RuntimeError("Could not load BHSA 2021 Text-Fabric")
+
+link = resolve_bhsa_word_lexeme(
+    api, 17,
+    source_revision="4db00e2157915495e1a4d3d57e41223df24775da",
+)
+print(link.word_node_id, link.lex_node_id)
+print(link.lexical_form.entry_iri)   # source-revision + original lex node identity
+print(link.lexical_form.form_iri)    # derived, not a source-native Form node
+print(link.lexical_form.written_rep) # idealized voc_lex_utf8, not a token surface
+```
+
+The lookup uses the **native edge** (reverse `oslots` via `L.u`) and verifies the source word's disambiguated `lex` and `languageISO` against the resolved lexical node. Zero or multiple lex memberships, mismatched IDs, missing native features, and the wrong pinned revision fail closed. The returned `lexical_form` reuses the existing [BHSA derived Form preview](src/tfont/bhsa_lexical_preview.py), preserving the separate OntoLex `LexicalEntry` and `Form` identities; it remains an **unreviewed derived representation**, not a published RDF ontology authority or a `canonicalForm` claim.
+
+Do not infer `LexicalSense` or `skos:Concept` from `gloss`, and do not equate two lexemes sharing `lex0` or `voc_lex_utf8`. The method takes a caller-supplied pinned revision: that argument does not authenticate the contents of an arbitrary TF checkout. Corpus data are not distributed with the package. This capability is **not in the published v0.1.1 wheel**.
+
 ## Installation
 
 Development checkout: Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). The already-published v0.1.1 wheel retains its original Python >=3.10 requirement; this update applies to the next release. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
