@@ -1,0 +1,124 @@
+"""ORACC named-entity POS/EPOS categories are qualified OLiA ProperNoun subtypes.
+
+Pinned ORACC-TF 1.0.0 provides 320,975 words and 8,025 lexical nodes.
+Its source epos codebook and primary ORACC QPN docs classify DN/GN/SN/RN/
+EN/PN/TN/WN as *name* types, not identified named-entity individuals.
+A narrower class-level correspondence cannot authorize exact TF selection.
+"""
+from __future__ import annotations
+
+import unittest
+
+from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+
+ORACC = "assyrian-royal-inscriptions"
+VERSION = "1.0.0"
+PROPER = "http://purl.org/olia/olia.owl#ProperNoun"
+CODES = ("DN", "GN", "SN", "RN", "EN", "PN", "TN", "WN")
+SCOPES = (("word", "pos"), ("word", "epos"), ("lex", "pos"))
+
+
+class OraccProperNameSubtypesTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.catalog = MappingCatalog()
+
+    def test_each_source_name_tag_has_one_narrower_proper_noun_disposition(self):
+        for node, feature in SCOPES:
+            for code in CODES:
+                with self.subTest(node=node, feature=feature, code=code):
+                    rows = self.catalog.map_native(
+                        ORACC, node=node, feature=feature, value=code,
+                        corpus_version=VERSION,
+                    )
+                    self.assertEqual(len(rows), 1)
+                    mapping, = rows
+                    self.assertEqual((mapping.relation, mapping.target),
+                                     ("narrower", PROPER))
+                    self.assertIn(
+                        "oracc.museum.upenn.edu/doc/help/languages/propernouns",
+                        mapping.evidence or "",
+                    )
+                    self.assertEqual(mapping.corpus_version, VERSION)
+                    self.assertEqual(mapping.kind, "value")
+        matches = self.catalog.find_by_target(
+            PROPER, corpus=ORACC, include_approximate=True
+        )
+        self.assertEqual(
+            {(row.node, row.feature, row.value) for row in matches},
+            {(node, feature, code) for node, feature in SCOPES for code in CODES},
+        )
+        self.assertEqual(
+            self.catalog.find_by_target(PROPER, corpus=ORACC), ()
+        )
+
+    def test_cross_corpus_name_class_discovery_requires_opt_in(self):
+        for node, feature in SCOPES:
+            with self.subTest(scope=(node, feature)):
+                plain = self.catalog.find_correspondences(
+                    ORACC, "bhsa", node=node, feature=feature, value="DN")
+                self.assertEqual(plain, ())
+                qualified = self.catalog.find_correspondences(
+                    ORACC, "bhsa", node=node, feature=feature,
+                    value="DN", include_approximate=True,
+                    source_version=VERSION, target_version="2021")
+                self.assertTrue(qualified)
+                self.assertTrue(any(
+                    hit.destination.node == "word"
+                    and hit.destination.feature == "sp"
+                    and hit.destination.value == "nmpr"
+                    for hit in qualified
+                ))
+                self.assertTrue(all(
+                    hit.target == PROPER
+                    and hit.source.relation == "narrower"
+                    and hit.destination.relation == "exact"
+                    and hit.scope == "category"
+                    and hit.relation == "approximate-via-target"
+                    for hit in qualified
+                ))
+        reverse = self.catalog.find_correspondences(
+            "syriac", ORACC, node="word", feature="ls",
+            value="prop", include_approximate=True)
+        self.assertTrue(any(
+            match.destination.feature == "epos"
+            and match.destination.value == "DN" for match in reverse
+        ))
+        self.assertEqual(
+            self.catalog.find_correspondences(
+                "syriac", ORACC, node="word", feature="ls",
+                value="prop"), (),
+        )
+
+    def test_name_tags_never_turn_into_exact_token_selection_or_identity(self):
+        row, = self.catalog.map_native(
+            ORACC, node="word", feature="epos", value="DN")
+        with self.assertRaisesRegex(MappingError, "exact"):
+            resolve_nodes(object(), row, corpus_version=VERSION)
+        self.assertEqual(self.catalog.map_native(
+            ORACC, kind="entity", node="word", feature="epos",
+            value="DN"), ())
+        self.assertEqual(self.catalog.find_correspondences(
+            ORACC, "bhsa", kind="entity", node="word",
+            feature="epos", value="DN", include_approximate=True), ())
+
+    def test_non_name_and_unlemmatised_tags_remain_unmapped(self):
+        for node, feature in SCOPES:
+            for code in ("DET", "MOD", "IP"):
+                with self.subTest(scope=(node, feature), value=code):
+                    row, = self.catalog.map_native(
+                        ORACC, node=node, feature=feature, value=code)
+                    self.assertEqual((row.relation, row.target),
+                                     ("native-only", None))
+                    self.assertEqual(self.catalog.find_correspondences(
+                        ORACC, "bhsa", node=node, feature=feature,
+                        value=code, include_approximate=True), ())
+        for code in ("u", "n"):
+            row, = self.catalog.map_native(
+                ORACC, node="word", feature="pos", value=code)
+            self.assertEqual((row.relation, row.target),
+                             ("native-only", None))
+
+
+if __name__ == "__main__":
+    unittest.main()
