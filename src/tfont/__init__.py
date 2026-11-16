@@ -452,3 +452,7 @@ __all__.extend([
     "find_across_corpora", "find_by_target", "find_correspondences",
     "list_corpora", "map_native", "resolve_nodes",
 ])
+
+# ORACC words may resolve to zero, one or several source-native lex nodes.
+from .oracc_lexical_preview import ORACCWordLexemeLink, resolve_oracc_word_lexemes
+__all__.extend(["ORACCWordLexemeLink", "resolve_oracc_word_lexemes"])
