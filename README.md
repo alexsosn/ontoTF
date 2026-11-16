@@ -115,6 +115,38 @@ The lookup uses the **native edge** (reverse `oslots` via `L.u`) and verifies th
 
 Do not infer `LexicalSense` or `skos:Concept` from `gloss`, and do not equate two lexemes sharing `lex0` or `voc_lex_utf8`. The method takes a caller-supplied pinned revision: that argument does not authenticate the contents of an arbitrary TF checkout. Corpus data are not distributed with the package. This capability is **not in the published v0.1.1 wheel**.
 
+## ORACC native word-to-lexeme lookup (development source only)
+
+The pinned [ORACC-TF 1.0.0](https://github.com/alexsosn/ORACC-TF/tree/60db4b724a687c0f425e78eae924fce89454e106) source has **320,975 words**, **8,025 lexemes**, and **289,824 native `word_lex` links**. Unlike BHSA, ORACC compound occurrences can link to **two or three** canonical lexemes, and 31,770 words have no lexeme link at all. Use the real TF edge, not a join on `cf`, guide word `gw`, lexical sense, or raw `sig`:
+
+```python
+from tf.fabric import Fabric
+from tfont import resolve_oracc_word_lexemes
+
+# Load the authenticated pinned ORACC-TF 1.0.0 corpus separately.
+tf = Fabric(locations="/path/to/pinned/oracc-tf", silent="deep")
+api = tf.load("source_id document_key word_lex lexeme lang cf gw pos")
+if api is None or api is False:
+    raise RuntimeError("Could not load the pinned ORACC-TF corpus")
+
+# This documented compound occurrence has three distinct lexeme links.
+word = next(
+    n for n in api.F.source_id.s("Q003333.l04f6b")
+    if api.F.otype.v(n) == "word"
+    and api.F.document_key.v(n) == "rinap/rinap4:Q003333"
+)
+links = resolve_oracc_word_lexemes(
+    api, word,
+    source_revision="60db4b724a687c0f425e78eae924fce89454e106",
+)
+for link in links:
+    print(link.word_node_id, link.lex_node_id, link.lexical_key)
+    # lexical_key = (language, citation form, guide word, lexical POS)
+assert len(links) == 3
+```
+
+Each link preserves the original `E.word_lex.f(word)` node identity and its canonical `lexeme` key, cross-checked against the source lex-node features. The return value is an immutable tuple (possibly empty). The existing XML maps ORACC `lex` as an OntoLex `LexicalEntry` **category**, not an RDF individual: no shared lexical sense, word identity or `canonicalForm` is manufactured. A caller-supplied pinned revision does **not** authenticate the loaded corpus bytes. The full ORACC TF corpus is **not** bundled with TFont, and this capability is **not yet in the published v0.1.1 wheel**.
+
 ## Installation
 
 Development checkout: Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). The already-published v0.1.1 wheel retains its original Python >=3.10 requirement; this update applies to the next release. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
