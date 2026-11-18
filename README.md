@@ -124,10 +124,10 @@ Do not infer `LexicalSense` or `skos:Concept` from `gloss`, and do not equate tw
 ## Real-source installed-wheel acceptance (development CI)
 
 The exact-head release smoke now builds a **fresh wheel**, installs it into a
-separate Python environment together with Context-Fabric, and runs
+separate Python environment together with Text-Fabric 13.1.1, and runs
 [`real_extrabiblical.py`](scripts/acceptance/real_extrabiblical.py) **outside
-the source checkout**. CI obtains the original `otype.tf`, `oslots.tf`,
-`otext.tf`, `book.tf`, `chapter.tf`, `verse.tf`, `sp.tf` and `g_word.tf` from the pinned
+the source checkout**. CI obtains the original node/slot, section, POS, surface and text-format TF
+features from the pinned
 [ETCBC ExtraBiblical TF 0.2 revision](https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2).
 The smoke verifies actual TF selections against the frozen R-005 counts:
 39,862 word slots, 39,560 populated surface tokens, 12,225 `sp=subs`
@@ -137,7 +137,7 @@ category discovery, negative native-only categories and wrong-version rejection.
 To repeat the semantic portion with independently acquired pinned files:
 
 ```bash
-python -m pip install -e . 'context-fabric==0.5.7'
+python -m pip install -e . 'text-fabric==13.1.1'
 python scripts/acceptance/real_extrabiblical.py --tf-dir /path/to/extrabiblical/tf/0.2
 ```
 
