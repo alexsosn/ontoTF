@@ -31,7 +31,7 @@ EXPECTED = {
     "nouns_subs": 12225,
     "proper_nouns_nmpr": 723,
 }
-NEEDED_FILES = ("otype.tf", "oslots.tf", "otext.tf", "sp.tf", "g_word.tf")
+NEEDED_FILES = ("otype.tf", "oslots.tf", "otext.tf", "book.tf", "chapter.tf", "verse.tf", "sp.tf", "g_word.tf")
 
 
 def audit_loaded_api(api) -> dict[str, int]:
