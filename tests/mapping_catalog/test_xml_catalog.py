@@ -406,6 +406,27 @@ class XMLMappingContractTests(unittest.TestCase):
                 return Feature()
 
         self.assertEqual(resolve_nodes(API(), mapping, corpus_version="0.9"), (1, 3))
+        # RED: an omitted source pin must not silently select from an unknown revision.
+        with self.assertRaisesRegex(MappingError, "explicit corpus_version"):
+            resolve_nodes(API(), mapping)
+        # The guard applies to both feature-value and source-bearing node classes.
+        pinned_token, = map_native(
+            "syriac", kind="node", node="word", feature="g_cons_utf8"
+        )
+        with self.assertRaisesRegex(MappingError, "explicit corpus_version"):
+            resolve_nodes(API(), pinned_token)
+        # Unversioned contributor mappings intentionally remain usable.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            file(root, "unpinned", (
+                f'<map kind="value" node="word" feature="sp" value="subs" '
+                f'relation="exact" target="{NOUN}"/>'
+            ))
+            unpinned, = MappingCatalog(root).map_native(
+                "unpinned", node="word", feature="sp", value="subs"
+            )
+            self.assertIsNone(unpinned.corpus_version)
+            self.assertEqual(resolve_nodes(API(), unpinned), (1, 3))
         with self.assertRaisesRegex(MappingError, "loaded corpus version"):
             resolve_nodes(API(), mapping, corpus_version="unknown")
         with self.assertRaisesRegex(MappingError, "not verified"):
