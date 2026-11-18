@@ -71,7 +71,7 @@ class TLHdigNormalizedSourceTokens(unittest.TestCase):
             class Missing(API):
                 def Fs(self, feature):
                     raise KeyError(feature)
-            resolve_nodes(Missing(), row)
+            resolve_nodes(Missing(), row, corpus_version=VERSION)
 
     def test_token_category_corresponds_to_corpus_without_word_identity(self):
         c = MappingCatalog()
