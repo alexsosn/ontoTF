@@ -132,7 +132,7 @@ jobs:
         run: python -m unittest tests.i009.test_wheel_install_red -v
 
       # Release-stage user journey: a freshly installed wheel queries original
-      # upstream TF files with the real Context-Fabric loader, not API doubles.
+      # upstream TF files with the real Text-Fabric loader, not API doubles.
       # One pinned source, one Python runner, no separate per-corpus workflow.
       - name: Smoke-test installed wheel on pinned real ExtraBiblical TF
         if: matrix.python-version == '3.12'
@@ -144,11 +144,12 @@ jobs:
           python -m venv "$VENV"
           WHEEL="$(find "$GITHUB_WORKSPACE/dist" -maxdepth 1 -type f -name 'tfont-*.whl' -print -quit)"
           test -n "$WHEEL"
-          "$VENV/bin/python" -m pip install "$WHEEL" 'context-fabric==0.5.7'
+          "$VENV/bin/python" -m pip install "$WHEEL" 'text-fabric==13.1.1'
 
           SOURCE="$RUNNER_TEMP/tfont-real-extrabiblical-0.2"
           mkdir -p "$SOURCE"
-          for feature in otype oslots otext book chapter verse sp g_word; do
+          for feature in otype oslots otext book chapter verse sp g_word \
+            g_lex_utf8 g_suffix_utf8 lex_utf8 g_suffix g_word_utf8 g_cons; do
             curl --fail --location --silent --show-error --retry 3 \
               --output "$SOURCE/$feature.tf" \
               "https://raw.githubusercontent.com/ETCBC/extrabiblical/$TFONT_SOURCE_PIN/tf/0.2/$feature.tf"
