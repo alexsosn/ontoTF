@@ -76,7 +76,7 @@ for mapping in find_by_target("http://purl.org/olia/olia.owl#Token"):
 
 By default, reverse ontology lookup returns exact `node` and `value` category mappings. Filter with `kind="node"` or `kind="value"` when required. Feature/property, edge and individual `entity` mappings require an explicit `kind` argument. `include_approximate=True` permits reviewed approximate positive relationships, but never promotes ambiguous or native-only declarations.
 
-This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, mapping)` can execute an **exact** native node category or a positive feature-value selector against an already loaded, source-version-compatible TF API. A node-category mapping can have an optional **native surface-feature presence** condition. For example, the source-pinned BHSA `word.g_word` category includes only text-bearing native word nodes, not inferred lexical or cross-corpus token identities:
+This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, mapping, corpus_version="...")` can execute an **exact** native node category or a positive feature-value selector against an already loaded, source-version-compatible TF API. For XML mappings pinned to a `corpusVersion`, supplying `corpus_version` is mandatory; omission and mismatches fail closed. The supplied version is a caller assertion, **not** authentication of the local corpus bytes. A node-category mapping can have an optional **native surface-feature presence** condition. For example, the source-pinned BHSA `word.g_word` category includes only text-bearing native word nodes, not inferred lexical or cross-corpus token identities:
 
 ```python
 from tfont import MappingCatalog, resolve_nodes

@@ -321,6 +321,10 @@ def resolve_nodes(api: Any, mapping: Mapping, *,
     # but execution must never silently promote them to exact node sets.
     if mapping.relation != "exact":
         raise MappingError("TF node execution requires an exact category mapping")
+    # Caller-reported version is not byte authentication, but omitting the
+    # check must not silently turn a source-pinned XML mapping into a wildcard.
+    if mapping.corpus_version is not None and corpus_version is None:
+        raise MappingError("explicit corpus_version is required for a source-pinned mapping")
     if corpus_version is not None and mapping.corpus_version is not None and corpus_version != mapping.corpus_version:
         raise MappingError("loaded corpus version differs from the mapped source version")
     try:
