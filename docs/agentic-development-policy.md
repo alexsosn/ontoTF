@@ -48,7 +48,7 @@ Fix material findings, rerun relevant gates and re-review changed code at the fi
 
 For relevant changes, check **research question → install released XML-enabled package → inspect mapping evidence → load real TF corpus → perform exact semantic query → show native-only limits**. Use real pinned source or downstream consumer data where permitted; distinguish a transport smoke from proof of source scholarship. Test actual installed package and supported public client/consumer interface at major milestones and near release, with no hidden developer-only inputs. A generated manifest or Python-only smoke is insufficient evidence of host usability.
 
-Record exact observable results, versions, compatibility limitations, resource costs and clear failure states. Do not claim public release, source coverage, live CAL capability or researcher success based only on a merged PR.
+Record exact observable results, versions, compatibility limitations, resource costs and clear failure states. Do not claim published XML wheels, verified mapping coverage, actual loaded-corpus use or researcher success based only on a merged PR.
 
 ## 6. Stop unproductive loops and finish
 
