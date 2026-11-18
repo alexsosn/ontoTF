@@ -127,7 +127,7 @@ The exact-head release smoke now builds a **fresh wheel**, installs it into a
 separate Python environment together with Context-Fabric, and runs
 [`real_extrabiblical.py`](scripts/acceptance/real_extrabiblical.py) **outside
 the source checkout**. CI obtains the original `otype.tf`, `oslots.tf`,
-`otext.tf`, `sp.tf` and `g_word.tf` from the pinned
+`otext.tf`, `book.tf`, `chapter.tf`, `verse.tf`, `sp.tf` and `g_word.tf` from the pinned
 [ETCBC ExtraBiblical TF 0.2 revision](https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2).
 The smoke verifies actual TF selections against the frozen R-005 counts:
 39,862 word slots, 39,560 populated surface tokens, 12,225 `sp=subs`
