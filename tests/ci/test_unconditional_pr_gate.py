@@ -45,7 +45,13 @@ class CanonicalPREventTests(unittest.TestCase):
         smoke_steps = {
             "Verify frozen seven-corpus coverage files inside wheel",
             "Install reviewed profile wheel in isolated environment",
+            "Smoke-test installed wheel on pinned real ExtraBiblical TF",
         }
+        self.assertEqual(
+            {step["name"] for step in job["steps"] if step["name"] in smoke_steps},
+            smoke_steps,
+            "all wheel and real-corpus acceptance stages must remain present",
+        )
         for step in job["steps"]:
             if step.get("name") in smoke_steps:
                 self.assertEqual(step["if"], "matrix.python-version == '3.12'")

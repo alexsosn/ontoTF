@@ -121,6 +121,33 @@ The lookup uses the **native edge** (reverse `oslots` via `L.u`) and verifies th
 
 Do not infer `LexicalSense` or `skos:Concept` from `gloss`, and do not equate two lexemes sharing `lex0` or `voc_lex_utf8`. The method takes a caller-supplied pinned revision: that argument does not authenticate the contents of an arbitrary TF checkout. Corpus data are not distributed with the package. This capability is **not in the published v0.1.1 wheel**.
 
+## Real-source installed-wheel acceptance (development CI)
+
+The exact-head release smoke now builds a **fresh wheel**, installs it into a
+separate Python environment together with Text-Fabric 13.1.1, and runs
+[`real_extrabiblical.py`](scripts/acceptance/real_extrabiblical.py) **outside
+the source checkout**. CI obtains the original node/slot, section, POS, surface and text-format TF
+features from the pinned
+[ETCBC ExtraBiblical TF 0.2 revision](https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2).
+The smoke verifies actual TF selections against the frozen R-005 counts:
+39,862 word slots, 39,560 populated surface tokens, 12,225 `sp=subs`
+words and 723 `sp=nmpr` words. It also tests OLiA Noun cross-corpus
+category discovery, negative native-only categories and wrong-version rejection.
+
+To repeat the semantic portion with independently acquired pinned files:
+
+```bash
+python -m pip install -e . 'text-fabric==13.1.1'
+python scripts/acceptance/real_extrabiblical.py --tf-dir /path/to/extrabiblical/tf/0.2
+```
+
+This is one full **real source TF corpus slice**, not real multi-corpus token
+alignment or a test of all nine upstream corpora. The script's source-version
+argument and expected counts are not proof that arbitrary local bytes come from
+that revision; CI uses commit-pinned download paths. The published v0.1.1 wheel
+predates the XML runtime, so this release smoke applies to a wheel built from
+the current source.
+
 ## Installation
 
 Development checkout: Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). The already-published v0.1.1 wheel retains its original Python >=3.10 requirement; this update applies to the next release. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
