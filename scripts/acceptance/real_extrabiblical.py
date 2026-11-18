@@ -4,7 +4,7 @@ Use independently obtained TF 0.2 files from the *pinned* repository revision:
 https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2
 
 This script deliberately does not download sources or trust a caller's corpus
-version as proof of byte identity. The release CI downloads the five required
+version as proof of byte identity. The release CI downloads the eight required
 original files from revision-pinned URLs before invoking this script outside
 the checkout with a freshly installed wheel and real Context-Fabric.
 """
