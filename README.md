@@ -3,6 +3,8 @@
 > **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The published v0.1.1 wheel still uses legacy resources. The development source implements an auto-discovered XML catalog (the current corpus roster comes from the XML files, not a hard-coded list); that XML functionality has not yet shipped in a tagged wheel. New contributions edit only `src/tfont/mappings/<corpus>.xml`.
 
 
+> **Next wheel candidate:** Source-built distributions from this branch are versioned **0.2.0rc1**. See [candidate scope and exact-head release gates](docs/releases/v0.2.0rc1.md). This candidate has **not** been published to GitHub Releases or PyPI, and the documented published v0.1.1 remains a different, narrower contract. The real ExtraBiblical installed-wheel smoke has passed on a prior exact head; the candidate itself still requires its own final-head CI, reviewer verification and a downloaded-asset cold install.
+
 TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
 
 ## What is shipped
