@@ -16,6 +16,10 @@ SHARED = {
     "ordn": "OrdinalNumber",
     "ques": "InterrogativeParticle",
 }
+QUALIFIED = {
+    "nmdi": "Noun", "nmcp": "Noun", "mult": "Noun",
+    "vbcp": "Verb", "quot": "Verb", "afad": "Adverb",
+}
 
 
 class BHSAObservedLexicalSetTests(unittest.TestCase):
@@ -32,6 +36,11 @@ class BHSAObservedLexicalSetTests(unittest.TestCase):
                         self.assertEqual(
                             (row.relation, row.target),
                             ("exact", OLIA + SHARED[code]),
+                        )
+                    elif code in QUALIFIED:
+                        self.assertEqual(
+                            (row.relation, row.target),
+                            ("narrower", OLIA + QUALIFIED[code]),
                         )
                     else:
                         self.assertEqual((row.relation, row.target),
