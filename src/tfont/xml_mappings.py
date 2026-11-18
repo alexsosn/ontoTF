@@ -206,25 +206,26 @@ class MappingCatalog:
 
     def find_by_target(
         self, target: str, *, corpus: str | None = None,
-        kind: str = "value", include_approximate: bool = False,
+        kind: str | None = None, include_approximate: bool = False,
     ) -> tuple[Mapping, ...]:
         """Find native category selectors mapped to a known ontology IRI.
 
-        Only positive category links are returned. An ambiguous candidate
-        cannot be used as an ontology match, even with approximate lookup.
-        To examine individual identity assertions, explicitly request
-        kind="entity"; those rows are *not* verified token identities.
+        By default search both node-kind and feature-value categories. Other
+        mapping kinds, including edges and unverified individual identities,
+        require an explicit kind filter. Only positive links are returned;
+        ambiguous candidates never become matches through approximation.
         """
         if not isinstance(target, str) or not _iri(target):
             raise MappingError("target must be an absolute ontology IRI")
-        if kind not in _KINDS:
+        if kind is not None and kind not in _KINDS:
             raise MappingError(f"unknown mapping kind: {kind!r}")
+        kinds = {"node", "value"} if kind is None else {kind}
         corpora = self.list_corpora() if corpus is None else (corpus,)
         return tuple(
             row
             for name in corpora
             for row in self.load(name)
-            if row.kind == kind
+            if row.kind in kinds
             and row.target == target
             and row.relation not in _NON_MATCHING
             and (include_approximate or row.relation == "exact")

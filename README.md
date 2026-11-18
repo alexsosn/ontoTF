@@ -66,7 +66,13 @@ for match in find_across_corpora(
 # Search an ontology class in every installed corpus without knowing native names.
 for mapping in find_by_target("http://purl.org/olia/olia.owl#Noun"):
     print(mapping.corpus, mapping.node, mapping.feature, mapping.value)
+
+# The same call also finds native node categories, e.g. observed text tokens.
+for mapping in find_by_target("http://purl.org/olia/olia.owl#Token"):
+    print(mapping.corpus, mapping.node, mapping.feature, mapping.kind)
 ```
+
+By default, reverse ontology lookup returns exact `node` and `value` category mappings. Filter with `kind="node"` or `kind="value"` when required. Feature/property, edge and individual `entity` mappings require an explicit `kind` argument. `include_approximate=True` permits reviewed approximate positive relationships, but never promotes ambiguous or native-only declarations.
 
 This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, mapping)` can execute an **exact** native node category or a positive feature-value selector against an already loaded, source-version-compatible TF API. A node-category mapping can have an optional **native surface-feature presence** condition. For example, the source-pinned BHSA `word.g_word` category includes only text-bearing native word nodes, not inferred lexical or cross-corpus token identities:
 
