@@ -142,7 +142,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
             (101, 103, 107),
         )
         entry = catalog.map_native("bhsa", kind="node", node="lex")[0]
-        self.assertEqual(resolve_nodes(api, entry), (400, 401))
+        self.assertEqual(resolve_nodes(api, entry, corpus_version="2021"), (400, 401))
         # A TF node type is a category, never lexical/token identity.
         with self.assertRaisesRegex(MappingError, "positive"):
             resolve_nodes(
@@ -165,7 +165,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
                 pass
 
         with self.assertRaisesRegex(MappingError, "required TF"):
-            resolve_nodes(NoOtype(), token)
+            resolve_nodes(NoOtype(), token, corpus_version="1.0")
 
 
     def test_surface_bearing_primary_word_nodes_exclude_empty_gaps(self):
@@ -218,7 +218,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
             class MissingSurface(API):
                 def Fs(self, name):
                     raise KeyError(name)
-            resolve_nodes(MissingSurface(), positive[0])
+            resolve_nodes(MissingSurface(), positive[0], corpus_version="1.0")
 
 
 if __name__ == "__main__":
