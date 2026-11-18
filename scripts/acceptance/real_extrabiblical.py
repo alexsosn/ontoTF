@@ -4,9 +4,9 @@ Use independently obtained TF 0.2 files from the *pinned* repository revision:
 https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2
 
 This script deliberately does not download sources or trust a caller's corpus
-version as proof of byte identity. The release CI downloads the eight required
-original files from revision-pinned URLs before invoking this script outside
-the checkout with a freshly installed wheel and real Context-Fabric.
+version as proof of byte identity. The release CI downloads the original structural, section, POS and text-format
+feature files from revision-pinned URLs before invoking this script outside
+the checkout with a freshly installed wheel and real Text-Fabric.
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ EXPECTED = {
     "nouns_subs": 12225,
     "proper_nouns_nmpr": 723,
 }
-NEEDED_FILES = ("otype.tf", "oslots.tf", "otext.tf", "book.tf", "chapter.tf", "verse.tf", "sp.tf", "g_word.tf")
+NEEDED_FILES = ("otype.tf", "oslots.tf", "otext.tf", "book.tf", "chapter.tf", "verse.tf", "sp.tf", "g_word.tf", "g_lex_utf8.tf", "g_suffix_utf8.tf", "lex_utf8.tf", "g_suffix.tf", "g_word_utf8.tf", "g_cons.tf")
 
 
 def audit_loaded_api(api) -> dict[str, int]:
@@ -138,12 +138,12 @@ def main() -> None:
     if missing:
         raise SystemExit(f"missing original TF files: {missing}")
 
-    from cfabric.core import Fabric
+    from tf.fabric import Fabric
 
     fabric = Fabric(locations=str(tf_dir), silent="deep")
     api = fabric.load("sp g_word")
     if api is None or api is False:
-        raise SystemExit("could not load pinned ExtraBiblical TF with Context-Fabric")
+        raise SystemExit("could not load pinned ExtraBiblical TF with Text-Fabric")
 
     observed = audit_loaded_api(api)
     verify_source_counts(observed)
