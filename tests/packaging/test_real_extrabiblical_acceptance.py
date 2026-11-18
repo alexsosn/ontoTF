@@ -1,7 +1,7 @@
 """Researcher acceptance contract for the pinned full ETCBC ExtraBiblical TF 0.2 source.
 
 The small offline API exercises the exact same acceptance logic as the
-fresh-installed-wheel/real-Context-Fabric CI smoke. It never stands in for
+fresh-installed-wheel/real-Text-Fabric CI smoke. It never stands in for
 the real upstream corpus: the CI gate supplies real pinned TF files.
 """
 from __future__ import annotations
