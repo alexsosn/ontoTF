@@ -148,7 +148,7 @@ jobs:
 
           SOURCE="$RUNNER_TEMP/tfont-real-extrabiblical-0.2"
           mkdir -p "$SOURCE"
-          for feature in otype oslots otext sp g_word; do
+          for feature in otype oslots otext book chapter verse sp g_word; do
             curl --fail --location --silent --show-error --retry 3 \
               --output "$SOURCE/$feature.tf" \
               "https://raw.githubusercontent.com/ETCBC/extrabiblical/$TFONT_SOURCE_PIN/tf/0.2/$feature.tf"
