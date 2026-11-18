@@ -185,6 +185,52 @@ class XMLMappingContractTests(unittest.TestCase):
         with self.assertRaisesRegex(MappingError, "absolute"):
             find_by_target("not-an-ontology-IRI")
 
+    def test_reverse_lookup_finds_real_token_node_categories_by_default(self):
+        # The nine source XML corpora map observed word/token nodes to OLiA
+        # Token, never to a feature-value selector. Default reverse discovery
+        # must therefore include reviewed native node categories.
+        token = "http://purl.org/olia/olia.owl#Token"
+        catalog = MappingCatalog()
+        rows = catalog.find_by_target(token)
+        self.assertTrue({
+            "assyrian-royal-inscriptions", "bhsa", "cuc",
+            "extrabiblical", "peshitta", "pseudepigrapha",
+            "syriac", "syrnt", "tlhdig-tf",
+        } <= {row.corpus for row in rows})
+        self.assertEqual(
+            {row.node for row in rows if row.corpus == "pseudepigrapha"},
+            {"word", "variant_word"},
+        )
+        self.assertTrue(all(row.kind == "node" and row.relation == "exact"
+                            and row.target == token for row in rows))
+        self.assertEqual(catalog.find_by_target(token, kind="node"), rows)
+        self.assertEqual(catalog.find_by_target(token, kind="value"), ())
+
+    def test_reverse_lookup_default_does_not_include_edges_or_entity_candidates(self):
+        # Edge/property and entity assertions need an explicit kind; a shared
+        # target IRI alone never turns an individual into a category match.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = "urn:example:shared-target"
+            file(root, "a", (
+                f'<map kind="node" node="word" relation="exact" target="{target}"/>'
+                f'<map kind="value" node="word" feature="pos" value="N" relation="exact" target="{target}"/>'
+                f'<map kind="feature" feature="pos" relation="exact" target="{target}"/>'
+                f'<map kind="edge" feature="related_to" from="word" to="word" relation="exact" target="{target}"/>'
+                f'<map kind="entity" node="word" feature="id" value="42" relation="exact" target="{target}"/>'
+            ))
+            catalog = MappingCatalog(root)
+            self.assertEqual(
+                [row.kind for row in catalog.find_by_target(target)],
+                ["node", "value"],
+            )
+            for kind in ("node", "value", "feature", "edge", "entity"):
+                with self.subTest(kind=kind):
+                    self.assertEqual(
+                        [row.kind for row in catalog.find_by_target(target, kind=kind)],
+                        [kind],
+                    )
+
     def test_reverse_lookup_excludes_ambiguous_and_opt_in_approximate(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
