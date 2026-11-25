@@ -42,8 +42,8 @@ class EtcBcClauseTypeTests(unittest.TestCase):
                 ).read_text(encoding="utf-8"))
                 self.assertEqual(inventory["revision"], pin)
                 self.assertEqual(inventory["tf_version"], version)
-                self.assertEqual(inventory["node_type_counts"]["clause"], count)
-                self.assertEqual(inventory["node_type_counts"]["clause_atom"], atoms)
+                self.assertEqual(inventory["node_types"]["clause"], count)
+                self.assertEqual(inventory["node_types"]["clause_atom"], atoms)
                 observed = inventory["node_features"]["typ"]["observed_frequencies"]
                 self.assertTrue((finite | other | {"Defc"}) <= observed.keys())
                 rows = [r for r in catalog.load(corpus)
