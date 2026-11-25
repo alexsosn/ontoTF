@@ -155,10 +155,18 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
         limited = catalog.find_correspondences(
             "syrnt", "syriac", node="word", feature="prtyp", value="personal",
             include_approximate=True)
+        # A shared generic Pronoun target permits discovery of other
+        # lexical subtypes, even disjoint ones, only as approximate category
+        # paths. It does not establish personal/demonstrative equivalence.
         self.assertEqual(
             {(x.destination.feature, x.destination.value, x.target,
-              x.source.relation, x.relation, x.scope) for x in limited},
-            {("sp", "pron", base_pronoun, "narrower",
+              x.source.relation, x.destination.relation, x.relation, x.scope)
+             for x in limited},
+            {("sp", "pron", base_pronoun, "narrower", "exact",
+              "approximate-via-target", "category"),
+             ("ls", "demo", base_pronoun, "narrower", "narrower",
+              "approximate-via-target", "category"),
+             ("ls", "prin", base_pronoun, "narrower", "narrower",
               "approximate-via-target", "category")},
         )
         self.assertEqual(
