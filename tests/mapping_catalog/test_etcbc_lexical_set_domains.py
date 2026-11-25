@@ -36,6 +36,12 @@ PIN = {
     "syriac": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
     "extrabiblical": "9a56288e6777bad6328856acf055c780e65dd5d9",
 }
+QUALIFIED = {
+    "extrabiblical": {
+        "nmdi": "Noun", "nmcp": "Noun", "mult": "Noun",
+        "vbcp": "Verb", "quot": "Verb", "afad": "Adverb",
+    },
+}
 
 
 class ETCBCObservedLexicalSetsTests(unittest.TestCase):
@@ -55,10 +61,11 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
                     self.assertEqual(len(m), 1)
                     self.assertIn(PIN[corpus], m[0].evidence)
                     cls = EXACT[corpus].get(value)
-                    self.assertEqual(
-                        (m[0].relation, m[0].target),
-                        ("exact", OLIA + cls) if cls else ("native-only", None),
-                    )
+                    parent = QUALIFIED.get(corpus, {}).get(value)
+                    expected = (("exact", OLIA + cls) if cls
+                                else ("narrower", OLIA + parent) if parent
+                                else ("native-only", None))
+                    self.assertEqual((m[0].relation, m[0].target), expected)
 
     def test_positive_cross_language_category_not_word_identity(self):
         catalog = MappingCatalog()
