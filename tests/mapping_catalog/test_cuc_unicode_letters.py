@@ -71,7 +71,7 @@ class CUCUgariticUnicodeLetterTests(unittest.TestCase):
                                  ("exact", OLIA_LETTER))
                 self.assertEqual(row.corpus_version, VERSION)
                 self.assertIn(PIN, row.evidence or "")
-        for value in NONLETTERS:
+        for value in set(NONLETTERS) - {WORD_DIVIDER}:
             with self.subTest(nonletter=value):
                 row, = catalog.map_native(
                     "cuc", node="sign", feature="usign", value=value,
@@ -79,6 +79,11 @@ class CUCUgariticUnicodeLetterTests(unittest.TestCase):
                 self.assertEqual((row.relation, row.target),
                                  ("native-only", None))
                 self.assertIn(PIN, row.evidence or "")
+        divider, = catalog.map_native("cuc", node="sign", feature="usign",
+                                      value=WORD_DIVIDER, corpus_version=VERSION)
+        self.assertEqual((divider.relation, divider.target),
+                         ("narrower", "http://purl.org/olia/olia.owl#GraphicalSeparator"))
+        self.assertIn(PIN, divider.evidence)
         self.assertEqual(catalog.map_native(
             "cuc", node="sign", feature="usign", value=SPACE), ())
 
@@ -127,8 +132,20 @@ class CUCUgariticUnicodeLetterTests(unittest.TestCase):
             resolve_nodes(API(), mapping, corpus_version="0.2.7")
         negative, = MappingCatalog().map_native(
             "cuc", node="sign", feature="usign", value=WORD_DIVIDER)
-        with self.assertRaisesRegex(MappingError, "only positive"):
+        with self.assertRaisesRegex(MappingError, "exact"):
             resolve_nodes(API(), negative, corpus_version=VERSION)
+
+    def test_separator_discovery_preserves_two_views_not_word_classification(self):
+        catalog = MappingCatalog()
+        target = "http://purl.org/olia/olia.owl#GraphicalSeparator"
+        self.assertEqual(catalog.find_by_target(target, corpus="cuc"), ())
+        rows = catalog.find_by_target(target, corpus="cuc", include_approximate=True)
+        self.assertEqual({(r.node, r.feature, r.value, r.relation) for r in rows},
+                         {("sign", "sign", ".", "narrower"),
+                          ("sign", "usign", WORD_DIVIDER, "narrower")})
+        for feature, value in (("trailer", "."), ("utrailer", WORD_DIVIDER)):
+            self.assertEqual(catalog.map_native(
+                "cuc", node="word", feature=feature, value=value), ())
 
 
 if __name__ == "__main__":
