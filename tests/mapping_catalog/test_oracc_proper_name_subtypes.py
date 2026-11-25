@@ -115,9 +115,9 @@ class OraccProperNameSubtypesTests(unittest.TestCase):
             ORACC, "bhsa", kind="entity", node="word",
             feature="epos", value="DN", include_approximate=True), ())
 
-    def test_non_name_and_unlemmatised_tags_remain_unmapped(self):
+    def test_other_unresolved_and_unlemmatised_tags_remain_unmapped(self):
         for node, feature in SCOPES:
-            for code in ("DET", "MOD", "IP"):
+            for code in ("DET", "MOD"):
                 with self.subTest(scope=(node, feature), value=code):
                     row, = self.catalog.map_native(
                         ORACC, node=node, feature=feature, value=code)
@@ -131,6 +131,34 @@ class OraccProperNameSubtypesTests(unittest.TestCase):
                 ORACC, node="word", feature="pos", value=code)
             self.assertEqual((row.relation, row.target),
                              ("native-only", None))
+
+    def test_independent_anaphoric_pronoun_is_qualified(self):
+        target = "http://purl.org/olia/olia.owl#Pronoun"
+        expected = {(node, feature, "IP") for node, feature in SCOPES}
+        for node, feature in SCOPES:
+            with self.subTest(node=node, feature=feature):
+                row, = self.catalog.map_native(
+                    ORACC, node=node, feature=feature, value="IP",
+                    corpus_version=VERSION)
+                self.assertEqual((row.relation, row.target), ("narrower", target))
+                self.assertEqual(self.catalog.find_correspondences(
+                    ORACC, "bhsa", node=node, feature=feature, value="IP"), ())
+                hits = self.catalog.find_correspondences(
+                    ORACC, "bhsa", node=node, feature=feature, value="IP",
+                    include_approximate=True)
+                self.assertTrue(hits)
+                self.assertTrue(all(hit.scope == "category" and
+                                    hit.relation == "approximate-via-target"
+                                    for hit in hits))
+                with self.assertRaisesRegex(MappingError, "exact"):
+                    resolve_nodes(object(), row, corpus_version=VERSION)
+                self.assertEqual(self.catalog.map_native(
+                    ORACC, kind="entity", node=node, feature=feature, value="IP"), ())
+        self.assertEqual({(row.node, row.feature, row.value)
+                          for row in self.catalog.find_by_target(
+                              target, corpus=ORACC, include_approximate=True)},
+                         expected)
+        self.assertEqual(self.catalog.find_by_target(target, corpus=ORACC), ())
 
 
 if __name__ == "__main__":
