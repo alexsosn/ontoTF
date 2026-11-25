@@ -41,15 +41,16 @@ class ClauseRoleTests(unittest.TestCase):
                     self.assertTrue(any(h.destination.node == "clause"
                                         and h.destination.feature == "rela"
                                         and h.destination.value == code
-                                        and h.scope == "category" for h in hits))
+                                        and h.scope == "category"
+                                        and h.relation == "approximate-via-target"
+                                        for h in hits))
                     with self.assertRaisesRegex(MappingError, "exact"):
                         resolve_nodes(object(), row, corpus_version=version)
                     for node in ("clause_atom", "phrase_atom", "subphrase", "phrase"):
                         self.assertEqual(catalog.map_native(
                             corpus, node=node, feature="rela", value=code), ())
-                    self.assertEqual(catalog.map_native(
-                        corpus, kind="edge", node="clause", feature="mother",
-                        value=code), ())
+            self.assertFalse(any(r.kind == "edge" and r.feature == "mother"
+                                 for r in catalog.load(corpus)))
 
     def test_extrabiblical_observed_clause_domain(self):
         catalog = MappingCatalog()
