@@ -19,6 +19,7 @@ SHARED = {
 QUALIFIED = {
     "nmdi": "Noun", "nmcp": "Noun", "mult": "Noun",
     "vbcp": "Verb", "quot": "Verb", "afad": "Adverb",
+    "cjad": "Adverb", "gntl": "Adjective",
 }
 
 
