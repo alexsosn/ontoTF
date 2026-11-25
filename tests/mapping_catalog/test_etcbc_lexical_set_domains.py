@@ -6,7 +6,7 @@ or finer part-of-speech classes from shared abbreviations or gloss strings.
 """
 import unittest
 
-from tfont.xml_mappings import MappingCatalog
+from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 OLIA = "http://purl.org/olia/olia.owl#"
 
@@ -40,6 +40,12 @@ QUALIFIED = {
     "extrabiblical": {
         "nmdi": "Noun", "nmcp": "Noun", "mult": "Noun",
         "vbcp": "Verb", "quot": "Verb", "afad": "Adverb",
+        "gntl": "Adjective",
+    },
+    "syriac": {
+        "cjad": "Adverb", "gntl": "Adjective", "vbex": "Verb",
+        "quot": "Verb", "demo": "Pronoun", "pers": "PersReflPronoun",
+        "prin": "Pronoun", "pinr": "Adverb",
     },
 }
 
@@ -91,9 +97,46 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
             (),
         )
 
+    def test_source_observed_qualified_subtypes_stay_out_of_exact_queries(self):
+        catalog = MappingCatalog()
+        for corpus in ("syriac", "extrabiblical"):
+            version = "0.9" if corpus == "syriac" else "0.2"
+            codes = (QUALIFIED[corpus] if corpus == "syriac"
+                     else {"gntl": "Adjective"})
+            for code, target in codes.items():
+                with self.subTest(corpus=corpus, code=code):
+                    row, = catalog.map_native(
+                        corpus, node="word", feature="ls", value=code,
+                        corpus_version=version,
+                    )
+                    self.assertEqual(
+                        (row.relation, row.target), ("narrower", OLIA + target),
+                    )
+                    self.assertNotIn(row, catalog.find_by_target(OLIA + target))
+                    self.assertIn(row, catalog.find_by_target(
+                        OLIA + target, include_approximate=True,
+                    ))
+                    self.assertEqual(catalog.find_correspondences(
+                        corpus, "bhsa", node="word", feature="ls", value=code,
+                    ), ())
+                    with self.assertRaisesRegex(MappingError, "exact"):
+                        resolve_nodes(object(), row, corpus_version=version)
+        # 'demo' includes XDD> 'each other' (9 occurrences); never pretend
+        # all 3,575 native demo annotations are demonstrative pronouns.
+        row, = catalog.map_native(
+            "syriac", node="word", feature="ls", value="demo",
+        )
+        self.assertNotEqual(row.target, OLIA + "DemonstrativePronoun")
+        # OLiA explicitly distinguishes the broad personal/reflexive
+        # category from its narrower irreflexive PersonalPronoun.
+        pers, = catalog.map_native(
+            "syriac", node="word", feature="ls", value="pers",
+        )
+        self.assertNotEqual(pers.target, OLIA + "PersonalPronoun")
+
     def test_unverified_subtypes_and_multitude_do_not_forge_matches(self):
         catalog = MappingCatalog()
-        for code in ("demo", "pers", "pinr", "pint", "pcon", "focp", "sffx"):
+        for code in ("pint", "pcon", "focp", "sffx", "nmex", "ppre"):
             with self.subTest(corpus="syriac", code=code):
                 self.assertEqual(
                     catalog.find_correspondences(
