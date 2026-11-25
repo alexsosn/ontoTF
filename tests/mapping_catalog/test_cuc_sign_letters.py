@@ -12,7 +12,9 @@ LETTERS = frozenset({
     "p", "q", "r", "s", "t", "u", "w", "y", "z", "ġ",
     "ś", "š", "ʿ", "ḏ", "ḥ", "ḫ", "ṣ", "ṭ", "ṯ", "ẓ",
 })
-CONSERVATIVE = frozenset({"-", ".", "?", "x", "Ṯ", "…"})
+CONSERVATIVE = frozenset({"-", "?", "x", "Ṯ", "…"})
+DIVIDER = "."
+SEPARATOR = "http://purl.org/olia/olia.owl#GraphicalSeparator"
 # XML selector validation excludes whitespace-only attributes, correctly
 # leaving textual layout slots unmapped rather than manufacturing a Letter.
 TECHNICAL = frozenset({" ", "\u00a0"})
@@ -22,7 +24,7 @@ class CUCObservedSignVocabularyTests(unittest.TestCase):
     def test_pinned_source_sign_values_and_orthographic_letter_categories(self):
         c = MappingCatalog()
         self.assertIn("cuc", c.list_corpora())
-        expected = LETTERS | CONSERVATIVE
+        expected = LETTERS | CONSERVATIVE | {DIVIDER}
         rows = [r for r in c.load("cuc")
                 if r.kind == "value" and r.node == "sign"
                 and r.feature == "sign"]
@@ -45,6 +47,11 @@ class CUCObservedSignVocabularyTests(unittest.TestCase):
                     [(r.relation, r.target) for r in m],
                     [("native-only", None)],
                 )
+        divider, = c.map_native("cuc", node="sign", feature="sign",
+                                value=DIVIDER, corpus_version="0.2.8")
+        self.assertEqual((divider.relation, divider.target),
+                         ("narrower", SEPARATOR))
+        self.assertIn(PIN, divider.evidence)
         for value in TECHNICAL:
             with self.subTest(technical_layout=value):
                 self.assertEqual(c.map_native(
