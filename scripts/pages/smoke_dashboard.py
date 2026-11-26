@@ -47,6 +47,13 @@ def main():
                 morph = next(d for c in report["corpora"] if c["corpus"] == "tlhdig-tf"
                              for d in c["scoped"]["domains"] if d["node"] == "analysis" and d["feature"] == "morph")
                 assert f'{morph["positive_occurrences"]:,} / {morph["occurrences"]:,}' in tlh.inner_text()
+                assert tlh.get_by_role("heading", name="Enclitic morphology tags").is_visible()
+                clitic = next(d for c in report["corpora"] if c["corpus"] == "tlhdig-tf"
+                              for d in c["scoped"]["domains"] if d["node"] == "analysis"
+                              and d["feature"] == "clitic_morph")
+                assert f'{clitic["positive_occurrences"]:,} / {clitic["occurrences"]:,}' in tlh.inner_text()
+                tlh.locator(".morph-summary").scroll_into_view_if_needed()
+                page.screenshot(path=args.screenshots / f"morphology-summary-{width}-{mode}.png")
                 tlh.locator(":scope > details > summary").click()
                 gaps = tlh.get_by_text("Node-value gaps", exact=False)
                 gaps.click()

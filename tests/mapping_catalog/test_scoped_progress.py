@@ -204,7 +204,7 @@ class ScopedProgressTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         report = build_report(root, "a"*40)
         self.assertEqual(report["totals"]["scoped_corpora"], 9)
-        self.assertEqual(report["totals"]["scoped"]["node_values"]["total"], 5898)
+        self.assertEqual(report["totals"]["scoped"]["node_values"]["total"], 6720)
         self.assertEqual(report["totals"]["scoped"]["edge_values"]["total"], 4)
         self.assertEqual(report["totals"]["scoped"]["node_features"]["total"], 740)
         self.assertEqual(report["totals"]["scoped"]["edge_pairs"]["total"], 73)
@@ -218,6 +218,18 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual((morph["positive"], morph["reviewed"]), (47, 57))
         self.assertEqual((morph["positive_occurrences"], morph["reviewed_occurrences"]),
                          (413526, 728190))
+        clitic = next(d for d in tlh["scoped"]["domains"]
+                      if d["node"] == "analysis" and d["feature"] == "clitic_morph")
+        self.assertEqual((clitic["total"], clitic["occurrences"]), (822, 388870))
+        self.assertEqual((clitic["positive"], clitic["reviewed"]), (9, 15))
+        self.assertEqual((clitic["positive_occurrences"], clitic["reviewed_occurrences"]),
+                         (246255, 313286))
+        self.assertEqual(clitic["unreviewed"], 807)
+        self.assertEqual(len(clitic["unreviewed_values"]), 807)
+        self.assertFalse(any(row[:2] == ["analysis", "clitic_morph"]
+                             for row in tlh["scoped"]["unmeasured_values"]))
+        self.assertFalse(any(key[:3] == ["value", "analysis", "clitic_morph"]
+                             for key in tlh["applicability"]["unclassified_items"]))
         self.assertEqual(morph["unreviewed"], 4524)
         self.assertEqual(len(morph["unreviewed_values"]), 4524)
         self.assertEqual(len(morph["top_unreviewed_values"]), 8)
@@ -241,6 +253,8 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertIn("All applicability research is partial", html)
         self.assertIn("Morphological analysis tags", html)
         self.assertIn("413,526 / 1,357,004", html)
+        self.assertIn("Enclitic morphology tags", html)
+        self.assertIn("246,255 / 388,870", html)
         self.assertIn("candidate analyses", html)
 
     def test_large_measured_domain_ranks_gaps_without_rendering_every_raw_tag(self):
