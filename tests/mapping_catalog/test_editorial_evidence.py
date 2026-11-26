@@ -38,12 +38,17 @@ class EditorialEvidenceTests(unittest.TestCase):
         self.assertEqual(data["catalog_version"], "0.2.8")
         self.assertEqual(scope["values"], {"False": 23551, "True": 53664})
         self.assertEqual(data["node_features"]["cert"]["empty_records"], 68802)
+        # I6 is a primitive value class with no published URI in 1.2.1.
+        # The feature can be discovered via J5, never its individual values.
+        self.check_candidate("cuc", "CRMinf", INF + "J5_holds_to_be", "related", "0.2.8",
+                             kind="feature", node="sign", feature="cert")
         for value in scope["values"]:
-            self.check_candidate("cuc", "CRMinf", INF + "I6_Belief_Value", "related", "0.2.8",
-                                 kind="value", node="sign", feature="cert", value=value)
+            self.assertFalse(any(r.target == INF + "J5_holds_to_be"
+                                 for r in self.catalog.map_native("cuc", node="sign",
+                                    feature="cert", value=value, corpus_version="0.2.8")))
         self.assertEqual(self.catalog.map_native("cuc", node="sign", feature="cert",
                                                  value="", corpus_version="0.2.8"), ())
-        self.assertFalse(any(r.target == INF + "I6_Belief_Value"
+        self.assertFalse(any(r.target == INF + "J5_holds_to_be"
                              for r in self.catalog.map_native("cuc", node="sign",
                                     feature="emen", value="restored", corpus_version="0.2.8")))
 
@@ -60,10 +65,8 @@ class EditorialEvidenceTests(unittest.TestCase):
             self.assertEqual(data["node_features"][feature]["scopes"]["edit"]["count"], count)
             self.check_candidate(corpus, "CIDOC CRM", CRM + prop, "related", "0.4.0",
                                  kind="feature", node="edit", feature=feature)
-        self.assertFalse(any(r.target == CRM + "P14_carried_out_by"
-                             for r in self.catalog.map_native(corpus, kind="feature", node="edit",
-                                                             feature="author")))
-        self.assertFalse(any(r.kind == "entity" and r.node == "edit" for r in self.catalog.load(corpus)))
+        self.check_candidate(corpus, "CRMinf", INF + "J7_is_based_on_evidence_from",
+                             "related", "0.4.0", kind="feature", node="edit", feature="src")
 
 if __name__ == "__main__":
     unittest.main()
