@@ -6,12 +6,12 @@ on:
       - impl/i008-exact-execution
   pull_request:
     paths:
-      - 'src/tfont/semantic_execution.py'
-      - 'src/tfont/__init__.py'
-      - 'src/tfont/runtime_prerequisites.py'
-      - 'src/tfont/runtime_tf_observation.py'
-      - 'src/tfont/semantic_resolver.py'
-      - 'src/tfont/semantic_ir.py'
+      - 'src/ontotf/semantic_execution.py'
+      - 'src/ontotf/__init__.py'
+      - 'src/ontotf/runtime_prerequisites.py'
+      - 'src/ontotf/runtime_tf_observation.py'
+      - 'src/ontotf/semantic_resolver.py'
+      - 'src/ontotf/semantic_ir.py'
       - 'tests/i008/**'
       - 'tests/i007/**'
       - 'tests/i006/**'

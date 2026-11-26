@@ -7,7 +7,7 @@ on:
       - stability/f-014-windows-exact-file-paths
   pull_request:
     paths:
-      - src/tfont/parent_identity.py
+      - src/ontotf/parent_identity.py
       - tests/f014/**
       - tests/i003/**
       - docs/research/F-014-windows-exact-file-paths.md

@@ -7,13 +7,13 @@ on:
     paths:
       - 'scripts/research/i009_measure_parent_identities.py'
       - '.github/workflows/i009-research-parent-identities.yml'
-      - 'src/tfont/parent_identity.py'
+      - 'src/ontotf/parent_identity.py'
       - 'docs/research/I-009*.md'
   pull_request:
     paths:
       - 'scripts/research/i009_measure_parent_identities.py'
       - '.github/workflows/i009-research-parent-identities.yml'
-      - 'src/tfont/parent_identity.py'
+      - 'src/ontotf/parent_identity.py'
       - 'docs/research/I-009*.md'
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
   measure:
     runs-on: ubuntu-24.04
     steps:
-      - name: Check out exact TFont head
+      - name: Check out exact ontoTF head
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}

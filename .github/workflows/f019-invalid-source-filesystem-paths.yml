@@ -6,7 +6,7 @@ on:
     branches:
       - research/f-019-invalid-source-filesystem-paths
     paths:
-      - src/tfont/source_validation.py
+      - src/ontotf/source_validation.py
       - tests/f019/**
       - tests/i001/**
       - docs/research/F-019-invalid-source-filesystem-paths.md
@@ -15,7 +15,7 @@ on:
       - .github/workflows/f019-invalid-source-filesystem-paths.yml
   pull_request:
     paths:
-      - src/tfont/source_validation.py
+      - src/ontotf/source_validation.py
       - tests/f019/**
       - tests/i001/**
       - docs/research/F-019-invalid-source-filesystem-paths.md
