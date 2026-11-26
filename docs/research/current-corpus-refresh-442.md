@@ -18,3 +18,13 @@ The latest data are 0.4.0, 0.92 and 1.1 respectively.
 4. Adversarial review on final diff and successful exact-head CI before merge. Until the migration is validated, published coverage remains on the older version.
 
 This draft starts with evidence generation only. It must not be merged as a migration while the catalog and committed current census still name the old data.
+
+## Follow-up evidence from successful loaded-data census
+
+CUC PR [#47](https://github.com/DT-UCPH/cuc/pull/47) changes TF 0.4.0 in place. Its candidate head 64c188da6d2dad0f2960769c40953994900e4571 has 177132 signs, 33012 words, 456 tablets, 1417 boundaries and 3 aliases. Keep current CUC 0.2.8 in the migration workflow until the upstream PR is merged and pinned. Do not mix the earlier 0.4.0 build's counts with that candidate.
+
+The actual Syriac 0.92 loaded census (job 140013842855, run 45850080114) has 407319 words, 31 books, 807 chapters, 18132 verses. All selected finite observed grammatical and lexical-set domains retain the previous value sets. Unicode surfaces exist on 406610 words. The new g_word is an explicitly pointed ETCBC transcription, not a lemma or morphosyntactic category. The old 0.9 research census remains historical.
+
+Pseudepigrapha TF 1.1 (job 140013843107, same run) preserves the node totals and every observed edge scope; exactly eight feature scopes change: bibliography, bibliography_xml, manuscript_index, ms_language, ms_name, ms_name_xml, ms_show, undefined_manuscript. The selected undefined_manuscript count changes 29→26 (actual scoped census; distinct from release prose's 30→27). Source files for the existing maps (graph.py and seven feature/architecture documents) are byte-identical across release commits. No changed selector semantics identified in those sources. Word anchors remain 2462; 920460 surface-bearing primary words and 7701 variant words; 231 book-level translation edges. This justifies version-scoped migration of reviewed selectors after tests, not identity of manuscript metadata.
+
+PR #439 merged at 01986020af62247aab4cd1c1640b0c760c880203; migration must include its reviewed book and apparatus maps. New source versions require explicit version arguments when a selector has multiple version dispositions (existing MappingCatalog behavior). Regression tests must exercise both historical and new versions and reject unknown versions. No runtime redesign is needed.

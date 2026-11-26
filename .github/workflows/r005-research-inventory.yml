@@ -218,9 +218,9 @@ jobs:
             edge_values: ""
           - id: cuc
             repo: DT-UCPH/cuc
-            pin: 81e20d7b164f31eb5135a265cb679d45facd39b2
-            version: "0.4.0"
-            values: "surface surface_cert surface_source emen cert cont language tablet_language sign usign trailer_emen type synthetic boundary_kind line_mark line_mark_cert source_edition"
+            pin: ad69400f5446e1c8217af01659c7c10ab00c015b
+            version: "0.2.8"
+            values: "side emen cert cont language sign usign trailer_emen"
             edge_values: ""
           - id: pseudepigrapha
             repo: alexsosn/Pseudepigrapha-TF
@@ -326,14 +326,6 @@ jobs:
           print("Scoped node features:", sum(len(x["scopes"]) for x in data["node_features"].values()))
           print("Directed edge pairs:", sum(len(x.get("pairs", [])) for x in data["edge_features"].values()))
           print("Complete selected node values:", sum(len(x.get("values", {})) for f in data["node_features"].values() for x in f["scopes"].values()))
-          if data["corpus_id"] == "cuc":
-              assert data["tf_version"] == "0.4.0"
-              assert data["node_types"]["tablet"] == 453
-              assert data["node_types"]["boundary"] == 1409
-              assert data["node_types"]["alias"] == 3
-              assert data["node_types"]["sign"] == 174549
-              assert "side" not in data["node_features"]
-              assert "surface" in data["node_features"]
           if data["corpus_id"] == "syriac":
               assert data["tf_version"] == "0.92"
               assert "g_word" in data["node_features"]
