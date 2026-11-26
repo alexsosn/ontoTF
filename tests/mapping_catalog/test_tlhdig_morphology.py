@@ -21,7 +21,6 @@ QUALIFIED = {
     "PTCP.NOM.SG.C": {"Participle":"narrower", "Nominative":"narrower",
                       "Singular":"narrower", "CommonGender":"close"},
     "GEN.SG": {"GenitiveCase":"narrower", "Singular":"narrower"},
-    "{ a → GEN.SG} { b → GEN.PL} { c → D/L.PL}": {},
 }
 NATIVE = ("NEG", "PREV", "STF", "{ a → 3SG.PRS} { b → 2SG.IMP}",
           "{ a → …:ABL} { b → …:INS}",
@@ -45,8 +44,6 @@ class TLHdigMorphologyTests(unittest.TestCase):
 
     def test_compound_annotations_do_not_become_exact_single_categories(self):
         for value, expected in QUALIFIED.items():
-            if not expected:
-                continue
             with self.subTest(value=value):
                 rows = self.rows(value)
                 self.assertEqual({r.target.removeprefix(OLIA): r.relation for r in rows}, expected)
@@ -90,3 +87,12 @@ class TLHdigMorphologyTests(unittest.TestCase):
         self.assertEqual(resolve_nodes(API(), row, corpus_version=VERSION), (10,))
         with self.assertRaisesRegex(MappingError, "version"):
             resolve_nodes(API(), row, corpus_version="0.3")
+
+    def test_batch_is_explicit_and_versioned(self):
+        expected = ["ADV","POSP","CNJ","QUANcar","ABL","INS","ALL","2SG.IMP","3SG.PRS","3PL.PRS","3SG.PRS.MP","3SG.PST","3PL.PRS.MP","1SG.PRS.MP","3SG.IMP","3PL.PST","1SG.PST","2SG.PRS","2PL.IMP","3SG.PRS.IMPF","1SG.PRS","3SG.IMP.MP","3PL.PRS.IMPF","2SG.PST","3PL.IMP","1PL.PST","1PL.PRS","2PL.PRS","2PL.PST","D/L.SG","ACC.SG.C","PTCP.NOM.SG.C","GEN.SG","PTCP.ACC.SG.C","NOM.PL.C","NOM.SG.C","GEN.PL","ACC.PL.C","D/L.SG.C","D/L.PL","D/L.SG.N","NEG","PREV","STF","{ a → 3SG.PRS} { b → 2SG.IMP}","{ a → …:ABL} { b → …:INS}","{ a → GEN.SG} { b → GEN.PL} { c → D/L.PL}","{ a → NOM.SG(UNM)} { b → ACC.SG(UNM)} { c → NOM.PL(UNM)} { d → ACC.PL(UNM)} { e → GEN.SG(UNM)} { f → GEN.PL(UNM)} { g → D/L.SG(UNM)} { h → D/L.PL(UNM)} { i → ALL(UNM)} { j → ABL(UNM)} { k → INS(UNM)} { l → VOC.SG(UNM)} { m → VOC.PL(UNM)}"]
+        rows = [r for r in self.catalog.load(CORPUS) if r.kind == "value"
+                and r.node == "analysis" and r.feature == "morph"]
+        self.assertEqual({r.value for r in rows}, set(expected))
+        self.assertEqual(len(rows), 121)
+        self.assertTrue(all(r.corpus_version == VERSION and PIN in r.evidence for r in rows))
+        self.assertEqual(sum(r.relation == "exact" for r in rows), 7)
