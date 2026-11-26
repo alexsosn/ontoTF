@@ -743,7 +743,7 @@
       "revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
       "catalog_version": "0.2.8",
       "source": "https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md",
-      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph. KTU tablet titles and side designators concern source objects/sections, not verified unique physical object identifiers. Transliteration and alternative readings must remain distinct from physical marks (CRMtex TX1/TX7/TX9). Line-continuation is a graphical/textual annotation; language is a source label. Word node review remains separate from an exact populated-surface guard.",
+      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph. KTU tablet titles and side designators concern source objects/sections, not verified unique physical object identifiers. Transliteration and alternative readings must remain distinct from physical marks (CRMtex TX1/TX7/TX9). Line-continuation is a graphical/textual annotation; language is a source label. Word node review remains separate from an exact populated-surface guard. Actual sign/usign slot-by-slot comparison supports TX11 review at observed letter-value granularity, including negative review of editorial/layout placeholders; both script views are representations of the same slots, not independent historical grapheme counts. Guarded word transcription views to TX12 remain separately accounted.",
       "rules": {
         "OLiA": [
           {
@@ -829,6 +829,16 @@
             "kind": "value",
             "features": [
               "cont"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "sign",
+              "usign"
             ],
             "nodes": [
               "sign"
