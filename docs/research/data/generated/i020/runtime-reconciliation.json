@@ -8,14 +8,14 @@
     "schema_change_required": false
   },
   "contracts": {
-    "exact_conjunction_execution": "ontotf-exact-semantic-conjunction-execution-v1",
-    "exact_conjunction_resolver": "ontotf-exact-semantic-conjunction-resolver-v1",
-    "exact_execution": "ontotf-exact-execution-v1",
-    "exact_resolver": "ontotf-exact-semantic-resolver-v1"
+    "exact_conjunction_execution": "tfont-exact-semantic-conjunction-execution-v1",
+    "exact_conjunction_resolver": "tfont-exact-semantic-conjunction-resolver-v1",
+    "exact_execution": "tfont-exact-execution-v1",
+    "exact_resolver": "tfont-exact-semantic-resolver-v1"
   },
   "exact": {
     "comparison_state": "exactly-comparable",
-    "execution_contract": "ontotf-exact-execution-v1",
+    "execution_contract": "tfont-exact-execution-v1",
     "execution_nodes": [
       1,
       3
@@ -24,7 +24,7 @@
     "losses": [],
     "plan_fingerprint": "sha256:a7dc2b0d8e234a7df399fed88c2af79aee0653f2233a1b15f68c9022a8f44616",
     "resolution_fingerprint": "sha256:90b87e1b4f59c3a53338b8ff952c7a1088905f78d25e46adf0d191a904435cfc",
-    "resolver_contract": "ontotf-exact-semantic-resolver-v1"
+    "resolver_contract": "tfont-exact-semantic-resolver-v1"
   },
   "exact_conjunction": {
     "comparison_state": "exactly-comparable",
@@ -51,10 +51,10 @@
         ]
       }
     ],
-    "execution_contract": "ontotf-exact-semantic-conjunction-execution-v1",
+    "execution_contract": "tfont-exact-semantic-conjunction-execution-v1",
     "losses": [],
     "resolution_fingerprint": "sha256:2f4b11335365b24adf8910c28a854dda5b0c99f702b38ad528a5b4c10a7054ca",
-    "resolver_contract": "ontotf-exact-semantic-conjunction-resolver-v1"
+    "resolver_contract": "tfont-exact-semantic-conjunction-resolver-v1"
   },
   "exact_multi_corpus": {
     "canonical_corpora": [

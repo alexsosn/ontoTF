@@ -178,8 +178,8 @@ Unknown aliases/case variants fail closed.
 Add new versioned constants/functions in `ontotf.digests`:
 
 ```text
-PROJECTION_SEMANTIC_ALGORITHM = ontotf-projection-semantic-sha256-v1
-MAPPING_SEMANTIC_ALGORITHM_V2 = ontotf-mapping-semantic-sha256-v2
+PROJECTION_SEMANTIC_ALGORITHM = tfont-projection-semantic-sha256-v1
+MAPPING_SEMANTIC_ALGORITHM_V2 = tfont-mapping-semantic-sha256-v2
 ```
 
 Keep old `MAPPING_SEMANTIC_ALGORITHM` behavior available for v1 tests/releases unless explicit deprecation tests prove it can be renamed compatibly.

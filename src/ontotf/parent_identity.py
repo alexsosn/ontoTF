@@ -15,10 +15,10 @@ if os.name == "nt":
     from ctypes import wintypes
 
 
-FILE_BYTES_ALGORITHM = "ontotf-file-bytes-sha256-v1"
-DIRECTORY_FILES_ALGORITHM = "ontotf-directory-files-sha256-v1"
-TF_FILES_ALGORITHM = "ontotf-tf-files-sha256-v1"
-PARENT_COMPONENTS_ALGORITHM = "ontotf-parent-components-sha256-v1"
+FILE_BYTES_ALGORITHM = "tfont-file-bytes-sha256-v1"
+DIRECTORY_FILES_ALGORITHM = "tfont-directory-files-sha256-v1"
+TF_FILES_ALGORITHM = "tfont-tf-files-sha256-v1"
+PARENT_COMPONENTS_ALGORITHM = "tfont-parent-components-sha256-v1"
 
 _FILE_ATTRIBUTE_REPARSE_POINT = 0x00000400
 _FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000

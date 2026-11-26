@@ -20,7 +20,7 @@ Add `src/ontotf/semantic_ir.py` and export its public surface from `ontotf.__ini
 Freeze:
 
 ```python
-NATIVE_BINDING_IDENTITY_ALGORITHM = "ontotf-native-binding-jcs-sha256-v1"
+NATIVE_BINDING_IDENTITY_ALGORITHM = "tfont-native-binding-jcs-sha256-v1"
 
 @dataclass(frozen=True)
 class SemanticIRProblem:

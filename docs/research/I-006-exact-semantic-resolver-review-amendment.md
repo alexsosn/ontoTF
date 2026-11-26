@@ -43,11 +43,11 @@ A versioned hash algorithm name is not sufficient if the fingerprint projection 
 Recommended v1 constants/identities are conceptually:
 
 ```text
-EXACT_RESOLVER_CONTRACT = ontotf-exact-semantic-resolver-v1
-PROFILE_RELEASE_FINGERPRINT_ALGORITHM = ontotf-profile-release-signature-jcs-sha256-v1
-RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = ontotf-runtime-prerequisite-jcs-sha256-v1
-EXACT_PLAN_FINGERPRINT_ALGORITHM = ontotf-exact-native-plan-jcs-sha256-v1
-EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = ontotf-exact-resolution-jcs-sha256-v1
+EXACT_RESOLVER_CONTRACT = tfont-exact-semantic-resolver-v1
+PROFILE_RELEASE_FINGERPRINT_ALGORITHM = tfont-profile-release-signature-jcs-sha256-v1
+RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = tfont-runtime-prerequisite-jcs-sha256-v1
+EXACT_PLAN_FINGERPRINT_ALGORITHM = tfont-exact-native-plan-jcs-sha256-v1
+EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = tfont-exact-resolution-jcs-sha256-v1
 ```
 
 The exact spellings remain a plan-gate decision, but the semantic rule is fixed: changing resolver interpretation/projection requires a new versioned identity, never silent reuse.

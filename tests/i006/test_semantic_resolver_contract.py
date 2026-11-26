@@ -127,22 +127,22 @@ class I006SemanticResolverContractTests(unittest.TestCase):
 
     # Public and happy-path contract.
     def test_public_constants_are_versioned(self):
-        self.assertEqual(self.module.EXACT_RESOLVER_CONTRACT, "ontotf-exact-semantic-resolver-v1")
+        self.assertEqual(self.module.EXACT_RESOLVER_CONTRACT, "tfont-exact-semantic-resolver-v1")
         self.assertEqual(
             self.module.PROFILE_RELEASE_FINGERPRINT_ALGORITHM,
-            "ontotf-profile-release-signature-jcs-sha256-v1",
+            "tfont-profile-release-signature-jcs-sha256-v1",
         )
         self.assertEqual(
             self.module.RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM,
-            "ontotf-runtime-prerequisite-jcs-sha256-v1",
+            "tfont-runtime-prerequisite-jcs-sha256-v1",
         )
         self.assertEqual(
             self.module.EXACT_PLAN_FINGERPRINT_ALGORITHM,
-            "ontotf-exact-native-plan-jcs-sha256-v1",
+            "tfont-exact-native-plan-jcs-sha256-v1",
         )
         self.assertEqual(
             self.module.EXACT_RESOLUTION_FINGERPRINT_ALGORITHM,
-            "ontotf-exact-resolution-jcs-sha256-v1",
+            "tfont-exact-resolution-jcs-sha256-v1",
         )
 
     def test_bhsa_noun_resolves_to_typed_native_plan(self):

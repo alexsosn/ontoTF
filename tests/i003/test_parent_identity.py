@@ -80,10 +80,10 @@ class IdentityTestCase(unittest.TestCase):
 
 class AlgorithmAndFileTests(IdentityTestCase):
     def test_algorithm_identifiers_are_versioned(self):
-        self.assertEqual(FILE_BYTES_ALGORITHM, "ontotf-file-bytes-sha256-v1")
-        self.assertEqual(DIRECTORY_FILES_ALGORITHM, "ontotf-directory-files-sha256-v1")
-        self.assertEqual(TF_FILES_ALGORITHM, "ontotf-tf-files-sha256-v1")
-        self.assertEqual(PARENT_COMPONENTS_ALGORITHM, "ontotf-parent-components-sha256-v1")
+        self.assertEqual(FILE_BYTES_ALGORITHM, "tfont-file-bytes-sha256-v1")
+        self.assertEqual(DIRECTORY_FILES_ALGORITHM, "tfont-directory-files-sha256-v1")
+        self.assertEqual(TF_FILES_ALGORITHM, "tfont-tf-files-sha256-v1")
+        self.assertEqual(PARENT_COMPONENTS_ALGORITHM, "tfont-parent-components-sha256-v1")
 
     def test_exact_file_vector_and_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:

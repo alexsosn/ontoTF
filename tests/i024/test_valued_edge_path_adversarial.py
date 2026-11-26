@@ -250,7 +250,7 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         layer0 = ontotf.EdgePathEvidenceLayer(0, (first,))
         layer1 = ontotf.EdgePathEvidenceLayer(1, (second,))
         base = ontotf.EdgePathEvidence(
-            "ontotf-edge-path-evidence-v1",
+            "tfont-edge-path-evidence-v1",
             "sha256:" + "a" * 64,
             "sha256:" + "b" * 64,
             (1,),
@@ -300,7 +300,7 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         observation = ontotf.EdgePathObservation(1, 2, True, "x")
         layer = ontotf.EdgePathEvidenceLayer(0, (observation,))
         base = ontotf.EdgePathEvidence(
-            "ontotf-edge-path-evidence-v1",
+            "tfont-edge-path-evidence-v1",
             "sha256:" + "a" * 64,
             "sha256:" + "b" * 64,
             (1,),
@@ -365,26 +365,26 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             (),
         )
 
-        self.assertEqual(ontotf.EXACT_EXECUTION_CONTRACT, "ontotf-exact-execution-v1")
-        self.assertEqual(ontotf.APPROXIMATE_EXECUTION_CONTRACT, "ontotf-approximate-execution-v1")
+        self.assertEqual(ontotf.EXACT_EXECUTION_CONTRACT, "tfont-exact-execution-v1")
+        self.assertEqual(ontotf.APPROXIMATE_EXECUTION_CONTRACT, "tfont-approximate-execution-v1")
         self.assertEqual(
             ontotf.EXACT_CONJUNCTION_EXECUTION_CONTRACT,
-            "ontotf-exact-semantic-conjunction-execution-v1",
+            "tfont-exact-semantic-conjunction-execution-v1",
         )
         self.assertEqual(
             ontotf.APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT,
-            "ontotf-approximate-semantic-conjunction-execution-v1",
+            "tfont-approximate-semantic-conjunction-execution-v1",
         )
         self.assertEqual(
             ontotf.EXACT_AUTHORITY_EXECUTION_CONTRACT,
-            "ontotf-exact-authority-execution-v1",
+            "tfont-exact-authority-execution-v1",
         )
         self.assertEqual(
             ontotf.APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT,
-            "ontotf-approximate-authority-execution-v1",
+            "tfont-approximate-authority-execution-v1",
         )
-        self.assertEqual(ontotf.IDENTITY_EXECUTION_CONTRACT, "ontotf-identity-execution-v1")
-        self.assertEqual(ontotf.IDENTIFIER_EXECUTION_CONTRACT, "ontotf-identifier-execution-v1")
+        self.assertEqual(ontotf.IDENTITY_EXECUTION_CONTRACT, "tfont-identity-execution-v1")
+        self.assertEqual(ontotf.IDENTIFIER_EXECUTION_CONTRACT, "tfont-identifier-execution-v1")
 
 
 if __name__ == "__main__":

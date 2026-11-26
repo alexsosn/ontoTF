@@ -6,7 +6,7 @@
 
 ## 1. Scope
 
-Remove Python call-stack recursion from `directory_component_digest()` while preserving the accepted `ontotf-directory-files-sha256-v1` identity contract exactly.
+Remove Python call-stack recursion from `directory_component_digest()` while preserving the accepted `tfont-directory-files-sha256-v1` identity contract exactly.
 
 Production scope is limited to recursive directory traversal internals in `src/ontotf/parent_identity.py`. No schema, digest algorithm identifier, mapping/profile contract, TF payload behavior, parent-manifest behavior, or semantic/runtime behavior changes.
 
@@ -47,7 +47,7 @@ The implementation must preserve:
 - invalid/unicode logical path diagnostics;
 - empty-directory digest semantics;
 - UTF-16 final record ordering;
-- all existing fixed `ontotf-directory-files-sha256-v1` vectors.
+- all existing fixed `tfont-directory-files-sha256-v1` vectors.
 
 No `RecursionError` catch is required in the final iterative traversal because traversal itself must not recurse. Do not mask unrelated programming errors with broad exception handling.
 

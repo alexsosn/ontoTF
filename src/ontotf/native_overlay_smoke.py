@@ -13,7 +13,7 @@ from .parent_identity import parent_manifest_digest
 from .release_registry import load_profile
 from .semantic_execution import LoadedComponentContext, LoadedCorpusContext
 
-CONTRACT = "ontotf-native-overlay-smoke-v1"
+CONTRACT = "tfont-native-overlay-smoke-v1"
 SAMPLE_LIMIT = 5
 
 

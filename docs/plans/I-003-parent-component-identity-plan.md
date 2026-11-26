@@ -38,10 +38,10 @@ No schema change is required.
 ## 3. Versioned algorithm constants
 
 ```python
-FILE_BYTES_ALGORITHM = "ontotf-file-bytes-sha256-v1"
-DIRECTORY_FILES_ALGORITHM = "ontotf-directory-files-sha256-v1"
-TF_FILES_ALGORITHM = "ontotf-tf-files-sha256-v1"
-PARENT_COMPONENTS_ALGORITHM = "ontotf-parent-components-sha256-v1"
+FILE_BYTES_ALGORITHM = "tfont-file-bytes-sha256-v1"
+DIRECTORY_FILES_ALGORITHM = "tfont-directory-files-sha256-v1"
+TF_FILES_ALGORITHM = "tfont-tf-files-sha256-v1"
+PARENT_COMPONENTS_ALGORITHM = "tfont-parent-components-sha256-v1"
 ```
 
 Digest values use the I-002 representation:
@@ -229,7 +229,7 @@ algorithm
 components[]
 ```
 
-`algorithm` must equal `ontotf-parent-components-sha256-v1`.
+`algorithm` must equal `tfont-parent-components-sha256-v1`.
 
 Each component source may contain:
 
@@ -271,8 +271,8 @@ Rules:
 Fixed parent vector with the TF and recursive directory vectors above:
 
 ```text
-bhsa-tf       tf-payload / ontotf-tf-files-sha256-v1
-oracc-sidecar sidecar    / ontotf-directory-files-sha256-v1
+bhsa-tf       tf-payload / tfont-tf-files-sha256-v1
+oracc-sidecar sidecar    / tfont-directory-files-sha256-v1
 
 -> sha256:c8427586f094ade21411843a55a89f88161ab42a7462564905e94599eea57fa9
 ```

@@ -302,7 +302,7 @@ and missing-value checks.
 Add evaluator rule token:
 
 ```text
-ontotf-runtime-edge-value-domain-v1
+tfont-runtime-edge-value-domain-v1
 ```
 
 Validate the v2 assertion defensively from the canonical dependency record.
@@ -370,7 +370,7 @@ continue I-024 empty trailing layers.
 
 ## 10. Evidence and public result compatibility
 
-Do not change `ontotf-edge-path-evidence-v1`.
+Do not change `tfont-edge-path-evidence-v1`.
 
 For filtered steps, record only accepted matching native observations.
 Each observation already includes the exact value that justified the accepted

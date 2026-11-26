@@ -67,7 +67,7 @@ I-024 now gives each valued step:
 Runtime validates loaded `doValues`, `meta.valueType`, exact pair shape,
 native value type, native source/target orientation, and result-node domain.
 Accepted values are retained in deterministic plan-bound
-`ontotf-edge-path-evidence-v1` evidence.
+`tfont-edge-path-evidence-v1` evidence.
 
 What it intentionally lacks is a value selection field and a dependency that
 authorizes an edge-value domain.

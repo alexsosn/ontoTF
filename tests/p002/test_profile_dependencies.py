@@ -98,7 +98,7 @@ def dependency(**overrides):
 def profile_v2():
     return {
         "schema_version": 2,
-        "profile_id": "ontotf-test",
+        "profile_id": "tfont-test",
         "profile_version": "0.2.0",
         "semantic_domains": ["morphology"],
         "parent_component_manifest": "parent/expected-components.json",
@@ -107,7 +107,7 @@ def profile_v2():
         "mapping_sources": ["mappings/test.yaml"],
         "dependency_contract_version": 1,
         "dependencies": [dependency()],
-        "minimum_ontotf_runtime": "0.1.0",
+        "minimum_tfont_runtime": "0.1.0",
         "license": "CC-BY-4.0",
     }
 

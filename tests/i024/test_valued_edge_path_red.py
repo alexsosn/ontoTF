@@ -181,7 +181,7 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         self.assertEqual(corpus.nodes, (11, 10))
         evidence = corpus.edge_path_evidence
         self.assertIsNotNone(evidence)
-        self.assertEqual(evidence.evidence_contract, "ontotf-edge-path-evidence-v1")
+        self.assertEqual(evidence.evidence_contract, "tfont-edge-path-evidence-v1")
         self.assertEqual(evidence.plan_fingerprint, corpus.plan.plan_fingerprint)
         self.assertEqual(evidence.start_nodes, (1, 2))
         self.assertEqual(evidence.final_nodes, (11, 10))
@@ -355,7 +355,7 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         observation = ontotf.EdgePathObservation(1, 2, True, "x")
         layer = ontotf.EdgePathEvidenceLayer(0, (observation,))
         base = ontotf.EdgePathEvidence(
-            "ontotf-edge-path-evidence-v1",
+            "tfont-edge-path-evidence-v1",
             "sha256:" + "a" * 64,
             "sha256:" + "b" * 64,
             (1,),
@@ -462,11 +462,11 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
 
         self.assertEqual(
             ontotf.EXACT_EXECUTION_CONTRACT,
-            "ontotf-exact-execution-v1",
+            "tfont-exact-execution-v1",
         )
         self.assertEqual(
             ontotf.APPROXIMATE_EXECUTION_CONTRACT,
-            "ontotf-approximate-execution-v1",
+            "tfont-approximate-execution-v1",
         )
 
     def test_packaged_mappings_and_runtime_dependency_boundary_remain_unchanged(self):

@@ -78,7 +78,7 @@ Do **not** include:
 The signature may be represented as a frozen record plus a versioned JCS/SHA-256 digest, e.g.:
 
 ```text
-ontotf-profile-release-signature-jcs-sha256-v1
+tfont-profile-release-signature-jcs-sha256-v1
 ```
 
 If the implementation exposes an overall digest, export the algorithm constant. The inspectable component record remains authoritative for debugging.

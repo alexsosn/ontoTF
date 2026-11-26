@@ -101,7 +101,7 @@ Key:
 
 Value contains the reviewed native semantic record, child projections and external references needed for inspection/provenance. The binding identity must be derived only from the closed `nativeBinding` object, not from display strings or mapping IDs.
 
-Use the already selected RFC 8785/JCS canonical JSON boundary and SHA-256 to derive a versioned native-binding identity. A suitable algorithm name is `ontotf-native-binding-jcs-sha256-v1`. This adds no dependency and gives a portable key for nested edge-path bindings. The original typed binding is retained alongside the digest; the digest is an identity/index key, not a replacement for executable fields.
+Use the already selected RFC 8785/JCS canonical JSON boundary and SHA-256 to derive a versioned native-binding identity. A suitable algorithm name is `tfont-native-binding-jcs-sha256-v1`. This adds no dependency and gives a portable key for nested edge-path bindings. The original typed binding is retained alongside the digest; the digest is an identity/index key, not a replacement for executable fields.
 
 ### `semantic_index`
 

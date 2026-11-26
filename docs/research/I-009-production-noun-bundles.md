@@ -38,7 +38,7 @@ For this first slice the exact parent manifest contains one component per corpus
 {
   "component_id": "<corpus>-tf",
   "kind": "tf-payload",
-  "identity_algorithm": "ontotf-tf-files-sha256-v1",
+  "identity_algorithm": "tfont-tf-files-sha256-v1",
   "content_digest": "sha256:..."
 }
 ```

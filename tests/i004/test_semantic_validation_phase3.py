@@ -120,8 +120,8 @@ class I004Phase3Tests(unittest.TestCase):
         self.assertNotEqual(mapping_semantic_digest_v2(mapping), before)
 
     def test_v2_algorithm_is_distinct_from_v1(self):
-        self.assertEqual(MAPPING_SEMANTIC_ALGORITHM, "ontotf-mapping-semantic-sha256-v1")
-        self.assertEqual(MAPPING_SEMANTIC_ALGORITHM_V2, "ontotf-mapping-semantic-sha256-v2")
+        self.assertEqual(MAPPING_SEMANTIC_ALGORITHM, "tfont-mapping-semantic-sha256-v1")
+        self.assertEqual(MAPPING_SEMANTIC_ALGORITHM_V2, "tfont-mapping-semantic-sha256-v2")
 
 
 if __name__ == "__main__":

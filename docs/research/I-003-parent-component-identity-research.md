@@ -25,8 +25,8 @@ The important negative invariant is explicit: unchanged TF bytes do **not** pres
 
 R-001's example names:
 
-- `ontotf-parent-components-sha256-v1` for the parent component-manifest identity contract;
-- `ontotf-tf-files-sha256-v1` for the TF payload file-set identity.
+- `tfont-parent-components-sha256-v1` for the parent component-manifest identity contract;
+- `tfont-tf-files-sha256-v1` for the TF payload file-set identity.
 
 ### P-001 byte projections
 
@@ -36,7 +36,7 @@ Accepted `docs/plans/P-001-foundation-poc-design.md` section 6 says:
 - component records are sorted by `component_id`;
 - parent identity is SHA-256 of canonical JSON over **semantic identity fields**;
 - absolute machine paths are excluded;
-- `ontotf-tf-files-sha256-v1` hashes a sorted list of `{relative_logical_path, sha256}` records for addressed TF payload files;
+- `tfont-tf-files-sha256-v1` hashes a sorted list of `{relative_logical_path, sha256}` records for addressed TF payload files;
 - directory-like sidecars use the same sorted-path/per-file-digest pattern;
 - a single-file sidecar uses SHA-256 of exact bytes.
 
@@ -56,7 +56,7 @@ content_digest
 `schemas/parent-component-manifest.schema.json` on baseline `67f55b52...` requires:
 
 ```text
-algorithm = ontotf-parent-components-sha256-v1
+algorithm = tfont-parent-components-sha256-v1
 components[]:
   component_id
   kind
@@ -107,7 +107,7 @@ In `tf/core/fabric.py::_makeIndex`, for each selected `location/module`, TF:
 
 ### Consequence for I-003
 
-`ontotf-tf-files-sha256-v1` should hash every direct regular `.tf` file in the addressed TF module directory, including config `.tf` files. It should **not** recursively hash README files, generated caches, VCS metadata, sibling source material, or `.tf` files in nested directories that the addressed TF module would not scan.
+`tfont-tf-files-sha256-v1` should hash every direct regular `.tf` file in the addressed TF module directory, including config `.tf` files. It should **not** recursively hash README files, generated caches, VCS metadata, sibling source material, or `.tf` files in nested directories that the addressed TF module would not scan.
 
 A TF directory with no direct `.tf` files cannot establish a TF payload identity and should fail closed rather than produce a plausible empty corpus identity.
 
@@ -203,23 +203,23 @@ The POC assumes the local component tree is not concurrently mutated during one 
 P-001 already fixes:
 
 ```text
-ontotf-tf-files-sha256-v1
-ontotf-parent-components-sha256-v1
+tfont-tf-files-sha256-v1
+tfont-parent-components-sha256-v1
 ```
 
 P-001 specifies but does not name the generic single-file and recursive-directory algorithms. I-003 should define names before production code rather than overload the TF identifier:
 
 ```text
-ontotf-file-bytes-sha256-v1
-ontotf-directory-files-sha256-v1
+tfont-file-bytes-sha256-v1
+tfont-directory-files-sha256-v1
 ```
 
 Semantics:
 
-- `ontotf-file-bytes-sha256-v1`: SHA-256 of exact file bytes;
-- `ontotf-directory-files-sha256-v1`: SHA-256 of RFC 8785 canonical JSON over the sorted recursive file-record list;
-- `ontotf-tf-files-sha256-v1`: SHA-256 of the same record shape, but over only direct regular `.tf` files in the addressed TF module root;
-- `ontotf-parent-components-sha256-v1`: SHA-256 of RFC 8785 canonical JSON over an object containing the sorted semantic component identity records.
+- `tfont-file-bytes-sha256-v1`: SHA-256 of exact file bytes;
+- `tfont-directory-files-sha256-v1`: SHA-256 of RFC 8785 canonical JSON over the sorted recursive file-record list;
+- `tfont-tf-files-sha256-v1`: SHA-256 of the same record shape, but over only direct regular `.tf` files in the addressed TF module root;
+- `tfont-parent-components-sha256-v1`: SHA-256 of RFC 8785 canonical JSON over an object containing the sorted semantic component identity records.
 
 Keeping directory and TF algorithm identifiers distinct preserves the addressed-file-boundary contract even when two specific file sets happen to produce the same record list.
 
@@ -244,7 +244,7 @@ The v1 digest projection is:
 
 Components are unique by `component_id` and sorted with the I-002 UTF-16 code-unit comparator.
 
-The top-level `algorithm` must equal `ontotf-parent-components-sha256-v1` but is not duplicated inside its own digest projection; the algorithm name and digest are separate identity metadata, matching I-002's versioned-digest pattern.
+The top-level `algorithm` must equal `tfont-parent-components-sha256-v1` but is not duplicated inside its own digest projection; the algorithm name and digest are separate identity metadata, matching I-002's versioned-digest pattern.
 
 Changing `logical_locator` or `license_ref` alone does not change parent semantic identity. Changing any of the four semantic component fields does.
 

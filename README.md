@@ -203,11 +203,11 @@ expected_component = bundle.expected_parent_manifest.data["components"][0]
 if observed_component != expected_component["content_digest"]:
     raise SystemExit("BHSA TF payload is not the pinned 2021 release; check BHSA_TF_DIR and revision")
 observed_manifest = {
-    "algorithm": "ontotf-parent-components-sha256-v1",
+    "algorithm": "tfont-parent-components-sha256-v1",
     "components": [{
         "component_id": "bhsa-tf",
         "kind": "tf-payload",
-        "identity_algorithm": "ontotf-tf-files-sha256-v1",
+        "identity_algorithm": "tfont-tf-files-sha256-v1",
         "content_digest": observed_component,
     }],
 }

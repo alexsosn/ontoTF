@@ -21,20 +21,20 @@ from .semantic_resolver import (
     profile_release_fingerprint,
 )
 
-RUNTIME_EVALUATION_CONTRACT = "ontotf-runtime-evaluation-v1"
-OBSERVATION_FINGERPRINT_ALGORITHM = "ontotf-runtime-observation-jcs-sha256-v1"
-RUNTIME_REPORT_FINGERPRINT_ALGORITHM = "ontotf-runtime-report-jcs-sha256-v1"
+RUNTIME_EVALUATION_CONTRACT = "tfont-runtime-evaluation-v1"
+OBSERVATION_FINGERPRINT_ALGORITHM = "tfont-runtime-observation-jcs-sha256-v1"
+RUNTIME_REPORT_FINGERPRINT_ALGORITHM = "tfont-runtime-report-jcs-sha256-v1"
 
 _KIND_RULES = {
-    "component-present": "ontotf-runtime-component-present-v1",
-    "node-type-present": "ontotf-runtime-node-type-present-v1",
-    "feature-present": "ontotf-runtime-feature-present-v1",
-    "edge-present": "ontotf-runtime-edge-present-v1",
-    "path-present": "ontotf-runtime-path-present-v1",
-    "native-value-present": "ontotf-runtime-native-value-present-v1",
-    "value-domain": "ontotf-runtime-value-domain-v1",
-    "edge-value-domain": "ontotf-runtime-edge-value-domain-v1",
-    "extent-interpretation": "ontotf-runtime-extent-interpretation-v1",
+    "component-present": "tfont-runtime-component-present-v1",
+    "node-type-present": "tfont-runtime-node-type-present-v1",
+    "feature-present": "tfont-runtime-feature-present-v1",
+    "edge-present": "tfont-runtime-edge-present-v1",
+    "path-present": "tfont-runtime-path-present-v1",
+    "native-value-present": "tfont-runtime-native-value-present-v1",
+    "value-domain": "tfont-runtime-value-domain-v1",
+    "edge-value-domain": "tfont-runtime-edge-value-domain-v1",
+    "extent-interpretation": "tfont-runtime-extent-interpretation-v1",
 }
 _DIRECTIONS = {"outgoing", "incoming"}
 _EXTENT_INTERPRETATIONS = {

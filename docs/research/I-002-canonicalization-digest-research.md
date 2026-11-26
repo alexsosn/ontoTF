@@ -112,11 +112,11 @@ The list is sorted by `logical_path` before canonicalization. Duplicate logical 
 
 P-001 fixes two evidence algorithms:
 
-### `ontotf-evidence-payload-sha256-v1`
+### `tfont-evidence-payload-sha256-v1`
 
 SHA-256 of the exact external payload bytes reviewed. No URI, filename, retrieval timestamp or transport metadata substitutes for the payload.
 
-### `ontotf-evidence-record-sha256-v1`
+### `tfont-evidence-record-sha256-v1`
 
 SHA-256 of JCS over a normalized evidence projection containing:
 
@@ -183,12 +183,12 @@ P-001 explicitly names evidence and compatibility algorithms but not source-bund
 Recommended names for the implementation plan:
 
 - canonical JSON format: `rfc8785-jcs` (format label, not a hash identifier);
-- normalized source file: `ontotf-source-file-sha256-v1`;
-- source bundle: `ontotf-source-bundle-sha256-v1`;
-- evidence payload: accepted `ontotf-evidence-payload-sha256-v1`;
-- evidence normalized record: accepted `ontotf-evidence-record-sha256-v1`;
-- mapping semantic digest: `ontotf-mapping-semantic-sha256-v1`;
-- profile semantic digest: `ontotf-profile-semantic-sha256-v1`.
+- normalized source file: `tfont-source-file-sha256-v1`;
+- source bundle: `tfont-source-bundle-sha256-v1`;
+- evidence payload: accepted `tfont-evidence-payload-sha256-v1`;
+- evidence normalized record: accepted `tfont-evidence-record-sha256-v1`;
+- mapping semantic digest: `tfont-mapping-semantic-sha256-v1`;
+- profile semantic digest: `tfont-profile-semantic-sha256-v1`.
 
 These names should be fixed in the I-002 plan and tests; changing an algorithm's byte/projection semantics later requires a new identifier rather than silently reusing `v1`.
 

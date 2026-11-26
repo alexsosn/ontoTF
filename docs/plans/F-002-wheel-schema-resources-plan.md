@@ -63,7 +63,7 @@ Behavior:
 3. If `schema_root is None`:
    - obtain `importlib.resources.files("ontotf").joinpath("schemas", filename)`;
    - read bytes from the returned traversable;
-   - use stable label `ontotf:schemas/<filename>` for invalid-schema source identity.
+   - use stable label `tfont:schemas/<filename>` for invalid-schema source identity.
 4. Decode with UTF-8 BOM tolerance exactly as today (`utf-8-sig`).
 5. Parse JSON, reject duplicate keys/non-finite constants, require Draft 2020-12, self-check the schema, then validate the instance exactly as today.
 
@@ -121,7 +121,7 @@ Required GREEN cases:
 - isolated non-editable wheel import validates all seven minimal instances with default lookup;
 - source-tree `validate_source(..., schema_root=explicit_path)` remains green;
 - malformed custom schema still reports the custom schema filesystem path;
-- packaged default schema errors use deterministic `ontotf:schemas/<filename>` source labels;
+- packaged default schema errors use deterministic `tfont:schemas/<filename>` source labels;
 - every schema still declares Draft 2020-12 and passes `Draft202012Validator.check_schema`;
 - no root `schemas/` canonical duplicate remains;
 - existing I-002 tests remain green.

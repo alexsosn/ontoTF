@@ -84,7 +84,7 @@ Add a coverage-specific validator in a new module rather than weakening generic 
 
 Add:
 
-`COVERAGE_DENOMINATOR_ALGORITHM = "ontotf-coverage-denominator-jcs-sha256-v1"`.
+`COVERAGE_DENOMINATOR_ALGORITHM = "tfont-coverage-denominator-jcs-sha256-v1"`.
 
 `coverage_denominator_projection(manifest)` binds:
 

@@ -29,7 +29,7 @@ class I005SemanticIRContractTests(unittest.TestCase):
         self.assertTrue(callable(module.compile_semantic_ir))
         self.assertEqual(
             module.NATIVE_BINDING_IDENTITY_ALGORITHM,
-            "ontotf-native-binding-jcs-sha256-v1",
+            "tfont-native-binding-jcs-sha256-v1",
         )
 
     def test_three_exact_noun_bundles_share_one_semantic_key(self):
@@ -107,13 +107,13 @@ class I005SemanticIRContractTests(unittest.TestCase):
         first = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             profile_version="0.1.0",
         )
         second = validated_noun_bundle(
             "bhsa",
             parent_char="d",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             profile_version="0.1.0",
         )
         ir = module.compile_semantic_ir((second, first))
@@ -138,13 +138,13 @@ class I005SemanticIRContractTests(unittest.TestCase):
         reviewed = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             mapping_review_status="reviewed",
         )
         provisional = validated_noun_bundle(
             "bhsa",
             parent_char="b",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             mapping_review_status="provisional",
         )
         with self.assertRaises(module.SemanticIRError) as raised:
@@ -156,13 +156,13 @@ class I005SemanticIRContractTests(unittest.TestCase):
         reviewed = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             projection_review_status="reviewed",
         )
         provisional = validated_noun_bundle(
             "bhsa",
             parent_char="b",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             projection_review_status="provisional",
         )
         with self.assertRaises(module.SemanticIRError) as raised:
@@ -174,13 +174,13 @@ class I005SemanticIRContractTests(unittest.TestCase):
         first = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             mapping_review_id="review:bhsa:mapping:noun:v1",
         )
         second = validated_noun_bundle(
             "bhsa",
             parent_char="b",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             mapping_review_id="review:bhsa:mapping:noun:v2",
         )
         with self.assertRaises(module.SemanticIRError) as raised:
@@ -192,13 +192,13 @@ class I005SemanticIRContractTests(unittest.TestCase):
         first = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             audit_suffix="-a",
         )
         second = validated_noun_bundle(
             "bhsa",
             parent_char="b",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             audit_suffix="-b",
         )
         ir = module.compile_semantic_ir((first, second))
@@ -209,13 +209,13 @@ class I005SemanticIRContractTests(unittest.TestCase):
         first = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             native_value="subs",
         )
         second = validated_noun_bundle(
             "bhsa",
             parent_char="b",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             native_value="substantive",
         )
         with self.assertRaises(module.SemanticIRError) as raised:
@@ -227,14 +227,14 @@ class I005SemanticIRContractTests(unittest.TestCase):
         first = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             profile_version="0.1.0",
             native_value="subs",
         )
         second = validated_noun_bundle(
             "bhsa",
             parent_char="b",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             profile_version="0.2.0",
             native_value="substantive",
         )

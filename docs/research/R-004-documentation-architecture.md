@@ -415,7 +415,7 @@ Conceptual profile entry:
 
 ```json
 {
-  "profile": "ontotf-bhsa@0.1.0",
+  "profile": "tfont-bhsa@0.1.0",
   "compatibility": "verified-exact",
   "parent_component_manifest": "sha256:...",
   "ontology_locks": ["olia:<lock>"],

@@ -114,7 +114,7 @@ For each requested corpus in UTF-16 lexical corpus order:
 4. call `evaluate_runtime_prerequisites()` with:
    - selected variant;
    - internally constructed observation;
-   - fixed source contract `ontotf-exact-execution-runtime-v1`;
+   - fixed source contract `tfont-exact-execution-runtime-v1`;
    - context active ontology-bundle digest;
 5. retain `RuntimeEvaluationReport` and use `.to_prerequisite()`;
 6. after all requested corpora have reports, invoke one `semantic_resolve(ir, request, prerequisites)` call;
@@ -175,7 +175,7 @@ Return:
 
 ```text
 ExactExecutionResult(
-  execution_contract="ontotf-exact-execution-v1",
+  execution_contract="tfont-exact-execution-v1",
   resolution=<fresh SemanticResolutionResult>,
   corpora=(
     ExactCorpusExecution(

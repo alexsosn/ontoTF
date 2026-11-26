@@ -182,10 +182,10 @@ to prevent accidental coupling to common-pivot capability state.
 Add versioned constants, names finalized as:
 
 ```python
-EXACT_AUTHORITY_RESOLVER_CONTRACT = "ontotf-exact-authority-resolver-v1"
-APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT = "ontotf-approximate-authority-resolver-v1"
-IDENTITY_RESOLVER_CONTRACT = "ontotf-identity-resolver-v1"
-IDENTIFIER_RESOLVER_CONTRACT = "ontotf-identifier-resolver-v1"
+EXACT_AUTHORITY_RESOLVER_CONTRACT = "tfont-exact-authority-resolver-v1"
+APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT = "tfont-approximate-authority-resolver-v1"
+IDENTITY_RESOLVER_CONTRACT = "tfont-identity-resolver-v1"
+IDENTIFIER_RESOLVER_CONTRACT = "tfont-identifier-resolver-v1"
 ```
 
 Each family has its own fingerprint-algorithm constant.

@@ -9,14 +9,14 @@ from typing import Any, Iterable
 import rfc8785
 
 JCS_FORMAT = "rfc8785-jcs"
-SOURCE_FILE_ALGORITHM = "ontotf-source-file-sha256-v1"
-SOURCE_BUNDLE_ALGORITHM = "ontotf-source-bundle-sha256-v1"
-EVIDENCE_PAYLOAD_ALGORITHM = "ontotf-evidence-payload-sha256-v1"
-EVIDENCE_RECORD_ALGORITHM = "ontotf-evidence-record-sha256-v1"
-MAPPING_SEMANTIC_ALGORITHM = "ontotf-mapping-semantic-sha256-v1"
-MAPPING_SEMANTIC_ALGORITHM_V2 = "ontotf-mapping-semantic-sha256-v2"
-PROJECTION_SEMANTIC_ALGORITHM = "ontotf-projection-semantic-sha256-v1"
-PROFILE_SEMANTIC_ALGORITHM = "ontotf-profile-semantic-sha256-v1"
+SOURCE_FILE_ALGORITHM = "tfont-source-file-sha256-v1"
+SOURCE_BUNDLE_ALGORITHM = "tfont-source-bundle-sha256-v1"
+EVIDENCE_PAYLOAD_ALGORITHM = "tfont-evidence-payload-sha256-v1"
+EVIDENCE_RECORD_ALGORITHM = "tfont-evidence-record-sha256-v1"
+MAPPING_SEMANTIC_ALGORITHM = "tfont-mapping-semantic-sha256-v1"
+MAPPING_SEMANTIC_ALGORITHM_V2 = "tfont-mapping-semantic-sha256-v2"
+PROJECTION_SEMANTIC_ALGORITHM = "tfont-projection-semantic-sha256-v1"
+PROFILE_SEMANTIC_ALGORITHM = "tfont-profile-semantic-sha256-v1"
 MAX_JSON_NESTING = 128
 
 _SAFE_INT_MIN = -(2**53) + 1

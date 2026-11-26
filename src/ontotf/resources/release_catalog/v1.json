@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "registry_id": "ontotf-release-catalog-v1",
+  "registry_id": "tfont-release-catalog-v1",
   "ontology_models": {
     "olia": {
       "ontology_revision": "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",

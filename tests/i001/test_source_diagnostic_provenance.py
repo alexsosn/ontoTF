@@ -26,7 +26,7 @@ DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 def invalid_profile() -> dict:
     return {
         "schema_version": "one",
-        "profile_id": "ontotf-test",
+        "profile_id": "tfont-test",
         "profile_version": "0.2.0",
         "semantic_domains": ["morphology"],
         "parent_component_manifest": "parent/expected-components.json",
@@ -42,7 +42,7 @@ def invalid_profile() -> dict:
                 "assertion": {},
             }
         ],
-        "minimum_ontotf_runtime": "0.1.0",
+        "minimum_tfont_runtime": "0.1.0",
         "license": "CC-BY-4.0",
     }
 

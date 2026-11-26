@@ -7,7 +7,7 @@
 
 ## Question
 
-How should `directory_component_digest()` preserve the accepted `ontotf-directory-files-sha256-v1` identity semantics for arbitrarily deep filesystem trees without leaking Python `RecursionError` or inventing a semantic directory-depth limit?
+How should `directory_component_digest()` preserve the accepted `tfont-directory-files-sha256-v1` identity semantics for arbitrarily deep filesystem trees without leaking Python `RecursionError` or inventing a semantic directory-depth limit?
 
 ## Existing I-003 contract
 

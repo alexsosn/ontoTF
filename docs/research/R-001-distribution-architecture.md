@@ -272,7 +272,7 @@ Conceptual manifest:
 ```yaml
 schema_version: 1
 profile:
-  id: ontotf-bhsa
+  id: tfont-bhsa
   version: 0.1.0
   mapping_revision: <ontoTF Git commit>
 
@@ -288,11 +288,11 @@ compatibility:
     - tf_version: "2021"
       upstream_revision: 4db00e2157915495e1a4d3d57e41223df24775da
       artifact_identity:
-        algorithm: ontotf-parent-components-sha256-v1
+        algorithm: tfont-parent-components-sha256-v1
         components:
           tf:
             kind: tf-payload
-            algorithm: ontotf-tf-files-sha256-v1
+            algorithm: tfont-tf-files-sha256-v1
             digest: sha256:<digest>
           # Additional native components are declared when the profile
           # semantically addresses sidecar/catalogue/adapter data.
@@ -433,7 +433,7 @@ Agora participates before runtime by resolving the appropriate corpus/profile ar
 ### BHSA
 
 - parent: `ETCBC/bhsa`, TF version `2021`, exact tested commit;
-- ontoTF profile: `ontotf-bhsa`;
+- ontoTF profile: `tfont-bhsa`;
 - runtime: sidecar mapping native POS/morphology/syntax/lexical structures to ontology terms;
 - optional TF product: safe projected categories with ontoTF-namespaced feature names;
 - CI: verify `word` slot, required `lex`/syntactic nodes/features/edges and bounded mapped values before release.
@@ -525,7 +525,7 @@ Implementation must follow TDD once the research/design gate opens; these checks
 
 The profile bundle is designed as the unit of migration.
 
-If BHSA later moves to `ontoTF/ontotf-bhsa` or an ETCBC-owned repository:
+If BHSA later moves to `ontoTF/tfont-bhsa` or an ETCBC-owned repository:
 
 1. copy the `profiles/bhsa` source subtree and its tests into the new repository;
 2. preserve the profile ID and manifest schema;

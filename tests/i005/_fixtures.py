@@ -103,16 +103,16 @@ def noun_sources(
         "mapping_sources": [f"mappings/{corpus_id}.json"],
         "dependency_contract_version": 1,
         "dependencies": [dependency],
-        "minimum_ontotf_runtime": "0.1.0",
+        "minimum_tfont_runtime": "0.1.0",
         "license": "CC-BY-4.0",
     }
     parent = {
-        "algorithm": "ontotf-parent-components-sha256-v1",
+        "algorithm": "tfont-parent-components-sha256-v1",
         "components": [
             {
                 "component_id": component_id,
                 "kind": "tf-payload",
-                "identity_algorithm": "ontotf-tf-files-sha256-v1",
+                "identity_algorithm": "tfont-tf-files-sha256-v1",
                 "content_digest": _sha(parent_char),
             }
         ],

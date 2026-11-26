@@ -13,7 +13,7 @@ BMP_PRIVATE = "\ue000"
 def mapping_fixture() -> dict:
     return {
         "mapping_id": "mapping:test",
-        "profile_id": "ontotf-test",
+        "profile_id": "tfont-test",
         "native_selector": {
             "kind": "feature-value",
             "component_id": "test-tf",
@@ -67,7 +67,7 @@ def lock_fixture(lock_id: str, suffix: str) -> dict:
 
 def profile_fixture() -> dict:
     return {
-        "profile_id": "ontotf-test",
+        "profile_id": "tfont-test",
         "schema_version": 1,
         "semantic_contract_version": 1,
         "semantic_domains": ["morphology", "syntax"],

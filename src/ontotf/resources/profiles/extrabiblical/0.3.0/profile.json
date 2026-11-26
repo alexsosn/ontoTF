@@ -204,14 +204,14 @@
     "mappings/noun-morphology.json",
     "mappings/verb.json"
   ],
-  "minimum_ontotf_runtime": "0.1.0",
+  "minimum_tfont_runtime": "0.1.0",
   "ontology_locks": [
     "olia-reference-model"
   ],
   "parent_compatibility": "exact-only",
   "parent_component_manifest": "parent/expected-components.json",
   "profile_catalog_version": 1,
-  "profile_id": "ontotf-extrabiblical",
+  "profile_id": "tfont-extrabiblical",
   "profile_version": "0.3.0",
   "profiles": [
     "linguistic"

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ontotf.dev/schema/v1/compatibility-report.schema.json",
+  "$id": "https://tfont.dev/schema/v1/compatibility-report.schema.json",
   "type": "object",
   "required": ["compatibility_report_id", "report_digest", "profile_id", "profile_version", "profile_semantic_digest", "expected_parent_manifest_digest", "observed_parent_manifest_digest", "state", "changed_components", "dependency_results", "evaluator_version", "incomplete_reasons", "failure_reasons"],
   "properties": {

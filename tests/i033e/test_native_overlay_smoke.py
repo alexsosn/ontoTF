@@ -80,7 +80,7 @@ class NativeOverlaySmokeTests(unittest.TestCase):
         before = copy.deepcopy(self.pack)
         result = inspect_native_overlay(self.pack,self.context("bhsa",api))
         self.assertEqual(self.pack,before)
-        self.assertEqual(result["contract"],"ontotf-native-overlay-smoke-v1")
+        self.assertEqual(result["contract"],"tfont-native-overlay-smoke-v1")
         self.assertEqual(result["authority"],"diagnostic-only-not-a-release")
         self.assertEqual(result["corpus_id"],"bhsa")
         self.assertEqual(result["pack_digest"],self.pack["content_digest"])

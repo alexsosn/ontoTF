@@ -273,7 +273,7 @@ def request() -> SemanticResolveRequest:
 
 
 def plan_checks(result: Any, apis: dict[str, LoadedAPI]) -> None:
-    require(result.execution_contract == "ontotf-exact-execution-v1", "execution contract drifted")
+    require(result.execution_contract == "tfont-exact-execution-v1", "execution contract drifted")
     expected_request = request()
     actual_request = result.resolution.request
     require(actual_request.key == expected_request.key, "resolution changed the semantic request key")
@@ -338,7 +338,7 @@ def plan_checks(result: Any, apis: dict[str, LoadedAPI]) -> None:
         require(report.observed_parent_manifest_digest == oracle["parent_digest"], f"{corpus_id}: runtime observed parent drift")
         require(report.compatibility_state == "verified-exact", f"{corpus_id}: runtime compatibility is not exact")
         require(report.profile_release_fingerprint == plan.profile_release_fingerprint, f"{corpus_id}: runtime/profile release mismatch")
-        require(report.source_contract == "ontotf-exact-execution-runtime-v1", f"{corpus_id}: runtime source contract drift")
+        require(report.source_contract == "tfont-exact-execution-runtime-v1", f"{corpus_id}: runtime source contract drift")
         require(tuple(dep.dependency_id for dep in report.dependency_results) == oracle["dependencies"], f"{corpus_id}: runtime dependencies drift")
         require(all(dep.result == "pass" for dep in report.dependency_results), f"{corpus_id}: runtime dependency did not pass")
         require_sha256(report.report_fingerprint, f"{corpus_id}: runtime report fingerprint")

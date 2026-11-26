@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ontotf.dev/schema/v1/coverage-manifest.schema.json",
+  "$id": "https://tfont.dev/schema/v1/coverage-manifest.schema.json",
   "$defs": {
     "assessment": {
       "enum": [

@@ -25,7 +25,7 @@ def lock_identity() -> dict:
 
 def profile_projection() -> dict:
     return {
-        "profile_id": "ontotf-test",
+        "profile_id": "tfont-test",
         "schema_version": 1,
         "semantic_contract_version": 1,
         "semantic_domains": ["morphology"],

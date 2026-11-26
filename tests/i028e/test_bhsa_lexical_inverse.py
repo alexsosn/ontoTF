@@ -115,7 +115,7 @@ class BHSAInverseContractTests(unittest.TestCase):
                 with self.assertRaises(LexicalProjectionError):
                     find_bhsa_lexical_forms(FakeTF(), value, source_revision=SOURCE)
         with self.assertRaises(LexicalProjectionError):
-            resolve_bhsa_lexical_uri(FakeTF(), "urn:ontotf:derived:bhsa:wrong",
+            resolve_bhsa_lexical_uri(FakeTF(), "urn:tfont:derived:bhsa:wrong",
                                     source_revision=SOURCE)
 
 

@@ -52,7 +52,7 @@ class I009ProductionBundleTests(unittest.TestCase):
         self.assertEqual(module.PRODUCTION_NOUN_CORPORA, ("bhsa", "syriac", "extrabiblical"))
         self.assertEqual(
             tuple(bundle.profile.data["profile_id"] for bundle in bundles),
-            ("ontotf-bhsa", "ontotf-syriac", "ontotf-extrabiblical"),
+            ("tfont-bhsa", "tfont-syriac", "tfont-extrabiblical"),
         )
         validated = tuple(validate_semantic_bundle(bundle) for bundle in bundles)
         ir = compile_semantic_ir(validated)
@@ -72,7 +72,7 @@ class I009ProductionBundleTests(unittest.TestCase):
                 self.assertEqual(len(components), 1)
                 self.assertEqual(components[0]["component_id"], f"{corpus_id}-tf")
                 self.assertEqual(components[0]["content_digest"], EXPECTED_COMPONENT_DIGESTS[corpus_id])
-                self.assertEqual(components[0]["identity_algorithm"], "ontotf-tf-files-sha256-v1")
+                self.assertEqual(components[0]["identity_algorithm"], "tfont-tf-files-sha256-v1")
 
     def test_shared_olia_lock_is_exact_and_identical_across_bundles(self):
         _, bundles = self._bundles()

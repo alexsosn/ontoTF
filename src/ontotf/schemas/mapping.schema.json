@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ontotf.dev/schema/v2/mapping.schema.json",
+  "$id": "https://tfont.dev/schema/v2/mapping.schema.json",
   "$defs": {
     "jsonScalar": {
       "type": ["string", "number", "boolean", "null"]

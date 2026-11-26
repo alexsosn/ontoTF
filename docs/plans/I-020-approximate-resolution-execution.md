@@ -72,18 +72,18 @@ The exact fingerprints frozen by I-020 research are regression anchors:
 Add to `src/ontotf/semantic_resolver.py` and export from package root:
 
 ```python
-APPROXIMATE_RESOLVER_CONTRACT = "ontotf-approximate-semantic-resolver-v1"
+APPROXIMATE_RESOLVER_CONTRACT = "tfont-approximate-semantic-resolver-v1"
 APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = (
-    "ontotf-approximate-native-plan-jcs-sha256-v1"
+    "tfont-approximate-native-plan-jcs-sha256-v1"
 )
 APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = (
-    "ontotf-approximate-resolution-jcs-sha256-v1"
+    "tfont-approximate-resolution-jcs-sha256-v1"
 )
 APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = (
-    "ontotf-approximate-semantic-conjunction-resolver-v1"
+    "tfont-approximate-semantic-conjunction-resolver-v1"
 )
 APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = (
-    "ontotf-approximate-conjunction-resolution-jcs-sha256-v1"
+    "tfont-approximate-conjunction-resolution-jcs-sha256-v1"
 )
 ```
 
@@ -497,12 +497,12 @@ constituent resolution fingerprints/loss records.
 Add to `src/ontotf/semantic_execution.py` and export:
 
 ```python
-APPROXIMATE_EXECUTION_CONTRACT = "ontotf-approximate-execution-v1"
+APPROXIMATE_EXECUTION_CONTRACT = "tfont-approximate-execution-v1"
 APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT = (
-    "ontotf-approximate-execution-runtime-v1"
+    "tfont-approximate-execution-runtime-v1"
 )
 APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT = (
-    "ontotf-approximate-semantic-conjunction-execution-v1"
+    "tfont-approximate-semantic-conjunction-execution-v1"
 )
 ```
 

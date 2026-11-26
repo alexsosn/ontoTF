@@ -12,7 +12,7 @@ from .digests import (
 from .semantic_digest_v2 import mapping_semantic_projection_v2, projection_semantic_projection_v1
 from .semantic_validation import ValidatedSemanticBundle
 
-NATIVE_BINDING_IDENTITY_ALGORITHM = "ontotf-native-binding-jcs-sha256-v1"
+NATIVE_BINDING_IDENTITY_ALGORITHM = "tfont-native-binding-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)
@@ -127,7 +127,7 @@ class ProfileReleaseSignature:
     profile_catalog_version: int
     dependency_contract_version: int
     mapping_schema_version: int
-    minimum_ontotf_runtime: str
+    minimum_tfont_runtime: str
     profiles: tuple[str, ...]
     capabilities: tuple[str, ...]
     dependency_records: tuple[tuple[str, str], ...]
@@ -656,7 +656,7 @@ def _bundle_context(
         profile_catalog_version=profile["profile_catalog_version"],
         dependency_contract_version=profile["dependency_contract_version"],
         mapping_schema_version=mapping_root["schema_version"],
-        minimum_ontotf_runtime=profile["minimum_ontotf_runtime"],
+        minimum_tfont_runtime=profile["minimum_tfont_runtime"],
         profiles=_strings(profile.get("profiles", [])),
         capabilities=_strings(profile.get("capabilities", [])),
         dependency_records=_dependency_records(profile),

@@ -40,30 +40,30 @@ from .semantic_vocabulary import (
     SEMANTIC_ROLES,
 )
 
-EXACT_RESOLVER_CONTRACT = "ontotf-exact-semantic-resolver-v1"
-PROFILE_RELEASE_FINGERPRINT_ALGORITHM = "ontotf-profile-release-signature-jcs-sha256-v1"
-RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = "ontotf-runtime-prerequisite-jcs-sha256-v1"
-EXACT_PLAN_FINGERPRINT_ALGORITHM = "ontotf-exact-native-plan-jcs-sha256-v1"
-EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-exact-resolution-jcs-sha256-v1"
-APPROXIMATE_RESOLVER_CONTRACT = "ontotf-approximate-semantic-resolver-v1"
-APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = "ontotf-approximate-native-plan-jcs-sha256-v1"
-APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-approximate-resolution-jcs-sha256-v1"
-APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = "ontotf-approximate-semantic-conjunction-resolver-v1"
-APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-approximate-conjunction-resolution-jcs-sha256-v1"
+EXACT_RESOLVER_CONTRACT = "tfont-exact-semantic-resolver-v1"
+PROFILE_RELEASE_FINGERPRINT_ALGORITHM = "tfont-profile-release-signature-jcs-sha256-v1"
+RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = "tfont-runtime-prerequisite-jcs-sha256-v1"
+EXACT_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-native-plan-jcs-sha256-v1"
+EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-resolution-jcs-sha256-v1"
+APPROXIMATE_RESOLVER_CONTRACT = "tfont-approximate-semantic-resolver-v1"
+APPROXIMATE_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-native-plan-jcs-sha256-v1"
+APPROXIMATE_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-resolution-jcs-sha256-v1"
+APPROXIMATE_CONJUNCTION_RESOLVER_CONTRACT = "tfont-approximate-semantic-conjunction-resolver-v1"
+APPROXIMATE_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-conjunction-resolution-jcs-sha256-v1"
 
-EXACT_AUTHORITY_RESOLVER_CONTRACT = "ontotf-exact-authority-resolver-v1"
-APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT = "ontotf-approximate-authority-resolver-v1"
-IDENTITY_RESOLVER_CONTRACT = "ontotf-identity-resolver-v1"
-IDENTIFIER_RESOLVER_CONTRACT = "ontotf-identifier-resolver-v1"
-EXACT_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "ontotf-exact-authority-plan-jcs-sha256-v1"
-EXACT_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-exact-authority-resolution-jcs-sha256-v1"
-APPROXIMATE_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "ontotf-approximate-authority-plan-jcs-sha256-v1"
-APPROXIMATE_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-approximate-authority-resolution-jcs-sha256-v1"
-IDENTITY_PLAN_FINGERPRINT_ALGORITHM = "ontotf-identity-plan-jcs-sha256-v1"
-IDENTITY_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-identity-resolution-jcs-sha256-v1"
-IDENTIFIER_PLAN_FINGERPRINT_ALGORITHM = "ontotf-identifier-plan-jcs-sha256-v1"
-IDENTIFIER_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-identifier-resolution-jcs-sha256-v1"
-REFERENCE_FINGERPRINT_ALGORITHM = "ontotf-reviewed-reference-jcs-sha256-v1"
+EXACT_AUTHORITY_RESOLVER_CONTRACT = "tfont-exact-authority-resolver-v1"
+APPROXIMATE_AUTHORITY_RESOLVER_CONTRACT = "tfont-approximate-authority-resolver-v1"
+IDENTITY_RESOLVER_CONTRACT = "tfont-identity-resolver-v1"
+IDENTIFIER_RESOLVER_CONTRACT = "tfont-identifier-resolver-v1"
+EXACT_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-authority-plan-jcs-sha256-v1"
+EXACT_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-authority-resolution-jcs-sha256-v1"
+APPROXIMATE_AUTHORITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-approximate-authority-plan-jcs-sha256-v1"
+APPROXIMATE_AUTHORITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-approximate-authority-resolution-jcs-sha256-v1"
+IDENTITY_PLAN_FINGERPRINT_ALGORITHM = "tfont-identity-plan-jcs-sha256-v1"
+IDENTITY_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-identity-resolution-jcs-sha256-v1"
+IDENTIFIER_PLAN_FINGERPRINT_ALGORITHM = "tfont-identifier-plan-jcs-sha256-v1"
+IDENTIFIER_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-identifier-resolution-jcs-sha256-v1"
+REFERENCE_FINGERPRINT_ALGORITHM = "tfont-reviewed-reference-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)
@@ -555,7 +555,7 @@ def _profile_release_projection(signature: ProfileReleaseSignature) -> dict[str,
         "profile_catalog_version": signature.profile_catalog_version,
         "dependency_contract_version": signature.dependency_contract_version,
         "mapping_schema_version": signature.mapping_schema_version,
-        "minimum_ontotf_runtime": signature.minimum_ontotf_runtime,
+        "minimum_tfont_runtime": signature.minimum_tfont_runtime,
         "parent_compatibility": signature.parent_compatibility,
         "profiles": list(signature.profiles),
         "capabilities": list(signature.capabilities),
@@ -2572,8 +2572,8 @@ def semantic_resolve_approximate(
     )
 
 
-EXACT_CONJUNCTION_RESOLVER_CONTRACT = "ontotf-exact-semantic-conjunction-resolver-v1"
-EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-exact-conjunction-resolution-jcs-sha256-v1"
+EXACT_CONJUNCTION_RESOLVER_CONTRACT = "tfont-exact-semantic-conjunction-resolver-v1"
+EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-conjunction-resolution-jcs-sha256-v1"
 
 
 @dataclass(frozen=True)

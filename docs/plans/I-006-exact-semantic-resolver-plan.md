@@ -26,11 +26,11 @@ It does **not** read mapping/profile/ontology source files, inspect a live TF/Co
 Freeze these v1 identities:
 
 ```python
-EXACT_RESOLVER_CONTRACT = "ontotf-exact-semantic-resolver-v1"
-PROFILE_RELEASE_FINGERPRINT_ALGORITHM = "ontotf-profile-release-signature-jcs-sha256-v1"
-RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = "ontotf-runtime-prerequisite-jcs-sha256-v1"
-EXACT_PLAN_FINGERPRINT_ALGORITHM = "ontotf-exact-native-plan-jcs-sha256-v1"
-EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = "ontotf-exact-resolution-jcs-sha256-v1"
+EXACT_RESOLVER_CONTRACT = "tfont-exact-semantic-resolver-v1"
+PROFILE_RELEASE_FINGERPRINT_ALGORITHM = "tfont-profile-release-signature-jcs-sha256-v1"
+RUNTIME_PREREQUISITE_FINGERPRINT_ALGORITHM = "tfont-runtime-prerequisite-jcs-sha256-v1"
+EXACT_PLAN_FINGERPRINT_ALGORITHM = "tfont-exact-native-plan-jcs-sha256-v1"
+EXACT_RESOLUTION_FINGERPRINT_ALGORITHM = "tfont-exact-resolution-jcs-sha256-v1"
 ```
 
 Digest values themselves use the repository convention:
@@ -213,7 +213,7 @@ profile_schema_version
 profile_catalog_version
 dependency_contract_version
 mapping_schema_version
-minimum_ontotf_runtime
+minimum_tfont_runtime
 profiles
 capabilities
 dependency_records
@@ -234,7 +234,7 @@ Projection:
 
 ```json
 {
-  "algorithm": "ontotf-runtime-prerequisite-jcs-sha256-v1",
+  "algorithm": "tfont-runtime-prerequisite-jcs-sha256-v1",
   "variant": {"...": "all BundleVariantKey fields"},
   "profile_release_fingerprint": "sha256:...",
   "observed_parent_manifest_digest": "...",

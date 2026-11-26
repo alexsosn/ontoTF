@@ -16,7 +16,7 @@ Any solution must preserve:
 
 - Windows and POSIX support;
 - no symlink/junction/reparse traversal;
-- exact existing `ontotf-directory-files-sha256-v1` bytes for stable trees;
+- exact existing `tfont-directory-files-sha256-v1` bytes for stable trees;
 - iterative traversal with no ontoTF depth ceiling;
 - deterministic `filesystem_error`, `symlink_not_allowed`, and `unsupported_entry` behavior;
 - Python standard library only;

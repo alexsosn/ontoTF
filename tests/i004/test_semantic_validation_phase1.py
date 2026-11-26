@@ -75,16 +75,16 @@ def base_sources() -> dict:
             "mapping_sources": ["mappings/test.yaml"],
             "dependency_contract_version": 1,
             "dependencies": [dep],
-            "minimum_ontotf_runtime": "0.1.0",
+            "minimum_tfont_runtime": "0.1.0",
             "license": "CC-BY-4.0",
         },
         "parent": {
-            "algorithm": "ontotf-parent-components-sha256-v1",
+            "algorithm": "tfont-parent-components-sha256-v1",
             "components": [
                 {
                     "component_id": "test-tf",
                     "kind": "tf-payload",
-                    "identity_algorithm": "ontotf-tf-files-sha256-v1",
+                    "identity_algorithm": "tfont-tf-files-sha256-v1",
                     "content_digest": "sha256:test-parent",
                 }
             ],

@@ -55,12 +55,12 @@ No schema change is required for I-002.
 
 ```python
 JCS_FORMAT = "rfc8785-jcs"
-SOURCE_FILE_ALGORITHM = "ontotf-source-file-sha256-v1"
-SOURCE_BUNDLE_ALGORITHM = "ontotf-source-bundle-sha256-v1"
-EVIDENCE_PAYLOAD_ALGORITHM = "ontotf-evidence-payload-sha256-v1"
-EVIDENCE_RECORD_ALGORITHM = "ontotf-evidence-record-sha256-v1"
-MAPPING_SEMANTIC_ALGORITHM = "ontotf-mapping-semantic-sha256-v1"
-PROFILE_SEMANTIC_ALGORITHM = "ontotf-profile-semantic-sha256-v1"
+SOURCE_FILE_ALGORITHM = "tfont-source-file-sha256-v1"
+SOURCE_BUNDLE_ALGORITHM = "tfont-source-bundle-sha256-v1"
+EVIDENCE_PAYLOAD_ALGORITHM = "tfont-evidence-payload-sha256-v1"
+EVIDENCE_RECORD_ALGORITHM = "tfont-evidence-record-sha256-v1"
+MAPPING_SEMANTIC_ALGORITHM = "tfont-mapping-semantic-sha256-v1"
+PROFILE_SEMANTIC_ALGORITHM = "tfont-profile-semantic-sha256-v1"
 ```
 
 An algorithm's projection or byte semantics must never change while reusing its `v1` identifier.

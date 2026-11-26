@@ -485,10 +485,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         )
 
     def test_public_contract_tokens_remain_unchanged(self):
-        self.assertEqual(ontotf.EXACT_EXECUTION_CONTRACT, "ontotf-exact-execution-v1")
-        self.assertEqual(ontotf.APPROXIMATE_EXECUTION_CONTRACT, "ontotf-approximate-execution-v1")
-        self.assertEqual(ontotf.EDGE_PATH_EVIDENCE_CONTRACT, "ontotf-edge-path-evidence-v1")
-        self.assertEqual(ontotf.RUNTIME_EVALUATION_CONTRACT, "ontotf-runtime-evaluation-v1")
+        self.assertEqual(ontotf.EXACT_EXECUTION_CONTRACT, "tfont-exact-execution-v1")
+        self.assertEqual(ontotf.APPROXIMATE_EXECUTION_CONTRACT, "tfont-approximate-execution-v1")
+        self.assertEqual(ontotf.EDGE_PATH_EVIDENCE_CONTRACT, "tfont-edge-path-evidence-v1")
+        self.assertEqual(ontotf.RUNTIME_EVALUATION_CONTRACT, "tfont-runtime-evaluation-v1")
 
 
 if __name__ == "__main__":

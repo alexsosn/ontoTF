@@ -86,7 +86,7 @@ def minimal_valid_instances() -> dict[str, dict]:
     return {
         "profile": {
             "schema_version": 2,
-            "profile_id": "ontotf-test",
+            "profile_id": "tfont-test",
             "profile_version": "0.2.0",
             "semantic_domains": ["morphology"],
             "parent_component_manifest": "parent/expected-components.json",
@@ -103,16 +103,16 @@ def minimal_valid_instances() -> dict[str, dict]:
                     "evidence": [evidence_binding()],
                 }
             ],
-            "minimum_ontotf_runtime": "0.1.0",
+            "minimum_tfont_runtime": "0.1.0",
             "license": "CC-BY-4.0",
         },
         "parent-component-manifest": {
-            "algorithm": "ontotf-parent-components-sha256-v1",
+            "algorithm": "tfont-parent-components-sha256-v1",
             "components": [
                 {
                     "component_id": "test-tf",
                     "kind": "tf-payload",
-                    "identity_algorithm": "ontotf-tf-files-sha256-v1",
+                    "identity_algorithm": "tfont-tf-files-sha256-v1",
                     "content_digest": "sha256:test",
                 }
             ],
@@ -141,7 +141,7 @@ def minimal_valid_instances() -> dict[str, dict]:
         "compatibility-report": {
             "compatibility_report_id": "ontotf-compatibility-sha256-v1:test",
             "report_digest": "sha256:report",
-            "profile_id": "ontotf-test",
+            "profile_id": "tfont-test",
             "profile_version": "0.1.0",
             "profile_semantic_digest": "sha256:profile",
             "expected_parent_manifest_digest": "sha256:expected",

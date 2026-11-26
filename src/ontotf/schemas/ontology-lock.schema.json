@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ontotf.dev/schema/v1/ontology-lock.schema.json",
+  "$id": "https://tfont.dev/schema/v1/ontology-lock.schema.json",
   "type": "object",
   "required": ["lock_id", "ontology_id", "support_tier", "term_namespace", "release", "source_uri", "content_digest", "license", "snapshot_artifact", "terms_used"],
   "properties": {

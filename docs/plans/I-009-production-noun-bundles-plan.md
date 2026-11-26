@@ -108,9 +108,9 @@ Freeze:
 
 | corpus | profile_id | profile_version | component_id |
 |---|---|---|---|
-| BHSA | `ontotf-bhsa` | `0.1.0` | `bhsa-tf` |
-| Syriac | `ontotf-syriac` | `0.1.0` | `syriac-tf` |
-| ExtraBiblical | `ontotf-extrabiblical` | `0.1.0` | `extrabiblical-tf` |
+| BHSA | `tfont-bhsa` | `0.1.0` | `bhsa-tf` |
+| Syriac | `tfont-syriac` | `0.1.0` | `syriac-tf` |
+| ExtraBiblical | `tfont-extrabiblical` | `0.1.0` | `extrabiblical-tf` |
 
 Each profile declares:
 
@@ -123,7 +123,7 @@ capabilities: [linguistic.part-of-speech]
 required_components: [<component-id>]
 ontology_locks: [olia-reference-model]
 dependency_contract_version: 1
-minimum_ontotf_runtime: 0.1.0
+minimum_tfont_runtime: 0.1.0
 ```
 
 ### Profile license boundary
@@ -139,7 +139,7 @@ Each parent manifest contains exactly one semantically addressable runtime compo
 Algorithm:
 
 ```text
-ontotf-parent-components-sha256-v1
+tfont-parent-components-sha256-v1
 ```
 
 Components:
@@ -154,7 +154,7 @@ Every component uses:
 
 ```text
 kind: tf-payload
-identity_algorithm: ontotf-tf-files-sha256-v1
+identity_algorithm: tfont-tf-files-sha256-v1
 ```
 
 Documentation, linksyr grammar, MQL source and ontology files are evidence/semantic dependencies, not runtime parent components for this slice.

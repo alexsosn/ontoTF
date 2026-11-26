@@ -36,9 +36,9 @@ current exact resolver, exact executor and exact conjunction guardrails.
 At the I-020 baseline the probe demonstrates:
 
 - exact single-corpus resolver contract:
-  `ontotf-exact-semantic-resolver-v1`;
+  `tfont-exact-semantic-resolver-v1`;
 - exact execution contract:
-  `ontotf-exact-execution-v1`;
+  `tfont-exact-execution-v1`;
 - exact conjunction resolver/execution contracts remain v1;
 - the exact BHSA noun control resolves with zero losses and executes nodes
   `[1, 3]`;

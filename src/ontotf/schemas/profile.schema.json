@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ontotf.dev/schema/v2/profile.schema.json",
+  "$id": "https://tfont.dev/schema/v2/profile.schema.json",
   "$defs": {
     "jsonScalar": {
       "type": ["string", "number", "boolean", "null"]
@@ -254,7 +254,7 @@
     "mapping_sources",
     "dependency_contract_version",
     "dependencies",
-    "minimum_ontotf_runtime",
+    "minimum_tfont_runtime",
     "license"
   ],
   "properties": {
@@ -324,7 +324,7 @@
       "uniqueItems": true,
       "items": {"$ref": "#/$defs/dependency"}
     },
-    "minimum_ontotf_runtime": {"type": "string", "minLength": 1},
+    "minimum_tfont_runtime": {"type": "string", "minLength": 1},
     "license": {"type": "string", "minLength": 1},
     "provenance": {"type": "object"}
   },

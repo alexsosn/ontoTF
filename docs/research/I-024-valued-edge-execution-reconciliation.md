@@ -176,9 +176,9 @@ polymorphic.
 
 ## Evidence identity and public result shape
 
-Introduce a nested evidence contract `ontotf-edge-path-evidence-v1` and a
+Introduce a nested evidence contract `tfont-edge-path-evidence-v1` and a
 domain-separated JCS/SHA-256 fingerprint algorithm
-`ontotf-edge-path-evidence-jcs-sha256-v1`. The canonical fingerprint projection
+`tfont-edge-path-evidence-jcs-sha256-v1`. The canonical fingerprint projection
 includes those contract/algorithm tokens, the **fresh execution plan
 fingerprint**, native binding identity, start nodes, ordered layers, ordered
 native edge observations, and final nodes.
@@ -263,7 +263,7 @@ Execution validates loaded `doValues`, declared `valueType`, exact pair/value
 shapes and JCS-safe evidence integers before result-domain filtering.
 
 Any path containing a valued step emits plan-bound
-`ontotf-edge-path-evidence-v1` evidence. The same shared traversal result is
+`tfont-edge-path-evidence-v1` evidence. The same shared traversal result is
 propagated through exact/approximate semantic, authority, identity, identifier,
 and conjunction execution. Pure I-023 unvalued paths retain `None` evidence
 (and legacy `()` for all-unvalued conjunctions).

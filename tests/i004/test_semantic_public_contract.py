@@ -39,14 +39,14 @@ class I004PublicContractTests(unittest.TestCase):
     def test_mapping_v2_digest_api_is_available_from_ontotf_digests(self):
         self.assertEqual(
             getattr(digests, "MAPPING_SEMANTIC_ALGORITHM_V2", None),
-            "ontotf-mapping-semantic-sha256-v2",
+            "tfont-mapping-semantic-sha256-v2",
         )
         self.assertTrue(callable(getattr(digests, "mapping_semantic_digest_v2", None)))
 
     def test_projection_digest_api_uses_planned_public_name(self):
         self.assertEqual(
             getattr(digests, "PROJECTION_SEMANTIC_ALGORITHM", None),
-            "ontotf-projection-semantic-sha256-v1",
+            "tfont-projection-semantic-sha256-v1",
         )
         self.assertTrue(callable(getattr(digests, "projection_semantic_digest_v1", None)))
 

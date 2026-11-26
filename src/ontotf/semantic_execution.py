@@ -51,18 +51,18 @@ from .semantic_resolver import (
     semantic_resolve_conjunction,
 )
 
-EXACT_EXECUTION_CONTRACT = "ontotf-exact-execution-v1"
-EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT = "ontotf-exact-execution-runtime-v1"
-APPROXIMATE_EXECUTION_CONTRACT = "ontotf-approximate-execution-v1"
-APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "ontotf-approximate-execution-runtime-v1"
-APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT = "ontotf-approximate-semantic-conjunction-execution-v1"
-REFERENCE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "ontotf-reference-execution-runtime-v1"
-EXACT_AUTHORITY_EXECUTION_CONTRACT = "ontotf-exact-authority-execution-v1"
-APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT = "ontotf-approximate-authority-execution-v1"
-IDENTITY_EXECUTION_CONTRACT = "ontotf-identity-execution-v1"
-IDENTIFIER_EXECUTION_CONTRACT = "ontotf-identifier-execution-v1"
-EDGE_PATH_EVIDENCE_CONTRACT = "ontotf-edge-path-evidence-v1"
-EDGE_PATH_EVIDENCE_FINGERPRINT_ALGORITHM = "ontotf-edge-path-evidence-jcs-sha256-v1"
+EXACT_EXECUTION_CONTRACT = "tfont-exact-execution-v1"
+EXACT_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-exact-execution-runtime-v1"
+APPROXIMATE_EXECUTION_CONTRACT = "tfont-approximate-execution-v1"
+APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-approximate-execution-runtime-v1"
+APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT = "tfont-approximate-semantic-conjunction-execution-v1"
+REFERENCE_EXECUTION_RUNTIME_SOURCE_CONTRACT = "tfont-reference-execution-runtime-v1"
+EXACT_AUTHORITY_EXECUTION_CONTRACT = "tfont-exact-authority-execution-v1"
+APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT = "tfont-approximate-authority-execution-v1"
+IDENTITY_EXECUTION_CONTRACT = "tfont-identity-execution-v1"
+IDENTIFIER_EXECUTION_CONTRACT = "tfont-identifier-execution-v1"
+EDGE_PATH_EVIDENCE_CONTRACT = "tfont-edge-path-evidence-v1"
+EDGE_PATH_EVIDENCE_FINGERPRINT_ALGORITHM = "tfont-edge-path-evidence-jcs-sha256-v1"
 _SAFE_JCS_INT_MIN = -(2**53) + 1
 _SAFE_JCS_INT_MAX = 2**53 - 1
 
@@ -1623,7 +1623,7 @@ def execute_approximate_semantic(
         raise _translate_exact_execution_error(error) from error
 
 
-EXACT_CONJUNCTION_EXECUTION_CONTRACT = "ontotf-exact-semantic-conjunction-execution-v1"
+EXACT_CONJUNCTION_EXECUTION_CONTRACT = "tfont-exact-semantic-conjunction-execution-v1"
 
 
 @dataclass(frozen=True)

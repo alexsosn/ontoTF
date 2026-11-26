@@ -51,7 +51,7 @@
   },
   "i024_boundary_preserved": {
     "edge_values_are_already_losslessly_preserved": true,
-    "nested_evidence_contract": "ontotf-edge-path-evidence-v1",
+    "nested_evidence_contract": "tfont-edge-path-evidence-v1",
     "path_present_remains_edge_direction_only": true
   },
   "pinned_sources": {

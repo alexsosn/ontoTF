@@ -11,7 +11,7 @@ from .digests import canonical_json_bytes
 from .semantic_vocabulary import CAPABILITY_IDS, PROFILE_IDS, PROJECTION_ASSESSMENTS
 from .source_validation import load_source, loads_source, validate_source
 
-COVERAGE_DENOMINATOR_ALGORITHM = "ontotf-coverage-denominator-jcs-sha256-v1"
+COVERAGE_DENOMINATOR_ALGORITHM = "tfont-coverage-denominator-jcs-sha256-v1"
 P004_R011_BASELINE_RESOURCE = "p004-r011-baseline-v1"
 P004_PSEUDEPIGRAPHA_V1_RESOURCE = "p004-pseudepigrapha-v1.0.0-v1"
 P004_ORACC_0_4_0_RESOURCE = "p004-oracc-0.4.0-f6f189b-v1"
@@ -455,7 +455,7 @@ def load_packaged_coverage_manifest(
     data = loads_source(
         text,
         format="json",
-        source_name=f"ontotf:resources/coverage/{resource_set}/{corpus_id}.json",
+        source_name=f"tfont:resources/coverage/{resource_set}/{corpus_id}.json",
     )
     source = _exact_dict(data)
     validate_coverage_manifest(source)

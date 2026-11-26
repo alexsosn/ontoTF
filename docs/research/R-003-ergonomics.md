@@ -357,7 +357,7 @@ semantic:
   assessment: exact
   publication_relation: null
 applicability:
-  profile: ontotf-bhsa@0.1.0
+  profile: tfont-bhsa@0.1.0
 review:
   status: reviewed
 rationale: >-
@@ -392,7 +392,7 @@ ontotf validate
 ontotf coverage bhsa
 ontotf explain bhsa native:word.gn=m
 ontotf explain bhsa ontology:http://purl.org/olia/...
-ontotf diff --from ontotf-bhsa@0.1.0 --to ontotf-bhsa@0.2.0
+ontotf diff --from tfont-bhsa@0.1.0 --to tfont-bhsa@0.2.0
 ```
 
 `validate` checks schema, ontology locks, component-aware parent compatibility, mapping assessments, duplicate/conflicting IDs, ambiguities, and generated-artifact drift.

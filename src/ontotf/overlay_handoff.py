@@ -28,7 +28,7 @@ def _digest(value: Any) -> str:
 
 
 _PROTECTED_BASE_RESOURCE = "resources/batch_release_bases/v1.json"
-_PROTECTED_BASE_ID = "ontotf-protected-batch-handoff-bases-v1"
+_PROTECTED_BASE_ID = "tfont-protected-batch-handoff-bases-v1"
 
 
 def _trusted_handoff_base(corpus: str) -> tuple[str, str]:

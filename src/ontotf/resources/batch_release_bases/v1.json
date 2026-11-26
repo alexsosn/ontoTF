@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "registry_id": "ontotf-protected-batch-handoff-bases-v1",
+  "registry_id": "tfont-protected-batch-handoff-bases-v1",
   "corpora": {
     "bhsa": {
       "base_release": "0.4.0",

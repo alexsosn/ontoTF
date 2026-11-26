@@ -24,13 +24,13 @@ class I005FixtureControlTests(unittest.TestCase):
         first = validated_noun_bundle(
             "bhsa",
             parent_char="a",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             profile_version="0.1.0",
         )
         second = validated_noun_bundle(
             "bhsa",
             parent_char="d",
-            authored_profile_id="ontotf-bhsa",
+            authored_profile_id="tfont-bhsa",
             profile_version="0.1.0",
         )
         self.assertNotEqual(

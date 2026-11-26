@@ -124,8 +124,8 @@ class EdgePathEvidence:
 
 Freeze:
 
-- evidence contract: `ontotf-edge-path-evidence-v1`;
-- fingerprint algorithm: `ontotf-edge-path-evidence-jcs-sha256-v1`.
+- evidence contract: `tfont-edge-path-evidence-v1`;
+- fingerprint algorithm: `tfont-edge-path-evidence-jcs-sha256-v1`.
 
 Add a public deterministic helper `edge_path_evidence_fingerprint(evidence)` that recomputes the fingerprint from all evidence fields except `evidence_fingerprint`. This follows the existing public fingerprint-helper pattern and gives callers a direct verification primitive.
 

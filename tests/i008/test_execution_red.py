@@ -31,7 +31,7 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
             node_types={1: "word", 2: "word", 3: "phrase"},
         )
         result = self.execute_one(api)
-        self.assertEqual(result.execution_contract, "ontotf-exact-execution-v1")
+        self.assertEqual(result.execution_contract, "tfont-exact-execution-v1")
         self.assertEqual(result.resolution.comparison_state, "exactly-comparable")
         self.assertEqual(result.corpora[0].corpus_id, "bhsa")
         self.assertEqual(result.corpora[0].nodes, (1,))

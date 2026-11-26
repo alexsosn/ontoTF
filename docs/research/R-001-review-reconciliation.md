@@ -51,7 +51,7 @@ parent:
   tf_version: "2021"
   upstream_revision: 4db00e...
   artifact_identity:
-    algorithm: ontotf-tf-files-sha256-v1
+    algorithm: tfont-tf-files-sha256-v1
     digest: ...
 ```
 
@@ -186,7 +186,7 @@ The reconciled release manifest needs, conceptually:
 
 ```yaml
 profile:
-  id: ontotf-bhsa
+  id: tfont-bhsa
   version: 0.1.0
 
 parent:
@@ -195,7 +195,7 @@ parent:
     - tf_version: "2021"
       upstream_revision: 4db00e...
       artifact_identity:
-        algorithm: ontotf-tf-files-sha256-v1
+        algorithm: tfont-tf-files-sha256-v1
         digest: ...
 
 compatibility:

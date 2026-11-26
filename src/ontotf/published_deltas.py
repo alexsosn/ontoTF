@@ -91,7 +91,7 @@ def _difference(
     base_release: str, target_release: str,
 ) -> dict[str, Any]:
     b, t = base.profile.data, target.profile.data
-    _require(b["profile_id"] == t["profile_id"] == f"ontotf-{corpus}"
+    _require(b["profile_id"] == t["profile_id"] == f"tfont-{corpus}"
              and b["profile_version"] == base_release
              and t["profile_version"] == target_release,
              "published corpus/profile identity drift")

@@ -3,7 +3,7 @@
 **Issues:** #275, parent #274 / #264 / #202  
 **Source corpus:** ETCBC/bhsa `4db00e2157915495e1a4d3d57e41223df24775da` (TF 2021)  
 **Ontology:** OLiA core snapshot `d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6`  
-**Prior release:** `ontotf-bhsa` `0.2.0`, immutable
+**Prior release:** `tfont-bhsa` `0.2.0`, immutable
 
 ## Question
 

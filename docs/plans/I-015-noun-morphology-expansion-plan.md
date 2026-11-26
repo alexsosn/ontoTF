@@ -91,7 +91,7 @@ Add `linguistic.morphology` to all three profile capability lists. ProperNoun re
 
 Add a separate exact-only contract in `semantic_resolver.py`:
 
-- `EXACT_CONJUNCTION_RESOLVER_CONTRACT = "ontotf-exact-semantic-conjunction-resolver-v1"`;
+- `EXACT_CONJUNCTION_RESOLVER_CONTRACT = "tfont-exact-semantic-conjunction-resolver-v1"`;
 - `EXACT_CONJUNCTION_RESOLUTION_FINGERPRINT_ALGORITHM`;
 - `SemanticConjunctionRequest(keys, corpora, semantic_mode="exact")`;
 - `SemanticConjunctionResolutionResult`;

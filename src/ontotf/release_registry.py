@@ -90,7 +90,7 @@ def _validate_catalogue(value: Any) -> dict[str, Any]:
     catalog = _object(
         value, {"schema_version", "registry_id", "ontology_models", "corpora"}, "catalogue"
     )
-    if catalog["schema_version"] != 1 or catalog["registry_id"] != "ontotf-release-catalog-v1":
+    if catalog["schema_version"] != 1 or catalog["registry_id"] != "tfont-release-catalog-v1":
         _fail("unsupported release catalogue revision")
     models = catalog["ontology_models"]
     corpora = catalog["corpora"]
@@ -188,7 +188,7 @@ def _load_from_catalogue(
         )
         root = f"resources/profiles/{corpus_id}/{version}"
         if (
-            profile.data.get("profile_id") != f"ontotf-{corpus_id}"
+            profile.data.get("profile_id") != f"tfont-{corpus_id}"
             or profile.data.get("profile_version") != version
             or profile.data.get("parent_component_manifest") != "parent/expected-components.json"
         ):

@@ -146,7 +146,7 @@ The future `profile.yaml` minimally contains:
 - `ontology_locks` — lock IDs used by mappings/publication;
 - `mapping_sources` — canonical mapping source paths;
 - `dependency_contract_version` — dependency-expression contract version;
-- `minimum_ontotf_runtime` — minimum runtime contract;
+- `minimum_tfont_runtime` — minimum runtime contract;
 - `license` — mapping/profile license metadata;
 - `provenance` — non-volatile source provenance.
 
@@ -154,7 +154,7 @@ Example:
 
 ```yaml
 schema_version: 1
-profile_id: ontotf-bhsa
+profile_id: tfont-bhsa
 profile_version: 0.1.0
 semantic_domains: [morphology]
 parent_component_manifest: parent/expected-components.json
@@ -162,7 +162,7 @@ required_components: [bhsa-tf]
 ontology_locks: [olia-2026-02-04]
 mapping_sources: [mappings/morphology.yaml]
 dependency_contract_version: 1
-minimum_ontotf_runtime: 0.1.0
+minimum_tfont_runtime: 0.1.0
 license: CC-BY-4.0
 ```
 
@@ -199,12 +199,12 @@ Conceptual shape:
 
 ```json
 {
-  "algorithm": "ontotf-parent-components-sha256-v1",
+  "algorithm": "tfont-parent-components-sha256-v1",
   "components": [
     {
       "component_id": "bhsa-tf",
       "kind": "tf-payload",
-      "identity_algorithm": "ontotf-tf-files-sha256-v1",
+      "identity_algorithm": "tfont-tf-files-sha256-v1",
       "content_digest": "sha256:..."
     }
   ]
@@ -215,7 +215,7 @@ Component records are sorted by `component_id`; the manifest identity is SHA-256
 
 ### 6.1 TF and sidecar identity
 
-`ontotf-tf-files-sha256-v1` hashes a sorted list of `{relative_logical_path, sha256}` for the addressed TF payload files. Directory-like sidecars use the same sorted-path/per-file-digest pattern. A single-file sidecar uses SHA-256 of exact bytes.
+`tfont-tf-files-sha256-v1` hashes a sorted list of `{relative_logical_path, sha256}` for the addressed TF payload files. Directory-like sidecars use the same sorted-path/per-file-digest pattern. A single-file sidecar uses SHA-256 of exact bytes.
 
 Dense storage empties remain part of exact TF byte identity even though they are not semantic values.
 
@@ -329,9 +329,9 @@ A mapping references normative evidence through normalized `(evidence_id, conten
 
 ### 10.1 Evidence digest projection
 
-For `content_mode: external-payload`, `content_digest` uses `ontotf-evidence-payload-sha256-v1`: SHA-256 of the **exact external payload bytes** that were reviewed. Source URI, filename and retrieval time are not substituted for content bytes.
+For `content_mode: external-payload`, `content_digest` uses `tfont-evidence-payload-sha256-v1`: SHA-256 of the **exact external payload bytes** that were reviewed. Source URI, filename and retrieval time are not substituted for content bytes.
 
-For `content_mode: normalized-record`, `content_digest` uses `ontotf-evidence-record-sha256-v1`: SHA-256 of RFC 8785 canonical JSON over the **evidence digest projection** containing `evidence_id`, `kind`, pinned `source_uri`/`source_revision` where present, `reviewed_content`, and any license/source fields declared normative by the schema. The projection explicitly **excludes `content_digest`**, generated/retrieval timestamps, local paths, human citation formatting and other **display-only metadata**. There is no recursive hash input.
+For `content_mode: normalized-record`, `content_digest` uses `tfont-evidence-record-sha256-v1`: SHA-256 of RFC 8785 canonical JSON over the **evidence digest projection** containing `evidence_id`, `kind`, pinned `source_uri`/`source_revision` where present, `reviewed_content`, and any license/source fields declared normative by the schema. The projection explicitly **excludes `content_digest`**, generated/retrieval timestamps, local paths, human citation formatting and other **display-only metadata**. There is no recursive hash input.
 
 Evidence content changes therefore change the mapping evidence binding and **invalidates review** until the mapping is reviewed against the new evidence digest. Pure display/citation formatting stored outside the content-addressed reviewed evidence projection may remain prose-only.
 
@@ -359,7 +359,7 @@ A normal reviewed mapping shape is conceptually:
 
 ```yaml
 mapping_id: bhsa.word.gn.m-to-olia-masculine
-profile_id: ontotf-bhsa
+profile_id: tfont-bhsa
 native_selector:
   kind: feature-value
   component_id: bhsa-tf

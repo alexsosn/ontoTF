@@ -34,12 +34,12 @@ class DigestTestCase(unittest.TestCase):
 class CanonicalJSONTests(DigestTestCase):
     def test_algorithm_identifiers_are_versioned(self):
         self.assertEqual(JCS_FORMAT, "rfc8785-jcs")
-        self.assertEqual(SOURCE_FILE_ALGORITHM, "ontotf-source-file-sha256-v1")
-        self.assertEqual(SOURCE_BUNDLE_ALGORITHM, "ontotf-source-bundle-sha256-v1")
-        self.assertEqual(EVIDENCE_PAYLOAD_ALGORITHM, "ontotf-evidence-payload-sha256-v1")
-        self.assertEqual(EVIDENCE_RECORD_ALGORITHM, "ontotf-evidence-record-sha256-v1")
-        self.assertEqual(MAPPING_SEMANTIC_ALGORITHM, "ontotf-mapping-semantic-sha256-v1")
-        self.assertEqual(PROFILE_SEMANTIC_ALGORITHM, "ontotf-profile-semantic-sha256-v1")
+        self.assertEqual(SOURCE_FILE_ALGORITHM, "tfont-source-file-sha256-v1")
+        self.assertEqual(SOURCE_BUNDLE_ALGORITHM, "tfont-source-bundle-sha256-v1")
+        self.assertEqual(EVIDENCE_PAYLOAD_ALGORITHM, "tfont-evidence-payload-sha256-v1")
+        self.assertEqual(EVIDENCE_RECORD_ALGORITHM, "tfont-evidence-record-sha256-v1")
+        self.assertEqual(MAPPING_SEMANTIC_ALGORITHM, "tfont-mapping-semantic-sha256-v1")
+        self.assertEqual(PROFILE_SEMANTIC_ALGORITHM, "tfont-profile-semantic-sha256-v1")
 
     def test_rfc_number_serialization_sample(self):
         value = {"numbers": [333333333.33333329, 1e30, 4.50, 2e-3, 1e-27]}
@@ -153,7 +153,7 @@ class SemanticDigestTests(DigestTestCase):
     def mapping(self) -> dict:
         return {
             "mapping_id": "mapping:test",
-            "profile_id": "ontotf-test",
+            "profile_id": "tfont-test",
             "native_selector": {
                 "kind": "feature-value",
                 "component_id": "test-tf",
@@ -205,7 +205,7 @@ class SemanticDigestTests(DigestTestCase):
             }
 
         return {
-            "profile_id": "ontotf-test",
+            "profile_id": "tfont-test",
             "schema_version": 1,
             "semantic_contract_version": 1,
             "semantic_domains": ["syntax", "morphology"],
@@ -232,7 +232,7 @@ class SemanticDigestTests(DigestTestCase):
 
     def test_evidence_payload_is_exact_bytes(self):
         self.assertEqual(
-            evidence_payload_digest(b"\x00ontoTF evidence\r\n\xff"),
+            evidence_payload_digest(b"\x00TFont evidence\r\n\xff"),
             "sha256:cc63f4469d92d52add4ddec1dfd42903171a50a63f39511228035a604b849870",
         )
 
