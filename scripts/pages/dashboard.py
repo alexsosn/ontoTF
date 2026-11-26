@@ -123,6 +123,11 @@ def labeled(label, body):
     return '<div class="measure"><h4>' + h(label) + '</h4>' + body + '</div>'
 
 
+def compact_native_label(value):
+    """Bound visual length while retaining recognizable prefix and suffix."""
+    return value if len(value) <= 72 else value[:44] + "…" + value[-24:]
+
+
 def domain_gaps(scoped):
     # Rank by the number of unreviewed annotations, then categories, within
     # each unit. A frequent native-only value is not a pending mapping.
@@ -139,14 +144,18 @@ def domain_gaps(scoped):
         for d in domains:
             scope = d["node"] if key == "domains" else d["source"] + " → " + d["target"]
             preview = d["top_unreviewed_values"]
-            labels = ", ".join(f"{value} ({freq:,})" for value, freq in preview)
+            labels = '<ul class="gap-preview">' + "".join(
+                '<li><span>' + h(compact_native_label(value)) + '</span>'
+                + f'<small>{freq:,}</small></li>' for value, freq in preview) + '</ul>'
             remainder = d["unreviewed"] - len(preview)
-            more = (f'<small>{remainder:,} more · <a href="progress.json">Download full gap data</a></small>'
-                    if remainder else "")
+            truncated = any(len(value) > 72 for value, _ in preview)
+            more = (('<small>' + (f'{remainder:,} more · ' if remainder else '')
+                     + '<a href="progress.json">Download full gap data</a></small>')
+                    if remainder or truncated else "")
             rows.append('<li><strong>' + h(scope + " · " + d["feature"]) + '</strong>'
                         + f'<small>{d["unreviewed"]:,} unreviewed values · '
                           f'{d["occurrences"]-d["reviewed_occurrences"]:,} unreviewed annotations</small>'
-                        + '<small class="wrap">' + h(labels) + '</small>' + more + '</li>')
+                        + labels + more + '</li>')
         sections.append(f'<details><summary>{title} ({len(domains):,} domains)</summary>'
                         '<ul class="gaps">' + "".join(rows) + '</ul></details>')
     return "".join(sections)
@@ -267,7 +276,7 @@ small{display:block;font-size:.75rem;line-height:1.45;margin-top:.25rem}
 .corpus-head h3{margin:0}.corpus-head h4{color:var(--muted)}
 details{margin-top:.7rem}summary{cursor:pointer;color:var(--link);font-size:.875rem;padding:.35rem 0}
 .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1rem;margin:.75rem 0 1.25rem}
-.morph-summary{margin:.8rem 0 0;padding:.6rem 0 0;border-top:1px solid var(--line)}.morph-summary p{font-size:.8rem;margin:.25rem 0}.morph-summary .detail-grid{margin:.5rem 0}.measure{min-width:0}.gaps{padding-left:1.3rem}.gaps li{margin:.5rem 0}.wrap{overflow-wrap:anywhere}
+.morph-summary{margin:.8rem 0 0;padding:.6rem 0 0;border-top:1px solid var(--line)}.morph-summary p{font-size:.8rem;margin:.25rem 0}.morph-summary .detail-grid{margin:.5rem 0}.measure{min-width:0}.gaps{padding-left:1.3rem}.gaps li{margin:.5rem 0}.wrap{overflow-wrap:anywhere}.gap-preview{list-style:none;padding:0;margin:.35rem 0}.gap-preview li{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;margin:.2rem 0;color:var(--muted);font-size:.75rem;line-height:1.45}.gap-preview li span{min-width:0;overflow-wrap:anywhere}.gap-preview li small{flex:none;margin:0;font-variant-numeric:tabular-nums}
 .ontology-row,.matrix-header{display:grid;grid-template-columns:minmax(8rem,1fr) minmax(0,7fr);gap:.8rem;align-items:center}
 .ontology-row{border-top:1px solid var(--line);padding:.5rem 0}
 .matrix-header{font-size:.75rem;color:var(--muted);font-weight:600;margin:.8rem 0}
