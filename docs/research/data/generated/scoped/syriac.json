@@ -1,6 +1,6 @@
 {
   "archive_sha256": null,
-  "catalog_version": "0.9",
+  "catalog_version": "0.92",
   "corpus_id": "syriac",
   "domain_policy": {
     "edge_value_features": [],
@@ -42,7 +42,7 @@
       "empty_records": 0,
       "scopes": {
         "book": {
-          "count": 29
+          "count": 31
         }
       },
       "value_type": "str"
@@ -52,20 +52,20 @@
       "empty_records": 0,
       "scopes": {
         "chapter": {
-          "count": 676
+          "count": 807
         }
       },
       "value_type": "int"
     },
     "emf": {
       "categorical_values_requested": true,
-      "empty_records": 307357,
+      "empty_records": 347101,
       "scopes": {
         "word": {
-          "count": 52836,
+          "count": 60218,
           "value_domain": "complete_observed",
           "values": {
-            ">": 52836
+            ">": 60218
           }
         }
       },
@@ -73,10 +73,10 @@
     },
     "g_cons": {
       "categorical_values_requested": false,
-      "empty_records": 685,
+      "empty_records": 709,
       "scopes": {
         "word": {
-          "count": 359508
+          "count": 406610
         }
       },
       "value_type": "str"
@@ -86,77 +86,87 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 359508
+          "count": 406610
         }
       },
       "value_type": "str"
     },
     "g_emf": {
       "categorical_values_requested": false,
-      "empty_records": 307358,
+      "empty_records": 347102,
       "scopes": {
         "word": {
-          "count": 52835
+          "count": 60217
         }
       },
       "value_type": "str"
     },
     "g_lex": {
       "categorical_values_requested": false,
-      "empty_records": 685,
+      "empty_records": 709,
       "scopes": {
         "word": {
-          "count": 359508
+          "count": 406610
         }
       },
       "value_type": "str"
     },
     "g_nme": {
       "categorical_values_requested": false,
-      "empty_records": 324707,
+      "empty_records": 367447,
       "scopes": {
         "word": {
-          "count": 35486
+          "count": 39872
         }
       },
       "value_type": "str"
     },
     "g_pfm": {
       "categorical_values_requested": false,
-      "empty_records": 340927,
+      "empty_records": 385501,
       "scopes": {
         "word": {
-          "count": 19266
+          "count": 21818
         }
       },
       "value_type": "str"
     },
     "g_pfx": {
       "categorical_values_requested": false,
-      "empty_records": 354498,
+      "empty_records": 400622,
       "scopes": {
         "word": {
-          "count": 5695
+          "count": 6697
         }
       },
       "value_type": "str"
     },
     "g_vbe": {
       "categorical_values_requested": false,
-      "empty_records": 343252,
+      "empty_records": 387863,
       "scopes": {
         "word": {
-          "count": 16941
+          "count": 19456
         }
       },
       "value_type": "str"
     },
     "g_vbs": {
       "categorical_values_requested": false,
-      "empty_records": 356698,
+      "empty_records": 403358,
       "scopes": {
         "word": {
-          "count": 3495
+          "count": 3961
+        }
+      },
+      "value_type": "str"
+    },
+    "g_word": {
+      "categorical_values_requested": false,
+      "empty_records": 709,
+      "scopes": {
+        "word": {
+          "count": 406610
         }
       },
       "value_type": "str"
@@ -166,7 +176,7 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 360193
+          "count": 407319
         }
       },
       "value_type": "str"
@@ -176,12 +186,12 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 215841,
+          "count": 243730,
           "value_domain": "complete_observed",
           "values": {
-            "f": 39650,
-            "m": 156702,
-            "unknown": 19489
+            "f": 44715,
+            "m": 176614,
+            "unknown": 22401
           }
         }
       },
@@ -192,7 +202,7 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 360193
+          "count": 407319
         }
       },
       "value_type": "str"
@@ -202,26 +212,26 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 129879,
+          "count": 147873,
           "value_domain": "complete_observed",
           "values": {
-            "card": 4974,
-            "cjad": 1115,
-            "demo": 3575,
-            "focp": 953,
-            "gntl": 1168,
-            "nmex": 1189,
-            "ordn": 305,
-            "pcon": 35621,
-            "pers": 7583,
+            "card": 5806,
+            "cjad": 1461,
+            "demo": 4537,
+            "focp": 1063,
+            "gntl": 1369,
+            "nmex": 1363,
+            "ordn": 398,
+            "pcon": 40910,
+            "pers": 8489,
             "pinr": 20,
-            "pint": 1709,
-            "ppre": 2996,
-            "prin": 1899,
-            "prop": 18748,
-            "quot": 4334,
-            "sffx": 39248,
-            "vbex": 4442
+            "pint": 1779,
+            "ppre": 3335,
+            "prin": 2229,
+            "prop": 21847,
+            "quot": 4818,
+            "sffx": 43295,
+            "vbex": 5154
           }
         }
       },
@@ -229,25 +239,25 @@
     },
     "nme": {
       "categorical_values_requested": true,
-      "empty_records": 315044,
+      "empty_records": 355868,
       "scopes": {
         "word": {
-          "count": 45149,
+          "count": 51451,
           "value_domain": "complete_observed",
           "values": {
-            ">": 2597,
-            "J": 19904,
-            "J=": 145,
-            "J==": 18,
-            "JN": 5887,
-            "JN=": 322,
-            "N": 891,
-            "T": 10342,
-            "T=": 3990,
-            "TJ": 71,
-            "TJN": 241,
-            "W": 634,
-            "WT": 107
+            ">": 2944,
+            "J": 22936,
+            "J=": 164,
+            "J==": 20,
+            "JN": 6734,
+            "JN=": 375,
+            "N": 1026,
+            "T": 11609,
+            "T=": 4459,
+            "TJ": 80,
+            "TJN": 260,
+            "W": 729,
+            "WT": 115
           }
         }
       },
@@ -258,12 +268,12 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 220518,
+          "count": 248747,
           "value_domain": "complete_observed",
           "values": {
-            "du": 779,
-            "pl": 56838,
-            "sg": 162896,
+            "du": 879,
+            "pl": 65701,
+            "sg": 182162,
             "unknown": 5
           }
         }
@@ -272,18 +282,18 @@
     },
     "pfm": {
       "categorical_values_requested": true,
-      "empty_records": 340927,
+      "empty_records": 385501,
       "scopes": {
         "word": {
-          "count": 19266,
+          "count": 21818,
           "value_domain": "complete_observed",
           "values": {
-            ">": 1756,
-            "M": 5777,
-            "N": 7549,
-            "N=": 425,
-            "T": 2855,
-            "T=": 904
+            ">": 1919,
+            "M": 6660,
+            "N": 8595,
+            "N=": 477,
+            "T": 3079,
+            "T=": 1088
           }
         }
       },
@@ -291,13 +301,13 @@
     },
     "pfx": {
       "categorical_values_requested": true,
-      "empty_records": 354483,
+      "empty_records": 400605,
       "scopes": {
         "word": {
-          "count": 5710,
+          "count": 6714,
           "value_domain": "complete_observed",
           "values": {
-            ">T": 5710
+            ">T": 6714
           }
         }
       },
@@ -308,12 +318,12 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 87910,
+          "count": 97756,
           "value_domain": "complete_observed",
           "values": {
-            "first": 12574,
-            "second": 17515,
-            "third": 57820,
+            "first": 13819,
+            "second": 19244,
+            "third": 64692,
             "unknown": 1
           }
         }
@@ -325,19 +335,19 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 360193,
+          "count": 407319,
           "value_domain": "complete_observed",
           "values": {
-            "adjv": 9001,
-            "advb": 5290,
-            "conj": 41791,
-            "inrg": 88,
-            "intj": 865,
-            "nega": 6547,
-            "prep": 81614,
-            "pron": 52305,
-            "subs": 105895,
-            "verb": 56797
+            "adjv": 10380,
+            "advb": 6103,
+            "conj": 47115,
+            "inrg": 260,
+            "intj": 976,
+            "nega": 7318,
+            "prep": 92908,
+            "pron": 58550,
+            "subs": 119855,
+            "verb": 63854
           }
         }
       },
@@ -348,14 +358,14 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 130623,
+          "count": 148129,
           "value_domain": "complete_observed",
           "values": {
-            "abs": 25009,
-            "c": 13710,
-            "cst": 13690,
-            "emph": 52836,
-            "unknown": 25378
+            "abs": 27860,
+            "c": 15164,
+            "cst": 15046,
+            "emph": 60218,
+            "unknown": 29841
           }
         }
       },
@@ -366,33 +376,33 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 225272
+          "count": 255247
         }
       },
       "value_type": "str"
     },
     "vbe": {
       "categorical_values_requested": true,
-      "empty_records": 343617,
+      "empty_records": 388228,
       "scopes": {
         "word": {
-          "count": 16576,
+          "count": 19091,
           "value_domain": "complete_observed",
           "values": {
-            "J": 212,
-            "J=": 377,
-            "JN": 75,
-            "JN=": 22,
-            "N": 296,
-            "N=": 310,
-            "T": 2147,
-            "T=": 956,
-            "T==": 1825,
-            "TJ": 174,
-            "TJN": 13,
-            "TWN": 426,
-            "W": 6379,
-            "WN": 3364
+            "J": 253,
+            "J=": 409,
+            "JN": 85,
+            "JN=": 38,
+            "N": 360,
+            "N=": 400,
+            "T": 2419,
+            "T=": 1086,
+            "T==": 1999,
+            "TJ": 178,
+            "TJN": 14,
+            "TWN": 493,
+            "W": 7448,
+            "WN": 3909
           }
         }
       },
@@ -400,15 +410,15 @@
     },
     "vbs": {
       "categorical_values_requested": true,
-      "empty_records": 354048,
+      "empty_records": 400398,
       "scopes": {
         "word": {
-          "count": 6145,
+          "count": 6921,
           "value_domain": "complete_observed",
           "values": {
-            ">": 5774,
-            "C": 320,
-            "S": 51
+            ">": 6443,
+            "C": 418,
+            "S": 60
           }
         }
       },
@@ -419,7 +429,7 @@
       "empty_records": 0,
       "scopes": {
         "verse": {
-          "count": 16072
+          "count": 18132
         }
       },
       "value_type": "int"
@@ -429,11 +439,11 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 56797,
+          "count": 63854,
           "value_domain": "complete_observed",
           "values": {
-            "act": 47915,
-            "pas": 8882
+            "act": 53517,
+            "pas": 10337
           }
         }
       },
@@ -444,12 +454,12 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 11408,
+          "count": 13008,
           "value_domain": "complete_observed",
           "values": {
-            "d": 8232,
-            "dp": 369,
-            "p": 2807
+            "d": 9380,
+            "dp": 454,
+            "p": 3174
           }
         }
       },
@@ -460,12 +470,12 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 56797,
+          "count": 63854,
           "value_domain": "complete_observed",
           "values": {
-            "af": 6145,
-            "pa": 8601,
-            "pe": 42051
+            "af": 6921,
+            "pa": 9834,
+            "pe": 47099
           }
         }
       },
@@ -476,14 +486,14 @@
       "empty_records": 0,
       "scopes": {
         "word": {
-          "count": 56797,
+          "count": 63854,
           "value_domain": "complete_observed",
           "values": {
-            "imp": 3875,
-            "inf": 2114,
-            "ipf": 13489,
-            "pf": 23706,
-            "ptc": 13613
+            "imp": 4278,
+            "inf": 2379,
+            "ipf": 15158,
+            "pf": 26524,
+            "ptc": 15515
           }
         }
       },
@@ -491,15 +501,15 @@
     }
   },
   "node_types": {
-    "book": 29,
-    "chapter": 676,
-    "verse": 16072,
-    "word": 360193
+    "book": 31,
+    "chapter": 807,
+    "verse": 18132,
+    "word": 407319
   },
   "repository": "ETCBC/syriac",
-  "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+  "revision": "0b6ded2b369c7d81589a98c92325290e24b20af6",
   "schema_version": 2,
   "slot_type": "word",
-  "tf_files_sha256": "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb",
-  "tf_version": "0.9"
+  "tf_files_sha256": "7f80aa94a37610417102b859a3fee861e6e244a5c65687f2defba76590a0b5e7",
+  "tf_version": "0.92"
 }

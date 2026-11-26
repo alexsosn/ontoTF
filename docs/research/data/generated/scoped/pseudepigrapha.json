@@ -1,6 +1,6 @@
 {
-  "archive_sha256": "d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a",
-  "catalog_version": "1.0",
+  "archive_sha256": "88f23ac9106c6ea8b35f89b19d760cf5d4ee544a3f8d8262d6ed7e2092e447e9",
+  "catalog_version": "1.1",
   "corpus_id": "pseudepigrapha",
   "domain_policy": {
     "edge_value_features": [],
@@ -156,7 +156,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 454
+          "count": 457
         }
       },
       "value_type": "str"
@@ -166,7 +166,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 454
+          "count": 457
         }
       },
       "value_type": "str"
@@ -685,7 +685,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 454
+          "count": 457
         }
       },
       "value_type": "int"
@@ -705,7 +705,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 449
+          "count": 452
         }
       },
       "value_type": "str"
@@ -715,7 +715,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 418
+          "count": 421
         }
       },
       "value_type": "str"
@@ -725,7 +725,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 418
+          "count": 421
         }
       },
       "value_type": "str"
@@ -735,7 +735,7 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 454
+          "count": 457
         }
       },
       "value_type": "str"
@@ -1083,10 +1083,10 @@
       "empty_records": 0,
       "scopes": {
         "manuscript": {
-          "count": 29,
+          "count": 26,
           "value_domain": "complete_observed",
           "values": {
-            "1": 29
+            "1": 26
           }
         }
       },
@@ -1298,9 +1298,9 @@
     "word": 922922
   },
   "repository": "alexsosn/Pseudepigrapha-TF",
-  "revision": "7c4b757bb543a110ae9a252d1281835859136852",
+  "revision": "39bd9fb895d1201e9cd9260170512fd8c399a3ac",
   "schema_version": 2,
   "slot_type": "word",
-  "tf_files_sha256": "9b708add5b9f8ddbfdafa7dd61507956f7987ca6a70b2b9164342bd49003ec61",
-  "tf_version": "1.0"
+  "tf_files_sha256": "782607d0740b8d9d564482bb703de05f99aa93aeab963625e6c28ed8e4d68fd9",
+  "tf_version": "1.1"
 }

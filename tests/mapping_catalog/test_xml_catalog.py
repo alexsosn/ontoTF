@@ -30,35 +30,35 @@ class XMLMappingContractTests(unittest.TestCase):
     def test_real_reviewed_bhsa_syriac_extrabiblical_equivalences(self):
         self.assertTrue({"bhsa", "syriac", "extrabiblical"} <= set(list_corpora()))
         forward = find_correspondences(
-            "bhsa", "syriac", node="word", feature="sp", value="subs")
+            "bhsa", "syriac", node="word", feature="sp", value="subs", target_version="0.9")
         self.assertEqual({(r.target, r.destination.value, r.relation, r.scope)
                           for r in forward}, {(NOUN, "subs", "exact", "category")})
         inverse = find_correspondences(
-            "syriac", "bhsa", node="word", feature="sp", value="subs")
+            "syriac", "bhsa", node="word", feature="sp", value="subs", source_version="0.9")
         self.assertEqual({r.destination.value for r in inverse}, {"subs", "nmpr"})
         third = find_correspondences(
             "bhsa", "extrabiblical", node="word", feature="sp", value="verb")
         self.assertEqual({r.destination.value for r in third}, {"verb"})
         proper = find_correspondences(
-            "bhsa", "syriac", node="word", feature="sp", value="nmpr")
+            "bhsa", "syriac", node="word", feature="sp", value="nmpr", target_version="0.9")
         self.assertTrue(any(r.target.endswith("#Noun") for r in proper))
         self.assertTrue(any(r.target.endswith("#ProperNoun")
                             and r.destination.feature == "ls"
                             and r.destination.value == "prop" for r in proper))
-        self.assertEqual(map_native("syriac", node="word", feature="sp", value="inrg")[0].relation, "native-only")
-        self.assertFalse(find_correspondences("syriac", "bhsa", node="word", feature="sp", value="inrg"))
+        self.assertEqual(map_native("syriac", corpus_version="0.9", node="word", feature="sp", value="inrg")[0].relation, "native-only")
+        self.assertFalse(find_correspondences("syriac", "bhsa", node="word", feature="sp", value="inrg", source_version="0.9"))
         construct = find_correspondences(
-            "bhsa", "syriac", node="word", feature="st", value="c")
+            "bhsa", "syriac", node="word", feature="st", value="c", target_version="0.9")
         self.assertEqual({r.destination.value for r in construct}, {"cst"})
         self.assertEqual(
-            find_correspondences("syriac", "bhsa", node="word", feature="st", value="c"), ())
+            find_correspondences("syriac", "bhsa", node="word", feature="st", value="c", source_version="0.9"), ())
         first = find_correspondences(
-            "bhsa", "syriac", node="word", feature="ps", value="p1")
+            "bhsa", "syriac", node="word", feature="ps", value="p1", target_version="0.9")
         self.assertEqual({r.destination.value for r in first}, {"first"})
         # Suffix person and host-word person share the OLiA category, but
         # the returned selectors retain their different grammatical carriers.
         suffix_person = find_correspondences(
-            "bhsa", "syriac", node="word", feature="prs_ps", value="p1")
+            "bhsa", "syriac", node="word", feature="prs_ps", value="p1", target_version="0.9")
         self.assertEqual(
             {(r.source.feature, r.destination.feature, r.target, r.scope)
              for r in suffix_person},
@@ -68,9 +68,9 @@ class XMLMappingContractTests(unittest.TestCase):
         # No equivalence of an individual pronoun or word token is inferred.
         self.assertEqual(
             find_correspondences("bhsa", "syriac", kind="entity",
-                                 node="word", feature="prs_ps", value="p1"), ())
+                                 node="word", feature="prs_ps", value="p1", target_version="0.9"), ())
         self.assertEqual(
-            find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf"), ())
+            find_correspondences("syriac", "bhsa", node="word", feature="vt", value="pf", source_version="0.9"), ())
 
 
     def test_bhsa_nonfinite_verbal_forms_share_only_general_olia_categories(self):
@@ -90,7 +90,8 @@ class XMLMappingContractTests(unittest.TestCase):
                     [("exact", target_base + concept)],
                 )
                 matches = find_correspondences(
-                    "bhsa", "syriac", node="word", feature="vt", value=value
+                    "bhsa", "syriac", node="word", feature="vt", value=value,
+                    target_version="0.9",
                 )
                 self.assertEqual(
                     {(row.destination.feature, row.destination.value,
@@ -118,7 +119,8 @@ class XMLMappingContractTests(unittest.TestCase):
             )
             self.assertEqual(
                 find_correspondences(
-                    "bhsa", "syriac", node="word", feature="vt", value=native
+                    "bhsa", "syriac", node="word", feature="vt", value=native,
+                    target_version="0.9",
                 ), (),
             )
 
@@ -386,7 +388,7 @@ class XMLMappingContractTests(unittest.TestCase):
                 "a", "b", node="word", feature="sp", value="x", source_version="2")), 1)
 
     def test_loaded_tf_execution_and_version_mismatch(self):
-        mapping = map_native("syriac", node="word", feature="sp", value="subs")[0]
+        mapping = map_native("syriac", corpus_version="0.9", node="word", feature="sp", value="subs")[0]
 
         class Feature:
             def v(self, n):
@@ -411,7 +413,7 @@ class XMLMappingContractTests(unittest.TestCase):
             resolve_nodes(API(), mapping)
         # The guard applies to both feature-value and source-bearing node classes.
         pinned_token, = map_native(
-            "syriac", kind="node", node="word", feature="g_cons_utf8"
+            "syriac", corpus_version="0.9", kind="node", node="word", feature="g_cons_utf8"
         )
         with self.assertRaisesRegex(MappingError, "explicit corpus_version"):
             resolve_nodes(API(), pinned_token)
@@ -602,7 +604,8 @@ class XMLMappingContractTests(unittest.TestCase):
                 )
                 joins = catalog.find_correspondences(
                     "syrnt", "syriac",
-                    node="word", feature="ptctyp", value=src
+                    node="word", feature="ptctyp", value=src,
+                    target_version="0.9",
                 )
                 self.assertEqual(
                     {(x.destination.feature, x.destination.value,
@@ -618,7 +621,8 @@ class XMLMappingContractTests(unittest.TestCase):
         self.assertEqual(
             catalog.find_correspondences(
                 "syrnt", "syriac",
-                node="word", feature="ptctyp", value="NA"
+                node="word", feature="ptctyp", value="NA",
+                target_version="0.9",
             ),
             (),
         )

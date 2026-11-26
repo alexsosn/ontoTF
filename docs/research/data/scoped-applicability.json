@@ -743,7 +743,7 @@
       "revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
       "catalog_version": "0.2.8",
       "source": "https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md",
-      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph. KTU tablet titles and side designators concern source objects/sections, not verified unique physical object identifiers. Transliteration and alternative readings must remain distinct from physical marks (CRMtex TX1/TX7/TX9). Line-continuation is a graphical/textual annotation; language is a source label. Word node review remains separate from an exact populated-surface guard.",
+      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph. KTU tablet titles and side designators concern source objects/sections, not verified unique physical object identifiers. Transliteration and alternative readings must remain distinct from physical marks (CRMtex TX1/TX7/TX9). Line-continuation is a graphical/textual annotation; language is a source label. Word node review remains separate from an exact populated-surface guard. Actual sign/usign slot-by-slot comparison supports TX11 review at observed letter-value granularity, including negative review of editorial/layout placeholders; both script views are representations of the same slots, not independent historical grapheme counts. Guarded word transcription views to TX12 remain separately accounted.",
       "rules": {
         "OLiA": [
           {
@@ -833,6 +833,16 @@
             "nodes": [
               "sign"
             ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "sign",
+              "usign"
+            ],
+            "nodes": [
+              "sign"
+            ]
           }
         ],
         "CRMinf": [
@@ -915,10 +925,10 @@
       ]
     },
     "syriac": {
-      "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
-      "catalog_version": "0.9",
-      "source": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9",
-      "rationale": "R-005 metadata and pinned Syriac grammar feature inventory: categories of morphology and lexical sets. Morphological form encodings and lexical references are distinct; textual divisions are review candidates, not automatically separate F2 Expressions.",
+      "revision": "0b6ded2b369c7d81589a98c92325290e24b20af6",
+      "catalog_version": "0.92",
+      "source": "https://github.com/ETCBC/syriac/tree/0b6ded2b369c7d81589a98c92325290e24b20af6/tf/0.92",
+      "rationale": "R-005 metadata and pinned Syriac grammar feature inventory: categories of morphology and lexical sets. Morphological form encodings and lexical references are distinct; textual divisions are review candidates, not automatically separate F2 Expressions. Revalidated against the current scoped TF inventory and reviewed upstream changes.",
       "rules": {
         "OLiA": [
           {
@@ -1008,7 +1018,8 @@
             "features": [
               "g_cons",
               "g_cons_utf8",
-              "trailer"
+              "trailer",
+              "g_word"
             ],
             "nodes": [
               "word"
@@ -1031,7 +1042,7 @@
             "word"
           ],
           "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
-          "evidence": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9"
+          "evidence": "https://github.com/ETCBC/syriac/tree/0b6ded2b369c7d81589a98c92325290e24b20af6/tf/0.92"
         },
         {
           "kind": "feature",
@@ -1051,7 +1062,7 @@
             "word"
           ],
           "reason": "Documented finite annotation family: account for observed categories individually rather than require an independent whole-feature mapping; source feature remains available for querying.",
-          "evidence": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9"
+          "evidence": "https://github.com/ETCBC/syriac/tree/0b6ded2b369c7d81589a98c92325290e24b20af6/tf/0.92"
         }
       ]
     },
@@ -1271,10 +1282,10 @@
       ]
     },
     "pseudepigrapha": {
-      "revision": "7c4b757bb543a110ae9a252d1281835859136852",
-      "catalog_version": "1.0",
-      "source": "https://github.com/alexsosn/Pseudepigrapha-TF/tree/7c4b757bb543a110ae9a252d1281835859136852/docs",
-      "rationale": "Pinned OCP TF graph and apparatus/translation documentation: source/translated versions, explicit reading and witness structure, variant words; manuscript metadata does not establish a physical carrier. LRMoo R5 requires meaningful structural components, unlike page/line or arbitrary anchor spans; apparatus readings, explicit omissions and source/generated layers remain distinct. Historical classifications and source witness metadata warrant review without fabricating concept, carrier or person identities. Pinned converter distinguishes OCP source identities from generated order/anchor flags, and literal witness lists from witness edges. Review generated language, edition metadata, rights, themes and editorial corrections at feature level. An empty primary-reading anchor is not physical damage. Source-preserved group, div_fragment and edition status require more upstream evidence; leave unresolved.",
+      "revision": "39bd9fb895d1201e9cd9260170512fd8c399a3ac",
+      "catalog_version": "1.1",
+      "source": "https://github.com/alexsosn/Pseudepigrapha-TF/tree/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs",
+      "rationale": "Pinned OCP TF graph and apparatus/translation documentation: source/translated versions, explicit reading and witness structure, variant words; manuscript metadata does not establish a physical carrier. LRMoo R5 requires meaningful structural components, unlike page/line or arbitrary anchor spans; apparatus readings, explicit omissions and source/generated layers remain distinct. Historical classifications and source witness metadata warrant review without fabricating concept, carrier or person identities. Pinned converter distinguishes OCP source identities from generated order/anchor flags, and literal witness lists from witness edges. Review generated language, edition metadata, rights, themes and editorial corrections at feature level. An empty primary-reading anchor is not physical damage. Source-preserved group, div_fragment and edition status require more upstream evidence; leave unresolved. Revalidated against the current scoped TF inventory and reviewed upstream changes.",
       "rules": {
         "OLiA": [
           {
@@ -1559,7 +1570,7 @@
             "source_sha256"
           ],
           "reason": "source byte digest is provenance integrity metadata, outside current corpus category mapping scope",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/source_sha256.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/source_sha256.md"
         },
         {
           "kind": "feature",
@@ -1570,7 +1581,7 @@
             "is_source_anomaly"
           ],
           "reason": "Explicit converter technical anchor or source-record availability/identity anomaly flags; keep for safe querying, not a textual lacuna, historical witness, proposition or inference category.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/source-identity-and-anomalies.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/source-identity-and-anomalies.md"
         },
         {
           "kind": "value",
@@ -1581,7 +1592,7 @@
             "is_source_anomaly"
           ],
           "reason": "Explicit converter technical anchor or source-record availability/identity anomaly flags; keep for safe querying, not a textual lacuna, historical witness, proposition or inference category.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/source-identity-and-anomalies.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/source-identity-and-anomalies.md"
         },
         {
           "kind": "feature",
@@ -1600,7 +1611,7 @@
             "token_count"
           ],
           "reason": "Native/derived order, nesting depth, occurrence disambiguator or token count. Preserve for citation and reconstruction but do not require distinct ontology category maps.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/0_home.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/0_home.md"
         },
         {
           "kind": "feature",
@@ -1608,7 +1619,7 @@
             "boundary_utf8"
           ],
           "reason": "Deterministic converter-inserted separator between OCP units, not historical text or source punctuation.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/boundary_utf8.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/boundary_utf8.md"
         },
         {
           "kind": "feature",
@@ -1621,7 +1632,7 @@
             "source_tag"
           ],
           "reason": "Literal serialization of source witness lists, XML content, reference parts and tag names. Retain verbatim; review structured reading/witness and source citation properties rather than a second obligation for the complete serialization. Uninterpreted nested markup remains outside the current inventory.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/0_home.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/0_home.md"
         },
         {
           "kind": "feature",
@@ -1629,7 +1640,7 @@
             "ms_show"
           ],
           "reason": "Literal display attribute, not manuscript identity or attestation.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/ms_show.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/ms_show.md"
         },
         {
           "kind": "value",
@@ -1640,7 +1651,7 @@
             "book"
           ],
           "reason": "Source-generated provenance literal OCP-Trans is a source-specific marker; review its feature/property, not the marker as a separate ontology class.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/generation_marker.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/generation_marker.md"
         },
         {
           "kind": "feature",
@@ -1652,7 +1663,7 @@
             "version_kind"
           ],
           "reason": "Finite source witness/reading/version category domains reviewed at observed value granularity; feature-level property mappings optional.",
-          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/0_home.md"
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/39bd9fb895d1201e9cd9260170512fd8c399a3ac/docs/features/0_home.md"
         }
       ]
     },
@@ -2426,7 +2437,7 @@
       "revision": "60db4b724a687c0f425e78eae924fce89454e106",
       "catalog_version": "1.0.0",
       "source": "https://github.com/alexsosn/ORACC-TF/tree/60db4b724a687c0f425e78eae924fce89454e106/docs/reference",
-      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity. Catalogue fields preserve raw text, including compound materials, uncertain types and multiple collections; review properties, not individual labels as ontology classes. CDLI IDs are not unique document keys. TEI translation ranges are alignment, not one translation per line, and include dollar annotations. Source hierarchy includes synthetic anchors. Source identifiers (including qualified document_key and occurrence IDs) and licences/source archive provenance merit property review, not cross-corpus identity. Distinguish source implicit chunk flag from converter synthetic anchors and metadata/analysis availability; synthetic slots must stay visible for query guards. Raw composite JSON/TEI fields are preserved but not a single semantic mapping unit; their contents are not thereby exhausted. Only the observed tr subtype is counted, not a documented but unobserved dollar alternative.",
+      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity. Catalogue fields preserve raw text, including compound materials, uncertain types and multiple collections; review properties, not individual labels as ontology classes. CDLI IDs are not unique document keys. TEI translation ranges are alignment, not one translation per line, and include dollar annotations. Source hierarchy includes synthetic anchors. Source identifiers (including qualified document_key and occurrence IDs) and licences/source archive provenance merit property review, not cross-corpus identity. Distinguish source implicit chunk flag from converter synthetic anchors and metadata/analysis availability; synthetic slots must stay visible for query guards. Raw composite JSON/TEI fields are preserved but not a single semantic mapping unit; their contents are not thereby exhausted. Only the observed tr subtype is counted, not a documented but unobserved dollar alternative. Source genre, subgenre and supergenre fields also warrant CRM P2 type-assignment review, independently of SKOS vocabulary review; raw labels do not establish E55 instances.",
       "rules": {
         "OLiA": [
           {
@@ -2729,7 +2740,10 @@
               "designation",
               "primary_publication",
               "text_id",
-              "exemplars"
+              "exemplars",
+              "genre",
+              "subgenre",
+              "supergenre"
             ],
             "nodes": [
               "document"

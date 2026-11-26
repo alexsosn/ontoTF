@@ -200,8 +200,8 @@ jobs:
             edge_values: ""
           - id: syriac
             repo: ETCBC/syriac
-            pin: bb0eaa7e21b020a26b7566d2e495da9b1f84a919
-            version: "0.9"
+            pin: 0b6ded2b369c7d81589a98c92325290e24b20af6
+            version: "0.92"
             values: "sp vs vt vo vpm gn nu ps st ls emf nme pfm pfx vbe vbs"
             edge_values: ""
           - id: syrnt
@@ -224,9 +224,9 @@ jobs:
             edge_values: ""
           - id: pseudepigrapha
             repo: alexsosn/Pseudepigrapha-TF
-            pin: 7c4b757bb543a110ae9a252d1281835859136852
-            version: "1.0"
-            archive_sha256: d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a
+            pin: 39bd9fb895d1201e9cd9260170512fd8c399a3ac
+            version: "1.1"
+            archive_sha256: 88f23ac9106c6ea8b35f89b19d760cf5d4ee544a3f8d8262d6ed7e2092e447e9
             values: "generation_marker is_metadata_only is_missing_unit_id is_omission is_primary is_source_anomaly synthetic_witness undefined_manuscript version_kind is_gap"
             edge_values: ""
           - id: tlhdig-tf
@@ -266,10 +266,10 @@ jobs:
         if: matrix.id == 'pseudepigrapha'
         run: |
           set -euo pipefail
-          curl --fail --location --silent --show-error --retry 3 -o corpus.zip https://github.com/alexsosn/Pseudepigrapha-TF/releases/download/v1.0.0/tf-1.0.zip
-          echo 'd2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a  corpus.zip' | sha256sum --check
-          mkdir -p upstream/corpus/tf/1.0
-          python -m zipfile -e corpus.zip upstream/corpus/tf/1.0
+          curl --fail --location --silent --show-error --retry 3 -o corpus.zip https://github.com/alexsosn/Pseudepigrapha-TF/releases/download/v1.1.0/tf-1.1.zip
+          echo '88f23ac9106c6ea8b35f89b19d760cf5d4ee544a3f8d8262d6ed7e2092e447e9  corpus.zip' | sha256sum --check
+          mkdir -p upstream/corpus/tf/1.1
+          python -m zipfile -e corpus.zip upstream/corpus/tf/1.1
       - name: Acquire verified ORACC-TF standalone release
         if: matrix.id == 'assyrian-royal-inscriptions'
         run: |
@@ -326,6 +326,13 @@ jobs:
           print("Scoped node features:", sum(len(x["scopes"]) for x in data["node_features"].values()))
           print("Directed edge pairs:", sum(len(x.get("pairs", [])) for x in data["edge_features"].values()))
           print("Complete selected node values:", sum(len(x.get("values", {})) for f in data["node_features"].values() for x in f["scopes"].values()))
+          if data["corpus_id"] == "syriac":
+              assert data["tf_version"] == "0.92"
+              assert "g_word" in data["node_features"]
+          if data["corpus_id"] == "pseudepigrapha":
+              assert data["tf_version"] == "1.1"
+              assert data["node_types"]["word"] == 922922
+              assert sum(data["node_types"].values()) == 1193651
           if data["corpus_id"] == "extrabiblical":
               rela = data["node_features"]["rela"]["scopes"]["clause"]["values"]
               assert rela["Adju"] == 727 and rela["Subj"] == 78 and sum(rela.values()) == 8908, rela
@@ -337,6 +344,72 @@ jobs:
           # The compact observed inventory is also available in the job log for
           # reproducible review. It contains selected categorical labels only.
           print("SCOPED_CENSUS_JSON=" + json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+      - name: Review Syriac lexical sets on the actual current TF
+        if: matrix.id == 'syriac'
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter, defaultdict
+          from pathlib import Path
+          from scripts.research.r005_inventory import load_tf
+          api = load_tf(Path("upstream/corpus/tf/0.92"))
+          labels = {"cjad":"advb","demo":"pron","gntl":"adjv","pers":"pron","pinr":"advb","prin":"pron","quot":"verb","vbex":"verb"}
+          groups = defaultdict(Counter)
+          lexemes = defaultdict(Counter)
+          glosses = defaultdict(set)
+          for n in api.F.otype.s("word"):
+              label = api.F.ls.v(n)
+              if label in labels:
+                  groups[label][api.F.sp.v(n)] += 1
+                  lexemes[label][api.F.lex.v(n)] += 1
+                  if label in {"pinr","prin","pers","quot","vbex"}:
+                      glosses[label].add(api.F.gloss.v(n) or "")
+          for label, pos in labels.items():
+              assert set(groups[label]) == {pos}, (label, groups[label])
+          assert set(lexemes["quot"]) == {">MR"}, lexemes["quot"]
+          assert set(lexemes["vbex"]) == {"HWJ"}, lexemes["vbex"]
+          print("SYRIAC_LEXICAL_REVIEW=" + json.dumps(
+              {k: {"pos": dict(groups[k]), "lexeme_count": len(lexemes[k]),
+                   "lexemes": dict(lexemes[k]) if len(lexemes[k]) <= 20 else {},
+                   "glosses": sorted(glosses[k])} for k in labels}, sort_keys=True))
+          PY
+      - name: Execute current version mappings on loaded TF
+        if: matrix.id == 'syriac' || matrix.id == 'pseudepigrapha'
+        env:
+          ID: ${{ matrix.id }}
+          VERSION: ${{ matrix.version }}
+        run: |
+          python -m pip install .
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes, resolve_edges
+          from scripts.research.r005_inventory import load_tf
+          corpus, version = os.environ["ID"], os.environ["VERSION"]
+          api = load_tf(Path("upstream/corpus/tf") / version)
+          c = MappingCatalog()
+          if corpus == "syriac":
+              row, = c.map_native(corpus, node="word", feature="sp", value="subs", corpus_version=version)
+              assert len(resolve_nodes(api, row, corpus_version=version)) == 119855
+              row, = c.map_native(corpus, kind="node", node="word", feature="g_cons_utf8", corpus_version=version)
+              assert len(resolve_nodes(api, row, corpus_version=version)) == 406610
+              row, = c.map_native(corpus, node="word", feature="ls", value="demo", corpus_version=version)
+              assert row.relation == "narrower"
+          else:
+              row, = c.map_native(corpus, kind="node", node="word", feature="g_word_utf8", corpus_version=version)
+              assert len(resolve_nodes(api, row, corpus_version=version)) == 920460
+              row, = c.map_native(corpus, kind="edge", feature="translation_of", from_node="book", to_node="book", corpus_version=version)
+              assert len(resolve_edges(api, row, corpus_version=version)) == 231
+              row, = c.map_native(corpus, kind="node", node="word", corpus_version=version)
+              assert row.relation == "native-only"
+          try:
+              resolve_nodes(api, row, corpus_version=version)
+          except MappingError:
+              pass
+          else:
+              raise AssertionError("Non-exact row unexpectedly executed")
+          print("Actual loaded TF version-specific mapping smoke passed:", corpus, version)
           PY
       - uses: actions/upload-artifact@v4
         with:

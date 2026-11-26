@@ -85,7 +85,7 @@ class EtcSourceTokensTests(unittest.TestCase):
         for corpus, version, feature, _, _, _ in CASES:
             with self.subTest(corpus=corpus):
                 row = catalog.map_native(
-                    corpus, kind="node", node="word", feature=feature
+                    corpus, kind="node", node="word", feature=feature, corpus_version=version
                 )[0]
                 self.assertEqual(
                     resolve_nodes(api, row, corpus_version=version), (1, 4),
@@ -97,14 +97,14 @@ class EtcSourceTokensTests(unittest.TestCase):
 
     def test_exact_categories_join_but_do_not_identify_occurrences(self):
         catalog = MappingCatalog()
-        for corpus, _, feature, _, _, _ in CASES:
+        for corpus, version, feature, _, _, _ in CASES:
             for destination in ("pseudepigrapha", "bhsa", "syrnt"):
                 if destination == corpus:
                     continue
                 with self.subTest(corpus=corpus, destination=destination):
                     joins = catalog.find_correspondences(
                         corpus, destination, kind="node",
-                        node="word", feature=feature,
+                        node="word", feature=feature, source_version=version,
                     )
                     self.assertTrue(joins)
                     self.assertEqual({j.target for j in joins}, {TOKEN})
