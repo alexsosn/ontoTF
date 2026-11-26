@@ -18,7 +18,7 @@ from tfont.xml_mappings import MappingCatalog
 from scripts.pages.dashboard import render
 from scripts.pages.scoped_progress import (
     ONTOLOGIES, POSITIVE, ontology, KINDS, scoped_progress, eligible_progress,
-    observed_items, rule_matches,
+    observed_items, rule_matches, compatible,
 )
 
 
@@ -219,8 +219,9 @@ def build_report(root, commit):
         schema_inventory = inv.get(corpus)
         # A current loaded scoped census supersedes stale schema-only evidence.
         # Keep historical reports intact and avoid maintaining duplicate snapshots.
-        if (scoped and scoped.get("catalog_version") == version
-                and (schema_inventory is None or schema_inventory["version"] != version)):
+        if (compatible(scoped, source, version)
+                and (schema_inventory is None or schema_inventory["version"] != version
+                     or schema_inventory.get("revision") != scoped["revision"])):
             domains = {}
             for name, info in scoped["node_features"].items():
                 scopes = info["scopes"]

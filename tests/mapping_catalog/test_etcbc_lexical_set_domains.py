@@ -81,8 +81,9 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
             with self.subTest(code=code):
                 matching = catalog.find_correspondences(
                     "syriac", "extrabiblical",
-                    node="word", feature="ls", value=code
-                , source_version="0.9")
+                    node="word", feature="ls", value=code,
+                    source_version="0.9",
+                )
                 self.assertEqual(len(matching), 1)
                 m = matching[0]
                 self.assertEqual(m.target, OLIA + cls)

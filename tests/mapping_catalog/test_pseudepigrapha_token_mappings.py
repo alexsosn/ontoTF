@@ -76,8 +76,9 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         self.assertEqual(
             catalog.find_correspondences(
                 "pseudepigrapha", "bhsa",
-                kind="node", node="word"
-            , source_version="1.0"), (),
+                kind="node", node="word",
+                source_version="1.0",
+            ), (),
         )
 
     def test_source_versions_and_source_edges_are_not_expression_identity(self):

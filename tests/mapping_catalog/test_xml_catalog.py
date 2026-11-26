@@ -90,8 +90,9 @@ class XMLMappingContractTests(unittest.TestCase):
                     [("exact", target_base + concept)],
                 )
                 matches = find_correspondences(
-                    "bhsa", "syriac", node="word", feature="vt", value=value
-                , target_version="0.9")
+                    "bhsa", "syriac", node="word", feature="vt", value=value,
+                    target_version="0.9",
+                )
                 self.assertEqual(
                     {(row.destination.feature, row.destination.value,
                       row.target, row.scope) for row in matches},
@@ -118,8 +119,9 @@ class XMLMappingContractTests(unittest.TestCase):
             )
             self.assertEqual(
                 find_correspondences(
-                    "bhsa", "syriac", node="word", feature="vt", value=native
-                , target_version="0.9"), (),
+                    "bhsa", "syriac", node="word", feature="vt", value=native,
+                    target_version="0.9",
+                ), (),
             )
 
     def test_all_corpora_mapping_joins_different_native_node_kinds(self):
@@ -151,7 +153,8 @@ class XMLMappingContractTests(unittest.TestCase):
         with self.assertRaisesRegex(MappingError, "not verified"):
             find_across_corpora(
                 "tlhdig-tf", node="analysis", feature="pos",
-                value="ADV", source_version="wrong",
+                value="ADV",
+     source_version="wrong",
             )
 
     def test_all_corpora_lookup_without_source_target_false_identity(self):
@@ -602,8 +605,9 @@ class XMLMappingContractTests(unittest.TestCase):
                 )
                 joins = catalog.find_correspondences(
                     "syrnt", "syriac",
-                    node="word", feature="ptctyp", value=src
-                , target_version="0.9")
+                    node="word", feature="ptctyp", value=src,
+                    target_version="0.9",
+                )
                 self.assertEqual(
                     {(x.destination.feature, x.destination.value,
                       x.scope, x.relation) for x in joins},
@@ -618,8 +622,9 @@ class XMLMappingContractTests(unittest.TestCase):
         self.assertEqual(
             catalog.find_correspondences(
                 "syrnt", "syriac",
-                node="word", feature="ptctyp", value="NA"
-            , target_version="0.9"),
+                node="word", feature="ptctyp", value="NA",
+                target_version="0.9",
+            ),
             (),
         )
         # Participle voice is NOT evidence for a chosen participle reading,
