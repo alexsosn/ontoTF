@@ -265,3 +265,23 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertIn("598", html)
         self.assertNotIn("raw-0000", html)
         self.assertIn("download", html.lower())
+
+    def test_long_native_values_are_compact_in_html_but_complete_in_report(self):
+        from scripts.pages.dashboard import domain_gaps
+        data = inventory()
+        value = "{ a → <rare> } " + "X" * 250 + " { z → final }"
+        data["node_features"]["morph"] = {"scopes": {"word": {
+            "count": 12345, "value_domain": "complete_observed",
+            "values": {value: 12345}}}}
+        result = scoped_progress([], data, "owner/demo", "1")
+        domain = next(d for d in result["domains"] if d["feature"] == "morph")
+        self.assertIn(value, domain["unreviewed_values"])
+        self.assertEqual(domain["top_unreviewed_values"], [[value, 12345]])
+        html = domain_gaps(result)
+        self.assertIn("…", html)
+        self.assertIn("12,345", html)
+        self.assertIn("&lt;rare&gt;", html)
+        self.assertIn("final", html)
+        self.assertNotIn("X" * 100, html)
+        self.assertIn('href="progress.json"', html)
+        self.assertIn('class="gap-preview"', html)
