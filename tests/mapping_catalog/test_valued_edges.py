@@ -97,6 +97,29 @@ class ValuedEdgesTests(unittest.TestCase):
             resolve_edges(api, mapping, corpus_version="1")
         self.assertEqual(resolve_edges(api, whole, corpus_version="1"), ((1, 2),))
 
+    def test_real_tlhdig_edge_dispositions_and_occurrence_counts(self):
+        root = Path(__file__).resolve().parents[2]
+        import json
+        observed = json.loads((root / "docs/research/data/generated/scoped/tlhdig-tf.json").read_text())
+        rows = MappingCatalog(root / "src/tfont/mappings").load("tlhdig-tf")
+        stats = scoped_progress(rows, observed, "alexsosn/TLHdig-TF", "0.4.0")
+        self.assertEqual(stats["edge_values"]["total"], 4)
+        self.assertEqual(stats["edge_values"]["reviewed"], 4)
+        self.assertEqual(stats["edge_values"]["positive"], 0)
+        self.assertEqual(stats["edge_values"]["reviewed_occurrences"], 139584)
+        self.assertEqual(stats["edge_pairs"]["reviewed"], 0)
+        self.assertFalse(stats["outside_edge_values"])
+        self.assertFalse(stats["unmeasured_edge_values"])
+        self.assertEqual({(d["feature"], d["reviewed"]) for d in stats["edge_domains"]},
+                         {("joined", 2), ("witness_resolution", 2)})
+
+    def test_cross_version_node_maps_cannot_execute(self):
+        self.put("demo", edge(feature="omap@old-new", value="1"))
+        mapping, = self.cat.map_native("demo", kind="edge", feature="omap@old-new",
+                                         from_node="word", to_node="lex", value="1")
+        with self.assertRaisesRegex(MappingError, "cross-version"):
+            resolve_edges(None, mapping, corpus_version="1")
+
     def test_dashboard_accounts_value_without_whole_edge_credit(self):
         self.put("demo", edge(value="yes") + edge(value="absent") + edge(value="yes", source="lex", target="word"))
         rows = self.cat.load("demo")
