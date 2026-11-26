@@ -1,0 +1,51 @@
+name: One-off project name migration
+on:
+  push:
+    branches: [rename-ontotf]
+permissions:
+  contents: write
+jobs:
+  rename:
+    if: github.ref == 'refs/heads/rename-ontotf'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Inventory and migrate tracked paths and text
+        run: |
+          python - <<'PY'
+          import pathlib, re, subprocess
+          old = re.compile(b'tfont', re.I)
+          def replacement(match):
+              text = match.group()
+              return b'ONTOTF' if text.isupper() else b'ontotf' if text.islower() else b'ontoTF'
+          paths = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+          changed = []
+          for name in paths:
+              if not name or name == '.github/workflows/one-off-project-rename.yml':
+                  continue
+              p = pathlib.Path(name)
+              data = p.read_bytes()
+              if old.search(data):
+                  data.decode('utf-8')  # refuse to rewrite binary inputs
+                  p.write_bytes(old.sub(replacement, data))
+                  changed.append(name)
+          pathlib.Path('src/tfont').rename('src/ontotf')
+          print(f'Rewritten {len(changed)} files')
+          PY
+          git add -A
+          git reset -- .github/workflows
+          git diff --cached --stat
+      - name: Commit migration to isolated review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Migrate package, resources and documentation to ontoTF"
+          git push origin HEAD:rename-ontotf
+      - name: Install renamed package and run regression tests
+        run: |
+          python -m pip install -e . pytest build
+          python -m compileall -q src/ontotf tests
+          python -m pytest -q --tb=short
