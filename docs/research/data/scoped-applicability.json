@@ -2446,7 +2446,7 @@
       "revision": "60db4b724a687c0f425e78eae924fce89454e106",
       "catalog_version": "1.0.0",
       "source": "https://github.com/alexsosn/ORACC-TF/tree/60db4b724a687c0f425e78eae924fce89454e106/docs/reference",
-      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity. Catalogue fields preserve raw text, including compound materials, uncertain types and multiple collections; review properties, not individual labels as ontology classes. CDLI IDs are not unique document keys. TEI translation ranges are alignment, not one translation per line, and include dollar annotations. Source hierarchy includes synthetic anchors. Source identifiers (including qualified document_key and occurrence IDs) and licences/source archive provenance merit property review, not cross-corpus identity. Distinguish source implicit chunk flag from converter synthetic anchors and metadata/analysis availability; synthetic slots must stay visible for query guards. Raw composite JSON/TEI fields are preserved but not a single semantic mapping unit; their contents are not thereby exhausted. Only the observed tr subtype is counted, not a documented but unobserved dollar alternative.",
+      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity. Catalogue fields preserve raw text, including compound materials, uncertain types and multiple collections; review properties, not individual labels as ontology classes. CDLI IDs are not unique document keys. TEI translation ranges are alignment, not one translation per line, and include dollar annotations. Source hierarchy includes synthetic anchors. Source identifiers (including qualified document_key and occurrence IDs) and licences/source archive provenance merit property review, not cross-corpus identity. Distinguish source implicit chunk flag from converter synthetic anchors and metadata/analysis availability; synthetic slots must stay visible for query guards. Raw composite JSON/TEI fields are preserved but not a single semantic mapping unit; their contents are not thereby exhausted. Only the observed tr subtype is counted, not a documented but unobserved dollar alternative. Source genre, subgenre and supergenre fields also warrant CRM P2 type-assignment review, independently of SKOS vocabulary review; raw labels do not establish E55 instances.",
       "rules": {
         "OLiA": [
           {
@@ -2749,7 +2749,10 @@
               "designation",
               "primary_publication",
               "text_id",
-              "exemplars"
+              "exemplars",
+              "genre",
+              "subgenre",
+              "supergenre"
             ],
             "nodes": [
               "document"
