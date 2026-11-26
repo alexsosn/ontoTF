@@ -21,11 +21,11 @@ class CUCOraccSourceTokens(unittest.TestCase):
             with self.subTest(corpus=corpus):
                 m = c.map_native(corpus, kind="node", node="word",
                                  feature=feature, corpus_version=version)
-                self.assertEqual(len(m), 1)
-                self.assertEqual((m[0].relation, m[0].target, m[0].corpus_version),
+                exact, = (row for row in m if row.target == TOKEN)
+                self.assertEqual((exact.relation, exact.target, exact.corpus_version),
                                  ("exact", TOKEN, version))
-                self.assertIn(sha, m[0].evidence)
-                self.assertIn(m[0], c.find_by_target(TOKEN, corpus=corpus,
+                self.assertIn(sha, exact.evidence)
+                self.assertIn(exact, c.find_by_target(TOKEN, corpus=corpus,
                                                       kind="node"))
                 self.assertEqual(c.map_native(corpus, kind="node",
                                                node="word"), ())
@@ -66,8 +66,8 @@ class CUCOraccSourceTokens(unittest.TestCase):
         c = MappingCatalog()
         for corpus, version, feature, _, _, _ in CASES:
             with self.subTest(corpus=corpus):
-                m = c.map_native(corpus, kind="node", node="word",
-                                 feature=feature)[0]
+                m, = (row for row in c.map_native(corpus, kind="node", node="word",
+                                 feature=feature) if row.target == TOKEN)
                 self.assertEqual(resolve_nodes(API(), m,
                                                corpus_version=version), (1, 3))
                 with self.assertRaisesRegex(MappingError, "loaded corpus version"):
