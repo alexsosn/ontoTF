@@ -15,7 +15,7 @@ from typing import Any, Mapping
 BHSA_SOURCE_REVISION = "4db00e2157915495e1a4d3d57e41223df24775da"
 _LEX_FIRST = 1437602
 _LEX_LAST = 1446831
-_ROOT = f"urn:tfont:derived:bhsa:{BHSA_SOURCE_REVISION}:lex:"
+_ROOT = f"urn:ontotf:derived:bhsa:{BHSA_SOURCE_REVISION}:lex:"
 _URI = re.compile(rf"^{re.escape(_ROOT)}([1-9][0-9]*)(:form:voc_lex_utf8)?$")
 ONTOLEX = "http://www.w3.org/ns/lemon/ontolex#"
 _LANGUAGES = frozenset({"hbo", "arc"})
