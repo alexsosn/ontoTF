@@ -40,6 +40,17 @@ def main():
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), (
                     f"Expanded corpus overflows at {width}px / {mode}"
                 )
+                tlh = page.locator(".corpus").filter(
+                    has=page.get_by_role("heading", name="TLHdig", exact=True))
+                assert tlh.count() == 1
+                assert tlh.get_by_role("heading", name="Morphological analysis tags").is_visible()
+                assert "413,526 / 1,357,004" in tlh.inner_text()
+                tlh.locator(":scope > details > summary").click()
+                gaps = tlh.get_by_text("Node-value gaps", exact=False)
+                gaps.click()
+                assert tlh.get_by_text("Download full gap data", exact=True).first.is_visible()
+                assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                page.screenshot(path=args.screenshots / f"morphology-{width}-{mode}.png")
                 page.close()
         browser.close()
 

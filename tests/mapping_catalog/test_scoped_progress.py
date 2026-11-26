@@ -204,13 +204,27 @@ class ScopedProgressTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         report = build_report(root, "a"*40)
         self.assertEqual(report["totals"]["scoped_corpora"], 9)
-        self.assertEqual(report["totals"]["scoped"]["node_values"]["total"], 1317)
+        self.assertEqual(report["totals"]["scoped"]["node_values"]["total"], 5898)
         self.assertEqual(report["totals"]["scoped"]["edge_values"]["total"], 4)
         self.assertEqual(report["totals"]["scoped"]["node_features"]["total"], 740)
         self.assertEqual(report["totals"]["scoped"]["edge_pairs"]["total"], 73)
         c = {x["corpus"]: x for x in report["corpora"]}
         self.assertEqual(c["bhsa"]["scoped"]["node_values"]["total"], 459)
         self.assertEqual(c["tlhdig-tf"]["scoped"]["edge_values"]["total"], 4)
+        tlh = c["tlhdig-tf"]
+        morph = next(d for d in tlh["scoped"]["domains"]
+                     if d["node"] == "analysis" and d["feature"] == "morph")
+        self.assertEqual((morph["total"], morph["occurrences"]), (4581, 1357004))
+        self.assertEqual((morph["positive"], morph["reviewed"]), (47, 57))
+        self.assertEqual((morph["positive_occurrences"], morph["reviewed_occurrences"]),
+                         (413526, 728190))
+        self.assertEqual(morph["unreviewed"], 4524)
+        self.assertEqual(len(morph["unreviewed_values"]), 4524)
+        self.assertEqual(len(morph["top_unreviewed_values"]), 8)
+        self.assertFalse(any(row[:2] == ["analysis", "morph"]
+                             for row in tlh["scoped"]["unmeasured_values"]))
+        self.assertFalse(any(key[:3] == ["value", "analysis", "morph"]
+                             for key in tlh["applicability"]["unclassified_items"]))
         self.assertEqual(c["assyrian-royal-inscriptions"]["scoped"]["tf_version"], "0.4.0")
         for name in ("tlhdig-tf", "pseudepigrapha", "assyrian-royal-inscriptions"):
             self.assertGreater(c[name]["applicability"]["classification"]["node_features"]["excluded"], 0)
@@ -225,6 +239,9 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertIn("Coverage by annotation type", html)
         self.assertIn("Ontology coverage", html)
         self.assertIn("All applicability research is partial", html)
+        self.assertIn("Morphological analysis tags", html)
+        self.assertIn("413,526 / 1,357,004", html)
+        self.assertIn("candidate analyses", html)
 
     def test_large_measured_domain_ranks_gaps_without_rendering_every_raw_tag(self):
         from scripts.pages.dashboard import domain_gaps
