@@ -21,6 +21,12 @@ class CrmtexCucTests(unittest.TestCase):
         data = json.loads((root / "docs/research/data/generated/scoped/cuc.json").read_text())
         self.assertEqual(data["revision"], PIN)
         self.assertEqual(data["node_types"]["sign"], 146017)
+        from scripts.pages.scoped_progress import eligible_progress
+        policy = json.loads((root / "docs/research/data/scoped-applicability.json").read_text())
+        rules = policy["corpora"]["cuc"]["rules"]
+        status = eligible_progress(c.load("cuc"), data, rules, "0.2.8")["CRMtex"]
+        self.assertEqual(status["qualified"], 60)
+        self.assertEqual(status["exact"], 0)
         actual = {(m.feature, m.value) for m in c.find_by_target(
             OCCURRENCE, corpus="cuc", include_approximate=True)}
         self.assertEqual(actual, {("sign", v) for v in LATIN}
