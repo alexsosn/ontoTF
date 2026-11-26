@@ -162,10 +162,10 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
         # irreflexivity or entitle callers to exact equivalence.
         base_pronoun = "http://purl.org/olia/olia.owl#Pronoun"
         self.assertEqual(catalog.find_correspondences(
-            "syrnt", "syriac", node="word", feature="prtyp", value="personal"), ())
+            "syrnt", "syriac", node="word", feature="prtyp", value="personal", target_version="0.9"), ())
         limited = catalog.find_correspondences(
             "syrnt", "syriac", node="word", feature="prtyp", value="personal",
-            include_approximate=True)
+            include_approximate=True, target_version="0.9")
         # A shared generic Pronoun target permits discovery of other
         # lexical subtypes, even disjoint ones, only as approximate category
         # paths. It does not establish personal/demonstrative equivalence.

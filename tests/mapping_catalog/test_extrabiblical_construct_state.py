@@ -55,7 +55,8 @@ class ExtraBiblicalConstructStateTests(unittest.TestCase):
                       x.destination.value, x.relation, x.scope) for x in forward},
                     {("word", "st", code, "exact", "category")})
                 backward = cat.find_correspondences(
-                    corpus, "extrabiblical", node="word", feature="st", value=code)
+                    corpus, "extrabiblical", node="word", feature="st", value=code,
+                    source_version="0.9" if corpus == "syriac" else None)
                 self.assertEqual(
                     {(x.destination.feature, x.destination.value, x.relation)
                      for x in backward},
@@ -73,7 +74,7 @@ class ExtraBiblicalConstructStateTests(unittest.TestCase):
                     value=value, include_approximate=True), ())
                 self.assertEqual(cat.find_correspondences(
                     "extrabiblical", "syriac", node="word", feature="st",
-                    value=value, include_approximate=True), ())
+                    value=value, include_approximate=True, target_version="0.9"), ())
 
     def test_execute_exact_native_selector_with_version_guard(self):
         cat = MappingCatalog()
