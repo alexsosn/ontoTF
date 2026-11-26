@@ -287,12 +287,12 @@ jobs:
                   if scope.get("value_domain") == "complete_observed":
                       assert sum(scope["values"].values()) == scope["count"], name
           for name, info in data["edge_features"].items():
-              for pair in info["pairs"]:
+              for pair in info.get("pairs", []):
                   if pair.get("value_domain") == "complete_observed":
                       assert sum(pair["values"].values()) + pair.get("empty_values", 0) == pair["count"], name
           print("Node types:", data["node_types"])
           print("Scoped node features:", sum(len(x["scopes"]) for x in data["node_features"].values()))
-          print("Directed edge pairs:", sum(len(x["pairs"]) for x in data["edge_features"].values()))
+          print("Directed edge pairs:", sum(len(x.get("pairs", [])) for x in data["edge_features"].values()))
           print("Complete selected node values:", sum(len(x.get("values", {})) for f in data["node_features"].values() for x in f["scopes"].values()))
           if data["corpus_id"] == "extrabiblical":
               rela = data["node_features"]["rela"]["scopes"]["clause"]["values"]
