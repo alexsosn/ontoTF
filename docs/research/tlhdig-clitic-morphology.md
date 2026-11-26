@@ -25,3 +25,7 @@ Plan: explicit single-clitic and two reviewed alternative-set selectors; conjunc
 | `OBPst` | 8815 | 190 | no |
 | `FOC` | 4925 | 1795 | no |
 | `QUOT` | 3576 | 548 | no |
+
+## Complete census integrated
+
+Loaded TF job 140177355374 completed successfully, including all 15 actual clitic selector checks. The new census has the same source revision and TF digest `18263afb3bc6e083c9b89e30118f9881ac3610e6fba93d7cfea4db99390c4f6b` as #445. Only clitic_morph changed from an unmeasured domain to a complete observed domain: 822 distinct values, 388870 populated annotations. Positive mappings cover nine values (246255 occurrences); six native-only dispositions account for 67031; 807 unreviewed values account for 75584. No node count, edge domain or main morphology changed. Added separate panel and scope-specific OLiA assessment; pooled source-value denominator expands 5898 to 6720, so old/new aggregate percentages are not directly comparable. Rebased onto squash merge of #445; verified main's tree equals reviewed parent tree.
