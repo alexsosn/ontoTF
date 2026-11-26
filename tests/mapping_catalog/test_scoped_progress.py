@@ -206,7 +206,7 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(report["totals"]["scoped_corpora"], 9)
         self.assertEqual(report["totals"]["scoped"]["node_values"]["total"], 1317)
         self.assertEqual(report["totals"]["scoped"]["edge_values"]["total"], 4)
-        self.assertEqual(report["totals"]["scoped"]["node_features"]["total"], 739)
+        self.assertEqual(report["totals"]["scoped"]["node_features"]["total"], 740)
         self.assertEqual(report["totals"]["scoped"]["edge_pairs"]["total"], 73)
         c = {x["corpus"]: x for x in report["corpora"]}
         self.assertEqual(c["bhsa"]["scoped"]["node_values"]["total"], 459)
