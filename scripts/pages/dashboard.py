@@ -138,10 +138,15 @@ def domain_gaps(scoped):
         rows = []
         for d in domains:
             scope = d["node"] if key == "domains" else d["source"] + " → " + d["target"]
+            preview = d["top_unreviewed_values"]
+            labels = ", ".join(f"{value} ({freq:,})" for value, freq in preview)
+            remainder = d["unreviewed"] - len(preview)
+            more = (f'<small>{remainder:,} more · <a href="progress.json">Download full gap data</a></small>'
+                    if remainder else "")
             rows.append('<li><strong>' + h(scope + " · " + d["feature"]) + '</strong>'
                         + f'<small>{d["unreviewed"]:,} unreviewed values · '
                           f'{d["occurrences"]-d["reviewed_occurrences"]:,} unreviewed annotations</small>'
-                        + '<small class="wrap">' + h(", ".join(d["unreviewed_values"])) + '</small></li>')
+                        + '<small class="wrap">' + h(labels) + '</small>' + more + '</li>')
         sections.append(f'<details><summary>{title} ({len(domains):,} domains)</summary>'
                         '<ul class="gaps">' + "".join(rows) + '</ul></details>')
     return "".join(sections)
