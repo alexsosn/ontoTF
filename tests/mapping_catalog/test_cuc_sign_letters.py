@@ -5,6 +5,7 @@ from tfont.xml_mappings import MappingCatalog, MappingError
 
 PIN = "ad69400f5446e1c8217af01659c7c10ab00c015b"
 LETTER = "http://purl.org/olia/olia.owl#Letter"
+OCCURRENCE = "http://www.cidoc-crm.org/extensions/crmtex/TX11_Grapheme_Occurrence"
 
 # Pinned CUC r005/cuc.json sign-feature observed values (TF 0.2.8).
 LETTERS = frozenset({
@@ -29,16 +30,17 @@ class CUCObservedSignVocabularyTests(unittest.TestCase):
                 if r.kind == "value" and r.node == "sign"
                 and r.feature == "sign"]
         self.assertEqual({r.value for r in rows}, expected)
-        self.assertEqual(len(rows), len(expected))
+        self.assertEqual(len(rows), len(expected) + len(LETTERS))
         for value in LETTERS:
             with self.subTest(letter=value):
                 m = c.map_native("cuc", node="sign",
                                  feature="sign", value=value)
-                self.assertEqual(len(m), 1)
-                self.assertEqual((m[0].relation, m[0].target),
-                                 ("exact", LETTER))
-                self.assertEqual(m[0].corpus_version, "0.2.8")
-                self.assertIn(PIN, m[0].evidence)
+                self.assertEqual({(r.relation, r.target) for r in m},
+                                 {("exact", LETTER), ("close", OCCURRENCE)})
+                self.assertEqual(len(m), 2)
+                for row in m:
+                    self.assertEqual(row.corpus_version, "0.2.8")
+                    self.assertIn(PIN, row.evidence)
         for value in CONSERVATIVE:
             with self.subTest(editorial_or_unverified=value):
                 m = c.map_native("cuc", node="sign",
