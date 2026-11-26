@@ -207,7 +207,25 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "nme",
+            "pfm",
+            "prs",
+            "uvf",
+            "vbe",
+            "vbs"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features"
+        }
+      ]
     },
     "extrabiblical": {
       "revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
@@ -349,7 +367,25 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "nme",
+            "pfm",
+            "prs",
+            "uvf",
+            "vbe",
+            "vbs"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
+        }
+      ]
     },
     "cuc": {
       "revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
@@ -547,7 +583,25 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "emf",
+            "nme",
+            "pfm",
+            "pfx",
+            "vbe",
+            "vbs"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
+          "evidence": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9"
+        }
+      ]
     },
     "syrnt": {
       "revision": "dae3eb6ff62b9b272fb503646796c25d248175ce",
@@ -686,7 +740,17 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "witness"
+          ],
+          "reason": "A/B labels are source-local witness identifiers; review the witness property at feature level, not each literal as a distinct ontology category.",
+          "evidence": "https://github.com/ETCBC/peshitta/blob/9850f5addade26f681334aa475570bef9b0b440a/docs/transcription.md"
+        }
+      ]
     },
     "pseudepigrapha": {
       "revision": "7c4b757bb543a110ae9a252d1281835859136852",
@@ -1233,6 +1297,12 @@
             ],
             "nodes": [
               "edit"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "witness_resolution"
             ]
           }
         ]
