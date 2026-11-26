@@ -66,16 +66,15 @@ def index_rows(rows, version):
 
 def matching(index, key):
     kind, node, feature, value, source, target = key
-    if kind == "edge_value":
-        return []  # Current XML has no individual valued-edge selector.
     if kind == "feature":
         # A feature-only declaration is a statement about the feature as a
         # whole; it can account for its observed scopes, not its values.
         return index.get(key, []) + index.get((kind, None, feature, None, None, None), [])
-    if kind == "edge":
+    if kind in {"edge", "edge_value"}:
+        # Values and whole-edge selectors are disjoint accounting units.
         # Explicit directions constrain coverage; omitted endpoints are generic.
         return [r for s in (source, None) for t in (target, None)
-                for r in index.get((kind, None, feature, None, s, t), ())]
+                for r in index.get(("edge", None, feature, value, s, t), ())]
     return index.get(key, [])
 
 
@@ -129,8 +128,9 @@ def scoped_progress(rows, inventory, source, version):
         for f, info in inventory["edge_features"].items() for p in info.get("pairs", ())
         if p.get("value_domain") == "overflow")
     outside, unmeasured, guarded = [], [], []
+    outside_edge, unmeasured_edge = [], []
     for key, rs in index.items():
-        kind, node, feature, value, _, _ = key
+        kind, node, feature, value, source, target = key
         scope = inventory["node_features"].get(feature, {}).get("scopes", {}).get(node)
         if kind == "value":
             if scope is None:
@@ -139,12 +139,25 @@ def scoped_progress(rows, inventory, source, version):
                 unmeasured.append([node, feature, value])
             elif value not in scope["values"]:
                 outside.append([node, feature, value])
+        elif kind == "edge" and value is not None:
+            info = inventory["edge_features"].get(feature, {})
+            pairs = [p for p in info.get("pairs", ())
+                     if (source is None or p["from"] == source)
+                     and (target is None or p["to"] == target)]
+            selector = [feature, value, source, target]
+            if info.get("scope_status") == "cross_version" or any(
+                    p.get("value_domain") != "complete_observed" for p in pairs):
+                unmeasured_edge.append(selector)
+            elif not any(value in p["values"] for p in pairs):
+                outside_edge.append(selector)
         elif kind == "node" and feature:
             guarded.append(dict(node=node, feature=feature, status=assessment(rs),
                                 observations=scope["count"] if scope else 0,
                                 node_count=inventory["node_types"].get(node, 0)))
     result.update(outside_values=sorted(outside), unmeasured_values=sorted(unmeasured),
-                  guarded_nodes=sorted(guarded, key=lambda x: (x["node"], x["feature"])))
+                  guarded_nodes=sorted(guarded, key=lambda x: (x["node"], x["feature"])),
+                  outside_edge_values=sorted(outside_edge, key=lambda x: tuple(v or "" for v in x)),
+                  unmeasured_edge_values=sorted(unmeasured_edge, key=lambda x: tuple(v or "" for v in x)))
     # Include every scoped categorical domain (even never mapped) and missing
     # native values so researchers can identify the next mapping batch.
     result["domains"] = []
@@ -155,6 +168,16 @@ def scoped_progress(rows, inventory, source, version):
             domain = [(("value", node, feature, value, None, None), freq)
                       for value, freq in scope["values"].items()]
             result["domains"].append(dict(node=node, feature=feature,
+                **counts(domain, index),
+                unreviewed_values=sorted(key[3] for key, _ in domain if not matching(index, key))))
+    result["edge_domains"] = []
+    for feature, info in sorted(inventory["edge_features"].items()):
+        for pair in info.get("pairs", ()):
+            if pair.get("value_domain") != "complete_observed":
+                continue
+            domain = [(("edge_value", None, feature, value, pair["from"], pair["to"]), frequency)
+                      for value, frequency in pair["values"].items()]
+            result["edge_domains"].append(dict(feature=feature, source=pair["from"], target=pair["to"],
                 **counts(domain, index),
                 unreviewed_values=sorted(key[3] for key, _ in domain if not matching(index, key))))
     result["unreviewed_items"] = [

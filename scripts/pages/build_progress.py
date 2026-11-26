@@ -346,16 +346,22 @@ def render(report):
                         rate(d["positive"], d["total"]), rate(d["reviewed"], d["total"]),
                         rate(d["positive_occurrences"], d["occurrences"]),
                         h(", ".join(d["unreviewed_values"])) or "—"] for d in scoped["domains"]]
+            edge_domains = [[h(d["feature"]), h(d["source"]), h(d["target"]),
+                             rate(d["positive"], d["total"]), rate(d["reviewed"], d["total"]),
+                             h(", ".join(d["unreviewed_values"])) or "—"] for d in scoped["edge_domains"]]
             guard_rows = [[h(g["node"]), h(g["feature"]), h(g["status"]),
                            rate(g["observations"], g["node_count"])] for g in scoped["guarded_nodes"]]
             outstanding = []
             for label, key in (("Outside observed domain", "outside_values"),
                                ("Unmeasured mapped values", "unmeasured_values"),
                                ("Overflow domains", "overflow_domains"),
+                               ("Outside observed edge values", "outside_edge_values"),
+                               ("Unmeasured edge values", "unmeasured_edge_values"),
+                               ("Edge value overflow", "edge_overflow_domains"),
                                ("Cross-version edges (no local pair types)", "cross_version_edges")):
                 if scoped[key]:
                     outstanding.append("<p>" + h(label) + ": " + h("; ".join(
-                        " / ".join(x) if isinstance(x, list) else x for x in scoped[key])) + "</p>")
+                        " / ".join(v or "*" for v in x) if isinstance(x, list) else x for x in scoped[key])) + "</p>")
             scoped_details.append("<details><summary>" + h(c["corpus"]) +
                 " · " + rate(scoped["node_values"]["positive"], scoped["node_values"]["total"]) +
                 "</summary><p>" + link(blob + scoped["source"], "Exact source inventory") +
@@ -365,6 +371,8 @@ def render(report):
                         "Positive annotations", "Unreviewed values"), domains,
                        "Every selected complete observed domain, with real node scope.") if domains else
                  "<p>No selected complete node-value domains.</p>") +
+                (table(("Edge feature", "Source", "Destination", "Positive values", "Reviewed values", "Unreviewed values"),
+                       edge_domains, "Selected complete observed edge-value domains.") if edge_domains else "") +
                 (table(("Node", "Presence guard", "Disposition", "Guard-bearing nodes"), guard_rows,
                        "Conditional node mappings (excluded from unconditional node-type counts).") if guard_rows else "") +
                 "".join(outstanding) + "</details>")
@@ -499,7 +507,7 @@ meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--a
 <h2>Corpus × ontology</h2><p>Each cell shows distinct positive versioned selectors; the smaller line is schema items with at least one positive mapping to that ontology / all comparable schema items in the corpus. Ontologies can overlap. The schema denominator is not an ontology-specific eligibility count.</p>""" + table(
         ("Corpus", *ONTOLOGIES, "Unique positive"), matrix,
         "Selectors and schema coverage, by ontology. A dash means no comparable inventory.") + """
-<h2>Observed scoped coverage</h2><p>Positive / observed, with reviewed counts below. The inventory includes actual node-feature combinations, actual directed edge pairs and selected complete categorical domains from pinned TF artifacts. Guarded node mappings are reported separately. Feature mappings do not cover individual values. Valued edge categories cannot yet be mapped individually by XML. Annotation-weighted coverage counts feature-value observations (not unique tokens).</p>""" + table(
+<h2>Observed scoped coverage</h2><p>Positive / observed, with reviewed counts below. The inventory includes actual node-feature combinations, actual directed edge pairs and selected complete categorical domains from pinned TF artifacts. Guarded node mappings are reported separately. Feature mappings do not cover individual values. Valued edge categories are counted separately from whole-edge mappings. Annotation-weighted coverage counts feature-value observations (not unique tokens).</p>""" + table(
         ("Corpus", "Node types", "Node features by scope", "Selected node values", "Directed edge pairs", "Selected edge values", "Positive annotations"),
         scoped_rows, f"Real scoped evidence for {totals['scoped_corpora']} of {totals['corpora']} corpora; categorical families are selected, not exhaustive.") + """
 """ + "".join(scoped_details) + """

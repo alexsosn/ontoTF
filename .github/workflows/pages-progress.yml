@@ -10,6 +10,7 @@ on:
       - 'scripts/pages/**'
       - 'tests/mapping_catalog/test_progress_tracker.py'
       - 'tests/mapping_catalog/test_scoped_progress.py'
+      - 'tests/mapping_catalog/test_valued_edges.py'
       - '.github/workflows/pages-progress.yml'
       - 'pyproject.toml'
   pull_request:
@@ -19,6 +20,7 @@ on:
       - 'scripts/pages/**'
       - 'tests/mapping_catalog/test_progress_tracker.py'
       - 'tests/mapping_catalog/test_scoped_progress.py'
+      - 'tests/mapping_catalog/test_valued_edges.py'
       - '.github/workflows/pages-progress.yml'
   workflow_dispatch:
 
@@ -40,7 +42,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -e .
-      - run: python -m unittest tests.mapping_catalog.test_progress_tracker tests.mapping_catalog.test_scoped_progress -v
+      - run: python -m unittest tests.mapping_catalog.test_progress_tracker tests.mapping_catalog.test_scoped_progress tests.mapping_catalog.test_valued_edges -v
       - run: python -m scripts.pages.build_progress --out _site
       - uses: actions/upload-pages-artifact@v4
         with:

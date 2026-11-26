@@ -102,7 +102,8 @@
       candidate; native-only and unsupported have no target.
       'node' maps an annotation node type; 'feature' maps a native feature;
       'value' maps a feature/value selector on a node type; 'edge' maps a
-      TF edge feature, optionally restricted by from/to node types; and
+      TF edge feature, optionally restricted by from/to node types and an explicit
+      native edge value; a value-qualified edge does not map the whole edge; and
       'entity' resolves an individual through a native node type plus a
       feature/value identifier and maps to an external identity IRI.
       For entity mappings, the selector must uniquely resolve the individual
@@ -144,6 +145,7 @@
       relation and direction. If no justified mapping exists, return an empty
       result with an intelligible diagnostic.
     </operation>
+    <operation name="resolve_edges">Execute an exact positive edge selector against the loaded source-compatible TF API; return directed native endpoint pairs, optionally filtered by stored edge value. Never infer reverse/transitive edges or identity.</operation>
     <operation name="resolve_nodes">
       When a target corpus TF dataset is already loaded and its selector is
       supported, execute the native query to return matching nodes. Otherwise
