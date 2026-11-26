@@ -225,3 +225,26 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertIn("Coverage by annotation type", html)
         self.assertIn("Ontology coverage", html)
         self.assertIn("All applicability research is partial", html)
+
+    def test_large_measured_domain_ranks_gaps_without_rendering_every_raw_tag(self):
+        from scripts.pages.dashboard import domain_gaps
+        data = inventory()
+        values = {f"raw-{i:04d}": i + 1 for i in range(600)}
+        data["node_features"]["morph"] = {"scopes": {"word": {
+            "count": sum(values.values()), "value_domain": "complete_observed",
+            "values": values}}}
+        rows = [row(feature="morph", value="raw-0599"),
+                row(feature="morph", value="raw-0598", relation="ambiguous", target=None)]
+        result = scoped_progress(rows, data, "owner/demo", "1")
+        domain = next(d for d in result["domains"] if d["feature"] == "morph")
+        self.assertEqual(domain["total"], 600)
+        self.assertEqual(domain["positive_occurrences"], 600)
+        self.assertEqual(domain["unreviewed"], 598)
+        self.assertEqual(len(domain["unreviewed_values"]), 598)
+        self.assertEqual(domain["top_unreviewed_values"][0], ["raw-0597", 598])
+        self.assertEqual(len(domain["top_unreviewed_values"]), 8)
+        html = domain_gaps(result)
+        self.assertIn("raw-0597", html)
+        self.assertIn("598", html)
+        self.assertNotIn("raw-0000", html)
+        self.assertIn("download", html.lower())

@@ -233,7 +233,7 @@ jobs:
             repo: alexsosn/TLHdig-TF
             pin: e954600d9f9cc7f16570729813cf6bf3954b8f6d
             version: "0.4.0"
-            values: "pos type sgr agr det num missing laes ras add quot materlect_anomalous cu_unrendered crossesline nested siglum_ambiguous from_open_marker from_close_marker mrpsel_kind sel_group parse_ok field4_kind cu_aligned ruling kind orphan fragment_kind siglum_source join_kind join_encoding join_resolved"
+            values: "morph pos type sgr agr det num missing laes ras add quot materlect_anomalous cu_unrendered crossesline nested siglum_ambiguous from_open_marker from_close_marker mrpsel_kind sel_group parse_ok field4_kind cu_aligned ruling kind orphan fragment_kind siglum_source join_kind join_encoding join_resolved"
             edge_values: "joined witness_resolution"
           - id: assyrian-royal-inscriptions
             repo: alexsosn/ORACC-TF
@@ -303,6 +303,7 @@ jobs:
           # Word splitting here is intentional for the source-reviewed feature names.
           args=()
           if [[ -n "$ARCHIVE_SHA256" ]]; then args+=(--archive-sha256 "$ARCHIVE_SHA256"); fi
+          if [[ "$ID" == tlhdig-tf ]]; then args+=(--domain-limit 5000); fi
           python scripts/research/r005_inventory.py "upstream/corpus/tf/$VERSION" \
             --scoped --corpus-id "$ID" --repository "$REPO" --revision "$PIN" --tf-version "$VERSION" \
             --catalog-version "$CATALOG_VERSION" "${args[@]}" \
@@ -326,6 +327,11 @@ jobs:
           print("Scoped node features:", sum(len(x["scopes"]) for x in data["node_features"].values()))
           print("Directed edge pairs:", sum(len(x.get("pairs", [])) for x in data["edge_features"].values()))
           print("Complete selected node values:", sum(len(x.get("values", {})) for f in data["node_features"].values() for x in f["scopes"].values()))
+          if data["corpus_id"] == "tlhdig-tf":
+              scope = data["node_features"]["morph"]["scopes"]["analysis"]
+              assert scope["value_domain"] == "complete_observed"
+              assert len(scope["values"]) == 4581
+              assert sum(scope["values"].values()) == 1357004
           if data["corpus_id"] == "syriac":
               assert data["tf_version"] == "0.92"
               assert "g_word" in data["node_features"]

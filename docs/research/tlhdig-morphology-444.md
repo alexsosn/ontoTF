@@ -98,3 +98,7 @@ Loaded census job [140033142601](https://github.com/alexsosn/ontoTF/actions/runs
 | `{ a → ACC.SG.C} { b → GEN.PL}` | 6150 | 806 | ambiguous |
 
 11 additional declarations across 9 raw selectors; 54341 additional positive candidate occurrences (1964 selected) and 37557 ambiguous occurrences (2586 selected). These counts are selector frequencies, not counts of independent class assignments or tokens.
+
+## Dashboard census follow-up
+
+The complete set of 4,581 raw morphology values is empirically finite in the pinned artifact. Increase the existing explicit census bound for TLHdig only (512→5,000); other selected TLHdig scopes had no overflow under the old cap, so this does not widen unrelated measured domains. Do not select open text or paradigm identifier features. The new measured unit is a distinct source value (possibly an alternative list), not an atomic grammatical category; the annotation count is candidate assignments, not selected words. Keep the full set in the machine-readable report and show only the eight most frequent unreviewed values per domain in the HTML. Before publishing, verify loaded census identity and all sums, commit the actual generated inventory, route morph values to OLiA research, revise fixed expected totals, and compare new and old coverage using explicitly changed scope. No historical snapshot comparison across this scope change.
