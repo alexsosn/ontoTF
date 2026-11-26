@@ -82,3 +82,19 @@ Official [HFR glossing abbreviation list](https://hethport.net/HFR/material/Abku
 ## Second batch research and acceptance
 
 Loaded census job [140033142601](https://github.com/alexsosn/ontoTF/actions/runs/45855637678/job/140033142601) confirms 4,581 populated raw morph labels and 339,019 populated morph values on 461,223 distinct selected analysis nodes; the source has words with up to 14 selected analyses. A whole alternative list can carry a shared property when every explicitly listed alternative includes it, but cannot resolve a difference among alternatives. Review six such native selectors against HFR definitions already documented above: PTCP shared across NOM/ACC/INDCL or STF; common gender shared across NOM/ACC.COLL.C; plural and common gender shared across NOM/ACC.PL.C; singular and past shared across 2SG/3SG.PST; third person shared across 3SG.PRS/3SG.PST/3PL.PRS. None is exact equivalence with an individual OLiA class. Collective number is left unasserted. Three mixed lists with no established shared relevant category are ambiguous, not negative evidence that no ontology is applicable. In particular HURR.ESS||HITT.D/L.SG cannot be treated as Hittite singular or one case. Source frequency and selected frequency are taken from the loaded-TF join, and no selected-word claim is made. Write regressions before XML implementation, re-run the loaded-data smoke, and independently compare expected shared properties and counts against raw records. Preserve CRMtex additions from merged #437.
+
+### Second batch implemented
+
+| Raw selector | All candidate occurrences | Distinct selected analysis occurrences | Disposition |
+|---|---:|---:|---|
+| `{ a → PTCP.NOM.SG.N} { b → PTCP.ACC.SG.N} { c → PTCP.INDCL}` | 19530 | 739 | narrower Participle |
+| `{ a → PTCP.NOM.PL.N} { b → PTCP.ACC.PL.N} { c → PTCP.STF}` | 8791 | 129 | narrower Participle |
+| `{ a → NOM.COLL.C} { b → ACC.COLL.C}` | 10648 | 37 | close CommonGender |
+| `{ a → NOM.PL.C} { b → ACC.PL.C}` | 4425 | 846 | narrower Plural; close CommonGender |
+| `{ a → 2SG.PST} { b → 3SG.PST}` | 5674 | 198 | narrower Singular; close Past |
+| `{ a → 3SG.PRS} { b → 3SG.PST} { c → 3PL.PRS}` | 5273 | 15 | narrower Third |
+| `HURR.ESS\|\|HITT.D/L.SG` | 8163 | 527 | ambiguous |
+| `{ a → HURR.ABS.SG} { b → STF}` | 23244 | 1253 | ambiguous |
+| `{ a → ACC.SG.C} { b → GEN.PL}` | 6150 | 806 | ambiguous |
+
+11 additional declarations across 9 raw selectors; 54341 additional positive candidate occurrences (1964 selected) and 37557 ambiguous occurrences (2586 selected). These counts are selector frequencies, not counts of independent class assignments or tokens.
