@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "partial",
-  "method": "Source-grounded initial review domains. Eligibility means the ontology warrants evaluation of the native item, not that any target is valid. Omitted families and ontologies remain unclassified; do not infer exhaustive denominators. Existing XML is sole mapping authority.",
+  "method": "Source-grounded partial review domains, expanded by native families. Eligibility means the ontology warrants evaluation of the native item, not that any target is valid. Omitted families and ontologies remain unclassified; do not infer exhaustive denominators. Existing XML is sole mapping authority. Whole-feature review is used for open/mixed fields; categorical observations are selected only when source semantics warrant individual review. Explicit exclusions concern this mapping scope only, not universal ontology inapplicability; excluded units and unrouted units must remain distinct.",
   "ontology_evidence": {
     "OLiA": "https://github.com/acoli-repo/olia/tree/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
     "OntoLex-Lemon": "https://www.w3.org/2016/05/ontolex/",
@@ -16,7 +16,7 @@
       "revision": "4db00e2157915495e1a4d3d57e41223df24775da",
       "catalog_version": "2021",
       "source": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features",
-      "rationale": "R-005 BHSA feature reference: documented parts of speech, grammar, clause/phrase categories and dependency roles; lex nodes and source dictionary-entry features.",
+      "rationale": "R-005 BHSA feature reference: documented parts of speech, grammar, clause/phrase categories and dependency roles; lex nodes and source dictionary-entry features. Expanded ETCBC dependency, morphology, morpheme-form, discourse and lexical representation families; section hierarchy warrants LRMoo review but not every verse is an independent expression. Source morph forms remain native encodings, aliases are not new linguistic concepts. Further distinction: lexical frequencies versus occurrence spelling frequencies, source-local sequence labels, actual dependency distance units, morpheme realization and text representation. Whole closed-category feature containers are assessed through their values; optional property maps remain possible. Direct Git blob comparison established identical complete suffix_*/prs_* payloads at the pinned versions; avoid a duplicate mapping obligation.",
       "rules": {
         "OLiA": [
           {
@@ -51,6 +51,126 @@
               "sentence",
               "sentence_atom",
               "subphrase"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "domain"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "code",
+              "tab"
+            ],
+            "nodes": [
+              "clause_atom"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "mother",
+              "distributional_parent",
+              "functional_parent"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "txt"
+            ],
+            "nodes": [
+              "clause"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "nametype"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "nme",
+              "pfm",
+              "prs",
+              "uvf",
+              "vbe",
+              "vbs"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "dist_unit",
+              "mother_object_type"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "dist"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "is_root"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "g_nme",
+              "g_nme_utf8",
+              "g_pfm",
+              "g_pfm_utf8",
+              "g_prs",
+              "g_prs_utf8",
+              "g_uvf",
+              "g_uvf_utf8",
+              "g_vbe",
+              "g_vbe_utf8",
+              "g_vbs",
+              "g_vbs_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "languageISO"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "instruction",
+              "pargr"
+            ],
+            "nodes": [
+              "clause_atom"
             ]
           }
         ],
@@ -72,15 +192,259 @@
             "nodes": [
               "lex"
             ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lex",
+              "lex0",
+              "lex_utf8",
+              "voc_lex",
+              "voc_lex_utf8",
+              "root",
+              "gloss",
+              "g_lex",
+              "g_lex_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lex0",
+              "lex_utf8",
+              "root"
+            ],
+            "nodes": [
+              "lex"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "book",
+              "chapter",
+              "verse",
+              "half_verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "qere",
+              "qere_utf8",
+              "kq_hybrid",
+              "kq_hybrid_utf8",
+              "qere_trailer",
+              "qere_trailer_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "label"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book@am",
+              "book@ar",
+              "book@bn",
+              "book@da",
+              "book@de",
+              "book@el",
+              "book@en",
+              "book@es",
+              "book@fa",
+              "book@fr",
+              "book@he",
+              "book@hi",
+              "book@id",
+              "book@ja",
+              "book@ko",
+              "book@la",
+              "book@nl",
+              "book@pa",
+              "book@pt",
+              "book@ru",
+              "book@sw",
+              "book@syc",
+              "book@tr",
+              "book@ua",
+              "book@ur",
+              "book@yo",
+              "book@zh"
+            ],
+            "nodes": [
+              "book"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "feature",
+            "features": [
+              "g_cons",
+              "g_cons_utf8",
+              "g_word",
+              "g_word_utf8",
+              "trailer",
+              "trailer_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "nme",
+            "pfm",
+            "prs",
+            "uvf",
+            "vbe",
+            "vbs"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "sp",
+            "pdp",
+            "gn",
+            "prs_gn",
+            "nu",
+            "prs_nu",
+            "ps",
+            "prs_ps",
+            "st",
+            "vs",
+            "vt",
+            "ls",
+            "typ",
+            "function",
+            "det",
+            "rela",
+            "kind",
+            "domain",
+            "nametype",
+            "is_root"
+          ],
+          "reason": "Closed source category family reviewed at individual observed value granularity; no separate whole-feature mapping obligation is assumed. The original feature remains queryable; property mappings may be added when justified.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "dist_unit",
+            "mother_object_type"
+          ],
+          "reason": "Native dependency-measure unit or endpoint-type label, not a separate linguistic class; assess the documented feature role and actual directed mother edge.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/dist.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "number"
+          ],
+          "reason": "Source-context sequence number used for navigation/ordering; no separate ontology category obligation in this project.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/number.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "language"
+          ],
+          "reason": "Language names are source codes/labels for a language identity; assess the language feature, not each literal as a grammatical class.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/language.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "freq_occ",
+            "rank_occ"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Derived corpus-specific frequencies/ranks of consonantal spellings (without accents), not lexical-entry frequencies or ontology categories; retain as native quantitative data.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/freq_occ.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "languageISO"
+          ],
+          "reason": "ISO-639 codes identify languages; assess the language property rather than each code as a separate grammatical class.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/languageISO.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/tf/2021"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/tf/2021"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "freq_lex",
+            "rank_lex",
+            "lexeme_count"
+          ],
+          "reason": "Corpus-specific lexeme occurrence counts and ranks (distinct from spelling frequency). OntoLex-FrAC is a separate corpus-information extension not in the current seven-model review scope; preserve native statistics for possible future FrAC research.",
+          "evidence": "https://ontolex.github.io/frequency-attestation-corpus-information/"
+        }
+      ]
     },
     "extrabiblical": {
       "revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
       "catalog_version": "0.2",
       "source": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2",
-      "rationale": "R-005 ETCBC feature inventory and actual scoped domains; linguistic feature meanings inherit the BHSA annotation conventions. No assumed lex node.",
+      "rationale": "R-005 ETCBC feature inventory and actual scoped domains; linguistic feature meanings inherit the BHSA annotation conventions. No assumed lex node. Expanded ETCBC dependency, morphology, morpheme-form, discourse and lexical representation families; section hierarchy warrants LRMoo review but not every verse is an independent expression. Source morph forms remain native encodings, aliases are not new linguistic concepts. Further distinction: lexical frequencies versus occurrence spelling frequencies, source-local sequence labels, actual dependency distance units, morpheme realization and text representation. Whole closed-category feature containers are assessed through their values; optional property maps remain possible. Direct Git blob comparison established identical complete suffix_*/prs_* payloads at the pinned versions; avoid a duplicate mapping obligation.",
       "rules": {
         "OLiA": [
           {
@@ -116,15 +480,270 @@
               "sentence_atom",
               "subphrase"
             ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "domain"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "code",
+              "tab"
+            ],
+            "nodes": [
+              "clause_atom"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "mother",
+              "distributional_parent",
+              "functional_parent"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "txt"
+            ],
+            "nodes": [
+              "clause"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "nme",
+              "pfm",
+              "prs",
+              "uvf",
+              "vbe",
+              "vbs"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "dist_unit",
+              "mother_object_type"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "dist"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "is_root"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "g_nme",
+              "g_nme_utf8",
+              "g_pfm",
+              "g_pfm_utf8",
+              "g_suffix",
+              "g_suffix_utf8",
+              "g_uvf",
+              "g_uvf_utf8",
+              "g_vbe",
+              "g_vbe_utf8",
+              "g_vbs",
+              "g_vbs_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "OntoLex-Lemon": [
+          {
+            "kind": "feature",
+            "features": [
+              "lex",
+              "lex_utf8",
+              "g_lex",
+              "g_lex_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "book",
+              "chapter",
+              "verse",
+              "half_verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "label"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book@en"
+            ],
+            "nodes": [
+              "book"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "feature",
+            "features": [
+              "g_cons",
+              "g_cons_utf8",
+              "g_word",
+              "g_word_utf8"
+            ],
+            "nodes": [
+              "word"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "nme",
+            "pfm",
+            "prs",
+            "uvf",
+            "vbe",
+            "vbs"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "sp",
+            "pdp",
+            "gn",
+            "prs_gn",
+            "nu",
+            "prs_nu",
+            "ps",
+            "prs_ps",
+            "st",
+            "vs",
+            "vt",
+            "ls",
+            "typ",
+            "function",
+            "det",
+            "rela",
+            "kind",
+            "domain",
+            "is_root"
+          ],
+          "reason": "Closed source category family reviewed at individual observed value granularity; no separate whole-feature mapping obligation is assumed. The original feature remains queryable; property mappings may be added when justified.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "dist_unit",
+            "mother_object_type"
+          ],
+          "reason": "Native dependency-measure unit or endpoint-type label, not a separate linguistic class; assess the documented feature role and actual directed mother edge.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/dist.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "number"
+          ],
+          "reason": "Source-context sequence number used for navigation/ordering; no separate ontology category obligation in this project.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/number.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "language"
+          ],
+          "reason": "Language names are source codes/labels for a language identity; assess the language feature, not each literal as a grammatical class.",
+          "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/language.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
+        }
+      ]
     },
     "cuc": {
       "revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
       "catalog_version": "0.2.8",
       "source": "https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md",
-      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph.",
+      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph. KTU tablet titles and side designators concern source objects/sections, not verified unique physical object identifiers. Transliteration and alternative readings must remain distinct from physical marks (CRMtex TX1/TX7/TX9). Line-continuation is a graphical/textual annotation; language is a source label. Word node review remains separate from an exact populated-surface guard.",
       "rules": {
         "OLiA": [
           {
@@ -132,6 +751,21 @@
             "features": [
               "sign",
               "usign"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ],
+            "nodes": [
+              "word"
             ]
           }
         ],
@@ -153,6 +787,52 @@
             "nodes": [
               "sign"
             ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "tablet"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "g_cons",
+              "trailer",
+              "utrailer"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "alt",
+              "cont"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "column",
+              "line",
+              "side",
+              "tablet",
+              "tablet_info"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "cont"
+            ],
+            "nodes": [
+              "sign"
+            ]
           }
         ],
         "CRMinf": [
@@ -164,14 +844,81 @@
               "trailer_emen"
             ]
           }
+        ],
+        "CIDOC CRM": [
+          {
+            "kind": "node",
+            "nodes": [
+              "tablet"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "tablet",
+              "tablet_info"
+            ],
+            "nodes": [
+              "tablet"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "side"
+            ],
+            "nodes": [
+              "line"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "feature",
+            "features": [
+              "alt"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "tablet"
+            ]
+          }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "language"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Source language label, not an independent grammatical class; language property assessed separately.",
+          "evidence": "https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "cert",
+            "emen",
+            "trailer_emen"
+          ],
+          "reason": "Editorial status family accounted at individual observed value granularity in CRMinf review; a separate property map is optional.",
+          "evidence": "https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md"
+        }
+      ]
     },
     "syriac": {
       "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
       "catalog_version": "0.9",
       "source": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9",
-      "rationale": "R-005 metadata and pinned Syriac grammar feature inventory: categories of morphology and lexical sets.",
+      "rationale": "R-005 metadata and pinned Syriac grammar feature inventory: categories of morphology and lexical sets. Morphological form encodings and lexical references are distinct; textual divisions are review candidates, not automatically separate F2 Expressions.",
       "rules": {
         "OLiA": [
           {
@@ -188,15 +935,131 @@
               "st",
               "ls"
             ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "emf",
+              "nme",
+              "pfm",
+              "pfx",
+              "vbe",
+              "vbs"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "g_emf",
+              "g_nme",
+              "g_pfm",
+              "g_pfx",
+              "g_vbe",
+              "g_vbs"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "OntoLex-Lemon": [
+          {
+            "kind": "feature",
+            "features": [
+              "lex",
+              "g_lex",
+              "gloss"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "feature",
+            "features": [
+              "g_cons",
+              "g_cons_utf8",
+              "trailer"
+            ],
+            "nodes": [
+              "word"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "emf",
+            "nme",
+            "pfm",
+            "pfx",
+            "vbe",
+            "vbs"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Individual native morpheme spellings are not independent semantic categories for ontology matching; assess their documented morphological feature/form role instead.",
+          "evidence": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "sp",
+            "vs",
+            "vt",
+            "vo",
+            "vpm",
+            "gn",
+            "nu",
+            "ps",
+            "st",
+            "ls"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Documented finite annotation family: account for observed categories individually rather than require an independent whole-feature mapping; source feature remains available for querying.",
+          "evidence": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9"
+        }
+      ]
     },
     "syrnt": {
       "revision": "dae3eb6ff62b9b272fb503646796c25d248175ce",
       "catalog_version": "0.1",
       "source": "https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce/tf/0.1",
-      "rationale": "Pinned SyrNT feature metadata and transcription documentation: morphological classes and lexeme nodes.",
+      "rationale": "Pinned SyrNT feature metadata and transcription documentation: morphological classes and lexeme nodes. Morphological form encodings and lexical references are distinct; textual divisions are review candidates, not automatically separate F2 Expressions.",
       "rules": {
         "OLiA": [
           {
@@ -218,6 +1081,40 @@
               "sfnu",
               "sfps"
             ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "fmhdot",
+              "seyame",
+              "sfcontract"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "stem",
+              "stem_etcbc",
+              "stem_sedra",
+              "root",
+              "root_etcbc",
+              "root_sedra",
+              "prefix",
+              "prefix_etcbc",
+              "prefix_sedra",
+              "suffix",
+              "suffix_etcbc",
+              "suffix_sedra"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
           }
         ],
         "OntoLex-Lemon": [
@@ -226,15 +1123,93 @@
             "nodes": [
               "lexeme"
             ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lexeme",
+              "lexeme_etcbc",
+              "lexeme_sedra"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book@en"
+            ],
+            "nodes": [
+              "book"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "feature",
+            "features": [
+              "word",
+              "word_etcbc",
+              "word_sedra"
+            ],
+            "nodes": [
+              "word"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "sp",
+            "gn",
+            "nu",
+            "ps",
+            "st",
+            "vt",
+            "vs",
+            "nmtyp",
+            "ntyp",
+            "prtyp",
+            "ptctyp",
+            "demcat",
+            "sfgn",
+            "sfnu",
+            "sfps",
+            "fmhdot",
+            "seyame",
+            "sfcontract"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "Documented finite annotation family: account for observed categories individually rather than require an independent whole-feature mapping; source feature remains available for querying.",
+          "evidence": "https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce/tf/0.1"
+        }
+      ]
     },
     "peshitta": {
       "revision": "9850f5addade26f681334aa475570bef9b0b440a",
       "catalog_version": "0.2",
       "source": "https://github.com/ETCBC/peshitta/blob/9850f5addade26f681334aa475570bef9b0b440a/docs/transcription.md",
-      "rationale": "Pinned transcription documentation: textual book versions and witness designations; chapter/verse parts are review candidates, not independently whole Expressions. Witness labels are identifiers, so review the feature, not every A/B occurrence.",
+      "rationale": "Pinned transcription documentation: textual book versions and witness designations; chapter/verse parts are review candidates, not independently whole Expressions. Witness labels are identifiers, so review the feature, not every A/B occurrence. Review the two transcriptions as representations; no identification of individual physical glyphs is implied. Orthographic word category warrants OLiA review; empty slots and attached enclitics prevent an unguarded morphological-word claim.",
       "rules": {
         "LRMoo": [
           {
@@ -250,20 +1225,77 @@
             "features": [
               "witness"
             ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book",
+              "book@en",
+              "chapter",
+              "verse"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "feature",
+            "features": [
+              "word",
+              "word_etcbc",
+              "trailer",
+              "trailer_etcbc"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "OLiA": [
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "value",
+          "features": [
+            "witness"
+          ],
+          "reason": "A/B labels are source-local witness identifiers; review the witness property at feature level, not each literal as a distinct ontology category.",
+          "evidence": "https://github.com/ETCBC/peshitta/blob/9850f5addade26f681334aa475570bef9b0b440a/docs/transcription.md"
+        }
+      ]
     },
     "pseudepigrapha": {
       "revision": "7c4b757bb543a110ae9a252d1281835859136852",
       "catalog_version": "1.0",
       "source": "https://github.com/alexsosn/Pseudepigrapha-TF/tree/7c4b757bb543a110ae9a252d1281835859136852/docs",
-      "rationale": "Pinned OCP TF graph and apparatus/translation documentation: source/translated versions, explicit reading and witness structure, variant words; manuscript metadata does not establish a physical carrier.",
+      "rationale": "Pinned OCP TF graph and apparatus/translation documentation: source/translated versions, explicit reading and witness structure, variant words; manuscript metadata does not establish a physical carrier. LRMoo R5 requires meaningful structural components, unlike page/line or arbitrary anchor spans; apparatus readings, explicit omissions and source/generated layers remain distinct. Historical classifications and source witness metadata warrant review without fabricating concept, carrier or person identities. Pinned converter distinguishes OCP source identities from generated order/anchor flags, and literal witness lists from witness edges. Review generated language, edition metadata, rights, themes and editorial corrections at feature level. An empty primary-reading anchor is not physical damage. Source-preserved group, div_fragment and edition status require more upstream evidence; leave unresolved.",
       "rules": {
         "OLiA": [
           {
             "kind": "node",
             "nodes": [
+              "variant_word"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ],
+            "nodes": [
+              "word",
               "variant_word"
             ]
           }
@@ -295,28 +1327,392 @@
               "manuscript_of",
               "translation_unit_of"
             ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "chapter",
+              "div",
+              "verse",
+              "ellipsis",
+              "orphan_reading",
+              "document_metadata"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "parent",
+              "variant_word_of"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "book",
+              "chapter",
+              "verse",
+              "div_label",
+              "div_number",
+              "source_ref",
+              "title",
+              "version_title",
+              "version_fragment",
+              "version_id",
+              "ocp_book",
+              "author",
+              "reading_text",
+              "ms_abbrev",
+              "ms_name",
+              "ms_language"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "is_primary",
+              "synthetic_witness",
+              "undefined_manuscript"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "div_path",
+              "division_delimiters",
+              "division_labels",
+              "division_texts",
+              "text_structure"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ],
+            "nodes": [
+              "book",
+              "version_metadata"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "generated_language"
+            ],
+            "nodes": [
+              "book"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "reading_option_source"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "intro_introduction_json",
+              "intro_label",
+              "intro_sigla_json",
+              "intro_title_json",
+              "intro_version_json"
+            ],
+            "nodes": [
+              "document_metadata"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "unit_id"
+            ]
+          }
+        ],
+        "SKOS": [
+          {
+            "kind": "feature",
+            "features": [
+              "historical_genres_json",
+              "historical_biblical_figures_json"
+            ],
+            "nodes": [
+              "document_metadata"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "intro_themes_json"
+            ],
+            "nodes": [
+              "document_metadata"
+            ]
+          }
+        ],
+        "CIDOC CRM": [
+          {
+            "kind": "feature",
+            "features": [
+              "ms_abbrev",
+              "ms_name",
+              "bibliography"
+            ],
+            "nodes": [
+              "manuscript"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "author"
+            ],
+            "nodes": [
+              "book"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "intro_provenance_json",
+              "intro_bibliography_json",
+              "intro_citation_json",
+              "intro_manuscripts_json"
+            ],
+            "nodes": [
+              "document_metadata"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "historical_ocp_doc_id",
+              "intro_copyright_json"
+            ],
+            "nodes": [
+              "document_metadata"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "source_file"
+            ]
+          }
+        ],
+        "CRMinf": [
+          {
+            "kind": "feature",
+            "features": [
+              "generation_method",
+              "generation_model",
+              "generation_marker"
+            ],
+            "nodes": [
+              "book"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "intro_corrections_json"
+            ],
+            "nodes": [
+              "document_metadata"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "feature",
+            "features": [
+              "g_word_utf8",
+              "trailer_utf8"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "indent",
+              "linebreak"
+            ],
+            "nodes": [
+              "reading"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "unit_linebreak"
+            ],
+            "nodes": [
+              "unit"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "source_sha256"
+          ],
+          "reason": "source byte digest is provenance integrity metadata, outside current corpus category mapping scope",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/source_sha256.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "is_gap",
+            "is_metadata_only",
+            "is_missing_unit_id",
+            "is_source_anomaly"
+          ],
+          "reason": "Explicit converter technical anchor or source-record availability/identity anomaly flags; keep for safe querying, not a textual lacuna, historical witness, proposition or inference category.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/source-identity-and-anomalies.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "is_gap",
+            "is_metadata_only",
+            "is_missing_unit_id",
+            "is_source_anomaly"
+          ],
+          "reason": "Explicit converter technical anchor or source-record availability/identity anomaly flags; keep for safe querying, not a textual lacuna, historical witness, proposition or inference category.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/source-identity-and-anomalies.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "chapter_index",
+            "div_index",
+            "div_level",
+            "manuscript_index",
+            "reading_index",
+            "section_occurrence",
+            "source_child_index",
+            "unit_index",
+            "variant_position",
+            "verse_index",
+            "reading_option",
+            "token_count"
+          ],
+          "reason": "Native/derived order, nesting depth, occurrence disambiguator or token count. Preserve for citation and reconstruction but do not require distinct ontology category maps.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/0_home.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "boundary_utf8"
+          ],
+          "reason": "Deterministic converter-inserted separator between OCP units, not historical text or source punctuation.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/boundary_utf8.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "mss",
+            "ms_name_xml",
+            "bibliography_xml",
+            "reading_xml",
+            "source_ref_parts",
+            "source_tag"
+          ],
+          "reason": "Literal serialization of source witness lists, XML content, reference parts and tag names. Retain verbatim; review structured reading/witness and source citation properties rather than a second obligation for the complete serialization. Uninterpreted nested markup remains outside the current inventory.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/0_home.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "ms_show"
+          ],
+          "reason": "Literal display attribute, not manuscript identity or attestation.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/ms_show.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "generation_marker"
+          ],
+          "nodes": [
+            "book"
+          ],
+          "reason": "Source-generated provenance literal OCP-Trans is a source-specific marker; review its feature/property, not the marker as a separate ontology class.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/generation_marker.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "is_omission",
+            "is_primary",
+            "synthetic_witness",
+            "undefined_manuscript",
+            "version_kind"
+          ],
+          "reason": "Finite source witness/reading/version category domains reviewed at observed value granularity; feature-level property mappings optional.",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/0_home.md"
+        }
+      ]
     },
     "tlhdig-tf": {
       "revision": "e954600d9f9cc7f16570729813cf6bf3954b8f6d",
       "catalog_version": "0.4.0",
       "source": "https://github.com/alexsosn/TLHdig-TF/tree/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features",
-      "rationale": "Pinned generated data model, feature documentation, source catalogue and join apparatus: morphology, lexeme links, editorial graph, lines/signs, fragment identification and CTH classification. CRMtex/CRM/LRMoo/SKOS/CRMinf are relevant review domains; not claims of class equivalence, physical identity, or explicit inference.",
+      "rationale": "Pinned generated data model, feature documentation, source catalogue and join apparatus: morphology, lexeme links, editorial graph, lines/signs, fragment identification and CTH classification. CRMtex/CRM/LRMoo/SKOS/CRMinf are relevant review domains; not claims of class equivalence, physical identity, or explicit inference. Sign-level aGr/d/num/sGr containment flags are graphemic/editorial evidence, not grammatical values on analysis nodes. Join edges are source apparatus projections (CRM physical-relation and CRMinf claim review), not LRMoo expression derivation. Resolution and alignment levels record process evidence, not belief values. CTH is a catalogue grouping; fragment occurrences and docgroup do not prove physical identity. Direct featuremeta.py and editorial.md distinguish source range geometry, recovered/synthesized boundary markers, philological uncertainty, source apparatus selection and parser diagnostics. Source record order, codepoint/record counts and duplicate docid representation do not create extra semantic obligations. sel_group, opaque mrp_control, mixed othertags and undocumented cudirty remain unresolved; do not infer grammatical number or a historical statement from internal selection codes.",
       "rules": {
         "OLiA": [
           {
             "kind": "value",
             "features": [
-              "pos",
-              "agr",
-              "det",
-              "num"
+              "pos"
             ]
           },
           {
             "kind": "node",
+            "nodes": [
+              "analysis"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "morph",
+              "stemclass",
+              "stemclass_raw",
+              "clitic_morph",
+              "clitic_stemclass",
+              "clitic_det"
+            ],
+            "nodes": [
+              "analysis"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lang"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "analyses",
+              "selected"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "det_hint"
+            ],
             "nodes": [
               "analysis"
             ]
@@ -333,6 +1729,31 @@
             "kind": "edge",
             "features": [
               "lexeme"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lemma",
+              "gloss"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "clitic_lemma"
+            ],
+            "nodes": [
+              "analysis"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "trans"
+            ],
+            "nodes": [
+              "word"
             ]
           }
         ],
@@ -355,28 +1776,217 @@
               "sign",
               "cluster"
             ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "agr",
+              "det",
+              "num",
+              "sgr",
+              "missing",
+              "laes",
+              "ras",
+              "add",
+              "quot",
+              "materlect_anomalous",
+              "cu_unrendered"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "ruling"
+            ],
+            "nodes": [
+              "paragraph"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "layout",
+              "paragraph",
+              "colon",
+              "surface",
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "sym",
+              "symmark",
+              "subscr",
+              "cu_sign",
+              "materlect",
+              "after"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "cu",
+              "cu_method"
+            ],
+            "nodes": [
+              "line"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "trans"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "startsAt",
+              "endsAt"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "crossesline",
+              "nested"
+            ],
+            "nodes": [
+              "cluster"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "corr",
+              "surplus"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "space_count"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "width"
+            ],
+            "nodes": [
+              "cluster"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "column",
+              "surface",
+              "lnr",
+              "lnno",
+              "prime",
+              "linetail",
+              "frag",
+              "txtid"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "markers"
+            ],
+            "nodes": [
+              "layout"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "det_hint"
+            ],
+            "nodes": [
+              "analysis"
+            ]
           }
         ],
         "LRMoo": [
           {
             "kind": "node",
             "nodes": [
-              "joinstmt",
-              "fragment"
+              "document",
+              "docgroup",
+              "paragraph",
+              "colon",
+              "note"
             ]
           },
           {
             "kind": "edge",
             "features": [
-              "joined",
-              "witness"
+              "edition",
+              "noteref"
             ]
           },
           {
-            "kind": "edge_value",
+            "kind": "feature",
             "features": [
-              "joined",
-              "witness_resolution"
+              "cth"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "txtpubl"
+            ],
+            "nodes": [
+              "fragment"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "n",
+              "c"
+            ],
+            "nodes": [
+              "note"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "nr"
+            ],
+            "nodes": [
+              "colon"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lnr",
+              "lnno",
+              "prime",
+              "linetail"
+            ],
+            "nodes": [
+              "line"
             ]
           }
         ],
@@ -389,6 +1999,94 @@
             "nodes": [
               "fragment"
             ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "invnr"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "fragment",
+              "joinstmt",
+              "docgroup"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "docid"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "fragment_label",
+              "txtpubl",
+              "frag_raw"
+            ],
+            "nodes": [
+              "fragment"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "joined",
+              "joinLeft",
+              "joinRight",
+              "joinDocument",
+              "witness"
+            ]
+          },
+          {
+            "kind": "edge_value",
+            "features": [
+              "joined"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "fragment_kind"
+            ],
+            "nodes": [
+              "fragment"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "project",
+              "src_file"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "frag",
+              "txtid"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "part",
+              "src",
+              "frgm",
+              "docs"
+            ],
+            "nodes": [
+              "edit"
+            ]
           }
         ],
         "SKOS": [
@@ -399,6 +2097,16 @@
             ],
             "nodes": [
               "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "alt",
+              "neu"
+            ],
+            "nodes": [
+              "edit"
             ]
           }
         ],
@@ -423,15 +2131,302 @@
             "features": [
               "edits"
             ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "joinstmt"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "join_kind",
+              "join_resolved"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "siglum_ambiguous",
+              "siglum_source"
+            ],
+            "nodes": [
+              "fragment"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "cu_aligned"
+            ],
+            "nodes": [
+              "line"
+            ]
+          },
+          {
+            "kind": "edge_value",
+            "features": [
+              "witness_resolution",
+              "joined"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "join_reason",
+              "join_context"
+            ],
+            "nodes": [
+              "joinstmt"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "author",
+              "editor",
+              "date"
+            ],
+            "nodes": [
+              "edit"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "witness_resolution"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "from_open_marker",
+              "from_close_marker",
+              "orphan"
+            ],
+            "nodes": [
+              "cluster"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "mrpsel_kind"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "mrpsel"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "siglum_raw_candidates"
+            ],
+            "nodes": [
+              "fragment"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "cu_undecided"
+            ],
+            "nodes": [
+              "line"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "join_raw"
+            ],
+            "nodes": [
+              "joinstmt"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lang_raw"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "part",
+              "src",
+              "frgm",
+              "docs",
+              "alt",
+              "neu"
+            ],
+            "nodes": [
+              "edit"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "corr",
+              "surplus"
+            ],
+            "nodes": [
+              "sign"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "anchor"
+          ],
+          "nodes": [
+            "sign"
+          ],
+          "reason": "technical empty-slot preservation; no independent written sign category",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features/anchor.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "subcorpus"
+          ],
+          "nodes": [
+            "document"
+          ],
+          "reason": "documented compatibility alias for project; no separate semantic mapping obligation",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features/subcorpus.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "docid_raw"
+          ],
+          "reason": "Pinned feature contract says docid_raw is currently identical to docid, kept for possible future raw spelling. No separate current semantic obligation.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "collabel",
+            "ln",
+            "srcln",
+            "id",
+            "index",
+            "order",
+            "manuscript_block",
+            "fragment_order",
+            "join_order",
+            "start_offset",
+            "end_offset",
+            "source_stem",
+            "source_subdir"
+          ],
+          "reason": "Derived section/navigation labels, local ordering or serialized source coordinates/path components. Keep all source-native values; no separate ontology category obligation.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "nanalyses",
+            "nselected",
+            "noccs",
+            "nrecords",
+            "cu_nsigns",
+            "cu_broken",
+            "cu_pua",
+            "cu_pua_unmapped"
+          ],
+          "reason": "Derived counts of native records, codepoints or processing diagnostics. Not independent semantic categories; count in native query results, not current ontology-category workload.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "raw",
+            "sep",
+            "sel_base",
+            "sel_clitic"
+          ],
+          "reason": "Raw analysis serialization / native selection syntax. Preserve pointers and underlying structured fields; no independent semantic category obligation for each representation.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "field4_kind",
+            "parse_ok",
+            "join_encoding"
+          ],
+          "reason": "Converter parsing discriminator, grammar parse status or XML/text serialization encoding. These are provenance/processing diagnostics rather than semantic categories of the historical text.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "field4_kind",
+            "parse_ok",
+            "join_encoding"
+          ],
+          "reason": "Converter parsing discriminator, grammar parse status or XML/text serialization encoding. These are provenance/processing diagnostics rather than semantic categories of the historical text.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "pos",
+            "type",
+            "agr",
+            "det",
+            "num",
+            "sgr",
+            "missing",
+            "laes",
+            "ras",
+            "add",
+            "quot",
+            "materlect_anomalous",
+            "cu_unrendered",
+            "ruling",
+            "crossesline",
+            "nested",
+            "fragment_kind",
+            "kind",
+            "join_kind",
+            "join_resolved",
+            "siglum_ambiguous",
+            "siglum_source",
+            "cu_aligned",
+            "from_open_marker",
+            "from_close_marker",
+            "orphan",
+            "mrpsel_kind"
+          ],
+          "reason": "Documented finite annotation family: assess actual observed categories at value granularity; separate whole-feature property mapping remains optional.",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/programs/tlhdig/featuremeta.py"
+        }
+      ]
     },
     "assyrian-royal-inscriptions": {
       "revision": "60db4b724a687c0f425e78eae924fce89454e106",
       "catalog_version": "1.0.0",
       "source": "https://github.com/alexsosn/ORACC-TF/tree/60db4b724a687c0f425e78eae924fce89454e106/docs/reference",
-      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity.",
+      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity. Catalogue fields preserve raw text, including compound materials, uncertain types and multiple collections; review properties, not individual labels as ontology classes. CDLI IDs are not unique document keys. TEI translation ranges are alignment, not one translation per line, and include dollar annotations. Source hierarchy includes synthetic anchors. Source identifiers (including qualified document_key and occurrence IDs) and licences/source archive provenance merit property review, not cross-corpus identity. Distinguish source implicit chunk flag from converter synthetic anchors and metadata/analysis availability; synthetic slots must stay visible for query guards. Raw composite JSON/TEI fields are preserved but not a single semantic mapping unit; their contents are not thereby exhausted. Only the observed tr subtype is counted, not a documented but unobserved dollar alternative.",
       "rules": {
         "OLiA": [
           {
@@ -439,6 +2434,37 @@
             "features": [
               "pos",
               "epos"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "phrase"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lang"
+            ],
+            "nodes": [
+              "word",
+              "lex"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ],
+            "nodes": [
+              "document"
             ]
           }
         ],
@@ -464,6 +2490,39 @@
             "nodes": [
               "lex"
             ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "cf",
+              "gw",
+              "sense",
+              "norm",
+              "sig",
+              "form"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lexeme",
+              "lang"
+            ],
+            "nodes": [
+              "lex"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "inst"
+            ],
+            "nodes": [
+              "word"
+            ]
           }
         ],
         "CRMtex": [
@@ -483,6 +2542,99 @@
             "nodes": [
               "word"
             ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "document",
+              "face",
+              "chunk",
+              "phrase"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "utf8",
+              "gdl_form",
+              "cuneiform_trailer"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "script"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "column_id",
+              "face",
+              "line",
+              "label"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "column_face",
+              "face_document",
+              "line_column",
+              "line_face",
+              "word_line"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "chunk_type",
+              "chunk_subtype"
+            ],
+            "nodes": [
+              "chunk"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "implicit"
+            ],
+            "nodes": [
+              "chunk"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "gdl_id",
+              "gdl_sexified",
+              "word_id"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "frag"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "ref"
+            ]
           }
         ],
         "LRMoo": [
@@ -497,9 +2649,241 @@
             "features": [
               "translation_line"
             ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "translation_text"
+            ],
+            "nodes": [
+              "translation_unit"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "primary_publication",
+              "designation"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "translation_document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "language"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "translation_id",
+              "translation_label",
+              "translation_se_label",
+              "translation_sref",
+              "translation_eref"
+            ],
+            "nodes": [
+              "translation_unit"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "translation_subtype"
+            ],
+            "nodes": [
+              "translation_unit"
+            ]
+          }
+        ],
+        "CIDOC CRM": [
+          {
+            "kind": "feature",
+            "features": [
+              "material",
+              "object_type",
+              "provenience",
+              "collection",
+              "ruler",
+              "period",
+              "cdli_id",
+              "pleiades_id",
+              "pleiades_coord",
+              "designation",
+              "primary_publication",
+              "text_id",
+              "exemplars"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "document",
+              "face"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "document_key",
+              "source_id"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "license",
+              "license_url",
+              "subproject"
+            ],
+            "nodes": [
+              "document"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "translation_source_id",
+              "translation_source_license",
+              "translation_source_license_url",
+              "translation_source_name",
+              "translation_source_url"
+            ],
+            "nodes": [
+              "translation_unit"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "frag"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "SKOS": [
+          {
+            "kind": "feature",
+            "features": [
+              "genre",
+              "subgenre",
+              "supergenre",
+              "object_type",
+              "material",
+              "period"
+            ],
+            "nodes": [
+              "document"
+            ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "translation_source_sha256"
+          ],
+          "nodes": [
+            "translation_unit"
+          ],
+          "reason": "source archive byte digest, not a linguistic/textual category",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/translations.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "readingu",
+            "lnno",
+            "document"
+          ],
+          "reason": "Documented compatibility aliases or section-key projection of utf8, source line label or qualified document_key; review canonical field, retain native aliases.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/features.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "catalogue_json",
+            "gdl_json",
+            "sign_json",
+            "translation_text_raw"
+          ],
+          "reason": "Composite source serialization retained verbatim; not a single ontology property/class obligation for the entire JSON/TEI blob. Individual source information may require future structured review.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/features.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "src_path",
+            "translation_rows"
+          ],
+          "reason": "Source GDL path or source-declared layout row count. Native structural/navigation coordinates/measurements retained outside current category mapping workload.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/features.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "catalogue_present",
+            "populated",
+            "synthetic",
+            "lemmaknown"
+          ],
+          "reason": "Source metadata/analysis availability or converter-synthesized structural anchors. Preserve as query guards, not independent linguistic/physical categories; known lemma status is not a lemma or correctness assertion.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/features.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "catalogue_present",
+            "populated",
+            "synthetic",
+            "lemmaknown"
+          ],
+          "reason": "Source metadata/analysis availability or converter-synthesized structural anchors. Preserve as query guards, not independent linguistic/physical categories; known lemma status is not a lemma or correctness assertion.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/features.md"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "lang"
+          ],
+          "reason": "Source language codes are labels/identifiers (including special codes); review language property rather than each literal as a grammatical class.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/words-and-lexemes.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "pos",
+            "epos",
+            "implicit",
+            "translation_subtype"
+          ],
+          "reason": "Observed categorical annotation domains assessed at value granularity; optional feature-property maps are not prohibited.",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/features.md"
+        }
+      ]
     }
   }
 }
