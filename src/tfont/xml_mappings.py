@@ -112,7 +112,7 @@ def _checked(name: str, text: str) -> tuple[Mapping, ...]:
         # native annotation on that node, not an ontology data-property claim.
         optional = ({"node"} if kind == "feature" else
                     {"feature"} if kind == "node" else
-                    {"from", "to"} if kind == "edge" else set())
+                    {"from", "to", "value"} if kind == "edge" else set())
         if not required <= given or given - (required | optional):
             raise MappingError(f"{where}: invalid {kind} selector fields")
         if any(not item.get(key, "").strip() for key in given):
@@ -252,6 +252,10 @@ class MappingCatalog:
             for other in destinations:
                 if other.kind != kind or other.target != origin.target:
                     continue
+                # Whole-edge and value-qualified selectors express different
+                # granularity. Do not equate the whole with one alternative.
+                if kind == "edge" and (origin.value is None) != (other.value is None):
+                    continue
                 if other.relation in _NON_MATCHING:
                     continue
                 if target_version is not None and other.corpus_version is not None and other.corpus_version != target_version:
@@ -345,3 +349,46 @@ def resolve_nodes(api: Any, mapping: Mapping, *,
                      and str(observed) == mapping.value)
     except (AttributeError, KeyError, TypeError) as exc:
         raise MappingError(f"{mapping.corpus}: required TF feature or node type unavailable") from exc
+
+
+def resolve_edges(api: Any, mapping: Mapping, *,
+                  corpus_version: str | None = None) -> tuple[tuple[int, int], ...]:
+    """Execute an exact native edge category, optionally filtering its value.
+
+    Return directed native endpoint pairs, never reverse/transitive edges or
+    cross-corpus identities. An omitted value selects all stored edges.
+    """
+    if mapping.kind != "edge" or mapping.target is None or mapping.relation != "exact":
+        raise MappingError("TF edge execution requires an exact positive edge mapping")
+    if mapping.corpus_version is not None and corpus_version is None:
+        raise MappingError("explicit corpus_version is required for a source-pinned mapping")
+    if mapping.corpus_version is not None and mapping.corpus_version != corpus_version:
+        raise MappingError("loaded corpus version differs from the mapped source version")
+    if mapping.feature.startswith("omap@"):
+        raise MappingError("cross-version node maps are not local TF edges")
+    try:
+        feature = api.Es(mapping.feature)
+        valued = feature.doValues
+        if mapping.value is not None and not valued:
+            raise MappingError("a value-qualified edge requires a valued TF edge feature")
+        otype = api.F.otype
+        pairs = []
+        for source, targets in feature.items():
+            source_type = otype.v(source)
+            if source_type is None:
+                raise MappingError("edge source node type unavailable")
+            if mapping.from_node is not None and source_type != mapping.from_node:
+                continue
+            entries = targets.items() if valued else ((target, None) for target in targets)
+            for target, value in entries:
+                target_type = otype.v(target)
+                if target_type is None:
+                    raise MappingError("edge target node type unavailable")
+                if mapping.to_node is not None and target_type != mapping.to_node:
+                    continue
+                if mapping.value is not None and (value is None or str(value) != mapping.value):
+                    continue
+                pairs.append((source, target))
+        return tuple(sorted(pairs))
+    except (AttributeError, KeyError, TypeError) as exc:
+        raise MappingError(f"{mapping.corpus}: required TF edge or node type unavailable") from exc
