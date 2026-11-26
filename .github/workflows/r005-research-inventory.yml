@@ -380,7 +380,7 @@ jobs:
           ID: ${{ matrix.id }}
           VERSION: ${{ matrix.version }}
         run: |
-          python -m pip install --no-deps .
+          python -m pip install .
           python - <<'PY'
           import os
           from pathlib import Path

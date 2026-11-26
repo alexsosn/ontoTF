@@ -153,8 +153,7 @@ class XMLMappingContractTests(unittest.TestCase):
         with self.assertRaisesRegex(MappingError, "not verified"):
             find_across_corpora(
                 "tlhdig-tf", node="analysis", feature="pos",
-                value="ADV",
-     source_version="wrong",
+                value="ADV", source_version="wrong",
             )
 
     def test_all_corpora_lookup_without_source_target_false_identity(self):

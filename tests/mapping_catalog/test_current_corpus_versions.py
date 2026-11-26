@@ -60,3 +60,24 @@ class CurrentCorpusVersionsTests(unittest.TestCase):
         self.assertEqual(row.relation, "native-only")
         self.assertEqual(c.find_correspondences("pseudepigrapha", "bhsa",
                          kind="node", node="word", source_version="1.1"), ())
+
+    def test_current_cross_corpus_discovery_keeps_version_identity(self):
+        c = MappingCatalog()
+        for version in ("0.9", "0.92"):
+            rows = c.find_correspondences("syriac", "bhsa", node="word",
+                                          feature="sp", value="subs",
+                                          source_version=version)
+            self.assertTrue(rows)
+            self.assertTrue(all(r.source.corpus_version == version and r.scope == "category"
+                                for r in rows))
+            reverse = c.find_correspondences("bhsa", "syriac", node="word",
+                                             feature="sp", value="subs",
+                                             target_version=version)
+            self.assertTrue(reverse)
+            self.assertTrue(all(r.destination.corpus_version == version for r in reverse))
+        for version in ("1.0", "1.1"):
+            rows = c.find_correspondences("pseudepigrapha", "peshitta", kind="node",
+                                          node="book", source_version=version)
+            self.assertTrue(rows)
+            self.assertTrue(all(r.source.corpus_version == version and r.scope == "category"
+                                for r in rows))
