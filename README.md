@@ -7,7 +7,7 @@
 
 > **Next wheel candidate:** Source-built distributions from this branch are versioned **0.2.0rc1**. See [candidate scope and exact-head release gates](docs/releases/v0.2.0rc1.md). This candidate has **not** been published to GitHub Releases or PyPI, and the documented published v0.1.1 remains a different, narrower contract. The real ExtraBiblical installed-wheel smoke has passed on a prior exact head; the candidate itself still requires its own final-head CI, reviewer verification and a downloaded-asset cold install.
 
-ontoTF is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
+ontoTF is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The last historical release (under the previous package name) is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
 
 ## What is shipped
 
@@ -166,13 +166,13 @@ the current source.
 
 ## Installation
 
-Development checkout: Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). The already-published v0.1.1 wheel retains its original Python >=3.10 requirement; this update applies to the next release. Download `ontotf-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
+Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). Install the current development package from this checkout:
 
-```bash
-python -m pip install ./ontotf-0.1.1-py3-none-any.whl
+```sh
+python -m pip install -e .
 ```
 
-For the local-corpus example below, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). A development checkout may instead use `python -m pip install -e .`. v0.1.1 changes package license metadata only; it does not expand the v0.1 semantic/runtime scope. This GitHub wheel is the current v0.1 distribution; `pip install ontotf` is **not** a supported PyPI installation claim.
+The examples below use `import ontotf`. For local-corpus execution, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). No PyPI publication of the renamed package is claimed. The [historical v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1) retains its original distribution and import name and its original Python >=3.10 requirement; use documentation at that tag for its installation and API examples.
 
 Corpus files are **not bundled**. ontoTF does not download, load or update BHSA, Syriac or ExtraBiblical; you must obtain source corpora independently and respect their licenses. The separately bundled pinned OLiA ontology is CC BY 3.0 with its `ATTRIBUTION.txt` and `LICENSE.data`; ontoTF-authored code and mapping/profile metadata are MIT. BHSA corpus data have distinct CC BY-NC 4.0 terms.
 
