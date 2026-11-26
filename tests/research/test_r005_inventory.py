@@ -208,6 +208,18 @@ class InventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "node type"):
             MODULE.inventory_scoped_api(api)
 
+    def test_cross_version_node_map_is_not_a_local_edge(self):
+        api = FakeApi()
+        api.E.__dict__["omap@old-new"] = FakeEdgeFeature({99: {1: 1}}, valued=True)
+        api.Eall = lambda warp=False: ["parent", "selected", "omap@old-new"]
+        got = MODULE.inventory_scoped_api(api)
+        edge = got["edge_features"]["omap@old-new"]
+        self.assertEqual(edge["scope_status"], "cross_version")
+        self.assertEqual(edge["edge_count"], 1)
+        self.assertNotIn("pairs", edge)
+        with self.assertRaisesRegex(ValueError, "cross.version"):
+            MODULE.inventory_scoped_api(api, edge_value_features={"omap@old-new"})
+
     def test_scoped_allowlist_typo_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "missing"):
             MODULE.inventory_scoped_api(FakeApi(), node_value_features={"missing"})
