@@ -11,7 +11,8 @@ import unittest
 
 from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
-OLIA = "http://purl.org/olia/olia.owl#DemonstrativePronoun"
+BASE = "http://purl.org/olia/olia.owl#"
+OLIA = BASE + "DemonstrativePronoun"
 PIN = "dae3eb6ff62b9b272fb503646796c25d248175ce"
 
 
@@ -46,15 +47,25 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
         rows = [r for r in catalog.load("syrnt")
                 if r.kind == "value" and r.node == "word"
                 and r.feature in {"prtyp", "demcat"}]
-        self.assertEqual(len(rows), len(expected))
+        additional = {
+            ("prtyp", "personal"): ("narrower", BASE + "PersReflPronoun"),
+            ("demcat", "near"): ("narrower", BASE + "Proximal"),
+            ("demcat", "far"): ("narrower", BASE + "Distal"),
+        }
+        self.assertEqual(len(rows), len(expected) + len(additional))
         self.assertEqual({(r.feature, r.value) for r in rows}, set(expected))
         for (feature, value), decision in expected.items():
             with self.subTest(feature=feature, value=value):
-                m, = catalog.map_native("syrnt", node="word", feature=feature,
-                                        value=value, corpus_version="0.1")
-                self.assertEqual((m.relation, m.target), decision)
-                self.assertEqual(m.corpus_version, "0.1")
-                self.assertIn(PIN, m.evidence or "")
+                mappings = catalog.map_native("syrnt", node="word", feature=feature,
+                                              value=value, corpus_version="0.1")
+                decisions = {decision}
+                if (feature, value) in additional:
+                    decisions.add(additional[feature, value])
+                self.assertEqual(len(mappings), len(decisions))
+                self.assertEqual({(m.relation, m.target) for m in mappings}, decisions)
+                for m in mappings:
+                    self.assertEqual(m.corpus_version, "0.1")
+                    self.assertIn(PIN, m.evidence or "")
 
     def test_exact_and_opt_in_narrower_lookup_are_distinguished(self):
         catalog = MappingCatalog()
@@ -167,6 +178,8 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
              ("ls", "demo", base_pronoun, "narrower", "narrower",
               "approximate-via-target", "category"),
              ("ls", "prin", base_pronoun, "narrower", "narrower",
+              "approximate-via-target", "category"),
+             ("ls", "pers", BASE + "PersReflPronoun", "narrower", "narrower",
               "approximate-via-target", "category")},
         )
         self.assertEqual(
@@ -200,11 +213,34 @@ class SyrNTDemonstrativeMappingsTests(unittest.TestCase):
                 with self.assertRaisesRegex(MappingError, "exact"):
                     resolve_nodes(MustNotInspect(), replace(exact,
                         relation=relation), corpus_version="0.1")
-        for value in ("near", "far"):
-            narrower, = catalog.map_native(
-                "syrnt", node="word", feature="demcat", value=value)
-            with self.assertRaisesRegex(MappingError, "exact"):
-                resolve_nodes(MustNotInspect(), narrower, corpus_version="0.1")
+        for feature, value in (("demcat", "near"), ("demcat", "far"),
+                               ("prtyp", "personal")):
+            mappings = catalog.map_native(
+                "syrnt", node="word", feature=feature, value=value)
+            self.assertEqual(len(mappings), 2)
+            for narrower in mappings:
+                with self.assertRaisesRegex(MappingError, "exact"):
+                    resolve_nodes(MustNotInspect(), narrower, corpus_version="0.1")
+
+    def test_specific_proximity_and_personal_category_discovery(self):
+        catalog = MappingCatalog()
+        for feature, value, target in (
+            ("demcat", "near", "Proximal"),
+            ("demcat", "far", "Distal"),
+            ("prtyp", "personal", "PersReflPronoun"),
+        ):
+            with self.subTest(value=value):
+                iri = BASE + target
+                self.assertEqual(catalog.find_by_target(iri, corpus="syrnt"), ())
+                rows = catalog.find_by_target(
+                    iri, corpus="syrnt", include_approximate=True)
+                self.assertEqual(
+                    [(r.node, r.feature, r.value, r.relation) for r in rows],
+                    [("word", feature, value, "narrower")],
+                )
+                self.assertEqual(catalog.map_native(
+                    "syrnt", kind="entity", node="word",
+                    feature=feature, value=value), ())
 
     def test_exact_demonstrative_selects_loaded_word_feature(self):
         catalog = MappingCatalog()
