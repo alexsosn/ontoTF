@@ -169,6 +169,16 @@ class PhraseFunctionMappingsTests(unittest.TestCase):
                      "narrower", "narrower")
                     for dest in clause_destinations
                 }
+                subphrase_destinations = {
+                    "Adju": {"adj"}, "Modi": {"mod"},
+                    "PreC": set(), "PrAd": {"adj"},
+                }[code]
+                expected |= {
+                    ("subphrase", "rela", dest, BASE + target,
+                     "approximate-via-target", "category",
+                     "narrower", "close")
+                    for dest in subphrase_destinations
+                }
                 self.assertEqual(
                     {(x.destination.node, x.destination.feature,
                       x.destination.value, x.target, x.relation, x.scope,
