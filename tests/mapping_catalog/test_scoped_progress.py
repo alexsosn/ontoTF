@@ -70,7 +70,7 @@ class ScopedProgressTests(unittest.TestCase):
 
     def test_incompatible_source_revision_or_version_is_unknown(self):
         for source, version in (("other/demo", "1"), ("owner/demo", "2"),
-                                ("owner/demo@" + "c"*40 + ":demo", "1")):
+                                ("owner/demo@" + "c"*40 + ":demo", "1"), ("owner/demo@unverified-tag", "1")):
             self.assertIsNone(scoped_progress([row()], inventory(), source, version))
 
     def test_eligibility_subset_and_ontology_specific_targets(self):
@@ -87,6 +87,13 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(s["OntoLex-Lemon"]["exact"], 1)
         self.assertNotIn("CRMtex", s)
 
+    def test_partially_missing_rule_is_visible(self):
+        s = eligible_progress([], inventory(),
+                              {"OLiA": [{"kind": "value", "features": ["pos", "absent", "large"]}]},
+                              "1")
+        self.assertEqual(s["OLiA"]["eligible"], 3)
+        self.assertEqual(s["OLiA"]["unmatched_rules"][0]["unobserved_features"], ["absent", "large"])
+
     def test_real_snapshots_and_report(self):
         root = Path(__file__).resolve().parents[2]
         report = build_report(root, "a"*40)
@@ -99,7 +106,11 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(c["bhsa"]["scoped"]["node_values"]["total"], 459)
         self.assertEqual(c["tlhdig-tf"]["scoped"]["edge_values"]["total"], 4)
         self.assertEqual(c["assyrian-royal-inscriptions"]["scoped"]["tf_version"], "0.4.0")
+        for corpus in c.values():
+            for model, stat in corpus["applicability"]["ontologies"].items():
+                self.assertFalse(stat["unmatched_rules"], (corpus["corpus"], model))
+                self.assertEqual(stat["eligible"], sum(stat[k] for k in ("exact", "qualified", "global_nonpositive", "ambiguous", "other_target", "unreviewed")))
         html = render(report)
         self.assertIn("Observed scoped coverage", html)
-        self.assertIn("Research-confirmed applicability", html)
+        self.assertIn("Ontology applicability review", html)
         self.assertIn("Incomplete", html)
