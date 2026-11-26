@@ -71,21 +71,32 @@ property mapping. The corpus annotation itself is never removed.
   on source-supported property mappings. In particular no technical
   exclusion is inferred merely from a low observed cardinality.
 
-## Residual uncertainty
+## Duplicate fields verified directly
 
-The BHSA `suffix_gender/number/person` histograms exactly match their
-respective `prs_*` histograms, but no matching suffix_* source codebook
-was found and the GitHub large-file response for BHSA suffix_gender.tf
-returned no content. Equal marginals do not establish row-wise equality.
-ExtraBiblical has only NA in all six fields. Leave the undocumented
-suffix_* features and values unclassified pending source-generation or
-node-by-node verification, rather than double count or silently discard.
-This leaves 3 feature scopes / 11 values in BHSA and 4 feature scopes /
-3 values in ExtraBiblical unresolved (including ExtraBiblical lexeme_count).
+The BHSA suffix_* files exceed the ordinary GitHub Contents response limit.
+Fetched their actual Git blobs by SHA instead, split the TF headers at the
+blank line, and compared the entire annotation payloads byte for byte. All
+three pairs have 426,590 dense records, zero differing rows and identical
+data payloads, although the BHSA file headers differ:
 
-CUC, Syriac, SyrNT, and Peshitta now have a review route or explicit
-granularity disposition for every **currently inventoried** unit. This
-does not establish exhaustive eligibility for all potential ontologies,
+| Pair | suffix blob SHA | prs blob SHA | payload bytes |
+| --- | --- | --- | ---: |
+| suffix_gender / prs_gn | ba73db858ac4f655481cade5c030a96d42476daf | 39f8f140e00c02245d507c7b02cc583d01c7aa99 | 1,291,804 |
+| suffix_number / prs_nu | 1187787cef9510f26d7f62eeaf59144c3eb4f4cb | b637c1ffebc0eb31e6a4e10d9a5a1520efed52a2 | 1,279,770 |
+| suffix_person / prs_ps | 4a6eb66e84260ae45c40375088a0f41502a3bd7e | 54c9b05adf58e7d38475fe60dd4f909da4dbd70b | 1,279,770 |
+
+For ExtraBiblical all six files have identical whole-blob SHA
+65db5eadec043d1343746e24f775b06a60a8c028; each contains 39,862 NA records.
+This establishes equal observations for the pinned versions only.
+Keep all native fields in the census and use prs_* as the canonical
+review family; no separate ontology mapping obligation for the duplicate
+suffix_* feature/value units. The unknown ExtraBiblical lexeme_count
+(all zeros, no documented meaning) is still unclassified.
+
+BHSA, CUC, Syriac, SyrNT, and Peshitta now have a review route or explicit
+granularity disposition for every **currently inventoried** unit.
+ExtraBiblical has just the unresolved lexeme_count field.
+This does not establish exhaustive eligibility for all potential ontologies,
 all uncollected value domains or conditional selectors.
 
 The remaining main families are the three converter corpora
