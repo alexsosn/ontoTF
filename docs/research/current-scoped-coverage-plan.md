@@ -28,9 +28,9 @@ applicability policy. Do not equate 100% review with 100% positive matches.
   node-scoped denominator. Do not edit the frozen policy or historical counts.
 * The XML catalog distinguishes exact and qualified mappings, nonpositive
   dispositions, node presence guards, scoped features and directed edges.
-  Current XML edge selectors cannot represent an individual valued-edge value:
-  census such values, but keep them as a representational gap until real
-  researcher use justifies a small XML extension.
+  The original XML edge selectors could not represent individual edge values.
+  The optional value attribute now distinguishes those categories from the
+  whole-edge feature, with exact directed native execution when justified.
 * Existing source-generated feature docs supply the current ORACC schema
   but not exhaustive scopes/values. The pinned builder README predates
   publication; later [release evidence](https://github.com/alexsosn/ORACC-TF/pull/154)
@@ -84,7 +84,7 @@ in batches with evidence:
 | Documented categorical node feature | each actually observed (node type, feature, value) |
 | Open feature | (node type, feature), not individual words, glosses, IDs or offsets |
 | Typed edge | (edge feature, actual source type, actual target type) |
-| Categorical edge | typed edge plus observed value where semantic; show unsupported XML granularity explicitly |
+| Categorical edge | typed edge plus observed value where semantic; use the optional edge value attribute |
 | Technical / empty-only / source-specific | reasoned exclusion or native-only disposition, not positive coverage |
 
 An unclassified family is a visible review gap. Do not automatically treat a
