@@ -1,0 +1,160 @@
+{
+  "checked_at": "2026-11-26",
+  "corpora": {
+    "bhsa": {
+      "name": "Biblia Hebraica Stuttgartensia Amstelodamensis",
+      "description": "Hebrew Bible with linguistic annotation by ETCBC.",
+      "checked_tf_version": "2021",
+      "checked_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "latest_tf_version": "2021",
+      "status": "current",
+      "evidence": "https://github.com/ETCBC/bhsa/tree/master/tf",
+      "note": "2021 feature files match the pinned census; c is an older frozen version."
+    },
+    "cuc": {
+      "name": "Copenhagen Ugaritic Corpus",
+      "description": "Ugaritic and other texts from Ugarit, with sign- and word-level annotations.",
+      "checked_tf_version": "0.2.8",
+      "checked_revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+      "latest_tf_version": "0.4.0",
+      "status": "update",
+      "evidence": "https://github.com/DT-UCPH/cuc/blob/main/docs/release-0.4.0.md",
+      "note": "The 0.4.0 release expands the corpus; node identifiers are version-specific."
+    },
+    "syriac": {
+      "name": "ETCBC Syriac literature",
+      "description": "Morphologically annotated classical Syriac literary texts.",
+      "checked_tf_version": "0.9",
+      "checked_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "latest_tf_version": "0.92",
+      "status": "update",
+      "evidence": "https://github.com/ETCBC/syriac",
+      "note": "The upstream README describes data version 0.92."
+    },
+    "peshitta": {
+      "name": "Peshitta (Old Testament)",
+      "description": "Syriac Old Testament with ETCBC text annotation.",
+      "checked_tf_version": "0.2",
+      "checked_revision": "9850f5addade26f681334aa475570bef9b0b440a",
+      "latest_tf_version": "0.2",
+      "status": "current",
+      "evidence": "https://github.com/ETCBC/peshitta/tree/master/tf",
+      "note": "The 0.2 feature files match the pinned census."
+    },
+    "syrnt": {
+      "name": "Syriac New Testament",
+      "description": "Syriac New Testament, including SEDRA-derived annotations.",
+      "checked_tf_version": "0.1",
+      "checked_revision": "dae3eb6ff62b9b272fb503646796c25d248175ce",
+      "latest_tf_version": "0.1",
+      "status": "current",
+      "evidence": "https://github.com/ETCBC/syrnt/tree/master/tf",
+      "note": "The 0.1 feature files match the pinned census."
+    },
+    "extrabiblical": {
+      "name": "ETCBC extra-biblical Hebrew",
+      "description": "Non-Masoretic Hebrew texts, including inscriptions and other writings related to the Hebrew Bible.",
+      "checked_tf_version": "0.2",
+      "checked_revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+      "latest_tf_version": "0.2",
+      "status": "current",
+      "evidence": "https://github.com/ETCBC/extrabiblical/tree/master/tf",
+      "note": "The 0.2 feature files match the pinned census."
+    },
+    "tlhdig-tf": {
+      "name": "Thesaurus Linguarum Hethaeorum digitalis",
+      "description": "Text-Fabric conversion of the digital Hittite text corpus.",
+      "checked_tf_version": "0.4.0",
+      "checked_revision": "e954600d9f9cc7f16570729813cf6bf3954b8f6d",
+      "latest_tf_version": "0.4.0",
+      "status": "current",
+      "evidence": "https://github.com/alexsosn/TLHdig-TF/releases/tag/tlhdig-0.3_tf-0.4.0",
+      "note": "Latest published TF release uses TLHdig source 0.3. Original source freshness is a separate question."
+    },
+    "pseudepigrapha": {
+      "name": "Online Critical Pseudepigrapha",
+      "description": "Text-Fabric conversion of critical editions of biblical pseudepigrapha and manuscript variants.",
+      "checked_tf_version": "1.0",
+      "checked_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+      "latest_tf_version": "1.1",
+      "status": "update",
+      "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/releases/tag/v1.1.0",
+      "note": "Release v1.1.0 changes eight TF features, including manuscript metadata."
+    },
+    "assyrian-royal-inscriptions": {
+      "name": "Assyrian royal inscriptions (ORACC)",
+      "description": "Text-Fabric corpus of RIAO and RINAP royal inscriptions.",
+      "checked_tf_version": "0.4.0",
+      "checked_revision": "60db4b724a687c0f425e78eae924fce89454e106",
+      "latest_tf_version": "0.4.0",
+      "status": "current",
+      "evidence": "https://github.com/alexsosn/ORACC-TF/releases/tag/v1.0.0",
+      "note": "Royal-inscription release v1.0.0 remains separate from native-v0.1.0 (Sumerian and medical corpora). Original source freshness is a separate question."
+    }
+  },
+  "ontologies": {
+    "OLiA": {
+      "registry_id": "olia",
+      "checked_baseline": "checked source 2026-02-04",
+      "reference_version": "d3bd4f1 (OWL snapshot)",
+      "latest_reference": "d3bd4f1 (OWL snapshot)",
+      "status": "current",
+      "evidence": "https://github.com/acoli-repo/olia/commits/master/owl/core/olia.owl",
+      "note": "Reference model file's latest commit is d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6; packaged lock exists for selected terms."
+    },
+    "OntoLex-Lemon": {
+      "registry_id": "ontolex-core",
+      "checked_baseline": "2016-05-10",
+      "reference_version": "2016 core; OWL snapshot d6f840f",
+      "latest_reference": "2016 final core",
+      "status": "current",
+      "evidence": "https://www.w3.org/community/ontolex/",
+      "note": "Core OWL blob matches upstream (10783b4c747bbc5f08fbae8f4169d6e02fc22565). Revised core is under development; selected terms have a pinned research lock."
+    },
+    "LRMoo": {
+      "registry_id": "lrmoo",
+      "checked_baseline": "1.1.1 / 2025",
+      "reference_version": "1.1.1",
+      "latest_reference": "1.1.1",
+      "status": "current",
+      "evidence": "https://cidoc-crm.org/lrmoo/fm_releases",
+      "note": "Official IFLA release, November 2025."
+    },
+    "CIDOC CRM": {
+      "registry_id": "cidoc-crm",
+      "checked_baseline": "7.1.3 / 2024-02",
+      "reference_version": "7.1.3",
+      "latest_reference": "7.1.3",
+      "status": "current",
+      "evidence": "https://cidoc-crm.org/versions-of-the-cidoc-crm",
+      "note": "7.4 (August 2026) is a draft; 7.1.3 remains the official ISO-corresponding release."
+    },
+    "CRMtex": {
+      "registry_id": "crmtex",
+      "checked_baseline": "2.0 / 2023-06",
+      "reference_version": "2.0",
+      "latest_reference": "2.0",
+      "status": "current",
+      "evidence": "https://cidoc-crm.org/crmtex/fm_releases",
+      "note": "Latest stable release, June 2023."
+    },
+    "SKOS": {
+      "registry_id": "skos",
+      "checked_baseline": "2009-08-18",
+      "reference_version": "2009 Recommendation",
+      "latest_reference": "2009 Recommendation",
+      "status": "current",
+      "evidence": "https://www.w3.org/TR/skos-reference/",
+      "note": "Stable W3C Recommendation; publication age does not imply obsolescence."
+    },
+    "CRMinf": {
+      "registry_id": "crminf",
+      "checked_baseline": "1.2.1 / 2026-04",
+      "reference_version": "1.2.1",
+      "latest_reference": "1.2.1",
+      "status": "current",
+      "evidence": "https://cidoc-crm.org/crminf/fm_releases",
+      "note": "Latest stable release, April 2026."
+    }
+  }
+}
