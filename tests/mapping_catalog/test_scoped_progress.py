@@ -94,6 +94,31 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(s["OLiA"]["eligible"], 3)
         self.assertEqual(s["OLiA"]["unmatched_rules"][0]["unobserved_features"], ["absent", "large"])
 
+    def test_applicability_research_distinguishes_sign_flags_and_catalogue_metadata(self):
+        import json
+        root = Path(__file__).resolve().parents[2]
+        policy = json.loads((root / "docs/research/data/scoped-applicability.json").read_text())
+        from scripts.pages.scoped_progress import rule_matches
+        def routed(corpus, ontology, key):
+            return any(rule_matches(r, key) for r in policy["corpora"][corpus]["rules"].get(ontology, []))
+        def node(kind, scope, feature=None, value=None):
+            return (kind, scope, feature, value, None, None)
+        def edge(kind, feature, source, target, value=None):
+            return (kind, None, feature, value, source, target)
+        self.assertTrue(routed("tlhdig-tf", "CRMtex", node("value", "sign", "agr", "1")))
+        self.assertFalse(routed("tlhdig-tf", "OLiA", node("value", "sign", "agr", "1")))
+        self.assertTrue(routed("tlhdig-tf", "OLiA", node("value", "analysis", "pos", "ADV")))
+        self.assertTrue(routed("tlhdig-tf", "CRMinf", edge("edge_value", "witness_resolution", "line", "fragment", "ambiguous")))
+        self.assertFalse(routed("tlhdig-tf", "LRMoo", edge("edge_value", "joined", "fragment", "fragment", "direct")))
+        self.assertTrue(routed("assyrian-royal-inscriptions", "CIDOC CRM", node("feature", "document", "material")))
+        self.assertFalse(routed("assyrian-royal-inscriptions", "CIDOC CRM", node("value", "document", "material", "clay")))
+        self.assertTrue(routed("assyrian-royal-inscriptions", "SKOS", node("feature", "document", "genre")))
+        self.assertTrue(routed("pseudepigrapha", "LRMoo", node("node", "chapter")))
+        self.assertTrue(routed("pseudepigrapha", "SKOS", node("feature", "document_metadata", "historical_genres_json")))
+        for model in policy["ontology_evidence"]:
+            self.assertFalse(routed("pseudepigrapha", model, node("feature", "book", "source_sha256")))
+            self.assertFalse(routed("tlhdig-tf", model, node("feature", "sign", "anchor")))
+
     def test_real_snapshots_and_report(self):
         root = Path(__file__).resolve().parents[2]
         report = build_report(root, "a"*40)
