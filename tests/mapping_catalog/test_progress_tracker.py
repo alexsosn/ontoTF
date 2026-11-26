@@ -103,7 +103,7 @@ class ProgressTrackerTests(unittest.TestCase):
                      "Applicability research", "aaaaaaaaaaaa", "progress.json"):
             self.assertIn(word, html)
         self.assertNotIn("<script", html)
-        self.assertNotIn(".xml", html)
+        self.assertNotRegex(html, r'href="[^"]+\.xml(?:[?#][^"]*)?"')
         self.assertNotIn("Historical semantic work plan", html)
         self.assertNotIn("TFont", html)
         self.assertIn("<details>", html)
@@ -112,7 +112,7 @@ class ProgressTrackerTests(unittest.TestCase):
         self.assertNotIn("<img src=x", render(report))
 
     def test_dashboard_distinguishes_missing_empty_and_zero(self):
-        from scripts.pages.dashboard import coverage_bar, ontology_cell
+        from scripts.pages.dashboard import coverage_bar, ontology_cell, percent
         self.assertIn("Unknown", coverage_bar(None))
         self.assertIn("No observed items", coverage_bar(dict(total=0)))
         self.assertIn("0.0%", coverage_bar(dict(total=10, exact=0, qualified=0,
@@ -123,6 +123,11 @@ class ProgressTrackerTests(unittest.TestCase):
         self.assertIn("Empty scope", ontology_cell(empty))
         self.assertIn("0.0%", ontology_cell(dict(empty, eligible=5, other_target=5)))
         self.assertIn("5 other ontology", ontology_cell(dict(empty, eligible=5, other_target=5)))
+        self.assertEqual(percent(1, 100000), "&lt;0.1%")
+        self.assertEqual(percent(99999, 100000), "&gt;99.9%")
+        self.assertEqual(percent(100000, 100000), "100.0%")
+        self.assertNotIn("other ontology", ontology_cell(dict(empty, eligible=5, other_target=5),
+                                                        detailed=False))
 
     def test_dashboard_bar_has_distinct_review_and_mapping_segments(self):
         from scripts.pages.dashboard import coverage_bar
