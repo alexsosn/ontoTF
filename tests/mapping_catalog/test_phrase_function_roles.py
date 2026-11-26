@@ -149,15 +149,32 @@ class PhraseFunctionMappingsTests(unittest.TestCase):
                     "PreC": {"Cmpl": "exact", "PreC": "narrower"},
                     "PrAd": {"Adju": "narrower", "PrAd": "narrower"},
                 }[code]
+                # The catalog also returns qualified clause-role mappings
+                # sharing this pivot. Preserve the exact expected phrase
+                # results and explicitly account for those distinct domains.
+                clause_destinations = {
+                    "Adju": {"Adju"},
+                    "Modi": set(),
+                    "PreC": {"Cmpl", "PreC"},
+                    "PrAd": {"Adju"},
+                }[code]
+                expected = {
+                    ("phrase", "function", dest, BASE + target,
+                     "approximate-via-target", "category",
+                     "narrower", relation)
+                    for dest, relation in destinations.items()
+                } | {
+                    ("clause", "rela", dest, BASE + target,
+                     "approximate-via-target", "category",
+                     "narrower", "narrower")
+                    for dest in clause_destinations
+                }
                 self.assertEqual(
                     {(x.destination.node, x.destination.feature,
                       x.destination.value, x.target, x.relation, x.scope,
                       x.source.relation, x.destination.relation)
                      for x in links},
-                    {("phrase", "function", dest, BASE + target,
-                      "approximate-via-target", "category",
-                      "narrower", relation)
-                     for dest, relation in destinations.items()},
+                    expected,
                 )
         # OLiA itself equates Modifier with SyntacticAdjunct. Its ontology
         # equivalence must NOT silently erase the source's native contrast.
