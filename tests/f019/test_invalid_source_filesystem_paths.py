@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tfont.source_validation import SourceValidationError, load_and_validate, load_source
+from ontotf.source_validation import SourceValidationError, load_and_validate, load_source
 
 
 class InvalidSourceFilesystemPathControls(unittest.TestCase):

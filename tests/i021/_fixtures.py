@@ -13,8 +13,8 @@ from tests.i005._fixtures import (
 from tests.i006._fixtures import PARENT_CHARS, _refresh_mapping
 from tests.i008._fixtures import FakeLoadedApi, loaded_context
 from tests.i020._fixtures import prerequisites_for
-from tfont.semantic_ir import CompiledSemanticIR, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import CompiledSemanticIR, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 def _validated(sources):

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 ORACC = "assyrian-royal-inscriptions"
 VERSION = "1.0.0"

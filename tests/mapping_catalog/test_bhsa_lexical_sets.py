@@ -1,7 +1,7 @@
 """BHSA pinned 2021 lexical-set category coverage, with no lexical identity inference."""
 import unittest
 
-from tfont.xml_mappings import MappingCatalog
+from ontotf.xml_mappings import MappingCatalog
 
 OLIA = "http://purl.org/olia/olia.owl#"
 PIN = "4db00e2157915495e1a4d3d57e41223df24775da"

@@ -32,7 +32,7 @@ load_production_noun_bundle(corpus_id: str) -> SemanticSourceBundle
 load_production_noun_bundles() -> tuple[SemanticSourceBundle, ...]
 ```
 
-`ProductionBundleError` is re-exported from `tfont.__init__`. Unknown or non-string corpus IDs raise this type deterministically; callers are not required to catch an implementation-private exception.
+`ProductionBundleError` is re-exported from `ontotf.__init__`. Unknown or non-string corpus IDs raise this type deterministically; callers are not required to catch an implementation-private exception.
 
 The RED contract must explicitly assert this export and exception type.
 

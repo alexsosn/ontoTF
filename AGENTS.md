@@ -23,7 +23,7 @@ a user-facing query, and tests, not by an arbitrary required number of corpora.
 
 ## Contribution invariant
 
-A new or extended corpus must require editing **one XML file at `src/tfont/mappings/<corpus>.xml`**, optionally a second source-evidence file; no new Python file, manifest, registry, release snapshot, ontology lock or CI workflow. XML in this repository is the source of truth. No intermediary YAML/JSON mapping ledger or external database.
+A new or extended corpus must require editing **one XML file at `src/ontotf/mappings/<corpus>.xml`**, optionally a second source-evidence file; no new Python file, manifest, registry, release snapshot, ontology lock or CI workflow. XML in this repository is the source of truth. No intermediary YAML/JSON mapping ledger or external database.
 
 One cohesive PR, one counterexample-driven adversarial semantic review, one nonduplicated CI check path. Same agent may conduct a genuinely logically independent review. Research/plan/TDD apply to genuinely new behavior, not to repeating an already-supported mapping row. Do not build review receipts, handoff signatures, certificates, cryptographic provenance protocols or per-batch immutable releases. Keep published historical wheels working during migration.
 

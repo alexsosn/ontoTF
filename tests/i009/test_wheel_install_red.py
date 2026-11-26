@@ -33,32 +33,32 @@ class I009WheelInstallTests(unittest.TestCase):
             wheel = wheels[0]
 
             corpus_xml_files = {
-                f"tfont/mappings/{path.name}"
-                for path in (repo / "src/tfont/mappings").glob("*.xml")
+                f"ontotf/mappings/{path.name}"
+                for path in (repo / "src/ontotf/mappings").glob("*.xml")
             }
             expected_corpora = {Path(name).stem for name in corpus_xml_files}
             self.assertTrue({"bhsa", "syriac", "extrabiblical"} <= expected_corpora)
             expected_entries = {
-                "tfont/mappings/schema.xsd",
-                "tfont/mappings/bhsa.xml",
-                "tfont/mappings/syriac.xml",
-                "tfont/mappings/extrabiblical.xml",
-                "tfont/resources/profiles/bhsa/0.1.0/profile.json",
-                "tfont/resources/profiles/bhsa/0.1.0/parent/expected-components.json",
-                "tfont/resources/profiles/bhsa/0.1.0/mappings/noun.json",
-                "tfont/resources/profiles/syriac/0.1.0/profile.json",
-                "tfont/resources/profiles/extrabiblical/0.1.0/profile.json",
-                "tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock.json",
-                "tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
-                "tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/olia.owl",
-                "tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
-                "tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
+                "ontotf/mappings/schema.xsd",
+                "ontotf/mappings/bhsa.xml",
+                "ontotf/mappings/syriac.xml",
+                "ontotf/mappings/extrabiblical.xml",
+                "ontotf/resources/profiles/bhsa/0.1.0/profile.json",
+                "ontotf/resources/profiles/bhsa/0.1.0/parent/expected-components.json",
+                "ontotf/resources/profiles/bhsa/0.1.0/mappings/noun.json",
+                "ontotf/resources/profiles/syriac/0.1.0/profile.json",
+                "ontotf/resources/profiles/extrabiblical/0.1.0/profile.json",
+                "ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/lock.json",
+                "ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/noun-evidence.json",
+                "ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/olia.owl",
+                "ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
+                "ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
             }
             with zipfile.ZipFile(wheel) as archive:
                 names = set(archive.namelist())
             expected_entries.update(corpus_xml_files)
             self.assertTrue(expected_entries <= names, f"missing wheel resources: {sorted(expected_entries - names)}")
-            wheel_xml = {name for name in names if name.startswith("tfont/mappings/") and name.endswith(".xml")}
+            wheel_xml = {name for name in names if name.startswith("ontotf/mappings/") and name.endswith(".xml")}
             self.assertEqual(wheel_xml, corpus_xml_files, "wheel must include exactly the authored XML corpus catalog")
             self.assertFalse(any(name.endswith(".tf") for name in names), "I-009 wheel must not bundle corpus TF payloads")
             self.assertFalse(any(name.endswith(".mql") or name.endswith(".mql.gz") for name in names), "I-009 wheel must not bundle corpus MQL payloads")
@@ -74,25 +74,25 @@ import os
 import sys
 
 sys.path.insert(0, os.environ["I009_INSTALLED_TARGET"])
-import tfont
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+import ontotf
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
-assert tfont.PRODUCTION_NOUN_CORPORA == ("bhsa", "syriac", "extrabiblical")
-assert set(tfont.list_corpora()) == set(json.loads(os.environ["I009_EXPECTED_XML_CORPORA"]))
-for corpus in tfont.list_corpora():
-    tfont.MappingCatalog().load(corpus)  # all authored XML must parse after installation
-links = tfont.find_correspondences(
+assert ontotf.PRODUCTION_NOUN_CORPORA == ("bhsa", "syriac", "extrabiblical")
+assert set(ontotf.list_corpora()) == set(json.loads(os.environ["I009_EXPECTED_XML_CORPORA"]))
+for corpus in ontotf.list_corpora():
+    ontotf.MappingCatalog().load(corpus)  # all authored XML must parse after installation
+links = ontotf.find_correspondences(
     "bhsa", "syriac", node="word", feature="sp", value="nmpr")
 assert any(x.destination.feature == "ls" and x.destination.value == "prop"
            and x.target.endswith("#ProperNoun") for x in links)
 # The new corpus is installed as XML without release registry updates.
-if "syrnt" in tfont.list_corpora():
-    correspondences = tfont.find_correspondences(
+if "syrnt" in ontotf.list_corpora():
+    correspondences = ontotf.find_correspondences(
         "syrnt", "bhsa", node="word", feature="sp", value="noun")
     assert any(link.target.endswith("#Noun") and link.destination.value == "subs"
                for link in correspondences)
-bundles = tfont.load_production_noun_bundles()
+bundles = ontotf.load_production_noun_bundles()
 assert len(bundles) == 3
 validated = tuple(validate_semantic_bundle(bundle) for bundle in bundles)
 ir = compile_semantic_ir(validated)

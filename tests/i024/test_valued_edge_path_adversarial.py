@@ -5,8 +5,8 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-import tfont
-import tfont.semantic_execution as semantic_execution
+import ontotf
+import ontotf.semantic_execution as semantic_execution
 from jsonschema import Draft202012Validator
 
 from tests.i006._fixtures import noun_semantic_key
@@ -41,7 +41,7 @@ def category(error: BaseException) -> str:
 
 def binding_validator():
     schema = json.loads(
-        (ROOT / "src/tfont/schemas/mapping.schema.json").read_text(encoding="utf-8")
+        (ROOT / "src/ontotf/schemas/mapping.schema.json").read_text(encoding="utf-8")
     )
     return Draft202012Validator(
         {
@@ -106,10 +106,10 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         api.loaded_edges = ("word_line", "line_quality")
 
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                semantic_request(tfont),
-                (valued_context(tfont, ir, api),),
+                semantic_request(ontotf),
+                (valued_context(ontotf, ir, api),),
             )
         self.assertEqual(category(raised.exception), "loaded_api_unavailable")
         self.assertEqual(line_quality.f_calls, [])
@@ -122,7 +122,7 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             corpus_id = "bhsa"
             native_execution_binding = replace(binding, steps=(object(),))
 
-        with self.assertRaises(tfont.ExactExecutionError) as raised:
+        with self.assertRaises(ontotf.ExactExecutionError) as raised:
             semantic_execution._validate_edge_path_binding(Plan())
         self.assertEqual(raised.exception.problem.category, "unsupported_native_binding")
     def test_malformed_metadata_pair_shapes_and_value_subclasses_fail_closed(self):
@@ -144,10 +144,10 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         for feature in cases:
             with self.subTest(feature=feature):
                 with self.assertRaises(Exception) as raised:
-                    tfont.execute_exact_semantic(
+                    ontotf.execute_exact_semantic(
                         ir,
-                        semantic_request(tfont),
-                        (valued_context(tfont, ir, selected_api(feature=feature)),),
+                        semantic_request(ontotf),
+                        (valued_context(ontotf, ir, selected_api(feature=feature)),),
                     )
                 self.assertEqual(category(raised.exception), "loaded_api_unavailable")
 
@@ -160,10 +160,10 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             value_type="int",
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 int_ir,
-                semantic_request(tfont),
-                (valued_context(tfont, int_ir, integer_api(feature=int_feature)),),
+                semantic_request(ontotf),
+                (valued_context(ontotf, int_ir, integer_api(feature=int_feature)),),
             )
         self.assertEqual(category(raised.exception), "loaded_api_unavailable")
 
@@ -176,10 +176,10 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         api = selected_api(feature=feature)
         api.node_types[oversized] = "phrase"
         api.F.otype.node_types[oversized] = "phrase"
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (valued_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, ir, api),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
         observations = result.edge_path_evidence.layers[0].observations
@@ -195,34 +195,34 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         )
         api = integer_api(feature=feature)
         api.F.otype.node_types[SAFE_MAX] = "word"
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (valued_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, ir, api),),
         ).corpora[0]
         self.assertEqual(result.nodes, (SAFE_MAX,))
         observation = result.edge_path_evidence.layers[0].observations[0]
         self.assertEqual((observation.target_node, observation.value), (SAFE_MAX, SAFE_MAX))
         self.assertEqual(
-            tfont.edge_path_evidence_fingerprint(result.edge_path_evidence),
+            ontotf.edge_path_evidence_fingerprint(result.edge_path_evidence),
             result.edge_path_evidence.evidence_fingerprint,
         )
 
     def test_pure_unvalued_execution_keeps_none_evidence_and_legacy_conjunction_empty_tuple(self):
         ir = compiled_edge_path_ir()
-        exact = tfont.execute_exact_semantic(
+        exact = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (edge_path_context(tfont, ir),),
+            semantic_request(ontotf),
+            (edge_path_context(ontotf, ir),),
         )
         self.assertIsNone(exact.corpora[0].edge_path_evidence)
 
         conjunction_ir = compiled_two_path_ir()
-        keys = (semantic_request(tfont).key, proper_noun_key(tfont))
-        conjunction = tfont.execute_exact_conjunction(
+        keys = (semantic_request(ontotf).key, proper_noun_key(ontotf))
+        conjunction = ontotf.execute_exact_conjunction(
             conjunction_ir,
-            tfont.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
-            (edge_path_context(tfont, conjunction_ir),),
+            ontotf.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
+            (edge_path_context(ontotf, conjunction_ir),),
         ).corpora[0]
         self.assertEqual(conjunction.constituent_edge_path_evidence, ())
 
@@ -232,25 +232,25 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             losses=("undercoverage",),
         )
         key = ir.authority_index[0][0]
-        result = tfont.execute_approximate_authority(
+        result = ontotf.execute_approximate_authority(
             ir,
-            tfont.ApproximateAuthorityResolveRequest(
+            ontotf.ApproximateAuthorityResolveRequest(
                 key=key,
                 corpora=("bhsa",),
                 accept_losses=("undercoverage",),
             ),
-            (valued_context(tfont, ir),),
+            (valued_context(ontotf, ir),),
         )
         self.assertEqual(result.resolution.losses, ("undercoverage",))
         self.assertIsNotNone(result.corpora[0].edge_path_evidence)
 
     def test_evidence_fingerprint_binds_observation_content_and_rejects_layer_reordering(self):
-        first = tfont.EdgePathObservation(1, 2, True, "x")
-        second = tfont.EdgePathObservation(2, 3, False, None)
-        layer0 = tfont.EdgePathEvidenceLayer(0, (first,))
-        layer1 = tfont.EdgePathEvidenceLayer(1, (second,))
-        base = tfont.EdgePathEvidence(
-            "tfont-edge-path-evidence-v1",
+        first = ontotf.EdgePathObservation(1, 2, True, "x")
+        second = ontotf.EdgePathObservation(2, 3, False, None)
+        layer0 = ontotf.EdgePathEvidenceLayer(0, (first,))
+        layer1 = ontotf.EdgePathEvidenceLayer(1, (second,))
+        base = ontotf.EdgePathEvidence(
+            "ontotf-edge-path-evidence-v1",
             "sha256:" + "a" * 64,
             "sha256:" + "b" * 64,
             (1,),
@@ -258,7 +258,7 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             (3,),
             "",
         )
-        fingerprint = tfont.edge_path_evidence_fingerprint(base)
+        fingerprint = ontotf.edge_path_evidence_fingerprint(base)
 
         mutations = (
             replace(base, start_nodes=(2,)),
@@ -266,9 +266,9 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             replace(
                 base,
                 layers=(
-                    tfont.EdgePathEvidenceLayer(
+                    ontotf.EdgePathEvidenceLayer(
                         0,
-                        (tfont.EdgePathObservation(1, 4, True, "x"),),
+                        (ontotf.EdgePathObservation(1, 4, True, "x"),),
                     ),
                     layer1,
                 ),
@@ -276,9 +276,9 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             replace(
                 base,
                 layers=(
-                    tfont.EdgePathEvidenceLayer(
+                    ontotf.EdgePathEvidenceLayer(
                         0,
-                        (tfont.EdgePathObservation(1, 2, True, "y"),),
+                        (ontotf.EdgePathObservation(1, 2, True, "y"),),
                     ),
                     layer1,
                 ),
@@ -287,20 +287,20 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         for changed in mutations:
             with self.subTest(changed=changed):
                 self.assertNotEqual(
-                    tfont.edge_path_evidence_fingerprint(changed),
+                    ontotf.edge_path_evidence_fingerprint(changed),
                     fingerprint,
                 )
 
         with self.assertRaises(TypeError):
-            tfont.edge_path_evidence_fingerprint(
+            ontotf.edge_path_evidence_fingerprint(
                 replace(base, layers=(layer1, layer0))
             )
 
     def test_fingerprint_helper_rejects_duplicate_forged_nodes_and_pairs(self):
-        observation = tfont.EdgePathObservation(1, 2, True, "x")
-        layer = tfont.EdgePathEvidenceLayer(0, (observation,))
-        base = tfont.EdgePathEvidence(
-            "tfont-edge-path-evidence-v1",
+        observation = ontotf.EdgePathObservation(1, 2, True, "x")
+        layer = ontotf.EdgePathEvidenceLayer(0, (observation,))
+        base = ontotf.EdgePathEvidence(
+            "ontotf-edge-path-evidence-v1",
             "sha256:" + "a" * 64,
             "sha256:" + "b" * 64,
             (1,),
@@ -314,19 +314,19 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             replace(
                 base,
                 layers=(
-                    tfont.EdgePathEvidenceLayer(0, (observation, observation)),
+                    ontotf.EdgePathEvidenceLayer(0, (observation, observation)),
                 ),
             ),
         )
         for row in forged:
             with self.subTest(row=row):
                 with self.assertRaises(TypeError):
-                    tfont.edge_path_evidence_fingerprint(row)
+                    ontotf.edge_path_evidence_fingerprint(row)
     def test_conjunction_intersection_does_not_trim_constituent_path_evidence(self):
         ir = compiled_mixed_conjunction_ir()
         keys = (
             noun_semantic_key(),
-            tfont.SemanticKey(
+            ontotf.SemanticKey(
                 profile_id="linguistic",
                 capability_id="linguistic.part-of-speech",
                 target="http://purl.org/olia/olia.owl#ProperNoun",
@@ -335,10 +335,10 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
             ),
         )
         api = selected_api(selections={"analysis": (10,)})
-        result = tfont.execute_exact_conjunction(
+        result = ontotf.execute_exact_conjunction(
             ir,
-            tfont.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
-            (valued_context(tfont, ir, api),),
+            ontotf.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
+            (valued_context(ontotf, ir, api),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
         evidence = result.constituent_edge_path_evidence[0]
@@ -350,41 +350,41 @@ class I024ValuedEdgePathAdversarialTests(unittest.TestCase):
         self.assertIn(11, targets)
 
     def test_all_public_execution_dataclass_prefixes_and_contract_tokens_stay_compatible(self):
-        self.assertIsNone(tfont.ExactCorpusExecution("x", (), None, None).edge_path_evidence)
-        self.assertIsNone(tfont.ApproximateCorpusExecution("x", (), None, None).edge_path_evidence)
-        self.assertIsNone(tfont.ExactAuthorityCorpusExecution("x", (), None, None).edge_path_evidence)
-        self.assertIsNone(tfont.ApproximateAuthorityCorpusExecution("x", (), None, None).edge_path_evidence)
-        self.assertIsNone(tfont.IdentityCorpusExecution("x", (), None, None).edge_path_evidence)
-        self.assertIsNone(tfont.IdentifierCorpusExecution("x", (), None, None).edge_path_evidence)
+        self.assertIsNone(ontotf.ExactCorpusExecution("x", (), None, None).edge_path_evidence)
+        self.assertIsNone(ontotf.ApproximateCorpusExecution("x", (), None, None).edge_path_evidence)
+        self.assertIsNone(ontotf.ExactAuthorityCorpusExecution("x", (), None, None).edge_path_evidence)
+        self.assertIsNone(ontotf.ApproximateAuthorityCorpusExecution("x", (), None, None).edge_path_evidence)
+        self.assertIsNone(ontotf.IdentityCorpusExecution("x", (), None, None).edge_path_evidence)
+        self.assertIsNone(ontotf.IdentifierCorpusExecution("x", (), None, None).edge_path_evidence)
         self.assertEqual(
-            tfont.ExactConjunctionCorpusExecution("x", (), (), None).constituent_edge_path_evidence,
+            ontotf.ExactConjunctionCorpusExecution("x", (), (), None).constituent_edge_path_evidence,
             (),
         )
         self.assertEqual(
-            tfont.ApproximateConjunctionCorpusExecution("x", (), (), None).constituent_edge_path_evidence,
+            ontotf.ApproximateConjunctionCorpusExecution("x", (), (), None).constituent_edge_path_evidence,
             (),
         )
 
-        self.assertEqual(tfont.EXACT_EXECUTION_CONTRACT, "tfont-exact-execution-v1")
-        self.assertEqual(tfont.APPROXIMATE_EXECUTION_CONTRACT, "tfont-approximate-execution-v1")
+        self.assertEqual(ontotf.EXACT_EXECUTION_CONTRACT, "ontotf-exact-execution-v1")
+        self.assertEqual(ontotf.APPROXIMATE_EXECUTION_CONTRACT, "ontotf-approximate-execution-v1")
         self.assertEqual(
-            tfont.EXACT_CONJUNCTION_EXECUTION_CONTRACT,
-            "tfont-exact-semantic-conjunction-execution-v1",
+            ontotf.EXACT_CONJUNCTION_EXECUTION_CONTRACT,
+            "ontotf-exact-semantic-conjunction-execution-v1",
         )
         self.assertEqual(
-            tfont.APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT,
-            "tfont-approximate-semantic-conjunction-execution-v1",
+            ontotf.APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT,
+            "ontotf-approximate-semantic-conjunction-execution-v1",
         )
         self.assertEqual(
-            tfont.EXACT_AUTHORITY_EXECUTION_CONTRACT,
-            "tfont-exact-authority-execution-v1",
+            ontotf.EXACT_AUTHORITY_EXECUTION_CONTRACT,
+            "ontotf-exact-authority-execution-v1",
         )
         self.assertEqual(
-            tfont.APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT,
-            "tfont-approximate-authority-execution-v1",
+            ontotf.APPROXIMATE_AUTHORITY_EXECUTION_CONTRACT,
+            "ontotf-approximate-authority-execution-v1",
         )
-        self.assertEqual(tfont.IDENTITY_EXECUTION_CONTRACT, "tfont-identity-execution-v1")
-        self.assertEqual(tfont.IDENTIFIER_EXECUTION_CONTRACT, "tfont-identifier-execution-v1")
+        self.assertEqual(ontotf.IDENTITY_EXECUTION_CONTRACT, "ontotf-identity-execution-v1")
+        self.assertEqual(ontotf.IDENTIFIER_EXECUTION_CONTRACT, "ontotf-identifier-execution-v1")
 
 
 if __name__ == "__main__":

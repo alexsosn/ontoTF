@@ -84,7 +84,7 @@ Add a coverage-specific validator in a new module rather than weakening generic 
 
 Add:
 
-`COVERAGE_DENOMINATOR_ALGORITHM = "tfont-coverage-denominator-jcs-sha256-v1"`.
+`COVERAGE_DENOMINATOR_ALGORITHM = "ontotf-coverage-denominator-jcs-sha256-v1"`.
 
 `coverage_denominator_projection(manifest)` binds:
 
@@ -240,7 +240,7 @@ This bridge is deliberately narrow. Future graph-shaped production mappings exte
 
 ## 8. Coverage report API
 
-Add immutable report dataclasses/functions in `src/tfont/coverage.py`:
+Add immutable report dataclasses/functions in `src/ontotf/coverage.py`:
 
 - `CoverageProblem`;
 - `CoverageError`;
@@ -284,7 +284,7 @@ Initial baseline must report all seven as corpus-wide ineligible because no corp
 
 Commit immutable generated manifests under:
 
-`src/tfont/resources/coverage/p004-r011-baseline-v1/<corpus>.json`
+`src/ontotf/resources/coverage/p004-r011-baseline-v1/<corpus>.json`
 
 for exactly seven corpus IDs.
 
@@ -344,11 +344,11 @@ Add tests for:
 
 Expected implementation scope:
 
-- `src/tfont/schemas/coverage-manifest.schema.json`
-- `src/tfont/source_validation.py`
-- `src/tfont/coverage.py`
-- `src/tfont/__init__.py`
-- `src/tfont/resources/coverage/p004-r011-baseline-v1/*.json`
+- `src/ontotf/schemas/coverage-manifest.schema.json`
+- `src/ontotf/source_validation.py`
+- `src/ontotf/coverage.py`
+- `src/ontotf/__init__.py`
+- `src/ontotf/resources/coverage/p004-r011-baseline-v1/*.json`
 - `scripts/coverage/build_p004_r011_baseline.py`
 - `tests/i016/**`
 - `.github/workflows/i016-coverage.yml`

@@ -8,7 +8,7 @@
 
 ## Goal
 
-Ship the smallest release-grade package-resource slice that lets TFont load, validate, compile, resolve and execute one shared semantic request — OLiA `Noun` — against exact pinned BHSA, ETCBC Syriac and ExtraBiblical parents.
+Ship the smallest release-grade package-resource slice that lets ontoTF load, validate, compile, resolve and execute one shared semantic request — OLiA `Noun` — against exact pinned BHSA, ETCBC Syriac and ExtraBiblical parents.
 
 The semantic target is shared; the reviewed native plans are intentionally heterogeneous:
 
@@ -22,10 +22,10 @@ This plan does not add a registry, downloader, materializer, generic query langu
 
 ## 1. Production package layout
 
-Use one canonical in-package resource tree under `src/tfont/resources/`. Do not duplicate resources at repository root.
+Use one canonical in-package resource tree under `src/ontotf/resources/`. Do not duplicate resources at repository root.
 
 ```text
-src/tfont/resources/
+src/ontotf/resources/
 ├── profiles/
 │   ├── bhsa/0.1.0/
 │   │   ├── profile.json
@@ -66,7 +66,7 @@ These strings remain relative to the profile version directory. The loader uses 
 
 ### Package-data rules
 
-Extend `[tool.setuptools.package-data].tfont` without a recursive glob assumption. Keep existing `schemas/*.json` and add explicit patterns covering:
+Extend `[tool.setuptools.package-data].ontotf` without a recursive glob assumption. Keep existing `schemas/*.json` and add explicit patterns covering:
 
 - `resources/profiles/*/*/*.json`
 - `resources/profiles/*/*/parent/*.json`
@@ -77,11 +77,11 @@ Extend `[tool.setuptools.package-data].tfont` without a recursive glob assumptio
 - `resources/ontologies/*/*/*.txt`
 - `resources/ontologies/*/*/*.data`
 
-Runtime lookup must use `importlib.resources.files("tfont")` Traversables directly, following F-002. No conversion to repository-relative `Path` and no assumption that package resources are ordinary files.
+Runtime lookup must use `importlib.resources.files("ontotf")` Traversables directly, following F-002. No conversion to repository-relative `Path` and no assumption that package resources are ordinary files.
 
 ## 2. Public loader surface
 
-Add `src/tfont/production_bundles.py` and re-export the three public names from `tfont.__init__`:
+Add `src/ontotf/production_bundles.py` and re-export the three public names from `ontotf.__init__`:
 
 ```python
 PRODUCTION_NOUN_CORPORA = ("bhsa", "syriac", "extrabiblical")
@@ -108,9 +108,9 @@ Freeze:
 
 | corpus | profile_id | profile_version | component_id |
 |---|---|---|---|
-| BHSA | `tfont-bhsa` | `0.1.0` | `bhsa-tf` |
-| Syriac | `tfont-syriac` | `0.1.0` | `syriac-tf` |
-| ExtraBiblical | `tfont-extrabiblical` | `0.1.0` | `extrabiblical-tf` |
+| BHSA | `ontotf-bhsa` | `0.1.0` | `bhsa-tf` |
+| Syriac | `ontotf-syriac` | `0.1.0` | `syriac-tf` |
+| ExtraBiblical | `ontotf-extrabiblical` | `0.1.0` | `extrabiblical-tf` |
 
 Each profile declares:
 
@@ -123,14 +123,14 @@ capabilities: [linguistic.part-of-speech]
 required_components: [<component-id>]
 ontology_locks: [olia-reference-model]
 dependency_contract_version: 1
-minimum_tfont_runtime: 0.1.0
+minimum_ontotf_runtime: 0.1.0
 ```
 
 ### Profile license boundary
 
 Issue #153 is the release-governance blocker for the required profile `license` field. The repository currently has no top-level license, and fixture `CC-BY-4.0` must not be copied into production as if it were an actual project decision.
 
-Implementation may temporarily use exact string `NOASSERTION` only to exercise RED/GREEN package mechanics. **I-009 cannot receive its final semantic review or merge with `NOASSERTION`, `LicenseRef-TFont-Unspecified`, fixture licensing, or any inferred corpus license in the profile license field.** #153 must be resolved first. This gate prevents a later license edit from silently changing a supposedly frozen profile/release identity.
+Implementation may temporarily use exact string `NOASSERTION` only to exercise RED/GREEN package mechanics. **I-009 cannot receive its final semantic review or merge with `NOASSERTION`, `LicenseRef-ontoTF-Unspecified`, fixture licensing, or any inferred corpus license in the profile license field.** #153 must be resolved first. This gate prevents a later license edit from silently changing a supposedly frozen profile/release identity.
 
 ## 4. Exact parent manifests
 
@@ -139,7 +139,7 @@ Each parent manifest contains exactly one semantically addressable runtime compo
 Algorithm:
 
 ```text
-tfont-parent-components-sha256-v1
+ontotf-parent-components-sha256-v1
 ```
 
 Components:
@@ -154,7 +154,7 @@ Every component uses:
 
 ```text
 kind: tf-payload
-identity_algorithm: tfont-tf-files-sha256-v1
+identity_algorithm: ontotf-tf-files-sha256-v1
 ```
 
 Documentation, linksyr grammar, MQL source and ontology files are evidence/semantic dependencies, not runtime parent components for this slice.
@@ -181,7 +181,7 @@ snapshot_artifact: resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f
 terms_used: [http://purl.org/olia/olia.owl#Noun]
 ```
 
-The exact `olia.owl` bytes are copied from the researched pinned revision. The installed resource must independently hash to the researched digest. Ship the upstream `LICENSE.data` text and a short TFont-authored `ATTRIBUTION.txt` naming OLiA, source repository/revision, exact snapshot path and CC BY 3.0 license URI.
+The exact `olia.owl` bytes are copied from the researched pinned revision. The installed resource must independently hash to the researched digest. Ship the upstream `LICENSE.data` text and a short ontoTF-authored `ATTRIBUTION.txt` naming OLiA, source repository/revision, exact snapshot path and CC BY 3.0 license URI.
 
 Do not create an ontology-bundle/bridge artifact for this slice: one lock is sufficient and no cross-ontology bridge participates.
 
@@ -401,7 +401,7 @@ Negative runtime tests:
 GREEN may add only:
 
 - the package resources listed in section 1;
-- `src/tfont/production_bundles.py` plus package exports;
+- `src/ontotf/production_bundles.py` plus package exports;
 - required package-data patterns;
 - I-009 tests/workflow;
 - minimal attribution/license resource text required by OLiA redistribution;

@@ -40,9 +40,9 @@ Primary references:
 - Python 3.10 `pathlib.Path.open` / `Path.read_bytes`: https://docs.python.org/3.10/library/pathlib.html
 - Python 3.12 `pathlib.Path.open` / `Path.read_bytes`: https://docs.python.org/3.12/library/pathlib.html
 
-F-020 also reuses the more specific CPython filesystem-converter evidence already recorded for the sibling F-019 source-file boundary in `docs/research/F-019-cpython-path-conversion-evidence.md`. That note traces `_io.FileIO` through the platform filesystem converters on Windows and non-Windows builds, records the C-API prohibition on embedded NULs, and identifies `ValueError` as an established path-conversion failure on the supported CPython family. The mechanism is relevant here because `Path.read_bytes()` ultimately reaches the same file-opening/path-conversion boundary; only the TFont authority/category differs (`invalid_schema` rather than `decode_error`).
+F-020 also reuses the more specific CPython filesystem-converter evidence already recorded for the sibling F-019 source-file boundary in `docs/research/F-019-cpython-path-conversion-evidence.md`. That note traces `_io.FileIO` through the platform filesystem converters on Windows and non-Windows builds, records the C-API prohibition on embedded NULs, and identifies `ValueError` as an established path-conversion failure on the supported CPython family. The mechanism is relevant here because `Path.read_bytes()` ultimately reaches the same file-opening/path-conversion boundary; only the ontoTF authority/category differs (`invalid_schema` rather than `decode_error`).
 
-The concrete RED case is an embedded NUL in `schema_root`. The path object/string can be formed, but the subsequent open/read boundary raises a path-conversion exception such as `ValueError` rather than necessarily reaching an `OSError`. TFont must not standardize the host exception text or depend on every platform surfacing the same underlying exception class; it must contain the supported boundary in the existing `invalid_schema` family.
+The concrete RED case is an embedded NUL in `schema_root`. The path object/string can be formed, but the subsequent open/read boundary raises a path-conversion exception such as `ValueError` rather than necessarily reaching an `OSError`. ontoTF must not standardize the host exception text or depend on every platform surfacing the same underlying exception class; it must contain the supported boundary in the existing `invalid_schema` family.
 
 ## Decision
 
@@ -80,7 +80,7 @@ Therefore an invalid explicit schema filesystem path continues to outrank instan
 
 ## Packaged schema resources
 
-When `schema_root is None`, `_read_schema_bytes()` uses `importlib.resources.files("tfont").joinpath("schemas", filename).read_bytes()`. That path is package-owned rather than a caller-provided native filesystem spelling.
+When `schema_root is None`, `_read_schema_bytes()` uses `importlib.resources.files("ontotf").joinpath("schemas", filename).read_bytes()`. That path is package-owned rather than a caller-provided native filesystem spelling.
 
 F-020 should not change packaged-resource semantics merely to make both branches syntactically identical. Existing packaged schema loading/wheel tests are controls.
 
@@ -112,7 +112,7 @@ The RED, GREEN, and final exact-head gate are mandatory on all four supported fi
 - Windows latest × Python 3.10;
 - Windows latest × Python 3.12.
 
-Runner unavailability blocks the missing cell; it does not weaken the matrix. Tests assert only the stable TFont category/provenance/precedence contract, not platform-specific CPython exception wording.
+Runner unavailability blocks the missing cell; it does not weaken the matrix. Tests assert only the stable ontoTF category/provenance/precedence contract, not platform-specific CPython exception wording.
 
 ## Non-goals
 
@@ -126,4 +126,4 @@ Runner unavailability blocks the missing cell; it does not weaken the matrix. Te
 
 ## Conclusion
 
-F-020 is implementable as a narrow public error-boundary repair once overlapping validation work lands. A host path-conversion failure caused by an invalid explicit schema-root filesystem spelling should not escape TFont; it should remain in the existing `invalid_schema` authority family with exact schema-path provenance, and that contract must be demonstrated on the complete supported Ubuntu/Windows × Python 3.10/3.12 matrix.
+F-020 is implementable as a narrow public error-boundary repair once overlapping validation work lands. A host path-conversion failure caused by an invalid explicit schema-root filesystem spelling should not escape ontoTF; it should remain in the existing `invalid_schema` authority family with exact schema-path provenance, and that contract must be demonstrated on the complete supported Ubuntu/Windows × Python 3.10/3.12 matrix.

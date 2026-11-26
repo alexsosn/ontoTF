@@ -13,7 +13,7 @@ They are not canonical ontology mappings and cannot be compiled directly into ex
 
 In particular:
 
-- R-005 `S` does not automatically become TFont `assessment.strength: exact`;
+- R-005 `S` does not automatically become ontoTF `assessment.strength: exact`;
 - R-005 `C` does not automatically become `close` to any particular ontology term;
 - R-005 `B/N` does not establish the direction of an RDF `rdfs:subClassOf` or SKOS mapping predicate;
 - R-005 `R` is evidence that concepts are related, but it does not select a publication relation;
@@ -24,7 +24,7 @@ An approved mapping requires a separate term-level review containing at minimum:
 
 1. exact native selector/path and parent-profile compatibility evidence;
 2. exact target term URI and pinned ontology release/snapshot;
-3. TFont mapping assessment (`exact`, `close`, `broader`, `narrower`, `related`, `ambiguous`, `native-only`, or `unsupported`);
+3. ontoTF mapping assessment (`exact`, `close`, `broader`, `narrower`, `related`, `ambiguous`, `native-only`, or `unsupported`);
 4. applicability conditions and rationale;
 5. formal publication relation/pattern, if one is safe under the target formalism;
 6. regression/negative cases;
@@ -37,7 +37,7 @@ R-005 candidate S/C/B/N/R/U/L
         ↓ evidence, never automatic promotion
 term-level ontology research/review
         ↓
-canonical TFont mapping assessment
+canonical ontoTF mapping assessment
         ↓
 optional RDF/OWL/SKOS formalization
         ↓

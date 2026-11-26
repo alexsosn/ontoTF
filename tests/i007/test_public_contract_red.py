@@ -3,7 +3,7 @@ from __future__ import annotations
 import pathlib
 import unittest
 
-import tfont
+import ontotf
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -23,8 +23,8 @@ class I007PublicContractRedTests(unittest.TestCase):
         )
         for name in expected:
             with self.subTest(name=name):
-                self.assertTrue(hasattr(tfont, name), name)
-                self.assertIn(name, tfont.__all__)
+                self.assertTrue(hasattr(ontotf, name), name)
+                self.assertIn(name, ontotf.__all__)
 
     def test_runtime_documentation_states_security_and_semantic_boundaries(self):
         path = ROOT / "docs" / "runtime-prerequisites.md"

@@ -5,10 +5,10 @@ import importlib.util
 import unittest
 
 from tests.i008._fixtures import FakeLoadedApi
-from tfont.semantic_execution import LoadedComponentContext, LoadedCorpusContext, execute_exact_semantic
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_resolver import SemanticResolveRequest, SemanticResolutionError
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_execution import LoadedComponentContext, LoadedCorpusContext, execute_exact_semantic
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_resolver import SemanticResolveRequest, SemanticResolutionError
+from ontotf.semantic_validation import validate_semantic_bundle
 
 OLIA_NOUN = "http://purl.org/olia/olia.owl#Noun"
 PARENT_DIGESTS = {
@@ -34,9 +34,9 @@ def _key() -> SemanticKey:
 
 
 def _module(testcase: unittest.TestCase):
-    spec = importlib.util.find_spec("tfont.production_bundles")
+    spec = importlib.util.find_spec("ontotf.production_bundles")
     testcase.assertIsNotNone(spec, "I-009 production bundle module is absent")
-    return importlib.import_module("tfont.production_bundles")
+    return importlib.import_module("ontotf.production_bundles")
 
 
 def _compiled(testcase: unittest.TestCase):

@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 from types import SimpleNamespace
 import unittest
 
-from tfont.bhsa_lexical_preview import (
+from ontotf.bhsa_lexical_preview import (
     BHSA_SOURCE_REVISION, LexicalProjectionError,
     project_bhsa_lexical_form, parse_bhsa_lexical_uri,
 )
@@ -97,7 +97,7 @@ class BHSADerivedLexicalFormTests(unittest.TestCase):
             good.entry_iri.replace(":1437649", ":1"),
             good.form_iri + ":extra",
             good.form_iri.replace(":form:voc_lex_utf8", ":form:lex0"),
-            good.entry_iri.replace("urn:tfont:derived", "http://example.org"),
+            good.entry_iri.replace("urn:ontotf:derived", "http://example.org"),
         ):
             with self.subTest(uri=uri):
                 with self.assertRaises(LexicalProjectionError):

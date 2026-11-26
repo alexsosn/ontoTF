@@ -1,6 +1,6 @@
 # Runtime prerequisite evaluation
 
-TFont derives runtime prerequisite state from the **currently observed materialized corpus** and the selected compiled semantic release. Callers do not choose `verified-exact`, `verified-compatible`, `unverified`, or `incompatible`; the I-007 evaluator derives those states from the observed parent identity and the complete dependency closure recorded in the selected `ProfileReleaseSignature`.
+ontoTF derives runtime prerequisite state from the **currently observed materialized corpus** and the selected compiled semantic release. Callers do not choose `verified-exact`, `verified-compatible`, `unverified`, or `incompatible`; the I-007 evaluator derives those states from the observed parent identity and the complete dependency closure recorded in the selected `ProfileReleaseSignature`.
 
 ## Compatibility states
 

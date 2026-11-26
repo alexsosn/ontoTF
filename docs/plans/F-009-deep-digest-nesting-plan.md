@@ -8,7 +8,7 @@
 
 Harden I-002 programmatic canonicalization/digest inputs against interpreter-dependent recursion failure without changing RFC 8785 bytes for accepted values.
 
-Production scope is limited to `src/tfont/digests.py` and public re-export only if the new limit is part of the supported module API. Tests live under `tests/f009/` plus existing I-002 controls.
+Production scope is limited to `src/ontotf/digests.py` and public re-export only if the new limit is part of the supported module API. Tests live under `tests/f009/` plus existing I-002 controls.
 
 No schema, semantic projection shape, source parser, ontology, compatibility or runtime query behavior changes.
 
@@ -107,8 +107,8 @@ Existing I-002 fixed vectors are mandatory controls. Do not update expected dige
 
 Focused workflow triggers on:
 
-- `src/tfont/digests.py`;
-- `src/tfont/__init__.py` if touched;
+- `src/ontotf/digests.py`;
+- `src/ontotf/__init__.py` if touched;
 - `tests/f009/**`;
 - `tests/i002/**`;
 - F-009 research/plan;

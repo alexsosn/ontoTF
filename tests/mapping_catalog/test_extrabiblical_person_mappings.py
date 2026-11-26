@@ -4,7 +4,7 @@ These are grammatical person categories, not cross-corpus word/entity identities
 """
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError
+from ontotf.xml_mappings import MappingCatalog, MappingError
 
 OLIA = "http://purl.org/olia/olia.owl#"
 PIN = "9a56288e6777bad6328856acf055c780e65dd5d9"

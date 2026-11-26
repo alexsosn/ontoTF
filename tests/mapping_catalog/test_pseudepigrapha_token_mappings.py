@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 from dataclasses import replace
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 TOKEN = "http://purl.org/olia/olia.owl#Token"
 LRMOO_F2 = "http://iflastandards.info/ns/lrm/lrmoo/F2_Expression"

@@ -9,9 +9,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tfont.batch_proposals import load_ledger
-from tfont.review_packets import build_review_packet
-from tfont.external_review_gate import ExternalReviewError
+from ontotf.batch_proposals import load_ledger
+from ontotf.review_packets import build_review_packet
+from ontotf.external_review_gate import ExternalReviewError
 from tests.i033e.test_external_review_red import (
     SHA, REPO, REVIEWER, body_for, pr_data, review,
 )

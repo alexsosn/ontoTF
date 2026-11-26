@@ -6,7 +6,7 @@ or finer part-of-speech classes from shared abbreviations or gloss strings.
 """
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 OLIA = "http://purl.org/olia/olia.owl#"
 

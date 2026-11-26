@@ -5,9 +5,9 @@ import hashlib
 import json
 import unittest
 
-import tfont
-from tfont.digests import canonical_json_bytes
-from tfont.semantic_ir import ApproximationIR, compile_semantic_ir
+import ontotf
+from ontotf.digests import canonical_json_bytes
+from ontotf.semantic_ir import ApproximationIR, compile_semantic_ir
 from tests.i006._fixtures import validated_assessment_bundle
 
 from ._fixtures import (
@@ -41,11 +41,11 @@ RESOLVER_API = (
     "semantic_resolve_approximate",
     "semantic_resolve_approximate_conjunction",
 )
-HAS_APPROXIMATE_RESOLVER = all(hasattr(tfont, name) for name in RESOLVER_API)
+HAS_APPROXIMATE_RESOLVER = all(hasattr(ontotf, name) for name in RESOLVER_API)
 
 
 def assert_problem(testcase, category, callable_, *args, **kwargs):
-    with testcase.assertRaises(tfont.SemanticResolutionError) as raised:
+    with testcase.assertRaises(ontotf.SemanticResolutionError) as raised:
         callable_(*args, **kwargs)
     testcase.assertEqual(problem_category(raised.exception), category)
     return raised.exception
@@ -53,7 +53,7 @@ def assert_problem(testcase, category, callable_, *args, **kwargs):
 
 class I020RedSentinelTests(unittest.TestCase):
     def test_public_approximate_resolver_surface_exists(self):
-        missing = [name for name in RESOLVER_API if not hasattr(tfont, name)]
+        missing = [name for name in RESOLVER_API if not hasattr(ontotf, name)]
         self.assertEqual(
             missing,
             [],
@@ -81,14 +81,14 @@ class I020RedSentinelTests(unittest.TestCase):
 class I020ExactCompatibilityAnchors(unittest.TestCase):
     def test_exact_single_and_multicorpus_fingerprints_are_unchanged(self):
         one = compiled_noun_ir(("bhsa",))
-        one_result = tfont.semantic_resolve(
+        one_result = ontotf.semantic_resolve(
             one,
-            tfont.SemanticResolveRequest(
+            ontotf.SemanticResolveRequest(
                 key=noun_semantic_key(),
                 corpora=("bhsa",),
                 semantic_mode="exact",
             ),
-            prerequisites_for(tfont, one),
+            prerequisites_for(ontotf, one),
         )
         self.assertEqual(
             one_result.plans[0].plan_fingerprint,
@@ -100,14 +100,14 @@ class I020ExactCompatibilityAnchors(unittest.TestCase):
         )
 
         three = compiled_noun_ir(("bhsa", "syriac", "extrabiblical"))
-        three_result = tfont.semantic_resolve(
+        three_result = ontotf.semantic_resolve(
             three,
-            tfont.SemanticResolveRequest(
+            ontotf.SemanticResolveRequest(
                 key=noun_semantic_key(),
                 corpora=("syriac", "extrabiblical", "bhsa"),
                 semantic_mode="exact",
             ),
-            prerequisites_for(tfont, three),
+            prerequisites_for(ontotf, three),
         )
         self.assertEqual(
             three_result.resolution_fingerprint,
@@ -121,9 +121,9 @@ class I020ExactCompatibilityAnchors(unittest.TestCase):
         )
 
         ir, contexts = compiled_and_contexts()
-        result = tfont.execute_exact_conjunction(
+        result = ontotf.execute_exact_conjunction(
             ir,
-            tfont.SemanticConjunctionRequest(
+            ontotf.SemanticConjunctionRequest(
                 keys=(key("Plural"), key("Noun")),
                 corpora=("syriac", "bhsa", "extrabiblical"),
                 semantic_mode="exact",
@@ -158,11 +158,11 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         prerequisites=None,
         key=None,
     ):
-        rows = prerequisites_for(tfont, ir) if prerequisites is None else prerequisites
-        return tfont.semantic_resolve_approximate(
+        rows = prerequisites_for(ontotf, ir) if prerequisites is None else prerequisites
+        return ontotf.semantic_resolve_approximate(
             ir,
             approximate_request(
-                tfont,
+                ontotf,
                 corpora=tuple(corpora),
                 accept_losses=tuple(accept_losses),
                 key=key,
@@ -180,7 +180,7 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         )
 
         result = self.resolve(ir, accept_losses=("undercoverage",))
-        self.assertEqual(result.resolver_contract, tfont.APPROXIMATE_RESOLVER_CONTRACT)
+        self.assertEqual(result.resolver_contract, ontotf.APPROXIMATE_RESOLVER_CONTRACT)
         self.assertEqual(result.comparison_state, "approximately-comparable")
         self.assertEqual(result.losses, ("undercoverage",))
         self.assertEqual(len(result.loss_records), 1)
@@ -368,7 +368,7 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         ir = compiled_binding_ir((("bhsa", "broader", ("undercoverage",), True),))
         key = noun_semantic_key()
 
-        bad_container = tfont.ApproximateSemanticResolveRequest(
+        bad_container = ontotf.ApproximateSemanticResolveRequest(
             key=key,
             corpora=("bhsa",),
             semantic_mode="approximate",
@@ -377,13 +377,13 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_loss_acceptance",
-            tfont.semantic_resolve_approximate,
+            ontotf.semantic_resolve_approximate,
             ir,
             bad_container,
             (),
         )
 
-        duplicate = tfont.ApproximateSemanticResolveRequest(
+        duplicate = ontotf.ApproximateSemanticResolveRequest(
             key=key,
             corpora=("bhsa",),
             semantic_mode="approximate",
@@ -392,13 +392,13 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_loss_acceptance",
-            tfont.semantic_resolve_approximate,
+            ontotf.semantic_resolve_approximate,
             ir,
             duplicate,
             (),
         )
 
-        non_string = tfont.ApproximateSemanticResolveRequest(
+        non_string = ontotf.ApproximateSemanticResolveRequest(
             key=key,
             corpora=("bhsa",),
             semantic_mode="approximate",
@@ -407,13 +407,13 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_loss_acceptance",
-            tfont.semantic_resolve_approximate,
+            ontotf.semantic_resolve_approximate,
             ir,
             non_string,
             (),
         )
 
-        unknown = tfont.ApproximateSemanticResolveRequest(
+        unknown = ontotf.ApproximateSemanticResolveRequest(
             key=key,
             corpora=("bhsa",),
             semantic_mode="approximate",
@@ -422,13 +422,13 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         assert_problem(
             self,
             "unknown_loss_token",
-            tfont.semantic_resolve_approximate,
+            ontotf.semantic_resolve_approximate,
             ir,
             unknown,
             (),
         )
 
-        wrong_mode = tfont.ApproximateSemanticResolveRequest(
+        wrong_mode = ontotf.ApproximateSemanticResolveRequest(
             key=key,
             corpora=("bhsa",),
             semantic_mode="exact",
@@ -437,7 +437,7 @@ class I020ApproximateResolutionTests(unittest.TestCase):
         assert_problem(
             self,
             "unsupported_semantic_mode",
-            tfont.semantic_resolve_approximate,
+            ontotf.semantic_resolve_approximate,
             ir,
             wrong_mode,
             (),
@@ -445,7 +445,7 @@ class I020ApproximateResolutionTests(unittest.TestCase):
 
     def test_valid_request_keeps_stale_prerequisite_precedence(self):
         ir = compiled_binding_ir((("bhsa", "broader", ("undercoverage",), True),))
-        state = prerequisites_for(tfont, ir)[0]
+        state = prerequisites_for(ontotf, ir)[0]
         stale = replace(
             state,
             profile_release_fingerprint="sha256:" + "0" * 64,
@@ -654,10 +654,10 @@ class I020ApproximateResolutionTests(unittest.TestCase):
 )
 class I020ApproximateConjunctionResolutionTests(unittest.TestCase):
     def resolve(self, ir, request):
-        return tfont.semantic_resolve_approximate_conjunction(
+        return ontotf.semantic_resolve_approximate_conjunction(
             ir,
             request,
-            prerequisites_for(tfont, ir),
+            prerequisites_for(ontotf, ir),
         )
 
     def test_exact_plus_broader_unions_undercoverage(self):
@@ -671,7 +671,7 @@ class I020ApproximateConjunctionResolutionTests(unittest.TestCase):
         result = self.resolve(
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Plural",
                 "Noun",
                 accept_losses=("undercoverage",),
@@ -693,7 +693,7 @@ class I020ApproximateConjunctionResolutionTests(unittest.TestCase):
         result = self.resolve(
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Noun",
                 "Plural",
                 accept_losses=("undercoverage", "overcoverage"),
@@ -720,7 +720,7 @@ class I020ApproximateConjunctionResolutionTests(unittest.TestCase):
             self.resolve,
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Noun",
                 "Plural",
                 accept_losses=("undercoverage",),
@@ -738,7 +738,7 @@ class I020ApproximateConjunctionResolutionTests(unittest.TestCase):
         forward = self.resolve(
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Noun",
                 "Plural",
                 corpora=("syriac", "bhsa", "extrabiblical"),
@@ -748,7 +748,7 @@ class I020ApproximateConjunctionResolutionTests(unittest.TestCase):
         reverse = self.resolve(
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Plural",
                 "Noun",
                 corpora=("extrabiblical", "syriac", "bhsa"),

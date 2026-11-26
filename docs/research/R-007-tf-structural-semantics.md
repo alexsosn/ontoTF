@@ -7,7 +7,7 @@
 
 ## Decision
 
-TFont should **not** replace Text-Fabric's native graph with POWLA, Web Annotation, RDF-star, or another RDF runtime model. The faithful common structural layer is:
+ontoTF should **not** replace Text-Fabric's native graph with POWLA, Web Annotation, RDF-star, or another RDF runtime model. The faithful common structural layer is:
 
 1. **native TF warp and feature semantics remain executable truth**;
 2. domain-semantic nodes and edges are projected to the seven-model ontology profiles only where their native meaning warrants it;
@@ -21,7 +21,7 @@ The governing invariant is:
 
 > **TF slot-set coverage/anchoring is structural evidence, not automatically linguistic constituency, physical containment, mereology, or semantic extent.**
 
-TF computes native structural embedding from `oslots` slot-set inclusion. TFont may expose that as native TF structural behavior, but must not silently publish or query it as `partOf`, POWLA `hasParent`, CRM containment, syntactic constituency, witness attestation, or another domain relation unless a reviewed semantic mapping establishes the stronger meaning.
+TF computes native structural embedding from `oslots` slot-set inclusion. ontoTF may expose that as native TF structural behavior, but must not silently publish or query it as `partOf`, POWLA `hasParent`, CRM containment, syntactic constituency, witness attestation, or another domain relation unless a reviewed semantic mapping establishes the stronger meaning.
 
 ## 1. Primary evidence
 
@@ -86,7 +86,7 @@ R-005 establishes that the same native TF mechanism can serve materially differe
 
 Therefore `oslots` cannot be treated as a universal domain-containment predicate.
 
-## 2. Structural dimensions TFont must preserve
+## 2. Structural dimensions ontoTF must preserve
 
 ### 2.1 Native identity
 
@@ -107,7 +107,7 @@ A common structural `Slot` term must therefore carry **no implication** of Word,
 
 ### 2.4 Neutral slot link
 
-`oslots` is the mandatory valueless edge linking non-slot TF nodes to slots. TFont needs a neutral public identity for this link because its interpretation varies by native object family. It must not globally be named `hasChild`, `partOf`, `containsWord`, `hasGlyph`, or another domain predicate.
+`oslots` is the mandatory valueless edge linking non-slot TF nodes to slots. ontoTF needs a neutral public identity for this link because its interpretation varies by native object family. It must not globally be named `hasChild`, `partOf`, `containsWord`, `hasGlyph`, or another domain predicate.
 
 ### 2.5 Native carrier kind
 
@@ -139,11 +139,11 @@ Defaulting every non-slot TF node to `textualExtent` is unsafe.
 
 ### 2.7 Node features
 
-A node feature maps nodes to strings/numbers. TFont must preserve reviewed applicability and value semantics. Dense empty/`None` storage records are not semantic values and cannot establish feature applicability by themselves.
+A node feature maps nodes to strings/numbers. ontoTF must preserve reviewed applicability and value semantics. Dense empty/`None` storage records are not semantic values and cannot establish feature applicability by themselves.
 
 ### 2.8 Directed and valued edge features
 
-A TF edge feature maps an **ordered source-target pair** to either no additional value or a string/number value. TFont mapping/IR must preserve at least:
+A TF edge feature maps an **ordered source-target pair** to either no additional value or a string/number value. ontoTF mapping/IR must preserve at least:
 
 ```text
 source selector/type
@@ -162,7 +162,7 @@ A mapping may preserve direction, map to an ontology inverse property, map an ed
 
 ### 2.10 Discontinuous objects
 
-TF objects may occupy arbitrary slot sets. A discontinuous object must preserve its exact slot set; TFont must never canonicalize it to a bounding contiguous interval merely for publication convenience.
+TF objects may occupy arbitrary slot sets. A discontinuous object must preserve its exact slot set; ontoTF must never canonicalize it to a bounding contiguous interval merely for publication convenience.
 
 ## 3. Corpus stress cases
 

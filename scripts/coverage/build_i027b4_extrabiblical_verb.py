@@ -8,20 +8,20 @@ import copy
 import json
 from pathlib import Path
 
-from tfont.coverage import (
+from ontotf.coverage import (
     coverage_denominator_digest,
     coverage_report,
     load_coverage_manifest,
     validate_coverage_manifest,
 )
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.digests import evidence_record_digest
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.digests import evidence_record_digest
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "src/tfont/resources/coverage/p004-r011-baseline-v1/extrabiblical.json"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json"
-MAPPING = ROOT / "src/tfont/resources/profiles/extrabiblical/0.3.0/mappings/verb.json"
-EVIDENCE = ROOT / "src/tfont/resources/profiles/extrabiblical/0.3.0/evidence/native-verb-pos.json"
+SOURCE = ROOT / "src/ontotf/resources/coverage/p004-r011-baseline-v1/extrabiblical.json"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json"
+MAPPING = ROOT / "src/ontotf/resources/profiles/extrabiblical/0.3.0/mappings/verb.json"
+EVIDENCE = ROOT / "src/ontotf/resources/profiles/extrabiblical/0.3.0/evidence/native-verb-pos.json"
 PINNED_SOURCE = ROOT / "docs/research/data/i027b3/extrabiblical-mql-pos-evidence.json"
 ITEM = 'node_value:sp="verb"'
 MAPPING_ID = "mapping:extrabiblical:olia-verb"

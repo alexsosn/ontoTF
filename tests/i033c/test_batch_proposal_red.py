@@ -6,18 +6,18 @@ import json
 import unittest
 from pathlib import Path
 
-from tfont.batch_proposals import compile_candidate_batch, load_ledger
-from tfont.semantic_digest_v2 import (
+from ontotf.batch_proposals import compile_candidate_batch, load_ledger
+from ontotf.semantic_digest_v2 import (
     mapping_semantic_digest_v2,
     mapping_semantic_projection_v2,
     projection_semantic_digest_v1,
     projection_semantic_projection_v1,
 )
-from tfont.source_validation import SourceValidationError, validate_source
+from ontotf.source_validation import SourceValidationError, validate_source
 
 
 ROOT = Path(__file__).resolve().parents[2]
-LEDGER = ROOT / "src/tfont/resources/batch_pilots/i033c-adj-adv-proposals.json"
+LEDGER = ROOT / "src/ontotf/resources/batch_pilots/i033c-adj-adv-proposals.json"
 OUTPUT = ROOT / "docs/research/data/generated/i033c/adj-adv-candidates.json"
 
 
@@ -35,7 +35,7 @@ class BatchProposalRedTests(unittest.TestCase):
                 corpus = mapping["corpus_id"]
                 target = mapping["projections"][0]["target"].rsplit("#", 1)[1]
                 original = json.loads(
-                    (ROOT / f"src/tfont/resources/profiles/{corpus}/0.4.0/mappings/adj-adv.json")
+                    (ROOT / f"src/ontotf/resources/profiles/{corpus}/0.4.0/mappings/adj-adv.json")
                     .read_text(encoding="utf-8")
                 )
                 historic = next(
@@ -76,7 +76,7 @@ class BatchProposalRedTests(unittest.TestCase):
             )
 
     def test_frozen_report_rebuilt_identically(self):
-        from tfont.batch_proposals import serialized
+        from ontotf.batch_proposals import serialized
         self.assertTrue(LEDGER.is_file())
         self.assertTrue(OUTPUT.is_file())
         self.assertEqual(

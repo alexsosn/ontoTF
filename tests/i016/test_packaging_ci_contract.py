@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-import tfont
+import ontotf
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,7 +22,7 @@ class I016PackagingAndCIContractTests(unittest.TestCase):
             "validate_coverage_manifest",
         ):
             with self.subTest(name=name):
-                self.assertTrue(hasattr(tfont, name), f"RED: tfont root does not export {name}")
+                self.assertTrue(hasattr(ontotf, name), f"RED: ontotf root does not export {name}")
 
     def test_wheel_package_data_includes_coverage_resources(self):
         pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")

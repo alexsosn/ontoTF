@@ -3,15 +3,15 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.coverage import coverage_denominator_digest, load_packaged_coverage_manifest
-from tfont.semantic_validation import (
+from ontotf.coverage import coverage_denominator_digest, load_packaged_coverage_manifest
+from ontotf.semantic_validation import (
     SemanticArtifact, SemanticSourceBundle, SemanticValidationError, validate_semantic_bundle,
 )
 
 
 class I027B1AdversarialTests(unittest.TestCase):
     def test_forged_native_selector_fails_reviewed_digest(self):
-        from tfont.production_bundles import load_production_verb_bundle
+        from ontotf.production_bundles import load_production_verb_bundle
         original = load_production_verb_bundle("bhsa")
         mutated = copy.deepcopy(original.mappings.data)
         verb = next(x for x in mutated["mappings"] if x["mapping_id"] == "mapping:bhsa:olia-verb")
@@ -27,7 +27,7 @@ class I027B1AdversarialTests(unittest.TestCase):
             validate_semantic_bundle(forged)
 
     def test_verb_must_not_replace_historical_noun_release(self):
-        from tfont.production_bundles import load_production_linguistic_bundle, load_production_verb_bundle
+        from ontotf.production_bundles import load_production_linguistic_bundle, load_production_verb_bundle
         noun = load_production_linguistic_bundle("bhsa")
         verb = load_production_verb_bundle("bhsa")
         self.assertEqual(noun.profile.data["profile_version"], "0.2.0")

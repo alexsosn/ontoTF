@@ -26,7 +26,7 @@ class CurrentQueueAdversarial(unittest.TestCase):
 
     def manifests(self,corpus="bhsa"):
         mod=self.mod
-        baseline=mod.load_json(mod.ROOT/f"src/tfont/resources/coverage/p004-r011-baseline-v1/{corpus}.json")
+        baseline=mod.load_json(mod.ROOT/f"src/ontotf/resources/coverage/p004-r011-baseline-v1/{corpus}.json")
         final=mod.load_json(mod.ROOT/mod.load_selection()["selected_manifests"][corpus])
         return baseline, final
 
@@ -85,7 +85,7 @@ class CurrentQueueAdversarial(unittest.TestCase):
     def test_selection_rejects_historical_downgrade(self):
         sel=self.mod.load_selection()
         changed=copy.deepcopy(sel)
-        changed["selected_manifests"]["bhsa"]="src/tfont/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
+        changed["selected_manifests"]["bhsa"]="src/ontotf/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
         with self.assertRaises(ValueError):
             self.mod.build_current_queue(selection=changed)
 

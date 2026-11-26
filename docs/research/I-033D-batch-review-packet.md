@@ -4,7 +4,7 @@
 
 ## Observed limitation in released code
 
-`src/tfont/batch_proposals.py` already compiles four approved-shape-but-unapproved candidate Mapping v2 records from the compact POS ledger. The output includes exact native selectors, content-bound evidence, ontology class locks and correct semantic mapping/projection digests, but deliberately omits `review` fields and has `release_authorized=false`.
+`src/ontotf/batch_proposals.py` already compiles four approved-shape-but-unapproved candidate Mapping v2 records from the compact POS ledger. The output includes exact native selectors, content-bound evidence, ontology class locks and correct semantic mapping/projection digests, but deliberately omits `review` fields and has `release_authorized=false`.
 
 `semantic_digest_v2.py` excludes audit-only `rationale` and `review` from mapping semantic digests. A scholarly argument can change while the technical semantic projection hash remains identical. That is correct for runtime cache stability, but a new review gate **must** include the rationale in a separately versioned content commitment.
 

@@ -5,20 +5,20 @@ import json
 import unittest
 from pathlib import Path
 
-from tfont.coverage import (
+from ontotf.coverage import (
     coverage_denominator_digest, coverage_report, load_packaged_coverage_manifest,
 )
-from tfont.production_bundles import (
+from ontotf.production_bundles import (
     load_production_linguistic_bundle, load_production_verb_bundle,
 )
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 BASE = "http://purl.org/olia/olia.owl#"
 ROOT = Path(__file__).resolve().parents[2]
 BUILDER = ROOT / "scripts/coverage/build_i027b4_extrabiblical_verb.py"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json"
 
 
 def build_from_disk():

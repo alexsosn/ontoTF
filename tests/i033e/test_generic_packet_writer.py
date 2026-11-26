@@ -11,7 +11,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from tfont.review_packets import serialized
+from ontotf.review_packets import serialized
 from tests.i033e.test_overlay_handoff import cohort
 
 # Deliberately RED until the generic entry point is implemented.
@@ -19,7 +19,7 @@ from scripts.mappings import build_candidate_review_packet as writer
 
 
 MANIFEST = "docs/research/data/batch_review/inputs.json"
-LEDGER = "src/tfont/resources/batch_pilots/ten-native-pilot.json"
+LEDGER = "src/ontotf/resources/batch_pilots/ten-native-pilot.json"
 PACKET = "docs/research/data/generated/i033d/ten-native-review-request.json"
 
 

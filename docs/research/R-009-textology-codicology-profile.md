@@ -7,7 +7,7 @@
 
 ## Decision
 
-TFont should represent textological and codicological semantics as a **layered composition**, not as one manuscript ontology and not as one universal `Witness` type.
+ontoTF should represent textological and codicological semantics as a **layered composition**, not as one manuscript ontology and not as one universal `Witness` type.
 
 The first profile has five distinct layers:
 
@@ -19,9 +19,9 @@ The first profile has five distinct layers:
 
 The governing invariant is:
 
-> **Physical carrier, physical writing, intellectual text, textual witness, apparatus reading, source assertion, and scholarly inference are separate semantic objects/roles. A source may connect them, but TFont must not collapse them because one corpus node or label happens to serve several purposes.**
+> **Physical carrier, physical writing, intellectual text, textual witness, apparatus reading, source assertion, and scholarly inference are separate semantic objects/roles. A source may connect them, but ontoTF must not collapse them because one corpus node or label happens to serve several purposes.**
 
-The evidence still does **not** justify minting a normative TFont critical-apparatus ontology. Pseudepigrapha-TF provides a robust full reading/witness graph; the other inspected corpora expose related witness, fragment, damage, qere, edition, or editorial assertions, but not a second independent full reading-at-locus apparatus model. That preserves R-002's rule that TFont-local ontology terms should be introduced only for recurring cross-corpus gaps.
+The evidence still does **not** justify minting a normative ontoTF critical-apparatus ontology. Pseudepigrapha-TF provides a robust full reading/witness graph; the other inspected corpora expose related witness, fragment, damage, qere, edition, or editorial assertions, but not a second independent full reading-at-locus apparatus model. That preserves R-002's rule that ontoTF-local ontology terms should be introduced only for recurring cross-corpus gaps.
 
 Canonical IR still must preserve profile-local apparatus **roles and assertion shapes** so native execution and cross-corpus comparison remain possible without inventing a common target. R-013 owns the final controlled role vocabulary. R-011 must measure whether these gaps recur strongly enough to justify a small later vocabulary or whether an external apparatus ontology becomes acceptable after governance/version review.
 
@@ -134,13 +134,13 @@ The Sharing Ancient Wisdoms ontology is valuable prior art for ancient-text tran
 
 It reuses and extends FRBRoo through the Erlangen OWL implementation and models relationships among manuscripts, textual units and transmitted/reused content.
 
-It should remain reference/prior art rather than a new normative TFont dependency because:
+It should remain reference/prior art rather than a new normative ontoTF dependency because:
 
 - its architecture is tied to the older FRBRoo/Erlangen family rather than current LRMoo 1.1.1;
 - the original SAWS project states that its work is under a Creative Commons Attribution-NonCommercial-ShareAlike licence, which conflicts with R-002's requirement for commercial-use-compatible normative dependencies;
-- its project/version context is historical rather than a current TFont interoperability target.
+- its project/version context is historical rather than a current ontoTF interoperability target.
 
-A later separately licensed redistribution of SAWS data does not silently relicense or modernize the 2.1 ontology model for TFont's normative dependency purposes.
+A later separately licensed redistribution of SAWS data does not silently relicense or modernize the 2.1 ontology model for ontoTF's normative dependency purposes.
 
 Decision: **reference/prior art only**, consistent with R-002.
 
@@ -152,7 +152,7 @@ The Critical Apparatus Ontology declares:
 - version: 0.9
 - release date: 2019-07-08
 
-Its published documentation remains an ontology specification draft and imports older FRBR and ontology-design-pattern components plus Web Annotation. The ontology documentation does not expose a clear licence value sufficient to promote the artifact to a normative redistributable TFont snapshot under R-002 governance.
+Its published documentation remains an ontology specification draft and imports older FRBR and ontology-design-pattern components plus Web Annotation. The ontology documentation does not expose a clear licence value sufficient to promote the artifact to a normative redistributable ontoTF snapshot under R-002 governance.
 
 Decision: **reference/prior art only**.
 
@@ -177,13 +177,13 @@ CEO explicitly models:
 - critical intervention and critical text/passage;
 - Web Annotation-based targeting/selectors.
 
-Its separation between textual `Witness` and physical `WitnessCarrier` is useful prior art for TFont. The generated documentation defines `Witness` as an `F2 Expression`, `WitnessCarrier` as an `F3 Manifestation`, and `preserves` as a specialization of the model's `R4 embodies`. Its apparatus reading/siglum-reference model is much closer to Pseudepigrapha-TF than generic CRM/LRMoo alone.
+Its separation between textual `Witness` and physical `WitnessCarrier` is useful prior art for ontoTF. The generated documentation defines `Witness` as an `F2 Expression`, `WitnessCarrier` as an `F3 Manifestation`, and `preserves` as a specialization of the model's `R4 embodies`. Its apparatus reading/siglum-reference model is much closer to Pseudepigrapha-TF than generic CRM/LRMoo alone.
 
 CEO is nevertheless **not promoted to a supported profile in R-009**:
 
 1. R-002 did not review/accept it as a normative dependency;
 2. its generated ontology embeds/redeclares an older F1/F2/F3/R3/R4/R15/R76 family rather than simply depending on the accepted current LRMoo 1.1.1 contract, so local names cannot be assumed semantically/version compatible;
-3. the 2024 article is CC BY 4.0, but R-009 did not establish a sufficiently explicit licence for redistribution of the ontology artifact itself as a pinned normative TFont dependency;
+3. the 2024 article is CC BY 4.0, but R-009 did not establish a sufficiently explicit licence for redistribution of the ontology artifact itself as a pinned normative ontoTF dependency;
 4. adopting it therefore requires explicit governance, licensing, and current-LRMoo bridge research.
 
 Decision: **strongest current apparatus prior art / candidate future alignment profile**, reference-only for the first P-003 design.
@@ -202,7 +202,7 @@ A newer related model, the **Medieval Manuscript Data Integration Ontology (MMDI
 
 <https://w3id.org/irnerio-mosaico/ontology/mmdio/>
 
-and is also CC BY 4.0. MMDIO extends the MeMO/FaBiO approach for heterogeneous manuscript data integration. Its existence makes the manuscript-vocabulary survey current, but it does not change the first-profile decision: the TFont pilot corpora do not yet show recurring quire/folio/hand/binding semantics that require adding a second normative manuscript ontology, and the FRBR/FaBiO modeling boundary would still need reconciliation with current LRMoo.
+and is also CC BY 4.0. MMDIO extends the MeMO/FaBiO approach for heterogeneous manuscript data integration. Its existence makes the manuscript-vocabulary survey current, but it does not change the first-profile decision: the ontoTF pilot corpora do not yet show recurring quire/folio/hand/binding semantics that require adding a second normative manuscript ontology, and the FRBR/FaBiO modeling boundary would still need reconciliation with current LRMoo.
 
 The Mapping Manuscript Migrations project likewise demonstrates that CRM + FRBR-family models can support large manuscript provenance graphs while source-specific vocabulary fills local gaps.
 
@@ -210,7 +210,7 @@ Decision: **MeMO/MMDIO/MMM are prior art; open a normative codicology-profile re
 
 ## 3. Responsibility matrix
 
-| semantic question | primary TFont layer | unsafe shortcut |
+| semantic question | primary ontoTF layer | unsafe shortcut |
 |---|---|---|
 | What physical object is this? | CIDOC CRM | `manuscript` label ⇒ LRMoo Expression |
 | What physical part is this fragment/folio/surface? | CIDOC CRM physical object/part | physical fragment ⇒ LRMoo R15 fragment |
@@ -226,7 +226,7 @@ Decision: **MeMO/MMDIO/MMM are prior art; open a normative codicology-profile re
 
 ## 4. Witness identity contract
 
-`Witness` is too overloaded for one automatic mapping. TFont must distinguish at least:
+`Witness` is too overloaded for one automatic mapping. ontoTF must distinguish at least:
 
 1. **physical witness carrier** — manuscript, tablet, fragment, printed item, or other physical object;
 2. **textual witness identity** — a textual realization/tradition-level witness that may be preserved by one or more carriers;
@@ -235,7 +235,7 @@ Decision: **MeMO/MMDIO/MMM are prior art; open a normative codicology-profile re
 
 R-013 owns final controlled role names. R-009 requires only that canonical mapping/IR preserve the distinction.
 
-One native node may legitimately support several reviewed roles. TFont should preserve one native identity plus complementary roles/projections rather than duplicate or silently retype the source entity.
+One native node may legitimately support several reviewed roles. ontoTF should preserve one native identity plus complementary roles/projections rather than duplicate or silently retype the source entity.
 
 ## 5. Apparatus gap analysis
 
@@ -264,7 +264,7 @@ variation locus
 
 CEO provides strong prior art for many of these concepts, but it is not yet an accepted supported dependency.
 
-### 5.3 Should TFont mint a local apparatus ontology now?
+### 5.3 Should ontoTF mint a local apparatus ontology now?
 
 **No.** The R-002 recurrence threshold is still not met.
 
@@ -276,7 +276,7 @@ R-009 therefore requires:
 - controlled semantic roles/assertion shapes sufficient for agents and R-011 measurements;
 - profile-local roles must not enter the common semantic→native index as though they had an accepted ontology target;
 - CEO/CAO/SAWS may guide mapping research/documentation only;
-- R-011 must test whether another independent corpus demonstrates the same gap strongly enough to justify a tiny TFont vocabulary;
+- R-011 must test whether another independent corpus demonstrates the same gap strongly enough to justify a tiny ontoTF vocabulary;
 - if CEO later passes licensing/governance/current-LRMoo review, prefer reuse/alignment over inventing overlapping local ontology terms.
 
 This is a deliberate `native-only`/profile-local result, not a failure of the mapping framework.
@@ -317,7 +317,7 @@ An explicit empty reading is **positive source evidence** for omission. Absence 
 
 ### 6.3 Manuscript node semantics
 
-The native `manuscript` node is a textual witness identity in the converter contract. Some records may correspond to physical manuscript carriers, but TFont must not map every such node directly to a CRM physical object or LRMoo F5 Item unless the source identity denotes that carrier.
+The native `manuscript` node is a textual witness identity in the converter contract. Some records may correspond to physical manuscript carriers, but ontoTF must not map every such node directly to a CRM physical object or LRMoo F5 Item unless the source identity denotes that carrier.
 
 A future mapping may separate:
 
@@ -347,7 +347,7 @@ Therefore:
 
 ### 6.5 First-profile apparatus projection
 
-| native assertion | TFont treatment |
+| native assertion | ontoTF treatment |
 |---|---|
 | `unit` | profile-local variation-locus role; `native-only` common-target state |
 | `reading` | profile-local reading role; `native-only` common-target state |
@@ -399,7 +399,7 @@ TLHdig witness relations concerning fragments/lines can support broad witness di
 
 ## 8. ORACC-TF mapping pattern
 
-ORACC-TF remains a stress/conversion target rather than a finalized released TFont profile. Its source/target schema separates physical/catalogue data, text structure, lexical layers and editorial/damage information.
+ORACC-TF remains a stress/conversion target rather than a finalized released ontoTF profile. Its source/target schema separates physical/catalogue data, text structure, lexical layers and editorial/damage information.
 
 Textological mapping should remain layered:
 
@@ -449,7 +449,7 @@ Every mapped assertion must retain whether it is:
 - deterministic converter derivation with explicit rule/closure assumptions;
 - reviewed semantic projection;
 - attributed scholarly claim/inference;
-- TFont runtime/query derivation.
+- ontoTF runtime/query derivation.
 
 Only appropriate source claims/processes project to CRMinf belief/inference classes.
 
@@ -652,7 +652,7 @@ P-003 should preserve these conclusions unless later reviewed evidence supersede
 6. textual witness identity and physical witness carrier must be separable;
 7. SAWS and CAO remain prior art; CEO 1.0 is the strongest modern apparatus candidate but requires governance/licensing/current-LRMoo review before normative use;
 8. MeMO and MMDIO are current manuscript/codicology prior art but do not justify another first-profile dependency absent corpus recurrence and LRMoo reconciliation;
-9. no TFont apparatus ontology is minted yet because independent full-apparatus recurrence is not demonstrated;
+9. no ontoTF apparatus ontology is minted yet because independent full-apparatus recurrence is not demonstrated;
 10. R-013/R-014 must provide role/capability identifiers without pretending profile-local roles are ontology targets;
 11. R-011 must empirically test common projections and residual native-only apparatus gaps.
 
@@ -686,7 +686,7 @@ Rejected for the first profile: CEO is strong apparatus prior art, but current-L
 
 Rejected: both are useful open manuscript models, but their FRBR/FaBiO basis requires reconciliation and current pilot recurrence does not justify another normative profile.
 
-### H. Mint a TFont apparatus ontology now
+### H. Mint a ontoTF apparatus ontology now
 
 Rejected: only one inspected corpus exposes a robust full apparatus graph. Profile-local roles preserve functionality without creating a premature vocabulary authority.
 
@@ -699,13 +699,13 @@ Rejected: only one inspected corpus exposes a robust full apparatus graph. Profi
 - [x] Evaluates CIDOC CRM, CRMtex, LRMoo and CRMinf responsibilities and preserves R-012 version/composition constraints.
 - [x] Evaluates SAWS/CAO as prior art and CEO 1.0 as stronger modern apparatus prior art without premature promotion.
 - [x] Evaluates current MeMO/MMDIO codicology prior art and records exact ontology identities/licensing.
-- [x] Determines that a local TFont apparatus ontology is not yet justified; profile-local roles/native-only mappings suffice for current evidence.
+- [x] Determines that a local ontoTF apparatus ontology is not yet justified; profile-local roles/native-only mappings suffice for current evidence.
 - [x] Defines explicit omission vs unattested/missing/unsupported semantics and scholarly attribution rules.
 - [x] Produces implementable R-011/P-003 mapping, IR, capability and adversarial-test requirements.
 
 ## 19. References
 
-### Accepted TFont research
+### Accepted ontoTF research
 
 - [R-002 ontology governance](R-002-ontology-governance.md)
 - [R-005 corpus semantic census](R-005-corpus-semantic-census.md)

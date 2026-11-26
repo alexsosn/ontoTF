@@ -5,7 +5,7 @@ import json
 import unittest
 from pathlib import Path
 
-from tfont.coverage import (
+from ontotf.coverage import (
     coverage_denominator_digest,
     coverage_report,
     load_coverage_manifest,
@@ -16,8 +16,8 @@ from tfont.coverage import (
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts/coverage/build_i027a_bhsa_verbal_stems.py"
 POLICY = ROOT / "docs/research/data/i027a/bhsa-verbal-stem-policy.json"
-SOURCE = ROOT / "src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
+SOURCE = ROOT / "src/ontotf/resources/coverage/p004-r011-baseline-v1/bhsa.json"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
 
 CODES = (
     "NA", "afel", "etpa", "etpe", "haf", "hif", "hit", "hof",

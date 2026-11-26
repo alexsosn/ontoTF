@@ -136,10 +136,10 @@ No mapping/projection digest changes are required because this is profile/releas
 
 Expected changes:
 
-- `src/tfont/schemas/profile.schema.json`: optional enum property;
-- `src/tfont/semantic_ir.py`: normalize policy into `ProfileReleaseSignature`;
-- `src/tfont/semantic_resolver.py`: release-fingerprint projection and resolver guard;
-- `src/tfont/runtime_prerequisites.py`: evaluator policy gate/signature validation;
+- `src/ontotf/schemas/profile.schema.json`: optional enum property;
+- `src/ontotf/semantic_ir.py`: normalize policy into `ProfileReleaseSignature`;
+- `src/ontotf/semantic_resolver.py`: release-fingerprint projection and resolver guard;
+- `src/ontotf/runtime_prerequisites.py`: evaluator policy gate/signature validation;
 - focused I-011 tests and deliberate migration of the I-007 compatibility test/fixture.
 
 No new dependency kind, request flag, execution API, registry, network behavior or parent-discovery mechanism.

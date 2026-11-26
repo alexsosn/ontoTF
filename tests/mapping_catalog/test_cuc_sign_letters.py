@@ -1,7 +1,7 @@
 """CUC 0.2.8 observed sign vocabulary: transliteration letters vs editorial marks."""
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError
+from ontotf.xml_mappings import MappingCatalog, MappingError
 
 PIN = "ad69400f5446e1c8217af01659c7c10ab00c015b"
 LETTER = "http://purl.org/olia/olia.owl#Letter"

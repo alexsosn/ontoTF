@@ -8,7 +8,7 @@ from tests.i006._fixtures import compiled_noun_ir, with_bundle_digest
 from tests.i006.test_semantic_resolver_contract import prerequisite_for
 
 
-RESOLVER = importlib.import_module("tfont.semantic_resolver")
+RESOLVER = importlib.import_module("ontotf.semantic_resolver")
 
 
 def assert_problem(testcase: unittest.TestCase, category: str, callable_, *args, **kwargs):

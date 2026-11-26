@@ -249,7 +249,7 @@
       "membership_with_value": false,
       "membership_with_values": false
     },
-    "tfont_declares_text_fabric_runtime_dependency": false
+    "ontotf_declares_text_fabric_runtime_dependency": false
   },
   "text_fabric_api": {
     "edge_incoming_signature": "(self, n)",

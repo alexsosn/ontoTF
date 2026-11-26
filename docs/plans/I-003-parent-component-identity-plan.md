@@ -23,7 +23,7 @@ It does not decide compatibility, validate dependency closure, resolve profile r
 ## 2. Production layout
 
 ```text
-src/tfont/
+src/ontotf/
   parent_identity.py
   __init__.py               # export common public identity API
 
@@ -38,10 +38,10 @@ No schema change is required.
 ## 3. Versioned algorithm constants
 
 ```python
-FILE_BYTES_ALGORITHM = "tfont-file-bytes-sha256-v1"
-DIRECTORY_FILES_ALGORITHM = "tfont-directory-files-sha256-v1"
-TF_FILES_ALGORITHM = "tfont-tf-files-sha256-v1"
-PARENT_COMPONENTS_ALGORITHM = "tfont-parent-components-sha256-v1"
+FILE_BYTES_ALGORITHM = "ontotf-file-bytes-sha256-v1"
+DIRECTORY_FILES_ALGORITHM = "ontotf-directory-files-sha256-v1"
+TF_FILES_ALGORITHM = "ontotf-tf-files-sha256-v1"
+PARENT_COMPONENTS_ALGORITHM = "ontotf-parent-components-sha256-v1"
 ```
 
 Digest values use the I-002 representation:
@@ -71,7 +71,7 @@ parent_manifest_projection(manifest: dict[str, JSONValue]) -> dict[str, JSONValu
 parent_manifest_digest(manifest: dict[str, JSONValue]) -> str
 ```
 
-Common functions/errors are exported from `tfont.__init__`. Algorithm constants remain available from `tfont.parent_identity`.
+Common functions/errors are exported from `ontotf.__init__`. Algorithm constants remain available from `ontotf.parent_identity`.
 
 ## 5. Stable error categories
 
@@ -229,7 +229,7 @@ algorithm
 components[]
 ```
 
-`algorithm` must equal `tfont-parent-components-sha256-v1`.
+`algorithm` must equal `ontotf-parent-components-sha256-v1`.
 
 Each component source may contain:
 
@@ -271,15 +271,15 @@ Rules:
 Fixed parent vector with the TF and recursive directory vectors above:
 
 ```text
-bhsa-tf       tf-payload / tfont-tf-files-sha256-v1
-oracc-sidecar sidecar    / tfont-directory-files-sha256-v1
+bhsa-tf       tf-payload / ontotf-tf-files-sha256-v1
+oracc-sidecar sidecar    / ontotf-directory-files-sha256-v1
 
 -> sha256:c8427586f094ade21411843a55a89f88161ab42a7462564905e94599eea57fa9
 ```
 
 ## 13. Mandatory TDD regressions
 
-RED tests are committed before `src/tfont/parent_identity.py` exists and must fail for that missing-production reason.
+RED tests are committed before `src/ontotf/parent_identity.py` exists and must fail for that missing-production reason.
 
 The test suite pins:
 
@@ -311,7 +311,7 @@ The test suite pins:
 
 ```text
 pyproject.toml
-src/tfont/**
+src/ontotf/**
 tests/i003/**
 docs/research/I-003-parent-component-identity-research.md
 docs/plans/I-003-parent-component-identity-plan.md

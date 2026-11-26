@@ -21,15 +21,15 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Callable
 
-from tfont.batch_proposals import packaged_resource
-from tfont.candidate_evidence import CandidateEvidenceResources, MAX_CANDIDATE_EVIDENCE
+from ontotf.batch_proposals import packaged_resource
+from ontotf.candidate_evidence import CandidateEvidenceResources, MAX_CANDIDATE_EVIDENCE
 
-from tfont.external_review_gate import (
+from ontotf.external_review_gate import (
     ExternalReviewError, evaluate_review_snapshot,
 )
-from tfont.single_agent_review import evaluate_single_agent_snapshot
-from tfont.review_packets import verify_review_packet
-from tfont.source_validation import loads_source
+from ontotf.single_agent_review import evaluate_single_agent_snapshot
+from ontotf.review_packets import verify_review_packet
+from ontotf.source_validation import loads_source
 
 
 MAX_BODY = 3_000_000
@@ -259,7 +259,7 @@ def fetch_pr_head_context() -> tuple[
     if set(meta) != keys:
         _abort("candidate batch manifest has unexpected or missing fields")
     ledger_path = _checked_candidate_path(
-        meta["ledger"], "src/tfont/resources/batch_pilots"
+        meta["ledger"], "src/ontotf/resources/batch_pilots"
     )
     packet_path = _checked_candidate_path(
         meta["packet"], "docs/research/data/generated/i033d"
@@ -438,7 +438,7 @@ def main() -> int:
         result=evaluate_live_gate(packet, ledger, resource_loader=read,
                                   require_publish=args.publish_handoff)
         if args.publish_handoff:
-            from tfont.overlay_handoff import (
+            from ontotf.overlay_handoff import (
                 build_overlay_handoff, verify_overlay_handoff_integrity,
             )
             if not 10 <= len(packet["rows"]) <= 50:

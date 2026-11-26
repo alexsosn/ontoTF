@@ -7,12 +7,12 @@
 
 ## Decision
 
-TFont needs **two independent controlled dimensions** for every common semantic projection:
+ontoTF needs **two independent controlled dimensions** for every common semantic projection:
 
 1. **formal target kind** — the stable cross-encoding structural kind of the target term/resource;
-2. **semantic role** — what that target means in the TFont mapping contract and how the reviewed native binding may be executed.
+2. **semantic role** — what that target means in the ontoTF mapping contract and how the reviewed native binding may be executed.
 
-A third concern, **ontology-artifact declaration metadata**, records encoding-specific facts such as `rdf:Property`, `owl:ObjectProperty`, `owl:DatatypeProperty`, class memberships, domain/range declarations, and source ontology release. Those declarations are evidence for validation/publication, but they are **not** the canonical TFont target-kind vocabulary.
+A third concern, **ontology-artifact declaration metadata**, records encoding-specific facts such as `rdf:Property`, `owl:ObjectProperty`, `owl:DatatypeProperty`, class memberships, domain/range declarations, and source ontology release. Those declarations are evidence for validation/publication, but they are **not** the canonical ontoTF target-kind vocabulary.
 
 The minimum first-profile formal-kind vocabulary is:
 
@@ -74,7 +74,7 @@ One opaque URI cannot tell the resolver whether to compile:
 - authority navigation;
 - claim/inference provenance.
 
-It also cannot determine publication-predicate legality. A TFont `exact` assessment does not imply `skos:exactMatch`, `owl:equivalentClass`, `owl:equivalentProperty`, or `owl:sameAs`.
+It also cannot determine publication-predicate legality. A ontoTF `exact` assessment does not imply `skos:exactMatch`, `owl:equivalentClass`, `owl:equivalentProperty`, or `owl:sameAs`.
 
 ## 2. Standards evidence
 
@@ -90,8 +90,8 @@ Primary sources:
 Consequences:
 
 - OLiA category/value targets can be `class` + `annotation-value`;
-- an OLiA property target is canonical TFont kind `property`, with role determined separately;
-- OLiA linking-model subclass relations are prior art/evidence, not runtime permission for TFont to infer new executable mappings.
+- an OLiA property target is canonical ontoTF kind `property`, with role determined separately;
+- OLiA linking-model subclass relations are prior art/evidence, not runtime permission for ontoTF to infer new executable mappings.
 
 ### 2.2 SKOS
 
@@ -103,9 +103,9 @@ Primary source:
 
 Consequences:
 
-- `skos-concept` remains a distinct TFont formal kind because concept-scheme and publication-mapping semantics are materially different from a generic named resource;
-- TFont assessment is formalism-neutral and must not be mechanically serialized as a SKOS mapping predicate;
-- an OWL class or ontology property does not become a SKOS concept merely because the TFont assessment vocabulary happens to contain the words `exact`, `close`, `broader`, etc.
+- `skos-concept` remains a distinct ontoTF formal kind because concept-scheme and publication-mapping semantics are materially different from a generic named resource;
+- ontoTF assessment is formalism-neutral and must not be mechanically serialized as a SKOS mapping predicate;
+- an OWL class or ontology property does not become a SKOS concept merely because the ontoTF assessment vocabulary happens to contain the words `exact`, `close`, `broader`, etc.
 
 ### 2.3 OntoLex-Lemon
 
@@ -143,7 +143,7 @@ Primary sources:
 - <https://cidoc-crm.org/html/cidoc_crm_v7.1.3.html>
 - <https://cidoc-crm.org/Issue/ID-555-rdfs-implementation-and-related-issues>
 
-The CRM SIG's RDFS implementation discussion explicitly records cases where supplementary RDFS/OWL declarations create object/datatype-property classification problems. That makes an OWL-specific split unsuitable as TFont's cross-formalism canonical kind.
+The CRM SIG's RDFS implementation discussion explicitly records cases where supplementary RDFS/OWL declarations create object/datatype-property classification problems. That makes an OWL-specific split unsuitable as ontoTF's cross-formalism canonical kind.
 
 Consequences:
 
@@ -160,7 +160,7 @@ The first-profile target vocabulary must be stable when the same reviewed semant
 Therefore:
 
 ```text
-canonical TFont kind: property
+canonical ontoTF kind: property
 semantic role: relation | attribute | annotation-category
 ontology declaration evidence:
   may include rdf:Property
@@ -175,7 +175,7 @@ The role determines the required native execution shape:
 - `attribute` -> literal/value predicate;
 - `annotation-category` -> category/dimension applicability.
 
-Artifact declarations still matter. If a locked ontology artifact explicitly gives a primitive/literal range while a proposed mapping claims an entity-valued `relation`, validation should fail closed. But the canonical target kind remains `property`; switching serialization must not change the projection's TFont identity.
+Artifact declarations still matter. If a locked ontology artifact explicitly gives a primitive/literal range while a proposed mapping claims an entity-valued `relation`, validation should fail closed. But the canonical target kind remains `property`; switching serialization must not change the projection's ontoTF identity.
 
 ## 3. Formal target kinds
 
@@ -207,7 +207,7 @@ Allowed first-profile roles include:
 
 Execution shape is role-sensitive and binding-sensitive. Relation direction, source applicability, target applicability, and any derived path must be explicit.
 
-OWL object/datatype declarations are ontology-artifact refinements, not separate canonical TFont kinds.
+OWL object/datatype declarations are ontology-artifact refinements, not separate canonical ontoTF kinds.
 
 ### 3.3 `skos-concept`
 
@@ -247,7 +247,7 @@ Rejected for the first canonical vocabulary because:
 
 1. the accepted pivot spans RDFS and OWL serializations;
 2. CRM provides authoritative RDFS encodings and has documented object/datatype classification complications in supplementary reasoning encodings;
-3. TFont already needs semantic role `relation` versus `attribute`, which determines the native execution shape;
+3. ontoTF already needs semantic role `relation` versus `attribute`, which determines the native execution shape;
 4. artifact-specific OWL declarations remain available as validation/publication evidence without changing canonical target kind.
 
 A future schema may expose a controlled **declaration refinement** field, but must not make projection identity depend on which equivalent serialization was loaded.
@@ -354,18 +354,18 @@ Use only for concept-to-concept mappings whose source publication entity and tar
 Never auto-convert:
 
 ```text
-TFont exact    -> skos:exactMatch
-TFont close    -> skos:closeMatch
-TFont broader  -> skos:broadMatch
-TFont narrower -> skos:narrowMatch
-TFont related  -> skos:relatedMatch
+ontoTF exact    -> skos:exactMatch
+ontoTF close    -> skos:closeMatch
+ontoTF broader  -> skos:broadMatch
+ontoTF narrower -> skos:narrowMatch
+ontoTF related  -> skos:relatedMatch
 ```
 
 ### 7.2 OWL equivalence
 
-`owl:equivalentClass` requires class-to-class semantics. `owl:equivalentProperty` requires property-to-property semantics. Neither follows from TFont `exact`.
+`owl:equivalentClass` requires class-to-class semantics. `owl:equivalentProperty` requires property-to-property semantics. Neither follows from ontoTF `exact`.
 
-Artifact metadata may additionally validate whether an OWL serialization declares a property as object/datatype, but publication logic must not make the canonical TFont kind encoding-dependent.
+Artifact metadata may additionally validate whether an OWL serialization declares a property as object/datatype, but publication logic must not make the canonical ontoTF kind encoding-dependent.
 
 ### 7.3 `owl:sameAs`
 
@@ -373,11 +373,11 @@ Only for genuine resource identity. Same label, gloss, catalogue number, period 
 
 ### 7.4 RDFS subclass/subproperty
 
-Only where the source/target ontology semantics establish an actual class/property hierarchy. TFont broader/narrower assessment is not automatically an RDFS hierarchy assertion.
+Only where the source/target ontology semantics establish an actual class/property hierarchy. ontoTF broader/narrower assessment is not automatically an RDFS hierarchy assertion.
 
 ### 7.5 OntoLex relations
 
-`ontolex:sense`, `reference`, `canonicalForm`, etc. have specific domain/range semantics and are not generic publication predicates for arbitrary TFont mappings.
+`ontolex:sense`, `reference`, `canonicalForm`, etc. have specific domain/range semantics and are not generic publication predicates for arbitrary ontoTF mappings.
 
 ## 8. Execution implications
 
@@ -414,7 +414,7 @@ role: annotation-value
 binding: F.sp.v(n) == "subs"
 ```
 
-Valid as a reviewed category projection. `skos:exactMatch` remains invalid merely from TFont assessment because the target is an OLiA class, not a concept-to-concept SKOS mapping.
+Valid as a reviewed category projection. `skos:exactMatch` remains invalid merely from ontoTF assessment because the target is an OLiA class, not a concept-to-concept SKOS mapping.
 
 BHSA `otype=lex -> ontolex:LexicalEntry` uses `class + entity-type`. A particular BHSA lexeme linked to a particular dictionary entry instead uses `named-resource + lexical-entry-identity`.
 
@@ -486,13 +486,13 @@ The future production contract should reject at least:
 4. **Class as relation** — `class + relation`.
 5. **Property as entity type** — `property + entity-type`.
 6. **Property declaration/role conflict** — authoritative primitive/literal range but mapping claims entity-valued relation execution.
-7. **Encoding leak** — same reviewed CRM property receives different canonical TFont kinds solely because one artifact is RDFS and another declares OWL Object/DatatypeProperty refinement.
+7. **Encoding leak** — same reviewed CRM property receives different canonical ontoTF kinds solely because one artifact is RDFS and another declares OWL Object/DatatypeProperty refinement.
 8. **SKOS publication misuse** — OWL/RDFS class target mechanically published with `skos:exactMatch`.
 9. **SKOS concept as relation property** — `skos-concept + relation`.
 10. **Class/identity conflation** — `ontolex:LexicalSense` class used as particular `lexical-sense-identity`.
 11. **Gloss promotion** — native gloss/guide word promoted to lexical concept identity without reviewed mapping.
 12. **Authority/class conflation** — PeriodO/AAT authority target marked entity-type solely from label semantics.
-13. **Assessment/publication conflation** — TFont `exact` auto-generates `owl:sameAs`, `owl:equivalentClass`, `owl:equivalentProperty`, or `skos:exactMatch`.
+13. **Assessment/publication conflation** — ontoTF `exact` auto-generates `owl:sameAs`, `owl:equivalentClass`, `owl:equivalentProperty`, or `skos:exactMatch`.
 14. **Native-only fake target** — no-target state forced to carry semantic target kind/role.
 15. **Unsupported fake target** — unsupported capability inserted into semantic->native target index.
 16. **Relation direction omitted** — executable `property + relation` binding lacks source/target direction/applicability.
@@ -576,7 +576,7 @@ Rejected. R-010/R-017 require authority identities to remain distinct from commo
 
 ### 13.6 Let publication predicate determine mapping assessment
 
-Rejected. Publication relation is ontology-specific serialization; TFont mapping assessment is the canonical cross-formalism review result.
+Rejected. Publication relation is ontology-specific serialization; ontoTF mapping assessment is the canonical cross-formalism review result.
 
 ## 14. Acceptance-criteria closure
 
@@ -584,7 +584,7 @@ Rejected. Publication relation is ontology-specific serialization; TFont mapping
 - **Separate semantic-role vocabulary:** entity type; annotation category/value; relation/attribute; lexical entry/form/sense/concept identity; authority reference; claim proposition; inference activity.
 - **Opaque URI shown insufficient:** demonstrated across OLiA, OntoLex, CIDOC CRM family, SKOS authorities, and no-target apparatus cases.
 - **Cross-encoding stability:** object/datatype OWL declarations retained as artifact metadata rather than canonical kind.
-- **Publication legality:** SKOS/OWL/RDFS/OntoLex predicates are kind/role/artifact validated and never mechanically derived from TFont assessment.
+- **Publication legality:** SKOS/OWL/RDFS/OntoLex predicates are kind/role/artifact validated and never mechanically derived from ontoTF assessment.
 - **Execution implications:** binding shape is explicit for class membership, categorical values, entity relations, literal attributes, identities, authorities, claims, and inference activities.
 - **Heterogeneous corpus tests:** BHSA, Syriac, CUC, Pseudepigrapha-TF, ORACC-TF, TLHdig-TF, plus ExtraBiblical control.
 - **Accepted R-011 carried forward:** ORACC generic document remains fail-closed for E22; TLH surface remains non-TX7; unsupported ExtraBiblical gloss is not resurrected.

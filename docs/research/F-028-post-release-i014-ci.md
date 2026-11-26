@@ -29,7 +29,7 @@ GitHub API readback already confirmed:
 - release/tag `v0.1.1`;
 - exact target `d53824c2f5d4f9e209dc685159ba6c56d267aba7`;
 - non-draft release;
-- wheel `tfont-0.1.1-py3-none-any.whl`;
+- wheel `ontotf-0.1.1-py3-none-any.whl`;
 - asset digest `sha256:a2a63562aba2d8fec25dfe65ee5c807db4f40991377d0d81989d5ab8ed6e6c3d`.
 
 The release workflow's publication job therefore completed its purpose. Keeping a `contents: write` workflow keyed to edits of historical v0.1.1 notes adds post-release mutation surface without creating a new legitimate publication operation.
@@ -84,7 +84,7 @@ Still-live current documentation contract while v0.1.1 is the advertised release
 
 `tests/docs/test_readme_status.py` already owns:
 
-- local wheel install string `tfont-0.1.1-py3-none-any.whl`;
+- local wheel install string `ontotf-0.1.1-py3-none-any.whl`;
 - no unsupported PyPI claim;
 - corpus data not bundled.
 

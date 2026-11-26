@@ -36,7 +36,7 @@ Do not add:
 ## 1. Source step contract
 
 Extend `$defs.edgeStep` in
-`src/tfont/schemas/mapping.schema.json` with:
+`src/ontotf/schemas/mapping.schema.json` with:
 
 ```json
 "match_values": {
@@ -69,7 +69,7 @@ Keep mapping schema version 2.
 
 ## 2. Dependency-contract v2
 
-Extend `src/tfont/schemas/profile.schema.json`.
+Extend `src/ontotf/schemas/profile.schema.json`.
 
 The profile schema version remains 2, but
 `dependency_contract_version` becomes `1 | 2`.
@@ -302,7 +302,7 @@ and missing-value checks.
 Add evaluator rule token:
 
 ```text
-tfont-runtime-edge-value-domain-v1
+ontotf-runtime-edge-value-domain-v1
 ```
 
 Validate the v2 assertion defensively from the canonical dependency record.
@@ -370,7 +370,7 @@ continue I-024 empty trailing layers.
 
 ## 10. Evidence and public result compatibility
 
-Do not change `tfont-edge-path-evidence-v1`.
+Do not change `ontotf-edge-path-evidence-v1`.
 
 For filtered steps, record only accepted matching native observations.
 Each observation already includes the exact value that justified the accepted
@@ -428,15 +428,15 @@ Therefore:
 
 Minimal expected changes:
 
-- `src/tfont/schemas/mapping.schema.json`;
-- `src/tfont/schemas/profile.schema.json`;
-- `src/tfont/semantic_digest_v2.py`;
-- `src/tfont/semantic_ir.py`;
-- `src/tfont/semantic_validation.py`;
-- `src/tfont/semantic_resolver.py`;
-- `src/tfont/runtime_prerequisites.py`;
-- `src/tfont/runtime_tf_observation.py`;
-- `src/tfont/semantic_execution.py`;
+- `src/ontotf/schemas/mapping.schema.json`;
+- `src/ontotf/schemas/profile.schema.json`;
+- `src/ontotf/semantic_digest_v2.py`;
+- `src/ontotf/semantic_ir.py`;
+- `src/ontotf/semantic_validation.py`;
+- `src/ontotf/semantic_resolver.py`;
+- `src/ontotf/runtime_prerequisites.py`;
+- `src/ontotf/runtime_tf_observation.py`;
+- `src/ontotf/semantic_execution.py`;
 - focused `tests/i025/`;
 - `.github/workflows/i025-valued-edge-predicate-execution.yml`;
 - post-GREEN I-025 research reconciliation only if the current-state guard must

@@ -6,7 +6,7 @@
 
 ## 1. Goal
 
-Keep recursion failures attributable to schema parsing/validation inside TFont's existing `invalid_schema` authority boundary, without introducing a TFont schema-depth limit or changing source-instance depth policy.
+Keep recursion failures attributable to schema parsing/validation inside ontoTF's existing `invalid_schema` authority boundary, without introducing a ontoTF schema-depth limit or changing source-instance depth policy.
 
 F-015 is now merged, so direct programmatic instance values are normalized/preflighted before `Draft202012Validator.iter_errors()`. A `RecursionError` that escapes after that preflight can therefore be attributed to schema/validator traversal for this ticket.
 
@@ -18,7 +18,7 @@ Translate only these schema-side `RecursionError` boundaries to `SourceValidatio
 2. `Draft202012Validator.check_schema(schema)`;
 3. consumption of `validator.iter_errors(normalized_data)` / sorting of yielded validation errors after F-015 preflight.
 
-Use one stable TFont-owned message for all three, e.g. `schema validation exceeded recursion capacity`. Tests must assert category and provenance; message equality may be asserted only to keep the TFont-owned diagnostic stable, never interpreter recursion text.
+Use one stable ontoTF-owned message for all three, e.g. `schema validation exceeded recursion capacity`. Tests must assert category and provenance; message equality may be asserted only to keep the ontoTF-owned diagnostic stable, never interpreter recursion text.
 
 Do not catch `RecursionError` from source normalization `_plain_json()`: F-015/F-006 own that source-side boundary.
 
@@ -44,12 +44,12 @@ Create `tests/f016/test_custom_schema_recursion_containment.py` with determinist
 
 ### RED-A — schema JSON parser recursion
 
-With a real explicit schema file present, patch `tfont.source_validation.json.loads` to raise `RecursionError` only at the schema parse call. Assert:
+With a real explicit schema file present, patch `ontotf.source_validation.json.loads` to raise `RecursionError` only at the schema parse call. Assert:
 
 - `validate_source(...)` raises `SourceValidationError` rather than raw `RecursionError`;
 - category is `invalid_schema`;
 - `source_name` is the exact explicit schema file path;
-- stable TFont recursion message is used.
+- stable ontoTF recursion message is used.
 
 ### RED-B — `check_schema()` recursion
 
@@ -94,7 +94,7 @@ Because this defect is interpreter/library recursion behavior rather than OS fil
 
 ## 7. Minimal GREEN
 
-Production should remain confined to `src/tfont/source_validation.py`.
+Production should remain confined to `src/ontotf/source_validation.py`.
 
 Preferred shape:
 

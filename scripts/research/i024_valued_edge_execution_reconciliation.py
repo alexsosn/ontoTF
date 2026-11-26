@@ -16,7 +16,7 @@ from jsonschema import Draft202012Validator
 from tf.convert import tf as tf_convert
 from tf.core.edgefeature import EdgeFeature
 
-from tfont.semantic_execution import (
+from ontotf.semantic_execution import (
     ApproximateAuthorityCorpusExecution,
     ApproximateConjunctionCorpusExecution,
     ApproximateCorpusExecution,
@@ -26,8 +26,8 @@ from tfont.semantic_execution import (
     IdentifierCorpusExecution,
     IdentityCorpusExecution,
 )
-from tfont.digests import DigestError, canonical_json_bytes
-from tfont.semantic_ir import EdgeStepIR
+from ontotf.digests import DigestError, canonical_json_bytes
+from ontotf.semantic_ir import EdgeStepIR
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -81,7 +81,7 @@ def main() -> int:
     if not BHSA.is_dir():
         raise SystemExit(f"missing pinned BHSA checkout: {BHSA}")
 
-    schema = load_json("src/tfont/schemas/mapping.schema.json")
+    schema = load_json("src/ontotf/schemas/mapping.schema.json")
     validator = binding_validator(schema)
     unvalued = {
         "component_id": "tlhdig-tf",
@@ -159,7 +159,7 @@ def main() -> int:
             "tlhdig": TLHDIG_REVISION,
             "bhsa": BHSA_REVISION,
         },
-        "current_tfont_contract": {
+        "current_ontotf_contract": {
             "edge_step_ir_fields": dataclass_fields(EdgeStepIR),
             "unvalued_edge_path_is_schema_valid": is_valid(validator, unvalued),
             "valued_candidate_is_schema_valid": is_valid(validator, valued_candidate),
@@ -188,7 +188,7 @@ def main() -> int:
             "string_empty_value_is_representable": (
                 'else ""' in parser_source and 'if valTf == ""' in parser_source
             ),
-            "tfont_jcs_rejects_unsafe_integer": unsafe_integer_rejected,
+            "ontotf_jcs_rejects_unsafe_integer": unsafe_integer_rejected,
         },
         "tlhdig_real_edges": {
             "selected": {
@@ -291,8 +291,8 @@ def main() -> int:
             "none_is_allowed_only_for_declared_int_values": True,
             "empty_string_is_preserved_not_treated_as_absence": True,
             "bool_is_not_an_integer_edge_value": True,
-            "integer_values_must_fit_tfont_safe_jcs_domain": True,
-            "evidence_node_ids_must_fit_tfont_safe_jcs_domain": True,
+            "integer_values_must_fit_ontotf_safe_jcs_domain": True,
+            "evidence_node_ids_must_fit_ontotf_safe_jcs_domain": True,
             "oversized_integer_values_fail_closed_without_string_coercion": True,
             "evidence_is_layered_edge_dag_not_expanded_path_cartesian_product": True,
             "evidence_records_all_steps_when_any_step_is_valued": True,
@@ -307,8 +307,8 @@ def main() -> int:
             "conjunction_evidence_is_plan_aligned_with_none_placeholders": True,
             "conjunction_evidence_stays_empty_when_all_constituents_unvalued": True,
             "outer_execution_contract_version_change": False,
-            "nested_evidence_contract": "tfont-edge-path-evidence-v1",
-            "evidence_fingerprint_algorithm": "tfont-edge-path-evidence-jcs-sha256-v1",
+            "nested_evidence_contract": "ontotf-edge-path-evidence-v1",
+            "evidence_fingerprint_algorithm": "ontotf-edge-path-evidence-jcs-sha256-v1",
             "evidence_fingerprint_projection_is_domain_separated": True,
             "mapping_schema_version_change": False,
             "mapping_digest_algorithm_change": False,
@@ -317,7 +317,7 @@ def main() -> int:
         },
     }
 
-    if result["current_tfont_contract"]["edge_step_ir_fields"] != [
+    if result["current_ontotf_contract"]["edge_step_ir_fields"] != [
         "edge",
         "direction",
         "result_node_type",
@@ -327,11 +327,11 @@ def main() -> int:
         "match_values",
     ]:
         raise SystemExit("I-024 EdgeStepIR contract drifted")
-    if not result["current_tfont_contract"]["unvalued_edge_path_is_schema_valid"]:
+    if not result["current_ontotf_contract"]["unvalued_edge_path_is_schema_valid"]:
         raise SystemExit("I-023 unvalued edge-path compatibility disappeared")
-    if not result["current_tfont_contract"]["valued_candidate_is_schema_valid"]:
+    if not result["current_ontotf_contract"]["valued_candidate_is_schema_valid"]:
         raise SystemExit("I-024 valued edge path is not source-valid")
-    if not result["current_tfont_contract"]["execution_results_have_edge_path_evidence"]:
+    if not result["current_ontotf_contract"]["execution_results_have_edge_path_evidence"]:
         raise SystemExit("I-024 edge-path evidence fields are unavailable")
 
     mechanics = result["text_fabric_mechanics"]

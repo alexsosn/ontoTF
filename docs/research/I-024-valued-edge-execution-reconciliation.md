@@ -78,7 +78,7 @@ empty string, and rejects `None`. `value_type=int` accepts exact Python
 pinned TF empty-integer encoding; that case is preserved as
 `value_present=false, value=None`.
 
-TFont's existing RFC 8785/JCS boundary accepts integers only in the portable
+ontoTF's existing RFC 8785/JCS boundary accepts integers only in the portable
 safe range `[-(2^53)+1, 2^53-1]`. Because edge evidence is content-addressed
 through that canonicalizer, an integer outside this range must fail closed
 rather than be coerced to a decimal string or float. This applies to every
@@ -176,9 +176,9 @@ polymorphic.
 
 ## Evidence identity and public result shape
 
-Introduce a nested evidence contract `tfont-edge-path-evidence-v1` and a
+Introduce a nested evidence contract `ontotf-edge-path-evidence-v1` and a
 domain-separated JCS/SHA-256 fingerprint algorithm
-`tfont-edge-path-evidence-jcs-sha256-v1`. The canonical fingerprint projection
+`ontotf-edge-path-evidence-jcs-sha256-v1`. The canonical fingerprint projection
 includes those contract/algorithm tokens, the **fresh execution plan
 fingerprint**, native binding identity, start nodes, ordered layers, ordered
 native edge observations, and final nodes.
@@ -263,7 +263,7 @@ Execution validates loaded `doValues`, declared `valueType`, exact pair/value
 shapes and JCS-safe evidence integers before result-domain filtering.
 
 Any path containing a valued step emits plan-bound
-`tfont-edge-path-evidence-v1` evidence. The same shared traversal result is
+`ontotf-edge-path-evidence-v1` evidence. The same shared traversal result is
 propagated through exact/approximate semantic, authority, identity, identifier,
 and conjunction execution. Pure I-023 unvalued paths retain `None` evidence
 (and legacy `()` for all-unvalued conjunctions).

@@ -10,9 +10,9 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import SourceValidationError, validate_source  # noqa: E402
+from ontotf.source_validation import SourceValidationError, validate_source  # noqa: E402
 
-SCHEMA_ROOT = ROOT / "src" / "tfont" / "schemas"
+SCHEMA_ROOT = ROOT / "src" / "ontotf" / "schemas"
 PROFILE_SCHEMA = SCHEMA_ROOT / "profile.schema.json"
 RESEARCH = ROOT / "docs" / "research" / "P-002-i004-source-contract-amendment.md"
 PLAN = ROOT / "docs" / "plans" / "P-002-i004-source-contract-amendment.md"
@@ -98,7 +98,7 @@ def dependency(**overrides):
 def profile_v2():
     return {
         "schema_version": 2,
-        "profile_id": "tfont-test",
+        "profile_id": "ontotf-test",
         "profile_version": "0.2.0",
         "semantic_domains": ["morphology"],
         "parent_component_manifest": "parent/expected-components.json",
@@ -107,7 +107,7 @@ def profile_v2():
         "mapping_sources": ["mappings/test.yaml"],
         "dependency_contract_version": 1,
         "dependencies": [dependency()],
-        "minimum_tfont_runtime": "0.1.0",
+        "minimum_ontotf_runtime": "0.1.0",
         "license": "CC-BY-4.0",
     }
 

@@ -13,7 +13,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "docs/research/data/i034d/syriac-morphology-olia.json"
-DENOM = ROOT / "src/tfont/resources/coverage/p004-i027c2-syriac-adj-adv-v1/syriac.json"
+DENOM = ROOT / "src/ontotf/resources/coverage/p004-i027c2-syriac-adj-adv-v1/syriac.json"
 SYRIAC = "bb0eaa7e21b020a26b7566d2e495da9b1f84a919"
 GRAMMAR = "3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6"
 OLIA = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
@@ -142,7 +142,7 @@ class RealSyriacOLiAMorphology(unittest.TestCase):
     def setUpClass(cls):
         cls.data = json.loads(DATA.read_text(encoding="utf-8"))
         cls.manifest = json.loads(DENOM.read_text(encoding="utf-8"))
-        blob = files("tfont").joinpath(*SNAPSHOT.split("/")).read_bytes()
+        blob = files("ontotf").joinpath(*SNAPSHOT.split("/")).read_bytes()
         cls.xml = blob.decode("utf-8")
         assert "sha256:" + hashlib.sha256(blob).hexdigest() == DIGEST
 

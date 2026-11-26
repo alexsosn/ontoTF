@@ -25,7 +25,7 @@ If I-006 is not merged when this plan is accepted, only tests/fixtures that do n
 
 ## Production module boundary
 
-Add one focused module, tentatively `src/tfont/runtime_prerequisites.py`.
+Add one focused module, tentatively `src/ontotf/runtime_prerequisites.py`.
 
 Public surface should remain small:
 
@@ -131,7 +131,7 @@ Deterministic malformed-input precedence: variant/type/coherence -> duplicate/ma
 
 ## Dependency result aggregation
 
-Return exactly one deterministic result per release dependency, canonically ordered by UTF-16 key order consistent with existing TFont deterministic ordering.
+Return exactly one deterministic result per release dependency, canonically ordered by UTF-16 key order consistent with existing ontoTF deterministic ordering.
 
 Each result carries:
 
@@ -260,7 +260,7 @@ If the Text-Fabric package itself is not already a runtime dependency, do not ad
 
 Add a dedicated I-007 focused workflow after RED is established. Python 3.10/3.12 matrix. Trigger on:
 
-- `src/tfont/runtime_prerequisites.py`;
+- `src/ontotf/runtime_prerequisites.py`;
 - I-006 resolver/prerequisite public module if relevant;
 - I-005 semantic IR;
 - dependency/profile schema and P-002 contract paths;
@@ -314,4 +314,4 @@ Any material review finding gets a tests-only RED first, then minimal GREEN, fol
 
 ## Exit condition
 
-I-007 is complete only when TFont can take one current compiled variant plus deterministic observations of an already-materialized corpus and produce a current fail-closed prerequisite state that the I-006 resolver accepts, with all release dependencies evaluated, exact parent/bundle/release identity preserved, unknown evidence non-executable, and no trust or execution capability inferred from a public report hash.
+I-007 is complete only when ontoTF can take one current compiled variant plus deterministic observations of an already-materialized corpus and produce a current fail-closed prerequisite state that the I-006 resolver accepts, with all release dependencies evaluated, exact parent/bundle/release identity preserved, unknown evidence non-executable, and no trust or execution capability inferred from a public report hash.

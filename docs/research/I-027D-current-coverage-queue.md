@@ -17,9 +17,9 @@ The actual source manifests have been independently inspected:
 BHSA latest includes **27** I-027A reviewed `vs` native-only dispositions; these are not OLiA common targets. `sp=verb` adds one exact common target per corpus, not one for every word node.
 
 Latest packaged successor paths:
-- `src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json`
-- `src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json`
-- `src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json` (pending PR #282 until merged)
+- `src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json`
+- `src/ontotf/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json`
+- `src/ontotf/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json` (pending PR #282 until merged)
 Other four corpora should retain the exact manifest paths selected by original I-026 policy.
 
 ## Architectural choice

@@ -25,7 +25,7 @@ The source ID resolves to the pinned evidence and semantic review documented in 
 
 - `docs/research/data/i027a/bhsa-verbal-stem-policy.json` — exact manifest/source pin, selected feature, 26 lexical code spellings, review source ID, expected metrics;
 - `scripts/coverage/build_i027a_bhsa_verbal_stems.py` — local deterministic generator with `--check`, no network;
-- `src/tfont/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json` — immutable generated successor;
+- `src/ontotf/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json` — immutable generated successor;
 - `tests/i027a/test_accounting_red.py` and `tests/i027a/test_accounting_adversarial.py`;
 - `.github/workflows/i027a-bhsa-stems.yml` focused exact-head matrix CI.
 
@@ -33,7 +33,7 @@ The source ID resolves to the pinned evidence and semantic review documented in 
 
 The builder must:
 
-1. Load and validate the historical BHSA manifest through `tfont.coverage`;
+1. Load and validate the historical BHSA manifest through `ontotf.coverage`;
 2. pin exact repository, TF version, corpus/source revision, denominator digest and inventory evidence location;
 3. require the selected `vs` family to match exactly the 27 already-bounded manifest rows;
 4. compare the value spellings with the existing R-005 inventory; observed frequencies are evidence, **not** authority to expand the denominator;

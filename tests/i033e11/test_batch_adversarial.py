@@ -2,9 +2,9 @@
 from __future__ import annotations
 import copy
 import unittest
-from tfont.mapping_supersession import (
+from ontotf.mapping_supersession import (
     NativeSupersessionError,plan_native_only_supersession_batch)
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
 from tests.i033e11.test_batch_red import two_real_source_synthetic_transitions
 
 class BatchSupersessionAdversarial(unittest.TestCase):
@@ -34,7 +34,7 @@ class BatchSupersessionAdversarial(unittest.TestCase):
             else:
                 t[1]["candidate"]["projections"][0]["projection_id"]=(
                     t[0]["candidate"]["projections"][0]["projection_id"])
-                from tfont.semantic_digest_v2 import projection_semantic_digest_v1
+                from ontotf.semantic_digest_v2 import projection_semantic_digest_v1
                 p=t[1]["candidate"]["projections"][0]
                 p["projection_semantic_digest"]=projection_semantic_digest_v1(p)
             t[1]["candidate"]["mapping_semantic_digest"]=mapping_semantic_digest_v2(

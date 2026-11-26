@@ -32,7 +32,7 @@ schemas/
   review.schema.json
   mapping.schema.json
   compatibility-report.schema.json
-src/tfont/
+src/ontotf/
   __init__.py
   source_validation.py
 tests/i001/
@@ -61,7 +61,7 @@ dependencies = [
 
 No Text-Fabric, RDF, HTTP, CLI-framework, or ontology dependencies enter this ticket.
 
-The package public surface exported by `tfont` is intentionally small:
+The package public surface exported by `ontotf` is intentionally small:
 
 ```python
 SourceValidationError
@@ -203,7 +203,7 @@ Load, validate, return the plain JSON-compatible value. No mutation or semantic 
 Every schema:
 
 - declares Draft 2020-12 in `$schema`;
-- has a stable local `$id` under `https://tfont.dev/schema/v1/...` as a logical identifier only;
+- has a stable local `$id` under `https://ontotf.dev/schema/v1/...` as a logical identifier only;
 - uses `type`, `required`, `enum`/`const`, arrays/objects and `additionalProperties: false` where P-001 defines a closed record;
 - does not fetch external schemas;
 - contains only structural rules expressible without opening another source artifact.
@@ -220,7 +220,7 @@ Requires at least:
 - `ontology_locks` unique string array;
 - `mapping_sources` non-empty unique string array;
 - `dependency_contract_version` integer;
-- `minimum_tfont_runtime`, `license` non-empty strings;
+- `minimum_ontotf_runtime`, `license` non-empty strings;
 - optional object `provenance` with JSON-compatible values.
 
 Structural schema does not prove referenced paths/IDs exist.
@@ -229,7 +229,7 @@ Structural schema does not prove referenced paths/IDs exist.
 
 Requires:
 
-- `algorithm` const `tfont-parent-components-sha256-v1`;
+- `algorithm` const `ontotf-parent-components-sha256-v1`;
 - non-empty `components` array;
 - each component has `component_id`, `kind`, `identity_algorithm`, `content_digest`;
 - component `kind` enum: `tf-payload | sidecar | catalogue | zero-span | native-adapter`;
@@ -326,7 +326,7 @@ Confirm RED in CI on an exact commit before creating production code.
 
 ## 10. GREEN implementation order
 
-1. add `pyproject.toml` + `src/tfont/__init__.py`;
+1. add `pyproject.toml` + `src/ontotf/__init__.py`;
 2. add loader/error model with loader-focused tests;
 3. add seven schemas;
 4. add registry/validator;

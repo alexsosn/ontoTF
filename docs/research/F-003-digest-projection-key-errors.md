@@ -7,7 +7,7 @@
 
 ## 1. Question
 
-I-002 defines a stable `DigestError` / `DigestProblem` boundary for canonicalization and projection failures. Public projection helpers accept caller-constructed Python dictionaries directly. This research checks whether non-string dictionary keys are rejected through that TFont error boundary or whether Python implementation exceptions can escape.
+I-002 defines a stable `DigestError` / `DigestProblem` boundary for canonicalization and projection failures. Public projection helpers accept caller-constructed Python dictionaries directly. This research checks whether non-string dictionary keys are rejected through that ontoTF error boundary or whether Python implementation exceptions can escape.
 
 ## 2. Accepted I-002 contract
 
@@ -24,7 +24,7 @@ Projection helpers intentionally do additional local shape checking before canon
 
 ## 3. Current implementation
 
-`src/tfont/digests.py` contains:
+`src/ontotf/digests.py` contains:
 
 ```python
 def _check_source_keys(source, *, allowed, required, path=()):

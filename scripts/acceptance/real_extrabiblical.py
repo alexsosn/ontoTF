@@ -15,7 +15,7 @@ import json
 import os
 from pathlib import Path
 
-import tfont
+import ontotf
 
 
 PIN = "9a56288e6777bad6328856acf055c780e65dd5d9"
@@ -36,7 +36,7 @@ NEEDED_FILES = ("otype.tf", "oslots.tf", "otext.tf", "book.tf", "chapter.tf", "v
 
 def audit_loaded_api(api) -> dict[str, int]:
     """Evaluate real native selectors; never equate words across corpora."""
-    catalog = tfont.MappingCatalog()
+    catalog = ontotf.MappingCatalog()
     token_rows = catalog.find_by_target(TOKEN, corpus="extrabiblical")
     tokens = [
         row for row in token_rows
@@ -83,16 +83,16 @@ def audit_loaded_api(api) -> dict[str, int]:
         raise ValueError("native-only source POS yielded a correspondence")
 
     try:
-        tfont.resolve_nodes(api, token, corpus_version="not-0.2")
-    except tfont.MappingError:
+        ontotf.resolve_nodes(api, token, corpus_version="not-0.2")
+    except ontotf.MappingError:
         pass
     else:
         raise ValueError("wrong corpus-version argument was accepted")
 
     slots = tuple(api.F.otype.s("word"))
-    token_nodes = tfont.resolve_nodes(api, token, corpus_version=TF_VERSION)
-    noun_nodes = tfont.resolve_nodes(api, nouns[0], corpus_version=TF_VERSION)
-    proper_nodes = tfont.resolve_nodes(api, proper[0], corpus_version=TF_VERSION)
+    token_nodes = ontotf.resolve_nodes(api, token, corpus_version=TF_VERSION)
+    noun_nodes = ontotf.resolve_nodes(api, nouns[0], corpus_version=TF_VERSION)
+    proper_nodes = ontotf.resolve_nodes(api, proper[0], corpus_version=TF_VERSION)
     if not set(token_nodes) <= set(slots):
         raise ValueError("token selection contains non-word nodes")
     if not set(noun_nodes) <= set(slots) or not set(proper_nodes) <= set(slots):
@@ -127,11 +127,11 @@ def main() -> None:
                         help="Local directory of original pinned ExtraBiblical tf/0.2 files")
     args = parser.parse_args()
 
-    forbidden = os.environ.get("TFONT_ACCEPTANCE_FORBID_ROOT")
-    if forbidden and Path(tfont.__file__).resolve().is_relative_to(
+    forbidden = os.environ.get("ONTOTF_ACCEPTANCE_FORBID_ROOT")
+    if forbidden and Path(ontotf.__file__).resolve().is_relative_to(
         Path(forbidden).resolve()
     ):
-        raise SystemExit("imported tfont from checkout instead of installed wheel")
+        raise SystemExit("imported ontotf from checkout instead of installed wheel")
 
     tf_dir = args.tf_dir.expanduser().resolve()
     missing = [name for name in NEEDED_FILES if not (tf_dir / name).is_file()]
@@ -148,13 +148,13 @@ def main() -> None:
     observed = audit_loaded_api(api)
     verify_source_counts(observed)
     print(json.dumps({
-        "contract": "tfont-real-extrabiblical-wheel-smoke-v1",
+        "contract": "ontotf-real-extrabiblical-wheel-smoke-v1",
         "status": "pass",
         "corpus": "extrabiblical",
         "source_version": TF_VERSION,
         "source_revision_expected": PIN,
         "counts": observed,
-        "package_file": str(Path(tfont.__file__).resolve()),
+        "package_file": str(Path(ontotf.__file__).resolve()),
     }, sort_keys=True))
 
 

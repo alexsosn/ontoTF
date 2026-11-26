@@ -80,7 +80,7 @@ No acceptance or normalization rule needs to change.
 
 ## 5. Caller surface
 
-A search of merged `src/tfont/digests.py` shows `_validate_logical_path()` is private and currently called only by `source_bundle_digest()`.
+A search of merged `src/ontotf/digests.py` shows `_validate_logical_path()` is private and currently called only by `source_bundle_digest()`.
 
 There is therefore no external helper API compatibility concern. The function signature can safely gain a keyword-only `error_path`/`path` parameter and the sole caller can pass `(index, 0)`.
 

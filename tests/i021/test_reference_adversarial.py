@@ -6,7 +6,7 @@ import json
 import unittest
 from dataclasses import replace
 
-import tfont
+import ontotf
 from tests.i005._fixtures import (
     catalogue_reference,
     entity_identity_reference,
@@ -26,13 +26,13 @@ from tests.i021._fixtures import (
     replace_identifier_row,
     replace_identity_row,
 )
-from tfont.semantic_ir import (
+from ontotf.semantic_ir import (
     IdentifierKey,
     IdentityKey,
     SemanticKey,
     compile_semantic_ir,
 )
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 def category(error: BaseException) -> str:
@@ -130,33 +130,33 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
             formal_kind=authority_key.formal_kind,
             semantic_role=authority_key.semantic_role,
         )
-        request = tfont.SemanticResolveRequest(
+        request = ontotf.SemanticResolveRequest(
             key=semantic_key,
             corpora=("bhsa",),
         )
-        with self.assertRaises(tfont.SemanticResolutionError):
-            tfont.semantic_resolve(ir, request, prerequisites(tfont, ir))
+        with self.assertRaises(ontotf.SemanticResolutionError):
+            ontotf.semantic_resolve(ir, request, prerequisites(ontotf, ir))
 
     def test_authority_corpus_order_is_canonical_and_fingerprint_stable(self):
         ir = authority_multi_ir()
         key = ir.authority_index[0][0]
-        left_request = tfont.AuthorityResolveRequest(
+        left_request = ontotf.AuthorityResolveRequest(
             key=key,
             corpora=("syriac", "bhsa"),
         )
-        right_request = tfont.AuthorityResolveRequest(
+        right_request = ontotf.AuthorityResolveRequest(
             key=key,
             corpora=("bhsa", "syriac"),
         )
-        left = tfont.authority_resolve_exact(
+        left = ontotf.authority_resolve_exact(
             ir,
             left_request,
-            prerequisites(tfont, ir),
+            prerequisites(ontotf, ir),
         )
-        right = tfont.authority_resolve_exact(
+        right = ontotf.authority_resolve_exact(
             ir,
             right_request,
-            prerequisites(tfont, ir),
+            prerequisites(ontotf, ir),
         )
         self.assertEqual(
             tuple(plan.corpus_id for plan in left.plans),
@@ -168,16 +168,16 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
     def test_related_authority_is_non_substitutive_in_both_modes(self):
         ir = authority_ir(assessment="related")
         key = ir.authority_index[0][0]
-        exact = tfont.AuthorityResolveRequest(key=key, corpora=("bhsa",))
+        exact = ontotf.AuthorityResolveRequest(key=key, corpora=("bhsa",))
         assert_problem(
             self,
             "non_substitutive_authority_mapping",
-            tfont.authority_resolve_exact,
+            ontotf.authority_resolve_exact,
             ir,
             exact,
-            prerequisites(tfont, ir),
+            prerequisites(ontotf, ir),
         )
-        approximate = tfont.ApproximateAuthorityResolveRequest(
+        approximate = ontotf.ApproximateAuthorityResolveRequest(
             key=key,
             corpora=("bhsa",),
             accept_losses=("undercoverage", "overcoverage"),
@@ -185,16 +185,16 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         assert_problem(
             self,
             "non_substitutive_authority_mapping",
-            tfont.authority_resolve_approximate,
+            ontotf.authority_resolve_approximate,
             ir,
             approximate,
-            prerequisites(tfont, ir),
+            prerequisites(ontotf, ir),
         )
 
     def test_forged_identity_strength_and_native_binding_fail_closed(self):
         ir = reference_ir()
         key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=key.authority_system,
             external_entity_id=key.external_entity_id,
             corpora=("bhsa",),
@@ -206,10 +206,10 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged_strength,
             request,
-            prerequisites(tfont, forged_strength),
+            prerequisites(ontotf, forged_strength),
         )
         forged_binding = replace_identity_row(
             ir,
@@ -218,16 +218,16 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged_binding,
             request,
-            prerequisites(tfont, forged_binding),
+            prerequisites(ontotf, forged_binding),
         )
 
     def test_forged_identifier_issuer_and_literal_fail_closed(self):
         ir = reference_ir(issuer="issuer-A", literal_id="123")
         key = ir.identifier_index[0][0]
-        request = tfont.IdentifierResolveRequest(key=key, corpora=("bhsa",))
+        request = ontotf.IdentifierResolveRequest(key=key, corpora=("bhsa",))
         for changes in (
             {"issuer_or_namespace": "issuer-B"},
             {"external": "124"},
@@ -238,10 +238,10 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
                 assert_problem(
                     self,
                     "invalid_compiled_ir",
-                    tfont.identifier_resolve,
+                    ontotf.identifier_resolve,
                     forged,
                     request,
-                    prerequisites(tfont, forged),
+                    prerequisites(ontotf, forged),
                 )
 
     def test_forged_parent_review_cannot_escape_selected_release_signature(self):
@@ -258,7 +258,7 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
             native_index=((key, (forged_parent,)),) + ir.native_index[1:],
         )
         identity_key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=identity_key.authority_system,
             external_entity_id=identity_key.external_entity_id,
             corpora=("bhsa",),
@@ -266,10 +266,10 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged,
             request,
-            prerequisites(tfont, forged),
+            prerequisites(ontotf, forged),
         )
 
     def test_explanation_only_rows_cannot_be_injected_into_reverse_indexes(self):
@@ -293,7 +293,7 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
             ir,
             identity_index=((identity_key, (provenance,)),) + ir.identity_index,
         )
-        identity_request = tfont.IdentityResolveRequest(
+        identity_request = ontotf.IdentityResolveRequest(
             authority_system=identity_key.authority_system,
             external_entity_id=identity_key.external_entity_id,
             corpora=("bhsa",),
@@ -301,10 +301,10 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged_identity,
             identity_request,
-            prerequisites(tfont, forged_identity),
+            prerequisites(ontotf, forged_identity),
         )
 
         identifier_key = IdentifierKey(
@@ -315,30 +315,30 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
             ir,
             identifier_index=((identifier_key, (locator,)),) + ir.identifier_index,
         )
-        identifier_request = tfont.IdentifierResolveRequest(
+        identifier_request = ontotf.IdentifierResolveRequest(
             key=identifier_key,
             corpora=("bhsa",),
         )
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identifier_resolve,
+            ontotf.identifier_resolve,
             forged_identifier,
             identifier_request,
-            prerequisites(tfont, forged_identifier),
+            prerequisites(ontotf, forged_identifier),
         )
 
     def test_value_set_reference_execution_uses_existing_native_union_path(self):
         ir = reference_ir_with_execution_shape("value-set-predicate")
         key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=key.authority_system,
             external_entity_id=key.external_entity_id,
             corpora=("bhsa",),
         )
         from tests.i021._fixtures import context
 
-        result = tfont.execute_identity(ir, request, (context(tfont, ir),))
+        result = ontotf.execute_identity(ir, request, (context(ontotf, ir),))
         self.assertEqual(result.corpora[0].nodes, (1, 3))
         self.assertEqual(
             result.corpora[0].plan.native_execution_binding.execution_shape,
@@ -348,12 +348,12 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
     def test_reviewed_but_unsupported_reference_shape_resolves_then_refuses_execution(self):
         ir = reference_ir_with_execution_shape("inspection-only")
         key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=key.authority_system,
             external_entity_id=key.external_entity_id,
             corpora=("bhsa",),
         )
-        resolved = tfont.identity_resolve(ir, request, prerequisites(tfont, ir))
+        resolved = ontotf.identity_resolve(ir, request, prerequisites(ontotf, ir))
         self.assertEqual(len(resolved.plans), 1)
         self.assertEqual(
             resolved.plans[0].native_execution_binding.execution_shape,
@@ -363,15 +363,15 @@ class I021ReferenceAdversarialTests(unittest.TestCase):
         from tests.i021._fixtures import context
 
         with self.assertRaises(Exception) as raised:
-            tfont.execute_identity(ir, request, (context(tfont, ir),))
+            ontotf.execute_identity(ir, request, (context(ontotf, ir),))
         self.assertEqual(category(raised.exception), "unsupported_native_binding")
 
     def test_public_reference_executors_have_no_caller_plan_parameter(self):
         for fn in (
-            tfont.execute_exact_authority,
-            tfont.execute_approximate_authority,
-            tfont.execute_identity,
-            tfont.execute_identifier,
+            ontotf.execute_exact_authority,
+            ontotf.execute_approximate_authority,
+            ontotf.execute_identity,
+            ontotf.execute_identifier,
         ):
             with self.subTest(fn=fn.__name__):
                 self.assertEqual(

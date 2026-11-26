@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.semantic_ir import SemanticIRError, compile_semantic_ir
+from ontotf.semantic_ir import SemanticIRError, compile_semantic_ir
 
 
 class I005SemanticIREdgeContractTests(unittest.TestCase):

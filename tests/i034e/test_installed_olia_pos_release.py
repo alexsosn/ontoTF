@@ -9,9 +9,9 @@ import copy
 from importlib.resources import files
 import unittest
 
-from tfont.release_registry import _load_catalogue, _load_from_catalogue, load_profile, list_profile_releases
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.digests import canonical_json_bytes
+from ontotf.release_registry import _load_catalogue, _load_from_catalogue, load_profile, list_profile_releases
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.digests import canonical_json_bytes
 
 
 POS = {
@@ -118,7 +118,7 @@ class InstalledRealOLiAPOS(unittest.TestCase):
         self.assertEqual((positive,native_only),(12,3))
 
     def test_installed_positive_classes_compile_into_cross_corpus_semantic_ir(self):
-        from tfont.semantic_ir import SemanticKey, compile_semantic_ir
+        from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
         releases = tuple(validate_semantic_bundle(load_profile(corpus, "0.5.0"))
                          for corpus in ("bhsa", "syriac"))
         ir = compile_semantic_ir(releases)
@@ -149,7 +149,7 @@ class InstalledRealOLiAPOS(unittest.TestCase):
                          ["syriac"])
 
     def test_new_release_is_packaged_and_preserves_old_source_bytes(self):
-        root=files("tfont")
+        root=files("ontotf")
         for corpus in POS:
             original=f"resources/profiles/{corpus}/0.4.0"
             extended=f"resources/profiles/{corpus}/0.5.0"

@@ -5,10 +5,10 @@ import copy
 import hashlib
 import unittest
 
-from tfont.batch_proposals import BatchProposalError, compile_candidate_batch, load_ledger
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import canonical_json_bytes, evidence_record_digest
-from tfont.review_packets import (
+from ontotf.batch_proposals import BatchProposalError, compile_candidate_batch, load_ledger
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import canonical_json_bytes, evidence_record_digest
+from ontotf.review_packets import (
     BatchReviewPacketError, build_review_packet, verify_review_packet,
 )
 from tests.i033e6.test_no_target_red import no_target_cohort
@@ -65,7 +65,7 @@ class NoTargetAdversarial(unittest.TestCase):
 
     def test_candidate_source_line_and_digest_rebind_invalidates_packet(self):
         packet=build_review_packet(self.ledger,resource_loader=self.read)
-        from tfont.batch_proposals import packaged_resource
+        from ontotf.batch_proposals import packaged_resource
         name=self.ledger["source_registry"]["bhsa"]["evidence_resource"]
         record=self.read(name)
         record["reviewed_content"]["source_definitions"]["prps"]["line"]=25
@@ -78,7 +78,7 @@ class NoTargetAdversarial(unittest.TestCase):
         from pathlib import Path
         import json
         root=Path(__file__).resolve().parents[2]
-        bhsa=json.loads((root/"src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json"
+        bhsa=json.loads((root/"src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json"
                           ).read_text(encoding="utf-8"))
         old=[r for r in bhsa["semantic_items"]
              if r["accounting"]["production"] is not None

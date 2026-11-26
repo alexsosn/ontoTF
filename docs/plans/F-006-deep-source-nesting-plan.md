@@ -2,7 +2,7 @@
 
 **Issue:** #32  
 **Research:** `docs/research/F-006-deep-source-nesting.md`  
-**Production scope:** `src/tfont/source_validation.py` only.
+**Production scope:** `src/ontotf/source_validation.py` only.
 
 ## 1. Public contract
 
@@ -39,8 +39,8 @@ Helpers generate deterministic nested structures/text without recursive test con
 
 Required tests:
 
-1. deeply nested JSON does not satisfy the planned stable TFont depth contract on pre-fix main;
-2. deeply nested YAML does not satisfy the planned stable TFont depth contract on pre-fix main;
+1. deeply nested JSON does not satisfy the planned stable ontoTF depth contract on pre-fix main;
+2. deeply nested YAML does not satisfy the planned stable ontoTF depth contract on pre-fix main;
 3. boundary JSON: depth 128 accepted, 129 rejected after GREEN;
 4. boundary YAML: depth 128 accepted, 129 rejected after GREEN;
 5. rejection preserves explicit `source_name`;
@@ -77,22 +77,22 @@ Do not alter duplicate-key or non-finite numeric handling.
 
 ### YAML parsing
 
-Do **not** make F-006 depend on ruamel.yaml's parser-specific `max_depth` exception contract. The pinned 0.19.x parser may expose early depth hardening, but coupling TFont's public behavior to its exception taxonomy would create a second, format-specific policy surface and make the stable message sensitive to dependency details.
+Do **not** make F-006 depend on ruamel.yaml's parser-specific `max_depth` exception contract. The pinned 0.19.x parser may expose early depth hardening, but coupling ontoTF's public behavior to its exception taxonomy would create a second, format-specific policy surface and make the stable message sensitive to dependency details.
 
 Instead:
 
-- catch `RecursionError` from `parser.load()` and normalize it to the same stable TFont depth `decode_error` used for JSON;
+- catch `RecursionError` from `parser.load()` and normalize it to the same stable ontoTF depth `decode_error` used for JSON;
 - preserve `DuplicateKeyError` precedence;
 - preserve generic `YAMLError` -> ordinary parse `decode_error` behavior;
 - rely on `_plain_json()` as the deterministic format-independent `MAX_SOURCE_NESTING` authority for successfully parsed documents.
 
-This still fails early for extreme YAML that exhausts parser recursion, while ordinary 129-level documents are rejected deterministically by TFont rather than by a parser-specific depth exception.
+This still fails early for extreme YAML that exhausts parser recursion, while ordinary 129-level documents are rejected deterministically by ontoTF rather than by a parser-specific depth exception.
 
 ## 4. Test workflow
 
 Add a focused F-006 workflow triggered by:
 
-- `src/tfont/source_validation.py`
+- `src/ontotf/source_validation.py`
 - `tests/f006/**`
 - F-006 research/plan
 - workflow itself.
@@ -124,7 +124,7 @@ Record exact RED run before production implementation and exact GREEN run afterw
 Fresh exact-head review must challenge:
 
 - off-by-one depth semantics;
-- whether JSON can still leak `RecursionError` before TFont enforcement;
+- whether JSON can still leak `RecursionError` before ontoTF enforcement;
 - whether YAML parser recursion failure is normalized robustly for pinned 0.19.x without depending on parser-specific depth exceptions;
 - whether recursive aliases were accidentally reclassified;
 - whether duplicate/non-finite error precedence changed;

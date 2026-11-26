@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from tfont.batch_proposals import load_ledger
-from tfont.review_packets import build_review_packet, serialized, verify_review_packet
+from ontotf.batch_proposals import load_ledger
+from ontotf.review_packets import build_review_packet, serialized, verify_review_packet
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "docs/research/data/generated/i033d/adj-adv-review-request.json"

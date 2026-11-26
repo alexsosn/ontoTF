@@ -6,9 +6,9 @@ import json
 import unittest
 from importlib.resources import files
 
-from tfont.digests import evidence_payload_digest
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.digests import evidence_payload_digest
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 OLIA_NOUN = "http://purl.org/olia/olia.owl#Noun"
 EXPECTED_PARENT_DIGESTS = {
@@ -37,9 +37,9 @@ def noun_key() -> SemanticKey:
 
 class I009ProductionBundleTests(unittest.TestCase):
     def _module(self):
-        spec = importlib.util.find_spec("tfont.production_bundles")
+        spec = importlib.util.find_spec("ontotf.production_bundles")
         self.assertIsNotNone(spec, "I-009 production bundle module is absent")
-        return importlib.import_module("tfont.production_bundles")
+        return importlib.import_module("ontotf.production_bundles")
 
     def _bundles(self):
         module = self._module()
@@ -52,7 +52,7 @@ class I009ProductionBundleTests(unittest.TestCase):
         self.assertEqual(module.PRODUCTION_NOUN_CORPORA, ("bhsa", "syriac", "extrabiblical"))
         self.assertEqual(
             tuple(bundle.profile.data["profile_id"] for bundle in bundles),
-            ("tfont-bhsa", "tfont-syriac", "tfont-extrabiblical"),
+            ("ontotf-bhsa", "ontotf-syriac", "ontotf-extrabiblical"),
         )
         validated = tuple(validate_semantic_bundle(bundle) for bundle in bundles)
         ir = compile_semantic_ir(validated)
@@ -72,7 +72,7 @@ class I009ProductionBundleTests(unittest.TestCase):
                 self.assertEqual(len(components), 1)
                 self.assertEqual(components[0]["component_id"], f"{corpus_id}-tf")
                 self.assertEqual(components[0]["content_digest"], EXPECTED_COMPONENT_DIGESTS[corpus_id])
-                self.assertEqual(components[0]["identity_algorithm"], "tfont-tf-files-sha256-v1")
+                self.assertEqual(components[0]["identity_algorithm"], "ontotf-tf-files-sha256-v1")
 
     def test_shared_olia_lock_is_exact_and_identical_across_bundles(self):
         _, bundles = self._bundles()
@@ -87,7 +87,7 @@ class I009ProductionBundleTests(unittest.TestCase):
         self.assertEqual(lock["source_revision"], OLIA_REVISION)
 
     def test_shipped_olia_snapshot_bytes_match_researched_digest(self):
-        snapshot = files("tfont").joinpath(
+        snapshot = files("ontotf").joinpath(
             "resources",
             "ontologies",
             "olia",
@@ -127,7 +127,7 @@ class I009ProductionBundleTests(unittest.TestCase):
             "fixture-v1",
             "reviewer:i005-fixture",
             "NOASSERTION",
-            "LicenseRef-TFont-Unspecified",
+            "LicenseRef-ontoTF-Unspecified",
         )
         for bundle in bundles:
             payloads = [

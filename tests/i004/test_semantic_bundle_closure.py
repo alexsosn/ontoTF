@@ -4,8 +4,8 @@ import copy
 import hashlib
 import unittest
 
-from tfont.digests import canonical_json_bytes, evidence_record_digest
-from tfont.semantic_validation import (
+from ontotf.digests import canonical_json_bytes, evidence_record_digest
+from ontotf.semantic_validation import (
     SemanticArtifact,
     SemanticSourceBundle,
     SemanticValidationError,

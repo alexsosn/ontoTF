@@ -78,7 +78,7 @@ names (not copies of immutable profile releases) can contain:
 ```json
 {
   "schema_version": 2,
-  "ledger": "src/tfont/resources/batch_pilots/cohort.json",
+  "ledger": "src/ontotf/resources/batch_pilots/cohort.json",
   "packet": "docs/research/data/generated/i033d/cohort.json",
   "evidence_resources": {
     "resources/profiles/bhsa/batch-candidates/native-sp.json":

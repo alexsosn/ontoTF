@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-import tfont
+import ontotf
 from tests.i008._fixtures import compiled_executable_noun_ir, loaded_context, request
 
 try:
@@ -62,7 +62,7 @@ class I008ContextFabricIntegrationTests(unittest.TestCase):
             sp_values=("subs", "verb", "subs", "subs", "subs"),
             ls_values={1: "prop", 4: "prop"},
         )
-        matches = tfont.find_correspondences(
+        matches = ontotf.find_correspondences(
             "bhsa", "syriac", node="word", feature="sp", value="nmpr",
         )
         # ProperNoun is just one of BHSA nmpr's category projections:
@@ -74,23 +74,23 @@ class I008ContextFabricIntegrationTests(unittest.TestCase):
                           link.destination.value), ("word", "ls", "prop"))
         self.assertEqual(link.scope, "category")
         self.assertEqual(
-            tfont.resolve_nodes(bhsa, link.source, corpus_version="2021"),
+            ontotf.resolve_nodes(bhsa, link.source, corpus_version="2021"),
             (1, 4),
         )
         self.assertEqual(
-            tfont.resolve_nodes(syriac, link.destination, corpus_version="0.9"),
+            ontotf.resolve_nodes(syriac, link.destination, corpus_version="0.9"),
             (1, 4),
         )
-        with self.assertRaises(tfont.MappingError):
-            tfont.resolve_nodes(syriac, link.destination, corpus_version="wrong")
+        with self.assertRaises(ontotf.MappingError):
+            ontotf.resolve_nodes(syriac, link.destination, corpus_version="wrong")
 
     def test_public_executor_runs_against_real_loaded_context_fabric_api(self):
-        if not hasattr(tfont, "execute_exact_semantic"):
+        if not hasattr(ontotf, "execute_exact_semantic"):
             self.skipTest("RED: I-008 execution surface is not implemented yet")
         api = self.make_api()
         ir = compiled_executable_noun_ir(("bhsa",))
-        context = loaded_context(tfont, ir, "bhsa", api)
-        result = tfont.execute_exact_semantic(ir, request(tfont, ("bhsa",)), (context,))
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        result = ontotf.execute_exact_semantic(ir, request(ontotf, ("bhsa",)), (context,))
         self.assertEqual(result.corpora[0].nodes, (1, 3, 5))
 
 

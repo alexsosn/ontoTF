@@ -5,7 +5,7 @@
 **Base:** `main=fac75d5a251945653a7be585fa30eae34afd4693`
 
 ## Goal
-Correct only the public README capability/status boundary so users can tell what TFont already ships from what is accepted architecture or still in implementation.
+Correct only the public README capability/status boundary so users can tell what ontoTF already ships from what is accepted architecture or still in implementation.
 
 ## RED contract
 Before editing README, extend `tests/docs/test_readme_status.py` with assertions that current README must fail:

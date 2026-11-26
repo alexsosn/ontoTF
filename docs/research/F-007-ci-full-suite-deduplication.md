@@ -6,7 +6,7 @@
 
 ## Question
 
-Can TFont retain the existing exact-head full-repository test gate while eliminating repeated execution of the same full suite by historical feature/follow-up workflows?
+Can ontoTF retain the existing exact-head full-repository test gate while eliminating repeated execution of the same full suite by historical feature/follow-up workflows?
 
 ## Repository evidence
 

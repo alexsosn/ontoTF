@@ -10,13 +10,13 @@ import copy
 import json
 from pathlib import Path
 
-from tfont.coverage import coverage_report, load_coverage_manifest, validate_coverage_manifest
+from ontotf.coverage import coverage_report, load_coverage_manifest, validate_coverage_manifest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "src/tfont/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json"
-MAPPING = ROOT / "src/tfont/resources/profiles/bhsa/0.3.0/mappings/verb.json"
+SOURCE = ROOT / "src/ontotf/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json"
+MAPPING = ROOT / "src/ontotf/resources/profiles/bhsa/0.3.0/mappings/verb.json"
 ITEM_ID = 'node_value:sp="verb"'
 MAPPING_ID = "mapping:bhsa:olia-verb"
 MANIFEST_ID = "coverage:p004-i027b1-bhsa-verb-v1:bhsa"

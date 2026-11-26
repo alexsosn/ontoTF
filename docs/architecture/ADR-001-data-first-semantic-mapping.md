@@ -11,11 +11,11 @@
 The production semantic runtime is not the main bottleneck: source bundle validation, content-bound semantic digests, compiled indexes (`native_index`, `semantic_index`), exact resolver and TF-native executor already exist. The **authoring/release path** couples every new correspondence to handwritten Mapping v2, duplicated profile/dependency resources, a new immutable coverage manifest, a one-off Python coverage builder and a new workflow.
 
 At audit time:
-- `main` contained **82 separate GitHub Actions workflow YAML files**, **214 Python test files**, nine full versioned corpus-profile trees (0.1/0.2/0.3 for BHSA/Syriac/ExtraBiblical), and hard-coded `PRODUCTION_*_CORPORA` / version / evidence dictionaries in `src/tfont/production_bundles.py`.
+- `main` contained **82 separate GitHub Actions workflow YAML files**, **214 Python test files**, nine full versioned corpus-profile trees (0.1/0.2/0.3 for BHSA/Syriac/ExtraBiblical), and hard-coded `PRODUCTION_*_CORPORA` / version / evidence dictionaries in `src/ontotf/production_bundles.py`.
 - Draft #289: **four** POS mappings required **30 files**, **32 commits**, **6,298 inserted lines** and triggered **26 workflows on its head**. Its 0.4.0 releases copy historic noun/morphology/verb mapping documents, parent manifests and whole coverage manifests.
 - Past #282 full suite ran **1,065 tests in approximately 191 seconds** on a Python runner; old Syriac-specific tests also asserted permanent absence of future ExtraBiblical functionality. A newly supported corpus broke that obsolete test, requiring another exact-head CI/review cycle.
 - P-004 current queue: **934 semantic identities**, 15 technical exclusions; 50 production-reviewed dispositions (23 with shared targets and 27 native-only), **884 not yet production reviewed**. 934 identities are *not* 934 OWL classes or 934 justified target equivalences.
-- Only OLiA is currently vendored under `src/tfont/resources/ontologies`, although P-004 targets seven models (OLiA, OntoLex-Lemon, SKOS, CIDOC CRM, CRMtex, LRMoo, CRMinf). Further target-ontology onboarding must not require seven separate bespoke runtime implementations.
+- Only OLiA is currently vendored under `src/ontotf/resources/ontologies`, although P-004 targets seven models (OLiA, OntoLex-Lemon, SKOS, CIDOC CRM, CRMtex, LRMoo, CRMinf). Further target-ontology onboarding must not require seven separate bespoke runtime implementations.
 
 This overhead is caused by data representation, release granularity and repeated CI—not by the necessity of native-source or ontology review.
 
@@ -62,11 +62,11 @@ Use independent reviewers to evaluate *semantic assertions*, not to repeatedly i
 Implement the following as CLI and importable Python APIs. **These are new target interfaces, not existing commands.**
 
 ```text
-tfont mappings validate [--changed]      # source/term/shape/denominator/approval gates
-tfont mappings build [--check]            # Mapping v2, Projection v1, digest, dependency IR
-tfont mappings diff <base> <candidate>    # semantic-only changed rows + evidence
-tfont mappings coverage [--check]         # current counts from baseline + decisions
-tfont mappings release <release-id>       # immutable published snapshots only at gate
+ontotf mappings validate [--changed]      # source/term/shape/denominator/approval gates
+ontotf mappings build [--check]            # Mapping v2, Projection v1, digest, dependency IR
+ontotf mappings diff <base> <candidate>    # semantic-only changed rows + evidence
+ontotf mappings coverage [--check]         # current counts from baseline + decisions
+ontotf mappings release <release-id>       # immutable published snapshots only at gate
 ```
 
 The compiler must preserve existing `SemanticSourceBundle`, `validate_semantic_bundle`, `compile_semantic_ir` and execution contracts. **Do not first rewrite the working runtime.** Generated Mapping v2/Projection v1 output must be byte-for-byte deterministic, identical in semantics to present hand-built resources, including RFC8785 digests and content-bound reviews.

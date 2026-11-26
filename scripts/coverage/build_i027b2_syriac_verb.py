@@ -12,13 +12,13 @@ import copy
 import json
 from pathlib import Path
 
-from tfont.coverage import coverage_report, load_coverage_manifest, validate_coverage_manifest
+from ontotf.coverage import coverage_report, load_coverage_manifest, validate_coverage_manifest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "src/tfont/resources/coverage/p004-r011-baseline-v1/syriac.json"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json"
-MAPPING = ROOT / "src/tfont/resources/profiles/syriac/0.3.0/mappings/verb.json"
+SOURCE = ROOT / "src/ontotf/resources/coverage/p004-r011-baseline-v1/syriac.json"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json"
+MAPPING = ROOT / "src/ontotf/resources/profiles/syriac/0.3.0/mappings/verb.json"
 ITEM_ID = 'node_value:sp="verb"'
 MAPPING_ID = "mapping:syriac:olia-verb"
 MANIFEST_ID = "coverage:p004-i027b2-syriac-verb-v1:syriac"

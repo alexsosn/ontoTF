@@ -4,7 +4,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.batch_proposals import BatchProposalError, compile_candidate_batch, load_ledger
+from ontotf.batch_proposals import BatchProposalError, compile_candidate_batch, load_ledger
 
 
 class BatchProposalAdversarialTests(unittest.TestCase):
@@ -46,12 +46,12 @@ class BatchProposalAdversarialTests(unittest.TestCase):
             if path.endswith("/native-adj-adv-pos.json") and "/bhsa/" in path:
                 record["reviewed_content"]["source_definitions"]["adjv"]["gloss"]="not-source-evidence"
             return record
-        from tfont.batch_proposals import packaged_resource
+        from ontotf.batch_proposals import packaged_resource
         with self.assertRaises(BatchProposalError):
             compile_candidate_batch(self.ledger, resource_loader=lambda path: forged(path,packaged_resource))
 
     def test_forged_ontology_type_and_target_rejected(self):
-        from tfont.batch_proposals import packaged_resource
+        from ontotf.batch_proposals import packaged_resource
         def forged(path):
             value = copy.deepcopy(packaged_resource(path))
             if path.endswith("/adjective-evidence.json"):
@@ -63,7 +63,7 @@ class BatchProposalAdversarialTests(unittest.TestCase):
 
 
     def test_foreign_ontology_lock_and_term_key_alias_are_rejected(self):
-        from tfont.batch_proposals import packaged_resource
+        from ontotf.batch_proposals import packaged_resource
         def forged(path):
             value=copy.deepcopy(packaged_resource(path))
             if path.endswith("/lock-linguistic-0.4.0.json"):

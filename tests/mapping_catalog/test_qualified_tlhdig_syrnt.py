@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.xml_mappings import (
+from ontotf.xml_mappings import (
     MappingCatalog, MappingError, find_across_corpora,
     find_by_target, resolve_nodes,
 )

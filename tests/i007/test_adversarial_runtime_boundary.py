@@ -8,7 +8,7 @@ from tests.i006._fixtures import compiled_noun_ir
 from tests.i007.test_dependency_kinds_red import _record, variant_with
 
 
-RUNTIME = importlib.import_module("tfont.runtime_prerequisites")
+RUNTIME = importlib.import_module("ontotf.runtime_prerequisites")
 
 
 class AbsentComponentObservation:

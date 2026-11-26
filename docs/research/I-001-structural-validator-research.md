@@ -11,7 +11,7 @@ What is the smallest current Python stack that can implement P-001's structural 
 
 ## Repository baseline
 
-At accepted main `e9ab50a759ba72c89047704ac70958fce6376951`, TFont has research/design documents, scripts and unittest-based tests but no `pyproject.toml`, no importable production package, no `schemas/`, no `profiles/`, and no `src/` package. I-001 is therefore the first production/package scaffold and should keep that scaffold minimal.
+At accepted main `e9ab50a759ba72c89047704ac70958fce6376951`, ontoTF has research/design documents, scripts and unittest-based tests but no `pyproject.toml`, no importable production package, no `schemas/`, no `profiles/`, and no `src/` package. I-001 is therefore the first production/package scaffold and should keep that scaffold minimal.
 
 ## JSON Schema validator
 
@@ -45,7 +45,7 @@ Format checking is not required for I-001 unless a structural field specifically
 
 ### Evidence
 
-The current `ruamel.yaml` PyPI line inspected on 2026-09-05 is **0.19.1**, requiring Python `>=3.9`; TFont's selected Python `>=3.10` baseline therefore satisfies it. `ruamel.yaml` documents YAML 1.2 support and states that duplicate mapping keys are disallowed by default in its modern API.
+The current `ruamel.yaml` PyPI line inspected on 2026-09-05 is **0.19.1**, requiring Python `>=3.9`; ontoTF's selected Python `>=3.10` baseline therefore satisfies it. `ruamel.yaml` documents YAML 1.2 support and states that duplicate mapping keys are disallowed by default in its modern API.
 
 Sources:
 
@@ -87,7 +87,7 @@ Use the standard `src` layout introduced only now that P-001 is accepted:
 
 ```text
 pyproject.toml
-src/tfont/
+src/ontotf/
   __init__.py
   source_validation.py
 schemas/
@@ -170,4 +170,4 @@ Rejected. Cross-artifact existence, hashes, ontology semantics and compatibility
 
 ## Recommendation
 
-Proceed with `jsonschema` Draft 2020-12 + strict `ruamel.yaml` safe loading, a recursive JSON-compatibility guard, and a minimal `src/tfont` package. The implementation plan should keep the API small: load a source file/text into the JSON-compatible model, select a registered local schema, structurally validate, and return data or raise one stable typed validation error. No semantic cross-artifact behavior should enter I-001.
+Proceed with `jsonschema` Draft 2020-12 + strict `ruamel.yaml` safe loading, a recursive JSON-compatibility guard, and a minimal `src/ontotf` package. The implementation plan should keep the API small: load a source file/text into the JSON-compatible model, select a registered local schema, structurally validate, and return data or raise one stable typed validation error. No semantic cross-artifact behavior should enter I-001.

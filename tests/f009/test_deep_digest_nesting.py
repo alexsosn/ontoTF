@@ -4,8 +4,8 @@ import math
 import unittest
 from unittest.mock import patch
 
-import tfont.digests as digests
-from tfont.digests import DigestError, canonical_json_bytes, source_bundle_digest
+import ontotf.digests as digests
+from ontotf.digests import DigestError, canonical_json_bytes, source_bundle_digest
 
 
 EXPECTED_MAX_JSON_NESTING = 128
@@ -74,7 +74,7 @@ class DeepDigestNestingTests(unittest.TestCase):
         self.assertEqual(error.problem.path, (0,))
 
     def test_downstream_recursion_error_is_translated(self):
-        with patch("tfont.digests.rfc8785.dumps", side_effect=RecursionError("dependency recursion")):
+        with patch("ontotf.digests.rfc8785.dumps", side_effect=RecursionError("dependency recursion")):
             error = self.assert_category("non_json_value", canonical_json_bytes, {"ok": True})
         self.assertIn("recursion", error.problem.message.lower())
 

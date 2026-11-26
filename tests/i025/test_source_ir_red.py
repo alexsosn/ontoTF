@@ -6,8 +6,8 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-import tfont
-import tfont.semantic_resolver as semantic_resolver
+import ontotf
+import ontotf.semantic_resolver as semantic_resolver
 from jsonschema import Draft202012Validator
 
 from tests.i005._fixtures import source_bundle, validate_structural_sources
@@ -20,9 +20,9 @@ from tests.i025._fixtures import (
     predicate_sources,
     predicate_step,
 )
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
-from tfont.semantic_ir import native_binding_identity
-from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
+from ontotf.semantic_ir import native_binding_identity
+from ontotf.semantic_validation import SemanticValidationError, validate_semantic_bundle
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -35,7 +35,7 @@ def category(error: BaseException) -> str:
 
 def mapping_binding_validator():
     schema = json.loads(
-        (ROOT / "src/tfont/schemas/mapping.schema.json").read_text(encoding="utf-8")
+        (ROOT / "src/ontotf/schemas/mapping.schema.json").read_text(encoding="utf-8")
     )
     return Draft202012Validator(
         {
@@ -48,7 +48,7 @@ def mapping_binding_validator():
 
 def profile_validator():
     schema = json.loads(
-        (ROOT / "src/tfont/schemas/profile.schema.json").read_text(encoding="utf-8")
+        (ROOT / "src/ontotf/schemas/profile.schema.json").read_text(encoding="utf-8")
     )
     return Draft202012Validator(schema)
 
@@ -132,7 +132,7 @@ class I025SourceIRRedTests(unittest.TestCase):
             domain_values=(1, 2),
         )
         # Draft 2020-12 treats 1.0 as an integer; semantic validation must
-        # still enforce the exact TFont int contract.
+        # still enforce the exact ontoTF int contract.
         validate_structural_sources(match_float)
         with self.assertRaises(SemanticValidationError) as raised:
             validate_semantic_bundle(source_bundle(match_float))
@@ -269,7 +269,7 @@ class I025SourceIRRedTests(unittest.TestCase):
         )
 
     def test_edge_step_ir_appends_defaulted_match_values(self):
-        old = tfont.EdgeStepIR(
+        old = ontotf.EdgeStepIR(
             "witness_resolution",
             "outgoing",
             "fragment",

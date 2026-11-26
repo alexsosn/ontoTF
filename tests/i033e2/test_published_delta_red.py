@@ -7,12 +7,12 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.published_deltas import (
+from ontotf.published_deltas import (
     PublishedDeltaError, build_published_delta, load_published_delta,
 )
-from tfont.release_registry import load_profile
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.semantic_ir import compile_semantic_ir
+from ontotf.release_registry import load_profile
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
 
 
 class PublishedReleaseDeltaTests(unittest.TestCase):

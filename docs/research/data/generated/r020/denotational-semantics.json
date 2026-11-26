@@ -204,7 +204,7 @@
     "relation_between_T_rep_and_T_truth": "unknown without separate coverage/quality authority",
     "represented_target_is_not_materialized_independently": true,
     "represented_target_query_denotation": "T_rep_c(t) subseteq U_c",
-    "truth_extension_is_outside_current_tfont_authority": true
+    "truth_extension_is_outside_current_ontotf_authority": true
   },
   "recommendation": {
     "productionization": "defer-public-runtime-api",

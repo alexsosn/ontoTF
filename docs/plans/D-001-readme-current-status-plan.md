@@ -18,7 +18,7 @@ No Python, schema, digest, mapping, profile, runtime, packaging, or compatibilit
 
 ### 1. Title and one-paragraph purpose
 
-Retain the core statement that TFont is an experimental semantic interoperability layer for Text-Fabric / Context-Fabric corpora and that corpus-native scholarly semantics remain authoritative.
+Retain the core statement that ontoTF is an experimental semantic interoperability layer for Text-Fabric / Context-Fabric corpora and that corpus-native scholarly semantics remain authoritative.
 
 Avoid claims that shared ontology projections replace native annotations.
 
@@ -70,7 +70,7 @@ Use actual public root exports.
 Example A — strict parsing:
 
 ```python
-from tfont import loads_source
+from ontotf import loads_source
 
 data = loads_source("a: [1, true, null, text]\n", format="yaml")
 ```
@@ -78,7 +78,7 @@ data = loads_source("a: [1, true, null, text]\n", format="yaml")
 Example B — file structural validation, clearly described as a caller-owned source path:
 
 ```python
-from tfont import load_and_validate
+from ontotf import load_and_validate
 
 profile = load_and_validate("path/to/profile.yaml", "profile")
 ```
@@ -86,7 +86,7 @@ profile = load_and_validate("path/to/profile.yaml", "profile")
 Example C — canonicalization/digest primitives:
 
 ```python
-from tfont import canonical_json_bytes, source_file_digest
+from ontotf import canonical_json_bytes, source_file_digest
 
 canonical = canonical_json_bytes({"b": 2, "a": 1})
 digest = source_file_digest(b"a: 1\r\n")

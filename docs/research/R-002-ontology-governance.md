@@ -6,13 +6,13 @@
 
 ## Decision
 
-TFont should use a **tiered, open-ended ontology policy** rather than one imported universal ontology.
+ontoTF should use a **tiered, open-ended ontology policy** rather than one imported universal ontology.
 
 The POC should distinguish four support tiers:
 
-1. **core infrastructure vocabularies** — stable, open standards used by TFont itself to express mapping relations, provenance and annotation targets;
-2. **supported semantic profiles** — maintained external ontologies that TFont validates and uses for a defined semantic domain;
-3. **external controlled vocabularies** — authoritative evolving datasets that TFont links to term-by-term but does not import as normative runtime dependencies;
+1. **core infrastructure vocabularies** — stable, open standards used by ontoTF itself to express mapping relations, provenance and annotation targets;
+2. **supported semantic profiles** — maintained external ontologies that ontoTF validates and uses for a defined semantic domain;
+3. **external controlled vocabularies** — authoritative evolving datasets that ontoTF links to term-by-term but does not import as normative runtime dependencies;
 4. **reference/prior-art vocabularies** — useful models that are draft, stale, non-commercially licensed, superseded, or otherwise unsuitable as normative dependencies.
 
 The initial recommendation is:
@@ -26,35 +26,35 @@ The initial recommendation is:
 | **external controlled vocabularies** | Getty AAT, PeriodO |
 | **reference/prior art** | POWLA, SAWS, Critical Apparatus Ontology 0.9, OntoLex Morph until final publication, OntoLex FrAC until final publication |
 
-TFont must not infer semantic identity from similar labels. Formal equivalence is exceptional. Every mapping carries a formalism-neutral **mapping assessment** (`exact | close | broader | narrower | related | ambiguous | native-only | unsupported`) for query planning and UX, while an independent **publication relation** records an RDF/OWL/SKOS formalization only when the target model justifies one. The corpus-native assertion remains authoritative.
+ontoTF must not infer semantic identity from similar labels. Formal equivalence is exceptional. Every mapping carries a formalism-neutral **mapping assessment** (`exact | close | broader | narrower | related | ambiguous | native-only | unsupported`) for query planning and UX, while an independent **publication relation** records an RDF/OWL/SKOS formalization only when the target model justifies one. The corpus-native assertion remains authoritative.
 
-The directional assessment values are always interpreted from the native/source concept toward the external target: **`broader` means the target is broader than the native/source concept**, while **`narrower` means the target is narrower than the native/source concept**. This runtime direction is part of the TFont assessment contract and does not imply any particular RDF predicate.
+The directional assessment values are always interpreted from the native/source concept toward the external target: **`broader` means the target is broader than the native/source concept**, while **`narrower` means the target is narrower than the native/source concept**. This runtime direction is part of the ontoTF assessment contract and does not imply any particular RDF predicate.
 
 ### Mapping-assessment semantics
 
-The TFont assessment vocabulary has the following governance meanings, independent of any RDF publication predicate:
+The ontoTF assessment vocabulary has the following governance meanings, independent of any RDF publication predicate:
 
-- **`exact` — the external target and native/source concept are judged semantically coextensive** for the reviewed TFont projection. This is a mapping-level assessment, not RDF identity or OWL equivalence.
+- **`exact` — the external target and native/source concept are judged semantically coextensive** for the reviewed ontoTF projection. This is a mapping-level assessment, not RDF identity or OWL equivalence.
 - **`close` — the external target and native/source concept are substantially overlapping or near-equivalent**, but the evidence does not justify coextensiveness/interchangeability.
 - **`broader` — the external target is broader than the native/source concept**.
 - **`narrower` — the external target is narrower than the native/source concept**.
 - **`related` — the external target is semantically related but neither coextensive nor ordered as broader/narrower**.
 - **`ambiguous` — available evidence does not justify one unambiguous external-target assessment**; multiple plausible targets or relations remain unresolved.
 - **`native-only` — the native/source concept is intentionally supported without an external ontology target** because preserving the native semantics is the reviewed outcome.
-- **`unsupported` — the active TFont profile does not provide a supported semantic projection for the native/source concept** under the current ontology/profile policy.
+- **`unsupported` — the active ontoTF profile does not provide a supported semantic projection for the native/source concept** under the current ontology/profile policy.
 
 Mapping-level **`exact` is distinct from R-001 `verified-exact`**: the former describes a reviewed semantic relation between a native/source concept and a target concept, while the latter proves exact identity of the loaded parent component set. **`native-only` and `unsupported` have no external target** and therefore cannot acquire a publication mapping relation. `ambiguous` likewise does not authorize an automatic cross-ontology projection; R-003 may refine runtime presentation and query-planning behavior without changing these governance meanings.
 
 A mapping records both a **stable term URI** and the **tested ontology release/snapshot**. Versionless namespaces alone are not enough for reproducibility. Existing mapping releases never change meaning merely because an upstream ontology publishes a new release or deprecates a term.
 
-When no external term fits, TFont should prefer, in order:
+When no external term fits, ontoTF should prefer, in order:
 
 1. preserve the native corpus concept without a semantic projection;
 2. map it approximately to an external concept where that relation is defensible;
 3. define a corpus-local concept if the value is specific to one annotation tradition;
-4. define a small TFont concept only when the same semantic gap recurs across independent corpora and is needed for interoperability.
+4. define a small ontoTF concept only when the same semantic gap recurs across independent corpora and is needed for interoperability.
 
-R-005 demonstrates full variation-unit/reading/witness-attestation/explicit-absence apparatus semantics robustly in Pseudepigrapha-TF, but not in a second independent corpus. Peshitta A/B witness metadata and TLHdig line→fragment witness links are related assertions, not equivalent reading-at-locus apparatus graphs. Therefore the foundation POC should **not mint** apparatus-specific TFont domain vocabulary yet; keep those semantics native/profile-local and retain CAO/SAWS as prior art until recurrence or mapping-infrastructure necessity is established.
+R-005 demonstrates full variation-unit/reading/witness-attestation/explicit-absence apparatus semantics robustly in Pseudepigrapha-TF, but not in a second independent corpus. Peshitta A/B witness metadata and TLHdig line→fragment witness links are related assertions, not equivalent reading-at-locus apparatus graphs. Therefore the foundation POC should **not mint** apparatus-specific ontoTF domain vocabulary yet; keep those semantics native/profile-local and retain CAO/SAWS as prior art until recurrence or mapping-infrastructure necessity is established.
 
 R-001 accepted the distribution/version-binding dependency at exact reviewed head `68b88a820f5519ad65d46b732679a6278e9ca3c9`, merged as `a22a95084a1518882d1e3e87d10e9757121f106d`. R-002 therefore assumes the accepted component-aware parent identity contract: every semantically addressable native component is identity-bound for `verified-exact`, and any non-exact component set must pass the complete dependency-closure validation before semantic execution.
 
@@ -74,13 +74,13 @@ Candidates were assessed on:
 
 The evaluation deliberately separates the age of a standard from the age of its latest document. A stable Recommendation such as SKOS does not need recent specification churn to remain useful. Conversely, a newer draft is not selected merely because its date is later than the last stable release.
 
-Where an ontology has a stable term namespace but no strong semantic-version contract, TFont should store an immutable content digest and, when available, the exact source-repository commit used for validation.
+Where an ontology has a stable term namespace but no strong semantic-version contract, ontoTF should store an immutable content digest and, when available, the exact source-repository commit used for validation.
 
 ## 2. Openness policy
 
 ### 2.1 Normative and supported dependencies
 
-A vocabulary may be a core or supported TFont dependency only when TFont can lawfully:
+A vocabulary may be a core or supported ontoTF dependency only when ontoTF can lawfully:
 
 - use its term URIs in mappings;
 - redistribute the mapping files that refer to those terms;
@@ -94,17 +94,17 @@ A non-commercial restriction is incompatible with a normative dependency because
 
 ### 2.2 External vocabularies
 
-An evolving controlled vocabulary may remain external even when its license is open. TFont then stores the external URI and the exact snapshot/revision used for validation, but does not make installing the complete vocabulary a prerequisite for ordinary runtime use.
+An evolving controlled vocabulary may remain external even when its license is open. ontoTF then stores the external URI and the exact snapshot/revision used for validation, but does not make installing the complete vocabulary a prerequisite for ordinary runtime use.
 
 This is the preferred treatment for Getty AAT and PeriodO.
 
 ### 2.3 Reference-only models
 
-A model can remain useful as scholarly prior art even when TFont does not depend on it. Reference status permits documentation links and explicit alignments where legally permitted, but TFont must not imply that the model is maintained, stable or part of the supported runtime contract.
+A model can remain useful as scholarly prior art even when ontoTF does not depend on it. Reference status permits documentation links and explicit alignments where legally permitted, but ontoTF must not imply that the model is maintained, stable or part of the supported runtime contract.
 
 ## 3. Version and URI governance
 
-Every external term used by a released TFont profile should be represented in the ontology lock with at least:
+Every external term used by a released ontoTF profile should be represented in the ontology lock with at least:
 
 ```yaml
 ontology: olia
@@ -139,7 +139,7 @@ The later design ticket may revise field names, but not these invariants:
 
 If an upstream term is deprecated or replaced:
 
-1. existing TFont releases keep the old lock and old mapping;
+1. existing ontoTF releases keep the old lock and old mapping;
 2. the next mapping revision records the upstream deprecation/replacement evidence;
 3. maintainers decide whether the new term is semantically equivalent, broader/narrower, or merely a successor in maintenance history;
 4. regression queries compare the old and new projections;
@@ -149,7 +149,7 @@ A changed URI is not automatically a changed concept, and an upstream `replacedB
 
 ## 4. Mapping-strength policy
 
-TFont separates a reified **mapping assessment** from any RDF **publication relation**. The assessment controls runtime/query behavior; it does not automatically select an RDF predicate. Formalization follows the native formalism of the target ontology or remains an explicit TFont mapping assertion when no safe RDF/OWL/SKOS relation exists.
+ontoTF separates a reified **mapping assessment** from any RDF **publication relation**. The assessment controls runtime/query behavior; it does not automatically select an RDF predicate. Formalization follows the native formalism of the target ontology or remains an explicit ontoTF mapping assertion when no safe RDF/OWL/SKOS relation exists.
 
 ### 4.1 Identity and OWL equivalence
 
@@ -168,9 +168,9 @@ SKOS mapping predicates are used only when the mapped resources are genuinely SK
 - `skos:broadMatch` / `skos:narrowMatch` — directional abstraction/specialization;
 - `skos:relatedMatch` — semantic relation without hierarchical or near-equivalence claim.
 
-`skos:closeMatch` is intentionally not transitive. TFont must not infer A≈C merely because A close-matches B and B close-matches C.
+`skos:closeMatch` is intentionally not transitive. ontoTF must not infer A≈C merely because A close-matches B and B close-matches C.
 
-The compact R-005 candidate words are research evidence only. Approved mappings receive a reviewed TFont assessment; that assessment remains separate from RDF formalization. For OWL/RDFS class/property targets, use `rdfs:subClassOf` / `rdfs:subPropertyOf` or OWL equivalence only when logically justified, otherwise publish the reified TFont assertion without manufacturing a SKOS predicate.
+The compact R-005 candidate words are research evidence only. Approved mappings receive a reviewed ontoTF assessment; that assessment remains separate from RDF formalization. For OWL/RDFS class/property targets, use `rdfs:subClassOf` / `rdfs:subPropertyOf` or OWL equivalence only when logically justified, otherwise publish the reified ontoTF assertion without manufacturing a SKOS predicate.
 
 ### 4.3 Native assertions remain authoritative
 
@@ -184,7 +184,7 @@ publication_relation: none
 confidence: illustrative
 ```
 
-This example is intentionally like-for-like: both sides concern grammatical gender rather than crossing from a verbal-stem value to a part-of-speech category. It illustrates the record shape and the separation between TFont assessment and RDF publication formalism; it does **not** itself approve `close` (or `exact`) for a released mapping. A production mapping must review the pinned BHSA definition and pinned OLiA class definition before choosing the final assessment. Because the target is an OLiA OWL class and this example asserts no independently justified OWL/RDFS relation, `publication_relation` remains `none`; TFont must not manufacture a SKOS mapping predicate.
+This example is intentionally like-for-like: both sides concern grammatical gender rather than crossing from a verbal-stem value to a part-of-speech category. It illustrates the record shape and the separation between ontoTF assessment and RDF publication formalism; it does **not** itself approve `close` (or `exact`) for a released mapping. A production mapping must review the pinned BHSA definition and pinned OLiA class definition before choosing the final assessment. Because the target is an OLiA OWL class and this example asserts no independently justified OWL/RDFS relation, `publication_relation` remains `none`; ontoTF must not manufacture a SKOS mapping predicate.
 
 If no defensible external concept exists, the projection is absent rather than fabricated.
 
@@ -238,11 +238,11 @@ Scores are qualitative: `5` strong, `1` poor. `maintenance` reflects governance/
 **Authoritative specification:** W3C Recommendation, *SKOS Simple Knowledge Organization System Reference*, 18 August 2009.  
 **Namespace:** `http://www.w3.org/2004/02/skos/core#`.  
 **Governance:** W3C Recommendation process.  
-**Role in TFont:** concept schemes and publication mapping relations.
+**Role in ontoTF:** concept schemes and publication mapping relations.
 
-SKOS supplies exact/close/broad/narrow/related publication relations for genuine concept-scheme mappings. The **TFont mapping assessment** remains the formalism-neutral runtime/query contract and does not require every target ontology term to be represented as a SKOS concept.
+SKOS supplies exact/close/broad/narrow/related publication relations for genuine concept-scheme mappings. The **ontoTF mapping assessment** remains the formalism-neutral runtime/query contract and does not require every target ontology term to be represented as a SKOS concept.
 
-TFont should not make every ontology class into a SKOS concept. SKOS is used for TFont's own concept schemes and for mappings where the external resource is appropriately treated as a concept scheme. OWL class/property relations remain OWL relations.
+ontoTF should not make every ontology class into a SKOS concept. SKOS is used for ontoTF's own concept schemes and for mappings where the external resource is appropriately treated as a concept scheme. OWL class/property relations remain OWL relations.
 
 ### 7.2 PROV-O
 
@@ -250,7 +250,7 @@ TFont should not make every ontology class into a SKOS concept. SKOS is used for
 **Namespace:** `http://www.w3.org/ns/prov#`.  
 **Role:** mapping provenance, derivation, agent/activity attribution and generated artifact provenance.
 
-PROV-O covers a recurrent need that should not become custom TFont vocabulary: which mapping artifact was generated from which corpus revision, by which activity/software/reviewer, and which prior mapping it revised.
+PROV-O covers a recurrent need that should not become custom ontoTF vocabulary: which mapping artifact was generated from which corpus revision, by which activity/software/reviewer, and which prior mapping it revised.
 
 Runtime need not perform OWL reasoning over PROV-O. The source/publication artifact can use it while the compiled sidecar stores equivalent indexed metadata.
 
@@ -258,7 +258,7 @@ Runtime need not perform OWL reasoning over PROV-O. The source/publication artif
 
 **Authoritative specifications:** W3C Web Annotation Data Model and Vocabulary Recommendations, 23 February 2017.  
 **Namespace:** `http://www.w3.org/ns/oa#`.  
-**Role:** supported **optional publication/targeting** profile for portable annotations targeting corpus entities or source spans. It is not required by every TFont profile or runtime mapping.
+**Role:** supported **optional publication/targeting** profile for portable annotations targeting corpus entities or source spans. It is not required by every ontoTF profile or runtime mapping.
 
 This is a better maintained publication/targeting choice than using POWLA as the generic RDF annotation layer where portable annotation exchange is actually needed. It is especially useful when a semantic assertion targets:
 
@@ -267,11 +267,11 @@ This is a better maintained publication/targeting choice than using POWLA as the
 - a passage selector;
 - a non-containment region that should not be confused with `oslots` extent.
 
-TFont does not need to rewrite every TF feature as an OA annotation. OA is a publication/alignment mechanism for assertions that benefit from a portable target/body model.
+ontoTF does not need to rewrite every TF feature as an OA annotation. OA is a publication/alignment mechanism for assertions that benefit from a portable target/body model.
 
 ### 7.4 SHACL
 
-TFont should use **SHACL 1.0**, the W3C Recommendation, for RDF-publication validation where appropriate. The 2026 SHACL 1.2 work is still draft and should not be the POC's normative validation baseline.
+ontoTF should use **SHACL 1.0**, the W3C Recommendation, for RDF-publication validation where appropriate. The 2026 SHACL 1.2 work is still draft and should not be the POC's normative validation baseline.
 
 SHACL belongs to the validation/tooling contract, not the semantic profile hierarchy.
 
@@ -286,12 +286,12 @@ SHACL belongs to the validation/tooling contract, not the semantic profile hiera
 
 OLiA remains the strongest broad linguistic alignment candidate because it was designed to mediate heterogeneous annotation schemes rather than require all corpora to share one tagset. Its domain spans morphology, morphosyntax, syntactic structures and relations, semantics/discourse and other annotation categories.
 
-TFont should support OLiA as a linguistic profile while keeping two layers distinct:
+ontoTF should support OLiA as a linguistic profile while keeping two layers distinct:
 
 - the corpus's native annotation model/value;
-- the OLiA reference category to which TFont maps it.
+- the OLiA reference category to which ontoTF maps it.
 
-Because OLiA's stable PURLs are not a complete release-lock mechanism, TFont CI should validate against a pinned repository snapshot/content digest.
+Because OLiA's stable PURLs are not a complete release-lock mechanism, ontoTF CI should validate against a pinned repository snapshot/content digest.
 
 ### 8.2 OntoLex-Lemon
 
@@ -301,7 +301,7 @@ Because OLiA's stable PURLs are not a complete release-lock mechanism, TFont CI 
 
 OntoLex is suitable for lexical entries, forms, senses/concepts, decomposition and lexical relations. It is particularly relevant to BHSA lexemes, Syriac/SyrNT lexical structures, TLHdig lexical analysis and the ORACC lexical stress case.
 
-Community Group reports are not W3C Recommendations. TFont documentation must say this explicitly and pin the tested final report/snapshot. Current work on OntoLex 1.1 must not silently alter the interpretation of a mapping released against the 2016 model.
+Community Group reports are not W3C Recommendations. ontoTF documentation must say this explicitly and pin the tested final report/snapshot. Current work on OntoLex 1.1 must not silently alter the interpretation of a mapping released against the 2016 model.
 
 ### 8.3 LexInfo 3.0
 
@@ -313,7 +313,7 @@ Community Group reports are not W3C Recommendations. TFont documentation must sa
 
 LexInfo supplies reusable linguistic categories around OntoLex, including parts of speech, morphosyntactic categories and lexical frames. It should be a supported profile alongside OLiA, not a mandatory replacement for OLiA.
 
-Where both offer a candidate term, mapping authors should select the ontology whose definition best matches the native corpus assertion. TFont should not emit two "equivalent" targets merely to maximize apparent coverage.
+Where both offer a candidate term, mapping authors should select the ontology whose definition best matches the native corpus assertion. ontoTF should not emit two "equivalent" targets merely to maximize apparent coverage.
 
 ### 8.4 OntoLex Lexicog
 
@@ -332,7 +332,7 @@ A bilingual gloss is not by itself a `vartrans:Translation` assertion. Corpus gl
 
 The Morph module remains under active development and public review in 2026. The checked repository `ontolex/morph` had head `743d461f99b266d8db8b507db177f031aa452afa` on 2026-07-23, with public-review work in progress.
 
-Morph is technically relevant to TFont's ancient-language corpora, but the POC should not make a draft module normative. TFont may:
+Morph is technically relevant to ontoTF's ancient-language corpora, but the POC should not make a draft module normative. ontoTF may:
 
 - cite its model as prior art;
 - experiment with alignments on non-release branches;
@@ -342,7 +342,7 @@ Morph is technically relevant to TFont's ancient-language corpora, but the POC s
 
 The Frequency, Attestation and Corpus Information work remains in public-review development in 2026. The checked repository `ontolex/frequency-attestation-corpus-information` had head `25f1d09786876bd4910d20914a3d62fa279b296e` on 2026-07-28.
 
-Its attestation model is relevant to corpus lexical evidence, but TFont does not need a draft module to answer the initial interoperability queries. Keep it reference-only until final publication.
+Its attestation model is relevant to corpus lexical evidence, but ontoTF does not need a draft module to answer the initial interoperability queries. Keep it reference-only until final publication.
 
 ## 9. Heritage, text and material profiles
 
@@ -353,7 +353,7 @@ Its attestation model is relevant to corpus lexical evidence, but TFont does not
 **License:** CC BY 4.0 for the official documentation/model materials.  
 **Governance:** CIDOC CRM Special Interest Group under ICOM/CIDOC, with ISO correspondence.
 
-The newer 7.4 release dated August 2026 is explicitly a **Draft**. TFont should not replace 7.1.3 with it merely because 7.4 is newer.
+The newer 7.4 release dated August 2026 is explicitly a **Draft**. ontoTF should not replace 7.1.3 with it merely because 7.4 is newer.
 
 CIDOC CRM supplies durable concepts for physical objects, identifiers, production, actors, places, times and information objects. It is the general heritage base for CUC/TLHdig/ORACC physical and catalogue metadata.
 
@@ -374,9 +374,9 @@ It does not replace the TF token/sign graph. A `sign` slot is mapped to a CRMtex
 **License:** CC BY 4.0.  
 **Governance:** joint IFLA LRMoo Working Group and CIDOC CRM SIG.
 
-LRMoo is preferred over old FRBRoo for new TFont mappings. It is useful for works, expressions, manifestations/items and bibliographic relationships around corpora, witnesses and editions.
+LRMoo is preferred over old FRBRoo for new ontoTF mappings. It is useful for works, expressions, manifestations/items and bibliographic relationships around corpora, witnesses and editions.
 
-TFont may align legacy models that use FRBRoo, but should not introduce a new normative dependency on superseded FRBRoo solely because CAO or SAWS used it.
+ontoTF may align legacy models that use FRBRoo, but should not introduce a new normative dependency on superseded FRBRoo solely because CAO or SAWS used it.
 
 ### 9.4 CRMinf
 
@@ -385,7 +385,7 @@ TFont may align legacy models that use FRBRoo, but should not introduce a new no
 
 CRMinf is useful for claims that an analyst inferred a semantic identification from evidence. It should be a supported optional profile rather than a requirement for simple deterministic mappings.
 
-A mapping-confidence field in TFont does not automatically become a CRMinf inference graph. Use CRMinf where the project actually wants to publish the argument/evidence structure.
+A mapping-confidence field in ontoTF does not automatically become a CRMinf inference graph. Use CRMinf where the project actually wants to publish the argument/evidence structure.
 
 ### 9.5 CRMarchaeo
 
@@ -414,7 +414,7 @@ AAT offers strong coverage for:
 - roles;
 - cultures and other heritage terminology.
 
-TFont should link to selected AAT terms but avoid vendoring the whole vocabulary as a runtime dependency. The ontology lock should record the URI and snapshot/date used for validation; attribution requirements must be retained in redistributed subsets or generated documentation.
+ontoTF should link to selected AAT terms but avoid vendoring the whole vocabulary as a runtime dependency. The ontology lock should record the URI and snapshot/date used for validation; attribution requirements must be retained in redistributed subsets or generated documentation.
 
 ### 10.2 PeriodO
 
@@ -428,13 +428,13 @@ PeriodO is a good target for corpus period metadata when the source period label
 
 POWLA demonstrated how linguistic annotation graphs could be represented in RDF/OWL and remains relevant background for standoff linguistic annotation. Its public project history is old/draft compared with the selected alternatives.
 
-TFont already has TF/Context-Fabric as its native graph model, Web Annotation for portable targeting, and OLiA for annotation semantics. Making POWLA normative would add another structural abstraction without solving an uncovered POC requirement.
+ontoTF already has TF/Context-Fabric as its native graph model, Web Annotation for portable targeting, and OLiA for annotation semantics. Making POWLA normative would add another structural abstraction without solving an uncovered POC requirement.
 
 Decision: reference only.
 
 ### 11.2 SAWS
 
-SAWS models relationships among ancient wisdom texts and witnesses and remains valuable prior art for intertextual/textual relationships. The authoritative ontology distribution inspected for R-002 establishes the model/version/PURL but does **not establish a reusable ontology license**. TFont therefore records the license as unknown/not established rather than inferring either permissive or non-commercial terms.
+SAWS models relationships among ancient wisdom texts and witnesses and remains valuable prior art for intertextual/textual relationships. The authoritative ontology distribution inspected for R-002 establishes the model/version/PURL but does **not establish a reusable ontology license**. ontoTF therefore records the license as unknown/not established rather than inferring either permissive or non-commercial terms.
 
 Its historical dependence on FRBRoo and the unresolved reuse rights are reasons not to adopt it as a normative POC dependency now that LRMoo is available.
 
@@ -455,24 +455,24 @@ The checked repository `fgiovannetti/cao` is at `7a96094092123d5f53358cd3311c583
 
 CAO is one of the closest conceptual precedents for Pseudepigrapha-TF's apparatus, but its maturity/maintenance make it a poor normative dependency for a new POC.
 
-Decision: use CAO as explicit prior art and publish alignments where justified. Keep apparatus domain concepts native/profile-local in the foundation POC until a second independent corpus establishes the same semantic gap or the design proves a term is required for TFont mapping infrastructure itself.
+Decision: use CAO as explicit prior art and publish alignments where justified. Keep apparatus domain concepts native/profile-local in the foundation POC until a second independent corpus establishes the same semantic gap or the design proves a term is required for ontoTF mapping infrastructure itself.
 
-## 12. Minimal TFont vocabulary
+## 12. Minimal ontoTF vocabulary
 
-TFont should not create a broad competing ontology. The initial local vocabulary should be restricted to gaps established by at least two corpus/stress cases or necessary to express the mapping contract itself.
+ontoTF should not create a broad competing ontology. The initial local vocabulary should be restricted to gaps established by at least two corpus/stress cases or necessary to express the mapping contract itself.
 
 ### 12.1 Text-critical concepts
 
-Do **not mint** TFont-local apparatus domain terms in the foundation POC. R-005 establishes full variation-unit/reading/witness-attestation/explicit-absence semantics in Pseudepigrapha-TF only; Peshitta witness designations and TLHdig fragment links do not constitute a second independent corpus with the same apparatus relation. Preserve the Pseudepigrapha-TF concepts natively/profile-locally and document the external ontology gap.
+Do **not mint** ontoTF-local apparatus domain terms in the foundation POC. R-005 establishes full variation-unit/reading/witness-attestation/explicit-absence semantics in Pseudepigrapha-TF only; Peshitta witness designations and TLHdig fragment links do not constitute a second independent corpus with the same apparatus relation. Preserve the Pseudepigrapha-TF concepts natively/profile-locally and document the external ontology gap.
 
-A later governance/design change may mint an apparatus term only after a **second independent corpus** requires the same semantic gap, or after the term is shown to be necessary for TFont's mapping-contract infrastructure rather than one corpus domain. `Witness` should likewise map to an established bibliographic/heritage entity when the native semantics justify it rather than being universalized from a shared label.
+A later governance/design change may mint an apparatus term only after a **second independent corpus** requires the same semantic gap, or after the term is shown to be necessary for ontoTF's mapping-contract infrastructure rather than one corpus domain. `Witness` should likewise map to an established bibliographic/heritage entity when the native semantics justify it rather than being universalized from a shared label.
 
-### 12.2 What should not enter the TFont vocabulary
+### 12.2 What should not enter the ontoTF vocabulary
 
 Do not mint local replacements for:
 
 - generic provenance — use PROV-O;
-- mapping strength — use the TFont mapping-assessment contract; publish SKOS/OWL/RDFS relations only where the target formalism justifies them;
+- mapping strength — use the ontoTF mapping-assessment contract; publish SKOS/OWL/RDFS relations only where the target formalism justifies them;
 - annotation targets/selectors — use Web Annotation where publication needs them;
 - lexical entry/form/sense — use OntoLex where applicable;
 - generic museum/material entities — use CIDOC CRM/AAT where applicable;
@@ -491,10 +491,10 @@ Primary useful profiles:
 
 - OLiA/LexInfo for POS, gender, number, person and selected morphological categories;
 - OntoLex for `lex` entities and lexical identity;
-- SKOS for TFont/local concept schemes and publication mappings only when both resources are genuine SKOS concepts;
+- SKOS for ontoTF/local concept schemes and publication mappings only when both resources are genuine SKOS concepts;
 - PROV-O for mapping provenance.
 
-Approximate cross-ontology projection remains a **TFont mapping assessment** unless the target formalism independently justifies a publication relation; merely being approximate does not make the mapping a SKOS mapping.
+Approximate cross-ontology projection remains a **ontoTF mapping assessment** unless the target formalism independently justifies a publication relation; merely being approximate does not make the mapping a SKOS mapping.
 
 Native BHSA syntax (`mother`, `functional_parent`, `distributional_parent`) must remain distinct predicates. OLiA can provide semantic categories where definitions match, but the edges are not automatically replaced by generic `dependsOn`/`parent` relations.
 
@@ -521,7 +521,7 @@ CUC needs:
 - SKOS/local concepts for editorial state inventories that lack exact maintained targets;
 - AAT as an external vocabulary for material/object terminology if such metadata is mapped.
 
-`emen`, `cert` and `alt` stay separate assertions. TFont must not collapse all three to one generic uncertainty concept.
+`emen`, `cert` and `alt` stay separate assertions. ontoTF must not collapse all three to one generic uncertainty concept.
 
 ### 13.5 TLHdig-TF
 
@@ -563,7 +563,7 @@ ORACC stresses several domains simultaneously:
 
 An ORACC `c type=sentence` implicit chunk does not become an OLiA/BHSA sentence because an ontology contains a class named Sentence.
 
-Zero-span source entities remain representable in the TFont sidecar without inventing TF slots merely to satisfy ontology structure.
+Zero-span source entities remain representable in the ontoTF sidecar without inventing TF slots merely to satisfy ontology structure.
 
 ## 14. Profile composition rules
 
@@ -635,7 +635,7 @@ Rejected. OntoLex models lexica well; it does not define the full syntax, physic
 
 ### POWLA as runtime RDF graph model
 
-Rejected. TFont already has native TF/Context-Fabric graphs, and R-001 recommends a compiled semantic sidecar. Web Annotation and the selected domain ontologies cover the publication needs with stronger current governance.
+Rejected. ontoTF already has native TF/Context-Fabric graphs, and R-001 recommends a compiled semantic sidecar. Web Annotation and the selected domain ontologies cover the publication needs with stronger current governance.
 
 ### SAWS or CAO as the normative apparatus ontology
 
@@ -647,7 +647,7 @@ Rejected until final publication. Active maintenance is positive evidence, but d
 
 ### Always follow the latest ontology release
 
-Rejected. It destroys reproducibility and can silently change mappings. TFont binds to a tested ontology lock and upgrades deliberately.
+Rejected. It destroys reproducibility and can silently change mappings. ontoTF binds to a tested ontology lock and upgrades deliberately.
 
 ## 17. Unresolved design questions
 
@@ -655,7 +655,7 @@ The later design work must still decide:
 
 1. exact ontology-lock file syntax and digest canonicalization;
 2. whether supported ontology snapshots are vendored, release-attached, or fetched into a verified cache;
-3. canonical TFont namespace/URI shape for the minimal local vocabulary;
+3. canonical ontoTF namespace/URI shape for the minimal local vocabulary;
 4. whether local concepts are authored directly as SKOS, OWL, or a simpler declarative source compiled to both;
 5. the exact machine-readable field for reviewed mapping justification/confidence;
 6. whether Web Annotation selectors target stable corpus node URIs, source spans, or both in the first POC;
@@ -669,7 +669,7 @@ These questions refine implementation. They do not reopen the support-tier, open
 - **Current status/version/governance/license checked:** all proposed supported candidates and all required candidates are classified above; draft/stale/licensing-uncertain cases are explicitly downgraded.
 - **Support policy:** four tiers — core, supported, external, reference — with optional domain profiles.
 - **Exact versus approximate mappings:** runtime mapping assessment is formalism-neutral and directionally defined from native/source to target; all eight assessment values are defined independently of publication predicates; SKOS exact/close/broad/narrow/related publication relations are used only for genuine SKOS concepts/concept schemes, while OWL/RDFS relations require their own logical justification.
-- **Local concepts:** native-only first; corpus-local for source-specific categories; TFont-local only for recurrent interoperability gaps.
+- **Local concepts:** native-only first; corpus-local for source-specific categories; ontoTF-local only for recurrent interoperability gaps.
 - **Version/deprecation:** stable URI plus tested release/snapshot/content digest; no silent migration.
 - **Runtime versus publication:** runtime uses the compiled sidecar from accepted R-001; RDF vocabularies are validated source/publication semantics and need not imply a triplestore.
 - **Corpus coverage:** BHSA, CUC, all three Syriac profiles, ExtraBiblical, TLHdig-TF, Pseudepigrapha-TF and ORACC-TF are exercised explicitly.

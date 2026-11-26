@@ -6,7 +6,7 @@
 
 ## Problem
 
-Current TFont GitHub Actions logs repeatedly emit warnings that `actions/checkout@v4` and `actions/setup-python@v5` target deprecated Node 20 and are being forced to run on Node 24 by GitHub-hosted runners. This is CI/runtime-maintenance debt: the workflow logic itself passes, but it relies on compatibility coercion that can eventually disappear.
+Current ontoTF GitHub Actions logs repeatedly emit warnings that `actions/checkout@v4` and `actions/setup-python@v5` target deprecated Node 20 and are being forced to run on Node 24 by GitHub-hosted runners. This is CI/runtime-maintenance debt: the workflow logic itself passes, but it relies on compatibility coercion that can eventually disappear.
 
 ## Upstream evidence
 
@@ -22,7 +22,7 @@ Relevant findings:
 - `actions/checkout` v5 moved the action runtime to Node 24. Newer majors exist, but v5 is the narrowest major that removes the Node-20 runtime dependency.
 - `actions/setup-python` v6 moved the action runtime to Node 24. Newer majors exist, but v6 is the narrowest major that removes the Node-20 runtime dependency.
 - `setup-python` v6 requires Actions runner v2.327.1 or later.
-- Current TFont hosted CI logs show runner `2.337.0`, so the documented runner compatibility floor is already satisfied.
+- Current ontoTF hosted CI logs show runner `2.337.0`, so the documented runner compatibility floor is already satisfied.
 
 ## Version decision
 

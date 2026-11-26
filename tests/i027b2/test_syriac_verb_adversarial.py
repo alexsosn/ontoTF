@@ -3,11 +3,11 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.semantic_validation import (
+from ontotf.semantic_validation import (
     SemanticArtifact, SemanticSourceBundle, SemanticValidationError,
     validate_semantic_bundle,
 )
-from tfont.production_bundles import (
+from ontotf.production_bundles import (
     load_production_verb_bundle, load_production_linguistic_bundle,
 )
 
@@ -44,7 +44,7 @@ class SyriacVerbAdversarialTests(unittest.TestCase):
         )
 
     def test_no_implicit_cross_corpus_or_stem_mapping(self):
-        from tfont.production_bundles import ProductionBundleError
+        from ontotf.production_bundles import ProductionBundleError
 
         with self.assertRaises(ProductionBundleError):
             load_production_verb_bundle("unsupported-corpus")

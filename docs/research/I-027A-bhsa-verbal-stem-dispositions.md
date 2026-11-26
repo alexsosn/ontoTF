@@ -14,7 +14,7 @@ Can the BHSA verbal-stem (`word.vs`) family receive a production-reviewed **nati
 
 - Corpus: `ETCBC/bhsa` at `4db00e2157915495e1a4d3d57e41223df24775da`, TF version `2021`.
 - Machine inventory: `docs/research/data/generated/r005/bhsa.json`, especially `/node_features/vs`.
-- Denominator: `src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json`, SHA-256/JCS denominator digest `sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03`.
+- Denominator: `src/ontotf/resources/coverage/p004-r011-baseline-v1/bhsa.json`, SHA-256/JCS denominator digest `sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03`.
 - Routing: `docs/research/data/generated/i026/p004-work-queue.json` (merged #271); 149 BHSA items belong to C, including all 27 `vs` family rows.
 - Historical R-011 pilot mapping `bhsa-verbal-stem` has `native-only` research authority; it is used as a hypothesis to re-evaluate, never as production authority.
 - Current OLiA snapshot lock: `olia-reference-model` at source revision `d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6`.

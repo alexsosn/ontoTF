@@ -247,7 +247,7 @@ The I-019 research workflow:
 6. projects the regenerated inventory into the compact committed evidence and
    requires exact equality.
 
-TFont runtime does not acquire or build TLHdig.
+ontoTF runtime does not acquire or build TLHdig.
 
 ## Plan handoff
 

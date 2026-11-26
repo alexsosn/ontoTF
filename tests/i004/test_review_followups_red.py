@@ -3,8 +3,8 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.semantic_digest_v2 import projection_semantic_digest_v1
-from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
+from ontotf.semantic_digest_v2 import projection_semantic_digest_v1
+from ontotf.semantic_validation import SemanticValidationError, validate_semantic_bundle
 from tests.i004.test_semantic_validation_phase1 import base_sources, bundle
 from tests.i004.test_semantic_validation_phase3 import reviewed_sources
 from tests.i004.test_semantic_validation_phase5 import evidence_record, full_bundle

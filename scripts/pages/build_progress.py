@@ -16,7 +16,7 @@ import subprocess
 from urllib.parse import quote
 from xml.etree import ElementTree as ET
 
-from tfont.xml_mappings import MappingCatalog
+from ontotf.xml_mappings import MappingCatalog
 from scripts.pages.scoped_progress import (
     ONTOLOGIES, POSITIVE, ontology, KINDS, scoped_progress, eligible_progress,
     observed_items, rule_matches,
@@ -198,7 +198,7 @@ def inventories(root):
 
 
 def build_report(root, commit):
-    catalog_path = root / "src/tfont/mappings"
+    catalog_path = root / "src/ontotf/mappings"
     catalog = MappingCatalog(catalog_path)
     inv = inventories(root)
     scoped_inventories = {}
@@ -324,7 +324,7 @@ def render(report):
     corpora = report["corpora"]
     commit = report["commit"]
     blob = REPO + "/blob/" + quote(commit, safe="") + "/"
-    mapping = lambda c: link(blob + "src/tfont/mappings/" + quote(c["corpus"], safe="") + ".xml",
+    mapping = lambda c: link(blob + "src/ontotf/mappings/" + quote(c["corpus"], safe="") + ".xml",
                              c["corpus"])
     count_rows = []
     matrix = []
@@ -513,7 +513,7 @@ tr:last-child td,tr:last-child th{border-bottom:0}tbody tr:last-child{background
 details{padding:.7rem 0;border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:600}details p{overflow-wrap:anywhere;font-size:.88rem}
 meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--accent);margin-top:.2rem}code{font-size:.85em}footer{margin-top:2rem;color:var(--muted);font-size:.85rem}
 </style></head><body><main>
-<header><strong>ontoTF / TFont</strong><nav>""" + link(REPO, "GitHub") + """ · <a href="progress.json">Download data</a></nav></header>
+<header><strong>ontoTF / ontoTF</strong><nav>""" + link(REPO, "GitHub") + """ · <a href="progress.json">Download data</a></nav></header>
 <h1>Mapping progress</h1><p class="muted">Current development XML catalog. Mapping counts describe native semantic categories, not individual corpus tokens, identity links, or released-wheel support.</p>
 <p class="muted">Source commit """ + link(REPO + "/commit/" + quote(commit, safe=""), commit[:12]) + """</p>
 <section class="metrics" aria-label="Summary">""" + cards_html + """</section>
@@ -534,7 +534,7 @@ meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--a
 <h2>Historical semantic work plan</h2><p>The P-004 inventory groups ontology workstreams and includes selected feature values. Its """ + number(report["historical_total"]) + """-item baseline excludes later corpora and uses older revisions for some datasets. It is not the denominator for the XML selector totals above. The historical plan remains separate; the current scoped evidence and partial applicability counts above do not establish exhaustive ontology-specific eligibility.</p>""" + table(
         ("Corpus", *WORKSTREAM_NAMES, "Total"), old_rows,
         "Historical P-004 routed semantic items; planned workload, not current progress ratios.") + """
-<footer>Generated from the """ + link(REPO + "/tree/" + quote(commit, safe="") + "/src/tfont/mappings", "authoritative XML catalog") + " and " + link(blob + QUEUE, "historical work queue") + """. No corpus text is redistributed by this page. <a href="progress.json">Machine-readable statistics</a>.</footer>
+<footer>Generated from the """ + link(REPO + "/tree/" + quote(commit, safe="") + "/src/ontotf/mappings", "authoritative XML catalog") + " and " + link(blob + QUEUE, "historical work queue") + """. No corpus text is redistributed by this page. <a href="progress.json">Machine-readable statistics</a>.</footer>
 </main></body></html>
 """
 

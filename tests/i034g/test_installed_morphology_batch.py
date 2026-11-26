@@ -8,9 +8,9 @@ from __future__ import annotations
 import json
 import unittest
 
-from tfont.release_registry import load_profile, list_profile_releases
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.digests import canonical_json_bytes
+from ontotf.release_registry import load_profile, list_profile_releases
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.digests import canonical_json_bytes
 
 OLIA = "http://purl.org/olia/olia.owl#"
 CANDIDATES = {
@@ -77,7 +77,7 @@ class ReleasedMorphologyBatch(unittest.TestCase):
                 self.assertIsNotNone(new)
     
     def test_historical_aliases_not_mutated(self):
-        from tfont.release_registry import _load_catalogue
+        from ontotf.release_registry import _load_catalogue
         c = _load_catalogue()
         for corpus in CANDIDATES:
             self.assertEqual(c["corpora"][corpus]["current"], "0.4.0")

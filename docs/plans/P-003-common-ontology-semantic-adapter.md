@@ -7,7 +7,7 @@
 
 ## 1. Architecture decision
 
-TFont is a reviewed semantic compatibility layer over already-materialized Text-Fabric / Context-Fabric corpora:
+ontoTF is a reviewed semantic compatibility layer over already-materialized Text-Fabric / Context-Fabric corpora:
 
 ```text
 source representations
@@ -28,7 +28,7 @@ native Context-Fabric query plan
 results + provenance + semantic-loss explanation
 ```
 
-Baseline TFont does **not** own generic JSON/XML/CSV/TEI/PDF/database/API ingestion, arbitrary source-record addressing, network dereferencing, adapter authentication/caching, or a generic sidecar/native-adapter runtime.
+Baseline ontoTF does **not** own generic JSON/XML/CSV/TEI/PDF/database/API ingestion, arbitrary source-record addressing, network dereferencing, adapter authentication/caching, or a generic sidecar/native-adapter runtime.
 
 A mapping becomes a reviewed **native semantic record** with one native TF/CF binding and zero or more complementary approved target-bearing projections. A target-bearing projection is the smallest reviewed unit that may participate in either the common semantic-pivot reverse index or the authority-value reverse index.
 
@@ -146,7 +146,7 @@ Freeze the first production vocabulary to:
 - `skos-concept`;
 - `named-resource`.
 
-OWL `ObjectProperty` / `DatatypeProperty` remain locked ontology-declaration metadata, not canonical TFont target kinds.
+OWL `ObjectProperty` / `DatatypeProperty` remain locked ontology-declaration metadata, not canonical ontoTF target kinds.
 
 ### 4.2 Closed semantic roles
 
@@ -364,7 +364,7 @@ A provenance/source or locator record requires a real external value but never c
 
 ## 8. Publication predicates
 
-Publication predicates are projection/reference-specific and never mechanically derived from TFont assessment.
+Publication predicates are projection/reference-specific and never mechanically derived from ontoTF assessment.
 
 - SKOS mapping predicates require concept-to-concept legality;
 - `owl:equivalentClass` requires class-to-class semantics;

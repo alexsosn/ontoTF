@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.digests import DigestError, source_bundle_digest
+from ontotf.digests import DigestError, source_bundle_digest
 
 
 class SourceBundleDiagnosticPathTests(unittest.TestCase):

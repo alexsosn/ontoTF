@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import urljoin
 
-from tfont.parent_identity import (
+from ontotf.parent_identity import (
     PARENT_COMPONENTS_ALGORITHM,
     TF_FILES_ALGORITHM,
     file_component_digest,

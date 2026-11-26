@@ -50,7 +50,7 @@ class FullSuiteDiscoveryGate(unittest.TestCase):
                 source=(WORKFLOWS/name).read_text(encoding="utf-8")
                 self.assertIn("  pull_request:",source)
                 pull=source.split("  pull_request:",1)[1].split("\n  workflow_dispatch:",1)[0].split("\npermissions:",1)[0].split("\njobs:",1)[0]
-                self.assertNotIn("src/tfont/**",pull)
+                self.assertNotIn("src/ontotf/**",pull)
                 self.assertIn("tests/",pull)
                 self.assertIn(name,pull)
 

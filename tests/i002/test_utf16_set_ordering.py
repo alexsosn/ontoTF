@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.digests import (
+from ontotf.digests import (
     _normalize_evidence_bindings,
     _normalize_mapping_identities,
     _normalize_ontology_lock_identities,

@@ -16,7 +16,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 FILE = ROOT / "docs/research/data/i034c/bhsa-morphology-olia.json"
-DENOMINATOR = ROOT / "src/tfont/resources/coverage/p004-i027c2-bhsa-adj-adv-v1/bhsa.json"
+DENOMINATOR = ROOT / "src/ontotf/resources/coverage/p004-i027c2-bhsa-adj-adv-v1/bhsa.json"
 BHSA_SHA = "4db00e2157915495e1a4d3d57e41223df24775da"
 OLIA_SHA = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 OLIA_DIGEST = "sha256:5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd"
@@ -158,7 +158,7 @@ class BHSARealMorphologySemantics(unittest.TestCase):
     def setUpClass(cls):
         cls.data = json.loads(FILE.read_text(encoding="utf-8"))
         cls.denom = json.loads(DENOMINATOR.read_text(encoding="utf-8"))
-        artifact = files("tfont").joinpath(*OLIA_BASE.split("/")).read_bytes()
+        artifact = files("ontotf").joinpath(*OLIA_BASE.split("/")).read_bytes()
         cls.xml = artifact.decode("utf-8")
         assert "sha256:" + hashlib.sha256(artifact).hexdigest() == OLIA_DIGEST
 

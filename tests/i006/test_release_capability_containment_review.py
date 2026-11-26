@@ -8,7 +8,7 @@ from tests.i006._fixtures import compiled_noun_ir
 from tests.i006.test_semantic_resolver_contract import prerequisite_for
 
 
-RESOLVER = importlib.import_module("tfont.semantic_resolver")
+RESOLVER = importlib.import_module("ontotf.semantic_resolver")
 
 
 def assert_invalid(testcase: unittest.TestCase, ir) -> None:

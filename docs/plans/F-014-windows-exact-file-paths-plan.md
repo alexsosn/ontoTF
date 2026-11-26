@@ -7,7 +7,7 @@ Research preceded implementation. Initial production edits followed tests-only R
 
 ## Production change
 
-`src/tfont/parent_identity.py` has one private lexical helper for exact-file spellings. It rejects before `_lstat()` when:
+`src/ontotf/parent_identity.py` has one private lexical helper for exact-file spellings. It rejects before `_lstat()` when:
 
 - the path ends in a native separator;
 - the final non-empty component is `.`; or

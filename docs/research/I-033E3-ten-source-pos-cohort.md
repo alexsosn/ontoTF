@@ -22,7 +22,7 @@ BHSA `ETCBC/bhsa@4db00e2157915495e1a4d3d57e41223df24775da`, [docs/features/sp.md
 
 Syriac grammatical rules: `ETCBC/linksyr@3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6`, [data/lib/syriac/word_grammar](https://github.com/ETCBC/linksyr/blob/3ba42432b0ed95c1ad65eb06865c3a5f7175f8b6/data/lib/syriac/word_grammar) defines `sp` as part of speech; `pron: "pronoun"` is at original **line 91**. The corpus target remains `ETCBC/syriac@bb0eaa7e21b020a26b7566d2e495da9b1f84a919`, not the grammar repository revision.
 
-The existing `src/tfont/resources/profiles/{bhsa,syriac}/0.4.0/evidence/native-adj-adv-pos.json` records provide immutable source URI, revision, node scope, TF target version and existing adjv/advb definitions. This batch creates **new supplemental, digest-bound candidate evidence** at those same frozen source pins and includes the original adjv/advb definitions unchanged. It does **not** mutate the installed historical evidence.
+The existing `src/ontotf/resources/profiles/{bhsa,syriac}/0.4.0/evidence/native-adj-adv-pos.json` records provide immutable source URI, revision, node scope, TF target version and existing adjv/advb definitions. This batch creates **new supplemental, digest-bound candidate evidence** at those same frozen source pins and includes the original adjv/advb definitions unchanged. It does **not** mutate the installed historical evidence.
 
 ## Scholarly interpretation and non-claims
 

@@ -7,8 +7,8 @@ from __future__ import annotations
 
 import copy
 
-from tfont.release_registry import load_profile
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
+from ontotf.release_registry import load_profile
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
 
 
 def synthetic_transition():

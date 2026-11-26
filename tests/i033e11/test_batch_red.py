@@ -4,9 +4,9 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.release_registry import load_profile
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
-from tfont.mapping_supersession import (
+from ontotf.release_registry import load_profile
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
+from ontotf.mapping_supersession import (
     NativeSupersessionError,
     plan_native_only_supersession_batch,
     verify_supersession_batch_preview,

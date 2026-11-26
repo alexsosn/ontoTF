@@ -3,9 +3,9 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import DigestError, evidence_record_digest
-from tfont.semantic_digest_v2 import projection_semantic_digest_v1
-from tfont.semantic_validation import (
+from ontotf.digests import DigestError, evidence_record_digest
+from ontotf.semantic_digest_v2 import projection_semantic_digest_v1
+from ontotf.semantic_validation import (
     SemanticArtifact,
     SemanticSourceBundle,
     SemanticValidationError,
@@ -194,7 +194,7 @@ class I004Phase5Tests(unittest.TestCase):
         self.assert_problem("native_semantics_unproven", sources)
 
     def test_digest_v2_non_mapping_input_has_stable_digest_error(self):
-        from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
+        from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
 
         with self.assertRaises(DigestError) as raised:
             mapping_semantic_digest_v2([])  # type: ignore[arg-type]

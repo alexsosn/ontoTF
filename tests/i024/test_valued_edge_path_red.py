@@ -6,8 +6,8 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-import tfont
-import tfont.semantic_resolver as semantic_resolver
+import ontotf
+import ontotf.semantic_resolver as semantic_resolver
 from jsonschema import Draft202012Validator
 
 from tests.i006._fixtures import _refresh_mapping, noun_semantic_key
@@ -30,8 +30,8 @@ from tests.i024._fixtures import (
     valued_context,
     valued_sources,
 )
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
-from tfont.semantic_ir import native_binding_identity
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
+from ontotf.semantic_ir import native_binding_identity
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -44,7 +44,7 @@ def category(error: BaseException) -> str:
 
 def binding_validator():
     schema = json.loads(
-        (ROOT / "src/tfont/schemas/mapping.schema.json").read_text(encoding="utf-8")
+        (ROOT / "src/ontotf/schemas/mapping.schema.json").read_text(encoding="utf-8")
     )
     return Draft202012Validator(
         {
@@ -112,7 +112,7 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         )
 
     def test_edge_step_ir_appends_defaulted_value_contract(self):
-        old = tfont.EdgeStepIR("selected", "outgoing", "analysis", False)
+        old = ontotf.EdgeStepIR("selected", "outgoing", "analysis", False)
         self.assertIsNone(old.value_type)
         self.assertIsNone(old.value_role)
 
@@ -145,8 +145,8 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             pass
 
         forged_steps = (
-            tfont.EdgeStepIR("selected", "outgoing", "analysis", True),
-            tfont.EdgeStepIR(
+            ontotf.EdgeStepIR("selected", "outgoing", "analysis", True),
+            ontotf.EdgeStepIR(
                 "selected",
                 "outgoing",
                 "analysis",
@@ -154,7 +154,7 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
                 StringSubclass("str"),
                 "source-evidence",
             ),
-            tfont.EdgeStepIR(
+            ontotf.EdgeStepIR(
                 "selected",
                 "outgoing",
                 "analysis",
@@ -172,16 +172,16 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
 
     def test_outgoing_valued_execution_preserves_fanin_and_typed_evidence(self):
         ir = compiled_valued_ir()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (valued_context(tfont, ir, selected_api()),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, ir, selected_api()),),
         )
         corpus = result.corpora[0]
         self.assertEqual(corpus.nodes, (11, 10))
         evidence = corpus.edge_path_evidence
         self.assertIsNotNone(evidence)
-        self.assertEqual(evidence.evidence_contract, "tfont-edge-path-evidence-v1")
+        self.assertEqual(evidence.evidence_contract, "ontotf-edge-path-evidence-v1")
         self.assertEqual(evidence.plan_fingerprint, corpus.plan.plan_fingerprint)
         self.assertEqual(evidence.start_nodes, (1, 2))
         self.assertEqual(evidence.final_nodes, (11, 10))
@@ -199,7 +199,7 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             ),
         )
         self.assertEqual(
-            tfont.edge_path_evidence_fingerprint(evidence),
+            ontotf.edge_path_evidence_fingerprint(evidence),
             evidence.evidence_fingerprint,
         )
 
@@ -209,10 +209,10 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             steps=INCOMING_VALUED_STEPS,
         )
         api = selected_api(selections={"analysis": (10, 11)})
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (valued_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, ir, api),),
         )
         self.assertEqual(result.corpora[0].nodes, (1, 2))
         observations = result.corpora[0].edge_path_evidence.layers[0].observations
@@ -229,20 +229,20 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         str_feature = ValuedFakeEdgeFeature({1: ((10, ""),)})
         str_api = selected_api(feature=str_feature)
         str_ir = compiled_valued_ir()
-        str_result = tfont.execute_exact_semantic(
+        str_result = ontotf.execute_exact_semantic(
             str_ir,
-            semantic_request(tfont),
-            (valued_context(tfont, str_ir, str_api),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, str_ir, str_api),),
         )
         row = str_result.corpora[0].edge_path_evidence.layers[0].observations[0]
         self.assertTrue(row.value_present)
         self.assertEqual(row.value, "")
 
         int_ir = compiled_valued_ir(steps=VALUED_INT_STEPS)
-        int_result = tfont.execute_exact_semantic(
+        int_result = ontotf.execute_exact_semantic(
             int_ir,
-            semantic_request(tfont),
-            (valued_context(tfont, int_ir, integer_api()),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, int_ir, integer_api()),),
         )
         rows = int_result.corpora[0].edge_path_evidence.layers[0].observations
         self.assertEqual(
@@ -264,10 +264,10 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             with self.subTest(feature=feature):
                 api = selected_api(feature=feature)
                 with self.assertRaises(Exception) as raised:
-                    tfont.execute_exact_semantic(
+                    ontotf.execute_exact_semantic(
                         ir,
-                        semantic_request(tfont),
-                        (valued_context(tfont, ir, api),),
+                        semantic_request(ontotf),
+                        (valued_context(ontotf, ir, api),),
                     )
                 self.assertEqual(category(raised.exception), "loaded_api_unavailable")
 
@@ -277,17 +277,17 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             {1: ((10, "1"), (10, "1"))}
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                semantic_request(tfont),
-                (valued_context(tfont, ir, selected_api(feature=duplicate)),),
+                semantic_request(ontotf),
+                (valued_context(ontotf, ir, selected_api(feature=duplicate)),),
             )
         self.assertEqual(category(raised.exception), "invalid_result_nodes")
 
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (valued_context(tfont, ir, selected_api()),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, ir, selected_api()),),
         )
         observations = result.corpora[0].edge_path_evidence.layers[0].observations
         self.assertEqual(
@@ -298,10 +298,10 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
 
     def test_mixed_path_records_unvalued_layer_and_trailing_empty_layer(self):
         mixed_ir = compiled_valued_ir(steps=MIXED_STEPS)
-        mixed = tfont.execute_exact_semantic(
+        mixed = ontotf.execute_exact_semantic(
             mixed_ir,
-            semantic_request(tfont),
-            (valued_context(tfont, mixed_ir, mixed_api()),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, mixed_ir, mixed_api()),),
         ).corpora[0]
         self.assertEqual(mixed.nodes, (20,))
         self.assertEqual(len(mixed.edge_path_evidence.layers), 2)
@@ -311,10 +311,10 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         self.assertTrue(all(not row.value_present and row.value is None for row in first.observations))
 
         empty_ir = compiled_valued_ir(steps=EMPTY_TRAILING_STEPS)
-        empty = tfont.execute_exact_semantic(
+        empty = ontotf.execute_exact_semantic(
             empty_ir,
-            semantic_request(tfont),
-            (valued_context(tfont, empty_ir, empty_trailing_api()),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, empty_ir, empty_trailing_api()),),
         ).corpora[0]
         self.assertEqual(empty.nodes, ())
         self.assertEqual(tuple(layer.step_index for layer in empty.edge_path_evidence.layers), (0, 1))
@@ -327,10 +327,10 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             value_type="int",
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 int_ir,
-                semantic_request(tfont),
-                (valued_context(tfont, int_ir, integer_api(feature=oversized_value)),),
+                semantic_request(ontotf),
+                (valued_context(ontotf, int_ir, integer_api(feature=oversized_value)),),
             )
         self.assertEqual(category(raised.exception), "loaded_api_unavailable")
 
@@ -341,21 +341,21 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         api = integer_api(feature=oversized_node)
         api.F.otype.node_types[SAFE_MAX + 1] = "word"
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 int_ir,
-                semantic_request(tfont),
-                (valued_context(tfont, int_ir, api),),
+                semantic_request(ontotf),
+                (valued_context(ontotf, int_ir, api),),
             )
         self.assertEqual(category(raised.exception), "invalid_result_nodes")
 
     def test_fingerprint_binds_plan_trace_and_rejects_forged_container_shapes(self):
-        self.assertTrue(hasattr(tfont, "EdgePathObservation"))
-        self.assertTrue(hasattr(tfont, "EdgePathEvidenceLayer"))
-        self.assertTrue(hasattr(tfont, "EdgePathEvidence"))
-        observation = tfont.EdgePathObservation(1, 2, True, "x")
-        layer = tfont.EdgePathEvidenceLayer(0, (observation,))
-        base = tfont.EdgePathEvidence(
-            "tfont-edge-path-evidence-v1",
+        self.assertTrue(hasattr(ontotf, "EdgePathObservation"))
+        self.assertTrue(hasattr(ontotf, "EdgePathEvidenceLayer"))
+        self.assertTrue(hasattr(ontotf, "EdgePathEvidence"))
+        observation = ontotf.EdgePathObservation(1, 2, True, "x")
+        layer = ontotf.EdgePathEvidenceLayer(0, (observation,))
+        base = ontotf.EdgePathEvidence(
+            "ontotf-edge-path-evidence-v1",
             "sha256:" + "a" * 64,
             "sha256:" + "b" * 64,
             (1,),
@@ -363,57 +363,57 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
             (2,),
             "",
         )
-        fp = tfont.edge_path_evidence_fingerprint(base)
+        fp = ontotf.edge_path_evidence_fingerprint(base)
         sealed = replace(base, evidence_fingerprint=fp)
-        self.assertEqual(tfont.edge_path_evidence_fingerprint(sealed), fp)
+        self.assertEqual(ontotf.edge_path_evidence_fingerprint(sealed), fp)
         other_plan = replace(sealed, plan_fingerprint="sha256:" + "c" * 64)
         self.assertNotEqual(
-            tfont.edge_path_evidence_fingerprint(other_plan),
+            ontotf.edge_path_evidence_fingerprint(other_plan),
             fp,
         )
         with self.assertRaises(TypeError):
-            tfont.edge_path_evidence_fingerprint(replace(sealed, layers=[layer]))
+            ontotf.edge_path_evidence_fingerprint(replace(sealed, layers=[layer]))
 
     def test_exact_approximate_authority_identity_identifier_surfaces_carry_evidence(self):
         ir = compiled_valued_ir()
-        exact = tfont.execute_exact_semantic(
+        exact = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (valued_context(tfont, ir),),
+            semantic_request(ontotf),
+            (valued_context(ontotf, ir),),
         )
-        approximate = tfont.execute_approximate_semantic(
+        approximate = ontotf.execute_approximate_semantic(
             ir,
-            approximate_request(tfont),
-            (valued_context(tfont, ir),),
+            approximate_request(ontotf),
+            (valued_context(ontotf, ir),),
         )
         self.assertIsNotNone(exact.corpora[0].edge_path_evidence)
         self.assertIsNotNone(approximate.corpora[0].edge_path_evidence)
 
         authority_ir = compiled_authority_valued_ir()
         authority_key = authority_ir.authority_index[0][0]
-        authority = tfont.execute_exact_authority(
+        authority = ontotf.execute_exact_authority(
             authority_ir,
-            tfont.AuthorityResolveRequest(key=authority_key, corpora=("bhsa",)),
-            (valued_context(tfont, authority_ir),),
+            ontotf.AuthorityResolveRequest(key=authority_key, corpora=("bhsa",)),
+            (valued_context(ontotf, authority_ir),),
         )
         self.assertIsNotNone(authority.corpora[0].edge_path_evidence)
 
         refs_ir = compiled_reference_valued_ir()
         identity_key = refs_ir.identity_index[0][0]
-        identity = tfont.execute_identity(
+        identity = ontotf.execute_identity(
             refs_ir,
-            tfont.IdentityResolveRequest(
+            ontotf.IdentityResolveRequest(
                 authority_system=identity_key.authority_system,
                 external_entity_id=identity_key.external_entity_id,
                 corpora=("bhsa",),
             ),
-            (valued_context(tfont, refs_ir),),
+            (valued_context(ontotf, refs_ir),),
         )
         identifier_key = refs_ir.identifier_index[0][0]
-        identifier = tfont.execute_identifier(
+        identifier = ontotf.execute_identifier(
             refs_ir,
-            tfont.IdentifierResolveRequest(key=identifier_key, corpora=("bhsa",)),
-            (valued_context(tfont, refs_ir),),
+            ontotf.IdentifierResolveRequest(key=identifier_key, corpora=("bhsa",)),
+            (valued_context(ontotf, refs_ir),),
         )
         self.assertIsNotNone(identity.corpora[0].edge_path_evidence)
         self.assertIsNotNone(identifier.corpora[0].edge_path_evidence)
@@ -421,8 +421,8 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
     def test_mixed_conjunction_evidence_is_plan_aligned(self):
         ir = compiled_mixed_conjunction_ir()
         keys = (
-            semantic_request(tfont).key,
-            tfont.SemanticKey(
+            semantic_request(ontotf).key,
+            ontotf.SemanticKey(
                 profile_id="linguistic",
                 capability_id="linguistic.part-of-speech",
                 target="http://purl.org/olia/olia.owl#ProperNoun",
@@ -430,24 +430,24 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
                 semantic_role="annotation-value",
             ),
         )
-        exact = tfont.execute_exact_conjunction(
+        exact = ontotf.execute_exact_conjunction(
             ir,
-            tfont.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
-            (valued_context(tfont, ir),),
+            ontotf.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
+            (valued_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(len(exact.constituent_edge_path_evidence), len(exact.plans))
         self.assertIsNotNone(exact.constituent_edge_path_evidence[0])
         self.assertIsNone(exact.constituent_edge_path_evidence[1])
 
-        approximate = tfont.execute_approximate_conjunction(
+        approximate = ontotf.execute_approximate_conjunction(
             ir,
-            tfont.ApproximateSemanticConjunctionRequest(
+            ontotf.ApproximateSemanticConjunctionRequest(
                 keys=keys,
                 corpora=("bhsa",),
                 semantic_mode="approximate",
                 accept_losses=(),
             ),
-            (valued_context(tfont, ir),),
+            (valued_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(
             tuple(item is None for item in approximate.constituent_edge_path_evidence),
@@ -455,25 +455,25 @@ class I024ValuedEdgePathRedTests(unittest.TestCase):
         )
 
     def test_public_result_positional_compatibility_and_outer_contracts(self):
-        exact = tfont.ExactCorpusExecution("bhsa", (1,), None, None)
-        approximate = tfont.ApproximateCorpusExecution("bhsa", (1,), None, None)
+        exact = ontotf.ExactCorpusExecution("bhsa", (1,), None, None)
+        approximate = ontotf.ApproximateCorpusExecution("bhsa", (1,), None, None)
         self.assertIsNone(exact.edge_path_evidence)
         self.assertIsNone(approximate.edge_path_evidence)
 
         self.assertEqual(
-            tfont.EXACT_EXECUTION_CONTRACT,
-            "tfont-exact-execution-v1",
+            ontotf.EXACT_EXECUTION_CONTRACT,
+            "ontotf-exact-execution-v1",
         )
         self.assertEqual(
-            tfont.APPROXIMATE_EXECUTION_CONTRACT,
-            "tfont-approximate-execution-v1",
+            ontotf.APPROXIMATE_EXECUTION_CONTRACT,
+            "ontotf-approximate-execution-v1",
         )
 
     def test_packaged_mappings_and_runtime_dependency_boundary_remain_unchanged(self):
         count = 0
         historical_count = 0
         shapes = set()
-        root = ROOT / "src/tfont/resources/profiles"
+        root = ROOT / "src/ontotf/resources/profiles"
         for path in sorted(root.glob("*/*/mappings/*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
             for mapping in data.get("mappings", []):

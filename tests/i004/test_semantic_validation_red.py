@@ -105,16 +105,16 @@ def minimal_v2_sources() -> dict:
             "mapping_sources": ["mappings/test.yaml"],
             "dependency_contract_version": 1,
             "dependencies": [dependency],
-            "minimum_tfont_runtime": "0.1.0",
+            "minimum_ontotf_runtime": "0.1.0",
             "license": "CC-BY-4.0",
         },
         "expected_parent_manifest": {
-            "algorithm": "tfont-parent-components-sha256-v1",
+            "algorithm": "ontotf-parent-components-sha256-v1",
             "components": [
                 {
                     "component_id": "test-tf",
                     "kind": "tf-payload",
-                    "identity_algorithm": "tfont-tf-files-sha256-v1",
+                    "identity_algorithm": "ontotf-tf-files-sha256-v1",
                     "content_digest": "sha256:test-parent",
                 }
             ],
@@ -170,7 +170,7 @@ class I004RedContractTests(unittest.TestCase):
             self.assertNotIn(forbidden, serialized)
 
     def test_production_semantic_validation_api_exists(self):
-        module = importlib.import_module("tfont.semantic_validation")
+        module = importlib.import_module("ontotf.semantic_validation")
         for name in (
             "SemanticArtifact",
             "SemanticSourceBundle",

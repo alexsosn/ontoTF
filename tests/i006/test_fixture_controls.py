@@ -7,7 +7,7 @@ from tests.i006._fixtures import (
     noun_semantic_key,
     validated_binding_presence_bundle,
 )
-from tfont.semantic_ir import compile_semantic_ir
+from ontotf.semantic_ir import compile_semantic_ir
 
 
 class I006FixtureControlTests(unittest.TestCase):

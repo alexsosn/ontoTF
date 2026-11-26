@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.parent_identity import (
+from ontotf.parent_identity import (
     IdentityError,
     directory_component_digest,
     file_component_digest,

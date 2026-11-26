@@ -15,12 +15,12 @@ The acceptance path is the reviewed exact OLiA Noun tuple across BHSA, ETCBC Syr
 
 ## 2. Public API
 
-Add `src/tfont/semantic_ir.py` and export its public surface from `tfont.__init__`.
+Add `src/ontotf/semantic_ir.py` and export its public surface from `ontotf.__init__`.
 
 Freeze:
 
 ```python
-NATIVE_BINDING_IDENTITY_ALGORITHM = "tfont-native-binding-jcs-sha256-v1"
+NATIVE_BINDING_IDENTITY_ALGORITHM = "ontotf-native-binding-jcs-sha256-v1"
 
 @dataclass(frozen=True)
 class SemanticIRProblem:
@@ -402,7 +402,7 @@ The fixture is a dedicated I-005 contract fixture; it does not claim to be a rel
 
 ## 13. TDD RED matrix
 
-Commit tests/workflow before `src/tfont/semantic_ir.py` or `__init__.py` exports.
+Commit tests/workflow before `src/ontotf/semantic_ir.py` or `__init__.py` exports.
 
 RED must fail because the compiler public API does not exist, while fixture setup controls pass independently.
 
@@ -410,7 +410,7 @@ Required tests:
 
 ### Public / determinism
 
-1. importing `compile_semantic_ir` from `tfont` is the intended missing production surface;
+1. importing `compile_semantic_ir` from `ontotf` is the intended missing production surface;
 2. same validated inputs compile identically on repeated calls after GREEN;
 3. reversing bundle order and mapping authored order does not change IR;
 4. native binding identity is stable across object key order and changes when an execution-significant field changes;
@@ -465,7 +465,7 @@ Required tests:
 8. semantic/authority/identity/identifier/native index assembly;
 9. variant-scoped capability facts;
 10. deterministic final sorting/equality;
-11. export public surface from `tfont.__init__`.
+11. export public surface from `ontotf.__init__`.
 
 Do not refactor I-004 internals unless a RED proves a shared helper is necessary. Favor read-only consumption of its public result.
 
@@ -474,7 +474,7 @@ Do not refactor I-004 internals unless a RED proves a shared helper is necessary
 Add `.github/workflows/i005-semantic-ir.yml`:
 
 - `push` on the active I-005 implementation branch;
-- `pull_request` paths covering `src/tfont/**`, `tests/i005/**`, relevant I-004 tests, I-005 research/plan and the workflow itself;
+- `pull_request` paths covering `src/ontotf/**`, `tests/i005/**`, relevant I-004 tests, I-005 research/plan and the workflow itself;
 - exact-head `actions/checkout@v5`;
 - `actions/setup-python@v6`;
 - Python 3.10 and 3.12;

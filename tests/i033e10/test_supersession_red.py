@@ -4,7 +4,7 @@ import copy
 import unittest
 
 from tests.i033e10.fixtures import synthetic_transition
-from tfont.mapping_supersession import (
+from ontotf.mapping_supersession import (
     NativeSupersessionError,
     plan_native_only_supersession,
     verify_supersession_preview,
@@ -66,7 +66,7 @@ class NativeOnlySupersessionRed(unittest.TestCase):
     def test_no_silent_replacement_or_unchanged_identity(self):
         same=copy.deepcopy(self.new)
         same["mapping_id"]=self.old["mapping_id"]
-        from tfont.semantic_digest_v2 import mapping_semantic_digest_v2
+        from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2
         same["mapping_semantic_digest"]=mapping_semantic_digest_v2(same)
         with self.assertRaises(NativeSupersessionError):
             self.preview(candidate=same)

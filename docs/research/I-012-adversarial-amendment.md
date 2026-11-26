@@ -18,10 +18,10 @@ The first draft listed only the executor selector surface (`Fall`, `F.sp.s`, `F.
 - `F.sp.s(value)` for actual scalar/set execution after authorization;
 - `F.otype.v(node)` for result node-type filtering.
 
-The acceptance double must implement all of these. It should also expose a load/autoload sentinel that fails or increments a counter if touched, even though TFont should never invoke it.
+The acceptance double must implement all of these. It should also expose a load/autoload sentinel that fails or increments a counter if touched, even though ontoTF should never invoke it.
 
 The negative parent-drift case must assert that all **execution selector** counters (`F.sp.s`) remain zero across all requested corpora. Observation calls (`F.otype.s` / `F.sp.v`) are expected because fresh prerequisite evaluation necessarily precedes resolution; they are not native result execution.
 
 ## Review consequence
 
-With these two amendments, I-012 remains an acceptance-only integration ticket: no new `src/tfont` surface is justified. The plan should freeze an outside-checkout fresh-venv runner that imports only installed `tfont`, independently checks the reviewed release identities, exercises both I-007 observation and I-008/I-010 native execution, asserts the existing provenance envelope, and proves parent drift blocks native result selection.
+With these two amendments, I-012 remains an acceptance-only integration ticket: no new `src/ontotf` surface is justified. The plan should freeze an outside-checkout fresh-venv runner that imports only installed `ontotf`, independently checks the reviewed release identities, exercises both I-007 observation and I-008/I-010 native execution, asserts the existing provenance envelope, and proves parent drift blocks native result selection.

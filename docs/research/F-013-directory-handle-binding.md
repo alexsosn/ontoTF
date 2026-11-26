@@ -6,7 +6,7 @@
 
 ## Question
 
-Can TFont guarantee that recursive directory enumeration remains attached to the exact directory objects that passed no-link inspection, on both POSIX and Windows, using Python 3.10+ standard-library facilities only?
+Can ontoTF guarantee that recursive directory enumeration remains attached to the exact directory objects that passed no-link inspection, on both POSIX and Windows, using Python 3.10+ standard-library facilities only?
 
 F-012 closes the analogous race for **regular files** by comparing a fresh no-follow stat identity with `fstat()` on the opened descriptor before reading bytes. The residual directory race is different: current traversal inspects a child directory pathname and later calls `os.scandir(path)`. If the pathname is replaced between those operations, enumeration may occur in a different directory object.
 
@@ -16,8 +16,8 @@ Any solution must preserve:
 
 - Windows and POSIX support;
 - no symlink/junction/reparse traversal;
-- exact existing `tfont-directory-files-sha256-v1` bytes for stable trees;
-- iterative traversal with no TFont depth ceiling;
+- exact existing `ontotf-directory-files-sha256-v1` bytes for stable trees;
+- iterative traversal with no ontoTF depth ceiling;
 - deterministic `filesystem_error`, `symlink_not_allowed`, and `unsupported_entry` behavior;
 - Python standard library only;
 - no claim of full filesystem snapshots or concurrent in-place mutation protection.
@@ -82,7 +82,7 @@ Closing that gap appears to require lower-level Windows relative-handle/object-m
 
 The research proves a clean descriptor-bound design for Unix, but it does not prove an equivalent implementation on Windows using the same documented Python standard-library abstraction. Shipping the POSIX implementation while silently leaving Windows pathname traversal weaker would create platform-dependent identity integrity under one algorithm/API contract.
 
-That violates TFont's explicit/fail-closed design principles more than the current documented residual race does.
+That violates ontoTF's explicit/fail-closed design principles more than the current documented residual race does.
 
 ## What can be stated today
 
@@ -99,7 +99,7 @@ This limitation should be explicit in implementation/review documentation until 
 
 ### Path A — raise the minimum platform/runtime contract
 
-If TFont eventually permits a stronger POSIX-only identity backend or platform-specific capability tiers, a descriptor walk can be implemented with `scandir(fd)` / `dir_fd` / `fwalk`, while Windows uses a separately specified backend. This requires an explicit compatibility/capability contract rather than pretending both backends are identical.
+If ontoTF eventually permits a stronger POSIX-only identity backend or platform-specific capability tiers, a descriptor walk can be implemented with `scandir(fd)` / `dir_fd` / `fwalk`, while Windows uses a separately specified backend. This requires an explicit compatibility/capability contract rather than pretending both backends are identical.
 
 ### Path B — research a documented Windows native-handle backend
 

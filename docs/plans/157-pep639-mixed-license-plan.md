@@ -6,8 +6,8 @@ Accepted research prerequisite: `docs/research/157-pep639-mixed-license.md` (mer
 
 - Current distribution version stays `0.1.0` on `main` as development source metadata after v0.1 tag. Do **not** overwrite v0.1.0 GitHub Release, retag, upload a replacement asset or claim a new release. No PyPI.
 - `[build-system].requires`: replace `setuptools>=75` with `setuptools>=77.0.3` (keep `wheel`); runtime `requires-python` and dependencies unchanged.
-- `[project]`: replace legacy `license = {file = "LICENSE"}` and remove old `License :: OSI Approved :: MIT License` classifier; add `license = "MIT AND CC-BY-3.0"`, `license-files = ["LICENSE", "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data", "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt"]`. These entries denote the archive's distinct license obligations and legal notices, not double-licensing each file.
-- Preserve original root MIT `LICENSE`; OLiA `olia.owl`, `LICENSE.data`, `ATTRIBUTION.txt`, lock and profile resources byte-for-byte and in `tfont/resources/...` package paths. No corpus TF/MQL payload. Release notes/README already explain file-level licensing; change them only if contract test proves materially inaccurate.
+- `[project]`: replace legacy `license = {file = "LICENSE"}` and remove old `License :: OSI Approved :: MIT License` classifier; add `license = "MIT AND CC-BY-3.0"`, `license-files = ["LICENSE", "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data", "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt"]`. These entries denote the archive's distinct license obligations and legal notices, not double-licensing each file.
+- Preserve original root MIT `LICENSE`; OLiA `olia.owl`, `LICENSE.data`, `ATTRIBUTION.txt`, lock and profile resources byte-for-byte and in `ontotf/resources/...` package paths. No corpus TF/MQL payload. Release notes/README already explain file-level licensing; change them only if contract test proves materially inaccurate.
 
 ## TDD test design (write tests only, demonstrate RED on exact head)
 

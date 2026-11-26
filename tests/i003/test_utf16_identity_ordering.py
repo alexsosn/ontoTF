@@ -5,8 +5,8 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tfont.digests import canonical_json_bytes
-from tfont.parent_identity import (
+from ontotf.digests import canonical_json_bytes
+from ontotf.parent_identity import (
     DIRECTORY_FILES_ALGORITHM,
     PARENT_COMPONENTS_ALGORITHM,
     directory_component_digest,

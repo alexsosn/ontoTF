@@ -6,7 +6,7 @@
 
 ## Question
 
-How should TFont derive the `RuntimePrerequisiteState` consumed by I-006 from an actually observed materialized TF/Context-Fabric corpus, while preserving the P-001 compatibility states, P-002 dependency semantics, P-003 prerequisite ordering, I-003 parent identity, I-005 release identity, and the R-019 rule that deterministic fingerprints do not authenticate their producer?
+How should ontoTF derive the `RuntimePrerequisiteState` consumed by I-006 from an actually observed materialized TF/Context-Fabric corpus, while preserving the P-001 compatibility states, P-002 dependency semantics, P-003 prerequisite ordering, I-003 parent identity, I-005 release identity, and the R-019 rule that deterministic fingerprints do not authenticate their producer?
 
 ## Current state
 
@@ -275,7 +275,7 @@ Cache by stable authority/observation identity, not by corpus path or profile ve
 - evaluator/source contract version;
 - active ontology-bundle identity.
 
-However, dependency observations are themselves derived from the observed parent. If a loaded mutable runtime can change without changing the parent identity, cache reuse is unsafe. The host must treat I-003 parent identity as identifying an immutable/quiescent materialization for the evaluation window, consistent with prior filesystem research: TFont does not promise a hostile concurrent-writer snapshot.
+However, dependency observations are themselves derived from the observed parent. If a loaded mutable runtime can change without changing the parent identity, cache reuse is unsafe. The host must treat I-003 parent identity as identifying an immutable/quiescent materialization for the evaluation window, consistent with prior filesystem research: ontoTF does not promise a hostile concurrent-writer snapshot.
 
 ## Test architecture required by research
 

@@ -3,8 +3,8 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import evidence_record_digest
-from tfont.semantic_validation import (
+from ontotf.digests import evidence_record_digest
+from ontotf.semantic_validation import (
     SemanticArtifact,
     SemanticSourceBundle,
     SemanticValidationError,

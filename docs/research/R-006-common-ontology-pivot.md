@@ -7,7 +7,7 @@
 
 ## Decision
 
-TFont should retain the accepted seven-model basis:
+ontoTF should retain the accepted seven-model basis:
 
 - **SKOS** — concept schemes and concept-to-concept mappings;
 - **OLiA** — cross-corpus linguistic annotation categories and relations;
@@ -19,7 +19,7 @@ TFont should retain the accepted seven-model basis:
 
 The seven models must **not** be implemented as one undifferentiated ontology, one generic `external_target` namespace, or one blindly imported OWL closure. The common pivot is a **reviewed, versioned composition of semantic profiles** whose mappings compile ontology-addressed semantic requests into corpus-native Context-Fabric selectors and paths.
 
-The architecture should follow the same separation that makes OLiA useful for heterogeneous annotation schemes: native annotation remains native; a linking layer connects native categories to a shared reference layer; query preprocessing resolves a shared request into the concrete native tags/selectors used by the corpus. TFont generalizes that pattern beyond linguistic annotation and executes through Context-Fabric rather than requiring RDF/SPARQL at runtime.
+The architecture should follow the same separation that makes OLiA useful for heterogeneous annotation schemes: native annotation remains native; a linking layer connects native categories to a shared reference layer; query preprocessing resolves a shared request into the concrete native tags/selectors used by the corpus. ontoTF generalizes that pattern beyond linguistic annotation and executes through Context-Fabric rather than requiring RDF/SPARQL at runtime.
 
 The central runtime route is therefore:
 
@@ -40,11 +40,11 @@ Ontology hierarchy, label similarity, identical TF feature names, or identical l
 
 ## 1. Evidence basis
 
-### 1.1 Accepted TFont research
+### 1.1 Accepted ontoTF research
 
 This report does not reopen R-002 merely because P-001 became generic.
 
-- [R-002 ontology governance](R-002-ontology-governance.md) established the seven-model semantic basis, ontology locks, eight TFont mapping assessments, the separation between runtime assessment and publication relation, and the policy against casual OWL/SKOS equivalence.
+- [R-002 ontology governance](R-002-ontology-governance.md) established the seven-model semantic basis, ontology locks, eight ontoTF mapping assessments, the separation between runtime assessment and publication relation, and the policy against casual OWL/SKOS equivalence.
 - [R-003 ergonomics](R-003-ergonomics.md) established `semantic_capabilities → semantic_resolve → semantic_search`, exact/approximate execution gates, inspectable native plans, and fail-closed behavior.
 - [R-005 corpus semantic census](R-005-corpus-semantic-census.md) established that the corpus family is heterogeneous in slot type, graph structure, lexical representation, witness semantics, editorial uncertainty, and physical-object metadata.
 - [P-001 foundation POC design](../plans/P-001-foundation-poc-design.md) remains authoritative for artifact integrity, parent-component identity, ontology locks, evidence/review bindings, deterministic canonicalization/digests, and fail-closed infrastructure. It is not treated as final authority for semantic target shape after #45.
@@ -69,7 +69,7 @@ R-005 is the authoritative pinned census. This report additionally spot-checks r
 - BHSA pinned corpus uses native POS values such as `sp=subs`, `sp=verb`, etc.; its lexical and syntactic relations remain ETCBC-native.
 - TLHdig-TF explicitly uses `sign` slots, separate `analysis` nodes for morphological alternatives, `analysis -> lex` links, `cluster` nodes for damage/editorial ranges, and a `sign → word → line → column → surface → document` hierarchy at the R-005 pin.
 - Pseudepigrapha-TF apparatus helpers require explicit `reading_of`, `witness`, `is_primary`, and manuscript relations; explicit empty readings represent omissions. Absence of an edge is not silently treated as an omission or reading.
-- ORACC-TF remains a conversion target/stress corpus rather than a finalized released TFont profile; the source tree contains separate catalogue, corpus, glossary, and per-text structures that must not be collapsed into one linguistic layer.
+- ORACC-TF remains a conversion target/stress corpus rather than a finalized released ontoTF profile; the source tree contains separate catalogue, corpus, glossary, and per-text structures that must not be collapsed into one linguistic layer.
 
 These observations agree with R-005's stronger empirical warning: identical names such as `sentence`, `lex`, or `witness` do not establish identity across corpora.
 
@@ -84,7 +84,7 @@ Stable **CRMtex 2.0** declares dependencies on:
 - CRMsci 2.0;
 - FRBRoo **2.4**.
 
-Current accepted TFont research otherwise uses:
+Current accepted ontoTF research otherwise uses:
 
 - CIDOC CRM **7.1.3**;
 - LRMoo **1.1.1** (the successor of FRBRoo for the current bibliographic model);
@@ -95,7 +95,7 @@ The mismatch is semantically relevant, not cosmetic. CRMtex 2.0 formally declare
 **Therefore:**
 
 1. each ontology release/snapshot remains independently locked;
-2. TFont must not assume that loading the seven RDF/OWL resources creates a coherent current-version reasoning closure;
+2. ontoTF must not assume that loading the seven RDF/OWL resources creates a coherent current-version reasoning closure;
 3. cross-version bridge assertions must be explicit, evidence-backed, reviewable, and versioned;
 4. a query can use several profiles without requiring their RDF documents to import each other;
 5. a missing or unreviewed required bridge fails closed.
@@ -106,7 +106,7 @@ R-012 #46 now owns the detailed CRMtex 2.0 ↔ current LRMoo/CRMinf bridge resea
 
 ## 3. Seven-ontology role and composition matrix
 
-| model | primary TFont role | typical target form | composes directly with | must not be used as |
+| model | primary ontoTF role | typical target form | composes directly with | must not be used as |
 |---|---|---|---|---|
 | **SKOS** | controlled concept schemes, hierarchy, and concept-to-concept mappings | `skos:Concept` / concept scheme / SKOS mapping property | OntoLex `LexicalConcept` is a `skos:Concept`; external controlled vocabularies | generic mapping predicate system for arbitrary OWL classes/properties |
 | **OLiA** | morphosyntax, morphology, syntactic/annotation categories and relations | OWL classes/properties such as `olia:Noun`, `olia:Singular` | native annotation models through reviewed linking mappings; lexical entries can carry OLiA/LexInfo-like linguistic categorization | lexical identity, manuscript ontology, physical-object model |
@@ -142,23 +142,23 @@ OLiA explicitly separates:
 2. a shared **Reference Model**;
 3. separate **Linking Models**.
 
-Its historical query preprocessor expands a query over the reference vocabulary into concrete corpus tags for a downstream corpus query engine. TFont should copy the architectural principle, not necessarily serialize every TFont mapping as an OLiA Annotation Model:
+Its historical query preprocessor expands a query over the reference vocabulary into concrete corpus tags for a downstream corpus query engine. ontoTF should copy the architectural principle, not necessarily serialize every ontoTF mapping as an OLiA Annotation Model:
 
 ```text
-OLiA-style pattern                    TFont pattern
+OLiA-style pattern                    ontoTF pattern
 ------------------                    -------------
 annotation model                      native TF schema/value/path
-linking model                         reviewed TFont mapping package
+linking model                         reviewed ontoTF mapping package
 reference model                       shared ontology/profile target
 query preprocessor                    semantic_resolve
 corpus query engine                   Context-Fabric native execution
 ```
 
-This is the strongest precedent found for TFont's language-side common pivot.
+This is the strongest precedent found for ontoTF's language-side common pivot.
 
 ### 3.3 OntoLex ↔ SKOS is an explicit formal composition point
 
-OntoLex defines `ontolex:LexicalConcept` as a subclass of `skos:Concept`. This gives TFont a clean way to make dictionary senses interoperable without asserting that dictionary senses themselves are identical:
+OntoLex defines `ontolex:LexicalConcept` as a subclass of `skos:Concept`. This gives ontoTF a clean way to make dictionary senses interoperable without asserting that dictionary senses themselves are identical:
 
 ```text
 dictionary A sense ─┐
@@ -172,13 +172,13 @@ A lexical sense, lexical concept, lexical entry, and canonical form remain disti
 
 ### 3.4 CIDOC-family composition must be version-aware
 
-Current LRMoo 1.1.1 and CRMinf 1.2.1 explicitly declare CIDOC CRM 7.1.3 dependencies. CRMtex 2.0 is the exception described in section 2. TFont should therefore expose the **effective ontology/profile bundle** used by a resolution, not merely seven independent URI strings and not a fiction that all current profiles share one import graph.
+Current LRMoo 1.1.1 and CRMinf 1.2.1 explicitly declare CIDOC CRM 7.1.3 dependencies. CRMtex 2.0 is the exception described in section 2. ontoTF should therefore expose the **effective ontology/profile bundle** used by a resolution, not merely seven independent URI strings and not a fiction that all current profiles share one import graph.
 
 ## 4. The semantic target cannot remain one opaque URI
 
 The current v1 mapping shape's `external_target` is insufficient because the runtime and publication meaning of an IRI depends on what kind of semantic target it is.
 
-At minimum TFont must distinguish two independent dimensions.
+At minimum ontoTF must distinguish two independent dimensions.
 
 ### 4.1 Formal target kind
 
@@ -231,7 +231,7 @@ Examples requiring this distinction:
 - A lexical entity may be represented through OntoLex while its grammatical category is projected through OLiA. Lexical identity and POS are different semantic dimensions.
 - A cuneiform document may use CIDOC CRM for the physical object, CRMtex for written-text segments/glyphs, and CRMinf for a scholarly reconstruction claim. The reconstructed proposition is not another physical-object type.
 
-Inheritance already present inside an ontology does not need to be redundantly materialized as multiple TFont projections. “Complementary” means a second profile conveys a genuinely different reviewed semantic role, not every superclass reachable by reasoning.
+Inheritance already present inside an ontology does not need to be redundantly materialized as multiple ontoTF projections. “Complementary” means a second profile conveys a genuinely different reviewed semantic role, not every superclass reachable by reasoning.
 
 ## 6. Conceptual semantic-profile / capability contract
 
@@ -309,7 +309,7 @@ This is precisely why target semantic role and native selector semantics are req
 
 ### 7.4 TLHdig-TF lexical layer: OntoLex plus OLiA, not one flattened feature
 
-At the pinned TLHdig-TF build, morphology lives on `analysis` nodes; alternatives remain separate; lexical nodes are reached through explicit `analysis -> lex` links. A TFont lexical profile can therefore project the lexical entity through OntoLex while linguistic features of each analysis project through OLiA. It must not pretend the `lex` node itself carries every analysis-level feature or infer that one ambiguous word has one selected analysis.
+At the pinned TLHdig-TF build, morphology lives on `analysis` nodes; alternatives remain separate; lexical nodes are reached through explicit `analysis -> lex` links. A ontoTF lexical profile can therefore project the lexical entity through OntoLex while linguistic features of each analysis project through OLiA. It must not pretend the `lex` node itself carries every analysis-level feature or infer that one ambiguous word has one selected analysis.
 
 ### 7.5 Pseudepigrapha-TF apparatus: separate witness facts, readings, and claims
 
@@ -326,7 +326,7 @@ Crucially, “witness has reading at locus” is not implied by generic witness 
 
 ### 7.6 ORACC-TF: object, lexical, and authority semantics are separate
 
-ORACC source distributions separate catalogue/object metadata, corpus structures, glossaries, and per-text annotations. TFont should therefore permit distinct projections:
+ORACC source distributions separate catalogue/object metadata, corpus structures, glossaries, and per-text annotations. ontoTF should therefore permit distinct projections:
 
 - physical object / production / place / identifier semantics → CIDOC CRM;
 - written text/sign segmentation → CRMtex where source semantics fit;
@@ -345,7 +345,7 @@ native manuscript node type
   └─ LRMoo Item role
 ```
 
-if and only if the native corpus definition satisfies both. These do not compete. If the same corpus also has a native written-text entity carried by the manuscript, that entity can separately map to CRMtex `TX1 Written Text`; TFont must not collapse carrier and writing merely to increase ontology coverage.
+if and only if the native corpus definition satisfies both. These do not compete. If the same corpus also has a native written-text entity carried by the manuscript, that entity can separately map to CRMtex `TX1 Written Text`; ontoTF must not collapse carrier and writing merely to increase ontology coverage.
 
 ## 8. Common semantic request and runtime compilation
 
@@ -427,7 +427,7 @@ The exact rules for whether particular `close`/`broader`/`narrower` mappings can
 
 ### 9.1 Publication relations remain independent
 
-A TFont `exact` assessment does not imply `owl:equivalentClass`, `owl:sameAs`, or `skos:exactMatch`.
+A ontoTF `exact` assessment does not imply `owl:equivalentClass`, `owl:sameAs`, or `skos:exactMatch`.
 
 - SKOS mapping properties are concept-to-concept relations between SKOS concepts/concept schemes.
 - OWL equivalence has formal class/property/individual semantics and requires stronger evidence.
@@ -556,9 +556,9 @@ A corpus-local clause type, editorial category, or syntactic relation with no de
 
 ## 15. Rejected alternatives
 
-### A. One new universal TFont ontology
+### A. One new universal ontoTF ontology
 
-Rejected as the default. It would duplicate mature domain vocabularies, create a new maintenance authority, and invite lossy normalization. A tiny TFont-local vocabulary remains permissible only for recurring gaps empirically demonstrated by R-007–R-011.
+Rejected as the default. It would duplicate mature domain vocabularies, create a new maintenance authority, and invite lossy normalization. A tiny ontoTF-local vocabulary remains permissible only for recurring gaps empirically demonstrated by R-007–R-011.
 
 ### B. One generic `external_target` URI with ontology lock
 
@@ -566,7 +566,7 @@ Rejected as the final semantic contract. It cannot distinguish class/property/co
 
 ### C. Use SKOS mapping predicates as the universal mapping-assessment vocabulary
 
-Rejected. SKOS mapping predicates have SKOS concept domain/range semantics; TFont must also map OWL classes/properties and other resources. The eight TFont assessments remain formalism-independent runtime governance.
+Rejected. SKOS mapping predicates have SKOS concept domain/range semantics; ontoTF must also map OWL classes/properties and other resources. The eight ontoTF assessments remain formalism-independent runtime governance.
 
 ### D. Import all seven ontologies and let an OWL reasoner find the mapping
 
@@ -576,9 +576,9 @@ Rejected. Native mappings are scholarly assertions, ontology versions are indepe
 
 Rejected as the default. It duplicates data, complicates release coupling, and makes the semantic layer harder to version independently. Materialized features may be optional generated artifacts after the mapping contract exists.
 
-### F. Convert each corpus to an OLiA Annotation Model as the canonical TFont representation
+### F. Convert each corpus to an OLiA Annotation Model as the canonical ontoTF representation
 
-Rejected as a universal requirement. The OLiA architecture is excellent prior art for the linguistic profile, but TFont spans lexical, manuscript, archaeological, and scholarly-inference semantics. Canonical TFont mappings must therefore be formalism-neutral enough to compose all seven models. Generated OLiA linking/annotation artifacts may still be useful publication outputs.
+Rejected as a universal requirement. The OLiA architecture is excellent prior art for the linguistic profile, but ontoTF spans lexical, manuscript, archaeological, and scholarly-inference semantics. Canonical ontoTF mappings must therefore be formalism-neutral enough to compose all seven models. Generated OLiA linking/annotation artifacts may still be useful publication outputs.
 
 ### G. Treat ontology hierarchy as automatic query widening
 
@@ -603,7 +603,7 @@ P-003 should treat the following R-006 conclusions as design inputs unless later
 
 1. The seven-model basis remains the normative starting point.
 2. The pivot is a composition of versioned semantic profiles, not one ontology and not one import closure.
-3. OLiA's annotation/reference/linking/query-preprocessor architecture is the principal precedent for the TFont resolver pattern.
+3. OLiA's annotation/reference/linking/query-preprocessor architecture is the principal precedent for the ontoTF resolver pattern.
 4. Native semantics and reviewed mappings, not ontology labels/hierarchy, control execution.
 5. Target formal kind and semantic role must be first-class in canonical mapping/IR.
 6. Multiple approved complementary projections must be representable separately from ambiguity candidates.

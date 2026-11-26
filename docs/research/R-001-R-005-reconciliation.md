@@ -7,7 +7,7 @@ R-005's reproducible census exposed dense Text-Fabric feature records whose load
 
 ## 1. Exact identity covers every semantically addressable native component
 
-`verified-exact` proves that every **semantically addressable native component** declared by a profile has the same exact bytes as the tested target under the canonical TFont component-identity algorithm.
+`verified-exact` proves that every **semantically addressable native component** declared by a profile has the same exact bytes as the tested target under the canonical ontoTF component-identity algorithm.
 
 For a TF-only profile, one component may be the native TF payload: every regular native `*.tf` file and its exact bytes, including:
 

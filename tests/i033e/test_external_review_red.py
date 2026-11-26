@@ -5,9 +5,9 @@ import copy
 import json
 import unittest
 
-from tfont.batch_proposals import load_ledger
-from tfont.review_packets import build_review_packet
-from tfont.external_review_gate import (
+from ontotf.batch_proposals import load_ledger
+from ontotf.review_packets import build_review_packet
+from ontotf.external_review_gate import (
     ExternalReviewError,
     evaluate_review_snapshot,
     parse_structured_review,

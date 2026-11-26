@@ -1,4 +1,4 @@
-# R-020 — denotational semantics for TFont mappings and query results
+# R-020 — denotational semantics for ontoTF mappings and query results
 
 **Issue:** #231  
 **Type:** research / feasibility only  
@@ -15,7 +15,7 @@ Adopt a **small denotational verification model** for reasoning, tests, and expl
 
 The useful core is smaller than a general ontology semantics:
 
-- every executable TFont semantic query for one corpus returns a set of corpus nodes;
+- every executable ontoTF semantic query for one corpus returns a set of corpus nodes;
 - a reviewed native binding denotes a set of nodes in that corpus/query domain;
 - a shared semantic target has a **reviewed represented corpus-relative extension** against the same node domain;
 - that represented extension is distinct from any hypothetical annotation-independent “truth set” in the text;
@@ -28,9 +28,9 @@ This model does not require RDF materialization, target-instance enumeration, a 
 
 ## 1. Why “denotational” is useful here
 
-Scott and Strachey's denotational-programming-language program separates implementation details from mathematical meaning by assigning mathematical objects to language constructs. TFont has a similar local need: separate the concrete TF feature/edge plan from the semantic claim the plan is reviewed to implement.
+Scott and Strachey's denotational-programming-language program separates implementation details from mathematical meaning by assigning mathematical objects to language constructs. ontoTF has a similar local need: separate the concrete TF feature/edge plan from the semantic claim the plan is reviewed to implement.
 
-The analogy must not be overstretched. TFont is not defining a programming-language semantics in this ticket. The useful borrowing is the discipline:
+The analogy must not be overstretched. ontoTF is not defining a programming-language semantics in this ticket. The useful borrowing is the discipline:
 
 ```text
 concrete native selector  ->  mathematical answer relation
@@ -53,7 +53,7 @@ Ontology-matching work is relevant because correspondences need not all mean equ
 
 ## 2. Do not identify ontology resources with result node sets
 
-OWL/RDFS formally distinguish a class/resource from its extension. TFont needs the same distinction.
+OWL/RDFS formally distinguish a class/resource from its extension. ontoTF needs the same distinction.
 
 For a corpus `c`, corpus snapshot `s`, and reviewed query node domain:
 
@@ -77,7 +77,7 @@ The **represented target extension** is:
 T_rep(c,s,t) ⊆ U(c,s)
 ```
 
-It is the target meaning **as represented by the reviewed active TFont profile** on that corpus snapshot.
+It is the target meaning **as represented by the reviewed active ontoTF profile** on that corpus snapshot.
 
 A stronger hypothetical set would be:
 
@@ -89,14 +89,14 @@ meaning every corpus node that would satisfy the semantic concept under an indep
 
 Current production profiles do not assert such total annotation completeness. Their linguistic dependencies are `native-value-present` claims; no current BHSA/Syriac/ExtraBiblical 0.2.0 profile asserts that every semantically eligible node is annotated with the mapped feature/value. Therefore R-020 must **not** identify `T_rep` with `T_truth`.
 
-Usually TFont can enumerate `N`. It does not independently enumerate either target extension. `T_rep` is the semantic variable constrained by the reviewed mapping/profile contract. `T_truth` is outside current TFont authority unless a future evidence-backed coverage/quality contract explicitly relates it to represented annotations.
+Usually ontoTF can enumerate `N`. It does not independently enumerate either target extension. `T_rep` is the semantic variable constrained by the reviewed mapping/profile contract. `T_truth` is outside current ontoTF authority unless a future evidence-backed coverage/quality contract explicitly relates it to represented annotations.
 
 This matters for OLiA class mappings. The URI
-`http://purl.org/olia/olia.owl#Noun` denotes an ontology class/resource under the ontology semantics. TFont's result is a set of TF nodes reviewed as realizing that target **within the profile's represented annotation semantics**. The ontology class, its ontology-model extension, `T_rep`, and any external ground-truth set are distinct objects.
+`http://purl.org/olia/olia.owl#Noun` denotes an ontology class/resource under the ontology semantics. ontoTF's result is a set of TF nodes reviewed as realizing that target **within the profile's represented annotation semantics**. The ontology class, its ontology-model extension, `T_rep`, and any external ground-truth set are distinct objects.
 
 ## 3. Minimal mapping relation
 
-Use the current TFont direction fixed by R-016:
+Use the current ontoTF direction fixed by R-016:
 
 ```text
 native/source concept -> external/common target
@@ -104,7 +104,7 @@ native/source concept -> external/common target
 
 For executable unary semantic constraints, the smallest safe corpus-local relation is between the native binding and `T_rep`:
 
-| TFont state | Corpus-local represented-denotation constraint |
+| ontoTF state | Corpus-local represented-denotation constraint |
 |---|---|
 | `exact` | `N = T_rep` |
 | `broader` | `N ⊆ T_rep` |
@@ -128,7 +128,7 @@ R-016 says:
 
 The set relations above are exactly that orientation.
 
-The common naming hazard is to read “broader” as “the native answer is broader”. That is the opposite of TFont's mapping direction.
+The common naming hazard is to read “broader” as “the native answer is broader”. That is the opposite of ontoTF's mapping direction.
 
 ## 4. Query answer relation
 
@@ -175,7 +175,7 @@ Refused(prerequisite-failed)
 Refused(non-substitutive)
 ```
 
-This is already operationally important in TFont and becomes essential in a formal model.
+This is already operationally important in ontoTF and becomes essential in a formal model.
 
 A successful empty result means:
 
@@ -183,7 +183,7 @@ A successful empty result means:
 
 An unsupported or ambiguous result means:
 
-> TFont has no authorized denotation for that common request on this corpus.
+> ontoTF has no authorized denotation for that common request on this corpus.
 
 Collapsing the second class into `∅` would turn “unknown/unavailable semantics” into the false scholarly statement “there are no such instances”.
 
@@ -292,9 +292,9 @@ This is exactly the kind of case where a denotational explanation is better than
 
 The model is useful only if these epistemic levels stay separate.
 
-### Mechanically provable from validated TFont state
+### Mechanically provable from validated ontoTF state
 
-Given trusted validated source/IR/runtime state, TFont can prove mechanically that:
+Given trusted validated source/IR/runtime state, ontoTF can prove mechanically that:
 
 - a plan uses a particular reviewed mapping/projection;
 - the mapping assessment is one of the closed supported states;
@@ -306,7 +306,7 @@ Given trusted validated source/IR/runtime state, TFont can prove mechanically th
 
 ### Human-reviewed semantic authority
 
-TFont does not derive from first principles that:
+ontoTF does not derive from first principles that:
 
 ```text
 BHSA sp in {nmpr,subs} = OLiA Noun
@@ -324,7 +324,7 @@ correspondence or corpus annotation completeness.
 
 ### Empirically observable
 
-For a concrete corpus snapshot TFont can enumerate:
+For a concrete corpus snapshot ontoTF can enumerate:
 
 ```text
 N(c,s,b)
@@ -449,22 +449,22 @@ If a `close` mapping is authorized with reviewed undercoverage/overcoverage, use
 
 Lenzerini's data-integration framework is relevant because mappings mediate between source and global schema meanings while queries are stated at the mediated/global level.
 
-TFont differs in important ways:
+ontoTF differs in important ways:
 
 - its semantic mappings are human-reviewed scholarly claims, not only logical dependencies;
 - a TF binding is executable against one materialized corpus;
 - the common ontology is a semantic pivot, not a target database instance;
-- TFont deliberately refuses unreviewed ontology traversal.
+- ontoTF deliberately refuses unreviewed ontology traversal.
 
 Fagin et al.'s data-exchange/certain-answer framework is a stronger reminder about incomplete knowledge: one should state what follows under allowed interpretations rather than confuse one generated structure with meaning.
 
-TFont should borrow the discipline, not copy the machinery. It currently does not need chase algorithms, universal solutions, or a target database.
+ontoTF should borrow the discipline, not copy the machinery. It currently does not need chase algorithms, universal solutions, or a target database.
 
 ## 12. Relation to ontology matching
 
 Ontology matching explicitly treats correspondences as potentially different relation types: equivalence, subsumption, and others.
 
-That aligns with TFont's refusal to collapse:
+That aligns with ontoTF's refusal to collapse:
 
 ```text
 exact
@@ -476,13 +476,13 @@ related
 
 into a generic similarity score.
 
-A major TFont-specific addition is execution policy:
+A major ontoTF-specific addition is execution policy:
 
 - a reviewed correspondence may remain informative-only;
 - direction-specific loss is explicit;
 - runtime prerequisites and caller acceptance are separate gates.
 
-Thus TFont's denotational model should describe the semantics of **authorized query execution**, not become a generic ontology matcher.
+Thus ontoTF's denotational model should describe the semantics of **authorized query execution**, not become a generic ontology matcher.
 
 ## 13. Concrete benefits
 
@@ -549,7 +549,7 @@ The production ProperNoun example demonstrates this directly.
 
 ### 14.1 False extensional precision
 
-The biggest risk is presenting reviewed semantic correspondence as if TFont
+The biggest risk is presenting reviewed semantic correspondence as if ontoTF
 independently enumerated an annotation-independent target class extension.
 
 It usually cannot. Current exact mappings establish exactness of the reviewed
@@ -624,7 +624,7 @@ unbounded
 refused
 ```
 
-from trusted existing TFont state.
+from trusted existing ontoTF state.
 
 A static checker could additionally enforce assessment/loss coherence.
 

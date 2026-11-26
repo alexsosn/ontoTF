@@ -5,7 +5,7 @@
 
 ## 1. Goal
 
-Restore the F-009 TFont JSON-model boundary inside the recursive semantic projection helper introduced by I-004, so public mapping-v2 and projection-v1 digest APIs never expose raw recursion for included cyclic/deep containers.
+Restore the F-009 ontoTF JSON-model boundary inside the recursive semantic projection helper introduced by I-004, so public mapping-v2 and projection-v1 digest APIs never expose raw recursion for included cyclic/deep containers.
 
 Do not change semantic identity, canonical bytes, digest algorithms, source/schema behavior, or audit-only exclusion.
 
@@ -13,11 +13,11 @@ Do not change semantic identity, canonical bytes, digest algorithms, source/sche
 
 Only:
 
-- `src/tfont/semantic_digest_v2.py`
+- `src/ontotf/semantic_digest_v2.py`
 
 No changes to:
 
-- `src/tfont/digests.py` other than consuming its existing `MAX_JSON_NESTING` constant;
+- `src/ontotf/digests.py` other than consuming its existing `MAX_JSON_NESTING` constant;
 - schemas;
 - source validation;
 - semantic bundle validation;
@@ -68,8 +68,8 @@ Lists recurse by index with `path + (index,)`.
 
 Reuse F-009 message family:
 
-- recursive list: `recursive list is outside the TFont JSON model`;
-- recursive object: `recursive object is outside the TFont JSON model`;
+- recursive list: `recursive list is outside the ontoTF JSON model`;
+- recursive object: `recursive object is outside the ontoTF JSON model`;
 - depth overflow: `JSON nesting exceeds maximum depth 128` using imported `MAX_JSON_NESTING`.
 
 Category: `non_json_value`.
@@ -181,4 +181,4 @@ Any material finding returns to RED/repair/GREEN/CI and requires a new exact-hea
 
 ## 12. Exit condition
 
-F-022 completes only when included cyclic/deep semantic projection inputs obey the F-009 TFont-owned JSON boundary, excluded audit-only metadata remains non-authoritative, accepted digest bytes stay unchanged, exact-head CI is green, and fresh independent review reports no blocker.
+F-022 completes only when included cyclic/deep semantic projection inputs obey the F-009 ontoTF-owned JSON boundary, excluded audit-only metadata remains non-authoritative, accepted digest bytes stay unchanged, exact-head CI is green, and fresh independent review reports no blocker.

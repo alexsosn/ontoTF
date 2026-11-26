@@ -4,7 +4,7 @@ from __future__ import annotations
 from types import SimpleNamespace
 import unittest
 
-from tfont.bhsa_lexical_preview import (
+from ontotf.bhsa_lexical_preview import (
     BHSA_SOURCE_REVISION, LexicalProjectionError,
     project_bhsa_lexical_form,
     resolve_bhsa_lexical_uri,
@@ -115,7 +115,7 @@ class BHSAInverseContractTests(unittest.TestCase):
                 with self.assertRaises(LexicalProjectionError):
                     find_bhsa_lexical_forms(FakeTF(), value, source_revision=SOURCE)
         with self.assertRaises(LexicalProjectionError):
-            resolve_bhsa_lexical_uri(FakeTF(), "urn:tfont:derived:bhsa:wrong",
+            resolve_bhsa_lexical_uri(FakeTF(), "urn:ontotf:derived:bhsa:wrong",
                                     source_revision=SOURCE)
 
 

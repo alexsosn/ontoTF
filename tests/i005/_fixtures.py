@@ -3,15 +3,15 @@ from __future__ import annotations
 import copy
 from typing import Any
 
-from tfont.digests import evidence_record_digest
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.semantic_validation import (
+from ontotf.digests import evidence_record_digest
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_validation import (
     SemanticArtifact,
     SemanticSourceBundle,
     ValidatedSemanticBundle,
     validate_semantic_bundle,
 )
-from tfont.source_validation import validate_source
+from ontotf.source_validation import validate_source
 
 OLIA_NOUN = "http://purl.org/olia/olia.owl#Noun"
 AUTHORITY_NOUN = "https://example.org/authority/noun"
@@ -72,7 +72,7 @@ def noun_sources(
     projection_review_id: str | None = None,
     audit_suffix: str = "",
 ) -> dict[str, Any]:
-    authored_profile_id = authored_profile_id or f"tfont-{corpus_id}"
+    authored_profile_id = authored_profile_id or f"ontotf-{corpus_id}"
     evidence = _evidence(corpus_id)
     evidence_binding = _binding(evidence)
     component_id = f"{corpus_id}-tf"
@@ -103,16 +103,16 @@ def noun_sources(
         "mapping_sources": [f"mappings/{corpus_id}.json"],
         "dependency_contract_version": 1,
         "dependencies": [dependency],
-        "minimum_tfont_runtime": "0.1.0",
+        "minimum_ontotf_runtime": "0.1.0",
         "license": "CC-BY-4.0",
     }
     parent = {
-        "algorithm": "tfont-parent-components-sha256-v1",
+        "algorithm": "ontotf-parent-components-sha256-v1",
         "components": [
             {
                 "component_id": component_id,
                 "kind": "tf-payload",
-                "identity_algorithm": "tfont-tf-files-sha256-v1",
+                "identity_algorithm": "ontotf-tf-files-sha256-v1",
                 "content_digest": _sha(parent_char),
             }
         ],

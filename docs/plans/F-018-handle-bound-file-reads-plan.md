@@ -6,7 +6,7 @@
 
 ## 1. Goal
 
-Strengthen every regular-file byte read used by TFont parent/component identity so the same trusted final-component descriptor/Win32 handle that passes link/reparse/type inspection supplies every digest byte.
+Strengthen every regular-file byte read used by ontoTF parent/component identity so the same trusted final-component descriptor/Win32 handle that passes link/reparse/type inspection supplies every digest byte.
 
 Keep the existing expected/opened `(st_dev, st_ino)` comparison only as defense in depth: mismatch fails, equality never authorizes continuity.
 
@@ -16,7 +16,7 @@ No public API or digest algorithm identifier changes.
 
 ## 2. Production scope
 
-Only `src/tfont/parent_identity.py` after the corrected RED is independently reviewed and observed.
+Only `src/ontotf/parent_identity.py` after the corrected RED is independently reviewed and observed.
 
 Public functions remain:
 
@@ -215,7 +215,7 @@ Require exact-head:
 - I-003 GREEN;
 - authoritative full repository suite GREEN;
 - current action-major/CI-ownership policy checks GREEN;
-- compare against current main contains only F-018 research/plan/tests/workflow plus the narrow `src/tfont/parent_identity.py` production delta.
+- compare against current main contains only F-018 research/plan/tests/workflow plus the narrow `src/ontotf/parent_identity.py` production delta.
 
 If main moves materially, integrate current main and rerun exact-head CI before final review.
 

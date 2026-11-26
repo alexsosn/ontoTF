@@ -6,13 +6,13 @@
 
 ## Frozen scope
 
-I-012 is a release-acceptance integration ticket, not a new TFont feature. The expected GREEN changes are limited to:
+I-012 is a release-acceptance integration ticket, not a new ontoTF feature. The expected GREEN changes are limited to:
 
 - `scripts/acceptance/v01_noun.py` — one repository-owned acceptance runner, deliberately outside the importable package;
 - `.github/workflows/i012-v01-acceptance.yml` — read-only focused CI that builds a wheel and runs the copied runner from a fresh outside-checkout venv;
 - `tests/i012/` only for a small RED/control contract if needed to prove the workflow/runner interface deterministically.
 
-Do not modify `src/tfont`, the production profile/mapping/evidence resources, package version, README, release notes, or release/tag workflow unless the acceptance RED demonstrates a genuine product defect. Any such defect requires a new explicit RED before a production-code change.
+Do not modify `src/ontotf`, the production profile/mapping/evidence resources, package version, README, release notes, or release/tag workflow unless the acceptance RED demonstrates a genuine product defect. Any such defect requires a new explicit RED before a production-code change.
 
 ## Frozen release oracle
 
@@ -88,8 +88,8 @@ The double should count `sp.s` execution-selector calls separately from `otype.s
 
 `scripts/acceptance/v01_noun.py` performs only public installed-package operations:
 
-1. import required objects from top-level `tfont` only;
-2. verify the imported `tfont` package path is not inside the source checkout if an optional `TFONT_ACCEPTANCE_FORBID_ROOT` environment value is supplied by CI; fail if it is;
+1. import required objects from top-level `ontotf` only;
+2. verify the imported `ontotf` package path is not inside the source checkout if an optional `ONTOTF_ACCEPTANCE_FORBID_ROOT` environment value is supplied by CI; fail if it is;
 3. call `load_production_noun_bundles()` and require exactly `PRODUCTION_NOUN_CORPORA == ("bhsa", "syriac", "extrabiblical")`;
 4. `validate_semantic_bundle()` each shipped bundle and `compile_semantic_ir()` the three validated bundles;
 5. inspect the compiled variants and exact target bindings/plans to compare installed release authority with the frozen oracle: exact parent, component identity from the shipped parent manifest/validated source, exact-only policy, mapping/projection semantic digests, OLiA lock/revision/Noun target and review identities;
@@ -106,7 +106,7 @@ Suggested success envelope:
 
 ```json
 {
-  "contract": "tfont-v01-noun-acceptance-v1",
+  "contract": "ontotf-v01-noun-acceptance-v1",
   "corpora": {
     "bhsa": [1, 2],
     "extrabiblical": [21, 22],
@@ -153,7 +153,7 @@ Run at least Python 3.10 and 3.12. For each:
 6. install that wheel into the venv, not `-e .`;
 7. copy `scripts/acceptance/v01_noun.py` to another `${RUNNER_TEMP}` working directory;
 8. `cd` there, unset `PYTHONPATH`/`PYTHONHOME`, and invoke the venv Python with `-I` on the copied script;
-9. set `TFONT_ACCEPTANCE_FORBID_ROOT=$GITHUB_WORKSPACE`; runner must reject source-tree import leakage;
+9. set `ONTOTF_ACCEPTANCE_FORBID_ROOT=$GITHUB_WORKSPACE`; runner must reject source-tree import leakage;
 10. capture the final JSON line and validate `contract/status/corpora` using the venv Python or stdlib only.
 
 The installed wheel may resolve Python package dependencies from PyPI during CI. The **acceptance runner itself** must perform no corpus loading, ontology dereference or network access. If strict offline wheel dependency installation is later required, that belongs to release polish unless it reveals a package defect.
@@ -175,7 +175,7 @@ Do **not** add the runner yet. Hosted acceptance must fail specifically because 
 
 ### GREEN
 
-Add `scripts/acceptance/v01_noun.py` only. If this passes without `src/tfont` changes, that is the intended implementation.
+Add `scripts/acceptance/v01_noun.py` only. If this passes without `src/ontotf` changes, that is the intended implementation.
 
 If GREEN exposes a genuine package/runtime defect, stop: add a focused failing regression for that defect before changing production code. Do not silently broaden I-012.
 
@@ -187,7 +187,7 @@ Before finalization require on one unchanged exact head:
 - existing I-009 focused/wheel contracts green where triggered;
 - authoritative `Full repository suite` green on Python 3.10 and 3.12;
 - no temporary write-enabled workflow/helper remains in the diff;
-- PR diff contains no `src/tfont` changes unless separately justified by a recorded RED;
+- PR diff contains no `src/ontotf` changes unless separately justified by a recorded RED;
 - fresh logically independent adversarial review PASS anchored to the exact head.
 
 Merge only with `expected_head_sha`.

@@ -19,18 +19,18 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.coverage import (  # noqa: E402
+from ontotf.coverage import (  # noqa: E402
     P004_TLHDIG_0_4_0_RESOURCE,
     coverage_denominator_digest,
     validate_coverage_manifest,
 )
-from tfont.digests import canonical_json_bytes  # noqa: E402
+from ontotf.digests import canonical_json_bytes  # noqa: E402
 
 EVIDENCE = ROOT / "docs/research/data/generated/i019/tlhdig-0.4.0.json"
 POLICY = ROOT / "docs/research/data/i019/tlhdig-denominator-policy.json"
 OUTPUT = (
     ROOT
-    / "src/tfont/resources/coverage"
+    / "src/ontotf/resources/coverage"
     / P004_TLHDIG_0_4_0_RESOURCE
     / "tlhdig.json"
 )

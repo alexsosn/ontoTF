@@ -20,7 +20,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.coverage import (  # noqa: E402
+from ontotf.coverage import (  # noqa: E402
     coverage_denominator_digest,
     coverage_report,
     load_coverage_manifest,
@@ -28,7 +28,7 @@ from tfont.coverage import (  # noqa: E402
 )
 
 POLICY = ROOT / "docs/research/data/i027a/bhsa-verbal-stem-policy.json"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-i027a-bhsa-stems-v1/bhsa.json"
 ROUTING = ROOT / "docs/research/data/generated/i026/p004-work-queue.json"
 
 EXPECTED_CORPUS = "bhsa"
@@ -38,7 +38,7 @@ EXPECTED_TF_VERSION = "2021"
 EXPECTED_DIGEST = (
     "sha256:0b260e21a1ebdb771f3d9975cb3e7b2560261dd99d9bd14d0eeabbb566852a03"
 )
-EXPECTED_SOURCE_MANIFEST = "src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json"
+EXPECTED_SOURCE_MANIFEST = "src/ontotf/resources/coverage/p004-r011-baseline-v1/bhsa.json"
 EXPECTED_EVIDENCE = "docs/research/data/generated/r005/bhsa.json"
 EXPECTED_POLICY_ID = "i027a-bhsa-vs-native-only-v1"
 EXPECTED_MANIFEST_ID = "coverage:p004-i027a-bhsa-stems-v1:bhsa"

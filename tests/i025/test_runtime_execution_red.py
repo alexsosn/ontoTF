@@ -3,8 +3,8 @@ from __future__ import annotations
 import unittest
 from dataclasses import replace
 
-import tfont
-import tfont.semantic_execution as semantic_execution
+import ontotf
+import ontotf.semantic_execution as semantic_execution
 
 from tests.i006._fixtures import noun_semantic_key
 from tests.i023._fixtures import approximate_request, semantic_request
@@ -49,7 +49,7 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
                     corpus_id = "bhsa"
                     native_execution_binding = forged_binding
 
-                with self.assertRaises(tfont.ExactExecutionError) as raised:
+                with self.assertRaises(ontotf.ExactExecutionError) as raised:
                     semantic_execution._validate_edge_path_binding(Plan())
                 self.assertEqual(
                     raised.exception.problem.category,
@@ -60,7 +60,7 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         ir = compiled_predicate_ir()
         feature = predicate_feature()
         observation = predicate_observation(
-            tfont,
+            ontotf,
             ir,
             predicate_api(feature=feature),
         )
@@ -86,7 +86,7 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             match_values=(1,),
             domain_values=(1, 2),
         )
-        observation = predicate_observation(tfont, ir, value_type="int")
+        observation = predicate_observation(ontotf, ir, value_type="int")
         self.assertEqual(
             observation.edge_values(
                 "bhsa-tf",
@@ -120,7 +120,7 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         for feature in cases:
             with self.subTest(feature=feature):
                 observation = predicate_observation(
-                    tfont,
+                    ontotf,
                     ir,
                     predicate_api(feature=feature),
                 )
@@ -134,7 +134,7 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
 
     def test_runtime_rejects_noncanonical_custom_edge_domain_observation(self):
         ir = compiled_predicate_ir()
-        base = predicate_observation(tfont, ir)
+        base = predicate_observation(ontotf, ir)
 
         class ReorderedObservation:
             parent_manifest_digest = base.parent_manifest_digest
@@ -145,7 +145,7 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             def edge_values(self, component_id, edge, source_node_type, target_node_type):
                 return ("complete", "str", ("unique", "ambiguous"), 0)
 
-        report = tfont.evaluate_runtime_prerequisites(
+        report = ontotf.evaluate_runtime_prerequisites(
             ir.variants[0],
             ReorderedObservation(),
             source_contract="i025-test",
@@ -165,11 +165,11 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             item_data={1: {10: "ambiguous", 11: "other"}},
         )
         observation = predicate_observation(
-            tfont,
+            ontotf,
             ir,
             predicate_api(feature=feature),
         )
-        report = tfont.evaluate_runtime_prerequisites(
+        report = ontotf.evaluate_runtime_prerequisites(
             ir.variants[0],
             observation,
             source_contract="i025-test",
@@ -190,11 +190,11 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             incoming={11: ((1, "unique"),)},
         )
         observation = predicate_observation(
-            tfont,
+            ontotf,
             ir,
             predicate_api(feature=unique_only),
         )
-        report = tfont.evaluate_runtime_prerequisites(
+        report = ontotf.evaluate_runtime_prerequisites(
             ir.variants[0],
             observation,
             source_contract="i025-test",
@@ -207,8 +207,8 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         )[0]
         self.assertEqual(edge_row.result, "pass")
 
-        other = predicate_observation(tfont, ir, predicate_api())
-        other_report = tfont.evaluate_runtime_prerequisites(
+        other = predicate_observation(ontotf, ir, predicate_api())
+        other_report = ontotf.evaluate_runtime_prerequisites(
             ir.variants[0],
             other,
             source_contract="i025-test",
@@ -227,9 +227,9 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             release_signature=forged_signature,
             dependency_contract_version=1,
         )
-        observation = predicate_observation(tfont, ir)
-        with self.assertRaises(tfont.RuntimeEvaluationError):
-            tfont.evaluate_runtime_prerequisites(
+        observation = predicate_observation(ontotf, ir)
+        with self.assertRaises(ontotf.RuntimeEvaluationError):
+            ontotf.evaluate_runtime_prerequisites(
                 forged,
                 observation,
                 source_contract="i025-test",
@@ -237,10 +237,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
 
     def test_exact_singleton_filter_keeps_only_matching_evidence(self):
         ir = compiled_predicate_ir()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
         evidence = result.edge_path_evidence
@@ -256,10 +256,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
 
     def test_exact_finite_set_filter_is_stable_or_membership(self):
         ir = compiled_predicate_ir(match_values=("unique", "ambiguous"))
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10, 11))
         self.assertEqual(
@@ -270,10 +270,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
     def test_incoming_filter_keeps_native_orientation(self):
         ir = compiled_predicate_ir(direction="incoming")
         api = predicate_api(selections={"fragment": (10, 11)})
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir, api),),
         ).corpora[0]
         self.assertEqual(result.nodes, (1,))
         observations = result.edge_path_evidence.layers[0].observations
@@ -288,10 +288,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             match_values=(1,),
             domain_values=(1, 2),
         )
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir, value_type="int"),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir, value_type="int"),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
         observations = result.edge_path_evidence.layers[0].observations
@@ -310,20 +310,20 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             incoming={10: ((1, ""),), 11: ((1, "unique"),)},
         )
         api = predicate_api(feature=feature)
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir, api),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
         self.assertEqual(result.edge_path_evidence.layers[0].observations[0].value, "")
 
     def test_off_domain_and_in_domain_nonmatches_do_not_enter_evidence(self):
         ir = compiled_predicate_ir()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
         self.assertTrue(
@@ -346,10 +346,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         api = predicate_api(feature=feature)
         api.node_types[oversized] = "fragment"
         api.F.otype.node_types[oversized] = "fragment"
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir, api),),
         ).corpora[0]
         self.assertEqual(result.nodes, (10,))
 
@@ -360,10 +360,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         )
         api = predicate_api(feature=feature)
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                semantic_request(tfont),
-                (predicate_context(tfont, ir, api),),
+                semantic_request(ontotf),
+                (predicate_context(ontotf, ir, api),),
             )
         self.assertEqual(category(raised.exception), "invalid_result_nodes")
 
@@ -376,10 +376,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
                 10: ((2, "unique"),),
             },
         )
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir, predicate_api(feature=feature)),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir, predicate_api(feature=feature)),),
         ).corpora[0]
         self.assertEqual(result.nodes, ())
         self.assertEqual(result.edge_path_evidence.final_nodes, ())
@@ -387,25 +387,25 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
 
     def test_exact_approximate_and_reference_surfaces_share_filter(self):
         ir = compiled_predicate_ir()
-        exact = tfont.execute_exact_semantic(
+        exact = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (predicate_context(tfont, ir),),
+            semantic_request(ontotf),
+            (predicate_context(ontotf, ir),),
         )
-        approximate = tfont.execute_approximate_semantic(
+        approximate = ontotf.execute_approximate_semantic(
             ir,
-            approximate_request(tfont),
-            (predicate_context(tfont, ir),),
+            approximate_request(ontotf),
+            (predicate_context(ontotf, ir),),
         )
         self.assertEqual(exact.corpora[0].nodes, (10,))
         self.assertEqual(approximate.corpora[0].nodes, (10,))
 
         authority_ir = compiled_authority_predicate_ir()
         authority_key = authority_ir.authority_index[0][0]
-        authority = tfont.execute_exact_authority(
+        authority = ontotf.execute_exact_authority(
             authority_ir,
-            tfont.AuthorityResolveRequest(key=authority_key, corpora=("bhsa",)),
-            (predicate_context(tfont, authority_ir),),
+            ontotf.AuthorityResolveRequest(key=authority_key, corpora=("bhsa",)),
+            (predicate_context(ontotf, authority_ir),),
         )
         self.assertEqual(authority.corpora[0].nodes, (10,))
 
@@ -414,33 +414,33 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             losses=("undercoverage",),
         )
         approximate_key = approximate_authority_ir.authority_index[0][0]
-        approximate_authority = tfont.execute_approximate_authority(
+        approximate_authority = ontotf.execute_approximate_authority(
             approximate_authority_ir,
-            tfont.ApproximateAuthorityResolveRequest(
+            ontotf.ApproximateAuthorityResolveRequest(
                 key=approximate_key,
                 corpora=("bhsa",),
                 accept_losses=("undercoverage",),
             ),
-            (predicate_context(tfont, approximate_authority_ir),),
+            (predicate_context(ontotf, approximate_authority_ir),),
         )
         self.assertEqual(approximate_authority.corpora[0].nodes, (10,))
 
         refs_ir = compiled_reference_predicate_ir()
         identity_key = refs_ir.identity_index[0][0]
-        identity = tfont.execute_identity(
+        identity = ontotf.execute_identity(
             refs_ir,
-            tfont.IdentityResolveRequest(
+            ontotf.IdentityResolveRequest(
                 authority_system=identity_key.authority_system,
                 external_entity_id=identity_key.external_entity_id,
                 corpora=("bhsa",),
             ),
-            (predicate_context(tfont, refs_ir),),
+            (predicate_context(ontotf, refs_ir),),
         )
         identifier_key = refs_ir.identifier_index[0][0]
-        identifier = tfont.execute_identifier(
+        identifier = ontotf.execute_identifier(
             refs_ir,
-            tfont.IdentifierResolveRequest(key=identifier_key, corpora=("bhsa",)),
-            (predicate_context(tfont, refs_ir),),
+            ontotf.IdentifierResolveRequest(key=identifier_key, corpora=("bhsa",)),
+            (predicate_context(ontotf, refs_ir),),
         )
         self.assertEqual(identity.corpora[0].nodes, (10,))
         self.assertEqual(identifier.corpora[0].nodes, (10,))
@@ -448,8 +448,8 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
     def test_exact_and_approximate_conjunction_use_filtered_nodes_and_aligned_evidence(self):
         ir = compiled_mixed_conjunction_predicate_ir()
         keys = (
-            semantic_request(tfont).key,
-            tfont.SemanticKey(
+            semantic_request(ontotf).key,
+            ontotf.SemanticKey(
                 profile_id="linguistic",
                 capability_id="linguistic.part-of-speech",
                 target="http://purl.org/olia/olia.owl#ProperNoun",
@@ -457,10 +457,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
                 semantic_role="annotation-value",
             ),
         )
-        exact = tfont.execute_exact_conjunction(
+        exact = ontotf.execute_exact_conjunction(
             ir,
-            tfont.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
-            (predicate_context(tfont, ir),),
+            ontotf.SemanticConjunctionRequest(keys=keys, corpora=("bhsa",)),
+            (predicate_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(exact.nodes, (10,))
         self.assertEqual(
@@ -468,15 +468,15 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
             (False, True),
         )
 
-        approximate = tfont.execute_approximate_conjunction(
+        approximate = ontotf.execute_approximate_conjunction(
             ir,
-            tfont.ApproximateSemanticConjunctionRequest(
+            ontotf.ApproximateSemanticConjunctionRequest(
                 keys=keys,
                 corpora=("bhsa",),
                 semantic_mode="approximate",
                 accept_losses=(),
             ),
-            (predicate_context(tfont, ir),),
+            (predicate_context(ontotf, ir),),
         ).corpora[0]
         self.assertEqual(approximate.nodes, (10,))
         self.assertEqual(
@@ -485,10 +485,10 @@ class I025RuntimeExecutionRedTests(unittest.TestCase):
         )
 
     def test_public_contract_tokens_remain_unchanged(self):
-        self.assertEqual(tfont.EXACT_EXECUTION_CONTRACT, "tfont-exact-execution-v1")
-        self.assertEqual(tfont.APPROXIMATE_EXECUTION_CONTRACT, "tfont-approximate-execution-v1")
-        self.assertEqual(tfont.EDGE_PATH_EVIDENCE_CONTRACT, "tfont-edge-path-evidence-v1")
-        self.assertEqual(tfont.RUNTIME_EVALUATION_CONTRACT, "tfont-runtime-evaluation-v1")
+        self.assertEqual(ontotf.EXACT_EXECUTION_CONTRACT, "ontotf-exact-execution-v1")
+        self.assertEqual(ontotf.APPROXIMATE_EXECUTION_CONTRACT, "ontotf-approximate-execution-v1")
+        self.assertEqual(ontotf.EDGE_PATH_EVIDENCE_CONTRACT, "ontotf-edge-path-evidence-v1")
+        self.assertEqual(ontotf.RUNTIME_EVALUATION_CONTRACT, "ontotf-runtime-evaluation-v1")
 
 
 if __name__ == "__main__":

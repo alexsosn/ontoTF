@@ -9,8 +9,8 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-import tfont.source_validation as source_validation  # noqa: E402
-from tfont.source_validation import SourceValidationError, loads_source  # noqa: E402
+import ontotf.source_validation as source_validation  # noqa: E402
+from ontotf.source_validation import SourceValidationError, loads_source  # noqa: E402
 
 LIMIT = 128
 

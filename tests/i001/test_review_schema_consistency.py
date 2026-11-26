@@ -9,9 +9,9 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import validate_source  # noqa: E402
+from ontotf.source_validation import validate_source  # noqa: E402
 
-SCHEMA_ROOT = ROOT / "src" / "tfont" / "schemas"
+SCHEMA_ROOT = ROOT / "src" / "ontotf" / "schemas"
 
 
 def reviewed_record() -> dict:

@@ -34,9 +34,9 @@ Create:
 - `tests/f021/test_feature_id_ownership.py`
 - `.github/workflows/f021-feature-id-ownership.yml`
 
-No `src/tfont/**`, schema, package metadata, digest, semantic-validator, runtime, or ontology file is in scope.
+No `src/ontotf/**`, schema, package metadata, digest, semantic-validator, runtime, or ontology file is in scope.
 
-The script is repository tooling rather than an installed TFont API. It must remain directly executable with the repository Python:
+The script is repository tooling rather than an installed ontoTF API. It must remain directly executable with the repository Python:
 
 ```bash
 python scripts/check_f_series_ownership.py
@@ -273,7 +273,7 @@ Workflow triggers cover:
 
 After valid RED evidence, add only `scripts/check_f_series_ownership.py` as the implementation needed to make the checker-contract tests pass.
 
-Do not weaken/change RED assertions unless a test defect is independently demonstrated. Any new production/runtime TFont code is out of scope.
+Do not weaken/change RED assertions unless a test defect is independently demonstrated. Any new production/runtime ontoTF code is out of scope.
 
 No third-party dependency should be required; do not add one.
 
@@ -322,7 +322,7 @@ Final review must attack at least:
 - CLI exit/output contract;
 - use of Git, GitHub API, registry, or hidden allowlist;
 - downstream workflow/test owner claims leaking into v1 despite lack of metadata;
-- accidental TFont runtime/package changes;
+- accidental ontoTF runtime/package changes;
 - current-main integration drift.
 
 Any blocker returns to the earliest affected research/plan/RED/GREEN gate.

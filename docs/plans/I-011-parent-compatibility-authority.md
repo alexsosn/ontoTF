@@ -19,10 +19,10 @@ Policy vocabulary is exactly `exact-only | dependency-verified`; an absent sourc
 
 ## Implementation touchpoints
 
-- `src/tfont/schemas/profile.schema.json` optional enum, schema version stays 2.
-- `src/tfont/semantic_ir.py` signature field and normalization in `_bundle_context`.
-- `src/tfont/semantic_resolver.py` signature shape guard, release fingerprint projection, independent prerequisite guard.
-- `src/tfont/runtime_prerequisites.py` use validated signature policy to derive state.
+- `src/ontotf/schemas/profile.schema.json` optional enum, schema version stays 2.
+- `src/ontotf/semantic_ir.py` signature field and normalization in `_bundle_context`.
+- `src/ontotf/semantic_resolver.py` signature shape guard, release fingerprint projection, independent prerequisite guard.
+- `src/ontotf/runtime_prerequisites.py` use validated signature policy to derive state.
 - `tests/i011/*` and deliberate one-test migration under `tests/i007`.
 
 ## Out of scope

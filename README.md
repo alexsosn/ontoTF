@@ -1,13 +1,13 @@
-# TFont
+# ontoTF
 
 [Mapping progress dashboard](https://alexsosn.github.io/ontoTF/) (development XML catalog; available after Pages deployment). The tracker reports distinct versioned selectors, exact/qualified/nonpositive dispositions, corpus × ontology counts and schema denominators from pinned source inventories. Schema coverage means at least one positive mapping, not exhaustive value coverage. The historical P-004 work plan is displayed separately. See [tracker build and deployment](scripts/pages/README.md).
 
-> **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The published v0.1.1 wheel still uses legacy resources. The development source implements an auto-discovered XML catalog (the current corpus roster comes from the XML files, not a hard-coded list); that XML functionality has not yet shipped in a tagged wheel. New contributions edit only `src/tfont/mappings/<corpus>.xml`.
+> **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The published v0.1.1 wheel still uses legacy resources. The development source implements an auto-discovered XML catalog (the current corpus roster comes from the XML files, not a hard-coded list); that XML functionality has not yet shipped in a tagged wheel. New contributions edit only `src/ontotf/mappings/<corpus>.xml`.
 
 
 > **Next wheel candidate:** Source-built distributions from this branch are versioned **0.2.0rc1**. See [candidate scope and exact-head release gates](docs/releases/v0.2.0rc1.md). This candidate has **not** been published to GitHub Releases or PyPI, and the documented published v0.1.1 remains a different, narrower contract. The real ExtraBiblical installed-wheel smoke has passed on a prior exact head; the candidate itself still requires its own final-head CI, reviewer verification and a downloaded-asset cold install.
 
-TFont is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
+ontoTF is a Python semantic interoperability layer for Text-Fabric / Context-Fabric corpora. The current package release is **v0.1.1**, a metadata-only packaging patch over the first semantic release, **v0.1.0**. The supported semantic contract remains one reviewed common ontology concept across three pinned corpus versions without guessing semantics from similar-looking feature names.
 
 ## What is shipped
 
@@ -47,10 +47,10 @@ The historical [I-026 work queue](docs/research/data/generated/i026/p004-work-qu
 
 ## XML cross-corpus lookup (current main branch)
 
-The source checkout reads `src/tfont/mappings/<corpus>.xml` directly. It does not generate a release profile for each new mapping. For example:
+The source checkout reads `src/ontotf/mappings/<corpus>.xml` directly. It does not generate a release profile for each new mapping. For example:
 
 ```python
-from tfont import find_across_corpora, find_by_target, find_correspondences, list_corpora
+from ontotf import find_across_corpora, find_by_target, find_correspondences, list_corpora
 
 print(list_corpora())  # discovered automatically from packaged XML files
 matches = find_correspondences(
@@ -81,7 +81,7 @@ By default, reverse ontology lookup returns exact `node` and `value` category ma
 This finds shared **category** mappings, not word-token alignments. `resolve_nodes(api, mapping, corpus_version="...")` can execute an **exact** native node category or a positive feature-value selector against an already loaded, source-version-compatible TF API. For XML mappings pinned to a `corpusVersion`, supplying `corpus_version` is mandatory; omission and mismatches fail closed. The supplied version is a caller assertion, **not** authentication of the local corpus bytes. A node-category mapping can have an optional **native surface-feature presence** condition. For example, the source-pinned BHSA `word.g_word` category includes only text-bearing native word nodes, not inferred lexical or cross-corpus token identities:
 
 ```python
-from tfont import MappingCatalog, resolve_nodes
+from ontotf import MappingCatalog, resolve_nodes
 
 def bhsa_source_word_token_ids(loaded_bhsa_api):
     catalog = MappingCatalog()
@@ -92,7 +92,7 @@ def bhsa_source_word_token_ids(loaded_bhsa_api):
     return resolve_nodes(loaded_bhsa_api, mapping, corpus_version="2021")
 ```
 
-The caller must independently load the pinned BHSA TF corpus; TFont does not download it. The returned IDs are **native BHSA node IDs only**. Other corpora may use different surface feature names, and an empty or missing source surface is excluded by the condition. Do not infer token alignment, source word identity, lexical sense or physical inscription from an ontology-category match.
+The caller must independently load the pinned BHSA TF corpus; ontoTF does not download it. The returned IDs are **native BHSA node IDs only**. Other corpora may use different surface feature names, and an empty or missing source surface is excluded by the condition. Do not infer token alignment, source word identity, lexical sense or physical inscription from an ontology-category match.
 
 ### Directed edge categories
 
@@ -106,7 +106,7 @@ An XML `kind="edge"` selector accepts optional `from`, `to` and `value` attribut
 
 Use `map_native(corpus, kind="edge", feature=..., from_node=..., to_node=..., value=...)` for exact selector lookup. Reverse ontology lookup requires `kind="edge"`. Cross-corpus edge correspondence preserves whole-edge versus value-specific granularity; it does not infer a reverse, transitive, or individual identity relationship. `resolve_edges(api, mapping, corpus_version=...)` executes an exact positive mapping against a loaded TF API and returns sorted directed native endpoint pairs. It requires an explicitly compatible version for pinned mappings, rejects value constraints on unvalued features and does not execute cross-version node maps. Approximate/native-only/ambiguous declarations are not executable.
 
-To add a new corpus or a reviewed category, edit its authoritative `src/tfont/mappings/<corpus>.xml`; no per-corpus registration or generated release ledger is required. A **wheel built from the current development source** packages the same XML mapping files. The published `v0.1.1` wheel predates this XML runtime.
+To add a new corpus or a reviewed category, edit its authoritative `src/ontotf/mappings/<corpus>.xml`; no per-corpus registration or generated release ledger is required. A **wheel built from the current development source** packages the same XML mapping files. The published `v0.1.1` wheel predates this XML runtime.
 
 ## BHSA native word-to-lexeme lookup (development source only)
 
@@ -116,7 +116,7 @@ Load your own **exact pinned TF 2021 source**, including the lexical features, b
 
 ```python
 from tf.fabric import Fabric
-from tfont import resolve_bhsa_word_lexeme
+from ontotf import resolve_bhsa_word_lexeme
 
 tf = Fabric(locations="/path/to/pinned/bhsa/tf/2021", silent="deep")
 api = tf.load("lex voc_lex_utf8 languageISO")  # otype/oslots and TF L are standard
@@ -133,7 +133,7 @@ print(link.lexical_form.form_iri)    # derived, not a source-native Form node
 print(link.lexical_form.written_rep) # idealized voc_lex_utf8, not a token surface
 ```
 
-The lookup uses the **native edge** (reverse `oslots` via `L.u`) and verifies the source word's disambiguated `lex` and `languageISO` against the resolved lexical node. Zero or multiple lex memberships, mismatched IDs, missing native features, and the wrong pinned revision fail closed. The returned `lexical_form` reuses the existing [BHSA derived Form preview](src/tfont/bhsa_lexical_preview.py), preserving the separate OntoLex `LexicalEntry` and `Form` identities; it remains an **unreviewed derived representation**, not a published RDF ontology authority or a `canonicalForm` claim.
+The lookup uses the **native edge** (reverse `oslots` via `L.u`) and verifies the source word's disambiguated `lex` and `languageISO` against the resolved lexical node. Zero or multiple lex memberships, mismatched IDs, missing native features, and the wrong pinned revision fail closed. The returned `lexical_form` reuses the existing [BHSA derived Form preview](src/ontotf/bhsa_lexical_preview.py), preserving the separate OntoLex `LexicalEntry` and `Form` identities; it remains an **unreviewed derived representation**, not a published RDF ontology authority or a `canonicalForm` claim.
 
 Do not infer `LexicalSense` or `skos:Concept` from `gloss`, and do not equate two lexemes sharing `lex0` or `voc_lex_utf8`. The method takes a caller-supplied pinned revision: that argument does not authenticate the contents of an arbitrary TF checkout. Corpus data are not distributed with the package. This capability is **not in the published v0.1.1 wheel**.
 
@@ -166,15 +166,15 @@ the current source.
 
 ## Installation
 
-Development checkout: Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). The already-published v0.1.1 wheel retains its original Python >=3.10 requirement; this update applies to the next release. Download `tfont-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
+Development checkout: Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). The already-published v0.1.1 wheel retains its original Python >=3.10 requirement; this update applies to the next release. Download `ontotf-0.1.1-py3-none-any.whl` from the [GitHub v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1), then install the **downloaded local wheel**:
 
 ```bash
-python -m pip install ./tfont-0.1.1-py3-none-any.whl
+python -m pip install ./ontotf-0.1.1-py3-none-any.whl
 ```
 
-For the local-corpus example below, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). A development checkout may instead use `python -m pip install -e .`. v0.1.1 changes package license metadata only; it does not expand the v0.1 semantic/runtime scope. This GitHub wheel is the current v0.1 distribution; `pip install tfont` is **not** a supported PyPI installation claim.
+For the local-corpus example below, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). A development checkout may instead use `python -m pip install -e .`. v0.1.1 changes package license metadata only; it does not expand the v0.1 semantic/runtime scope. This GitHub wheel is the current v0.1 distribution; `pip install ontotf` is **not** a supported PyPI installation claim.
 
-Corpus files are **not bundled**. TFont does not download, load or update BHSA, Syriac or ExtraBiblical; you must obtain source corpora independently and respect their licenses. The separately bundled pinned OLiA ontology is CC BY 3.0 with its `ATTRIBUTION.txt` and `LICENSE.data`; ontoTF-authored code and mapping/profile metadata are MIT. BHSA corpus data have distinct CC BY-NC 4.0 terms.
+Corpus files are **not bundled**. ontoTF does not download, load or update BHSA, Syriac or ExtraBiblical; you must obtain source corpora independently and respect their licenses. The separately bundled pinned OLiA ontology is CC BY 3.0 with its `ATTRIBUTION.txt` and `LICENSE.data`; ontoTF-authored code and mapping/profile metadata are MIT. BHSA corpus data have distinct CC BY-NC 4.0 terms.
 
 ## First success with real BHSA data
 
@@ -186,7 +186,7 @@ python - <<'PY'
 import os
 from pathlib import Path
 from tf.fabric import Fabric
-from tfont import (
+from ontotf import (
     LoadedComponentContext, LoadedCorpusContext,
     SemanticKey, SemanticResolveRequest,
     load_production_noun_bundle, validate_semantic_bundle,
@@ -203,11 +203,11 @@ expected_component = bundle.expected_parent_manifest.data["components"][0]
 if observed_component != expected_component["content_digest"]:
     raise SystemExit("BHSA TF payload is not the pinned 2021 release; check BHSA_TF_DIR and revision")
 observed_manifest = {
-    "algorithm": "tfont-parent-components-sha256-v1",
+    "algorithm": "ontotf-parent-components-sha256-v1",
     "components": [{
         "component_id": "bhsa-tf",
         "kind": "tf-payload",
-        "identity_algorithm": "tfont-tf-files-sha256-v1",
+        "identity_algorithm": "ontotf-tf-files-sha256-v1",
         "content_digest": observed_component,
     }],
 }

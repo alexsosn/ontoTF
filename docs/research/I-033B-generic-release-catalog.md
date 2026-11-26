@@ -4,18 +4,18 @@
 
 ## Real-code audit
 
-`src/tfont/production_bundles.py` hard-codes three different corpus sets, four version constants, four growing evidence dictionaries, four conditional ontology evidence switches and one wrapper per feature increment. Releasing four mappings in #289 required new Python declarations despite existing `_mapping_artifact`, `_artifact`, `SemanticSourceBundle`, `validate_semantic_bundle`, and `compile_semantic_ir` supporting arbitrary mapping sets. New version 0.4.0 also copies 0.3.0 mappings and parent manifest.
+`src/ontotf/production_bundles.py` hard-codes three different corpus sets, four version constants, four growing evidence dictionaries, four conditional ontology evidence switches and one wrapper per feature increment. Releasing four mappings in #289 required new Python declarations despite existing `_mapping_artifact`, `_artifact`, `SemanticSourceBundle`, `validate_semantic_bundle`, and `compile_semantic_ir` supporting arbitrary mapping sets. New version 0.4.0 also copies 0.3.0 mappings and parent manifest.
 
 The biggest immediate high-confidence cut is to separate *release selection* from Python code. The loader should read a single **packaged versioned release catalogue** and construct the same `SemanticSourceBundle`, preserving all old wrappers. This makes a future release a catalogue data change plus genuinely new evidence/mapping data, with no hard-coded `_ADJ_ADV_...` Python edits.
 
 ## Scope and non-goals
 
-Introduce `tfont.load_profile(corpus_id, release_id="current", models=("olia",))` and `tfont.list_profile_releases(corpus_id)`. Existing supported versions:
+Introduce `ontotf.load_profile(corpus_id, release_id="current", models=("olia",))` and `ontotf.list_profile_releases(corpus_id)`. Existing supported versions:
 - BHSA: 0.1.0, 0.2.0, 0.3.0, 0.4.0 (`current`=0.4.0)
 - Syriac: the same four versions (`current`=0.4.0)
 - ExtraBiblical: 0.1.0, 0.2.0, 0.3.0 (`current`=0.3.0)
 
-Catalogue entries hold **explicit immutable resource paths** (profile, parent, evidence, ontology lock). The current *alias* is intentionally explicit, not automatically inferred from semver or filenames. No source corpus checkout is needed at runtime; resources come from `importlib.resources.files("tfont")` and are portable in installed wheels.
+Catalogue entries hold **explicit immutable resource paths** (profile, parent, evidence, ontology lock). The current *alias* is intentionally explicit, not automatically inferred from semver or filenames. No source corpus checkout is needed at runtime; resources come from `importlib.resources.files("ontotf")` and are portable in installed wheels.
 
 This is **loader parity**: no new ontology mappings, term approvals, semantic digests, coverage upgrades, or schema changes. The installed catalog initially supports only OLiA as a model pack. Requests for any other model MUST fail closed rather than pretending seven ontologies are installed.
 

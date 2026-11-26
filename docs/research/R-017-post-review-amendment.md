@@ -28,7 +28,7 @@ R-017 therefore cannot bypass R-016 merely because an AAT/PeriodO binding or ont
 
 ## 3. `native-only` and `unsupported` are no-target states, not external-reference targets
 
-Accepted TFont architecture treats reviewed `native-only` as a legitimate native semantic state with no defensible common target. `unsupported` likewise represents absence of a usable target for the requested semantics.
+Accepted ontoTF architecture treats reviewed `native-only` as a legitimate native semantic state with no defensible common target. `unsupported` likewise represents absence of a usable target for the requested semantics.
 
 Consequently:
 

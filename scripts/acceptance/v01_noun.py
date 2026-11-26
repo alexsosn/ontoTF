@@ -5,8 +5,8 @@ import os
 from pathlib import Path
 from typing import Any
 
-import tfont
-from tfont import (
+import ontotf
+from ontotf import (
     PRODUCTION_NOUN_CORPORA,
     LoadedComponentContext,
     LoadedCorpusContext,
@@ -19,7 +19,7 @@ from tfont import (
     validate_semantic_bundle,
 )
 
-CONTRACT = "tfont-v01-noun-acceptance-v1"
+CONTRACT = "ontotf-v01-noun-acceptance-v1"
 OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 OLIA_RELEASE = f"snapshot-{OLIA_REVISION}"
 OLIA_NOUN = "http://purl.org/olia/olia.owl#Noun"
@@ -121,12 +121,12 @@ def _under(path: Path, root: Path) -> bool:
 
 
 def assert_install_isolation() -> None:
-    forbidden = os.environ.get("TFONT_ACCEPTANCE_FORBID_ROOT")
+    forbidden = os.environ.get("ONTOTF_ACCEPTANCE_FORBID_ROOT")
     if not forbidden:
         return
     root = Path(forbidden)
-    package_file = Path(tfont.__file__)
-    require(not _under(package_file, root), f"tfont imported from forbidden checkout: {package_file}")
+    package_file = Path(ontotf.__file__)
+    require(not _under(package_file, root), f"ontotf imported from forbidden checkout: {package_file}")
     require(not _under(Path.cwd(), root), f"acceptance cwd is inside forbidden checkout: {Path.cwd()}")
 
 
@@ -273,7 +273,7 @@ def request() -> SemanticResolveRequest:
 
 
 def plan_checks(result: Any, apis: dict[str, LoadedAPI]) -> None:
-    require(result.execution_contract == "tfont-exact-execution-v1", "execution contract drifted")
+    require(result.execution_contract == "ontotf-exact-execution-v1", "execution contract drifted")
     expected_request = request()
     actual_request = result.resolution.request
     require(actual_request.key == expected_request.key, "resolution changed the semantic request key")
@@ -338,7 +338,7 @@ def plan_checks(result: Any, apis: dict[str, LoadedAPI]) -> None:
         require(report.observed_parent_manifest_digest == oracle["parent_digest"], f"{corpus_id}: runtime observed parent drift")
         require(report.compatibility_state == "verified-exact", f"{corpus_id}: runtime compatibility is not exact")
         require(report.profile_release_fingerprint == plan.profile_release_fingerprint, f"{corpus_id}: runtime/profile release mismatch")
-        require(report.source_contract == "tfont-exact-execution-runtime-v1", f"{corpus_id}: runtime source contract drift")
+        require(report.source_contract == "ontotf-exact-execution-runtime-v1", f"{corpus_id}: runtime source contract drift")
         require(tuple(dep.dependency_id for dep in report.dependency_results) == oracle["dependencies"], f"{corpus_id}: runtime dependencies drift")
         require(all(dep.result == "pass" for dep in report.dependency_results), f"{corpus_id}: runtime dependency did not pass")
         require_sha256(report.report_fingerprint, f"{corpus_id}: runtime report fingerprint")

@@ -8,12 +8,12 @@ import unittest
 import xml.etree.ElementTree as ET
 import json
 
-from tfont.source_validation import validate_source
+from ontotf.source_validation import validate_source
 
 
 ROOT = Path(__file__).resolve().parents[2]
 REVISION = "d6f840f40a05b76cbd8c10b9472ddd097371d610"
-FOLDER = ROOT / "src/tfont/resources/ontologies/ontolex" / REVISION
+FOLDER = ROOT / "src/ontotf/resources/ontologies/ontolex" / REVISION
 OWL_FILE = FOLDER / "ontolex.owl"
 LOCK = FOLDER / "lock-core-v1.json"
 FILE_SHA256 = "76e4c74fae4013944f60701df83828836c22a7f19c8cc8f72f994e321d12efd9"

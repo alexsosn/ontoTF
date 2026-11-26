@@ -4,8 +4,8 @@ from __future__ import annotations
 import json
 import unittest
 
-from tfont.coverage import coverage_report, load_packaged_coverage_manifest
-from tfont.coverage_deltas import (
+from ontotf.coverage import coverage_report, load_packaged_coverage_manifest
+from ontotf.coverage_deltas import (
     PublishedCoverageDeltaError,
     build_published_coverage_delta,
     load_published_coverage_delta,

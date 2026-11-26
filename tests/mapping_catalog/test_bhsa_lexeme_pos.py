@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 OLIA = "http://purl.org/olia/olia.owl#"
 BHSA_PIN = "4db00e2157915495e1a4d3d57e41223df24775da"

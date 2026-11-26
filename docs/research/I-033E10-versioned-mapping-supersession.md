@@ -11,7 +11,7 @@
 
 ## Architecture decision
 
-Introduce one shared **pure, untrusted preview** `tfont.mapping_supersession.plan_native_only_supersession` that validates:
+Introduce one shared **pure, untrusted preview** `ontotf.mapping_supersession.plan_native_only_supersession` that validates:
 
 - predecessor is content-digest-bound `reviewed` native-only Mapping v2 with no projection;
 - proposed successor is a still-UNREVIEWED, digest-bound positive Mapping v2 with one exact target class;

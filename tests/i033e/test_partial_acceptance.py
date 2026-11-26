@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tfont.overlay_handoff import verify_overlay_handoff_integrity
-from tfont.review_packets import build_review_packet
+from ontotf.overlay_handoff import verify_overlay_handoff_integrity
+from ontotf.review_packets import build_review_packet
 from tests.i033e.test_overlay_handoff import cohort, assemble
 from tests.i033e import test_protected_pr_batch_gate_red as transport
 from tests.i033e8.test_handoff_integrity_red import sealed

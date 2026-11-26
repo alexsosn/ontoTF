@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tfont.parent_identity import IdentityError, file_component_digest
+from ontotf.parent_identity import IdentityError, file_component_digest
 
 
 class FilePathSpellingRegressionTests(unittest.TestCase):

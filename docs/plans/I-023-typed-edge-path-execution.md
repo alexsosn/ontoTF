@@ -8,7 +8,7 @@ Baseline: main `1146f48ed22844203a8af1e86681246e2c9a4059`
 
 ## Exit condition
 
-TFont can execute one reviewed, fully typed, **unvalued** native TF edge path
+ontoTF can execute one reviewed, fully typed, **unvalued** native TF edge path
 against already-loaded Text-Fabric / Context-Fabric APIs.
 
 The executable source form is exactly:
@@ -50,7 +50,7 @@ No production ontology mapping is added merely to exercise this runtime path.
 ### Typed edge step
 
 Change `$defs.edgeStep` in
-`src/tfont/schemas/mapping.schema.json` from the current two-field object to
+`src/ontotf/schemas/mapping.schema.json` from the current two-field object to
 an exact four-field object.
 
 Required:
@@ -111,7 +111,7 @@ Any contrary result is a blocker and requires a plan amendment.
 
 ## IR amendment
 
-Extend `EdgeStepIR` in `src/tfont/semantic_ir.py` to:
+Extend `EdgeStepIR` in `src/ontotf/semantic_ir.py` to:
 
 ```python
 @dataclass(frozen=True)
@@ -126,7 +126,7 @@ Update `_native_binding()` so validated source steps compile all four fields
 in source order.
 
 The two new dataclass fields deliberately have defaults. `EdgeStepIR` is
-already exported from `tfont.__init__`; making the fields mandatory would
+already exported from `ontotf.__init__`; making the fields mandatory would
 break existing external Python construction such as
 `EdgeStepIR("mother", "outgoing")` even though old two-field steps are not an
 executable I-023 path. Preserve that constructor compatibility.
@@ -147,7 +147,7 @@ The new step fields therefore naturally participate in native identity.
 ## Resolver reconstruction and forged-IR boundary
 
 Update `_native_binding_projection()` in
-`src/tfont/semantic_resolver.py` so reconstructed step source includes all
+`src/ontotf/semantic_resolver.py` so reconstructed step source includes all
 four fields.
 
 For every compiled `EdgeStepIR`, require:
@@ -169,7 +169,7 @@ authoritative. No new plan-fingerprint algorithm is introduced.
 ## Semantic dependency authority
 
 Add an edge-path authority validator alongside the current membership
-dependency-authority validator in `src/tfont/semantic_validation.py`.
+dependency-authority validator in `src/ontotf/semantic_validation.py`.
 
 Apply it to all native execution binding owners already covered by membership:
 
@@ -217,7 +217,7 @@ Do not broaden `path-present` in P-002 during I-023.
 
 ## Runtime binding validator
 
-Add a private validator in `src/tfont/semantic_execution.py`, conceptually:
+Add a private validator in `src/ontotf/semantic_execution.py`, conceptually:
 
 ```python
 _validate_edge_path_binding(plan) -> NativeBindingIR
@@ -592,11 +592,11 @@ Observe RED on the tests-only head before touching production source.
 
 Expected production changes:
 
-- `src/tfont/schemas/mapping.schema.json`;
-- `src/tfont/semantic_ir.py`;
-- `src/tfont/semantic_validation.py`;
-- `src/tfont/semantic_resolver.py`;
-- `src/tfont/semantic_execution.py`.
+- `src/ontotf/schemas/mapping.schema.json`;
+- `src/ontotf/semantic_ir.py`;
+- `src/ontotf/semantic_validation.py`;
+- `src/ontotf/semantic_resolver.py`;
+- `src/ontotf/semantic_execution.py`.
 
 Expected non-production changes:
 

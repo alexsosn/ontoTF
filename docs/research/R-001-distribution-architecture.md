@@ -6,17 +6,17 @@
 
 ## Decision
 
-For the POC, TFont should use a **central source repository with independently versioned per-corpus semantic sidecar bundles**.
+For the POC, ontoTF should use a **central source repository with independently versioned per-corpus semantic sidecar bundles**.
 
-Each corpus profile is authored and validated in the TFont repository, but is publishable as its own immutable release artifact. The **TFont profile source** is the canonical human-reviewable semantic source. A **compiled runtime sidecar** is a deterministic generated lookup/index derived from that source. Exact compatibility binds to a transport-independent parent component manifest covering every **semantically addressable native component** of the tested parent — the TF payload plus any declared external sidecar, catalogue, zero-span entity store, or native-adapter artifact. Reusable compatibility validates the profile dependency closure against a different parent component set. TFont may optionally generate a Text-Fabric feature module when the mapped semantics can be represented faithfully as TF node/edge features, but generated TF features are never the canonical mapping source.
+Each corpus profile is authored and validated in the ontoTF repository, but is publishable as its own immutable release artifact. The **ontoTF profile source** is the canonical human-reviewable semantic source. A **compiled runtime sidecar** is a deterministic generated lookup/index derived from that source. Exact compatibility binds to a transport-independent parent component manifest covering every **semantically addressable native component** of the tested parent — the TF payload plus any declared external sidecar, catalogue, zero-span entity store, or native-adapter artifact. Reusable compatibility validates the profile dependency closure against a different parent component set. ontoTF may optionally generate a Text-Fabric feature module when the mapped semantics can be represented faithfully as TF node/edge features, but generated TF features are never the canonical mapping source.
 
-Agora should discover and install TFont profiles and select compatible profiles for a parent corpus. Agora should not contain mappings, ontology reasoning, term equivalence rules, or corpus-specific semantic transformations. Context-Fabric/Text-Fabric remain corpus loaders and query engines; TFont owns semantic resolution over the loaded corpus plus its sidecar.
+Agora should discover and install ontoTF profiles and select compatible profiles for a parent corpus. Agora should not contain mappings, ontology reasoning, term equivalence rules, or corpus-specific semantic transformations. Context-Fabric/Text-Fabric remain corpus loaders and query engines; ontoTF owns semantic resolution over the loaded corpus plus its sidecar.
 
 The POC therefore has four distinct artifact roles:
 
 1. **parent corpus artifact** — authoritative native TF data plus any semantically addressable native sidecars/catalogue/adapter data and corpus metadata;
-2. **TFont profile source** — version-controlled declarative semantic mappings, compatibility manifest, tests and documentation;
-3. **TFont runtime sidecar** — deterministic compiled/indexed representation consumed by TFont without requiring an RDF store;
+2. **ontoTF profile source** — version-controlled declarative semantic mappings, compatibility manifest, tests and documentation;
+3. **ontoTF runtime sidecar** — deterministic compiled/indexed representation consumed by ontoTF without requiring an RDF store;
 4. **optional materialized TF module** — derived node/edge features for tools that only understand TF features, produced only where semantic fidelity is preserved.
 
 RDF/Turtle should be a standards-oriented publication/interchange representation of the semantic graph, not a requirement that runtime queries use RDF or a triplestore. The later ontology-governance ticket may refine the exact RDF vocabulary and authoring serialization, but it should not reopen the distribution decision above.
@@ -55,11 +55,11 @@ These are useful compatibility mechanisms, but they solve **feature distribution
 
 ### 2.2 Main-data version and module release are separate dimensions
 
-The TF module path contains a parent-data version directory, while the module repository itself can have independent releases/commits. That distinction is essential for TFont:
+The TF module path contains a parent-data version directory, while the module repository itself can have independent releases/commits. That distinction is essential for ontoTF:
 
 - BHSA `2021` identifies a corpus schema/data generation;
-- a TFont BHSA mapping can evolve through `0.1.0`, `0.1.1`, etc. without changing BHSA;
-- the same TFont profile release may support more than one exact parent revision only after each target has been validated.
+- a ontoTF BHSA mapping can evolve through `0.1.0`, `0.1.1`, etc. without changing BHSA;
+- the same ontoTF profile release may support more than one exact parent revision only after each target has been validated.
 
 A string such as `tf/2021` is therefore insufficient as the full compatibility contract. It identifies a version directory but not the exact parent data revision whose feature inventory/value domain was tested.
 
@@ -86,22 +86,22 @@ Context-Fabric preserves the Text-Fabric core graph APIs and reads the same `.tf
 
 At the inspected revision, Context-Fabric `Fabric` accepts multiple `locations` and `modules`. It scans `.tf` files in each selected `location/module`; module order is significant because a later module can override an earlier feature with the same name.
 
-Consequences for TFont:
+Consequences for ontoTF:
 
-- a materialized TFont TF module can be loaded alongside the corpus in Context-Fabric;
-- TFont must avoid accidental feature-name collision/override, preferably by namespacing generated compatibility features and failing CI on undeclared collisions;
-- Context-Fabric itself should not be required to understand TFont ontology manifests in order to load raw corpus data;
+- a materialized ontoTF TF module can be loaded alongside the corpus in Context-Fabric;
+- ontoTF must avoid accidental feature-name collision/override, preferably by namespacing generated compatibility features and failing CI on undeclared collisions;
+- Context-Fabric itself should not be required to understand ontoTF ontology manifests in order to load raw corpus data;
 - the semantic sidecar/resolver can sit above Context-Fabric's corpus API and use native feature/edge access without modifying `.cfm` internals.
 
 ### 3.2 Context-Fabric distribution is independently revision-pinnable
 
-Current Context-Fabric includes a Hugging Face Hub downloader whose `revision` can be a tag, branch or commit. This is another useful acquisition mechanism, especially for large precompiled `.cfm` artifacts, but it is not a reason to make Hugging Face the identity authority for TFont profiles.
+Current Context-Fabric includes a Hugging Face Hub downloader whose `revision` can be a tag, branch or commit. This is another useful acquisition mechanism, especially for large precompiled `.cfm` artifacts, but it is not a reason to make Hugging Face the identity authority for ontoTF profiles.
 
-A corpus can be obtained from TF-native GitHub/GitLab data, Context-Fabric/HF distribution, Agora materialization, or a local checkout. TFont compatibility must resolve all of those to the **same logical parent corpus identity plus the same declared component identities**, rather than bind semantic correctness to one download transport.
+A corpus can be obtained from TF-native GitHub/GitLab data, Context-Fabric/HF distribution, Agora materialization, or a local checkout. ontoTF compatibility must resolve all of those to the **same logical parent corpus identity plus the same declared component identities**, rather than bind semantic correctness to one download transport.
 
 ### 3.3 Runtime performance favors a sidecar index
 
-Context-Fabric gains its performance by compiling once and memory-mapping indexed data. TFont should follow the same separation of concerns: preserve a reviewable semantic source, then compile a deterministic runtime index. Re-parsing a whole RDF graph or executing SPARQL for every agent request is not required by the problem and would couple semantic interoperability to an unnecessary infrastructure choice.
+Context-Fabric gains its performance by compiling once and memory-mapping indexed data. ontoTF should follow the same separation of concerns: preserve a reviewable semantic source, then compile a deterministic runtime index. Re-parsing a whole RDF graph or executing SPARQL for every agent request is not required by the problem and would couple semantic interoperability to an unnecessary infrastructure choice.
 
 The runtime sidecar can be opened offline next to the corpus. A later implementation benchmark should decide the exact index encoding after query shapes from R-003 are known.
 
@@ -123,21 +123,21 @@ Current Agora already supports a generic `feature-module` resource kind with:
 
 Its registry validator checks that a feature module refers to an existing corpus parent on the same provider/plugin and validates controlled vocabularies. This proves that Agora can carry **compatibility and acquisition metadata** without owning the scholarly semantics.
 
-### 4.2 TFont sidecars should not be mislabeled as ordinary feature modules
+### 4.2 ontoTF sidecars should not be mislabeled as ordinary feature modules
 
-A TFont profile is broader than a TF feature bundle. The recommended later Agora integration is a resource type such as `semantic-module` (name to be finalized in the design ticket) with the same thin fields Agora already understands conceptually:
+A ontoTF profile is broader than a TF feature bundle. The recommended later Agora integration is a resource type such as `semantic-module` (name to be finalized in the design ticket) with the same thin fields Agora already understands conceptually:
 
 - parent resource ID;
 - compatible/tested parent revisions;
-- TFont profile ID/version;
+- ontoTF profile ID/version;
 - immutable release location and digest;
 - optional materialized TF-module artifact;
 - ontology/profile identifiers;
 - acquisition and verification status.
 
-If Agora does not add a new resource kind immediately, the POC can be installed directly from TFont and Agora integration can wait. It is preferable to temporary non-registration than to describe a semantic sidecar falsely as a `feature-module`.
+If Agora does not add a new resource kind immediately, the POC can be installed directly from ontoTF and Agora integration can wait. It is preferable to temporary non-registration than to describe a semantic sidecar falsely as a `feature-module`.
 
-Agora may resolve/download/select an artifact. The TFont library must interpret it.
+Agora may resolve/download/select an artifact. The ontoTF library must interpret it.
 
 ## 5. Corpus-census constraints from R-005
 
@@ -165,7 +165,7 @@ Witness semantics require explicit reading/unit/manuscript relations and disting
 
 ### ORACC-TF
 
-The current target includes sign slots, source GDL structures, physical object/catalogue metadata and zero-span sidecar entities. TFont cannot require every mapped entity to be a materialized TF node. The distribution format must allow a profile to describe corpus-native sidecar/entity sources alongside TF nodes/features. If an ORACC profile semantically addresses those native sidecar/catalogue entities, their bytes are part of the tested parent component manifest; a TF-only digest cannot establish exact identity for that profile.
+The current target includes sign slots, source GDL structures, physical object/catalogue metadata and zero-span sidecar entities. ontoTF cannot require every mapped entity to be a materialized TF node. The distribution format must allow a profile to describe corpus-native sidecar/entity sources alongside TF nodes/features. If an ORACC profile semantically addresses those native sidecar/catalogue entities, their bytes are part of the tested parent component manifest; a TF-only digest cannot establish exact identity for that profile.
 
 ## 6. Architecture alternatives
 
@@ -173,10 +173,10 @@ Scores: 1 = poor, 3 = workable with material costs, 5 = strong. `Maintenance` in
 
 | alternative | fidelity | independent releases | human install | agent discovery | version resolution | independent publication | Agora fit | CI validation | maintenance | optional profiles | stale behavior | total / 55 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| **A. Central TFont source + independently released semantic sidecars + optional generated TF modules** | 5 | 5 | 4 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | **54** |
+| **A. Central ontoTF source + independently released semantic sidecars + optional generated TF modules** | 5 | 5 | 4 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | **54** |
 | B. One repository/package per corpus from day one | 5 | 5 | 3 | 4 | 5 | 5 | 5 | 5 | 2 | 5 | 5 | 49 |
 | C. Put mappings in each parent corpus repository | 4 | 1 | 5 | 3 | 4 | 1 | 3 | 4 | 2 | 3 | 4 | 34 |
-| D. Make TF feature modules the canonical TFont artifact | 2 | 5 | 5 | 4 | 4 | 5 | 5 | 5 | 4 | 3 | 4 | 46 |
+| D. Make TF feature modules the canonical ontoTF artifact | 2 | 5 | 5 | 4 | 4 | 5 | 5 | 5 | 4 | 3 | 4 | 46 |
 | E. Store mapping logic/metadata centrally in Agora | 3 | 4 | 5 | 5 | 4 | 3 | 1 | 4 | 2 | 4 | 4 | 39 |
 | F. RDF/triplestore-only runtime package per corpus | 5 | 5 | 2 | 3 | 5 | 5 | 3 | 5 | 3 | 5 | 5 | 46 |
 
@@ -201,7 +201,7 @@ This becomes attractive after the profile schema and governance rules stabilize 
 
 ### C. Mappings live with the parent corpus
 
-Rejected as the default because mapping releases would be coupled to unrelated parent corpus governance and release cadence. It would also require upstream maintainers to accept every ontology dependency/profile TFont wants to support. Parent repositories should be able to opt in, but TFont cannot depend on that.
+Rejected as the default because mapping releases would be coupled to unrelated parent corpus governance and release cadence. It would also require upstream maintainers to accept every ontology dependency/profile ontoTF wants to support. Parent repositories should be able to opt in, but ontoTF cannot depend on that.
 
 ### D. TF feature module as canonical source
 
@@ -209,7 +209,7 @@ Rejected as canonical because R-005 demonstrates graph and zero-span semantics t
 
 ### E. Agora owns mappings
 
-Rejected. It violates Agora's thin marketplace boundary and would duplicate mutable corpus/ontology semantics in an integration registry. Agora should know enough to select the correct TFont artifact, no more.
+Rejected. It violates Agora's thin marketplace boundary and would duplicate mutable corpus/ontology semantics in an integration registry. Agora should know enough to select the correct ontoTF artifact, no more.
 
 ### F. RDF/triplestore-only runtime
 
@@ -220,13 +220,13 @@ RDF is useful for publication and ontology interoperability, but requiring a tri
 Conceptual layout; the design ticket may refine filenames but should preserve the boundaries.
 
 ```text
-TFont/
+ontoTF/
 ├── schemas/
 │   ├── profile-manifest.schema.*
 │   └── mapping.schema.*
 ├── ontology/
 │   ├── lock.*                 # exact external ontology/version pins
-│   └── local/                 # TFont-local concepts allowed by governance
+│   └── local/                 # ontoTF-local concepts allowed by governance
 ├── profiles/
 │   ├── bhsa/
 │   │   ├── manifest.*
@@ -250,7 +250,7 @@ TFont/
 A published **profile bundle** should contain at least:
 
 ```text
-<tfont-profile-id>-<mapping-version>/
+<ontotf-profile-id>-<mapping-version>/
 ├── manifest.json              # normalized release manifest
 ├── mapping.<rdf-or-source-export>
 ├── runtime/index.json|...     # deterministic compiled lookup representation
@@ -272,9 +272,9 @@ Conceptual manifest:
 ```yaml
 schema_version: 1
 profile:
-  id: tfont-bhsa
+  id: ontotf-bhsa
   version: 0.1.0
-  mapping_revision: <TFont Git commit>
+  mapping_revision: <ontoTF Git commit>
 
 parent:
   resource_id: bhsa
@@ -288,11 +288,11 @@ compatibility:
     - tf_version: "2021"
       upstream_revision: 4db00e2157915495e1a4d3d57e41223df24775da
       artifact_identity:
-        algorithm: tfont-parent-components-sha256-v1
+        algorithm: ontotf-parent-components-sha256-v1
         components:
           tf:
             kind: tf-payload
-            algorithm: tfont-tf-files-sha256-v1
+            algorithm: ontotf-tf-files-sha256-v1
             digest: sha256:<digest>
           # Additional native components are declared when the profile
           # semantically addresses sidecar/catalogue/adapter data.
@@ -313,7 +313,7 @@ artifacts:
     parent_tf_version: "2021"
 
 provenance:
-  generated_from: <TFont Git commit>
+  generated_from: <ontoTF Git commit>
 ```
 
 ### Required identity fields
@@ -327,7 +327,7 @@ A verified compatibility target should include:
 5. **transport-independent parent component manifest** with exact **component identities** for every semantically addressable native component — the TF payload plus any external sidecar, catalogue, zero-span entity store, or native-adapter artifact used by the profile;
 6. **complete profile dependency closure**, including every native selector/value/entity/invariant used by the mapping;
 7. **expected slot type**;
-8. **TFont profile version and source revision**;
+8. **ontoTF profile version and source revision**;
 9. **locked ontology/profile versions**.
 
 The design ticket should define canonical component-identity and dependency-manifest construction. The TF payload identity hashes the parent semantic TF bytes, including storage-level dense records, but that digest is only one component identity when the profile addresses native semantics outside `*.tf`. Exact identity requires every declared semantically addressable component to match the tested target. Dependency compatibility is semantic: an empty-string or `None` dense record carries **no semantic value** unless the parent corpus explicitly defines otherwise, so it cannot satisfy a required mapped value or establish feature applicability. Likewise, an **observed small** release domain is not automatically a **closed vocabulary**: compatibility validates the particular values and invariants the profile depends on rather than assuming every finite observed domain is permanently closed.
@@ -339,7 +339,7 @@ Runtime discovery should distinguish:
 - `verified-exact` — every declared semantically addressable parent component identity equals the exact tested target and no required component is missing or unverifiable;
 - `verified-compatible` — one or more component identities differ, but the current profile's complete declared dependency closure has been validated against the changed parent component set;
 - `incompatible` — at least one required dependency differs, is absent, or cannot be validated;
-- `unverified` — TFont cannot prove exact component identity or complete dependency compatibility.
+- `unverified` — ontoTF cannot prove exact component identity or complete dependency compatibility.
 
 Semantic execution is enabled only for `verified-exact` and `verified-compatible`. `unverified` is diagnostic and **non-executable**: it may support migration inspection or a prospective resolution report, but there is no normal agent/user opt-in that converts it into executable semantic truth. `incompatible` fails closed.
 
@@ -352,12 +352,12 @@ A semver/version range may be a **discovery hint**, but must not by itself autho
 When a parent corpus changes:
 
 1. acquisition resolves the new corpus revision and complete semantically addressable native component set used by the profile;
-2. TFont computes/verifies the transport-independent component identities;
-3. if any declared component identity is not an exact tested target, TFont validates the complete profile dependency closure across the changed component set;
+2. ontoTF computes/verifies the transport-independent component identities;
+3. if any declared component identity is not an exact tested target, ontoTF validates the complete profile dependency closure across the changed component set;
 4. semantic queries are enabled only after reaching `verified-exact` or `verified-compatible`; otherwise the profile is `unverified` or `incompatible` and remains non-executable;
-5. CI for the TFont profile is run against the new exact parent revision/component set;
+5. CI for the ontoTF profile is run against the new exact parent revision/component set;
 6. any changed dependency — including mapped open-domain values/entity IDs, edge semantics, external sidecar/native-adapter entities, structural invariants, or required bounded values — requires mapping review;
-7. a new TFont profile release records the added exact component manifest or explicit compatibility evidence.
+7. a new ontoTF profile release records the added exact component manifest or explicit compatibility evidence.
 
 Do not silently fall back to a nearest earlier mapping. A reproducible semantic request receives verified execution or a diagnostic failure; an unverified profile never produces plausible but unvalidated semantic results.
 
@@ -369,7 +369,7 @@ All verified targets and build provenance use exact Git commit SHAs. Human-reada
 
 ### Profile releases
 
-The central TFont repository can publish profiles independently with namespaced tags, for example:
+The central ontoTF repository can publish profiles independently with namespaced tags, for example:
 
 ```text
 profile/bhsa/v0.1.0
@@ -395,7 +395,7 @@ The project should support an RDF representation because ontology terms and mapp
 
 Recommended boundary:
 
-- **authoritative semantics:** declarative TFont profile source plus ontology lock and validation rules;
+- **authoritative semantics:** declarative ontoTF profile source plus ontology lock and validation rules;
 - **publication/interchange:** deterministic RDF export, with Turtle as the human-readable default and JSON-LD as an optional machine-oriented serialization;
 - **runtime:** deterministic lookup/index sidecar compiled from the same source;
 - **TF compatibility:** optional generated `.tf` node/edge features for the safe representable subset.
@@ -408,20 +408,20 @@ R-002 should decide the exact ontology/mapping predicates and URI governance. R-
 
 | component | owns | must not own |
 |---|---|---|
-| parent corpus repository | native nodes/features/edges and native sidecar/catalogue data, corpus versioning, native semantics, source provenance, corpus licence | TFont cross-corpus equivalence claims unless it explicitly chooses to contribute them |
-| TFont | ontology/profile locks, corpus mapping assertions, mapping strength, semantic sidecars, mapping validation, generated semantic reference, optional TF materialization | parent corpus data truth; download-marketplace policy; MCP transport |
-| Text-Fabric | TF data model, module loading/distribution conventions, core/advanced APIs | TFont ontology policy |
-| Context-Fabric core | efficient `.tf`/`.cfm` loading and core graph/query APIs | TFont mapping governance or marketplace discovery |
-| Context-Fabric MCP | agent transport, corpus selection, native corpus query tools, optional invocation of TFont semantic resolver | canonical mapping definitions |
+| parent corpus repository | native nodes/features/edges and native sidecar/catalogue data, corpus versioning, native semantics, source provenance, corpus licence | ontoTF cross-corpus equivalence claims unless it explicitly chooses to contribute them |
+| ontoTF | ontology/profile locks, corpus mapping assertions, mapping strength, semantic sidecars, mapping validation, generated semantic reference, optional TF materialization | parent corpus data truth; download-marketplace policy; MCP transport |
+| Text-Fabric | TF data model, module loading/distribution conventions, core/advanced APIs | ontoTF ontology policy |
+| Context-Fabric core | efficient `.tf`/`.cfm` loading and core graph/query APIs | ontoTF mapping governance or marketplace discovery |
+| Context-Fabric MCP | agent transport, corpus selection, native corpus query tools, optional invocation of ontoTF semantic resolver | canonical mapping definitions |
 | Agora | discovery, parent/resource compatibility metadata, installation/acquisition, selection, integration verification | substantive mappings, ontology reasoning, duplicated corpus quality judgments |
 
 The runtime integration can therefore look like:
 
 ```text
 Agent
-  -> Context-Fabric MCP / TFont-aware tool
+  -> Context-Fabric MCP / ontoTF-aware tool
        -> loaded native corpus API
-       -> selected TFont sidecar resolver
+       -> selected ontoTF sidecar resolver
             -> native feature/edge lookup
             -> semantic projection + provenance
 ```
@@ -433,9 +433,9 @@ Agora participates before runtime by resolving the appropriate corpus/profile ar
 ### BHSA
 
 - parent: `ETCBC/bhsa`, TF version `2021`, exact tested commit;
-- TFont profile: `tfont-bhsa`;
+- ontoTF profile: `ontotf-bhsa`;
 - runtime: sidecar mapping native POS/morphology/syntax/lexical structures to ontology terms;
-- optional TF product: safe projected categories with TFont-namespaced feature names;
+- optional TF product: safe projected categories with ontoTF-namespaced feature names;
 - CI: verify `word` slot, required `lex`/syntactic nodes/features/edges and bounded mapped values before release.
 
 ### CUC
@@ -472,7 +472,7 @@ Agora participates before runtime by resolving the appropriate corpus/profile ar
 - profile is not released until ORACC-TF has a stable schema release;
 - sidecar can cover TF warp entities plus zero-span sidecar/catalogue entities;
 - any native sidecar/catalogue component that the profile addresses is explicitly included in the parent component identity manifest;
-- TFont runtime entity addressing must allow non-TF entities qualified by source identity and profile adapter, rather than requiring every semantic object to have a TF node number.
+- ontoTF runtime entity addressing must allow non-TF entities qualified by source identity and profile adapter, rather than requiring every semantic object to have a TF node number.
 
 ## 14. Offline and caching behavior
 
@@ -481,7 +481,7 @@ A reproducible offline workspace should be representable as:
 ```text
 workspace/
 ├── corpus/             # exact parent corpus revision/component set or exported data
-├── tfont-profile/      # exact immutable TFont bundle
+├── ontotf-profile/      # exact immutable ontoTF bundle
 └── lock.json           # resolved component/profile/ontology identities and digests
 ```
 
@@ -489,20 +489,20 @@ After acquisition, no network is required for semantic querying. The lock record
 
 Caches may accelerate acquisition or compilation but are disposable. Semantic identity must never be inferred from the cache path alone. A corrupted or mismatched runtime cache is rejected by digest/version metadata and can be regenerated from the profile source/bundle.
 
-For Context-Fabric `.cfm` caches, TFont should treat the native corpus feature set exposed by the API as authoritative; TFont does not need to embed its semantic sidecar into the `.cfm` cache format.
+For Context-Fabric `.cfm` caches, ontoTF should treat the native corpus feature set exposed by the API as authoritative; ontoTF does not need to embed its semantic sidecar into the `.cfm` cache format.
 
 ## 15. Agent discovery behavior
 
 An agent should be able to ask discovery questions before executing a semantic query:
 
-- Which TFont profiles are installed for this corpus?
+- Which ontoTF profiles are installed for this corpus?
 - Which profile release is compatible with the exact loaded corpus component set?
 - Which ontology profiles are active?
 - Is a requested concept native, projected with a `same/close/broader/...` mapping, or unsupported?
 - Which native feature/node/edge/sidecar entity produces the answer?
 - Is this mapping `verified-exact`, `verified-compatible`, `unverified`, or `incompatible`, and what component/dependency evidence supports that state?
 
-Agora can help discover/install the profile. TFont supplies the semantic capability metadata. Context-Fabric supplies native corpus schema and values. These layers should not synthesize one another's claims.
+Agora can help discover/install the profile. ontoTF supplies the semantic capability metadata. Context-Fabric supplies native corpus schema and values. These layers should not synthesize one another's claims.
 
 ## 16. CI contract for a profile release
 
@@ -525,19 +525,19 @@ Implementation must follow TDD once the research/design gate opens; these checks
 
 The profile bundle is designed as the unit of migration.
 
-If BHSA later moves to `TFont/tfont-bhsa` or an ETCBC-owned repository:
+If BHSA later moves to `ontoTF/ontotf-bhsa` or an ETCBC-owned repository:
 
 1. copy the `profiles/bhsa` source subtree and its tests into the new repository;
 2. preserve the profile ID and manifest schema;
 3. continue versioning the profile independently;
-4. update artifact/discovery coordinates in the central TFont catalog and Agora;
+4. update artifact/discovery coordinates in the central ontoTF catalog and Agora;
 5. retain old release coordinates as immutable historical provenance;
 6. keep logical mapping/entity identifiers independent of the hosting repository URL;
 7. run the same exact-parent CI contract in the new repository.
 
 No corpus consumer should have to change semantic query syntax solely because the profile's Git repository changed. Hosting location is acquisition metadata, not semantic identity.
 
-The central TFont repository can then evolve into a core schema/governance/catalog repository while independently maintained profile packages own their release cycles.
+The central ontoTF repository can then evolve into a core schema/governance/catalog repository while independently maintained profile packages own their release cycles.
 
 ## 18. Failure policy
 
@@ -555,16 +555,16 @@ Fail closed where a wrong semantic result would look plausible.
 | ontology dependency unavailable offline | use locked local copy if bundled; otherwise profile unavailable rather than silently changing vocabulary |
 | optional materialized TF module unavailable | sidecar semantic queries continue; feature-only clients lose only the compatibility projection |
 | mapping sidecar digest mismatch | refuse to load |
-| Agora metadata stale | TFont manifest remains authoritative for semantic compatibility; discovery can report registry mismatch |
+| Agora metadata stale | ontoTF manifest remains authoritative for semantic compatibility; discovery can report registry mismatch |
 
 ## 19. Rejected assumptions
 
 1. **Corpus version directory is enough compatibility information.** Rejected: exact revisions and relevant schema/value inventories may change independently.
-2. **One TFont repository implies one release cadence.** Rejected: per-profile release artifacts/tags provide independent cadence inside a monorepo.
+2. **One ontoTF repository implies one release cadence.** Rejected: per-profile release artifacts/tags provide independent cadence inside a monorepo.
 3. **TF feature modules can express the whole ontology layer.** Rejected by sign-slot, witness-graph, technical-anchor and zero-span cases.
 4. **RDF requires a triplestore runtime.** Rejected: RDF can be an interchange/publication representation while runtime uses a compiled index.
-5. **Context-Fabric should absorb TFont mappings into `.cfm`.** Rejected: this would couple independent semantic releases to corpus-cache internals and make invalidation harder.
-6. **Agora should duplicate mapping manifests.** Rejected: Agora should carry only the metadata needed for discovery/acquisition/compatibility selection and point at the authoritative TFont release.
+5. **Context-Fabric should absorb ontoTF mappings into `.cfm`.** Rejected: this would couple independent semantic releases to corpus-cache internals and make invalidation harder.
+6. **Agora should duplicate mapping manifests.** Rejected: Agora should carry only the metadata needed for discovery/acquisition/compatibility selection and point at the authoritative ontoTF release.
 7. **A semver range can authorize auto-loading.** Rejected: several TF corpora use non-semver data versions, and compatible-looking versions can still change schema semantics.
 8. **Generated projected features should overwrite native features.** Rejected: native corpus semantics remain authoritative; collision is a validation failure unless a deliberately named override artifact is requested.
 9. **Matching TF bytes prove exact parent semantics when the profile also addresses native sidecars.** Rejected: exact identity is component-aware and must cover every semantically addressable native component.
@@ -578,7 +578,7 @@ These do not reopen the distribution decision:
 - R-004: which reference tables are generated from manifests versus maintained prose;
 - design ticket: exact manifest serialization, canonical parent-component identity and profile-dependency-manifest algorithms, runtime index encoding, artifact naming and signing workflow;
 - implementation benchmark: whether JSON, SQLite, memory-mapped arrays or another deterministic index best serves R-003 query shapes;
-- Agora follow-up: final name/schema for `semantic-module`, and whether it is added before or after the first TFont POC release.
+- Agora follow-up: final name/schema for `semantic-module`, and whether it is added before or after the first ontoTF POC release.
 
 ## 21. Acceptance-criteria trace
 

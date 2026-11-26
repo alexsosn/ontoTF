@@ -3,9 +3,9 @@ from __future__ import annotations
 import copy
 import unittest
 
-import tfont.semantic_ir as semantic_ir
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.semantic_validation import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
+import ontotf.semantic_ir as semantic_ir
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_validation import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
 from tests.i005._fixtures import (
     catalogue_reference,
     entity_identity_reference,
@@ -56,10 +56,10 @@ def _ontology_bundle(sources, *profile_contracts):
 class I005PlanAmendmentContractTests(unittest.TestCase):
     def test_dependency_semantic_drift_is_release_conflict(self):
         first_sources = noun_sources(
-            "bhsa", parent_char="a", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="a", authored_profile_id="ontotf-bhsa"
         )
         second_sources = noun_sources(
-            "bhsa", parent_char="b", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="b", authored_profile_id="ontotf-bhsa"
         )
         second_sources["profile"]["dependencies"][0]["assertion"]["value"] = "substantive"
 
@@ -71,10 +71,10 @@ class I005PlanAmendmentContractTests(unittest.TestCase):
 
     def test_value_domain_order_is_non_semantic_for_release_signature(self):
         first_sources = noun_sources(
-            "bhsa", parent_char="a", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="a", authored_profile_id="ontotf-bhsa"
         )
         second_sources = noun_sources(
-            "bhsa", parent_char="b", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="b", authored_profile_id="ontotf-bhsa"
         )
         for sources, values in (
             (first_sources, ["subs", "verb"]),
@@ -100,10 +100,10 @@ class I005PlanAmendmentContractTests(unittest.TestCase):
 
     def test_ontology_bundle_digest_drift_is_release_conflict(self):
         first_sources = noun_sources(
-            "bhsa", parent_char="a", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="a", authored_profile_id="ontotf-bhsa"
         )
         second_sources = noun_sources(
-            "bhsa", parent_char="b", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="b", authored_profile_id="ontotf-bhsa"
         )
         first = _validated_sources(
             first_sources,
@@ -146,10 +146,10 @@ class I005PlanAmendmentContractTests(unittest.TestCase):
 
     def test_referenced_lock_identity_drift_is_release_conflict(self):
         first_sources = noun_sources(
-            "bhsa", parent_char="a", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="a", authored_profile_id="ontotf-bhsa"
         )
         second_sources = noun_sources(
-            "bhsa", parent_char="b", authored_profile_id="tfont-bhsa"
+            "bhsa", parent_char="b", authored_profile_id="ontotf-bhsa"
         )
         second_sources["locks"][0]["release"] = "fixture-release-2"
 

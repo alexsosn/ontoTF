@@ -8,11 +8,11 @@ R-007 remains unchanged as the reviewed historical research artifact merged in P
 
 ## Decision
 
-The generic `sidecar/native-adapter` carrier is superseded as a baseline TFont runtime concept.
+The generic `sidecar/native-adapter` carrier is superseded as a baseline ontoTF runtime concept.
 
-It is not a baseline TFont runtime carrier, and TFont must not replace it with another generic external-storage carrier name.
+It is not a baseline ontoTF runtime carrier, and ontoTF must not replace it with another generic external-storage carrier name.
 
-**Storage location or source format is not a semantic carrier type.** Baseline TFont resolves semantic requests against already-materialized Text-Fabric / Context-Fabric corpus structure plus TFont semantic/provenance artifacts. Corpus-specific materializers own JSON/XML/CSV/TEI/database/API or other source ingestion.
+**Storage location or source format is not a semantic carrier type.** Baseline ontoTF resolves semantic requests against already-materialized Text-Fabric / Context-Fabric corpus structure plus ontoTF semantic/provenance artifacts. Corpus-specific materializers own JSON/XML/CSV/TEI/database/API or other source ingestion.
 
 External identifiers and URIs remain legitimate semantic, authority, identity, evidence, and provenance references. Their presence does not imply runtime dereferencing, arbitrary record addressing, or an external data-access adapter.
 
@@ -39,9 +39,9 @@ R-007 section 3.5 and its later ORACC catalogue example were based on the earlie
 
 The current ORACC model keeps independently positioned zero-span textual entities in the TF warp through explicit synthetic/empty slots. A synthetic/empty slot is a real TF positional slot but not a semantic cuneiform sign. Its rendering/content semantics must remain distinguishable from source signs.
 
-Current merged R-011 pilot evidence is likewise materialized and TF-native: ORACC corpus plans use normal TF node/feature selectors, including catalogue-derived features such as `material` and `period`, rather than a TFont-side external-record selector.
+Current merged R-011 pilot evidence is likewise materialized and TF-native: ORACC corpus plans use normal TF node/feature selectors, including catalogue-derived features such as `material` and `period`, rather than a ontoTF-side external-record selector.
 
-Therefore ORACC provides no current evidence for generic adapter-side runtime addressing in TFont.
+Therefore ORACC provides no current evidence for generic adapter-side runtime addressing in ontoTF.
 
 ## Specific R-007 conclusions superseded
 
@@ -51,7 +51,7 @@ Where R-007 says any of the following, A-001 replaces that conclusion:
 2. sidecar/native-adapter is a required canonical IR carrier dimension;
 3. ORACC catalogue/object entities should resolve through `carrier=sidecar/native-adapter`;
 4. P-003 should preserve/add sidecar/native-adapter components or adapter-specific schema rules;
-5. later TDD must prove sidecar entities resolve through TFont without fake `oslots`;
+5. later TDD must prove sidecar entities resolve through ontoTF without fake `oslots`;
 6. forcing current ORACC zero-span data into TF is rejected merely because earlier sidecars existed.
 
 The replacement contract is simpler:
@@ -59,18 +59,18 @@ The replacement contract is simpler:
 ```text
 semantic request
     ↓
-reviewed TFont semantic mapping
+reviewed ontoTF semantic mapping
     ↓
 materialized TF / Context-Fabric node, feature, edge, slot-set constraint
     ↓
 native Context-Fabric execution
 ```
 
-Synthetic/empty technical slots and other corpus-specific anchoring choices are materializer outputs whose semantics TFont may preserve, not reasons to add a storage adapter.
+Synthetic/empty technical slots and other corpus-specific anchoring choices are materializer outputs whose semantics ontoTF may preserve, not reasons to add a storage adapter.
 
 ## What remains outside baseline
 
-Data genuinely outside a TF/Context-Fabric graph/API contract is not automatically a TFont runtime concern. It may remain source/provenance/publication material owned by the corpus or materializer.
+Data genuinely outside a TF/Context-Fabric graph/API contract is not automatically a ontoTF runtime concern. It may remain source/provenance/publication material owned by the corpus or materializer.
 
 A generic outside-TF query/storage abstraction requires a separate architecture ticket and at least two independent real corpus cases showing that:
 
@@ -80,4 +80,4 @@ A generic outside-TF query/storage abstraction requires a separate architecture 
 - materializer-side alternatives were evaluated;
 - failure, provenance, packaging, synchronization and security contracts are defined.
 
-No current seven-pilot TFont evidence meets that threshold.
+No current seven-pilot ontoTF evidence meets that threshold.

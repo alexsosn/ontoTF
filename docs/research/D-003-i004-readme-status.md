@@ -21,7 +21,7 @@ Those statements no longer match current main.
 
 ## Public API evidence
 
-`src/tfont/__init__.py` publicly exports the I-004 semantic-validation surface:
+`src/ontotf/__init__.py` publicly exports the I-004 semantic-validation surface:
 
 - `SemanticArtifact`;
 - `SemanticSourceBundle`;
@@ -107,7 +107,7 @@ A documentation-only repair should:
 The public construction model is explicit artifacts, not hidden file discovery:
 
 ```python
-from tfont import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
+from ontotf import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
 
 bundle = SemanticSourceBundle(
     profile=SemanticArtifact("profile", "profile.yaml", profile_data),

@@ -12,7 +12,7 @@ The change must not alter any valid semantic projection or any all-string missin
 
 ## 2. Production change
 
-Modify only `_check_source_keys()` in `src/tfont/digests.py`.
+Modify only `_check_source_keys()` in `src/ontotf/digests.py`.
 
 Before set subtraction, sorting, or message formatting, reject any key whose exact type is not `str`:
 
@@ -70,7 +70,7 @@ Controls:
 7. a missing required field still yields `projection_error` with its current object path;
 8. `canonical_json_bytes({1: "x"})` still yields `non_json_value`.
 
-The RED head must leave `src/tfont/digests.py` untouched. At least cases 1-5 should error/fail because the current implementation leaks `TypeError`; controls should already pass.
+The RED head must leave `src/ontotf/digests.py` untouched. At least cases 1-5 should error/fail because the current implementation leaks `TypeError`; controls should already pass.
 
 ## 5. Fixtures
 
@@ -109,7 +109,7 @@ Add `.github/workflows/f003-digest-projection-key-errors.yml` with push trigger 
 .github/workflows/f003-digest-projection-key-errors.yml
 docs/research/F-003-digest-projection-key-errors.md
 docs/plans/F-003-digest-projection-key-errors-plan.md
-src/tfont/digests.py
+src/ontotf/digests.py
 tests/i002/**
 pyproject.toml
 ```

@@ -5,10 +5,10 @@ import copy
 import unittest
 from pathlib import Path
 
-from tfont.batch_compiler import (
+from ontotf.batch_compiler import (
     BatchCompilerError, ROOT, compile_pilot, load_pilot, parity_report, serialized
 )
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
 
 REPORT=ROOT/"docs/research/data/generated/i033a/pos-pilot-summary.json"
 
@@ -52,7 +52,7 @@ class BatchPilotContractTests(unittest.TestCase):
         pilot=load_pilot()
         produced=compile_pilot(pilot)
         for mapping in produced["mappings"]:
-            original_rel=f"src/tfont/resources/profiles/{mapping['corpus_id']}/0.3.0/mappings/verb.json"
+            original_rel=f"src/ontotf/resources/profiles/{mapping['corpus_id']}/0.3.0/mappings/verb.json"
             import json
             published=json.loads((ROOT/original_rel).read_text(encoding="utf-8"))
             self.assertEqual(published["mappings"],[mapping])

@@ -36,9 +36,9 @@ current exact resolver, exact executor and exact conjunction guardrails.
 At the I-020 baseline the probe demonstrates:
 
 - exact single-corpus resolver contract:
-  `tfont-exact-semantic-resolver-v1`;
+  `ontotf-exact-semantic-resolver-v1`;
 - exact execution contract:
-  `tfont-exact-execution-v1`;
+  `ontotf-exact-execution-v1`;
 - exact conjunction resolver/execution contracts remain v1;
 - the exact BHSA noun control resolves with zero losses and executes nodes
   `[1, 3]`;
@@ -330,7 +330,7 @@ rather than returning a silently partial plan set.
 
 This preserves the current all-requested-corpora contract.
 
-The current TFont runtime has no aggregate/statistics API. I-020 therefore does
+The current ontoTF runtime has no aggregate/statistics API. I-020 therefore does
 not invent the R-016 optional approximate-aggregate surface. Any later
 aggregation API should remain exact-only until it separately implements the
 R-016 uniform-loss rule.

@@ -6,13 +6,13 @@ import json
 import unittest
 from importlib.resources import files
 
-from tfont.coverage import (
+from ontotf.coverage import (
     coverage_denominator_digest,
     coverage_report,
     load_packaged_coverage_manifest,
 )
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 BASE = "http://purl.org/olia/olia.owl#"
@@ -21,14 +21,14 @@ PROFILE_VERSION = "0.3.0"
 
 class I027B1VerbRedTests(unittest.TestCase):
     def test_versioned_verb_loader_exists(self):
-        loader = importlib.import_module("tfont.production_bundles")
+        loader = importlib.import_module("ontotf.production_bundles")
         self.assertTrue(
             hasattr(loader, "load_production_verb_bundle"),
             "RED: no separately versioned OLiA Verb production loader",
         )
 
     def test_new_verb_bundle_compiles_as_exact_word_selector(self):
-        loader = importlib.import_module("tfont.production_bundles")
+        loader = importlib.import_module("ontotf.production_bundles")
         bundle = loader.load_production_verb_bundle("bhsa")
         self.assertEqual(bundle.profile.data["profile_version"], PROFILE_VERSION)
         validated = validate_semantic_bundle(bundle)
@@ -54,7 +54,7 @@ class I027B1VerbRedTests(unittest.TestCase):
         self.assertIn(BASE + "Verb", bundle.ontology_locks[0].data["terms_used"])
 
     def test_locked_olia_verb_is_real_reference_class(self):
-        snapshot = files("tfont").joinpath(
+        snapshot = files("ontotf").joinpath(
             "resources", "ontologies", "olia",
             "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
             "olia.owl",
@@ -68,7 +68,7 @@ class I027B1VerbRedTests(unittest.TestCase):
         )
 
     def test_new_release_preserves_noun_and_morphology_semantics(self):
-        loader = importlib.import_module("tfont.production_bundles")
+        loader = importlib.import_module("ontotf.production_bundles")
         old = validate_semantic_bundle(loader.load_production_linguistic_bundle("bhsa"))
         new = validate_semantic_bundle(loader.load_production_verb_bundle("bhsa"))
         old_by_id = dict(old.indexes.mappings)
@@ -107,7 +107,7 @@ class I027B1VerbRedTests(unittest.TestCase):
         self.assertEqual(report.production_unreviewed_items, 184)
 
     def test_verb_does_not_forge_stem_or_non_word_bindings(self):
-        loader = importlib.import_module("tfont.production_bundles")
+        loader = importlib.import_module("ontotf.production_bundles")
         bundle = loader.load_production_verb_bundle("bhsa")
         verb = next(
             item for item in bundle.mappings.data["mappings"]
@@ -125,7 +125,7 @@ class I027B1VerbRedTests(unittest.TestCase):
         self.assertEqual(verb["projections"][0]["assessment"], "exact")
 
     def test_coverage_successor_is_byte_for_byte_reproducible(self):
-        root = files("tfont").joinpath("resources", "coverage")
+        root = files("ontotf").joinpath("resources", "coverage")
         actual = root.joinpath("p004-i027b1-bhsa-verb-v1", "bhsa.json").read_text(
             encoding="utf-8"
         )

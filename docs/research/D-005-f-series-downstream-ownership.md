@@ -6,7 +6,7 @@
 
 ## Question
 
-Can TFont extend F-021's research-authority model to plans, focused workflows, and `tests/fNNN` packages so stale downstream artifacts can be attributed to the wrong issue after current-main integration, without adding a central hand-maintained feature registry or a live GitHub dependency?
+Can ontoTF extend F-021's research-authority model to plans, focused workflows, and `tests/fNNN` packages so stale downstream artifacts can be attributed to the wrong issue after current-main integration, without adding a central hand-maintained feature registry or a live GitHub dependency?
 
 ## Trigger
 

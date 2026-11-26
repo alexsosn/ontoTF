@@ -20,11 +20,11 @@ class DigestProblem:
     path: tuple[str | int, ...] = ()
 ```
 
-It makes `unicode_domain` the stable category for lone surrogates / otherwise non-UTF-8-serializable strings and states that tests assert TFont category/path. The same plan makes UTF-16 code-unit ordering normative for set-like semantic strings; valid ordering semantics therefore must not change in a diagnostics fix.
+It makes `unicode_domain` the stable category for lone surrogates / otherwise non-UTF-8-serializable strings and states that tests assert ontoTF category/path. The same plan makes UTF-16 code-unit ordering normative for set-like semantic strings; valid ordering semantics therefore must not change in a diagnostics fix.
 
 ## Current implementation
 
-`src/tfont/digests.py` currently has:
+`src/ontotf/digests.py` currently has:
 
 ```python
 def _utf16_sort_key(value: str) -> bytes:

@@ -81,7 +81,7 @@ This closes the path where a fresh-but-provisional review could silently become 
 
 ## 2. One semantic profile release may have multiple parent variants
 
-The parent research proposed rejecting duplicate `(corpus_id, profile source id, profile_version)` inputs. That conflicts with accepted R-001, which explicitly permits one TFont profile release to support multiple exact parent revisions after each parent target is validated.
+The parent research proposed rejecting duplicate `(corpus_id, profile source id, profile_version)` inputs. That conflicts with accepted R-001, which explicitly permits one ontoTF profile release to support multiple exact parent revisions after each parent target is validated.
 
 I-005 must represent **compiled bundle variants** rather than assume one parent fingerprint per profile release.
 
@@ -158,9 +158,9 @@ This also keeps a stale/unavailable parent variant from contaminating the summar
 
 F-024/#122 merged onto `main` after the initial I-005 research commit. It changes repository ownership namespace scanning and diagnostics only. It does not modify:
 
-- `src/tfont/semantic_validation.py`;
-- `src/tfont/semantic_child_validation.py`;
-- `src/tfont/semantic_vocabulary.py`;
+- `src/ontotf/semantic_validation.py`;
+- `src/ontotf/semantic_child_validation.py`;
+- `src/ontotf/semantic_vocabulary.py`;
 - mapping/profile/ontology schemas;
 - P-003/R-001/R-013/R-014/R-017 semantic contracts.
 

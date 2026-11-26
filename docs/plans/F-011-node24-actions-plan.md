@@ -5,7 +5,7 @@
 
 ## Goal
 
-Move all tracked TFont workflow uses of `actions/checkout@v4` to `actions/checkout@v5` and `actions/setup-python@v5` to `actions/setup-python@v6`, with no other workflow-semantic changes.
+Move all tracked ontoTF workflow uses of `actions/checkout@v4` to `actions/checkout@v5` and `actions/setup-python@v5` to `actions/setup-python@v6`, with no other workflow-semantic changes.
 
 ## Gate sequence
 

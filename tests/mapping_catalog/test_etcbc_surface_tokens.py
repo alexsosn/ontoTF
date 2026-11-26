@@ -4,7 +4,7 @@ from __future__ import annotations
 import unittest
 import json
 from pathlib import Path
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 TOKEN = "http://purl.org/olia/olia.owl#Token"
 # Frozen R-005 evidence: corpus, TF version, surface feature, source pin,

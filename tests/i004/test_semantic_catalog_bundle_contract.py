@@ -3,8 +3,8 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.source_validation import SourceValidationError, validate_source
-from tfont.semantic_validation import SemanticArtifact, SemanticSourceBundle, SemanticValidationError, validate_semantic_bundle
+from ontotf.source_validation import SourceValidationError, validate_source
+from ontotf.semantic_validation import SemanticArtifact, SemanticSourceBundle, SemanticValidationError, validate_semantic_bundle
 from tests.i004.test_semantic_bundle_closure import bundle_sources, semantic_bundle
 from tests.i004.test_semantic_validation_phase1 import base_sources, bundle
 

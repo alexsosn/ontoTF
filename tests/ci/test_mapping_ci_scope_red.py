@@ -16,7 +16,7 @@ WORKFLOWS = ROOT / ".github/workflows"
 # removed owners are enforced by test_ci_consolidation_pos_pilot.py.
 SCOPES = {
     "i009-production-bundles.yml": (
-        ('"src/tfont/resources/**"', "'src/tfont/resources/**'"),
+        ('"src/ontotf/resources/**"', "'src/ontotf/resources/**'"),
         "tests/i009/**",
     ),
 }
@@ -42,7 +42,7 @@ class CITriggerScopeRED(unittest.TestCase):
             'python scripts/coverage/build_i026_work_queue.py --check',
             'tests.i009.test_wheel_install_red',
             'I009_WHEEL_TEST: "1"',
-            'tfont/resources/coverage/p004-r011-baseline-v1/',
+            'ontotf/resources/coverage/p004-r011-baseline-v1/',
         ):
             with self.subTest(required=name):
                 self.assertIn(name, full)

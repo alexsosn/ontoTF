@@ -10,7 +10,7 @@ Make every invalid logical-path failure from `source_bundle_digest()` identify t
 
 ## 2. Production change
 
-Modify only `src/tfont/digests.py`:
+Modify only `src/ontotf/digests.py`:
 
 ```python
 def _validate_logical_path(
@@ -86,7 +86,7 @@ Add `.github/workflows/f004-source-bundle-diagnostic-paths.yml` triggered by:
 .github/workflows/f004-source-bundle-diagnostic-paths.yml
 docs/research/F-004-source-bundle-diagnostic-paths.md
 docs/plans/F-004-source-bundle-diagnostic-paths-plan.md
-src/tfont/digests.py
+src/ontotf/digests.py
 tests/i002/**
 pyproject.toml
 ```

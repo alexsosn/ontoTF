@@ -171,7 +171,7 @@ Before opening/finalizing the F-007 PR:
 2. if I-003/F-006 have merged, integrate current main first;
 3. apply the same generic-step removal to their new workflows;
 4. static contract must dynamically find exactly one full-suite owner;
-5. compare final head to current main and confirm runtime `src/tfont/**` files are untouched by F-007;
+5. compare final head to current main and confirm runtime `src/ontotf/**` files are untouched by F-007;
 6. rerun central matrix and F-007 focused gate on the integrated exact head.
 
 If concurrent main integration introduces any workflow containing the canonical command, the static test must go RED until that workflow is deduplicated. This is intentional.

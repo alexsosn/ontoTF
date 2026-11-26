@@ -3,13 +3,13 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.semantic_validation import (
+from ontotf.semantic_validation import (
     SemanticArtifact, SemanticSourceBundle, SemanticValidationError, validate_semantic_bundle,
 )
 
 class POSAdjectiveAdverbAdversarial(unittest.TestCase):
     def test_fail_closed_modified_selectors_and_reviews(self):
-        from tfont.production_bundles import load_production_adj_adv_bundle
+        from ontotf.production_bundles import load_production_adj_adv_bundle
         for corpus in ("bhsa","syriac"):
             bundle=load_production_adj_adv_bundle(corpus)
             validate_semantic_bundle(bundle)
@@ -31,7 +31,7 @@ class POSAdjectiveAdverbAdversarial(unittest.TestCase):
                             validate_semantic_bundle(forged)
 
     def test_new_mapping_source_evidence_is_corpus_specific(self):
-        from tfont.production_bundles import load_production_adj_adv_bundle
+        from ontotf.production_bundles import load_production_adj_adv_bundle
         for corpus in ("bhsa","syriac"):
             b=load_production_adj_adv_bundle(corpus)
             for target in ("adjective","adverb"):

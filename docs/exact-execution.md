@@ -1,11 +1,11 @@
 # Exact execution against already-loaded corpora
 
-TFont's first execution surface resolves a reviewed shared semantic request and runs the resulting exact native predicate against corpus APIs that the host has already loaded.
+ontoTF's first execution surface resolves a reviewed shared semantic request and runs the resulting exact native predicate against corpus APIs that the host has already loaded.
 
 The public entry point is:
 
 ```python
-from tfont import execute_exact_semantic
+from ontotf import execute_exact_semantic
 
 result = execute_exact_semantic(ir, request, contexts)
 ```
@@ -30,9 +30,9 @@ The result keeps the actual node IDs together with the fresh `ExactNativePlan` a
 
 ## Runtime boundary
 
-TFont does not load or acquire corpora in this path. The requested feature must already be loaded. Missing or changed runtime state fails closed; there is no feature autoload, network access, ontology dereferencing, source-format ingestion, or MCP-specific transport in the executor.
+ontoTF does not load or acquire corpora in this path. The requested feature must already be loaded. Missing or changed runtime state fails closed; there is no feature autoload, network access, ontology dereferencing, source-format ingestion, or MCP-specific transport in the executor.
 
-The Context-Fabric package is not a required TFont dependency. TFont uses the compatible loaded API structurally, which keeps validator/compiler/resolver use available on Python 3.10-3.12 while current Context-Fabric integration is exercised separately on Python 3.13.
+The Context-Fabric package is not a required ontoTF dependency. ontoTF uses the compatible loaded API structurally, which keeps validator/compiler/resolver use available on Python 3.10-3.12 while current Context-Fabric integration is exercised separately on Python 3.13.
 
 ## Current limitations
 

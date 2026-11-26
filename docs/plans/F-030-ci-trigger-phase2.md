@@ -9,4 +9,4 @@
 3. Focus tests: `python -m unittest tests.ci.test_mapping_ci_scope_red tests.ci.test_full_suite_workflow_contract`.
 4. Full exact-head CI on Python 3.10/3.12; source/workflow changes must not skip the full suite. Confirm all generated artifacts remain frozen.
 5. Independent adversarial review: compare before/after trigger sets and unique command ownership, check no removal of source-only MQL gates, no hidden pytest/wheel test regressions, and enforce exact-head CI before expected-head merge.
-6. Report concrete saved workflow/job triggers for a hypothetical new `src/tfont/resources/coverage/new-snapshot` change and a `src/tfont/production_bundles.py` change. No fabricated wall-clock savings.
+6. Report concrete saved workflow/job triggers for a hypothetical new `src/ontotf/resources/coverage/new-snapshot` change and a `src/ontotf/production_bundles.py` change. No fabricated wall-clock savings.

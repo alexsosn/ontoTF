@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import DigestError, profile_semantic_digest
+from ontotf.digests import DigestError, profile_semantic_digest
 
 
 def lock_identity() -> dict:
@@ -25,7 +25,7 @@ def lock_identity() -> dict:
 
 def profile_projection() -> dict:
     return {
-        "profile_id": "tfont-test",
+        "profile_id": "ontotf-test",
         "schema_version": 1,
         "semantic_contract_version": 1,
         "semantic_domains": ["morphology"],

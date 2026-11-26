@@ -35,7 +35,7 @@ It did not add production paths.
 Immediately after P-001, I-001 introduced production implementation. In particular:
 
 - commit `d12a7be3a72ef48caaf61b0333c6564d4962572d` added the package scaffold and configured setuptools to find packages under `src`;
-- commit `e89470f3015fa41c1ee7262960fd9aa520801e71` implemented I-001 structural validation and added `src/tfont/**` plus production schemas.
+- commit `e89470f3015fa41c1ee7262960fd9aa520801e71` implemented I-001 structural validation and added `src/ontotf/**` plus production schemas.
 
 The later merged I-001 implementation therefore makes repository-level assertions such as `assert not (ROOT / "src").exists()` permanently invalid.
 

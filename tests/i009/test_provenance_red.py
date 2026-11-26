@@ -4,14 +4,14 @@ import importlib
 import importlib.util
 import unittest
 
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 class I009ProductionProvenanceTests(unittest.TestCase):
     def _bundles(self):
-        spec = importlib.util.find_spec("tfont.production_bundles")
+        spec = importlib.util.find_spec("ontotf.production_bundles")
         self.assertIsNotNone(spec, "I-009 production bundle module is absent")
-        module = importlib.import_module("tfont.production_bundles")
+        module = importlib.import_module("ontotf.production_bundles")
         return module, module.load_production_noun_bundles()
 
     def test_artifact_source_names_are_deterministic_package_relative_paths(self):

@@ -4,7 +4,7 @@ import json
 import unittest
 from dataclasses import replace
 
-import tfont
+import ontotf
 from tests.i021._fixtures import (
     authority_ir,
     authority_two_binding_ir,
@@ -14,7 +14,7 @@ from tests.i021._fixtures import (
     replace_identifier_row,
     replace_identity_row,
 )
-from tfont.semantic_ir import IdentifierKey
+from ontotf.semantic_ir import IdentifierKey
 
 
 API_NAMES = (
@@ -27,7 +27,7 @@ API_NAMES = (
     "identity_resolve",
     "identifier_resolve",
 )
-HAS_API = all(hasattr(tfont, name) for name in API_NAMES)
+HAS_API = all(hasattr(ontotf, name) for name in API_NAMES)
 
 
 def category(error: BaseException) -> str:
@@ -54,7 +54,7 @@ class I021RedSentinelTests(unittest.TestCase):
         self.assertEqual(json.dumps(json.loads(payload), separators=(",", ":"), sort_keys=True), payload)
 
     def test_public_reference_resolver_api_exists(self):
-        missing = [name for name in API_NAMES if not hasattr(tfont, name)]
+        missing = [name for name in API_NAMES if not hasattr(ontotf, name)]
         self.assertEqual(missing, [], f"RED: missing I-021 public API: {missing}")
 
 
@@ -62,37 +62,37 @@ class I021RedSentinelTests(unittest.TestCase):
 class I021ReferenceResolutionContractTests(unittest.TestCase):
     def exact_authority(self, ir):
         key = ir.authority_index[0][0]
-        request = tfont.AuthorityResolveRequest(key=key, corpora=("bhsa",))
-        return tfont.authority_resolve_exact(ir, request, prerequisites(tfont, ir))
+        request = ontotf.AuthorityResolveRequest(key=key, corpora=("bhsa",))
+        return ontotf.authority_resolve_exact(ir, request, prerequisites(ontotf, ir))
 
     def approx_authority(self, ir, *, accept_losses=()):
         key = ir.authority_index[0][0]
-        request = tfont.ApproximateAuthorityResolveRequest(
+        request = ontotf.ApproximateAuthorityResolveRequest(
             key=key,
             corpora=("bhsa",),
             accept_losses=tuple(accept_losses),
         )
-        return tfont.authority_resolve_approximate(ir, request, prerequisites(tfont, ir))
+        return ontotf.authority_resolve_approximate(ir, request, prerequisites(ontotf, ir))
 
     def identity(self, ir):
         key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=key.authority_system,
             external_entity_id=key.external_entity_id,
             corpora=("bhsa",),
         )
-        return tfont.identity_resolve(ir, request, prerequisites(tfont, ir))
+        return ontotf.identity_resolve(ir, request, prerequisites(ontotf, ir))
 
     def identifier(self, ir, *, issuer=None, literal=None):
         key = ir.identifier_index[0][0]
-        request = tfont.IdentifierResolveRequest(
+        request = ontotf.IdentifierResolveRequest(
             key=IdentifierKey(
                 issuer_or_namespace=issuer or key.issuer_or_namespace,
                 literal_id=literal or key.literal_id,
             ),
             corpora=("bhsa",),
         )
-        return tfont.identifier_resolve(ir, request, prerequisites(tfont, ir))
+        return ontotf.identifier_resolve(ir, request, prerequisites(ontotf, ir))
 
     def test_exact_authority_resolves_only_authority_index(self):
         ir = authority_ir()
@@ -195,7 +195,7 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
         assert_problem(self, "multiple_identity_bindings", self.identity, ir)
 
     def test_identity_request_has_no_caller_strength_field(self):
-        fields = tfont.IdentityResolveRequest.__dataclass_fields__
+        fields = ontotf.IdentityResolveRequest.__dataclass_fields__
         self.assertNotIn("identity_strength", fields)
 
     def test_native_only_parent_can_authorize_reference(self):
@@ -231,7 +231,7 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
             ir,
             external="https://example.org/entity/forged",
         )
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=identity.authority_system,
             external_entity_id=identity.external,
             corpora=("bhsa",),
@@ -239,10 +239,10 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged_identity,
             request,
-            prerequisites(tfont, forged_identity),
+            prerequisites(ontotf, forged_identity),
         )
 
         identifier = ir.identifier_index[0][1][0]
@@ -250,17 +250,17 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
             ir,
             native_binding_identity="sha256:" + "0" * 64,
         )
-        request = tfont.IdentifierResolveRequest(
+        request = ontotf.IdentifierResolveRequest(
             key=ir.identifier_index[0][0],
             corpora=("bhsa",),
         )
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identifier_resolve,
+            ontotf.identifier_resolve,
             forged_identifier,
             request,
-            prerequisites(tfont, forged_identifier),
+            prerequisites(ontotf, forged_identifier),
         )
 
     def test_forged_parent_tuple_cannot_inherit_reviewed_payload(self):
@@ -277,7 +277,7 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
         )
         forged_ir = replace(ir, native_index=((key, (forged_native,)),) + ir.native_index[1:])
         identity_key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=identity_key.authority_system,
             external_entity_id=identity_key.external_entity_id,
             corpora=("bhsa",),
@@ -285,10 +285,10 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged_ir,
             request,
-            prerequisites(tfont, forged_ir),
+            prerequisites(ontotf, forged_ir),
         )
 
     def test_forged_mapping_payload_fails_closed(self):
@@ -298,7 +298,7 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
         forged = replace(native, mapping_semantic_payload='{"mapping_id":"forged"}')
         forged_ir = replace(ir, native_index=((key, (forged,)),) + ir.native_index[1:])
         identity_key = ir.identity_index[0][0]
-        request = tfont.IdentityResolveRequest(
+        request = ontotf.IdentityResolveRequest(
             authority_system=identity_key.authority_system,
             external_entity_id=identity_key.external_entity_id,
             corpora=("bhsa",),
@@ -306,10 +306,10 @@ class I021ReferenceResolutionContractTests(unittest.TestCase):
         assert_problem(
             self,
             "invalid_compiled_ir",
-            tfont.identity_resolve,
+            ontotf.identity_resolve,
             forged_ir,
             request,
-            prerequisites(tfont, forged_ir),
+            prerequisites(ontotf, forged_ir),
         )
 
 

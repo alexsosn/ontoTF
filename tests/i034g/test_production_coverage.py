@@ -2,8 +2,8 @@
 import json
 import unittest
 from pathlib import Path
-from tfont.coverage import coverage_report, coverage_denominator_digest, validate_coverage_manifest
-from tfont.release_registry import load_profile
+from ontotf.coverage import coverage_report, coverage_denominator_digest, validate_coverage_manifest
+from ontotf.release_registry import load_profile
 
 ROOT=Path(__file__).resolve().parents[2]
 EXPECTED={"bhsa":(219,75,23,52),"syriac":(74,37,22,15)}
@@ -12,8 +12,8 @@ class MorphologyCoverage(unittest.TestCase):
     def test_successors_are_accounted_and_reconciled(self):
         for corpus,(denom,reviewed,shared,native) in EXPECTED.items():
             with self.subTest(corpus=corpus):
-                old=json.loads((ROOT/f"src/tfont/resources/coverage/p004-i027c2-{corpus}-adj-adv-v1/{corpus}.json").read_text(encoding="utf-8"))
-                new=json.loads((ROOT/f"src/tfont/resources/coverage/p004-i034g-{corpus}-morphology-v1/{corpus}.json").read_text(encoding="utf-8"))
+                old=json.loads((ROOT/f"src/ontotf/resources/coverage/p004-i027c2-{corpus}-adj-adv-v1/{corpus}.json").read_text(encoding="utf-8"))
+                new=json.loads((ROOT/f"src/ontotf/resources/coverage/p004-i034g-{corpus}-morphology-v1/{corpus}.json").read_text(encoding="utf-8"))
                 validate_coverage_manifest(new)
                 self.assertEqual(coverage_denominator_digest(old),coverage_denominator_digest(new))
                 self.assertEqual(new["denominator_digest"],old["denominator_digest"])

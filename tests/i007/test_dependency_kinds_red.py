@@ -5,10 +5,10 @@ import unittest
 from dataclasses import replace
 
 from tests.i006._fixtures import compiled_noun_ir
-from tfont.digests import canonical_json_bytes
+from ontotf.digests import canonical_json_bytes
 
 
-RUNTIME = importlib.import_module("tfont.runtime_prerequisites")
+RUNTIME = importlib.import_module("ontotf.runtime_prerequisites")
 
 
 def _record(

@@ -6,11 +6,11 @@ import hashlib
 import json
 import unittest
 
-from tfont.batch_proposals import compile_candidate_batch, load_ledger
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import canonical_json_bytes, evidence_record_digest
-from tfont.review_packets import build_review_packet, verify_review_packet
-from tfont.external_review_gate import evaluate_review_snapshot
+from ontotf.batch_proposals import compile_candidate_batch, load_ledger
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import canonical_json_bytes, evidence_record_digest
+from ontotf.review_packets import build_review_packet, verify_review_packet
+from ontotf.external_review_gate import evaluate_review_snapshot
 from tests.i033e.test_external_review_red import (
     REPO, SHA, REVIEWER, body_for, pr_data, review,
 )
@@ -21,7 +21,7 @@ def no_target_cohort():
     ledger = copy.deepcopy(load_ledger())
     ledger["schema_version"] = 2
     native = ledger["source_registry"]["bhsa"]
-    from tfont.batch_proposals import packaged_resource
+    from ontotf.batch_proposals import packaged_resource
     record = packaged_resource(native["evidence_resource"])
     record["evidence_id"] = "evidence:bhsa:word-sp-source-prps-review-candidate"
     record["reviewed_content"]["source_definitions"]["prps"] = {
@@ -178,7 +178,7 @@ class NoTargetBatchRed(unittest.TestCase):
         original = build_review_packet(load_ledger())
         frozen = (root / "docs/research/data/generated/i033d/adj-adv-review-request.json"
                   ).read_text(encoding="utf-8")
-        from tfont.review_packets import serialized
+        from ontotf.review_packets import serialized
         self.assertEqual(serialized(original), frozen)
         self.assertEqual(original["schema_version"], 1)
         self.assertEqual(original["count"], 4)

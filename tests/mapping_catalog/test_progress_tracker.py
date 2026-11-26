@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from scripts.pages.build_progress import build_report, render, summarize, ontology
-from tfont.xml_mappings import Mapping
+from ontotf.xml_mappings import Mapping
 
 
 class ProgressTrackerTests(unittest.TestCase):

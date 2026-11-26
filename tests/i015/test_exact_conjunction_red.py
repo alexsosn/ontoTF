@@ -3,10 +3,10 @@ from __future__ import annotations
 import importlib
 import unittest
 
-from tfont.semantic_ir import SemanticKey
+from ontotf.semantic_ir import SemanticKey
 
-RESOLVER = importlib.import_module("tfont.semantic_resolver")
-EXECUTION = importlib.import_module("tfont.semantic_execution")
+RESOLVER = importlib.import_module("ontotf.semantic_resolver")
+EXECUTION = importlib.import_module("ontotf.semantic_execution")
 
 BASE = "http://purl.org/olia/olia.owl#"
 

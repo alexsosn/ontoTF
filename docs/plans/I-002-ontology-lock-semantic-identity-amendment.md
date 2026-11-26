@@ -40,7 +40,7 @@ Unknown fields fail with `projection_error`; the implementation must not recursi
 
 - lock records are unique by `lock_id` and sorted by `lock_id` in the profile semantic projection;
 - `terms_used` is a set-like collection: entries must be unique non-empty exact strings and are sorted before JCS canonicalization;
-- other scalar fields are preserved exactly and must satisfy the accepted TFont JSON/JCS domain;
+- other scalar fields are preserved exactly and must satisfy the accepted ontoTF JSON/JCS domain;
 - changing any required/optional semantic field changes profile semantic identity even when `content_digest` is unchanged;
 - reordering `terms_used` alone does not change profile semantic identity;
 - changing the set of `terms_used` does change profile semantic identity.

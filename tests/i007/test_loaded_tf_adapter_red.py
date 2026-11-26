@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-import tfont.runtime_prerequisites as runtime
+import ontotf.runtime_prerequisites as runtime
 
 
 class NodeFeature:

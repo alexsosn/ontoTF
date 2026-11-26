@@ -11,17 +11,17 @@ from importlib.resources import files
 from pathlib import Path
 import unittest
 
-from tfont.batch_proposals import compile_candidate_batch, packaged_resource
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import evidence_record_digest
-from tfont.source_validation import validate_source
+from ontotf.batch_proposals import compile_candidate_batch, packaged_resource
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import evidence_record_digest
+from ontotf.source_validation import validate_source
 
 
 ROOT = Path(__file__).resolve().parents[2]
 REV = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 BASE = f"resources/ontologies/olia/{REV}"
 LOCK = BASE + "/lock-linguistic-i034a-pos.json"
-LEDGER = "src/tfont/resources/batch_pilots/i034a-olia-bhsa-syriac-pos-proposals.json"
+LEDGER = "src/ontotf/resources/batch_pilots/i034a-olia-bhsa-syriac-pos-proposals.json"
 
 TARGET_LINES = {
     "article": ("Article", 1682),
@@ -92,7 +92,7 @@ class RealOLiAPOSBatch(unittest.TestCase):
                 "http://purl.org/olia/olia.owl#" + term for term, _ in TARGET_LINES.values()
             },
         )
-        artifact = files("tfont").joinpath(
+        artifact = files("ontotf").joinpath(
             *self.ontology_lock["snapshot_artifact"].split("/")
         ).read_bytes()
         self.assertEqual(

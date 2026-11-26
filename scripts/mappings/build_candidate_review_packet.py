@@ -15,15 +15,15 @@ import re
 from pathlib import Path
 from typing import Any
 
-from tfont.batch_proposals import packaged_resource
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.review_packets import build_review_packet, serialized, verify_review_packet
-from tfont.source_validation import loads_source
+from ontotf.batch_proposals import packaged_resource
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.review_packets import build_review_packet, serialized, verify_review_packet
+from ontotf.source_validation import loads_source
 
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = "docs/research/data/batch_review/inputs.json"
-LEDGER_PREFIX = "src/tfont/resources/batch_pilots"
+LEDGER_PREFIX = "src/ontotf/resources/batch_pilots"
 PACKET_PREFIX = "docs/research/data/generated/i033d"
 EVIDENCE_PREFIX = "docs/research/data/batch_review/evidence"
 MAX_INPUT = 1_000_000

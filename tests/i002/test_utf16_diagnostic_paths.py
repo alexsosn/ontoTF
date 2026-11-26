@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import DigestError, mapping_semantic_digest, profile_semantic_digest
+from ontotf.digests import DigestError, mapping_semantic_digest, profile_semantic_digest
 
 SURROGATE = "\ud800"
 ASTRAL = "\U0001f600"
@@ -13,7 +13,7 @@ BMP_PRIVATE = "\ue000"
 def mapping_fixture() -> dict:
     return {
         "mapping_id": "mapping:test",
-        "profile_id": "tfont-test",
+        "profile_id": "ontotf-test",
         "native_selector": {
             "kind": "feature-value",
             "component_id": "test-tf",
@@ -67,7 +67,7 @@ def lock_fixture(lock_id: str, suffix: str) -> dict:
 
 def profile_fixture() -> dict:
     return {
-        "profile_id": "tfont-test",
+        "profile_id": "ontotf-test",
         "schema_version": 1,
         "semantic_contract_version": 1,
         "semantic_domains": ["morphology", "syntax"],

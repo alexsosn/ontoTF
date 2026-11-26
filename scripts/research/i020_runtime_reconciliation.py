@@ -18,7 +18,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-import tfont
+import ontotf
 from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import (
     _refresh_mapping,
@@ -27,8 +27,8 @@ from tests.i006._fixtures import (
 )
 from tests.i008._fixtures import FakeLoadedApi, compiled_executable_noun_ir, loaded_context
 from tests.i015.test_exact_conjunction_behavior import compiled_and_contexts, key as conjunction_key
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 def problem_category(error: BaseException) -> str:
@@ -69,23 +69,23 @@ def prerequisites_for(module, ir):
 
 def exact_control() -> dict[str, object]:
     ir = compiled_noun_ir(("bhsa",))
-    prerequisites = prerequisites_for(tfont, ir)
-    request = tfont.SemanticResolveRequest(
+    prerequisites = prerequisites_for(ontotf, ir)
+    request = ontotf.SemanticResolveRequest(
         key=noun_semantic_key(),
         corpora=("bhsa",),
         semantic_mode="exact",
     )
-    result = tfont.semantic_resolve(ir, request, prerequisites)
+    result = ontotf.semantic_resolve(ir, request, prerequisites)
 
     executable_ir = compiled_executable_noun_ir(("bhsa",))
     api = FakeLoadedApi(
         values={1: "subs", 2: "verb", 3: "subs"},
         node_types={1: "word", 2: "word", 3: "word"},
     )
-    context = loaded_context(tfont, executable_ir, "bhsa", api)
-    execution = tfont.execute_exact_semantic(
+    context = loaded_context(ontotf, executable_ir, "bhsa", api)
+    execution = ontotf.execute_exact_semantic(
         executable_ir,
-        tfont.SemanticResolveRequest(
+        ontotf.SemanticResolveRequest(
             key=noun_semantic_key(),
             corpora=("bhsa",),
             semantic_mode="exact",
@@ -107,10 +107,10 @@ def exact_control() -> dict[str, object]:
 
 def exact_multi_corpus_control() -> dict[str, object]:
     ir = compiled_noun_ir(("bhsa", "syriac", "extrabiblical"))
-    prerequisites = prerequisites_for(tfont, ir)
-    result = tfont.semantic_resolve(
+    prerequisites = prerequisites_for(ontotf, ir)
+    result = ontotf.semantic_resolve(
         ir,
-        tfont.SemanticResolveRequest(
+        ontotf.SemanticResolveRequest(
             key=noun_semantic_key(),
             corpora=("extrabiblical", "bhsa", "syriac"),
             semantic_mode="exact",
@@ -128,12 +128,12 @@ def exact_multi_corpus_control() -> dict[str, object]:
 
 def exact_conjunction_control() -> dict[str, object]:
     ir, contexts = compiled_and_contexts()
-    request = tfont.SemanticConjunctionRequest(
+    request = ontotf.SemanticConjunctionRequest(
         keys=(conjunction_key("Noun"), conjunction_key("Plural")),
         corpora=("syriac", "bhsa", "extrabiblical"),
         semantic_mode="exact",
     )
-    result = tfont.execute_exact_conjunction(ir, request, contexts)
+    result = ontotf.execute_exact_conjunction(ir, request, contexts)
     return {
         "resolver_contract": result.resolution.resolver_contract,
         "resolution_fingerprint": result.resolution.resolution_fingerprint,
@@ -172,21 +172,21 @@ def approximation_control() -> dict[str, object]:
     approximation = binding.approximation
     if approximation is None:
         raise AssertionError("validated approximation was lost before runtime IR")
-    prerequisites = prerequisites_for(tfont, ir)
+    prerequisites = prerequisites_for(ontotf, ir)
 
     failures: dict[str, str] = {}
     for mode in ("exact", "approximate"):
         try:
-            tfont.semantic_resolve(
+            ontotf.semantic_resolve(
                 ir,
-                tfont.SemanticResolveRequest(
+                ontotf.SemanticResolveRequest(
                     key=noun_semantic_key(),
                     corpora=("bhsa",),
                     semantic_mode=mode,
                 ),
                 prerequisites,
             )
-        except tfont.SemanticResolutionError as error:
+        except ontotf.SemanticResolutionError as error:
             failures[mode] = problem_category(error)
         else:
             failures[mode] = "unexpected-success"
@@ -213,10 +213,10 @@ def main() -> int:
         "exact_conjunction": exact_conjunction_control(),
         "reviewed_broader": approximation_control(),
         "contracts": {
-            "exact_resolver": tfont.EXACT_RESOLVER_CONTRACT,
-            "exact_execution": tfont.EXACT_EXECUTION_CONTRACT,
-            "exact_conjunction_resolver": tfont.EXACT_CONJUNCTION_RESOLVER_CONTRACT,
-            "exact_conjunction_execution": tfont.EXACT_CONJUNCTION_EXECUTION_CONTRACT,
+            "exact_resolver": ontotf.EXACT_RESOLVER_CONTRACT,
+            "exact_execution": ontotf.EXACT_EXECUTION_CONTRACT,
+            "exact_conjunction_resolver": ontotf.EXACT_CONJUNCTION_RESOLVER_CONTRACT,
+            "exact_conjunction_execution": ontotf.EXACT_CONJUNCTION_EXECUTION_CONTRACT,
         },
         "conclusion": {
             "approximation_review_reaches_ir": True,

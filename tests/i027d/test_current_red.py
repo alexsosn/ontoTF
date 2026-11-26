@@ -6,7 +6,7 @@ import json
 import unittest
 from pathlib import Path
 
-from tfont.coverage import coverage_denominator_digest
+from ontotf.coverage import coverage_denominator_digest
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts/coverage/build_i027d_current_queue.py"
@@ -67,7 +67,7 @@ class CurrentQueueRed(unittest.TestCase):
         mod.verify_historical_queue()
         self.assertEqual(
             json.loads(LEGACY.read_text(encoding="utf-8"))["manifest_bindings"]["bhsa"]["manifest"],
-            "src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json"
+            "src/ontotf/resources/coverage/p004-r011-baseline-v1/bhsa.json"
         )
 
     def test_stable_output_rebuild(self):

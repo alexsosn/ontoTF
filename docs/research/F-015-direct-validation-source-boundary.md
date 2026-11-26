@@ -19,7 +19,7 @@ The bypass is observable even without exhausting Python recursion: structurally 
 
 ## Upstream validator behavior
 
-`jsonschema` validators recurse through schema/instance structure via validator descent. Historical upstream issue python-jsonschema/jsonschema#847 demonstrates raw `RecursionError` escaping recursive validation. This is additional reason not to let unbounded programmatic values bypass TFont's own source boundary.
+`jsonschema` validators recurse through schema/instance structure via validator descent. Historical upstream issue python-jsonschema/jsonschema#847 demonstrates raw `RecursionError` escaping recursive validation. This is additional reason not to let unbounded programmatic values bypass ontoTF's own source boundary.
 
 References:
 - jsonschema validator/error documentation: https://python-jsonschema.readthedocs.io/
@@ -27,7 +27,7 @@ References:
 
 ## Decision
 
-`validate_source()` is a public source-validation entrypoint and must enforce the same TFont JSON-value contract as the loaders.
+`validate_source()` is a public source-validation entrypoint and must enforce the same ontoTF JSON-value contract as the loaders.
 
 Before constructing/iterating the JSON Schema validator:
 
@@ -57,7 +57,7 @@ This means a direct call without `source_name` reports `schema_name`, preserving
 
 ## Do not catch all validator recursion as source depth
 
-After preflight, official TFont source values are bounded at 128. A remaining `RecursionError` may instead be caused by a deeply/recursively structured custom schema. Translating that to source `decode_error` would misdiagnose the failing authority.
+After preflight, official ontoTF source values are bounded at 128. A remaining `RecursionError` may instead be caused by a deeply/recursively structured custom schema. Translating that to source `decode_error` would misdiagnose the failing authority.
 
 Custom `schema_root` recursion is therefore a separate defect/research lane: F-016 (#88).
 
@@ -77,7 +77,7 @@ Depth accounting must reuse `_plain_json()` exactly; do not invent a second defi
 
 ## Production scope
 
-Only `src/tfont/source_validation.py` should change, ideally a few lines at the start of `validate_source()` plus use of the normalized value in `iter_errors()`.
+Only `src/ontotf/source_validation.py` should change, ideally a few lines at the start of `validate_source()` plus use of the normalized value in `iter_errors()`.
 
 No schema, I-004 semantic, digest, ontology, compatibility or filesystem behavior changes.
 

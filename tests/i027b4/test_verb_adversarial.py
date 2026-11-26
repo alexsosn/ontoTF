@@ -5,7 +5,7 @@ import importlib.util
 import unittest
 from pathlib import Path
 
-from tfont.semantic_validation import (
+from ontotf.semantic_validation import (
     SemanticArtifact, SemanticSourceBundle,
     SemanticValidationError, validate_semantic_bundle,
 )
@@ -16,7 +16,7 @@ BUILDER=ROOT/"scripts/coverage/build_i027b4_extrabiblical_verb.py"
 
 class ExtraBiblicalVerbAdversarialTests(unittest.TestCase):
     def test_forged_native_selector_invalidates_review(self):
-        from tfont.production_bundles import load_production_verb_bundle
+        from ontotf.production_bundles import load_production_verb_bundle
         bundle=load_production_verb_bundle("extrabiblical")
         for key,value in (("value","subs"),("feature","vs"),("node_type","lex")):
             with self.subTest(key=key):
@@ -35,7 +35,7 @@ class ExtraBiblicalVerbAdversarialTests(unittest.TestCase):
                     validate_semantic_bundle(forged)
 
     def test_verb_cannot_be_loaded_from_historical_profile(self):
-        from tfont.production_bundles import load_production_linguistic_bundle
+        from ontotf.production_bundles import load_production_linguistic_bundle
         old=load_production_linguistic_bundle("extrabiblical")
         self.assertEqual(old.profile.data["profile_version"],"0.2.0")
         self.assertNotIn("mapping:extrabiblical:olia-verb",

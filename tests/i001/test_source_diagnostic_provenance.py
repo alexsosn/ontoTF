@@ -11,7 +11,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import (  # noqa: E402
+from ontotf.source_validation import (  # noqa: E402
     SCHEMA_FILES,
     SourceValidationError,
     load_and_validate,
@@ -19,14 +19,14 @@ from tfont.source_validation import (  # noqa: E402
     validate_source,
 )
 
-SCHEMA_ROOT = ROOT / "src" / "tfont" / "schemas"
+SCHEMA_ROOT = ROOT / "src" / "ontotf" / "schemas"
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 
 
 def invalid_profile() -> dict:
     return {
         "schema_version": "one",
-        "profile_id": "tfont-test",
+        "profile_id": "ontotf-test",
         "profile_version": "0.2.0",
         "semantic_domains": ["morphology"],
         "parent_component_manifest": "parent/expected-components.json",
@@ -42,7 +42,7 @@ def invalid_profile() -> dict:
                 "assertion": {},
             }
         ],
-        "minimum_tfont_runtime": "0.1.0",
+        "minimum_ontotf_runtime": "0.1.0",
         "license": "CC-BY-4.0",
     }
 

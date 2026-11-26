@@ -13,7 +13,7 @@ New fail-closed behavior uses existing `filesystem_error` for unavailable expect
 
 ## Production change
 
-In `src/tfont/parent_identity.py`:
+In `src/ontotf/parent_identity.py`:
 
 1. add `_stat_no_follow(path)` using `os.stat(path, follow_symlinks=False)` with stable `filesystem_error` translation;
 2. add `_file_identity(st, path)` requiring exact integer `st_dev` and non-zero exact integer `st_ino`;

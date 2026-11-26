@@ -359,7 +359,7 @@ All directions below are source -> target. Eight are unvalued; `selected` is val
 | `edits` | `edit -> document` | none | editorial history event belongs to document record |
 | `edition` | `document -> docgroup` | none | document record claims same manuscript identity/group; does not assert edition equivalence |
 
-A key modelling detail is that `oslots` on `lex`, `edit`, note-like and other non-textual objects can be a TF technical anchor rather than semantic extent. Consumers must use the declared semantic edge for meaning. This distinction has to be expressible in TFont.
+A key modelling detail is that `oslots` on `lex`, `edit`, note-like and other non-textual objects can be a TF technical anchor rather than semantic extent. Consumers must use the declared semantic edge for meaning. This distinction has to be expressible in ontoTF.
 
 #### Explicit uncertainty
 
@@ -395,7 +395,7 @@ Custom edges include:
 
 The converter preserves explicit omissions separately from unattested witnesses. A missing witness assignment is not inferred to mean an omission or lacuna. Metadata-only versions remain metadata-only rather than receiving fabricated text. Duplicate human-readable version titles are disambiguated by stable `version_id`. Exact duplicate source citations are retained with technical section suffixes while the source reference remains unchanged.
 
-This stress profile establishes that a TFont witness ontology must support **witness entity + reading assertion + locus + version ownership + explicit absence state**, not just a `witness` string.
+This stress profile establishes that a ontoTF witness ontology must support **witness entity + reading assertion + locus + version ownership + explicit absence state**, not just a `witness` string.
 
 ### 2.10 ORACC-TF stress profile
 
@@ -415,7 +415,7 @@ At the inspected commit the joined RIAO+RINAP target is still an implementation 
 | `lex` | 8,025 | 8,023 | 2 |
 | `sign` | 792,651 | 792,651 | — |
 
-There are 1,242 zero-span entities in the sidecar. This is a direct constraint on TFont architecture: a semantic entity cannot be required to be a TF node with a meaningful textual extent.
+There are 1,242 zero-span entities in the sidecar. This is a direct constraint on ontoTF architecture: a semantic entity cannot be required to be a TF node with a meaningful textual extent.
 
 #### Sign/token features
 
@@ -515,7 +515,7 @@ The same broad concept appears as a node in one corpus and a feature in another:
 
 #### Assertion vs inferred convenience
 
-Several source models deliberately preserve ambiguity: TLHdig morphological alternatives, CUC alternative readings/certainty, OCP competing readings and unattested witnesses, ORACC ambiguous GDL structures. TFont must never turn absence into a negative assertion or choose one alternative silently.
+Several source models deliberately preserve ambiguity: TLHdig morphological alternatives, CUC alternative readings/certainty, OCP competing readings and unattested witnesses, ORACC ambiguous GDL structures. ontoTF must never turn absence into a negative assertion or choose one alternative silently.
 
 ## 4. Candidate cross-corpus interoperability queries
 
@@ -571,11 +571,11 @@ Generated per-corpus reference should include pins, slot type, node types/counts
 
 ## 7. Open uncertainties to carry forward
 
-- BHSA documentation itself notes that the full linguistic interpretation/domain of `mother` for all object-type combinations needs further explanation. TFont should preserve the native relation and avoid stronger universal semantics until profiled.
+- BHSA documentation itself notes that the full linguistic interpretation/domain of `mother` for all object-type combinations needs further explanation. ontoTF should preserve the native relation and avoid stronger universal semantics until profiled.
 - CUC's exact-release observed feature domains are generated and preserved by R-005 in `docs/research/data/generated/r005/cuc.json`. At pinned 0.2.8, the non-empty `cert` values are `False` and `True`; the non-empty `emen` values are `excised`, `missing`, `redundant`, `remark`, and `restored`. The generator records these as an observed small domain rather than claiming permanent categorical closure. A later production mapping must separately justify domain closure and ontology relations while preserving the native release values.
 - `ETCBC/syriac` 0.9 and SyrNT 0.1 use different generations of Syriac morphology. Similar categories require value-level philological review before `same` claims.
 - Pseudepigrapha-TF does not commit generated corpus data, so node counts are deliberately not invented here. The converter's parity audit and pinned upstream checkout make the schema inspectable; a later integration test should generate the corpus and freeze counts for the exact upstream pin.
-- ORACC-TF is still under active implementation. Its measured P-001 schema is valuable stress evidence but should not be registered as a released TFont profile until its own release/schema version is final.
+- ORACC-TF is still under active implementation. Its measured P-001 schema is valuable stress evidence but should not be registered as a released ontoTF profile until its own release/schema version is final.
 - Archaeological/object ontologies will need controlled-vocabulary research beyond this census. ORACC source strings such as material, period, genre and provenience should remain native until R-002 decides ontology sources and governance.
 
 ## 8. Acceptance-criteria trace

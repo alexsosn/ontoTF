@@ -10,7 +10,7 @@ Extend the existing repository-local F-series ownership checker so research rema
 
 The historical failure this ticket must reject is a downstream `F-015 -> #90` claim when research owns `F-015 -> #87`.
 
-This ticket does not add a registry, Git/GitHub lookup, installed TFont API, runtime/schema/digest/ontology behavior, automatic renumbering, or history-wide collision guarantee.
+This ticket does not add a registry, Git/GitHub lookup, installed ontoTF API, runtime/schema/digest/ontology behavior, automatic renumbering, or history-wide collision guarantee.
 
 ## 2. Files and phase ownership
 

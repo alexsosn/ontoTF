@@ -40,7 +40,7 @@ Create:
 
 with exactly:
 
-`src/tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json`
+`src/ontotf/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json`
 
 Manifest ID:
 
@@ -106,7 +106,7 @@ Add:
 
 `docs/research/data/i018/oracc-denominator-policy.json`.
 
-It is repository/build input, not TFont runtime data.
+It is repository/build input, not ontoTF runtime data.
 
 Required reviewed technical features:
 
@@ -326,11 +326,11 @@ After RED is recorded, implement the minimum contract and add regressions for:
 
 Expected:
 
-- `src/tfont/coverage.py` — resource constant only;
-- `src/tfont/__init__.py` — export only;
+- `src/ontotf/coverage.py` — resource constant only;
+- `src/ontotf/__init__.py` — export only;
 - `docs/research/data/i018/oracc-denominator-policy.json`;
 - `scripts/coverage/build_i018_oracc_current.py`;
-- `src/tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json`;
+- `src/ontotf/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json`;
 - `tests/i018/**`;
 - `.github/workflows/i018-oracc-coverage.yml`.
 

@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import copy
 import unittest
-from tfont.digests import evidence_record_digest
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.mapping_supersession import plan_native_only_supersession_batch
-from tfont.mapping_supersession import (
+from ontotf.digests import evidence_record_digest
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.mapping_supersession import plan_native_only_supersession_batch
+from ontotf.mapping_supersession import (
     NativeSupersessionError,
     plan_multi_corpus_native_supersession,
     verify_multi_corpus_native_supersession_preview,

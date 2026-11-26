@@ -5,7 +5,7 @@
   "repository": "ETCBC/bhsa",
   "tf_version": "2021",
   "corpus_revision": "4db00e2157915495e1a4d3d57e41223df24775da",
-  "source_manifest": "src/tfont/resources/coverage/p004-r011-baseline-v1/bhsa.json",
+  "source_manifest": "src/ontotf/resources/coverage/p004-r011-baseline-v1/bhsa.json",
   "source_manifest_id": "coverage:p004-r011-baseline-v1:bhsa",
   "successor_resource": "p004-i027a-bhsa-stems-v1",
   "successor_manifest_id": "coverage:p004-i027a-bhsa-stems-v1:bhsa",

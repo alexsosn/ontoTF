@@ -5,10 +5,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tfont.source_validation import SCHEMA_FILES, SourceValidationError, validate_source
+from ontotf.source_validation import SCHEMA_FILES, SourceValidationError, validate_source
 
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_ROOT = ROOT / "src" / "tfont" / "schemas"
+SCHEMA_ROOT = ROOT / "src" / "ontotf" / "schemas"
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 
 

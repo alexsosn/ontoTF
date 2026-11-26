@@ -54,7 +54,7 @@ I-006 still checks `assessment == exact`; I-005 intentionally indexes reviewed s
 
 ### 3.1 The old compatibility report is not P-003 runtime authority
 
-`src/tfont/schemas/compatibility-report.schema.json` is still the P-001/v1 shape. It binds:
+`src/ontotf/schemas/compatibility-report.schema.json` is still the P-001/v1 shape. It binds:
 
 - `profile_semantic_digest` from the superseded pre-P-003 profile identity model;
 - expected/observed parent manifest digests;
@@ -131,9 +131,9 @@ I-006 should therefore bind prerequisite state to the selected `ProfileReleaseSi
 
 Recommended identity layers:
 
-- `tfont-profile-release-signature-jcs-sha256-v1` — deterministic projection of the frozen I-005 `ProfileReleaseSignature`;
-- `tfont-runtime-prerequisite-jcs-sha256-v1` — selected variant + profile-release signature fingerprint + observed parent + compatibility state + complete dependency result identity + active bundle state/digest + evaluator/source contract identifier;
-- `tfont-exact-resolution-jcs-sha256-v1` — exact request + selected binding semantic identities + prerequisite fingerprint + emitted native binding identity.
+- `ontotf-profile-release-signature-jcs-sha256-v1` — deterministic projection of the frozen I-005 `ProfileReleaseSignature`;
+- `ontotf-runtime-prerequisite-jcs-sha256-v1` — selected variant + profile-release signature fingerprint + observed parent + compatibility state + complete dependency result identity + active bundle state/digest + evaluator/source contract identifier;
+- `ontotf-exact-resolution-jcs-sha256-v1` — exact request + selected binding semantic identities + prerequisite fingerprint + emitted native binding identity.
 
 Volatile timestamps, local paths, MCP/session IDs and display text must not enter these fingerprints.
 

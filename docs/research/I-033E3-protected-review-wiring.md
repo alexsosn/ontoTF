@@ -1,12 +1,12 @@
 # I-033E3 — protected review-gate wiring (integration slice)
 
-Parent #303 / #300 / #290. Source audit 2026-10-10: `src/tfont/external_review_gate.py` correctly rejects author, stale, revoked, unauthenticated and conflicting reviewer decisions; `scripts/mappings/check_external_review.py` requires `GITHUB_EVENT_NAME=pull_request_target` and caller-supplied packet/ledger files. **No protected-base workflow invokes it or fetches the two untrusted inputs from the exact PR SHA.**
+Parent #303 / #300 / #290. Source audit 2026-10-10: `src/ontotf/external_review_gate.py` correctly rejects author, stale, revoked, unauthenticated and conflicting reviewer decisions; `scripts/mappings/check_external_review.py` requires `GITHUB_EVENT_NAME=pull_request_target` and caller-supplied packet/ledger files. **No protected-base workflow invokes it or fetches the two untrusted inputs from the exact PR SHA.**
 
 ## Threat model and decision
 
 The trust boundary must be GitHub API-observed **review principal and exact head**, not a JSON declaration from a proposed batch. `pull_request` workflows that check out PR HEAD are untrusted, even if `GITHUB_TOKEN` is read-only. Avoid running PR-authored Python, workflows, shell, build instructions, JS Actions, or executable files inside a token-bearing reviewer job.
 
-This integration permits **only protected-base code**: workflow executed from default branch, `actions/checkout` pinned to `main` (never a PR ref), `pip install -e .` on protected base, then fixed Python CLI under `scripts/mappings/`. The only PR-head inputs are a closed-shape JSON manifest at `docs/research/data/batch_review/inputs.json`, a proposal ledger beneath `src/tfont/resources/batch_pilots/`, and a review packet beneath `docs/research/data/generated/i033d/`. Fetch these as *raw data at the exact Git SHA* using GitHub REST contents API, verify encoding/size/Git-blob checksum/path. No filename/path from the manifest may escape the allowlisted directories.
+This integration permits **only protected-base code**: workflow executed from default branch, `actions/checkout` pinned to `main` (never a PR ref), `pip install -e .` on protected base, then fixed Python CLI under `scripts/mappings/`. The only PR-head inputs are a closed-shape JSON manifest at `docs/research/data/batch_review/inputs.json`, a proposal ledger beneath `src/ontotf/resources/batch_pilots/`, and a review packet beneath `docs/research/data/generated/i033d/`. Fetch these as *raw data at the exact Git SHA* using GitHub REST contents API, verify encoding/size/Git-blob checksum/path. No filename/path from the manifest may escape the allowlisted directories.
 
 **CRITICAL GitHub security constraint:** `pull_request_review` workflows can be supplied by the PR merge commit, and therefore their workflow *definitions* are attacker-controlled even if a checkout step names `main`. Do NOT use `pull_request_review` for this privileged gate. Use only protected-default-branch `pull_request_target` workflow with `labeled` trigger. To evaluate a newly submitted review, explicitly apply (or remove and reapply) the `ontology-batch-review` label **after approval**, or re-trigger through a later new push. This human scheduling step is a documented limitation, not a self-approval shortcut. GitHub's default public-repository event policy may restrict `pull_request_target` starting 2026-11-02; verify repository policy before deployment.
 
@@ -21,7 +21,7 @@ The proposal PR supplies a data-only manifest at `docs/research/data/batch_revie
 ```json
 {
   "schema_version": 1,
-  "ledger": "src/tfont/resources/batch_pilots/i033c-adj-adv-proposals.json",
+  "ledger": "src/ontotf/resources/batch_pilots/i033c-adj-adv-proposals.json",
   "packet": "docs/research/data/generated/i033d/adj-adv-review-request.json"
 }
 ```
@@ -34,6 +34,6 @@ Operational checks: GitHub's default-branch protection must prevent PR authors f
 
 ## Deliberate boundary
 
-This slice **does not itself publish** newly accepted mappings. `src/tfont/published_deltas.py` operates on *already published* registry releases and explicitly forbids authorizing new ones. The integration job will check authenticated approval and emit a non-signature JSON audit artifact, never a new runtime mapping. #303 remains open for a protected reviewer-driven delta publisher and source-bundle overlay. This is an actual deployable independent review gate, not a claim of end-to-end release throughput.
+This slice **does not itself publish** newly accepted mappings. `src/ontotf/published_deltas.py` operates on *already published* registry releases and explicitly forbids authorizing new ones. The integration job will check authenticated approval and emit a non-signature JSON audit artifact, never a new runtime mapping. #303 remains open for a protected reviewer-driven delta publisher and source-bundle overlay. This is an actual deployable independent review gate, not a claim of end-to-end release throughput.
 
 Live GitHub review checks remain required for a real batch: offline mocked API unit tests are never counted as real approval.

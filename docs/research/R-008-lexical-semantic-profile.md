@@ -7,12 +7,12 @@
 
 ## Decision
 
-TFont should use a **depth-aware OntoLex/SKOS lexical profile** rather than treating every corpus `lex`, `lemma`, `gloss`, `root`, `base`, `stem`, or dictionary string as the same kind of semantic object.
+ontoTF should use a **depth-aware OntoLex/SKOS lexical profile** rather than treating every corpus `lex`, `lemma`, `gloss`, `root`, `base`, `stem`, or dictionary string as the same kind of semantic object.
 
 The first interoperable lexical contract is:
 
 1. **OntoLex-Lemon core is the only mandatory OntoLex module for the baseline lexical profile.** It supplies lexical-entry, form, sense, and lexical-concept identities.
-2. **SKOS is mandatory non-OntoLex infrastructure** for shared concept schemes, semantic-domain taxonomies, and concept mappings. TFont mapping assessment remains independent of SKOS publication predicates.
+2. **SKOS is mandatory non-OntoLex infrastructure** for shared concept schemes, semantic-domain taxonomies, and concept mappings. ontoTF mapping assessment remains independent of SKOS publication predicates.
 3. **LexInfo 3.0 is a supported companion vocabulary**, activated where a native assertion belongs to lexical-resource grammatical/data-category semantics. It is not required merely to activate the baseline lexical profile.
 4. **OntoLex VarTrans is capability-gated.** A profile that claims explicit lexical/sense translation or variation capability must activate VarTrans; a corpus with no such native relation does not need it.
 5. **OntoLex Lexicog is capability-gated.** It is activated only when dictionary-specific structure such as sense ordering or lexicographic entry organization must be preserved.
@@ -48,7 +48,7 @@ Primary sources:
 
 Because `ontolex:LexicalConcept` is a SKOS concept, SKOS provides the generic machinery for shared semantic concepts and concept schemes. Semantic-domain taxonomies may also be represented as SKOS concept schemes without pretending that every domain category is itself a dictionary sense.
 
-R-002's TFont mapping assessment remains the runtime/query contract; SKOS relations are publication semantics only where the mapped resources and relation justify them.
+R-002's ontoTF mapping assessment remains the runtime/query contract; SKOS relations are publication semantics only where the mapped resources and relation justify them.
 
 ### 1.3 LexInfo 3.0
 
@@ -56,7 +56,7 @@ LexInfo is the data-category ontology for OntoLex-Lemon. The maintained project 
 
 Primary source: <https://github.com/ontolex/lexinfo>
 
-TFont should use LexInfo for **lexical-resource grammatical semantics**. Corpus-token annotation remains primarily an OLiA responsibility under R-006. A source assertion may have complementary OLiA and LexInfo projections only after review; similarity of POS labels is not enough to duplicate mappings automatically.
+ontoTF should use LexInfo for **lexical-resource grammatical semantics**. Corpus-token annotation remains primarily an OLiA responsibility under R-006. A source assertion may have complementary OLiA and LexInfo projections only after review; similarity of POS labels is not enough to duplicate mappings automatically.
 
 ### 1.4 OntoLex VarTrans
 
@@ -64,13 +64,13 @@ VarTrans is part of the published 2016 model and represents lexical and sense re
 
 A translation-like gloss string does not create a VarTrans relation because it does not identify the target lexical entry/sense and usually does not assert direction, scope, or equivalence.
 
-VarTrans is therefore **mandatory only for a TFont lexical profile/capability that claims translation or variation support**, not for every lexical corpus.
+VarTrans is therefore **mandatory only for a ontoTF lexical profile/capability that claims translation or variation support**, not for every lexical corpus.
 
 ### 1.5 OntoLex Lexicog
 
 Lexicog was published as a W3C Community Group Final Report in 2019. Its specification explicitly recommends using ordinary OntoLex modules when they suffice and adding Lexicog only when lexicographic organization such as sense ordering is needed.
 
-That rule fits TFont directly: a TF corpus with a repeated lemma/gloss feature does not become a dictionary merely because lexical strings exist.
+That rule fits ontoTF directly: a TF corpus with a repeated lemma/gloss feature does not become a dictionary merely because lexical strings exist.
 
 Primary source: <https://www.w3.org/2019/09/lexicog/>
 
@@ -82,13 +82,13 @@ The current OntoLex project page distinguishes:
 - published 2019 Lexicog;
 - **emerging** Morph and FrAC modules.
 
-Therefore the first TFont lexical profile must not make Morph or FrAC normative dependencies. Their eventual fit for Semitic morphology and corpus attestations may be excellent, but version/publication governance belongs to a later accepted research change.
+Therefore the first ontoTF lexical profile must not make Morph or FrAC normative dependencies. Their eventual fit for Semitic morphology and corpus attestations may be excellent, but version/publication governance belongs to a later accepted research change.
 
 ### 1.7 Module activation matrix
 
 This is the explicit minimum-module answer required by #40:
 
-| capability claimed by a TFont profile | OntoLex modules required | companion vocabularies |
+| capability claimed by a ontoTF profile | OntoLex modules required | companion vocabularies |
 |---|---|---|
 | baseline entry/form/sense/concept interoperability | **core only** | SKOS mandatory; LexInfo optional by native semantics |
 | explicit translation / lexical variation | **core + VarTrans** | SKOS; LexInfo when relevant |
@@ -97,11 +97,11 @@ This is the explicit minimum-module answer required by #40:
 | explicit lexical decomposition | **core + Decomp** | language-specific mappings as reviewed |
 | emerging morphology/attestation profile | not first-profile normative | Morph/FrAC remain reference until separately accepted |
 
-A corpus does not load or advertise a module merely because TFont supports that module globally.
+A corpus does not load or advertise a module merely because ontoTF supports that module globally.
 
 ## 2. Native lexical layers that must not be collapsed
 
-TFont needs explicit lexical **entity role/depth** in canonical mapping/IR.
+ontoTF needs explicit lexical **entity role/depth** in canonical mapping/IR.
 
 | native/source evidence | semantic interpretation | OntoLex/SKOS candidate | executable capability |
 |---|---|---|---|
@@ -130,7 +130,7 @@ A corpus can express lexical identity as:
 - a documented repeated feature value that acts as a stable corpus-wide key;
 - a deterministic derived grouping explicitly defined by the converter/profile.
 
-TFont therefore must not require `otype=lex` in order to support `LexicalEntry`.
+ontoTF therefore must not require `otype=lex` in order to support `LexicalEntry`.
 
 However, a string named `lemma` or `lex` is **not sufficient evidence by itself**. The profile must record the identity rule and scope. For a feature-keyed or derived identity, canonical IR must expose that construction and its source/version provenance.
 
@@ -153,7 +153,7 @@ Mapping is a projection, not entity deduplication.
 
 ## 4. Gloss, sense, definition, and concept decision table
 
-| observed source value | default TFont treatment | promotion allowed only when | unsafe promotion |
+| observed source value | default ontoTF treatment | promotion allowed only when | unsafe promotion |
 |---|---|---|---|
 | `gloss="stone"` | source literal attached to the native object | source documentation explicitly defines it as something stronger | LexicalSense / LexicalConcept |
 | ORACC `gw="stone"` | guide-word/disambiguator literal | source model defines a stronger relation | shared concept |
@@ -267,7 +267,7 @@ Primary ORACC sources:
 - <https://oracc.museum.upenn.edu/doc/help/lemmatising/syntax/>
 - <https://oracc.museum.upenn.edu/ns/cbd/1.0/>
 
-#### TFont interpretation
+#### ontoTF interpretation
 
 - ORACC glossary entry IDs are strong source `LexicalEntry` candidates, version-scoped to the pinned glossary;
 - form IDs are strong `Form` candidates where the exact form semantics are reviewed;
@@ -279,11 +279,11 @@ Primary ORACC sources:
 - entry `ROOT`, entry `BASE` inventory, occurrence/signature `BASE`, and occurrence/signature `STEM` are **four different semantic roles** and must be preserved separately;
 - none of ROOT/BASE/STEM becomes `LexicalEntry` merely because it can be used in lexicographic organization;
 - Decomp may be considered only for a source relation that actually has decomposition semantics; ORACC BASE/STEM strings do not activate Decomp automatically;
-- Lexicog becomes useful if TFont needs to preserve/query explicit sense ordering and dictionary structure.
+- Lexicog becomes useful if ontoTF needs to preserve/query explicit sense ordering and dictionary structure.
 
 This resolves the #40 root/base requirement without claiming that every ORACC project/language instantiates every field.
 
-ORACC-TF remains a stress/conversion target rather than a released TFont profile; final mappings belong to R-011/P-003.
+ORACC-TF remains a stress/conversion target rather than a released ontoTF profile; final mappings belong to R-011/P-003.
 
 ### 5.5 CUC 0.2.8
 
@@ -299,10 +299,10 @@ Therefore the R-008 profile must report lexical entry/sense/concept queries as u
 
 Open English WordNet is an open lexical network with explicitly identified lexical/synset structure and CC-BY-4.0 licensing. Open Multilingual Wordnet/CILI can be useful external multilingual alignment infrastructure, but constituent resources and versions must remain separately governed rather than becoming an implicit universal authority.
 
-Use in TFont:
+Use in ontoTF:
 
 - optional authority/mapping target for reviewed lexical concepts/senses;
-- never the definition of TFont's common lexical schema;
+- never the definition of ontoTF's common lexical schema;
 - no automatic mapping from English gloss text to WordNet synset;
 - exact external IDs and resource release/license must be locked when used in a released profile.
 
@@ -361,7 +361,7 @@ LexicalConcept: HAILSTONE
   classifiedBy -> semantic-domain concept WEATHER
 ```
 
-TFont must not collapse the lexical concept and its domain category merely because both are SKOS concepts.
+ontoTF must not collapse the lexical concept and its domain category merely because both are SKOS concepts.
 
 ### 7.3 Mapping strengths
 
@@ -371,7 +371,7 @@ R-002's eight assessments remain authoritative:
 
 For lexical concepts:
 
-- `exact` is a reviewed coextensiveness claim for TFont query projection, not source-sense identity;
+- `exact` is a reviewed coextensiveness claim for ontoTF query projection, not source-sense identity;
 - `close` does not authorize silent interchangeability;
 - `broader` / `narrower` preserve direction from native/source semantics to target concept;
 - `related` is informative-only by default;
@@ -398,7 +398,7 @@ Unsafe shortcuts:
 - two entries share the same English gloss => translation relation;
 - translation relation => semantic identity/exact concept mapping.
 
-A source can translate another expression approximately or contextually; translation must remain separate from TFont's mapping assessment.
+A source can translate another expression approximately or contextually; translation must remain separate from ontoTF's mapping assessment.
 
 A corpus with no explicit translation/variation relation can use the baseline lexical profile without VarTrans.
 
@@ -415,7 +415,7 @@ Weak/non-candidate cases:
 - Syriac repeated lexical feature values;
 - CUC 0.2.8 with no released lexical layer.
 
-TFont must not manufacture sense ordering or dictionary-entry components in corpora that do not assert them.
+ontoTF must not manufacture sense ordering or dictionary-entry components in corpora that do not assert them.
 
 ## 10. LexInfo and OLiA composition
 
@@ -426,7 +426,7 @@ word/token POS annotation -> OLiA mapping
 lexical-entry grammatical category -> LexInfo mapping
 ```
 
-If one native field serves both functions, TFont may publish complementary projections only after reviewing both meanings. It must not create two mappings solely because `Noun` exists in both ontologies.
+If one native field serves both functions, ontoTF may publish complementary projections only after reviewing both meanings. It must not create two mappings solely because `Noun` exists in both ontologies.
 
 This distinction keeps the lexical profile composable with the seven-model pivot rather than making LexInfo a competing universal grammar ontology.
 
@@ -488,7 +488,7 @@ Every lexical resolution should expose:
 - native identity rule/selector;
 - native path to occurrences/results;
 - activated OntoLex module/capability where relevant;
-- TFont mapping assessment;
+- ontoTF mapping assessment;
 - ontology/resource lock;
 - profile/mapping version;
 - parent component identity/compatibility;
@@ -535,7 +535,7 @@ P-003/later production tickets should begin with failing tests for at least:
 6. **TLH gloss is not a sense.** `(lemma, gloss)` lexical grouping can support entry association while sense-level query remains unsupported.
 7. **BHSA gloss is not a sense.** A lexeme with a gloss cannot satisfy an arbitrary LexicalSense query.
 8. **root/stem is not entry.** Source root/base/stem fields never compile to LexicalEntry solely by name.
-9. **translation is not identity.** VarTrans relation does not create `exact` TFont mapping or `owl:sameAs`.
+9. **translation is not identity.** VarTrans relation does not create `exact` ontoTF mapping or `owl:sameAs`.
 10. **same concept does not collapse native senses.** Two source senses mapped exact to one shared concept remain two source identities/results when queried natively.
 11. **one source sense may have multiple projections.** Complementary/approximate concept mappings are not treated as ambiguity unless the mapping says `ambiguous`.
 12. **CUC 0.2.8 fails closed.** Sense/concept request reports unsupported rather than lexicalizing word strings.

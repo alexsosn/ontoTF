@@ -17,7 +17,7 @@ Use a narrowly version-specific v0.1.1 release workflow rather than broadening t
 
 GitHub release `v0.1.0` exists and is published, non-draft, with wheel asset:
 
-`tfont-0.1.0-py3-none-any.whl`
+`ontotf-0.1.0-py3-none-any.whl`
 
 The release targets commit:
 
@@ -50,8 +50,8 @@ requires = ["setuptools>=77.0.3", "wheel"]
 license = "MIT AND CC-BY-3.0"
 license-files = [
   "LICENSE",
-  "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
-  "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
+  "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
+  "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
 ]
 ```
 
@@ -68,7 +68,7 @@ GitHub compare from the v0.1.0 release target `dcab3a473…` to research baselin
 - `pyproject.toml`;
 - `tests/packaging/test_pep639_mixed_license.py`.
 
-No `src/tfont/*.py`, schema, production profile, mapping, evidence, ontology bytes, or acceptance-runner source changed after the release target.
+No `src/ontotf/*.py`, schema, production profile, mapping, evidence, ontology bytes, or acceptance-runner source changed after the release target.
 
 Therefore v0.1.1 can truthfully state:
 
@@ -122,14 +122,14 @@ Implementation should be limited to:
 
 Do not rewrite the historical v0.1.0 release notes. They describe the release that actually happened.
 
-The existing I-013 workflow is not purely historical today: its PR trigger watches `pyproject.toml`, `README.md`, `tests/i013/**`, and docs, while its wheel job hard-codes `tfont-0.1.0`. Leaving it untouched would make every future version bump fail an obsolete candidate gate. The patch must therefore retire that PR trigger deliberately rather than weakening the v0.1.0 publication safeguards.
+The existing I-013 workflow is not purely historical today: its PR trigger watches `pyproject.toml`, `README.md`, `tests/i013/**`, and docs, while its wheel job hard-codes `ontotf-0.1.0`. Leaving it untouched would make every future version bump fail an obsolete candidate gate. The patch must therefore retire that PR trigger deliberately rather than weakening the v0.1.0 publication safeguards.
 
 ## 7. TDD contract
 
 Tests-only RED must prove the current main is not yet a v0.1.1 candidate:
 
 - package version is exactly 0.1.1;
-- README installation points to `v0.1.1` and `tfont-0.1.1-py3-none-any.whl`;
+- README installation points to `v0.1.1` and `ontotf-0.1.1-py3-none-any.whl`;
 - v0.1.1 release notes exist and call the patch metadata-only;
 - current PEP 639 expression remains `MIT AND CC-BY-3.0`;
 - root/OliA license files remain explicit;
@@ -142,7 +142,7 @@ The RED should fail only on version/docs/notes, not by weakening or breaking #15
 On Python 3.10 and 3.12:
 
 1. build wheel and sdist with current backend;
-2. require exactly `tfont-0.1.1-py3-none-any.whl`;
+2. require exactly `ontotf-0.1.1-py3-none-any.whl`;
 3. require wheel `METADATA`:
    - `Version: 0.1.1`;
    - `License-Expression: MIT AND CC-BY-3.0`;
@@ -151,7 +151,7 @@ On Python 3.10 and 3.12:
 4. verify license-file bytes and OLiA resource bytes using the existing #157 test contract;
 5. reject TF/MQL corpus payload;
 6. install the wheel into a fresh isolated environment outside checkout;
-7. require `importlib.metadata.version("tfont") == "0.1.1"`;
+7. require `importlib.metadata.version("ontotf") == "0.1.1"`;
 8. run the existing v0.1 Noun acceptance runner unchanged;
 9. run full repository suite.
 
@@ -189,4 +189,4 @@ Research review should challenge:
 
 ## Exit decision
 
-Proceed to a plan-only gate for v0.1.1. The patch is justified by distribution metadata correctness, does not change TFont semantic/runtime behavior, and must preserve v0.1.0 as immutable historical provenance.
+Proceed to a plan-only gate for v0.1.1. The patch is justified by distribution metadata correctness, does not change ontoTF semantic/runtime behavior, and must preserve v0.1.0 as immutable historical provenance.

@@ -10,13 +10,13 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.batch_proposals import BatchProposalError, packaged_resource
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import evidence_record_digest
+from ontotf.batch_proposals import BatchProposalError, packaged_resource
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import evidence_record_digest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-LEDGER = ROOT / "src/tfont/resources/batch_pilots/i034f-extrabiblical-olia-pos.json"
+LEDGER = ROOT / "src/ontotf/resources/batch_pilots/i034f-extrabiblical-olia-pos.json"
 REV = "9a56288e6777bad6328856acf055c780e65dd5d9"
 PINNED_VERB = "resources/profiles/extrabiblical/0.3.0/evidence/native-verb-pos.json"
 

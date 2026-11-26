@@ -130,7 +130,7 @@ class P001FoundationDesignContractTests(unittest.TestCase):
     def test_compatibility_report_digest_projection_is_non_self_referential(self):
         self.assertIn("report digest projection", self.lower)
         self.assertIn("excludes `compatibility_report_id` and `report_digest`", self.lower)
-        self.assertIn("tfont-compatibility-sha256-v1", self.lower)
+        self.assertIn("ontotf-compatibility-sha256-v1", self.lower)
         self.assertIn("derived from `report_digest`", self.lower)
 
     def test_compatibility_report_lifecycle_separates_release_and_activation(self):

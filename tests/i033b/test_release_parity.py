@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.production_bundles import (
+from ontotf.production_bundles import (
     load_production_adj_adv_bundle,
     load_production_linguistic_bundle,
     load_production_noun_bundle,
     load_production_verb_bundle,
 )
-from tfont.release_registry import load_profile, list_profile_releases
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.semantic_ir import compile_semantic_ir
+from ontotf.release_registry import load_profile, list_profile_releases
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
 
 
 LEGACY = {

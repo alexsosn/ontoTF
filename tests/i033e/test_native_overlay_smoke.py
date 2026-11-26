@@ -8,10 +8,10 @@ import copy
 import unittest
 
 from tests.i033e.test_overlay_handoff import cohort, assemble
-from tfont.parent_identity import parent_manifest_digest
-from tfont.release_registry import load_profile
-from tfont.semantic_execution import LoadedComponentContext, LoadedCorpusContext
-from tfont.native_overlay_smoke import inspect_native_overlay, NativeOverlaySmokeError
+from ontotf.parent_identity import parent_manifest_digest
+from ontotf.release_registry import load_profile
+from ontotf.semantic_execution import LoadedComponentContext, LoadedCorpusContext
+from ontotf.native_overlay_smoke import inspect_native_overlay, NativeOverlaySmokeError
 
 
 class _Otype:
@@ -80,7 +80,7 @@ class NativeOverlaySmokeTests(unittest.TestCase):
         before = copy.deepcopy(self.pack)
         result = inspect_native_overlay(self.pack,self.context("bhsa",api))
         self.assertEqual(self.pack,before)
-        self.assertEqual(result["contract"],"tfont-native-overlay-smoke-v1")
+        self.assertEqual(result["contract"],"ontotf-native-overlay-smoke-v1")
         self.assertEqual(result["authority"],"diagnostic-only-not-a-release")
         self.assertEqual(result["corpus_id"],"bhsa")
         self.assertEqual(result["pack_digest"],self.pack["content_digest"])
@@ -116,9 +116,9 @@ class NativeOverlaySmokeTests(unittest.TestCase):
         # deliberately an UNAUTHENTICATED test fixture, not GitHub approval.
         import json
         from pathlib import Path
-        from tfont.candidate_evidence import CandidateEvidenceResources
-        from tfont.overlay_handoff import build_overlay_handoff
-        from tfont.review_packets import verify_review_packet
+        from ontotf.candidate_evidence import CandidateEvidenceResources
+        from ontotf.overlay_handoff import build_overlay_handoff
+        from ontotf.review_packets import verify_review_packet
         root = Path(__file__).resolve().parents[2]
         meta = json.loads((root / "docs/research/data/batch_review/i033e3-inputs.json").read_text())
         ledger = json.loads((root / meta["ledger"]).read_text())

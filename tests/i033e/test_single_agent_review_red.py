@@ -9,8 +9,8 @@ from tests.i033e.test_overlay_handoff import cohort
 from tests.i033e.test_external_review_red import (
     REPO, SHA, body_for, pr_data, review,
 )
-from tfont.external_review_gate import ExternalReviewError, evaluate_review_snapshot
-from tfont.single_agent_review import (
+from ontotf.external_review_gate import ExternalReviewError, evaluate_review_snapshot
+from ontotf.single_agent_review import (
     evaluate_single_agent_snapshot, parse_adversarial_report,
 )
 
@@ -201,7 +201,7 @@ class SingleAgentReviewRED(unittest.TestCase):
                                       resource_loader=self.source_reader)
 
     def test_unset_adversarial_worksheet_and_explicit_body_renderer(self):
-        from tfont.single_agent_review import adversarial_template, render_adversarial_body
+        from ontotf.single_agent_review import adversarial_template, render_adversarial_body
         sheet = adversarial_template(self.packet)
         self.assertIsNone(sheet["summary"])
         self.assertEqual(len(sheet["rows"]), 10)

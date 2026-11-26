@@ -3,7 +3,7 @@
 Parent #329 / #300 / #290 / P-004 #202.
 
 ## Observed architecture bottleneck
-I-033E10 (`src/tfont/mapping_supersession.py`) provides a fail-closed, **untrusted** plan for one native-only selector promoted to a source-pinned ontology class. `overlay_handoff.py` still forbids collision with inherited selectors, so the accepted-only path only adds new keys. Repeating a separate single-item release for promotions would recreate the original throughput problem.
+I-033E10 (`src/ontotf/mapping_supersession.py`) provides a fail-closed, **untrusted** plan for one native-only selector promoted to a source-pinned ontology class. `overlay_handoff.py` still forbids collision with inherited selectors, so the accepted-only path only adds new keys. Repeating a separate single-item release for promotions would recreate the original throughput problem.
 
 ## Architectural scope
 Add a reusable deterministic **multi-transition preflight** for up to 50 accepted corpus-native decisions against one immutable base. Reuse the existing single-transition evidence/ontology/source checks for every row. Explicitly forbid duplicate retired selectors and retired/new mapping/projection IDs across the batch; stable ordering and content digest must be independent of input order. One independently validated base index, one coherent base release version. The batch is source-bound planning data only, never activation or approval.

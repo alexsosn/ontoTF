@@ -19,7 +19,7 @@ except (OSError, UnicodeDecodeError) as exc:
 
 Filesystem path APIs can reject a syntactically representable `Path` only when I/O is attempted. One important example on supported CPython builds is a string containing an embedded NUL. `Path("bad\0.json")` can exist as a path object, but the later file open/read raises `ValueError: embedded null byte` rather than `OSError`.
 
-Because the I/O `ValueError` is outside the current exception tuple, the raw Python exception leaks through TFont's public source-loading API.
+Because the I/O `ValueError` is outside the current exception tuple, the raw Python exception leaks through ontoTF's public source-loading API.
 
 This is inconsistent with the current API shape: ordinary missing/inaccessible files and invalid UTF-8 are already translated to `SourceValidationError(category="decode_error")` with source-path provenance.
 
@@ -38,13 +38,13 @@ Reference:
 
 - https://docs.python.org/3/library/os.html#os.fspath
 
-That distinction matters for TFont:
+That distinction matters for ontoTF:
 
 - `load_source` advertises `str | Path`, not arbitrary user-defined objects;
 - invalid object/type coercion at `Path(path)` is therefore outside the declared input contract and should not be silently converted into a filesystem `decode_error`;
 - a `ValueError` raised by the **file read after a valid `Path` object exists** belongs to the same file-backed source-loading boundary as `OSError`.
 
-## 3. Existing TFont error model
+## 3. Existing ontoTF error model
 
 The source loader already intentionally groups several pre-parse failures under `decode_error`:
 
@@ -154,14 +154,14 @@ Packaged-resource schema loading is not part of F-019.
 
 The implementation fix is intentionally small, but the exact underlying exception/message is an OS/CPython detail. CI should therefore exercise embedded-NUL paths on the supported Python matrix and, where practical, both Ubuntu and Windows.
 
-The stable TFont assertions are:
+The stable ontoTF assertions are:
 
 - no raw `ValueError` escapes;
 - category is `decode_error`;
 - `source_name` is preserved;
 - no parser is reached after filesystem failure.
 
-Do not freeze the exact text `"embedded null byte"` as a cross-platform TFont API promise.
+Do not freeze the exact text `"embedded null byte"` as a cross-platform ontoTF API promise.
 
 ## 11. Required RED before production
 
@@ -196,7 +196,7 @@ No changes are needed to:
 
 ## 13. Scheduling / overlap
 
-F-019 touches `src/tfont/source_validation.py`, not F-015's `parent_identity.py`, so its **research** is independent of the currently queued F-015 Actions gate.
+F-019 touches `src/ontotf/source_validation.py`, not F-015's `parent_identity.py`, so its **research** is independent of the currently queued F-015 Actions gate.
 
 The issue explicitly allows research in parallel but asks production work to avoid overlapping `source_validation.py` implementation streams. Before RED/implementation, re-check current open PRs and `main` for source-validation changes and rebase/integrate as necessary.
 
