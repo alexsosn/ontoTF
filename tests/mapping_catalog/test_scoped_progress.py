@@ -131,7 +131,12 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(c["bhsa"]["scoped"]["node_values"]["total"], 459)
         self.assertEqual(c["tlhdig-tf"]["scoped"]["edge_values"]["total"], 4)
         self.assertEqual(c["assyrian-royal-inscriptions"]["scoped"]["tf_version"], "0.4.0")
+        self.assertEqual(c["tlhdig-tf"]["applicability"]["classification"]["node_features"]["excluded"], 2)
+        self.assertEqual(c["pseudepigrapha"]["applicability"]["classification"]["node_features"]["excluded"], 2)
+        self.assertEqual(c["assyrian-royal-inscriptions"]["applicability"]["classification"]["node_features"]["excluded"], 1)
         for corpus in c.values():
+            for kind, stat in corpus["applicability"]["classification"].items():
+                self.assertEqual(stat["candidates"], stat["routed"] + stat["excluded"] + stat["unclassified"], (corpus["corpus"], kind))
             for model, stat in corpus["applicability"]["ontologies"].items():
                 self.assertFalse(stat["unmatched_rules"], (corpus["corpus"], model))
                 self.assertEqual(stat["eligible"], sum(stat[k] for k in ("exact", "qualified", "global_nonpositive", "ambiguous", "other_target", "unreviewed")))
