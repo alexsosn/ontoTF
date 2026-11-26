@@ -173,10 +173,10 @@ h3{font-size:1.05rem;margin:.5rem 0}h4{font-size:.85rem;margin:0 0 .35rem;font-w
 p{max-width:80ch;margin:.4rem 0 1rem}.muted,small,.unknown{color:var(--muted)}
 small{display:block;font-size:.75rem;line-height:1.45;margin-top:.25rem}
 .snapshot{display:flex;gap:1.25rem;flex-wrap:wrap;margin:1.25rem 0;padding:1rem 0;border-block:1px solid var(--line)}
-.snapshot div{flex:1 1 11rem}.snapshot strong{font-size:1.65rem;display:block;font-variant-numeric:tabular-nums}
+.snapshot .measure{flex:1 1 17rem}.snapshot .reading strong{font-size:1.65rem;font-variant-numeric:tabular-nums}
 .legend{font-size:.8rem;margin:.8rem 0}.legend span{display:inline-flex;align-items:center;gap:.3rem}
 .legend i{width:.75rem;height:.75rem;border-radius:2px;display:inline-block}
-.mapped{background:var(--exact)}.exact{background:var(--exact)}.qualified{background:var(--qualified)}.reviewed{background:var(--reviewed)}.remaining{background:var(--remaining)}
+.mapped{background:var(--qualified)}.exact{background:var(--exact)}.qualified{background:var(--qualified)}.reviewed{background:var(--reviewed)}.remaining{background:var(--remaining)}
 .track{display:flex;height:.65rem;background:var(--remaining);border-radius:3px;overflow:hidden;margin:.35rem 0}
 .track span{flex:none}.reading{justify-content:space-between;gap:.25rem .75rem;font-variant-numeric:tabular-nums}
 .reading strong{font-size:1.25rem}.reading span{font-size:.78rem;color:var(--muted)}
@@ -204,6 +204,7 @@ def render(report):
     commit_url = REPO + "/commit/" + quote(commit, safe="")
     scoped_count = sum(c.get("scoped") is not None for c in corpora)
     research_count = sum(c.get("applicability") is not None for c in corpora)
+    pooled = report["totals"]["scoped"]["node_values"] if scoped_count else None
     rows, matrix = [], []
     for c in corpora:
         scoped = c.get("scoped")
@@ -220,24 +221,25 @@ def render(report):
                         + '</div>' for model in ONTOLOGIES[:-1])
         matrix.append('<article class="ontology-row"><h3>' + name(c)
                       + '</h3><div class="ontology-grid">' + cells + '</div></article>')
-    return """<!doctype html>
+    return ("""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mapping progress · ontoTF</title><style>""" + STYLE + """</style></head>
 <body><main><header><strong>ontoTF</strong><nav><a href="#coverage">Corpora</a>
 <a href="#ontologies">Ontologies</a><a href="#method">Method</a></nav></header>
 <h1>Mapping progress</h1><p class="muted">Semantic coverage of Text-Fabric corpora in the current development catalog.</p>
 <div class="snapshot">""" + (
-        f'<div><strong>{len(corpora)}</strong>Corpora in catalog</div>'
-        f'<div><strong>{scoped_count} / {len(corpora)}</strong>Corpora with scoped inventories</div>'
-        f'<div><strong>{research_count} / {len(corpora)}</strong>Corpora with partial applicability research</div>'
-    ) + """</div>
+        labeled("Mapped categorical values · pooled", coverage_bar(pooled))
+        + labeled("Mapped annotations · pooled", annotation_bar(pooled))
+    ) + """</div><p class="muted">""" +
+    h(f"Measured domains in {scoped_count} of {len(corpora)} corpora; partial applicability research in {research_count}. "
+      "Pooled percentages weight larger measured domains more heavily.") + """</p>
 <section id="coverage"><h2>Coverage by corpus</h2>
-<p>Compare mapped categorical values and the share of their observed annotations. These selected domains vary by corpus; percentages use measured values only.</p>
+<p>Compare mapped categorical values and the share of their observed annotations. These selected domains vary by corpus; percentages use measured values only. The annotation bar combines exact and qualified mappings.</p>
 <div class="legend"><span><i class="exact"></i>Exact</span><span><i class="qualified"></i>Qualified</span>
 <span><i class="reviewed"></i>Reviewed without positive match</span><span><i class="remaining"></i>Unreviewed</span></div>
 """ + "".join(rows) + """</section>
 <section id="ontologies"><h2>Ontology coverage</h2>
-<p>Mapped share of the researched scope for each corpus and ontology. All applicability research is partial; the percentages do not establish overall ontology completion. Other-ontology mappings do not contribute.</p>
+<p>Mapped share of the researched scope for each corpus and ontology. All applicability research is partial; the percentages do not establish overall ontology completion. Other-ontology mappings do not contribute. Gray shows the researched share without a positive mapping to that ontology.</p>
 """ + "".join(matrix) + """</section>
 <section id="method"><h2>Method and limitations</h2><details><summary>How coverage is calculated</summary>
 <p>Each distinct observed node-scoped value or directed edge value is counted once. Exact and qualified (close, broader, narrower or related) mappings contribute to mapped coverage. Native-only, ambiguous and unsupported dispositions do not contribute. A whole-feature mapping does not cover its values. Annotation coverage weights selected node values by their frequency; it measures feature-value observations and may count multiple annotations of the same word. Guarded node mappings are excluded from unconditional node-type counts.</p>
@@ -246,4 +248,4 @@ def render(report):
 <footer>Source revision """ + '<a href="' + h(commit_url) + '">' + h(commit[:12]) + """</a> ·
 <a href="progress.json">Download underlying statistics</a> · <a href="https://github.com/alexsosn/ontoTF">Project repository</a></footer>
 </main></body></html>
-"""
+""")
