@@ -8,7 +8,7 @@ From the repository root with Python 3.12 or newer:
 
 ```sh
 python -m pip install -e .
-python -m unittest tests.test_progress_tracker -v
+python -m unittest tests.mapping_catalog.test_progress_tracker -v
 python -m scripts.pages.build_progress --out /tmp/ontotf-pages
 python -m http.server 8000 --directory /tmp/ontotf-pages
 ```
