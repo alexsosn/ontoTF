@@ -19,17 +19,17 @@
       "latest_tf_version": "0.4.0",
       "status": "update",
       "evidence": "https://github.com/DT-UCPH/cuc/blob/main/docs/release-0.4.0.md",
-      "note": "The 0.4.0 release expands the corpus; node identifiers are version-specific."
+      "note": "The 0.4.0 release expands the corpus; node identifiers are version-specific. Upstream PR #47 rebuilds 0.4.0 before tagging; migration awaits the merged revision."
     },
     "syriac": {
       "name": "ETCBC Syriac literature",
       "description": "Morphologically annotated classical Syriac literary texts.",
-      "checked_tf_version": "0.9",
-      "checked_revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "checked_tf_version": "0.92",
+      "checked_revision": "0b6ded2b369c7d81589a98c92325290e24b20af6",
       "latest_tf_version": "0.92",
-      "status": "update",
+      "status": "current",
       "evidence": "https://github.com/ETCBC/syriac",
-      "note": "The upstream README describes data version 0.92."
+      "note": "TF 0.92 at the reviewed revision; 31 books and 407319 words."
     },
     "peshitta": {
       "name": "Peshitta (Old Testament)",
@@ -74,12 +74,12 @@
     "pseudepigrapha": {
       "name": "Online Critical Pseudepigrapha",
       "description": "Text-Fabric conversion of critical editions of biblical pseudepigrapha and manuscript variants.",
-      "checked_tf_version": "1.0",
-      "checked_revision": "7c4b757bb543a110ae9a252d1281835859136852",
+      "checked_tf_version": "1.1",
+      "checked_revision": "39bd9fb895d1201e9cd9260170512fd8c399a3ac",
       "latest_tf_version": "1.1",
-      "status": "update",
+      "status": "current",
       "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/releases/tag/v1.1.0",
-      "note": "Release v1.1.0 changes eight TF features, including manuscript metadata."
+      "note": "TF 1.1 release v1.1.0 at the reviewed revision; manuscript metadata corrected."
     },
     "assyrian-royal-inscriptions": {
       "name": "Assyrian royal inscriptions (ORACC)",

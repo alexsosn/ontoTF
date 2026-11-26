@@ -215,9 +215,29 @@ def build_report(root, commit):
         source = xml.get("source")
         pin = re.search(r"@([a-f0-9]{40})(?::|$)", source)
         rows = catalog.load(corpus)
-        stats = summarize(rows, inv.get(corpus), version,
-                          source_revision=pin.group(1) if pin else None)
         scoped = scoped_inventories.get(corpus)
+        schema_inventory = inv.get(corpus)
+        # A current loaded scoped census supersedes stale schema-only evidence.
+        # Keep historical reports intact and avoid maintaining duplicate snapshots.
+        if (scoped and scoped.get("catalog_version") == version
+                and (schema_inventory is None or schema_inventory["version"] != version)):
+            domains = {}
+            for name, info in scoped["node_features"].items():
+                scopes = info["scopes"]
+                if scopes and all(s.get("value_domain") == "complete_observed"
+                                  for s in scopes.values()):
+                    domains[name] = {
+                        "values": sorted({v for s in scopes.values() for v in s["values"]}),
+                        "scopes": sorted(scopes),
+                    }
+            schema_inventory = {
+                "version": version, "revision": scoped["revision"],
+                "source": SCOPED + "/" + corpus + ".json", "value_domains": domains,
+                **{name: sorted(scoped[name]) for name in
+                   ("node_types", "node_features", "edge_features")},
+            }
+        stats = summarize(rows, schema_inventory, version,
+                          source_revision=pin.group(1) if pin else None)
         stats["scoped"] = scoped_progress(rows, scoped, source, version)
         stats["applicability"] = None
         spec = policy["corpora"].get(corpus)

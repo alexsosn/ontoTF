@@ -32,3 +32,7 @@ PR #439 merged at 01986020af62247aab4cd1c1640b0c760c880203; migration must inclu
 ### Additional acceptance check before migrating qualified Syriac categories
 
 A complete value domain does not establish that the cross-feature linguistic predicates still hold. Re-run the eight prior ls→sp/lex/gloss joins on the loaded 0.92 corpus using the same scoped census workflow. Assert the eight uniform POS sets and the two exact lexical-label sets for quotation/existential categories. Inspect the printed lexeme and gloss distributions before transferring the qualified mappings. Do not copy previous counts into 0.92 evidence notes. The public API must keep version mismatch checks and require explicit source_version/corpus_version where a selector has multiple versions.
+
+### Migration implementation
+
+Syriac 0.92 lexical review passed in job 140018970413: cjad 1461 advb (four lexemes), demo 4537 pron (including 10 XDD>), gntl 1369 adjv (124 lexemes), pers 8489 pron (12 lexemes), pinr 20 advb (one lexeme), prin 2229 pron (six lexemes), quot 4818 verb (>MR), vbex 5154 verb (HWJ). All previous qualified relations remain qualified; no new exact inference. The new data has 709 word nodes without Unicode surface text. Version-scoped rows retain the historical evidence and update current counts. The current applicability and source status are updated together with the actual census. CUC remains on 0.2.8 until upstream #47 merges.

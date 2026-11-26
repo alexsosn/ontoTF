@@ -374,6 +374,43 @@ jobs:
                    "lexemes": dict(lexemes[k]) if len(lexemes[k]) <= 20 else {},
                    "glosses": sorted(glosses[k])} for k in labels}, sort_keys=True))
           PY
+      - name: Execute current version mappings on loaded TF
+        if: matrix.id == 'syriac' || matrix.id == 'pseudepigrapha'
+        env:
+          ID: ${{ matrix.id }}
+          VERSION: ${{ matrix.version }}
+        run: |
+          python -m pip install --no-deps .
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes, resolve_edges
+          from scripts.research.r005_inventory import load_tf
+          corpus, version = os.environ["ID"], os.environ["VERSION"]
+          api = load_tf(Path("upstream/corpus/tf") / version)
+          c = MappingCatalog()
+          if corpus == "syriac":
+              row, = c.map_native(corpus, node="word", feature="sp", value="subs", corpus_version=version)
+              assert len(resolve_nodes(api, row, corpus_version=version)) == 119855
+              row, = c.map_native(corpus, kind="node", node="word", feature="g_cons_utf8", corpus_version=version)
+              assert len(resolve_nodes(api, row, corpus_version=version)) == 406610
+              row, = c.map_native(corpus, node="word", feature="ls", value="demo", corpus_version=version)
+              assert row.relation == "narrower"
+          else:
+              row, = c.map_native(corpus, kind="node", node="word", feature="g_word_utf8", corpus_version=version)
+              assert len(resolve_nodes(api, row, corpus_version=version)) == 920460
+              row, = c.map_native(corpus, kind="edge", feature="translation_of", from_node="book", to_node="book", corpus_version=version)
+              assert len(resolve_edges(api, row, corpus_version=version)) == 231
+              row, = c.map_native(corpus, kind="node", node="word", corpus_version=version)
+              assert row.relation == "native-only"
+          try:
+              resolve_nodes(api, row, corpus_version=version)
+          except MappingError:
+              pass
+          else:
+              raise AssertionError("Non-exact row unexpectedly executed")
+          print("Actual loaded TF version-specific mapping smoke passed:", corpus, version)
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: scoped-${{ matrix.id }}
