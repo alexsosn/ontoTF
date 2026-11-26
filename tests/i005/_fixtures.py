@@ -72,7 +72,7 @@ def noun_sources(
     projection_review_id: str | None = None,
     audit_suffix: str = "",
 ) -> dict[str, Any]:
-    authored_profile_id = authored_profile_id or f"ontotf-{corpus_id}"
+    authored_profile_id = authored_profile_id or f"tfont-{corpus_id}"
     evidence = _evidence(corpus_id)
     evidence_binding = _binding(evidence)
     component_id = f"{corpus_id}-tf"
