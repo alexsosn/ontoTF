@@ -307,7 +307,11 @@ def render(report):
             url = inv["source"]
             if not url.startswith("https://"):
                 url = blob + quote(url, safe="/")
-            source = link(url, "Inventory evidence") + " · TF " + h(inv["version"])
+            source = link(url, "Inventory evidence") + " · TF " + h(inv.get("tf_version", inv["version"]))
+            if inv.get("tf_version") and inv["tf_version"] != inv["version"]:
+                source += " · catalog " + h(inv["version"])
+            if inv.get("release_evidence"):
+                source += " · " + link(inv["release_evidence"], "Release identity evidence")
             if inv.get("revision"):
                 source += " · revision " + h(inv["revision"][:12])
             if inv.get("type_source"):
@@ -392,7 +396,7 @@ meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--a
 <p class="muted">Source commit """ + link(REPO + "/commit/" + quote(commit, safe=""), commit[:12]) + """</p>
 <section class="metrics" aria-label="Summary">""" + cards_html + """</section>
 <h2>Corpus coverage</h2><p>Exact takes precedence over qualified when one selector has multiple positive targets. Native-only, ambiguous and unsupported selectors are reviewed dispositions without a positive target. Selector counts include all declared versions; schema counts use only the comparable default version. Individual entity declarations are excluded.</p>""" + table(
-        ("Corpus", "Default TF version", "Exact", "Qualified", "No positive target", "Positive / reviewed", "Schema positive", "Schema touched"),
+        ("Corpus", "Catalog version", "Exact", "Qualified", "No positive target", "Positive / reviewed", "Schema positive", "Schema touched"),
         count_rows, f"Schema totals cover {totals['comparable_corpora']} of {totals['corpora']} corpora with compatible pinned inventories.") + """
 <h2>Corpus × ontology</h2><p>Each cell shows distinct positive versioned selectors; the smaller line is schema items with at least one positive mapping to that ontology / all comparable schema items in the corpus. Ontologies can overlap. The schema denominator is not an ontology-specific eligibility count.</p>""" + table(
         ("Corpus", *ONTOLOGIES, "Unique positive"), matrix,
