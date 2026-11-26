@@ -14,6 +14,7 @@ from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 PIN = "ad69400f5446e1c8217af01659c7c10ab00c015b"
 VERSION = "0.2.8"
 OLIA_LETTER = "http://purl.org/olia/olia.owl#Letter"
+OCCURRENCE = "http://www.cidoc-crm.org/extensions/crmtex/TX11_Grapheme_Occurrence"
 LETTERS = tuple(chr(codepoint) for codepoint in range(0x10380, 0x1039E))
 WORD_DIVIDER = "\U0001039f"
 NONLETTERS = ("-", "?", "x", "…", WORD_DIVIDER)
@@ -59,18 +60,20 @@ class CUCUgariticUnicodeLetterTests(unittest.TestCase):
                 and r.feature == "usign"]
         # One source whitespace value is intentionally absent because the
         # XML selector validator forbids whitespace-only native values.
-        self.assertEqual(len(rows), 35)
+        self.assertEqual(len(rows), 65)
         self.assertEqual({r.value for r in rows},
                          set(LETTERS) | set(NONLETTERS))
         for value in LETTERS:
             with self.subTest(letter=value):
-                row, = catalog.map_native(
+                mappings = catalog.map_native(
                     "cuc", node="sign", feature="usign", value=value,
                     corpus_version=VERSION)
-                self.assertEqual((row.relation, row.target),
-                                 ("exact", OLIA_LETTER))
-                self.assertEqual(row.corpus_version, VERSION)
-                self.assertIn(PIN, row.evidence or "")
+                self.assertEqual(len(mappings), 2)
+                self.assertEqual({(row.relation, row.target) for row in mappings},
+                                 {("exact", OLIA_LETTER), ("close", OCCURRENCE)})
+                for row in mappings:
+                    self.assertEqual(row.corpus_version, VERSION)
+                    self.assertIn(PIN, row.evidence or "")
         for value in set(NONLETTERS) - {WORD_DIVIDER}:
             with self.subTest(nonletter=value):
                 row, = catalog.map_native(
@@ -107,8 +110,9 @@ class CUCUgariticUnicodeLetterTests(unittest.TestCase):
             value=LETTERS[0]), ())
 
     def test_exact_unicode_letter_selects_sign_nodes_only(self):
-        mapping, = MappingCatalog().map_native(
+        mapping, = (m for m in MappingCatalog().map_native(
             "cuc", node="sign", feature="usign", value=LETTERS[0])
+                    if m.target == OLIA_LETTER)
         class API:
             class F:
                 class otype:

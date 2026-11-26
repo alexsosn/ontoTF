@@ -17,13 +17,13 @@ class TLHdigNormalizedSourceTokens(unittest.TestCase):
             CORPUS, kind="node", node="word", feature="trans",
             corpus_version=VERSION,
         )
-        self.assertEqual(len(rows), 1)
+        exact, = (row for row in rows if row.target == TOKEN)
         self.assertEqual(
-            (rows[0].relation, rows[0].target, rows[0].corpus_version),
+            (exact.relation, exact.target, exact.corpus_version),
             ("exact", TOKEN, VERSION),
         )
-        self.assertIn(PIN, rows[0].evidence)
-        self.assertIn(rows[0], c.find_by_target(
+        self.assertIn(PIN, exact.evidence)
+        self.assertIn(exact, c.find_by_target(
             TOKEN, corpus=CORPUS, kind="node",
         ))
         self.assertEqual(c.map_native(CORPUS, kind="node", node="word"), ())
@@ -59,9 +59,9 @@ class TLHdigNormalizedSourceTokens(unittest.TestCase):
                 return Trans()
 
         c = MappingCatalog()
-        row = c.map_native(
+        row, = (m for m in c.map_native(
             CORPUS, kind="node", node="word", feature="trans"
-        )[0]
+        ) if m.target == TOKEN)
         self.assertEqual(
             resolve_nodes(API(), row, corpus_version=VERSION), (10, 12, 14),
         )
