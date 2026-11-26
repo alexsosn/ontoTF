@@ -1671,7 +1671,7 @@
       "revision": "e954600d9f9cc7f16570729813cf6bf3954b8f6d",
       "catalog_version": "0.4.0",
       "source": "https://github.com/alexsosn/TLHdig-TF/tree/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features",
-      "rationale": "Pinned generated data model, feature documentation, source catalogue and join apparatus: morphology, lexeme links, editorial graph, lines/signs, fragment identification and CTH classification. CRMtex/CRM/LRMoo/SKOS/CRMinf are relevant review domains; not claims of class equivalence, physical identity, or explicit inference. Sign-level aGr/d/num/sGr containment flags are graphemic/editorial evidence, not grammatical values on analysis nodes. Join edges are source apparatus projections (CRM physical-relation and CRMinf claim review), not LRMoo expression derivation. Resolution and alignment levels record process evidence, not belief values. CTH is a catalogue grouping; fragment occurrences and docgroup do not prove physical identity. Direct featuremeta.py and editorial.md distinguish source range geometry, recovered/synthesized boundary markers, philological uncertainty, source apparatus selection and parser diagnostics. Source record order, codepoint/record counts and duplicate docid representation do not create extra semantic obligations. sel_group, opaque mrp_control, mixed othertags and undocumented cudirty remain unresolved; do not infer grammatical number or a historical statement from internal selection codes.",
+      "rationale": "Pinned generated data model, feature documentation, source catalogue and join apparatus: morphology, lexeme links, editorial graph, lines/signs, fragment identification and CTH classification. CRMtex/CRM/LRMoo/SKOS/CRMinf are relevant review domains; not claims of class equivalence, physical identity, or explicit inference. Sign-level aGr/d/num/sGr containment flags are graphemic/editorial evidence, not grammatical values on analysis nodes. Join edges are source apparatus projections (CRM physical-relation and CRMinf claim review), not LRMoo expression derivation. Resolution and alignment levels record process evidence, not belief values. CTH is a catalogue grouping; fragment occurrences and docgroup do not prove physical identity. Direct featuremeta.py and editorial.md distinguish source range geometry, recovered/synthesized boundary markers, philological uncertainty, source apparatus selection and parser diagnostics. Source record order, codepoint/record counts and duplicate docid representation do not create extra semantic obligations. sel_group, opaque mrp_control, mixed othertags and undocumented cudirty remain unresolved; do not infer grammatical number or a historical statement from internal selection codes. Complete observed raw analysis.morph values are now included for OLiA research; composite alternatives are source values, not individual ontology classes or selected word tokens.",
       "rules": {
         "OLiA": [
           {
@@ -1723,6 +1723,15 @@
             "kind": "feature",
             "features": [
               "det_hint"
+            ],
+            "nodes": [
+              "analysis"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "morph"
             ],
             "nodes": [
               "analysis"

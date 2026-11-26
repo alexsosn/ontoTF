@@ -110,6 +110,13 @@ KINDS = {"node": "node_types", "feature": "node_features", "value": "node_values
          "edge": "edge_pairs", "edge_value": "edge_values"}
 
 
+def top_unreviewed(domain, index, limit=8):
+    """Frequency-ranked preview; retain complete unreviewed labels in JSON."""
+    gaps = ((key[3], freq) for key, freq in domain if not matching(index, key))
+    return [[value, freq] for value, freq in
+            sorted(gaps, key=lambda pair: (-pair[1], pair[0]))[:limit]]
+
+
 def scoped_progress(rows, inventory, source, version):
     if not compatible(inventory, source, version):
         return None
@@ -169,6 +176,7 @@ def scoped_progress(rows, inventory, source, version):
                       for value, freq in scope["values"].items()]
             result["domains"].append(dict(node=node, feature=feature,
                 **counts(domain, index),
+                top_unreviewed_values=top_unreviewed(domain, index),
                 unreviewed_values=sorted(key[3] for key, _ in domain if not matching(index, key))))
     result["edge_domains"] = []
     for feature, info in sorted(inventory["edge_features"].items()):
@@ -179,6 +187,7 @@ def scoped_progress(rows, inventory, source, version):
                       for value, frequency in pair["values"].items()]
             result["edge_domains"].append(dict(feature=feature, source=pair["from"], target=pair["to"],
                 **counts(domain, index),
+                top_unreviewed_values=top_unreviewed(domain, index),
                 unreviewed_values=sorted(key[3] for key, _ in domain if not matching(index, key))))
     result["unreviewed_items"] = [
         list(key) for key, _ in items if not matching(index, key)]
