@@ -1,7 +1,7 @@
 """ORACC named-entity POS/EPOS categories are qualified OLiA ProperNoun subtypes.
 
 Pinned ORACC-TF 1.0.0 provides 320,975 words and 8,025 lexical nodes.
-The source top-20 XML inventory currently has 22 relevant named-entity rows.
+The full observed scoped POS/EPOS domains now determine named-entity rows.
 Its source epos codebook and primary ORACC QPN docs classify DN/GN/SN/RN/
 EN/PN/TN/WN as *name* types, not identified named-entity individuals.
 A narrower class-level correspondence cannot authorize exact TF selection.
@@ -15,14 +15,12 @@ from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 ORACC = "assyrian-royal-inscriptions"
 VERSION = "1.0.0"
 PROPER = "http://purl.org/olia/olia.owl#ProperNoun"
-CODES = ("DN", "GN", "SN", "RN", "EN", "PN", "TN", "WN")
+CODES = ("DN", "GN", "SN", "RN", "EN", "PN", "TN", "WN", "CN", "LN", "MN", "ON", "QN")
 SCOPES = (("word", "pos"), ("word", "epos"), ("lex", "pos"))
 
 
 def existing_codes(feature):
-    # Pinned map inventory covers only top-20 source pos/epos tags;
-    # WN occurs in epos top-20, not in the currently mapped pos top-20.
-    return CODES if feature == "epos" else CODES[:-1]
+    return CODES
 
 
 class OraccProperNameSubtypesTests(unittest.TestCase):
@@ -59,11 +57,10 @@ class OraccProperNameSubtypesTests(unittest.TestCase):
         self.assertEqual(
             self.catalog.find_by_target(PROPER, corpus=ORACC), ()
         )
-        # Unreviewed source-domain codes outside the mapped top-20 are not
-        # invented as production mappings from a QPN vocabulary list alone.
-        for node in ("word", "lex"):
+        # No unobserved QPN code is fabricated from the vocabulary alone.
+        for node, feature in SCOPES:
             self.assertEqual(self.catalog.map_native(
-                ORACC, node=node, feature="pos", value="WN"), ())
+                ORACC, node=node, feature=feature, value="AN"), ())
 
     def test_cross_corpus_name_class_discovery_requires_opt_in(self):
         for node, feature in SCOPES:
