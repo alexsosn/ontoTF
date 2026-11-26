@@ -163,6 +163,80 @@ class InventoryTests(unittest.TestCase):
             (root / ".tf").mkdir()
             self.assertEqual(MODULE.digest_tf_files(root), expected)
 
+    def test_scoped_domains_do_not_cross_multiply_node_types(self):
+        api = FakeApi()
+        api.F.pos.data = {1: "noun", 2: "verb", 3: "noun", 4: "", 5: None}
+        got = MODULE.inventory_scoped_api(api, node_value_features={"pos"})
+        pos = got["node_features"]["pos"]
+        self.assertEqual(pos["scopes"]["word"]["values"], {"noun": 1, "verb": 1})
+        self.assertEqual(pos["scopes"]["sign"]["values"], {"noun": 1})
+        self.assertNotIn("line", pos["scopes"])
+        self.assertEqual(pos["empty_records"], 2)
+        self.assertEqual(got["node_types"], {"word": 2, "sign": 2, "line": 1})
+        self.assertEqual(got["node_features"]["form"]["scopes"]["word"]["count"], 2)
+        self.assertNotIn("values", got["node_features"]["form"]["scopes"]["word"])
+
+    def test_scoped_edges_keep_actual_pairs_and_missing_values(self):
+        api = FakeApi()
+        api.E.selected.data = {1: {2: "x", 3: ""}, 3: {5: "y"}, 4: {5: None}}
+        got = MODULE.inventory_scoped_api(api, edge_value_features={"selected"})
+        edges = got["edge_features"]["selected"]["pairs"]
+        pairs = {(e["from"], e["to"]): e for e in edges}
+        self.assertEqual(set(pairs), {("word", "word"), ("word", "sign"), ("sign", "line")})
+        self.assertEqual(pairs["word", "word"]["values"], {"x": 1})
+        self.assertEqual(pairs["word", "sign"]["values"], {})
+        self.assertEqual(pairs["word", "sign"]["empty_values"], 1)
+        self.assertEqual(pairs["sign", "line"]["values"], {"y": 1})
+        self.assertEqual(pairs["sign", "line"]["count"], 2)
+        self.assertEqual(pairs["sign", "line"]["empty_values"], 1)
+
+    def test_scoped_domain_overflow_is_explicit_and_never_a_sample(self):
+        got = MODULE.inventory_scoped_api(FakeApi(), node_value_features={"form"},
+                                          domain_limit=1)
+        word = got["node_features"]["form"]["scopes"]["word"]
+        self.assertEqual(word["count"], 2)
+        self.assertEqual(word["value_domain"], "overflow")
+        self.assertNotIn("values", word)
+
+    def test_scoped_numeric_zero_preserved_and_unknown_nodes_fail(self):
+        api = FakeApi()
+        api.F.pos.data = {1: 0, 2: 1}
+        got = MODULE.inventory_scoped_api(api, node_value_features={"pos"})
+        self.assertEqual(got["node_features"]["pos"]["scopes"]["word"]["values"],
+                         {"0": 1, "1": 1})
+        api.F.pos.data[99] = "unknown"
+        with self.assertRaisesRegex(ValueError, "node type"):
+            MODULE.inventory_scoped_api(api)
+
+    def test_cross_version_node_map_is_not_a_local_edge(self):
+        api = FakeApi()
+        api.E.__dict__["omap@old-new"] = FakeEdgeFeature({99: {1: 1}}, valued=True)
+        api.Eall = lambda warp=False: ["parent", "selected", "omap@old-new"]
+        got = MODULE.inventory_scoped_api(api)
+        edge = got["edge_features"]["omap@old-new"]
+        self.assertEqual(edge["scope_status"], "cross_version")
+        self.assertEqual(edge["edge_count"], 1)
+        self.assertNotIn("pairs", edge)
+        with self.assertRaisesRegex(ValueError, "cross.version"):
+            MODULE.inventory_scoped_api(api, edge_value_features={"omap@old-new"})
+
+    def test_scoped_identity_distinguishes_catalog_release_and_tf_version(self):
+        got = MODULE.scoped_identity(corpus_id="oracc", repository="owner/repo",
+                                     revision="abc", tf_version="0.4.0",
+                                     catalog_version="1.0.0", archive_sha256="a"*64)
+        self.assertEqual(got["tf_version"], "0.4.0")
+        self.assertEqual(got["catalog_version"], "1.0.0")
+        self.assertEqual(got["archive_sha256"], "a"*64)
+        default = MODULE.scoped_identity(corpus_id="bhsa", repository="ETCBC/bhsa",
+                                         revision="abc", tf_version="2021")
+        self.assertEqual(default["catalog_version"], "2021")
+
+    def test_scoped_allowlist_typo_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "missing"):
+            MODULE.inventory_scoped_api(FakeApi(), node_value_features={"missing"})
+        with self.assertRaisesRegex(ValueError, "parent"):
+            MODULE.inventory_scoped_api(FakeApi(), edge_value_features={"parent"})
+
 
 if __name__ == "__main__":
     unittest.main()
