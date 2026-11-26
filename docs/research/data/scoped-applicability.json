@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "partial",
-  "method": "Source-grounded partial review domains, expanded by native families. Eligibility means the ontology warrants evaluation of the native item, not that any target is valid. Omitted families and ontologies remain unclassified; do not infer exhaustive denominators. Existing XML is sole mapping authority. Whole-feature review is used for open/mixed fields; categorical observations are selected only when source semantics warrant individual review.",
+  "method": "Source-grounded partial review domains, expanded by native families. Eligibility means the ontology warrants evaluation of the native item, not that any target is valid. Omitted families and ontologies remain unclassified; do not infer exhaustive denominators. Existing XML is sole mapping authority. Whole-feature review is used for open/mixed fields; categorical observations are selected only when source semantics warrant individual review. Explicit exclusions concern this mapping scope only, not universal ontology inapplicability; excluded units and unrouted units must remain distinct.",
   "ontology_evidence": {
     "OLiA": "https://github.com/acoli-repo/olia/tree/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
     "OntoLex-Lemon": "https://www.w3.org/2016/05/ontolex/",
@@ -56,16 +56,7 @@
           {
             "kind": "value",
             "features": [
-              "domain",
-              "dist_unit",
-              "mother_object_type",
-              "is_root",
-              "nme",
-              "pfm",
-              "prs",
-              "uvf",
-              "vbe",
-              "vbs"
+              "domain"
             ]
           },
           {
@@ -110,6 +101,28 @@
             "features": [
               "nametype",
               "languageISO"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "nme",
+              "pfm",
+              "prs",
+              "uvf",
+              "vbe",
+              "vbs"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "dist_unit",
+              "mother_object_type",
+              "is_root"
             ]
           }
         ],
@@ -240,16 +253,7 @@
           {
             "kind": "value",
             "features": [
-              "domain",
-              "dist_unit",
-              "mother_object_type",
-              "is_root",
-              "nme",
-              "pfm",
-              "prs",
-              "uvf",
-              "vbe",
-              "vbs"
+              "domain"
             ]
           },
           {
@@ -287,6 +291,28 @@
             ],
             "nodes": [
               "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "nme",
+              "pfm",
+              "prs",
+              "uvf",
+              "vbe",
+              "vbs"
+            ],
+            "nodes": [
+              "word"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "dist_unit",
+              "mother_object_type",
+              "is_root"
             ]
           }
         ],
@@ -476,7 +502,7 @@
             ]
           },
           {
-            "kind": "value",
+            "kind": "feature",
             "features": [
               "emf",
               "nme",
@@ -484,6 +510,9 @@
               "pfx",
               "vbe",
               "vbs"
+            ],
+            "nodes": [
+              "word"
             ]
           }
         ],
@@ -816,7 +845,17 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "source_sha256"
+          ],
+          "reason": "source byte digest is provenance integrity metadata, outside current corpus category mapping scope",
+          "evidence": "https://github.com/alexsosn/Pseudepigrapha-TF/blob/7c4b757bb543a110ae9a252d1281835859136852/docs/features/source_sha256.md"
+        }
+      ]
     },
     "tlhdig-tf": {
       "revision": "e954600d9f9cc7f16570729813cf6bf3954b8f6d",
@@ -1197,7 +1236,31 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "anchor"
+          ],
+          "nodes": [
+            "sign"
+          ],
+          "reason": "technical empty-slot preservation; no independent written sign category",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features/anchor.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "subcorpus"
+          ],
+          "nodes": [
+            "document"
+          ],
+          "reason": "documented compatibility alias for project; no separate semantic mapping obligation",
+          "evidence": "https://github.com/alexsosn/TLHdig-TF/blob/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features/subcorpus.md"
+        }
+      ]
     },
     "assyrian-royal-inscriptions": {
       "revision": "60db4b724a687c0f425e78eae924fce89454e106",
@@ -1439,7 +1502,20 @@
             ]
           }
         ]
-      }
+      },
+      "exclusions": [
+        {
+          "kind": "feature",
+          "features": [
+            "translation_source_sha256"
+          ],
+          "nodes": [
+            "translation_unit"
+          ],
+          "reason": "source archive byte digest, not a linguistic/textual category",
+          "evidence": "https://github.com/alexsosn/ORACC-TF/blob/60db4b724a687c0f425e78eae924fce89454e106/docs/reference/translations.md"
+        }
+      ]
     }
   }
 }
