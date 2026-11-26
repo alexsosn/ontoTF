@@ -377,6 +377,15 @@ def build_inventory(
     return result
 
 
+def scoped_identity(*, corpus_id, repository, revision, tf_version,
+                    catalog_version=None, archive_sha256=None):
+    """Keep the catalog version (sometimes release ID) distinct from TF version."""
+    return dict(schema_version=2, evidence_kind="loaded_tf_scoped_artifact",
+                corpus_id=corpus_id, repository=repository, revision=revision,
+                tf_version=tf_version, catalog_version=catalog_version or tf_version,
+                archive_sha256=archive_sha256)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("path", type=Path, help="directory containing the exact *.tf files")
@@ -386,6 +395,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tf-version")
     parser.add_argument("--small-domain-limit", type=int, default=64)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--catalog-version")
+    parser.add_argument("--archive-sha256")
     parser.add_argument("--scoped", action="store_true", help="emit scoped empirical census instead of historical R-005 format")
     parser.add_argument("--node-value-features", nargs="*", default=[])
     parser.add_argument("--edge-value-features", nargs="*", default=[])
@@ -400,10 +411,11 @@ def main() -> int:
                                       node_value_features=args.node_value_features,
                                       edge_value_features=args.edge_value_features,
                                       domain_limit=args.domain_limit)
-        result.update(schema_version=2, evidence_kind="loaded_tf_scoped_artifact",
-                      corpus_id=args.corpus_id, repository=args.repository,
-                      revision=args.revision, tf_version=args.tf_version,
-                      tf_files_sha256=digest_tf_files(args.path))
+        result.update(scoped_identity(corpus_id=args.corpus_id, repository=args.repository,
+                                      revision=args.revision, tf_version=args.tf_version,
+                                      catalog_version=args.catalog_version,
+                                      archive_sha256=args.archive_sha256))
+        result["tf_files_sha256"] = digest_tf_files(args.path)
     else:
         result = build_inventory(
             args.path,
