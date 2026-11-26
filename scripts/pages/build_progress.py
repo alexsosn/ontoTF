@@ -381,6 +381,16 @@ def render(report):
                     "</small>" + ("<small>Unmatched policy rules</small>" if stat["unmatched_rules"] else ""))
         eligible_cells.append("Incomplete" if applicability else "Unclassified")
         eligible_rows.append(eligible_cells)
+        if applicability and scoped_details:
+            labels = {"node_types": "Node types", "node_features": "Scoped features",
+                      "node_values": "Selected node values", "edge_pairs": "Edge pairs",
+                      "edge_values": "Selected edge values"}
+            classification = applicability["classification"]
+            routed = "; ".join(f"{labels[k]}: {v['routed']}/{v['candidates']}"
+                              for k, v in classification.items() if v["candidates"])
+            details = "<p>" + link(applicability["source"], "Applicability evidence") + " · " + h(applicability["rationale"]) + "</p>"
+            details += "<p>Observed units routed to at least one model (separate units, not an overall completion ratio): " + h(routed) + ".</p>"
+            scoped_details[-1] = scoped_details[-1].removesuffix("</details>") + details + "</details>"
         inv = c["inventory"]
         source = "No matching inventory."
         if inv:
@@ -442,10 +452,13 @@ def render(report):
     old_rows.append(["<strong>Total</strong>", *[number(sum(x.get(w, 0) for x in legacy.values()))
                     for w in WORKSTREAMS], number(report["historical_total"])])
     cards = [
-        ("Positive selectors", number(totals["positive"]), "of " + number(totals["reviewed"]) + " reviewed"),
+        ("Positive observed values", rate(totals["scoped"]["node_values"]["positive"], totals["scoped"]["node_values"]["total"]),
+         "selected scoped categories · " + number(totals["scoped_corpora"]) + " corpora"),
+        ("Reviewed observed values", rate(totals["scoped"]["node_values"]["reviewed"], totals["scoped"]["node_values"]["total"]),
+         "selected categorical families only"),
         ("Schema coverage", rate(totals["schema_positive"], totals["schema_total"]),
          "at least one positive mapping · " + number(totals["comparable_corpora"]) + " comparable corpora"),
-        ("Exact selectors", number(totals["exact"]), "qualified: " + number(totals["qualified"])),
+        ("Positive selectors", number(totals["positive"]), "of " + number(totals["reviewed"]) + " reviewed"),
         ("Core ontologies", number(sum(totals["ontologies"][o]["selectors"] > 0 for o in ONTOLOGIES[:-1])) + " / 7",
          number(totals["corpora"]) + " corpora"),
     ]
@@ -490,7 +503,7 @@ meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--a
         ("Corpus", "Node types", "Node features by scope", "Selected node values", "Directed edge pairs", "Selected edge values", "Positive annotations"),
         scoped_rows, f"Real scoped evidence for {totals['scoped_corpora']} of {totals['corpora']} corpora; categorical families are selected, not exhaustive.") + """
 """ + "".join(scoped_details) + """
-<h2>Research-confirmed applicability (partial review scope)</h2><p>Positive / eligible within explicitly selected research families. These are review domains, not guaranteed ontology matches or complete denominators. A global native-only or unsupported disposition is shown separately; it does not prove that every ontology was evaluated. Ambiguous and other-target counts are separate. A dash indicates no researched scope, not zero applicable items. All corpus-wide applicability inventories remain incomplete.</p><p>""" + link(blob + APPLICABILITY, "Family-level applicability policy and source evidence") + """</p>""" + table(
+<h2>Ontology applicability review (partial)</h2><p>Positive / eligible within explicitly selected research families. These are review domains, not guaranteed ontology matches or complete denominators. A global native-only or unsupported disposition is shown separately; it does not prove that every ontology was evaluated. Ambiguous and other-target counts are separate. A dash indicates no researched scope, not zero applicable items. All corpus-wide applicability inventories remain incomplete.</p><p>""" + link(blob + APPLICABILITY, "Family-level applicability policy and source evidence") + """</p>""" + table(
         ("Corpus", *ONTOLOGIES[:-1], "Eligibility completeness"), eligible_rows,
         "Partial source-grounded review families; no aggregate completion percentage.") + """
 <h2>Schema gaps and evidence</h2><p>One schema item is a native node type, node feature or edge feature. A partially mapped feature counts once. TF warp/configuration and optional unloaded provenance features are excluded; other technical or native-only categories can remain in the denominator. A version match is not authentication of source bytes. Complete observed value lists are shown only for already mapped feature families where the inventory provides them; values are pooled across native scopes and may include technical categories. No corpus-wide value completion rate is inferred. The tracker does not assert that every schema item needs an ontology target.</p>""" + "".join(gaps) + """
