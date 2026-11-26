@@ -1,0 +1,1343 @@
+{
+  "archive_sha256": null,
+  "catalog_version": "0.2",
+  "corpus_id": "extrabiblical",
+  "domain_policy": {
+    "edge_value_features": [],
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "limit_per_scope": 512,
+    "node_value_features": [
+      "det",
+      "dist_unit",
+      "domain",
+      "function",
+      "gn",
+      "is_root",
+      "kind",
+      "language",
+      "ls",
+      "mother_object_type",
+      "nme",
+      "nu",
+      "pdp",
+      "pfm",
+      "prs",
+      "prs_gn",
+      "prs_nu",
+      "prs_ps",
+      "ps",
+      "rela",
+      "sp",
+      "st",
+      "suffix_gender",
+      "suffix_number",
+      "suffix_person",
+      "typ",
+      "uvf",
+      "vbe",
+      "vbs",
+      "vs",
+      "vt"
+    ],
+    "observed_values_are_not_ontology_applicability": true
+  },
+  "edge_features": {
+    "distributional_parent": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 9160,
+          "from": "clause_atom",
+          "to": "sentence_atom"
+        },
+        {
+          "count": 23370,
+          "from": "phrase_atom",
+          "to": "clause_atom"
+        },
+        {
+          "count": 39862,
+          "from": "word",
+          "to": "phrase_atom"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "functional_parent": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 8908,
+          "from": "clause",
+          "to": "sentence"
+        },
+        {
+          "count": 9160,
+          "from": "clause_atom",
+          "to": "clause"
+        },
+        {
+          "count": 22770,
+          "from": "phrase",
+          "to": "clause"
+        },
+        {
+          "count": 23370,
+          "from": "phrase_atom",
+          "to": "phrase"
+        },
+        {
+          "count": 6665,
+          "from": "sentence_atom",
+          "to": "sentence"
+        },
+        {
+          "count": 39862,
+          "from": "word",
+          "to": "phrase"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "mother": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 1638,
+          "from": "clause",
+          "to": "clause"
+        },
+        {
+          "count": 380,
+          "from": "clause",
+          "to": "phrase"
+        },
+        {
+          "count": 116,
+          "from": "clause",
+          "to": "word"
+        },
+        {
+          "count": 9069,
+          "from": "clause_atom",
+          "to": "clause_atom"
+        },
+        {
+          "count": 2,
+          "from": "phrase",
+          "to": "clause"
+        },
+        {
+          "count": 112,
+          "from": "phrase",
+          "to": "phrase"
+        },
+        {
+          "count": 522,
+          "from": "phrase_atom",
+          "to": "phrase_atom"
+        },
+        {
+          "count": 78,
+          "from": "phrase_atom",
+          "to": "word"
+        },
+        {
+          "count": 1710,
+          "from": "subphrase",
+          "to": "subphrase"
+        },
+        {
+          "count": 5947,
+          "from": "subphrase",
+          "to": "word"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    }
+  },
+  "evidence_kind": "loaded_tf_scoped_artifact",
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "node_features": {
+    "book": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 13
+        },
+        "chapter": {
+          "count": 79
+        },
+        "verse": {
+          "count": 1800
+        }
+      },
+      "value_type": "str"
+    },
+    "book@en": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 13
+        }
+      },
+      "value_type": "str"
+    },
+    "chapter": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 79
+        },
+        "verse": {
+          "count": 1800
+        }
+      },
+      "value_type": "int"
+    },
+    "code": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "clause_atom": {
+          "count": 9160
+        }
+      },
+      "value_type": "int"
+    },
+    "det": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "phrase": {
+          "count": 22770,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 12490,
+            "det": 6021,
+            "und": 4259
+          }
+        },
+        "phrase_atom": {
+          "count": 23370,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 12571,
+            "det": 6293,
+            "und": 4506
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "dist": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 2134
+        },
+        "clause_atom": {
+          "count": 9160
+        },
+        "phrase": {
+          "count": 114
+        },
+        "phrase_atom": {
+          "count": 600
+        }
+      },
+      "value_type": "int"
+    },
+    "dist_unit": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 2134,
+          "value_domain": "complete_observed",
+          "values": {
+            "clause_atoms": 1638,
+            "phrase_atoms": 380,
+            "words": 116
+          }
+        },
+        "phrase": {
+          "count": 114,
+          "value_domain": "complete_observed",
+          "values": {
+            "clause_atoms": 2,
+            "phrase_atoms": 112
+          }
+        },
+        "phrase_atom": {
+          "count": 600,
+          "value_domain": "complete_observed",
+          "values": {
+            "phrase_atoms": 522,
+            "words": 78
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "domain": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 8908,
+          "value_domain": "complete_observed",
+          "values": {
+            "?": 2464,
+            "D": 349,
+            "N": 107,
+            "Q": 5988
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "function": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "phrase": {
+          "count": 22770,
+          "value_domain": "complete_observed",
+          "values": {
+            "Adju": 2253,
+            "Cmpl": 1831,
+            "Conj": 3948,
+            "EPPr": 13,
+            "Exst": 58,
+            "Frnt": 134,
+            "Intj": 80,
+            "Loca": 97,
+            "Modi": 1068,
+            "NCop": 159,
+            "Nega": 565,
+            "Objc": 1859,
+            "PrAd": 17,
+            "PreC": 2742,
+            "Pred": 3970,
+            "Ques": 84,
+            "Rela": 652,
+            "Subj": 2878,
+            "Time": 254,
+            "Unkn": 23,
+            "Voct": 85
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "g_cons": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39416
+        }
+      },
+      "value_type": "str"
+    },
+    "g_cons_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39416
+        }
+      },
+      "value_type": "str"
+    },
+    "g_lex": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39525
+        }
+      },
+      "value_type": "str"
+    },
+    "g_lex_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 301,
+      "scopes": {
+        "word": {
+          "count": 39224
+        }
+      },
+      "value_type": "str"
+    },
+    "g_nme": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 16898
+        }
+      },
+      "value_type": "str"
+    },
+    "g_nme_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 16898
+        }
+      },
+      "value_type": "str"
+    },
+    "g_pfm": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 2678
+        }
+      },
+      "value_type": "str"
+    },
+    "g_pfm_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 970,
+      "scopes": {
+        "word": {
+          "count": 1708
+        }
+      },
+      "value_type": "str"
+    },
+    "g_suffix": {
+      "categorical_values_requested": false,
+      "empty_records": 14793,
+      "scopes": {
+        "word": {
+          "count": 25069
+        }
+      },
+      "value_type": "str"
+    },
+    "g_suffix_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 14793,
+      "scopes": {
+        "word": {
+          "count": 25069
+        }
+      },
+      "value_type": "str"
+    },
+    "g_uvf": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 69
+        }
+      },
+      "value_type": "str"
+    },
+    "g_uvf_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 69
+        }
+      },
+      "value_type": "str"
+    },
+    "g_vbe": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 6100
+        }
+      },
+      "value_type": "str"
+    },
+    "g_vbe_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 4794,
+      "scopes": {
+        "word": {
+          "count": 1306
+        }
+      },
+      "value_type": "str"
+    },
+    "g_vbs": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 1868
+        }
+      },
+      "value_type": "str"
+    },
+    "g_vbs_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 531,
+      "scopes": {
+        "word": {
+          "count": 1337
+        }
+      },
+      "value_type": "str"
+    },
+    "g_word": {
+      "categorical_values_requested": false,
+      "empty_records": 302,
+      "scopes": {
+        "word": {
+          "count": 39560
+        }
+      },
+      "value_type": "str"
+    },
+    "g_word_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 446,
+      "scopes": {
+        "word": {
+          "count": 39416
+        }
+      },
+      "value_type": "str"
+    },
+    "gn": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 15287,
+            "f": 3852,
+            "m": 16293,
+            "unknown": 4430
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "is_root": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause_atom": {
+          "count": 9160,
+          "value_domain": "complete_observed",
+          "values": {
+            "false": 9069,
+            "true": 91
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "kind": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 8908,
+          "value_domain": "complete_observed",
+          "values": {
+            "NC": 2801,
+            "VC": 5504,
+            "WP": 602,
+            "unknown": 1
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "label": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "half_verse": {
+          "count": 1800
+        },
+        "verse": {
+          "count": 1800
+        }
+      },
+      "value_type": "str"
+    },
+    "language": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "Hebrew": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "lex": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862
+        }
+      },
+      "value_type": "str"
+    },
+    "lex_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 888,
+      "scopes": {
+        "word": {
+          "count": 38974
+        }
+      },
+      "value_type": "str"
+    },
+    "lexeme_count": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862
+        }
+      },
+      "value_type": "int"
+    },
+    "ls": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "afad": 92,
+            "card": 396,
+            "focp": 67,
+            "gntl": 60,
+            "mult": 4,
+            "nmcp": 332,
+            "nmdi": 1028,
+            "none": 32359,
+            "ordn": 71,
+            "padv": 335,
+            "ppre": 207,
+            "ques": 24,
+            "quot": 839,
+            "sffx": 3745,
+            "vbcp": 303
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "mother_object_type": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 2134,
+          "value_domain": "complete_observed",
+          "values": {
+            "clause": 1638,
+            "phrase": 380,
+            "word": 116
+          }
+        },
+        "subphrase": {
+          "count": 15351,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 7678,
+            "subphrase": 1726,
+            "word": 5947
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "nme": {
+      "categorical_values_requested": true,
+      "empty_records": 10808,
+      "scopes": {
+        "word": {
+          "count": 29054,
+          "value_domain": "complete_observed",
+          "values": {
+            "H": 1175,
+            "J": 1508,
+            "J=": 60,
+            "JM": 1134,
+            "JM=": 54,
+            "JN": 179,
+            "T": 1221,
+            "TJ": 19,
+            "TJM": 24,
+            "TJN": 1,
+            "WT": 649,
+            "WTJ": 66,
+            "absent": 18,
+            "n/a": 22946
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "nu": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 15297,
+            "du": 158,
+            "pl": 5327,
+            "sg": 18199,
+            "unknown": 881
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "number": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 8908
+        },
+        "clause_atom": {
+          "count": 9160
+        },
+        "phrase": {
+          "count": 22770
+        },
+        "phrase_atom": {
+          "count": 23370
+        },
+        "sentence": {
+          "count": 6429
+        },
+        "sentence_atom": {
+          "count": 6665
+        },
+        "word": {
+          "count": 39862
+        }
+      },
+      "value_type": "int"
+    },
+    "pdp": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "adjv": 589,
+            "advb": 1321,
+            "art": 1610,
+            "conj": 5394,
+            "inrg": 90,
+            "intj": 83,
+            "nega": 744,
+            "nmpr": 748,
+            "prde": 178,
+            "prep": 6342,
+            "prin": 194,
+            "prps": 4368,
+            "subs": 12560,
+            "verb": 5641
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "pfm": {
+      "categorical_values_requested": true,
+      "empty_records": 969,
+      "scopes": {
+        "word": {
+          "count": 38893,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 190,
+            "H": 59,
+            "J": 766,
+            "M": 398,
+            "N": 30,
+            "T": 201,
+            "T=": 65,
+            "absent": 3422,
+            "n/a": 33762
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "prs": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "n/a": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "prs_gn": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "prs_nu": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "prs_ps": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "ps": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 29387,
+            "p1": 1247,
+            "p2": 1751,
+            "p3": 4496,
+            "unknown": 2981
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "qere": {
+      "categorical_values_requested": false,
+      "empty_records": 39862,
+      "scopes": {},
+      "value_type": "str"
+    },
+    "qere_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 39862,
+      "scopes": {},
+      "value_type": "str"
+    },
+    "rela": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 8908,
+          "value_domain": "complete_observed",
+          "values": {
+            "Adju": 727,
+            "Attr": 375,
+            "Cmpl": 44,
+            "Coor": 396,
+            "NA": 6774,
+            "Objc": 106,
+            "PreC": 89,
+            "ReVo": 19,
+            "Resu": 178,
+            "RgRc": 114,
+            "Spec": 8,
+            "Subj": 78
+          }
+        },
+        "phrase": {
+          "count": 22770,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 22656,
+            "PrAd": 17,
+            "Resu": 97
+          }
+        },
+        "phrase_atom": {
+          "count": 23370,
+          "value_domain": "complete_observed",
+          "values": {
+            "Appo": 62,
+            "Link": 75,
+            "NA": 22770,
+            "Para": 95,
+            "Sfxs": 5,
+            "Spec": 363
+          }
+        },
+        "subphrase": {
+          "count": 15351,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 7678,
+            "adj": 568,
+            "atr": 313,
+            "dem": 44,
+            "mod": 39,
+            "par": 762,
+            "rec": 5947
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "sp": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "adjv": 969,
+            "advb": 1201,
+            "art": 1746,
+            "conj": 5219,
+            "inrg": 87,
+            "intj": 83,
+            "nega": 509,
+            "nmpr": 723,
+            "prde": 173,
+            "prep": 6255,
+            "prin": 197,
+            "prps": 4375,
+            "subs": 12225,
+            "verb": 6100
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "st": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 22964,
+            "a": 9970,
+            "c": 6919,
+            "e": 9
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "suffix_gender": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "suffix_number": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "suffix_person": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 39862
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "tab": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "clause_atom": {
+          "count": 9160
+        }
+      },
+      "value_type": "int"
+    },
+    "txt": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 8908
+        }
+      },
+      "value_type": "str"
+    },
+    "typ": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "clause": {
+          "count": 8908,
+          "value_domain": "complete_observed",
+          "values": {
+            "AjCl": 105,
+            "CPen": 179,
+            "Ellp": 313,
+            "InfA": 1,
+            "InfC": 848,
+            "MSyn": 14,
+            "NmCl": 2696,
+            "Ptcp": 1542,
+            "Unkn": 1,
+            "Voct": 87,
+            "WIm0": 49,
+            "WImX": 1,
+            "WQt0": 180,
+            "WQtX": 67,
+            "WXQt": 119,
+            "WXYq": 112,
+            "WYq0": 209,
+            "WYqX": 51,
+            "Way0": 37,
+            "WayX": 12,
+            "WxI0": 2,
+            "WxQ0": 154,
+            "WxQX": 30,
+            "WxY0": 255,
+            "WxYX": 69,
+            "XPos": 9,
+            "XQtl": 174,
+            "XYqt": 51,
+            "ZIm0": 86,
+            "ZImX": 3,
+            "ZQt0": 154,
+            "ZQtX": 66,
+            "ZYq0": 104,
+            "ZYqX": 49,
+            "xIm0": 6,
+            "xQt0": 649,
+            "xQtX": 123,
+            "xYq0": 233,
+            "xYqX": 68
+          }
+        },
+        "clause_atom": {
+          "count": 9160,
+          "value_domain": "complete_observed",
+          "values": {
+            "AjCl": 105,
+            "CPen": 179,
+            "Defc": 252,
+            "Ellp": 313,
+            "InfA": 1,
+            "InfC": 848,
+            "MSyn": 14,
+            "NmCl": 2696,
+            "Ptcp": 1542,
+            "Unkn": 1,
+            "Voct": 87,
+            "WIm0": 49,
+            "WImX": 1,
+            "WQt0": 180,
+            "WQtX": 67,
+            "WXQt": 106,
+            "WXYq": 94,
+            "WYq0": 209,
+            "WYqX": 50,
+            "Way0": 37,
+            "WayX": 12,
+            "WxI0": 1,
+            "WxQ0": 144,
+            "WxQX": 30,
+            "WxY0": 233,
+            "WxYX": 57,
+            "XPos": 9,
+            "XQtl": 155,
+            "XYqt": 47,
+            "ZIm0": 88,
+            "ZImX": 3,
+            "ZQt0": 212,
+            "ZQtX": 68,
+            "ZYq0": 153,
+            "ZYqX": 61,
+            "xIm0": 5,
+            "xQt0": 635,
+            "xQtX": 119,
+            "xYq0": 231,
+            "xYqX": 66
+          }
+        },
+        "phrase": {
+          "count": 22770,
+          "value_domain": "complete_observed",
+          "values": {
+            "AdjP": 168,
+            "AdvP": 1144,
+            "CP": 4598,
+            "DPrP": 86,
+            "IPrP": 137,
+            "InjP": 80,
+            "InrP": 73,
+            "NP": 4057,
+            "NegP": 726,
+            "PP": 4608,
+            "PPrP": 1159,
+            "PrNP": 295,
+            "VP": 5639
+          }
+        },
+        "phrase_atom": {
+          "count": 23370,
+          "value_domain": "complete_observed",
+          "values": {
+            "AdjP": 171,
+            "AdvP": 1146,
+            "CP": 4673,
+            "DPrP": 89,
+            "IPrP": 137,
+            "InjP": 80,
+            "InrP": 73,
+            "NP": 4232,
+            "NegP": 726,
+            "PP": 4932,
+            "PPrP": 1164,
+            "PrNP": 308,
+            "VP": 5639
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "uvf": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 9,
+            "H": 10,
+            "J": 20,
+            "N": 30,
+            "absent": 39793
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vbe": {
+      "categorical_values_requested": true,
+      "empty_records": 4781,
+      "scopes": {
+        "word": {
+          "count": 35081,
+          "value_domain": "complete_observed",
+          "values": {
+            "H": 84,
+            "H=": 59,
+            "J": 9,
+            "NH": 10,
+            "NW": 14,
+            "T": 282,
+            "T=": 3,
+            "TJ": 103,
+            "TM": 9,
+            "W": 742,
+            "WN": 4,
+            "n/a": 33762
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vbs": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 5,
+            ">T": 3,
+            "H": 821,
+            "HCT": 3,
+            "HT": 203,
+            "N": 816,
+            "NT": 17,
+            "absent": 4232,
+            "n/a": 33762
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "verse": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "verse": {
+          "count": 1800
+        }
+      },
+      "value_type": "int"
+    },
+    "vs": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 33762,
+            "afel": 5,
+            "etpe": 3,
+            "hif": 794,
+            "hit": 203,
+            "hof": 27,
+            "hsht": 3,
+            "nif": 816,
+            "nit": 17,
+            "pael": 2,
+            "pasq": 1,
+            "peal": 56,
+            "peil": 1,
+            "piel": 489,
+            "pual": 59,
+            "qal": 3624
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vt": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 39862,
+          "value_domain": "complete_observed",
+          "values": {
+            "NA": 33762,
+            "impf": 1203,
+            "impv": 147,
+            "infa": 18,
+            "infc": 863,
+            "perf": 1720,
+            "ptca": 1760,
+            "ptcp": 340,
+            "wayq": 49
+          }
+        }
+      },
+      "value_type": "str"
+    }
+  },
+  "node_types": {
+    "book": 13,
+    "chapter": 79,
+    "clause": 8908,
+    "clause_atom": 9160,
+    "half_verse": 1800,
+    "phrase": 22770,
+    "phrase_atom": 23370,
+    "sentence": 6429,
+    "sentence_atom": 6665,
+    "subphrase": 15351,
+    "verse": 1800,
+    "word": 39862
+  },
+  "repository": "ETCBC/extrabiblical",
+  "revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+  "schema_version": 2,
+  "slot_type": "word",
+  "tf_files_sha256": "5930dbf82af2ac32d2c4702052cedf44275246025004e17ebb8b01f7eb39ca35",
+  "tf_version": "0.2"
+}
