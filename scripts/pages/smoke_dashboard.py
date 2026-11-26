@@ -44,7 +44,9 @@ def main():
                     has=page.get_by_role("heading", name="TLHdig", exact=True))
                 assert tlh.count() == 1
                 assert tlh.get_by_role("heading", name="Morphological analysis tags").is_visible()
-                assert "413,526 / 1,357,004" in tlh.inner_text()
+                morph = next(d for c in report["corpora"] if c["corpus"] == "tlhdig-tf"
+                             for d in c["scoped"]["domains"] if d["node"] == "analysis" and d["feature"] == "morph")
+                assert f'{morph["positive_occurrences"]:,} / {morph["occurrences"]:,}' in tlh.inner_text()
                 tlh.locator(":scope > details > summary").click()
                 gaps = tlh.get_by_text("Node-value gaps", exact=False)
                 gaps.click()

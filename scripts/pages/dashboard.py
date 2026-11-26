@@ -6,7 +6,7 @@ from scripts.pages.scoped_progress import ONTOLOGIES
 
 LABELS = {
     "node_types": "Node types", "node_features": "Features by node type",
-    "node_values": "Categorical node values", "edge_pairs": "Directed relationships",
+    "node_values": "Measured source values", "edge_pairs": "Directed relationships",
     "edge_values": "Categorical edge values",
 }
 NAMES = {
@@ -267,7 +267,7 @@ small{display:block;font-size:.75rem;line-height:1.45;margin-top:.25rem}
 .corpus-head h3{margin:0}.corpus-head h4{color:var(--muted)}
 details{margin-top:.7rem}summary{cursor:pointer;color:var(--link);font-size:.875rem;padding:.35rem 0}
 .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1rem;margin:.75rem 0 1.25rem}
-.measure{min-width:0}.gaps{padding-left:1.3rem}.gaps li{margin:.5rem 0}.wrap{overflow-wrap:anywhere}
+.morph-summary{margin:.8rem 0 0;padding:.6rem 0 0;border-top:1px solid var(--line)}.morph-summary p{font-size:.8rem;margin:.25rem 0}.morph-summary .detail-grid{margin:.5rem 0}.measure{min-width:0}.gaps{padding-left:1.3rem}.gaps li{margin:.5rem 0}.wrap{overflow-wrap:anywhere}
 .ontology-row,.matrix-header{display:grid;grid-template-columns:minmax(8rem,1fr) minmax(0,7fr);gap:.8rem;align-items:center}
 .ontology-row{border-top:1px solid var(--line);padding:.5rem 0}
 .matrix-header{font-size:.75rem;color:var(--muted);font-weight:600;margin:.8rem 0}
@@ -285,6 +285,19 @@ footer{border-top:1px solid var(--line);margin-top:2rem;padding-top:1rem;font-si
 """
 
 
+def morphology_summary(scoped):
+    if not scoped:
+        return ""
+    domain = next((d for d in scoped["domains"]
+                   if d["node"] == "analysis" and d["feature"] == "morph"), None)
+    if domain is None:
+        return ""
+    return ('<div class="morph-summary"><h4>Morphological analysis tags</h4>'
+            '<p class="muted">Raw HFR tags, including alternatives. Frequencies count candidate analyses, not unique words or selected readings.</p>'
+            '<div class="detail-grid">' + labeled("Distinct tags", coverage_bar(domain))
+            + labeled("Candidate annotations", annotation_bar(domain)) + '</div></div>')
+
+
 def render(report):
     corpora = report["corpora"]
     commit = report["commit"]
@@ -299,9 +312,10 @@ def render(report):
         values = scoped["node_values"] if scoped else None
         rows.append('<article class="corpus"><div class="corpus-head"><div><h3>'
                     + name(c) + '</h3>' + corpus_source(c, metadata)
-                    + '</div>' + labeled("Category coverage", coverage_bar(values))
+                    + '</div>' + labeled("Source-value coverage", coverage_bar(values))
                     + labeled("Annotation coverage", annotation_bar(values))
-                    + '</div><details><summary>Structure, applicability and remaining work — '
+                    + '</div>' + (morphology_summary(scoped) if c['corpus'] == 'tlhdig-tf' else '')
+                    + '<details><summary>Structure, applicability and remaining work — '
                     + name(c) + '</summary>' + corpus_provenance(c, metadata) + corpus_detail(c) + '</details></article>')
         app = c.get("applicability")
         research_rows.append('<article class="research-row"><h3>' + name(c) + '</h3>'
@@ -324,13 +338,13 @@ def render(report):
 <a href="#ontologies">Ontologies</a><a href="#models">Ontology guide</a><a href="#research">Research gaps</a><a href="#method">Method</a></nav></header>
 <h1>Mapping progress</h1><p class="muted">Semantic coverage of Text-Fabric corpora in the current development catalog.</p>
 <div class="snapshot">""" + (
-        labeled("Mapped categorical values · pooled", coverage_bar(pooled))
+        labeled("Mapped source values · pooled", coverage_bar(pooled))
         + labeled("Mapped annotations · pooled", annotation_bar(pooled))
     ) + """</div><p class="muted">""" +
     h(f"Compatible scoped inventories for {scoped_count} of {len(corpora)} corpora; partial applicability research for {research_count}. "
       "Pooled percentages weight larger measured domains more heavily.") + """</p><p class="muted">Upstream version checks: """ + h(metadata.get("checked_at", "not recorded")) + """. Status is based on the latest observed TF data release or published stable ontology reference; source editions and converter releases may differ.</p>
 <section id="coverage"><h2>Coverage by corpus</h2>
-<p>Compare mapped categorical values and the share of their observed annotations. These selected domains vary by corpus; percentages use measured values only. The annotation bar combines exact and qualified mappings.</p>
+<p>Compare mapped source values and the share of their observed annotations. Measured domains vary by corpus. TLHdig includes thousands of raw morphology tags, including composite alternatives; these count as distinct source values and may dominate the pooled value denominator. Compare across snapshots only when measured scopes match. The annotation bar combines exact and qualified mappings.</p>
 <div class="legend"><span><i class="exact"></i>Exact</span><span><i class="qualified"></i>Qualified</span>
 <span><i class="reviewed"></i>Reviewed without positive match</span><span><i class="remaining"></i>Unreviewed</span></div>
 """ + "".join(rows) + """</section>
@@ -341,10 +355,10 @@ def render(report):
 """ + "".join(matrix) + """</section>
 <section id="models"><h2>Ontology guide and versions</h2><p>Reference baselines used for mapping research. A current reference does not establish that every catalog mapping was validated against a version-locked ontology artifact.</p>""" + ontology_sources(metadata) + """</section>
 <section id="research"><h2>Applicability research</h2>
-<p>Share of measured node-value categories assigned to ontology research or explicitly excluded. Classification measures the scope of research; mapping coverage is tracked separately. Structural and edge categories are available in corpus details.</p>
+<p>Share of measured node-feature values assigned to ontology research or explicitly excluded. Classification measures the scope of research; mapping coverage is tracked separately. Structural and edge categories are available in corpus details.</p>
 """ + "".join(research_rows) + """</section>
 <section id="method"><h2>Method and limitations</h2><details><summary>How coverage is calculated</summary>
-<p>Each distinct observed node-scoped value or directed edge value is counted once. Exact and qualified (close, broader, narrower or related) mappings contribute to mapped coverage. Native-only, ambiguous and unsupported dispositions do not contribute. A whole-feature mapping does not cover its values. Annotation coverage weights selected node values by their frequency; it measures feature-value observations and may count multiple annotations of the same word. Guarded node mappings are excluded from unconditional node-type counts.</p>
+<p>Each distinct observed node-scoped value or directed edge value is counted once, including a composite tag as one source value rather than multiple atomic grammatical categories. Exact and qualified (close, broader, narrower or related) mappings contribute to mapped coverage. Native-only, ambiguous and unsupported dispositions do not contribute. A whole-feature mapping does not cover its values. Annotation coverage weights selected node values by their frequency; it measures feature-value observations and may count multiple annotations of the same word. Guarded node mappings are excluded from unconditional node-type counts.</p>
 <p>Applicability classification measures research of observed units within each kind. Selected units may be relevant to several ontologies. Exclusions follow the current granularity policy. Unclassified units require further research. Unknown scopes and empty measured scopes have no percentage. Open or overflowing value domains are not extrapolated. The report tracks development mappings; release readiness and execution support require separate tests.</p>
 <p>Only one snapshot is available. Trend comparisons require comparable inventories over time.</p></details></section>
 <footer>Source revision """ + '<a href="' + h(commit_url) + '">' + h(commit[:12]) + """</a> ·
