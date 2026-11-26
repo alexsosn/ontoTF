@@ -181,6 +181,7 @@ jobs:
     if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'scoped')
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    name: Scoped census (${{ matrix.id }})
     strategy:
       fail-fast: false
       matrix:
@@ -225,6 +226,7 @@ jobs:
             repo: alexsosn/Pseudepigrapha-TF
             pin: 7c4b757bb543a110ae9a252d1281835859136852
             version: "1.0"
+            archive_sha256: d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a
             values: "generation_marker is_metadata_only is_missing_unit_id is_omission is_primary is_source_anomaly synthetic_witness undefined_manuscript version_kind is_gap"
             edge_values: ""
           - id: tlhdig-tf
@@ -233,6 +235,14 @@ jobs:
             version: "0.4.0"
             values: "pos type sgr agr det num missing laes ras add quot materlect_anomalous cu_unrendered crossesline nested siglum_ambiguous from_open_marker from_close_marker mrpsel_kind sel_group parse_ok field4_kind cu_aligned ruling kind orphan fragment_kind siglum_source join_kind join_encoding join_resolved"
             edge_values: "joined witness_resolution"
+          - id: assyrian-royal-inscriptions
+            repo: alexsosn/ORACC-TF
+            pin: 60db4b724a687c0f425e78eae924fce89454e106
+            version: "0.4.0"
+            catalog_version: "1.0.0"
+            archive_sha256: 788f580604e30054fab34c4c3ea60ec3eb4f399412f1da90f778469d03507468
+            values: "pos epos lang implicit lemmaknown synthetic populated catalogue_present translation_subtype"
+            edge_values: ""
     steps:
       - uses: actions/checkout@v5
         with:
@@ -244,7 +254,7 @@ jobs:
       - run: python -m pip install 'text-fabric==13.1.0'
       - run: python -m unittest tests.research.test_r005_inventory -v
       - uses: actions/checkout@v5
-        if: matrix.id != 'pseudepigrapha'
+        if: matrix.id != 'pseudepigrapha' && matrix.id != 'assyrian-royal-inscriptions'
         with:
           repository: ${{ matrix.repo }}
           ref: ${{ matrix.pin }}
@@ -260,20 +270,42 @@ jobs:
           echo 'd2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a  corpus.zip' | sha256sum --check
           mkdir -p upstream/corpus/tf/1.0
           python -m zipfile -e corpus.zip upstream/corpus/tf/1.0
+      - name: Acquire verified ORACC-TF standalone release
+        if: matrix.id == 'assyrian-royal-inscriptions'
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 3 -o corpus.zip https://github.com/alexsosn/ORACC-TF/releases/download/v1.0.0/assyrian-royal-inscriptions-1.0.0.zip
+          echo '788f580604e30054fab34c4c3ea60ec3eb4f399412f1da90f778469d03507468  corpus.zip' | sha256sum --check
+          mkdir -p upstream/corpus
+          python -m zipfile -e corpus.zip upstream/corpus
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("upstream/corpus/manifest.json").read_text())
+          assert manifest["dataset"] == "assyrian-royal-inscriptions"
+          assert manifest["release_id"] == "1.0.0"
+          assert manifest["tf_version"] == "0.4.0"
+          assert manifest["builder_commit"] == "60db4b724a687c0f425e78eae924fce89454e106"
+          PY
       - name: Generate scoped inventory from actual TF
         env:
           ID: ${{ matrix.id }}
           REPO: ${{ matrix.repo }}
           PIN: ${{ matrix.pin }}
           VERSION: ${{ matrix.version }}
+          CATALOG_VERSION: ${{ matrix.catalog_version || matrix.version }}
+          ARCHIVE_SHA256: ${{ matrix.archive_sha256 || '' }}
           VALUES: ${{ matrix.values }}
           EDGE_VALUES: ${{ matrix.edge_values }}
         run: |
           set -euo pipefail
           mkdir -p scoped
           # Word splitting here is intentional for the source-reviewed feature names.
+          args=()
+          if [[ -n "$ARCHIVE_SHA256" ]]; then args+=(--archive-sha256 "$ARCHIVE_SHA256"); fi
           python scripts/research/r005_inventory.py "upstream/corpus/tf/$VERSION" \
             --scoped --corpus-id "$ID" --repository "$REPO" --revision "$PIN" --tf-version "$VERSION" \
+            --catalog-version "$CATALOG_VERSION" "${args[@]}" \
             --node-value-features $VALUES --edge-value-features $EDGE_VALUES \
             --output "scoped/$ID.json"
           python - <<'PY'
@@ -298,6 +330,10 @@ jobs:
               rela = data["node_features"]["rela"]["scopes"]["clause"]["values"]
               assert rela["Adju"] == 727 and rela["Subj"] == 78 and sum(rela.values()) == 8908, rela
               assert data["node_types"]["word"] == 39862
+          if data["corpus_id"] == "assyrian-royal-inscriptions":
+              assert data["node_types"]["word"] == 320975
+              assert data["node_types"]["translation_unit"] == 6792
+              assert data["catalog_version"] == "1.0.0" and data["tf_version"] == "0.4.0"
           # The compact observed inventory is also available in the job log for
           # reproducible review. It contains selected categorical labels only.
           print("SCOPED_CENSUS_JSON=" + json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
