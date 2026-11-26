@@ -220,6 +220,17 @@ class InventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cross.version"):
             MODULE.inventory_scoped_api(api, edge_value_features={"omap@old-new"})
 
+    def test_scoped_identity_distinguishes_catalog_release_and_tf_version(self):
+        got = MODULE.scoped_identity(corpus_id="oracc", repository="owner/repo",
+                                     revision="abc", tf_version="0.4.0",
+                                     catalog_version="1.0.0", archive_sha256="a"*64)
+        self.assertEqual(got["tf_version"], "0.4.0")
+        self.assertEqual(got["catalog_version"], "1.0.0")
+        self.assertEqual(got["archive_sha256"], "a"*64)
+        default = MODULE.scoped_identity(corpus_id="bhsa", repository="ETCBC/bhsa",
+                                         revision="abc", tf_version="2021")
+        self.assertEqual(default["catalog_version"], "2021")
+
     def test_scoped_allowlist_typo_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "missing"):
             MODULE.inventory_scoped_api(FakeApi(), node_value_features={"missing"})
