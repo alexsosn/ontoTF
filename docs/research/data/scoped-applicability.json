@@ -220,14 +220,6 @@
             "nodes": [
               "lex"
             ]
-          },
-          {
-            "kind": "feature",
-            "features": [
-              "freq_lex",
-              "rank_lex",
-              "lexeme_count"
-            ]
           }
         ],
         "LRMoo": [
@@ -435,6 +427,16 @@
           ],
           "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
           "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/tf/2021"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "freq_lex",
+            "rank_lex",
+            "lexeme_count"
+          ],
+          "reason": "Corpus-specific lexeme occurrence counts and ranks (distinct from spelling frequency). OntoLex-FrAC is a separate corpus-information extension not in the current seven-model review scope; preserve native statistics for possible future FrAC research.",
+          "evidence": "https://ontolex.github.io/frequency-attestation-corpus-information/"
         }
       ]
     },
