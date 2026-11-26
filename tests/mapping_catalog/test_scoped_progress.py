@@ -119,6 +119,35 @@ class ScopedProgressTests(unittest.TestCase):
             self.assertFalse(routed("pseudepigrapha", model, node("feature", "book", "source_sha256")))
             self.assertFalse(routed("tlhdig-tf", model, node("feature", "sign", "anchor")))
 
+    def test_etcbc_granularity_distinguishes_labels_counts_and_morphemes(self):
+        import json
+        from scripts.pages.scoped_progress import rule_matches
+        root = Path(__file__).resolve().parents[2]
+        policy = json.loads((root / "docs/research/data/scoped-applicability.json").read_text())
+        def routed(corpus, model, key):
+            return any(rule_matches(r, key) for r in policy["corpora"][corpus]["rules"].get(model, []))
+        def excluded(corpus, key):
+            return any(rule_matches(r, key) for r in policy["corpora"][corpus].get("exclusions", []))
+        def key(kind, node, feature=None, value=None):
+            return (kind, node, feature, value, None, None)
+        self.assertTrue(routed("bhsa", "LRMoo", key("feature", "book", "book@he")))
+        self.assertFalse(routed("bhsa", "SKOS", key("feature", "book", "book@he")))
+        self.assertTrue(routed("bhsa", "OntoLex-Lemon", key("feature", "lex", "freq_lex")))
+        self.assertTrue(excluded("bhsa", key("feature", "word", "freq_occ")))
+        self.assertTrue(excluded("bhsa", key("feature", "word", "rank_occ")))
+        self.assertTrue(excluded("bhsa", key("value", "word", "language", "Hebrew")))
+        self.assertTrue(routed("bhsa", "OLiA", key("feature", "lex", "language")))
+        self.assertTrue(routed("bhsa", "OLiA", key("value", "clause_atom", "is_root", "true")))
+        self.assertTrue(excluded("bhsa", key("value", "clause", "dist_unit", "words")))
+        self.assertTrue(routed("syriac", "OLiA", key("feature", "word", "g_emf")))
+        self.assertTrue(routed("syrnt", "CRMtex", key("feature", "word", "word_sedra")))
+        self.assertTrue(routed("cuc", "CRMtex", key("value", "sign", "cont", "continued")))
+        self.assertTrue(routed("peshitta", "OLiA", key("node", "word")))
+        # Identical pooled histograms cannot justify removing undocumented
+        # suffix fields or asserting node-by-node equivalence to prs_*.
+        self.assertFalse(excluded("bhsa", key("value", "word", "suffix_gender", "m")))
+        self.assertFalse(routed("bhsa", "OLiA", key("value", "word", "suffix_gender", "m")))
+
     def test_real_snapshots_and_report(self):
         root = Path(__file__).resolve().parents[2]
         report = build_report(root, "a"*40)
