@@ -345,6 +345,45 @@ jobs:
           # reproducible review. It contains selected categorical labels only.
           print("SCOPED_CENSUS_JSON=" + json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           PY
+      - name: Review TLHdig morphological candidate domains
+        if: matrix.id == 'tlhdig-tf'
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          import json
+          from pathlib import Path
+          from scripts.research.r005_inventory import load_tf
+          api = load_tf(Path("upstream/corpus/tf/0.4.0"))
+          selected = set()
+          selected_per_word = Counter()
+          for word, targets in api.E.selected.items():
+              assert api.F.otype.v(word) == "word"
+              assert all(api.F.otype.v(n) == "analysis" for n in targets)
+              selected.update(targets)
+              selected_per_word[len(targets)] += 1
+          nodes = api.F.otype.s("analysis")
+          report = {"analysis_nodes": len(nodes), "selected_distinct_analysis_nodes": len(selected),
+                    "selected_per_word": dict(selected_per_word), "features": {}}
+          for feature in ("morph", "stemclass", "clitic_morph", "clitic_stemclass", "field4_kind"):
+              f = api.Fs(feature)
+              total, chosen = Counter(), Counter()
+              for n in nodes:
+                  value = f.v(n)
+                  if value is not None and value != "":
+                      total[value] += 1
+                      if n in selected:
+                          chosen[value] += 1
+              assert not (chosen - total)
+              report["features"][feature] = {
+                  "populated": sum(total.values()), "distinct": len(total),
+                  "selected_populated": sum(chosen.values()),
+                  "top": [[v, count, chosen[v]] for v, count in total.most_common(60)]
+              }
+          assert report["features"]["morph"]["populated"] == 1357004
+          assert report["features"]["stemclass"]["populated"] == 1171124
+          assert sum(selected_per_word.values()) > 0
+          print("TLHDIG_MORPHOLOGY_REVIEW=" + json.dumps(report, ensure_ascii=False, sort_keys=True))
+          PY
       - name: Review Syriac lexical sets on the actual current TF
         if: matrix.id == 'syriac'
         run: |
