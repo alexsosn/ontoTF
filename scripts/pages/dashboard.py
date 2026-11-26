@@ -28,7 +28,13 @@ def name(c):
 
 
 def percent(n, d):
-    return f"{100*n/d:.1f}%"
+    rounded = f"{100*n/d:.1f}%"
+    if 0 < n < d:
+        if rounded == "0.0%":
+            return "&lt;0.1%"
+        if rounded == "100.0%":
+            return "&gt;99.9%"
+    return rounded
 
 
 def unknown(label):
@@ -73,7 +79,7 @@ def annotation_bar(stat):
             + segments([("mapped", mapped), ("remaining", total-mapped)], total))
 
 
-def ontology_cell(stat):
+def ontology_cell(stat, *, detailed=True):
     if stat is None:
         return unknown("Not assessed")
     total = stat["eligible"]
@@ -83,15 +89,21 @@ def ontology_cell(stat):
         return unknown("Empty scope") + warning
     mapped = stat["exact"] + stat["qualified"]
     pending = total - mapped
+    compact = (f'<strong>{percent(mapped, total)}</strong>'
+               + segments([("exact", stat["exact"]), ("qualified", stat["qualified"]),
+                           ("remaining", pending)], total)
+               + f'<small>{mapped:,} / {total:,}</small>')
+    if not detailed:
+        return compact + warning
     return (f'<strong>{percent(mapped, total)}</strong>'
             + segments([("exact", stat["exact"]), ("qualified", stat["qualified"]),
                         ("remaining", pending)], total)
             + f'<small>{mapped:,} / {total:,}</small>'
-              f'<details><summary>Breakdown</summary><small>{stat["exact"]:,} exact · {stat["qualified"]:,} qualified</small>'
+              f'<small>{stat["exact"]:,} exact · {stat["qualified"]:,} qualified</small>'
               f'<small>{stat["other_target"]:,} other ontology · '
               f'{stat["ambiguous"]:,} ambiguous · '
               f'{stat["global_nonpositive"]:,} global no-match · '
-              f'{stat["unreviewed"]:,} unreviewed</small></details>' + warning)
+              f'{stat["unreviewed"]:,} unreviewed</small>' + warning)
 
 
 def classification_bar(stat):
@@ -150,7 +162,11 @@ def corpus_detail(c):
             labeled(label, classification_bar(app["classification"][key]))
             for key, label in LABELS.items()
         ) + '</div>'
-    body += '<h3>Remaining work</h3>' + domain_gaps(scoped)
+    if app is not None:
+        body += '<h3>Ontology assessment breakdown</h3><div class="detail-grid">' + "".join(
+            labeled(model, ontology_cell(stat)) for model, stat in app["ontologies"].items()
+        ) + '</div>'
+    body += '<h3>Unreviewed native categories</h3>' + domain_gaps(scoped)
     omitted = sum(len(scoped[k]) for k in ("overflow_domains", "edge_overflow_domains"))
     cross = len(scoped["cross_version_edges"])
     if omitted or cross:
@@ -186,14 +202,19 @@ small{display:block;font-size:.75rem;line-height:1.45;margin-top:.25rem}
 details{margin-top:.7rem}summary{cursor:pointer;color:var(--link);font-size:.875rem;padding:.35rem 0}
 .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1rem;margin:.75rem 0 1.25rem}
 .measure{min-width:0}.gaps{padding-left:1.3rem}.gaps li{margin:.5rem 0}.wrap{overflow-wrap:anywhere}
-.ontology-row{border-top:1px solid var(--line);padding:.8rem 0}
+.ontology-row,.matrix-header{display:grid;grid-template-columns:minmax(8rem,1fr) minmax(0,7fr);gap:.8rem;align-items:center}
+.ontology-row{border-top:1px solid var(--line);padding:.5rem 0}
+.matrix-header{font-size:.75rem;color:var(--muted);font-weight:600;margin:.8rem 0}
+.matrix-header .ontology-grid span{text-align:center}
+.ontology-row h3{margin:0;font-size:.95rem}
+.research-row{display:grid;grid-template-columns:minmax(9rem,1fr) minmax(0,3fr);gap:1rem;align-items:center;padding:.7rem 0;border-top:1px solid var(--line)}
 .ontology-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.5rem}
-.ontology-cell{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:.55rem;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
-.ontology-cell strong{font-size:1.1rem}.ontology-cell h4{font-size:.75rem;min-height:2.3em}
+.ontology-cell{background:var(--panel);background:color-mix(in srgb,var(--exact) var(--strength),var(--panel));border:1px solid var(--line);border-radius:5px;padding:.55rem;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.ontology-cell strong{font-size:1.1rem}.ontology-cell h4{font-size:.75rem;position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
 .unknown{font-size:.85rem}.warning{color:var(--warn)}
 footer{border-top:1px solid var(--line);margin-top:2rem;padding-top:1rem;font-size:.85rem}
-@media(max-width:900px){.ontology-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:650px){.corpus-head{grid-template-columns:1fr;gap:.8rem}.ontology-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ontology-cell h4{min-height:0}}
+@media(max-width:900px){.ontology-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.matrix-header{display:none}.ontology-row{grid-template-columns:1fr;gap:.45rem}.ontology-cell h4{position:static;clip-path:none;width:auto;height:auto;overflow:visible}}
+@media(max-width:650px){.corpus-head,.research-row{grid-template-columns:1fr;gap:.8rem}.ontology-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ontology-cell h4{min-height:0}}
 @media(max-width:320px){.ontology-grid{grid-template-columns:1fr}}
 """
 
@@ -205,7 +226,7 @@ def render(report):
     scoped_count = sum(c.get("scoped") is not None for c in corpora)
     research_count = sum(c.get("applicability") is not None for c in corpora)
     pooled = report["totals"]["scoped"]["node_values"] if scoped_count else None
-    rows, matrix = [], []
+    rows, matrix, research_rows = [], [], []
     for c in corpora:
         scoped = c.get("scoped")
         values = scoped["node_values"] if scoped else None
@@ -216,22 +237,30 @@ def render(report):
                     + '</div><details><summary>Structure, applicability and remaining work — '
                     + name(c) + '</summary>' + corpus_detail(c) + '</details></article>')
         app = c.get("applicability")
-        cells = "".join('<div class="ontology-cell"><h4>' + h(model) + '</h4>'
-                        + ontology_cell(app["ontologies"].get(model) if app else None)
-                        + '</div>' for model in ONTOLOGIES[:-1])
+        research_rows.append('<article class="research-row"><h3>' + name(c) + '</h3>'
+                             + (classification_bar(app["classification"]["node_values"])
+                                if app else unknown("Not assessed")) + '</article>')
+        cells = []
+        for model in ONTOLOGIES[:-1]:
+            stat = app["ontologies"].get(model) if app else None
+            strength = 0 if not stat or not stat["eligible"] else (
+                22 * (stat["exact"] + stat["qualified"]) / stat["eligible"]
+            )
+            cells.append(f'<div class="ontology-cell" style="--strength:{strength:.5g}%"><h4>'
+                         + h(model) + '</h4>' + ontology_cell(stat, detailed=False) + '</div>')
         matrix.append('<article class="ontology-row"><h3>' + name(c)
-                      + '</h3><div class="ontology-grid">' + cells + '</div></article>')
+                      + '</h3><div class="ontology-grid">' + "".join(cells) + '</div></article>')
     return ("""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mapping progress · ontoTF</title><style>""" + STYLE + """</style></head>
 <body><main><header><strong>ontoTF</strong><nav><a href="#coverage">Corpora</a>
-<a href="#ontologies">Ontologies</a><a href="#method">Method</a></nav></header>
+<a href="#ontologies">Ontologies</a><a href="#research">Research gaps</a><a href="#method">Method</a></nav></header>
 <h1>Mapping progress</h1><p class="muted">Semantic coverage of Text-Fabric corpora in the current development catalog.</p>
 <div class="snapshot">""" + (
         labeled("Mapped categorical values · pooled", coverage_bar(pooled))
         + labeled("Mapped annotations · pooled", annotation_bar(pooled))
     ) + """</div><p class="muted">""" +
-    h(f"Measured domains in {scoped_count} of {len(corpora)} corpora; partial applicability research in {research_count}. "
+    h(f"Compatible scoped inventories for {scoped_count} of {len(corpora)} corpora; partial applicability research for {research_count}. "
       "Pooled percentages weight larger measured domains more heavily.") + """</p>
 <section id="coverage"><h2>Coverage by corpus</h2>
 <p>Compare mapped categorical values and the share of their observed annotations. These selected domains vary by corpus; percentages use measured values only. The annotation bar combines exact and qualified mappings.</p>
@@ -239,8 +268,13 @@ def render(report):
 <span><i class="reviewed"></i>Reviewed without positive match</span><span><i class="remaining"></i>Unreviewed</span></div>
 """ + "".join(rows) + """</section>
 <section id="ontologies"><h2>Ontology coverage</h2>
-<p>Mapped share of the researched scope for each corpus and ontology. All applicability research is partial; the percentages do not establish overall ontology completion. Other-ontology mappings do not contribute. Gray shows the researched share without a positive mapping to that ontology.</p>
+<p>Mapped share of the researched scope for each corpus and ontology. All applicability research is partial; the percentages do not establish overall ontology completion. Other-ontology mappings do not contribute. Gray shows the researched share without a positive mapping to that ontology.</p><div class="matrix-header"><span>Corpus</span><div class="ontology-grid">""" +
+    "".join('<span>' + h(model) + '</span>' for model in ONTOLOGIES[:-1]) +
+    """</div></div>
 """ + "".join(matrix) + """</section>
+<section id="research"><h2>Applicability research</h2>
+<p>Share of measured node-value categories assigned to ontology research or explicitly excluded. Classification measures the scope of research; mapping coverage is tracked separately. Structural and edge categories are available in corpus details.</p>
+""" + "".join(research_rows) + """</section>
 <section id="method"><h2>Method and limitations</h2><details><summary>How coverage is calculated</summary>
 <p>Each distinct observed node-scoped value or directed edge value is counted once. Exact and qualified (close, broader, narrower or related) mappings contribute to mapped coverage. Native-only, ambiguous and unsupported dispositions do not contribute. A whole-feature mapping does not cover its values. Annotation coverage weights selected node values by their frequency; it measures feature-value observations and may count multiple annotations of the same word. Guarded node mappings are excluded from unconditional node-type counts.</p>
 <p>Applicability classification measures research of observed units within each kind. Selected units may be relevant to several ontologies. Exclusions follow the current granularity policy. Unclassified units require further research. Unknown scopes and empty measured scopes have no percentage. Open or overflowing value domains are not extrapolated. The report tracks development mappings; release readiness and execution support require separate tests.</p>
