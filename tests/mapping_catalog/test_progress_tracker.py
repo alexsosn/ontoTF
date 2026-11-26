@@ -138,3 +138,28 @@ class ProgressTrackerTests(unittest.TestCase):
         self.assertIn('width:20%', html)
         self.assertIn('width:40%', html)
         self.assertNotIn("60.0% mapped", html)
+
+    def test_source_metadata_versions_and_unknown(self):
+        from scripts.pages.dashboard import corpus_source, ontology_sources
+        root = Path(__file__).resolve().parents[2]
+        report = build_report(root, "a" * 40)
+        by_id = {c["corpus"]: c for c in report["corpora"]}
+        meta = report["source_status"]
+        html = corpus_source(by_id["cuc"], meta)
+        self.assertIn("0.2.8", html)
+        self.assertIn("0.4.0", html)
+        self.assertIn("Update available", html)
+        self.assertIn("Current at check", corpus_source(by_id["bhsa"], meta))
+        c = dict(by_id["cuc"], scoped=dict(by_id["cuc"]["scoped"], revision="new"))
+        self.assertIn("Freshness unverified", corpus_source(c, meta))
+        self.assertNotIn("Update available", corpus_source(c, meta))
+        self.assertIn("Freshness unverified", corpus_source(by_id["cuc"], {}))
+        self.assertIn("Freshness unverified", corpus_source(dict(by_id["cuc"], scoped=None), meta))
+        ont = ontology_sources(meta)
+        self.assertIn("7.1.3", ont)
+        self.assertIn("7.4", ont)
+        self.assertIn("Reference baseline", ont)
+        self.assertIn("Latest stable", ont)
+        self.assertIn("2026-11-26", render(report))
+        self.assertIn("Copenhagen Ugaritic Corpus", render(report))
+        self.assertIn("Source and version", render(report))

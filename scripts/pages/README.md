@@ -33,6 +33,22 @@ Use fixed 0–100% bars, text labels alongside color, responsive layouts and
 progressive disclosure. Do not promote declaration counts or raw file links
 to headline metrics. Preserve missing, empty and zero states independently.
 
+## Source identity and freshness
+
+The dashboard displays the measured TF version (and distinct catalog release
+when applicable), a corpus description, and the most recent checked upstream
+TF version. The dated source comparison in `docs/research/data/pages-source-status.json` is evidence,
+not a floating dependency or a migration. A corpus status is valid only for
+the checked TF version and census revision. Missing or changed evidence
+becomes unverified. For converter corpora, status concerns published TF data,
+not the freshness of the underlying scholarly source edition.
+
+The ontology guide combines the existing R-002 registry with a dated
+comparison of the stable published reference or relevant OWL file. Reference
+versions are not a claim that every mapping has a version-locked ontology
+artifact. Draft releases do not supersede stable reference releases.
+Review source comparisons when new upstream versions appear.
+
 ## Accounting
 
 - A reviewed category selector (excluding individual entity-kind declarations) is a distinct (corpus, corpus version, kind, node, feature, value, from, to) key. Multiple target IRIs do not multiply this count. Exact takes precedence over qualified; ambiguous candidates, native-only and unsupported are not positive.

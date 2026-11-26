@@ -274,7 +274,14 @@ def build_report(root, commit):
         for label in KINDS.values()
     }
     legacy = read_json(root, QUEUE)
+    source_status = read_json(root, DATA + "/pages-source-status.json")
+    registry = read_json(root, DATA + "/R-002-ontology-registry.json")
+    source_status["ontology_registry"] = {
+        row["id"]: {key: row[key] for key in ("name", "scope", "version_or_date", "source")}
+        for row in registry["candidates"]
+    }
     return {"commit": commit, "corpora": corpora, "totals": totals,
+            "source_status": source_status,
             "historical_workstreams": legacy["counts"]["per_corpus"],
             "historical_total": legacy["invariants"]["semantic_items"]}
 

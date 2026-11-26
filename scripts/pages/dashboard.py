@@ -175,6 +175,67 @@ def corpus_detail(c):
     return body
 
 
+
+def source_link(url, label):
+    if not isinstance(url, str) or not url.startswith("https://"):
+        return h(label)
+    return '<a href="' + h(url) + '">' + h(label) + '</a>'
+
+
+def corpus_source(c, metadata):
+    item = metadata.get("corpora", {}).get(c["corpus"], {})
+    scoped = c.get("scoped")
+    version = scoped["tf_version"] if scoped else None
+    status = "Freshness unverified"
+    if (version and version == item.get("checked_tf_version")
+            and scoped["revision"] == item.get("checked_revision")):
+        status = {"current": "Current at check", "update": "Update available"}.get(
+            item.get("status"), status)
+    description = '<small>' + h(item.get("description", "Corpus description unavailable.")) + '</small>'
+    used = "TF " + h(version) if version else "TF version unverified"
+    if c.get("version") and c["version"] != version:
+        used += " · catalog " + h(c["version"])
+    latest = " · upstream TF " + h(item["latest_tf_version"]) if item.get("latest_tf_version") else ""
+    css = "warning" if status == "Update available" else "muted"
+    return (description + '<small>' + used + latest + '</small>'
+            + '<small class="' + css + '">' + h(status) + '</small>')
+
+
+def corpus_provenance(c, metadata):
+    item = metadata.get("corpora", {}).get(c["corpus"], {})
+    scoped = c.get("scoped")
+    repo = c.get("source", "").split("@", 1)[0].split(":", 1)[0]
+    source = source_link("https://github.com/" + repo, "Corpus repository") if repo else "Source unavailable"
+    revision = (source_link("https://github.com/" + repo + "/tree/" + scoped["revision"],
+                            scoped["revision"][:12]) if repo and scoped else "Unknown")
+    return ('<h3>Source and version</h3><p><strong>' + h(item.get("name", c["corpus"]))
+            + '</strong> — ' + source + ' · census revision ' + revision + '</p><p>'
+            + h(item.get("note", "No upstream comparison recorded.")) + ' '
+            + source_link(item.get("evidence"), "Upstream evidence") + '</p>')
+
+
+def ontology_sources(metadata):
+    registry = metadata.get("ontology_registry", {})
+    rows = []
+    for model in ONTOLOGIES[:-1]:
+        item = metadata.get("ontologies", {}).get(model, {})
+        ref = registry.get(item.get("registry_id"), {})
+        baseline = ref.get("version_or_date")
+        matches = baseline is not None and baseline == item.get("checked_baseline")
+        status = ("Current at check" if matches and item.get("status") == "current"
+                  else "Update available" if matches and item.get("status") == "update"
+                  else "Freshness unverified")
+        rows.append('<article class="ontology-info"><h3>' + h(model) + '</h3><p>'
+                    + h(ref.get("name", model)) + ' — ' + h(ref.get("scope", "Scope unavailable."))
+                    + '</p><small>Reference baseline: ' + h(item.get("reference_version") if matches else baseline or "Unknown")
+                    + ' · Latest stable reference: ' + h(item.get("latest_reference", "Unknown"))
+                    + '</small><small class="' + ("warning" if status == "Update available" else "muted")
+                    + '">' + h(status) + '</small><details><summary>Release evidence</summary><p>'
+                    + h(item.get("note", "")) + ' ' + source_link(item.get("evidence"), "Upstream releases")
+                    + '</p></details></article>')
+    return '<div class="ontology-info-grid">' + "".join(rows) + '</div>'
+
+
 STYLE = """
 :root{color-scheme:light dark;--bg:#f7f8fa;--panel:#fff;--ink:#17212a;--muted:#526272;--line:#dce1e6;--link:#075d98;--exact:#17694e;--qualified:#4d7da6;--reviewed:#b28b42;--remaining:#dce1e6;--warn:#795300}
 @media(prefers-color-scheme:dark){:root{--bg:#14191f;--panel:#1b232b;--ink:#e8eef4;--muted:#a9b8c5;--line:#38434d;--link:#8dcaf4;--exact:#70c8a4;--qualified:#8ab9df;--reviewed:#e4b85e;--remaining:#48535e;--warn:#f3cd85}}
@@ -211,7 +272,7 @@ details{margin-top:.7rem}summary{cursor:pointer;color:var(--link);font-size:.875
 .ontology-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.5rem}
 .ontology-cell{background:var(--panel);background:color-mix(in srgb,var(--exact) var(--strength),var(--panel));border:1px solid var(--line);border-radius:5px;padding:.55rem;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .ontology-cell strong{font-size:1.1rem}.ontology-cell h4{font-size:.75rem;position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
-.unknown{font-size:.85rem}.warning{color:var(--warn)}
+.ontology-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem}.ontology-info{border-top:1px solid var(--line);padding:.6rem 0}.ontology-info p{font-size:.875rem;margin:.25rem 0}.ontology-info details{margin:.25rem 0}.unknown{font-size:.85rem}.warning{color:var(--warn)}
 footer{border-top:1px solid var(--line);margin-top:2rem;padding-top:1rem;font-size:.85rem}
 @media(max-width:900px){.ontology-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.matrix-header{display:none}.ontology-row{grid-template-columns:1fr;gap:.45rem}.ontology-cell h4{position:static;clip-path:none;width:auto;height:auto;overflow:visible}}
 @media(max-width:650px){.corpus-head,.research-row{grid-template-columns:1fr;gap:.8rem}.ontology-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ontology-cell h4{min-height:0}}
@@ -222,6 +283,7 @@ footer{border-top:1px solid var(--line);margin-top:2rem;padding-top:1rem;font-si
 def render(report):
     corpora = report["corpora"]
     commit = report["commit"]
+    metadata = report.get("source_status", {})
     commit_url = REPO + "/commit/" + quote(commit, safe="")
     scoped_count = sum(c.get("scoped") is not None for c in corpora)
     research_count = sum(c.get("applicability") is not None for c in corpora)
@@ -231,11 +293,11 @@ def render(report):
         scoped = c.get("scoped")
         values = scoped["node_values"] if scoped else None
         rows.append('<article class="corpus"><div class="corpus-head"><div><h3>'
-                    + name(c) + '</h3><small>Catalog ' + h(c["version"] or "unpinned")
-                    + '</small></div>' + labeled("Category coverage", coverage_bar(values))
+                    + name(c) + '</h3>' + corpus_source(c, metadata)
+                    + '</div>' + labeled("Category coverage", coverage_bar(values))
                     + labeled("Annotation coverage", annotation_bar(values))
                     + '</div><details><summary>Structure, applicability and remaining work — '
-                    + name(c) + '</summary>' + corpus_detail(c) + '</details></article>')
+                    + name(c) + '</summary>' + corpus_provenance(c, metadata) + corpus_detail(c) + '</details></article>')
         app = c.get("applicability")
         research_rows.append('<article class="research-row"><h3>' + name(c) + '</h3>'
                              + (classification_bar(app["classification"]["node_values"])
@@ -254,14 +316,14 @@ def render(report):
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mapping progress · ontoTF</title><style>""" + STYLE + """</style></head>
 <body><main><header><strong>ontoTF</strong><nav><a href="#coverage">Corpora</a>
-<a href="#ontologies">Ontologies</a><a href="#research">Research gaps</a><a href="#method">Method</a></nav></header>
+<a href="#ontologies">Ontologies</a><a href="#models">Ontology guide</a><a href="#research">Research gaps</a><a href="#method">Method</a></nav></header>
 <h1>Mapping progress</h1><p class="muted">Semantic coverage of Text-Fabric corpora in the current development catalog.</p>
 <div class="snapshot">""" + (
         labeled("Mapped categorical values · pooled", coverage_bar(pooled))
         + labeled("Mapped annotations · pooled", annotation_bar(pooled))
     ) + """</div><p class="muted">""" +
     h(f"Compatible scoped inventories for {scoped_count} of {len(corpora)} corpora; partial applicability research for {research_count}. "
-      "Pooled percentages weight larger measured domains more heavily.") + """</p>
+      "Pooled percentages weight larger measured domains more heavily.") + """</p><p class="muted">Upstream version checks: """ + h(metadata.get("checked_at", "not recorded")) + """. Status is based on the latest observed TF data release or published stable ontology reference; source editions and converter releases may differ.</p>
 <section id="coverage"><h2>Coverage by corpus</h2>
 <p>Compare mapped categorical values and the share of their observed annotations. These selected domains vary by corpus; percentages use measured values only. The annotation bar combines exact and qualified mappings.</p>
 <div class="legend"><span><i class="exact"></i>Exact</span><span><i class="qualified"></i>Qualified</span>
@@ -272,6 +334,7 @@ def render(report):
     "".join('<span>' + h(model) + '</span>' for model in ONTOLOGIES[:-1]) +
     """</div></div>
 """ + "".join(matrix) + """</section>
+<section id="models"><h2>Ontology guide and versions</h2><p>Reference baselines used for mapping research. A current reference does not establish that every catalog mapping was validated against a version-locked ontology artifact.</p>""" + ontology_sources(metadata) + """</section>
 <section id="research"><h2>Applicability research</h2>
 <p>Share of measured node-value categories assigned to ontology research or explicitly excluded. Classification measures the scope of research; mapping coverage is tracked separately. Structural and edge categories are available in corpus details.</p>
 """ + "".join(research_rows) + """</section>

@@ -17,6 +17,8 @@ on:
     paths:
       - 'docs/research/data/generated/scoped/**'
       - 'docs/research/data/scoped-applicability.json'
+      - 'docs/research/data/pages-source-status.json'
+      - 'docs/research/data/R-002-ontology-registry.json'
       - 'scripts/pages/**'
       - 'tests/mapping_catalog/test_progress_tracker.py'
       - 'tests/mapping_catalog/test_scoped_progress.py'
