@@ -94,6 +94,18 @@ def bhsa_source_word_token_ids(loaded_bhsa_api):
 
 The caller must independently load the pinned BHSA TF corpus; TFont does not download it. The returned IDs are **native BHSA node IDs only**. Other corpora may use different surface feature names, and an empty or missing source surface is excluded by the condition. Do not infer token alignment, source word identity, lexical sense or physical inscription from an ontology-category match.
 
+### Directed edge categories
+
+An XML `kind="edge"` selector accepts optional `from`, `to` and `value` attributes. Omitting `value` describes the whole edge feature in that direction; specifying it describes only edges with that native value. For example, TLHdig's `joined=direct` is distinct from `joined=indirect`. A value-specific declaration does not imply a mapping for the whole edge.
+
+```xml
+<!-- Source-native disposition, not an asserted ontology equivalence -->
+<map kind="edge" feature="joined" from="fragment" to="fragment"
+     value="direct" relation="native-only"/>
+```
+
+Use `map_native(corpus, kind="edge", feature=..., from_node=..., to_node=..., value=...)` for exact selector lookup. Reverse ontology lookup requires `kind="edge"`. Cross-corpus edge correspondence preserves whole-edge versus value-specific granularity; it does not infer a reverse, transitive, or individual identity relationship. `resolve_edges(api, mapping, corpus_version=...)` executes an exact positive mapping against a loaded TF API and returns sorted directed native endpoint pairs. It requires an explicitly compatible version for pinned mappings, rejects value constraints on unvalued features and does not execute cross-version node maps. Approximate/native-only/ambiguous declarations are not executable.
+
 To add a new corpus or a reviewed category, edit its authoritative `src/tfont/mappings/<corpus>.xml`; no per-corpus registration or generated release ledger is required. A **wheel built from the current development source** packages the same XML mapping files. The published `v0.1.1` wheel predates this XML runtime.
 
 ## BHSA native word-to-lexeme lookup (development source only)
