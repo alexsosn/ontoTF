@@ -31,13 +31,14 @@ applicability policy. Do not equate 100% review with 100% positive matches.
   Current XML edge selectors cannot represent an individual valued-edge value:
   census such values, but keep them as a representational gap until real
   researcher use justifies a small XML extension.
-* Existing source-generated feature docs supply the current ORACC 1.0.0
-  schema but not exhaustive scope/values. At the mapping-pinned
-  [builder revision](https://github.com/alexsosn/ORACC-TF/tree/60db4b724a687c0f425e78eae924fce89454e106)
-  the README describes a staged candidate and pending public release. The
-  committed source tree is not a verified published TF artifact. Acquire the
-  versioned candidate with verified provenance or rebuild from exact source
-  before claiming a real scoped census; do not silently substitute 0.4.0.
+* Existing source-generated feature docs supply the current ORACC schema
+  but not exhaustive scopes/values. The pinned builder README predates
+  publication; later [release evidence](https://github.com/alexsosn/ORACC-TF/pull/154)
+  and [consumer verification](https://github.com/alexsosn/ORACC-TF/pull/156)
+  identify the exact public archive and independently pinned checksum.
+  Release ID 1.0.0 uses internal TF 0.4.0. Verify archive bytes and manifest
+  builder commit before census; record catalog/release version and internal TF
+  version separately, never relabel an unrelated 0.4.0 build.
 
 ## Implementation stages
 
@@ -55,8 +56,8 @@ no free-text samples, IDs, transliterations or large open-domain values. The
 inference. Overflow is explicit and has no partial value list.
 
 Reuse the research-inventory workflow. The new read-only PR/dispatch mode
-generates the current seven direct/checksummed sources plus TLHdig 0.4.0
-(eight total); the old historical verification remains separate. These jobs
+generates all nine current mapping-pinned artifacts (seven direct
+checkouts including TLHdig 0.4.0, two independently checksummed archives); the old historical verification remains separate. These jobs
 run only for census changes or manual refresh, never for normal mapping
 batches. Matrix values are initial source-researched selections, derived
 from R-005 metadata and R-011/I-017/I-019 bounded-family research, plus the
@@ -113,6 +114,6 @@ build the actual Pages artifact.
 
 A is the first implementation gate. B and C depend on verified current
 inventories; no precise ontology-specific completion claim before then.
-ORACC acquisition, large TLHdig memory requirements, and licensing boundaries
-may require separately bounded follow-up work. Continue semantic mapping
+Large TLHdig memory requirements, source access failures and licensing
+boundaries may require separately bounded follow-up work. Continue semantic mapping
 batches independently; new inventory work must not gate ordinary XML edits.
