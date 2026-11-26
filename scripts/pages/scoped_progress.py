@@ -30,7 +30,7 @@ def compatible(inventory, source, version):
     if repo != inventory.get("repository"):
         return False
     pin = re.search(r"@([a-f0-9]{40})(?::|$)", source)
-    return not pin or inventory.get("revision") == pin.group(1)
+    return ("@" not in source if pin is None else inventory.get("revision") == pin.group(1))
 
 
 def observed_items(inventory):
@@ -188,8 +188,14 @@ def eligible_progress(rows, inventory, policy, version):
         unmatched = []
         for rule in rules:
             matched = {key for key, _ in items if rule_matches(rule, key)}
-            if not matched:
-                unmatched.append(rule)
+            absent_features = sorted(set(rule.get("features", ())) - {key[2] for key in matched})
+            absent_nodes = sorted(set(rule.get("nodes", ())) - {key[1] for key in matched})
+            absent_from = sorted(set(rule.get("from", ())) - {key[4] for key in matched})
+            absent_to = sorted(set(rule.get("to", ())) - {key[5] for key in matched})
+            if not matched or absent_features or absent_nodes or absent_from or absent_to:
+                unmatched.append({"rule": rule, "unobserved_features": absent_features,
+                                  "unobserved_nodes": absent_nodes, "unobserved_from": absent_from,
+                                  "unobserved_to": absent_to})
             chosen.update(matched)
         stat = dict(eligible=len(chosen), exact=0, qualified=0, global_nonpositive=0,
                     ambiguous=0, other_target=0, unreviewed=0, unmatched_rules=unmatched)
