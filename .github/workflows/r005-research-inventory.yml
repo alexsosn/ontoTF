@@ -345,6 +345,35 @@ jobs:
           # reproducible review. It contains selected categorical labels only.
           print("SCOPED_CENSUS_JSON=" + json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           PY
+      - name: Review Syriac lexical sets on the actual current TF
+        if: matrix.id == 'syriac'
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter, defaultdict
+          from pathlib import Path
+          from scripts.research.r005_inventory import load_tf
+          api = load_tf(Path("upstream/corpus/tf/0.92"))
+          labels = {"cjad":"advb","demo":"pron","gntl":"adjv","pers":"pron","pinr":"advb","prin":"pron","quot":"verb","vbex":"verb"}
+          groups = defaultdict(Counter)
+          lexemes = defaultdict(Counter)
+          glosses = defaultdict(set)
+          for n in api.F.otype.s("word"):
+              label = api.F.ls.v(n)
+              if label in labels:
+                  groups[label][api.F.sp.v(n)] += 1
+                  lexemes[label][api.F.lex.v(n)] += 1
+                  if label in {"pinr","prin","pers","quot","vbex"}:
+                      glosses[label].add(api.F.gloss.v(n) or "")
+          for label, pos in labels.items():
+              assert set(groups[label]) == {pos}, (label, groups[label])
+          assert set(lexemes["quot"]) == {">MR"}, lexemes["quot"]
+          assert set(lexemes["vbex"]) == {"HWJ"}, lexemes["vbex"]
+          print("SYRIAC_LEXICAL_REVIEW=" + json.dumps(
+              {k: {"pos": dict(groups[k]), "lexeme_count": len(lexemes[k]),
+                   "lexemes": dict(lexemes[k]) if len(lexemes[k]) <= 20 else {},
+                   "glosses": sorted(glosses[k])} for k in labels}, sort_keys=True))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: scoped-${{ matrix.id }}
