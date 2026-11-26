@@ -17,7 +17,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         catalog = MappingCatalog()
         self.assertIn("pseudepigrapha", catalog.list_corpora())
         rows = catalog.map_native(
-            "pseudepigrapha", kind="node", node="variant_word"
+            "pseudepigrapha", corpus_version="1.0", kind="node", node="variant_word"
         )
         self.assertEqual(len(rows), 1)
         self.assertEqual(
@@ -39,7 +39,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         )
         self.assertIn(rows[0], found)
         self.assertEqual(
-            catalog.map_native("pseudepigrapha", kind="entity",
+            catalog.map_native("pseudepigrapha", corpus_version="1.0", kind="entity",
                                node="variant_word", feature="g_word_utf8",
                                value="same spelling"),
             (),
@@ -53,20 +53,20 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         for node in ("word", "reading", "manuscript"):
             with self.subTest(node=node):
                 rows = catalog.map_native(
-                    "pseudepigrapha", kind="node", node=node)
+                    "pseudepigrapha", corpus_version="1.0", kind="node", node=node)
                 self.assertEqual(len(rows), 1)
                 self.assertEqual((rows[0].relation, rows[0].target),
                                  ("native-only", None))
         # A source-version text is a qualified F2 Expression category,
         # but it is neither a word Token nor a physical witness.
-        book, = catalog.map_native("pseudepigrapha", kind="node", node="book")
+        book, = catalog.map_native("pseudepigrapha", corpus_version="1.0", kind="node", node="book")
         self.assertEqual((book.relation, book.target), ("exact", LRMOO_F2))
         self.assertNotIn(
             book,
             catalog.find_by_target(TOKEN, corpus="pseudepigrapha", kind="node"),
         )
         rows = catalog.map_native(
-            "pseudepigrapha", kind="value", node="word",
+            "pseudepigrapha", corpus_version="1.0", kind="value", node="word",
             feature="is_gap", value="1"
         )
         self.assertEqual(
@@ -76,7 +76,8 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         self.assertEqual(
             catalog.find_correspondences(
                 "pseudepigrapha", "bhsa",
-                kind="node", node="word"
+                kind="node", node="word",
+                source_version="1.0",
             ), (),
         )
 
@@ -85,7 +86,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         for value in ("source", "generated_translation"):
             with self.subTest(version_kind=value):
                 rows = catalog.map_native(
-                    "pseudepigrapha", node="book",
+                    "pseudepigrapha", corpus_version="1.0", node="book",
                     feature="version_kind", value=value)
                 self.assertEqual(
                     [(r.relation, r.target) for r in rows],
@@ -95,7 +96,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         # link; apparatus membership still has no justified LRMoo target.
         self.assertEqual(
             catalog.map_native(
-                "pseudepigrapha", kind="entity", node="book",
+                "pseudepigrapha", corpus_version="1.0", kind="entity", node="book",
                 feature="version_kind", value="source",
             ), (),
         )
@@ -106,7 +107,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         ):
             with self.subTest(edge=edge):
                 rows = catalog.map_native(
-                    "pseudepigrapha", kind="edge",
+                    "pseudepigrapha", corpus_version="1.0", kind="edge",
                     feature=edge, from_node=source, to_node=target,
                 )
                 self.assertEqual(
@@ -135,7 +136,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
 
         api = API()
         token = catalog.map_native(
-            "pseudepigrapha", kind="node", node="variant_word"
+            "pseudepigrapha", corpus_version="1.0", kind="node", node="variant_word"
         )[0]
         self.assertEqual(
             resolve_nodes(api, token, corpus_version="1.0"),
@@ -147,7 +148,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         with self.assertRaisesRegex(MappingError, "positive"):
             resolve_nodes(
                 api, catalog.map_native(
-                    "pseudepigrapha", kind="node", node="word"
+                    "pseudepigrapha", corpus_version="1.0", kind="node", node="word"
                 )[0],
             )
         with self.assertRaisesRegex(MappingError, "loaded corpus version"):
@@ -171,7 +172,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
     def test_surface_bearing_primary_word_nodes_exclude_empty_gaps(self):
         catalog = MappingCatalog()
         positive = catalog.map_native(
-            "pseudepigrapha", kind="node",
+            "pseudepigrapha", corpus_version="1.0", kind="node",
             node="word", feature="g_word_utf8"
         )
         self.assertEqual(
@@ -208,7 +209,7 @@ class PseudepigraphaObservedMappingsTests(unittest.TestCase):
         # be promoted without the verified feature-presence precondition.
         self.assertEqual(
             [(m.relation, m.target) for m in catalog.map_native(
-                "pseudepigrapha", kind="node", node="word"
+                "pseudepigrapha", corpus_version="1.0", kind="node", node="word"
             )],
             [("native-only", None)],
         )

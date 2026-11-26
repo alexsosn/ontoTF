@@ -206,7 +206,7 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(report["totals"]["scoped_corpora"], 9)
         self.assertEqual(report["totals"]["scoped"]["node_values"]["total"], 1317)
         self.assertEqual(report["totals"]["scoped"]["edge_values"]["total"], 4)
-        self.assertEqual(report["totals"]["scoped"]["node_features"]["total"], 739)
+        self.assertEqual(report["totals"]["scoped"]["node_features"]["total"], 740)
         self.assertEqual(report["totals"]["scoped"]["edge_pairs"]["total"], 73)
         c = {x["corpus"]: x for x in report["corpora"]}
         self.assertEqual(c["bhsa"]["scoped"]["node_values"]["total"], 459)
@@ -222,6 +222,6 @@ class ScopedProgressTests(unittest.TestCase):
                 self.assertFalse(stat["unmatched_rules"], (corpus["corpus"], model))
                 self.assertEqual(stat["eligible"], sum(stat[k] for k in ("exact", "qualified", "global_nonpositive", "ambiguous", "other_target", "unreviewed")))
         html = render(report)
-        self.assertIn("Observed scoped coverage", html)
-        self.assertIn("Ontology applicability review", html)
-        self.assertIn("Incomplete", html)
+        self.assertIn("Coverage by annotation type", html)
+        self.assertIn("Ontology coverage", html)
+        self.assertIn("All applicability research is partial", html)

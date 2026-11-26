@@ -8,18 +8,17 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
-from html import escape
 import json
 import re
 from pathlib import Path
 import subprocess
-from urllib.parse import quote
 from xml.etree import ElementTree as ET
 
 from tfont.xml_mappings import MappingCatalog
+from scripts.pages.dashboard import render
 from scripts.pages.scoped_progress import (
     ONTOLOGIES, POSITIVE, ontology, KINDS, scoped_progress, eligible_progress,
-    observed_items, rule_matches,
+    observed_items, rule_matches, compatible,
 )
 
 
@@ -216,9 +215,30 @@ def build_report(root, commit):
         source = xml.get("source")
         pin = re.search(r"@([a-f0-9]{40})(?::|$)", source)
         rows = catalog.load(corpus)
-        stats = summarize(rows, inv.get(corpus), version,
-                          source_revision=pin.group(1) if pin else None)
         scoped = scoped_inventories.get(corpus)
+        schema_inventory = inv.get(corpus)
+        # A current loaded scoped census supersedes stale schema-only evidence.
+        # Keep historical reports intact and avoid maintaining duplicate snapshots.
+        if (compatible(scoped, source, version)
+                and (schema_inventory is None or schema_inventory["version"] != version
+                     or schema_inventory.get("revision") != scoped["revision"])):
+            domains = {}
+            for name, info in scoped["node_features"].items():
+                scopes = info["scopes"]
+                if scopes and all(s.get("value_domain") == "complete_observed"
+                                  for s in scopes.values()):
+                    domains[name] = {
+                        "values": sorted({v for s in scopes.values() for v in s["values"]}),
+                        "scopes": sorted(scopes),
+                    }
+            schema_inventory = {
+                "version": version, "revision": scoped["revision"],
+                "source": SCOPED + "/" + corpus + ".json", "value_domains": domains,
+                **{name: sorted(scoped[name]) for name in
+                   ("node_types", "node_features", "edge_features")},
+            }
+        stats = summarize(rows, schema_inventory, version,
+                          source_revision=pin.group(1) if pin else None)
         stats["scoped"] = scoped_progress(rows, scoped, source, version)
         stats["applicability"] = None
         spec = policy["corpora"].get(corpus)
@@ -275,268 +295,16 @@ def build_report(root, commit):
         for label in KINDS.values()
     }
     legacy = read_json(root, QUEUE)
+    source_status = read_json(root, DATA + "/pages-source-status.json")
+    registry = read_json(root, DATA + "/R-002-ontology-registry.json")
+    source_status["ontology_registry"] = {
+        row["id"]: {key: row[key] for key in ("name", "scope", "version_or_date", "source")}
+        for row in registry["candidates"]
+    }
     return {"commit": commit, "corpora": corpora, "totals": totals,
+            "source_status": source_status,
             "historical_workstreams": legacy["counts"]["per_corpus"],
             "historical_total": legacy["invariants"]["semantic_items"]}
-
-
-def h(value):
-    return escape(str(value), quote=True)
-
-
-def link(url, label):
-    # Inventory URL can be external only over HTTPS, never an executable URI.
-    if not url.startswith("https://"):
-        return h(label)
-    return '<a href="' + h(url) + '">' + h(label) + '</a>'
-
-
-def rate(n, d):
-    if n is None or d is None or not d:
-        return "—"
-    return f"{n:,} / {d:,} ({100*n/d:.1f}%)"
-
-
-def bar(n, d):
-    text = rate(n, d)
-    if n is None or d is None or not d:
-        return text
-    # The adjacent numeric text is the accessible label, so the visual bar is decorative.
-    return text + f'<meter min="0" max="{d}" value="{n}" aria-hidden="true"></meter>'
-
-
-def number(value):
-    return "—" if value is None else f"{value:,}"
-
-
-def table(headers, rows, caption):
-    head = "".join(f'<th scope="col">{h(x)}</th>' for x in headers)
-    body = "".join('<tr><th scope="row">' + cells[0] + '</th>' +
-                   "".join("<td>" + cell + "</td>" for cell in cells[1:]) + "</tr>"
-                   for cells in rows)
-    return ('<div class="scroll"><table><caption>' + h(caption) +
-            '</caption><thead><tr>' + head + '</tr></thead><tbody>' + body +
-            '</tbody></table></div>')
-
-
-def render(report):
-    totals = report["totals"]
-    corpora = report["corpora"]
-    commit = report["commit"]
-    blob = REPO + "/blob/" + quote(commit, safe="") + "/"
-    mapping = lambda c: link(blob + "src/tfont/mappings/" + quote(c["corpus"], safe="") + ".xml",
-                             c["corpus"])
-    count_rows = []
-    matrix = []
-    gaps = []
-    scoped_rows = []
-    eligible_rows = []
-    scoped_details = []
-    for c in corpora:
-        count_rows.append([mapping(c), h(c["version"] or "unpinned"),
-                           number(c["exact"]), number(c["qualified"]), number(c["nonpositive"]),
-                           rate(c["positive"], c["reviewed"]), bar(c["schema_positive"], c["schema_total"]),
-                           bar(c["schema_reviewed"], c["schema_total"])])
-        cells = [mapping(c)]
-        for name in ONTOLOGIES:
-            stat = c["ontologies"][name]
-            cells.append(number(stat["selectors"]) +
-                         '<small>' + (number(stat["schema"]) + " / " + number(c["schema_total"])
-                                       if c["schema_total"] is not None else "—") + '</small>')
-        cells.append(number(c["positive"]))
-        matrix.append(cells)
-        scoped = c.get("scoped")
-        if scoped is None:
-            scoped_rows.append([mapping(c)] + ["—"] * 6)
-        else:
-            scoped_rows.append([mapping(c), *[
-                rate(scoped[label]["positive"], scoped[label]["total"]) +
-                "<small>" + rate(scoped[label]["reviewed"], scoped[label]["total"]) + " reviewed</small>"
-                for label in KINDS.values()],
-                rate(scoped["node_values"]["positive_occurrences"], scoped["node_values"]["occurrences"])])
-            domains = [[h(d["node"]), h(d["feature"]),
-                        rate(d["positive"], d["total"]), rate(d["reviewed"], d["total"]),
-                        rate(d["positive_occurrences"], d["occurrences"]),
-                        h(", ".join(d["unreviewed_values"])) or "—"] for d in scoped["domains"]]
-            edge_domains = [[h(d["feature"]), h(d["source"]), h(d["target"]),
-                             rate(d["positive"], d["total"]), rate(d["reviewed"], d["total"]),
-                             h(", ".join(d["unreviewed_values"])) or "—"] for d in scoped["edge_domains"]]
-            guard_rows = [[h(g["node"]), h(g["feature"]), h(g["status"]),
-                           rate(g["observations"], g["node_count"])] for g in scoped["guarded_nodes"]]
-            outstanding = []
-            for label, key in (("Outside observed domain", "outside_values"),
-                               ("Unmeasured mapped values", "unmeasured_values"),
-                               ("Overflow domains", "overflow_domains"),
-                               ("Outside observed edge values", "outside_edge_values"),
-                               ("Unmeasured edge values", "unmeasured_edge_values"),
-                               ("Edge value overflow", "edge_overflow_domains"),
-                               ("Cross-version edges (no local pair types)", "cross_version_edges")):
-                if scoped[key]:
-                    outstanding.append("<p>" + h(label) + ": " + h("; ".join(
-                        " / ".join(v or "*" for v in x) if isinstance(x, list) else x for x in scoped[key])) + "</p>")
-            scoped_details.append("<details><summary>" + h(c["corpus"]) +
-                " · " + rate(scoped["node_values"]["positive"], scoped["node_values"]["total"]) +
-                "</summary><p>" + link(blob + scoped["source"], "Exact source inventory") +
-                " · TF " + h(scoped["tf_version"]) + " · SHA-256 <code>" +
-                h(scoped["tf_files_sha256"]) + "</code></p>" +
-                (table(("Node", "Feature", "Positive values", "Reviewed values",
-                        "Positive annotations", "Unreviewed values"), domains,
-                       "Every selected complete observed domain, with real node scope.") if domains else
-                 "<p>No selected complete node-value domains.</p>") +
-                (table(("Edge feature", "Source", "Destination", "Positive values", "Reviewed values", "Unreviewed values"),
-                       edge_domains, "Selected complete observed edge-value domains.") if edge_domains else "") +
-                (table(("Node", "Presence guard", "Disposition", "Guard-bearing nodes"), guard_rows,
-                       "Conditional node mappings (excluded from unconditional node-type counts).") if guard_rows else "") +
-                "".join(outstanding) + "</details>")
-        applicability = c.get("applicability")
-        eligible_cells = [mapping(c)]
-        for model in ONTOLOGIES[:-1]:
-            stat = applicability["ontologies"].get(model) if applicability else None
-            if stat is None:
-                eligible_cells.append("—")
-            else:
-                eligible_cells.append(rate(stat["positive"], stat["eligible"]) +
-                    "<small>" + h(f'{stat["exact"]} exact · {stat["qualified"]} qualified') +
-                    "</small><small>" + h(f'{stat["global_nonpositive"]} global no-target · {stat["ambiguous"]} ambiguous · {stat["other_target"]} other target · {stat["unreviewed"]} no decision') +
-                    "</small>" + ("<small>Unmatched policy rules</small>" if stat["unmatched_rules"] else ""))
-        eligible_cells.append("Incomplete" if applicability else "Unclassified")
-        eligible_rows.append(eligible_cells)
-        if applicability and scoped_details:
-            labels = {"node_types": "Node types", "node_features": "Scoped features",
-                      "node_values": "Selected node values", "edge_pairs": "Edge pairs",
-                      "edge_values": "Selected edge values"}
-            classification = applicability["classification"]
-            routed = "; ".join(f"{labels[k]}: {v['routed']} routed, {v['excluded']} excluded, {v['unclassified']} unclassified"
-                              for k, v in classification.items() if v["candidates"])
-            details = "<p>" + link(applicability["source"], "Applicability evidence") + " · " + h(applicability["rationale"]) + "</p>"
-            details += "<p>Observed units by research status (separate units, not an overall completion ratio): " + h(routed) + ".</p>"
-            if applicability["exclusions"]:
-                details += "<ul>" + "".join("<li>" + h(", ".join(rule.get("features", rule.get("nodes", [])))) +
-                    " — " + h(rule["reason"]) + " (" + link(rule["evidence"], "source") + ")</li>"
-                    for rule in applicability["exclusions"]) + "</ul>"
-            scoped_details[-1] = scoped_details[-1].removesuffix("</details>") + details + "</details>"
-        inv = c["inventory"]
-        source = "No matching inventory."
-        if inv:
-            url = inv["source"]
-            if not url.startswith("https://"):
-                url = blob + quote(url, safe="/")
-            source = link(url, "Inventory evidence") + " · TF " + h(inv.get("tf_version", inv["version"]))
-            if inv.get("tf_version") and inv["tf_version"] != inv["version"]:
-                source += " · catalog " + h(inv["version"])
-            if inv.get("release_evidence"):
-                source += " · " + link(inv["release_evidence"], "Release identity evidence")
-            if inv.get("revision"):
-                source += " · revision " + h(inv["revision"][:12])
-            if inv.get("type_source"):
-                source += " · " + link(inv["type_source"], "Node type evidence")
-            if c["schema_total"] is None:
-                source += " (not comparable to mapping version or explicit revision)"
-        details = ""
-        if c["schema_unmapped"] is not None:
-            details += '<p>Schema items with positive mappings: ' + " · ".join(
-                h(label) + " " + rate(c["schema_breakdown"][key]["positive"],
-                                       c["schema_breakdown"][key]["total"])
-                for key, label in (("type", "Node types"), ("feature", "Node features"), ("edge", "Edge features"))
-            ) + '</p>'
-            details += '<p>Without positive mapping: ' + ", ".join(h(x) for x in c["schema_unmapped"]) + '</p>'
-            details += '<p>Without any schema-linked disposition: ' + ", ".join(h(x) for x in c["schema_unreviewed"]) + '</p>'
-        details += '<p>Selectors without a positive target: ' + (
-            ", ".join(h(k) + " " + number(v) for k, v in c["nonpositive_status"].items()) or "none"
-        ) + '</p>'
-        if c["value_domains"]:
-            domain_rows = [[h(d["feature"]), h(", ".join(d["scopes"])),
-                            rate(d["positive"], d["total"]), rate(d["reviewed"], d["total"]),
-                            number(len(d["outside_inventory"]))]
-                           for d in c["value_domains"]]
-            details += table(("Feature", "Observed scopes", "Positive values", "Reviewed values",
-                              "Declared outside list"), domain_rows,
-                             "Complete observed value lists for features with XML value dispositions; values pooled across scopes.")
-        else:
-            details += '<p>No complete comparable observed value lists for mapped features are available in this inventory.</p>'
-        gaps.append('<details><summary>' + h(c["corpus"]) + ' · ' +
-                    rate(c["schema_positive"], c["schema_total"]) +
-                    '</summary><p>' + source + " · " + mapping(c) + '</p>' + details + '</details>')
-    scoped_rows.append(["<strong>Total</strong>", *[
-        rate(totals["scoped"][label]["positive"], totals["scoped"][label]["total"]) +
-        "<small>" + rate(totals["scoped"][label]["reviewed"], totals["scoped"][label]["total"]) + " reviewed</small>"
-        for label in KINDS.values()],
-        rate(totals["scoped"]["node_values"]["positive_occurrences"], totals["scoped"]["node_values"]["occurrences"])])
-    count_rows.append(["<strong>Total</strong>", "—", *[number(totals[k]) for k in
-                      ("exact", "qualified", "nonpositive")], rate(totals["positive"], totals["reviewed"]),
-                       bar(totals["schema_positive"], totals["schema_total"]),
-                       bar(totals["schema_reviewed"], totals["schema_total"])])
-    matrix.append(["<strong>Total</strong>", *[
-        number(totals["ontologies"][name]["selectors"]) + '<small>' +
-        number(totals["ontologies"][name]["schema"]) + " / " + number(totals["schema_total"]) +
-        '</small>' for name in ONTOLOGIES], number(totals["positive"])])
-    legacy = report["historical_workstreams"]
-    old_rows = [[h(c), *[number(counts.get(w, 0)) for w in WORKSTREAMS],
-                 number(sum(counts.values()))] for c, counts in sorted(legacy.items())]
-    old_rows.append(["<strong>Total</strong>", *[number(sum(x.get(w, 0) for x in legacy.values()))
-                    for w in WORKSTREAMS], number(report["historical_total"])])
-    cards = [
-        ("Positive observed values", rate(totals["scoped"]["node_values"]["positive"], totals["scoped"]["node_values"]["total"]),
-         "selected scoped categories · " + number(totals["scoped_corpora"]) + " corpora"),
-        ("Reviewed observed values", rate(totals["scoped"]["node_values"]["reviewed"], totals["scoped"]["node_values"]["total"]),
-         "selected categorical families only"),
-        ("Schema coverage", rate(totals["schema_positive"], totals["schema_total"]),
-         "at least one positive mapping · " + number(totals["comparable_corpora"]) + " comparable corpora"),
-        ("Positive selectors", number(totals["positive"]), "of " + number(totals["reviewed"]) + " reviewed"),
-        ("Core ontologies", number(sum(totals["ontologies"][o]["selectors"] > 0 for o in ONTOLOGIES[:-1])) + " / 7",
-         number(totals["corpora"]) + " corpora"),
-    ]
-    cards_html = "".join('<div class="metric"><span>' + h(label) + '</span><strong>' +
-                         h(value) + '</strong><small>' + h(subtitle) + '</small></div>'
-                         for label, value, subtitle in cards)
-    return """<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mapping progress · ontoTF</title>
-<style>
-:root{color-scheme:light dark;--bg:#f7f8fa;--panel:#fff;--ink:#17212a;--muted:#526272;--line:#dce1e6;--link:#075d98;--accent:#17694e}
-@media(prefers-color-scheme:dark){:root{--bg:#14191f;--panel:#1b232b;--ink:#e8eef4;--muted:#a9b8c5;--line:#38434d;--link:#8dcaf4;--accent:#83d7b1}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
-main{max-width:1280px;margin:auto;padding:2rem clamp(1rem,3vw,2.5rem) 4rem}a{color:var(--link)}
-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem}
-h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.15;margin:1.5rem 0 .4rem;letter-spacing:-.04em}
-h2{font-size:1.3rem;margin:2.5rem 0 .4rem}p{max-width:95ch;margin:.5rem 0 1rem}
-.muted,small{color:var(--muted)}small{display:block;font-size:.78rem}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;margin:1.5rem 0}
-.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1rem}
-.metric strong{display:block;color:var(--accent);font-size:1.65rem;letter-spacing:-.025em;font-variant-numeric:tabular-nums;margin:.3rem 0}
-.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
-table{border-collapse:collapse;width:100%;font-size:.875rem;font-variant-numeric:tabular-nums}
-caption{text-align:left;padding:.8rem 1rem;color:var(--muted);font-size:.8rem}
-th,td{padding:.75rem .8rem;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-th:first-child{text-align:left}thead th{background:var(--bg);font-size:.8rem}tbody th{font-weight:500}
-tr:last-child td,tr:last-child th{border-bottom:0}tbody tr:last-child{background:var(--bg)}
-details{padding:.7rem 0;border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:600}details p{overflow-wrap:anywhere;font-size:.88rem}
-meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--accent);margin-top:.2rem}code{font-size:.85em}footer{margin-top:2rem;color:var(--muted);font-size:.85rem}
-</style></head><body><main>
-<header><strong>ontoTF / TFont</strong><nav>""" + link(REPO, "GitHub") + """ · <a href="progress.json">Download data</a></nav></header>
-<h1>Mapping progress</h1><p class="muted">Current development XML catalog. Mapping counts describe native semantic categories, not individual corpus tokens, identity links, or released-wheel support.</p>
-<p class="muted">Source commit """ + link(REPO + "/commit/" + quote(commit, safe=""), commit[:12]) + """</p>
-<section class="metrics" aria-label="Summary">""" + cards_html + """</section>
-<h2>Corpus coverage</h2><p>Exact takes precedence over qualified when one selector has multiple positive targets. Native-only, ambiguous and unsupported selectors are reviewed dispositions without a positive target. Selector counts include all declared versions; schema counts use only the comparable default version. Individual entity declarations are excluded.</p>""" + table(
-        ("Corpus", "Catalog version", "Exact", "Qualified", "No positive target", "Positive / reviewed", "Schema positive", "Schema touched"),
-        count_rows, f"Schema totals cover {totals['comparable_corpora']} of {totals['corpora']} corpora with compatible pinned inventories.") + """
-<h2>Corpus × ontology</h2><p>Each cell shows distinct positive versioned selectors; the smaller line is schema items with at least one positive mapping to that ontology / all comparable schema items in the corpus. Ontologies can overlap. The schema denominator is not an ontology-specific eligibility count.</p>""" + table(
-        ("Corpus", *ONTOLOGIES, "Unique positive"), matrix,
-        "Selectors and schema coverage, by ontology. A dash means no comparable inventory.") + """
-<h2>Observed scoped coverage</h2><p>Positive / observed, with reviewed counts below. The inventory includes actual node-feature combinations, actual directed edge pairs and selected complete categorical domains from pinned TF artifacts. Guarded node mappings are reported separately. Feature mappings do not cover individual values. Valued edge categories are counted separately from whole-edge mappings. Annotation-weighted coverage counts feature-value observations (not unique tokens).</p>""" + table(
-        ("Corpus", "Node types", "Node features by scope", "Selected node values", "Directed edge pairs", "Selected edge values", "Positive annotations"),
-        scoped_rows, f"Real scoped evidence for {totals['scoped_corpora']} of {totals['corpora']} corpora; categorical families are selected, not exhaustive.") + """
-""" + "".join(scoped_details) + """
-<h2>Ontology applicability review (partial)</h2><p>Positive / eligible within explicitly selected research families. These are review domains, not guaranteed ontology matches or complete denominators. A global native-only or unsupported disposition is shown separately; it does not prove that every ontology was evaluated. Ambiguous and other-target counts are separate. A dash indicates no researched scope, not zero applicable items. All corpus-wide applicability inventories remain incomplete.</p><p>""" + link(blob + APPLICABILITY, "Family-level applicability policy and source evidence") + """</p>""" + table(
-        ("Corpus", *ONTOLOGIES[:-1], "Eligibility completeness"), eligible_rows,
-        "Partial source-grounded review families; no aggregate completion percentage.") + """
-<h2>Schema gaps and evidence</h2><p>One schema item is a native node type, node feature or edge feature. A partially mapped feature counts once. TF warp/configuration and optional unloaded provenance features are excluded; other technical or native-only categories can remain in the denominator. A version match is not authentication of source bytes. Complete observed value lists are shown only for already mapped feature families where the inventory provides them; values are pooled across native scopes and may include technical categories. No corpus-wide value completion rate is inferred. The tracker does not assert that every schema item needs an ontology target.</p>""" + "".join(gaps) + """
-<h2>Historical semantic work plan</h2><p>The P-004 inventory groups ontology workstreams and includes selected feature values. Its """ + number(report["historical_total"]) + """-item baseline excludes later corpora and uses older revisions for some datasets. It is not the denominator for the XML selector totals above. The historical plan remains separate; the current scoped evidence and partial applicability counts above do not establish exhaustive ontology-specific eligibility.</p>""" + table(
-        ("Corpus", *WORKSTREAM_NAMES, "Total"), old_rows,
-        "Historical P-004 routed semantic items; planned workload, not current progress ratios.") + """
-<footer>Generated from the """ + link(REPO + "/tree/" + quote(commit, safe="") + "/src/tfont/mappings", "authoritative XML catalog") + " and " + link(blob + QUEUE, "historical work queue") + """. No corpus text is redistributed by this page. <a href="progress.json">Machine-readable statistics</a>.</footer>
-</main></body></html>
-"""
 
 
 def main():

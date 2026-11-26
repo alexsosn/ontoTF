@@ -89,7 +89,7 @@ class OraccProperNameSubtypesTests(unittest.TestCase):
                 ))
         reverse = self.catalog.find_correspondences(
             "syriac", ORACC, node="word", feature="ls",
-            value="prop", include_approximate=True)
+            value="prop", include_approximate=True, source_version="0.9")
         self.assertTrue(any(
             match.destination.feature == "epos"
             and match.destination.value == "DN" for match in reverse
@@ -97,7 +97,7 @@ class OraccProperNameSubtypesTests(unittest.TestCase):
         self.assertEqual(
             self.catalog.find_correspondences(
                 "syriac", ORACC, node="word", feature="ls",
-                value="prop"), (),
+                value="prop", source_version="0.9"), (),
         )
 
     def test_name_tags_never_turn_into_exact_token_selection_or_identity(self):
