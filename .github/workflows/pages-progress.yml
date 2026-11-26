@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/tfont/mappings/**'
-      - 'src/tfont/xml_mappings.py'
+      - 'src/ontotf/mappings/**'
+      - 'src/ontotf/xml_mappings.py'
       - 'docs/research/data/**'
       - 'scripts/pages/**'
       - 'tests/mapping_catalog/test_progress_tracker.py'

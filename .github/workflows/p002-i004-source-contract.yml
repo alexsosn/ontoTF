@@ -5,7 +5,7 @@ on:
     branches:
       - design/p-002-i004-source-contract
     paths:
-      - src/tfont/schemas/profile.schema.json
+      - src/ontotf/schemas/profile.schema.json
       - tests/p002/**
       - tests/i001/**
       - tests/i002/**

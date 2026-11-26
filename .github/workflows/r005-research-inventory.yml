@@ -34,7 +34,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'historical')
     runs-on: ubuntu-latest
     steps:
-      - name: Check out TFont research branch
+      - name: Check out ontoTF research branch
         uses: actions/checkout@v5
         with:
           fetch-depth: 0

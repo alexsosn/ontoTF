@@ -6,9 +6,9 @@ on:
       - "scripts/research/r020_denotational_semantics.py"
       - "docs/research/R-020-denotational-mapping-semantics.md"
       - "docs/research/data/generated/r020/denotational-semantics.json"
-      - "src/tfont/resources/profiles/bhsa/0.2.0/mappings/**"
-      - "src/tfont/resources/profiles/syriac/0.2.0/mappings/**"
-      - "src/tfont/resources/profiles/extrabiblical/0.2.0/mappings/**"
+      - "src/ontotf/resources/profiles/bhsa/0.2.0/mappings/**"
+      - "src/ontotf/resources/profiles/syriac/0.2.0/mappings/**"
+      - "src/ontotf/resources/profiles/extrabiblical/0.2.0/mappings/**"
       - "docs/research/R-016-approximate-execution-policy.md"
       - ".github/workflows/r020-denotational-semantics.yml"
   workflow_dispatch:
