@@ -29,20 +29,34 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      - name: Enforce current project name in tracked paths and content
+      - name: Guard project naming and preserve legacy format IDs
         run: |
           python3 - <<'PY'
           import pathlib
+          import re
           import subprocess
-          retired = b"tf" + b"ont"
+
+          # Wire identifiers in the historical JSON runtime are data, not branding.
+          # Keep the existing hashes reproducible while the XML architecture
+          # replaces that runtime. Reject old paths, imports, and display names.
+          old = b"tf" + b"ont"
+          allowed = re.compile(
+              rb"minimum_" + old + rb"_runtime|"
+              + old + rb"-(?:[a-z0-9-]+-v[0-9]+|bhsa|syriac|extrabiblical|test)(?![a-z0-9-])|"
+              + old + rb"-\{|"
+              + old + rb"\.dev/schema/|"
+              + old + rb":(?:resources/|schemas/|derived:)"
+          )
           paths = subprocess.check_output(["git", "ls-files", "-z"]).split(b"\0")
-          stale = [
-              p.decode() for p in paths if p and (
-                  retired in p.lower() or retired in pathlib.Path(p.decode()).read_bytes().lower()
-              )
-          ]
+          stale = []
+          for p in paths:
+              if not p:
+                  continue
+              raw = pathlib.Path(p.decode()).read_bytes()
+              if old in p.lower() or old in allowed.sub(b"", raw).lower():
+                  stale.append(p.decode())
           if stale:
-              raise SystemExit("Retired project name in:\n" + "\n".join(stale))
+              raise SystemExit("Retired branding in:\n" + "\n".join(stale))
           PY
 
       - name: Set up Python

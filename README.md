@@ -172,7 +172,7 @@ Python 3.12 or newer (Python 3.14 recommended; CI tests 3.12–3.15). Install th
 python -m pip install -e .
 ```
 
-The examples below use `import ontotf`. For local-corpus execution, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). No PyPI publication of the renamed package is claimed. The [historical v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1) retains its original distribution and import name and its original Python >=3.10 requirement; use documentation at that tag for its installation and API examples.
+The examples below use `import ontotf`. Existing serialized identifiers of the historical JSON runtime retain their original spellings for compatibility with reviewed artifacts and digests; they are not distribution or import names. The XML catalog does not depend on these identifiers. For local-corpus execution, separately install [Text-Fabric](https://github.com/annotation/text-fabric) (`python -m pip install text-fabric`). No PyPI publication of the renamed package is claimed. The [historical v0.1.1 release](https://github.com/alexsosn/ontoTF/releases/tag/v0.1.1) retains its original distribution and import name and its original Python >=3.10 requirement; use documentation at that tag for its installation and API examples.
 
 Corpus files are **not bundled**. ontoTF does not download, load or update BHSA, Syriac or ExtraBiblical; you must obtain source corpora independently and respect their licenses. The separately bundled pinned OLiA ontology is CC BY 3.0 with its `ATTRIBUTION.txt` and `LICENSE.data`; ontoTF-authored code and mapping/profile metadata are MIT. BHSA corpus data have distinct CC BY-NC 4.0 terms.
 
