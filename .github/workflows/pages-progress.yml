@@ -44,6 +44,17 @@ jobs:
       - run: python -m pip install -e .
       - run: python -m unittest tests.mapping_catalog.test_progress_tracker tests.mapping_catalog.test_scoped_progress tests.mapping_catalog.test_valued_edges -v
       - run: python -m scripts.pages.build_progress --out _site
+      - name: Browser smoke test (desktop, tablet, mobile)
+        if: github.event_name == 'pull_request'
+        run: |
+          python -m pip install playwright
+          python -m scripts.pages.smoke_dashboard --site _site --screenshots _preview
+      - name: Upload visual preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-preview
+          path: _preview
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
