@@ -233,7 +233,7 @@ jobs:
             repo: alexsosn/TLHdig-TF
             pin: e954600d9f9cc7f16570729813cf6bf3954b8f6d
             version: "0.4.0"
-            values: "morph pos type sgr agr det num missing laes ras add quot materlect_anomalous cu_unrendered crossesline nested siglum_ambiguous from_open_marker from_close_marker mrpsel_kind sel_group parse_ok field4_kind cu_aligned ruling kind orphan fragment_kind siglum_source join_kind join_encoding join_resolved"
+            values: "morph clitic_morph pos type sgr agr det num missing laes ras add quot materlect_anomalous cu_unrendered crossesline nested siglum_ambiguous from_open_marker from_close_marker mrpsel_kind sel_group parse_ok field4_kind cu_aligned ruling kind orphan fragment_kind siglum_source join_kind join_encoding join_resolved"
             edge_values: "joined witness_resolution"
           - id: assyrian-royal-inscriptions
             repo: alexsosn/ORACC-TF
@@ -332,6 +332,10 @@ jobs:
               assert scope["value_domain"] == "complete_observed"
               assert len(scope["values"]) == 4581
               assert sum(scope["values"].values()) == 1357004
+              clitics = data["node_features"]["clitic_morph"]["scopes"]["analysis"]
+              assert clitics["value_domain"] == "complete_observed"
+              assert len(clitics["values"]) == 822
+              assert sum(clitics["values"].values()) == 388870
           if data["corpus_id"] == "syriac":
               assert data["tf_version"] == "0.92"
               assert "g_word" in data["node_features"]
@@ -422,6 +426,21 @@ jobs:
                       else:
                           raise AssertionError("Non-exact morphology executed")
           print("TLHdig actual morphology mapping smoke passed", len(expected))
+          clitic_expected = {"CNJadd":105734,"CNJctr":36985,"PPRO.3SG.C.ACC":35383,"PPRO.3PL.C.ACC":15113,"PPRO.3SG.D/L":2014,"PPRO.3PL.D/L":1177,"{ R → PPRO.3SG.C.NOM} { S → PPRO.3PL.C.ACC}":40368,"{ R → PPRO.3SG.N.NOM} { S → PPRO.3SG.N.ACC} { T → PPRO.3PL.C.NOM} { U → PPRO.3PL.N.NOM} { V → PPRO.3PL.N.ACC}":7914,"POSS.3SG.ALL.SG":1567,"REFL":28174,"OBPk":10964,"OBPs":10577,"OBPst":8815,"FOC":4925,"QUOT":3576}
+          clitic_observed = Counter(api.F.clitic_morph.v(n) for n in api.F.otype.s("analysis"))
+          for value, count in clitic_expected.items():
+              assert clitic_observed[value] == count, (value, clitic_observed[value], count)
+              rows = c.map_native("tlhdig-tf", node="analysis", feature="clitic_morph",
+                                  value=value, corpus_version="0.4.0")
+              assert rows and all(row.relation != "exact" for row in rows), value
+              for row in rows:
+                  try:
+                      resolve_nodes(api, row, corpus_version="0.4.0")
+                  except MappingError:
+                      pass
+                  else:
+                      raise AssertionError("Qualified clitic tag unexpectedly executed")
+          print("TLHdig actual clitic mapping smoke passed", len(clitic_expected))
           PY
       - name: Review Syriac lexical sets on the actual current TF
         if: matrix.id == 'syriac'
