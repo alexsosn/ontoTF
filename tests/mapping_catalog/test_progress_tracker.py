@@ -99,9 +99,37 @@ class ProgressTrackerTests(unittest.TestCase):
         self.assertEqual(by_name["tlhdig-tf"]["schema_total"], 153)
         self.assertEqual(report["totals"]["reviewed"], sum(c["reviewed"] for c in by_name.values()))
         html = render(report)
-        for word in ("Corpus × ontology", "Schema coverage", "native-only", "934",
-                     "aaaaaaaaaaaa", "progress.json"):
+        for word in ("Coverage by corpus", "Ontology coverage", "Annotation coverage",
+                     "Applicability research", "aaaaaaaaaaaa", "progress.json"):
             self.assertIn(word, html)
         self.assertNotIn("<script", html)
+        self.assertNotIn(".xml", html)
+        self.assertNotIn("Historical semantic work plan", html)
+        self.assertNotIn("TFont", html)
+        self.assertIn("<details>", html)
+        self.assertIn('aria-hidden="true"', html)
         report["corpora"][0]["corpus"] = "<img src=x onerror=alert(1)>"
         self.assertNotIn("<img src=x", render(report))
+
+    def test_dashboard_distinguishes_missing_empty_and_zero(self):
+        from scripts.pages.dashboard import coverage_bar, ontology_cell
+        self.assertIn("Unknown", coverage_bar(None))
+        self.assertIn("No observed items", coverage_bar(dict(total=0)))
+        self.assertIn("0.0%", coverage_bar(dict(total=10, exact=0, qualified=0,
+                                                nonpositive=0, unreviewed=10)))
+        self.assertIn("Not assessed", ontology_cell(None))
+        empty = dict(eligible=0, exact=0, qualified=0, global_nonpositive=0,
+                     ambiguous=0, other_target=0, unreviewed=0, unmatched_rules=[])
+        self.assertIn("Empty scope", ontology_cell(empty))
+        self.assertIn("0.0%", ontology_cell(dict(empty, eligible=5, other_target=5)))
+        self.assertIn("5 other ontology", ontology_cell(dict(empty, eligible=5, other_target=5)))
+
+    def test_dashboard_bar_has_distinct_review_and_mapping_segments(self):
+        from scripts.pages.dashboard import coverage_bar
+        html = coverage_bar(dict(total=10, exact=2, qualified=1, nonpositive=3, unreviewed=4))
+        for expected in ("30.0%", "3 / 10", "2 exact", "1 qualified",
+                         "3 without positive match", "4 unreviewed"):
+            self.assertIn(expected, html)
+        self.assertIn('width:20%', html)
+        self.assertIn('width:40%', html)
+        self.assertNotIn("60.0% mapped", html)
