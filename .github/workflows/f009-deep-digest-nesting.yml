@@ -6,8 +6,8 @@ on:
     branches:
       - stability/f-009-deep-digest-nesting
     paths:
-      - src/tfont/digests.py
-      - src/tfont/__init__.py
+      - src/ontotf/digests.py
+      - src/ontotf/__init__.py
       - tests/f009/**
       - tests/i002/**
       - docs/research/F-009-deep-digest-nesting.md
@@ -15,8 +15,8 @@ on:
       - .github/workflows/f009-deep-digest-nesting.yml
   pull_request:
     paths:
-      - src/tfont/digests.py
-      - src/tfont/__init__.py
+      - src/ontotf/digests.py
+      - src/ontotf/__init__.py
       - tests/f009/**
       - tests/i002/**
       - docs/research/F-009-deep-digest-nesting.md

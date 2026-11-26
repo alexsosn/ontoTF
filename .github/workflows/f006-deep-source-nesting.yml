@@ -6,7 +6,7 @@ on:
     branches:
       - fix/deep-source-nesting
     paths:
-      - src/tfont/source_validation.py
+      - src/ontotf/source_validation.py
       - tests/f006/**
       - tests/i001/**
       - tests/packaging/**
@@ -15,7 +15,7 @@ on:
       - .github/workflows/f006-deep-source-nesting.yml
   pull_request:
     paths:
-      - src/tfont/source_validation.py
+      - src/ontotf/source_validation.py
       - tests/f006/**
       - tests/i001/**
       - tests/packaging/**
