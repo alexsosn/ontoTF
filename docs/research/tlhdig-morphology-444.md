@@ -17,3 +17,9 @@ Plan:
 4. Actual TF query checks and independent adversarial review before final head CI and merge.
 
 This draft is evidence generation, not a completed mapping contribution.
+
+## Independently decoded native feature evidence (before implementation)
+
+The Git blob of `tf/0.4.0/morph.tf`, b138fbf371e985a2cabac9df82fb87438ba01422, was decoded by expanding explicit comma-separated node/range lists and counting implicit one-node records. 1,626,939 assignments including 269,935 empty strings; 1,357,004 populated assignments in 4,581 distinct raw values. The largest raw value (234,935) is a 13-way unmarked-logogram alternative list. The most frequent simple tags include 2SG.IMP (71,845), 3SG.PRS (62,630), D/L.SG (37,672), 3PL.PRS (32,545). These are candidate records, not selected word tokens. This agrees with the existing actual scoped census population; the selected-candidate join is still running.
+
+Official [HFR glossing abbreviation list](https://hethport.net/HFR/material/Abkuerzungen-morph-Glossierung.pdf), pp. 1–5, and [annotation principles](https://hethport.net/HFR/annotation.php?lang=EN) inspected. Verified actual class definitions in the pinned OLiA reference blob 5c5e8bda93eaeab2940472a167ff8d3107be8d43. OLiA MediopassiveVoice is a union of middle and passive, not both individual properties; CommonGender's reference examples are two-gender systems, so Hittite C is close. Present/Past are absolute tense classes, while HFR labels inflectional paradigms, so close. Composite tags with explicit number/person/case are narrower than individual category classes; unambiguous single POS/case labels can be exact at candidate level. Keep D/L case unresolved while mapping explicitly shared number, and leave ambiguous multi-tag examples native-only. No selected-word inference. First tests are written before XML changes; actual RED execution unavailable locally.
