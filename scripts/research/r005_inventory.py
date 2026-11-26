@@ -180,6 +180,127 @@ def inventory_api(api: Any, *, small_domain_limit: int = 64) -> dict[str, Any]:
     }
 
 
+def _new_scope(collect_values: bool) -> dict[str, Any]:
+    result: dict[str, Any] = {"count": 0}
+    if collect_values:
+        result.update(value_domain="complete_observed", values={})
+    return result
+
+
+def _record_scope(scope: dict[str, Any], value: Any, limit: int) -> None:
+    scope["count"] += 1
+    if _is_empty_observation(value):
+        scope["empty_values"] = scope.get("empty_values", 0) + 1
+        return
+    if scope.get("value_domain") != "complete_observed":
+        return
+    # TF string and integer feature values use their lexical XML spelling.
+    # A TF feature has one declared scalar datatype, not mixed int/string keys.
+    key = str(value)
+    values = scope["values"]
+    if key not in values and len(values) >= limit:
+        # Never publish a partial list disguised as a complete domain.
+        del scope["values"]
+        scope["value_domain"] = "overflow"
+        scope["distinct_values_at_least"] = limit + 1
+        return
+    values[key] = values.get(key, 0) + 1
+
+
+def inventory_scoped_api(
+    api: Any, *, node_value_features: Iterable[str] = (),
+    edge_value_features: Iterable[str] = (), domain_limit: int = 512,
+) -> dict[str, Any]:
+    """Inventory actual native scopes using the loaded TF API.
+
+    All non-warp features and actual directed edge-type pairs are counted.
+    Only explicitly selected source-documented categorical families publish
+    value labels; free text, identifiers and other open domains do not leak
+    into the report. An overflow reports a lower bound, never a partial list.
+    This is observation evidence, not an ontology applicability decision.
+    """
+    if domain_limit < 1:
+        raise ValueError("domain_limit must be positive")
+    node_value_features = set(node_value_features)
+    edge_value_features = set(edge_value_features)
+    node_names = sorted(api.Fall(warp=False))
+    edge_names = sorted(api.Eall(warp=False))
+    if node_value_features - set(node_names):
+        raise ValueError(f"Unknown node value features: {sorted(node_value_features - set(node_names))}")
+    if edge_value_features - set(edge_names):
+        raise ValueError(f"Unknown edge value features: {sorted(edge_value_features - set(edge_names))}")
+    otype = api.F.otype
+
+    def node_type(node):
+        kind = otype.v(node)
+        if not kind:
+            raise ValueError(f"Missing node type for TF node {node}")
+        return kind
+
+    node_features = {}
+    edge_features = {}
+    for name in node_names:
+        feature = api.Fs(name)
+        collect = name in node_value_features
+        scopes = {}
+        empty = 0
+        for node, value in feature.items():
+            kind = node_type(node)
+            if _is_empty_observation(value):
+                empty += 1
+                continue
+            if kind not in scopes:
+                scopes[kind] = _new_scope(collect)
+            _record_scope(scopes[kind], value, domain_limit)
+        node_features[name] = {
+            "scopes": scopes,
+            "empty_records": empty,
+            "value_type": getattr(feature, "meta", {}).get("valueType"),
+            "categorical_values_requested": collect,
+        }
+
+    for name in edge_names:
+        feature = api.Es(name)
+        valued = bool(getattr(feature, "doValues", False))
+        collect = name in edge_value_features
+        if collect and not valued:
+            raise ValueError(f"Cannot inventory values of unvalued edge {name}")
+        pairs = {}
+        for source, targets in feature.items():
+            source_type = node_type(source)
+            iterator = targets.items() if valued else ((target, None) for target in targets)
+            for target, value in iterator:
+                pair = (source_type, node_type(target))
+                if pair not in pairs:
+                    pairs[pair] = _new_scope(collect)
+                if valued:
+                    _record_scope(pairs[pair], value, domain_limit)
+                else:
+                    pairs[pair]["count"] += 1
+        edge_features[name] = {
+            "valued": valued,
+            "value_type": getattr(feature, "meta", {}).get("valueType"),
+            "categorical_values_requested": collect,
+            "pairs": [{"from": source, "to": target, **scope}
+                      for (source, target), scope in sorted(pairs.items())],
+        }
+
+    return {
+        "slot_type": getattr(otype, "slotType", None),
+        "node_types": dict(sorted(Counter(value for _, value in otype.items()).items())),
+        "node_features": node_features,
+        "edge_features": edge_features,
+        "domain_policy": {
+            "limit_per_scope": domain_limit,
+            "node_value_features": sorted(node_value_features),
+            "edge_value_features": sorted(edge_value_features),
+            "empty_string_and_none_records_are_not_domain_members": True,
+            "observed_values_are_not_ontology_applicability": True,
+        },
+        "excluded_warp_features": {"node": sorted(WARP_NODE), "edge": sorted(WARP_EDGE)},
+    }
+
+
 def digest_tf_files(path: Path) -> str:
     """Hash the exact TF feature files in deterministic path/content order."""
     digest = hashlib.sha256()
@@ -254,19 +375,33 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tf-version")
     parser.add_argument("--small-domain-limit", type=int, default=64)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--scoped", action="store_true", help="emit scoped empirical census instead of historical R-005 format")
+    parser.add_argument("--node-value-features", nargs="*", default=[])
+    parser.add_argument("--edge-value-features", nargs="*", default=[])
+    parser.add_argument("--domain-limit", type=int, default=512)
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    result = build_inventory(
-        args.path,
-        corpus_id=args.corpus_id,
-        repository=args.repository,
-        revision=args.revision,
-        tf_version=args.tf_version,
-        small_domain_limit=args.small_domain_limit,
-    )
+    if args.scoped:
+        result = inventory_scoped_api(load_tf(args.path),
+                                      node_value_features=args.node_value_features,
+                                      edge_value_features=args.edge_value_features,
+                                      domain_limit=args.domain_limit)
+        result.update(schema_version=2, evidence_kind="loaded_tf_scoped_artifact",
+                      corpus_id=args.corpus_id, repository=args.repository,
+                      revision=args.revision, tf_version=args.tf_version,
+                      tf_files_sha256=digest_tf_files(args.path))
+    else:
+        result = build_inventory(
+            args.path,
+            corpus_id=args.corpus_id,
+            repository=args.repository,
+            revision=args.revision,
+            tf_version=args.tf_version,
+            small_domain_limit=args.small_domain_limit,
+        )
     text = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
