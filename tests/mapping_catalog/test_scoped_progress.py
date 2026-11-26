@@ -94,6 +94,67 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(s["OLiA"]["eligible"], 3)
         self.assertEqual(s["OLiA"]["unmatched_rules"][0]["unobserved_features"], ["absent", "large"])
 
+    def test_applicability_research_distinguishes_sign_flags_and_catalogue_metadata(self):
+        import json
+        root = Path(__file__).resolve().parents[2]
+        policy = json.loads((root / "docs/research/data/scoped-applicability.json").read_text())
+        from scripts.pages.scoped_progress import rule_matches
+        def routed(corpus, ontology, key):
+            return any(rule_matches(r, key) for r in policy["corpora"][corpus]["rules"].get(ontology, []))
+        def node(kind, scope, feature=None, value=None):
+            return (kind, scope, feature, value, None, None)
+        def edge(kind, feature, source, target, value=None):
+            return (kind, None, feature, value, source, target)
+        self.assertTrue(routed("tlhdig-tf", "CRMtex", node("value", "sign", "agr", "1")))
+        self.assertFalse(routed("tlhdig-tf", "OLiA", node("value", "sign", "agr", "1")))
+        self.assertTrue(routed("tlhdig-tf", "OLiA", node("value", "analysis", "pos", "ADV")))
+        self.assertTrue(routed("tlhdig-tf", "CRMinf", edge("edge_value", "witness_resolution", "line", "fragment", "ambiguous")))
+        self.assertFalse(routed("tlhdig-tf", "LRMoo", edge("edge_value", "joined", "fragment", "fragment", "direct")))
+        self.assertTrue(routed("assyrian-royal-inscriptions", "CIDOC CRM", node("feature", "document", "material")))
+        self.assertFalse(routed("assyrian-royal-inscriptions", "CIDOC CRM", node("value", "document", "material", "clay")))
+        self.assertTrue(routed("assyrian-royal-inscriptions", "SKOS", node("feature", "document", "genre")))
+        self.assertTrue(routed("pseudepigrapha", "LRMoo", node("node", "chapter")))
+        self.assertTrue(routed("pseudepigrapha", "SKOS", node("feature", "document_metadata", "historical_genres_json")))
+        for model in policy["ontology_evidence"]:
+            self.assertFalse(routed("pseudepigrapha", model, node("feature", "book", "source_sha256")))
+            self.assertFalse(routed("tlhdig-tf", model, node("feature", "sign", "anchor")))
+
+    def test_etcbc_granularity_distinguishes_labels_counts_and_morphemes(self):
+        import json
+        from scripts.pages.scoped_progress import rule_matches
+        root = Path(__file__).resolve().parents[2]
+        policy = json.loads((root / "docs/research/data/scoped-applicability.json").read_text())
+        def routed(corpus, model, key):
+            return any(rule_matches(r, key) for r in policy["corpora"][corpus]["rules"].get(model, []))
+        def excluded(corpus, key):
+            return any(rule_matches(r, key) for r in policy["corpora"][corpus].get("exclusions", []))
+        def key(kind, node, feature=None, value=None):
+            return (kind, node, feature, value, None, None)
+        self.assertTrue(routed("bhsa", "LRMoo", key("feature", "book", "book@he")))
+        self.assertFalse(routed("bhsa", "SKOS", key("feature", "book", "book@he")))
+        self.assertTrue(excluded("bhsa", key("feature", "lex", "freq_lex")))
+        self.assertFalse(routed("bhsa", "OntoLex-Lemon", key("feature", "lex", "freq_lex")))
+        self.assertTrue(excluded("bhsa", key("feature", "word", "freq_occ")))
+        self.assertTrue(excluded("bhsa", key("feature", "word", "rank_occ")))
+        self.assertTrue(excluded("bhsa", key("value", "word", "language", "Hebrew")))
+        self.assertTrue(routed("bhsa", "OLiA", key("feature", "lex", "language")))
+        self.assertTrue(routed("bhsa", "OLiA", key("value", "clause_atom", "is_root", "true")))
+        self.assertTrue(excluded("bhsa", key("value", "clause", "dist_unit", "words")))
+        self.assertTrue(routed("syriac", "OLiA", key("feature", "word", "g_emf")))
+        self.assertTrue(routed("syrnt", "CRMtex", key("feature", "word", "word_sedra")))
+        self.assertTrue(routed("cuc", "CRMtex", key("value", "sign", "cont", "continued")))
+        self.assertTrue(routed("peshitta", "OLiA", key("node", "word")))
+        # Independent direct blob comparison established byte-identical
+        # data payloads at the pinned versions; do not require a second
+        # mapping of those duplicate native annotations.
+        for corpus in ("bhsa", "extrabiblical"):
+            for name in ("suffix_gender", "suffix_number", "suffix_person"):
+                self.assertTrue(excluded(corpus, key("feature", "word", name)))
+                self.assertTrue(excluded(corpus, key("value", "word", name, "NA")))
+        self.assertTrue(excluded("bhsa", key("value", "word", "suffix_gender", "m")))
+        self.assertFalse(routed("bhsa", "OLiA", key("value", "word", "suffix_gender", "m")))
+        self.assertTrue(routed("bhsa", "OLiA", key("value", "word", "prs_gn", "m")))
+
     def test_real_snapshots_and_report(self):
         root = Path(__file__).resolve().parents[2]
         report = build_report(root, "a"*40)
@@ -106,7 +167,12 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertEqual(c["bhsa"]["scoped"]["node_values"]["total"], 459)
         self.assertEqual(c["tlhdig-tf"]["scoped"]["edge_values"]["total"], 4)
         self.assertEqual(c["assyrian-royal-inscriptions"]["scoped"]["tf_version"], "0.4.0")
+        self.assertEqual(c["tlhdig-tf"]["applicability"]["classification"]["node_features"]["excluded"], 2)
+        self.assertEqual(c["pseudepigrapha"]["applicability"]["classification"]["node_features"]["excluded"], 2)
+        self.assertEqual(c["assyrian-royal-inscriptions"]["applicability"]["classification"]["node_features"]["excluded"], 1)
         for corpus in c.values():
+            for kind, stat in corpus["applicability"]["classification"].items():
+                self.assertEqual(stat["candidates"], stat["routed"] + stat["excluded"] + stat["unclassified"], (corpus["corpus"], kind))
             for model, stat in corpus["applicability"]["ontologies"].items():
                 self.assertFalse(stat["unmatched_rules"], (corpus["corpus"], model))
                 self.assertEqual(stat["eligible"], sum(stat[k] for k in ("exact", "qualified", "global_nonpositive", "ambiguous", "other_target", "unreviewed")))
