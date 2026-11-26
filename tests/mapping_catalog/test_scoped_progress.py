@@ -143,10 +143,16 @@ class ScopedProgressTests(unittest.TestCase):
         self.assertTrue(routed("syrnt", "CRMtex", key("feature", "word", "word_sedra")))
         self.assertTrue(routed("cuc", "CRMtex", key("value", "sign", "cont", "continued")))
         self.assertTrue(routed("peshitta", "OLiA", key("node", "word")))
-        # Identical pooled histograms cannot justify removing undocumented
-        # suffix fields or asserting node-by-node equivalence to prs_*.
-        self.assertFalse(excluded("bhsa", key("value", "word", "suffix_gender", "m")))
+        # Independent direct blob comparison established byte-identical
+        # data payloads at the pinned versions; do not require a second
+        # mapping of those duplicate native annotations.
+        for corpus in ("bhsa", "extrabiblical"):
+            for name in ("suffix_gender", "suffix_number", "suffix_person"):
+                self.assertTrue(excluded(corpus, key("feature", "word", name)))
+                self.assertTrue(excluded(corpus, key("value", "word", name, "NA")))
+        self.assertTrue(excluded("bhsa", key("value", "word", "suffix_gender", "m")))
         self.assertFalse(routed("bhsa", "OLiA", key("value", "word", "suffix_gender", "m")))
+        self.assertTrue(routed("bhsa", "OLiA", key("value", "word", "prs_gn", "m")))
 
     def test_real_snapshots_and_report(self):
         root = Path(__file__).resolve().parents[2]
