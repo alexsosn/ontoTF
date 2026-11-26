@@ -1,0 +1,158 @@
+{
+  "archive_sha256": null,
+  "catalog_version": "0.2",
+  "corpus_id": "peshitta",
+  "domain_policy": {
+    "edge_value_features": [],
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "limit_per_scope": 512,
+    "node_value_features": [
+      "witness"
+    ],
+    "observed_values_are_not_ontology_applicability": true
+  },
+  "edge_features": {},
+  "evidence_kind": "loaded_tf_scoped_artifact",
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "node_features": {
+    "book": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 65
+        },
+        "chapter": {
+          "count": 1269
+        },
+        "verse": {
+          "count": 31341
+        }
+      },
+      "value_type": "str"
+    },
+    "book@en": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 65
+        }
+      },
+      "value_type": "str"
+    },
+    "chapter": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 1269
+        },
+        "verse": {
+          "count": 31341
+        }
+      },
+      "value_type": "int"
+    },
+    "trailer": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 426835
+        }
+      },
+      "value_type": "str"
+    },
+    "trailer_etcbc": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 426835
+        }
+      },
+      "value_type": "str"
+    },
+    "verse": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "verse": {
+          "count": 31341
+        }
+      },
+      "value_type": "int"
+    },
+    "witness": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 10,
+          "value_domain": "complete_observed",
+          "values": {
+            "A": 5,
+            "B": 5
+          }
+        },
+        "chapter": {
+          "count": 75,
+          "value_domain": "complete_observed",
+          "values": {
+            "A": 39,
+            "B": 36
+          }
+        },
+        "verse": {
+          "count": 2300,
+          "value_domain": "complete_observed",
+          "values": {
+            "A": 1186,
+            "B": 1114
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "word": {
+      "categorical_values_requested": false,
+      "empty_records": 1,
+      "scopes": {
+        "word": {
+          "count": 426834
+        }
+      },
+      "value_type": "str"
+    },
+    "word_etcbc": {
+      "categorical_values_requested": false,
+      "empty_records": 1,
+      "scopes": {
+        "word": {
+          "count": 426834
+        }
+      },
+      "value_type": "str"
+    }
+  },
+  "node_types": {
+    "book": 65,
+    "chapter": 1269,
+    "verse": 31341,
+    "word": 426835
+  },
+  "repository": "ETCBC/peshitta",
+  "revision": "9850f5addade26f681334aa475570bef9b0b440a",
+  "schema_version": 2,
+  "slot_type": "word",
+  "tf_files_sha256": "7ccf9952a3f867d6005aab12154602f6fa454cfe89b8c5e6c0c1d2e76ba9bc36",
+  "tf_version": "0.2"
+}

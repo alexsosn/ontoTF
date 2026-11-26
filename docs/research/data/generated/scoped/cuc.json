@@ -1,0 +1,327 @@
+{
+  "archive_sha256": null,
+  "catalog_version": "0.2.8",
+  "corpus_id": "cuc",
+  "domain_policy": {
+    "edge_value_features": [],
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "limit_per_scope": 512,
+    "node_value_features": [
+      "cert",
+      "cont",
+      "emen",
+      "language",
+      "side",
+      "sign",
+      "trailer_emen",
+      "usign"
+    ],
+    "observed_values_are_not_ontology_applicability": true
+  },
+  "edge_features": {},
+  "evidence_kind": "loaded_tf_scoped_artifact",
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "node_features": {
+    "alt": {
+      "categorical_values_requested": false,
+      "empty_records": 145938,
+      "scopes": {
+        "sign": {
+          "count": 79
+        }
+      },
+      "value_type": "str"
+    },
+    "cert": {
+      "categorical_values_requested": true,
+      "empty_records": 68802,
+      "scopes": {
+        "sign": {
+          "count": 77215,
+          "value_domain": "complete_observed",
+          "values": {
+            "False": 23551,
+            "True": 53664
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "column": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "column": {
+          "count": 334
+        }
+      },
+      "value_type": "str"
+    },
+    "cont": {
+      "categorical_values_requested": true,
+      "empty_records": 145915,
+      "scopes": {
+        "sign": {
+          "count": 102,
+          "value_domain": "complete_observed",
+          "values": {
+            "continued": 102
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "emen": {
+      "categorical_values_requested": true,
+      "empty_records": 93786,
+      "scopes": {
+        "sign": {
+          "count": 52231,
+          "value_domain": "complete_observed",
+          "values": {
+            "excised": 396,
+            "missing": 123,
+            "redundant": 72,
+            "remark": 43,
+            "restored": 51597
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "g_cons": {
+      "categorical_values_requested": false,
+      "empty_records": 528,
+      "scopes": {
+        "word": {
+          "count": 27242
+        }
+      },
+      "value_type": "str"
+    },
+    "language": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 27770,
+          "value_domain": "complete_observed",
+          "values": {
+            "Ugaritic": 27770
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "line": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 7616
+        }
+      },
+      "value_type": "int"
+    },
+    "side": {
+      "categorical_values_requested": true,
+      "empty_records": 27,
+      "scopes": {
+        "line": {
+          "count": 7589,
+          "value_domain": "complete_observed",
+          "values": {
+            "le.e.": 1228,
+            "low.e.": 392,
+            "low.e. ": 2,
+            "obv.": 12,
+            "rev.": 5163,
+            "rev.\t": 43,
+            "rev. ": 183,
+            "rev.?": 24,
+            "up.e.": 542
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "sign": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 146017,
+          "value_domain": "complete_observed",
+          "values": {
+            " ": 62931,
+            "-": 10,
+            ".": 517,
+            "?": 16,
+            "a": 2161,
+            "b": 4921,
+            "d": 2946,
+            "g": 892,
+            "h": 2187,
+            "i": 1970,
+            "k": 3424,
+            "l": 6358,
+            "m": 6691,
+            "n": 4875,
+            "p": 2233,
+            "q": 1265,
+            "r": 4630,
+            "s": 694,
+            "t": 6067,
+            "u": 732,
+            "w": 2063,
+            "x": 6342,
+            "y": 3731,
+            "z": 296,
+            " ": 5325,
+            "ġ": 534,
+            "ś": 86,
+            "š": 3046,
+            "ʿ": 3059,
+            "ḏ": 123,
+            "ḥ": 1504,
+            "ḫ": 958,
+            "ṣ": 1047,
+            "ṭ": 286,
+            "Ṯ": 1,
+            "ṯ": 1952,
+            "ẓ": 141,
+            "…": 3
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "tablet": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "tablet": {
+          "count": 279
+        }
+      },
+      "value_type": "str"
+    },
+    "tablet_info": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "tablet": {
+          "count": 2
+        }
+      },
+      "value_type": "str"
+    },
+    "trailer": {
+      "categorical_values_requested": false,
+      "empty_records": 13870,
+      "scopes": {
+        "word": {
+          "count": 13900
+        }
+      },
+      "value_type": "str"
+    },
+    "trailer_emen": {
+      "categorical_values_requested": true,
+      "empty_records": 24881,
+      "scopes": {
+        "word": {
+          "count": 2889,
+          "value_domain": "complete_observed",
+          "values": {
+            "excised": 22,
+            "missing": 5,
+            "redundant": 13,
+            "remark": 1,
+            "restored": 2848
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "usign": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 146017,
+          "value_domain": "complete_observed",
+          "values": {
+            " ": 68256,
+            "-": 10,
+            "?": 17,
+            "x": 6342,
+            "…": 3,
+            "𐎀": 2161,
+            "𐎁": 4921,
+            "𐎂": 892,
+            "𐎃": 958,
+            "𐎄": 2946,
+            "𐎅": 2187,
+            "𐎆": 2063,
+            "𐎇": 296,
+            "𐎈": 1504,
+            "𐎉": 286,
+            "𐎊": 3731,
+            "𐎋": 3424,
+            "𐎌": 3046,
+            "𐎍": 6358,
+            "𐎎": 6691,
+            "𐎏": 123,
+            "𐎐": 4875,
+            "𐎑": 141,
+            "𐎒": 694,
+            "𐎓": 3059,
+            "𐎔": 2233,
+            "𐎕": 1047,
+            "𐎖": 1265,
+            "𐎗": 4630,
+            "𐎘": 1952,
+            "𐎙": 534,
+            "𐎚": 6067,
+            "𐎛": 1970,
+            "𐎜": 732,
+            "𐎝": 86,
+            "𐎟": 517
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "utrailer": {
+      "categorical_values_requested": false,
+      "empty_records": 13870,
+      "scopes": {
+        "word": {
+          "count": 13900
+        }
+      },
+      "value_type": "str"
+    }
+  },
+  "node_types": {
+    "column": 334,
+    "line": 7616,
+    "sign": 146017,
+    "tablet": 279,
+    "word": 27770
+  },
+  "repository": "DT-UCPH/cuc",
+  "revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+  "schema_version": 2,
+  "slot_type": "sign",
+  "tf_files_sha256": "41d6e149e5f8069f57777064476e18433a77a81e56153da515a226a95d8fd09b",
+  "tf_version": "0.2.8"
+}

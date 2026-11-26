@@ -1,0 +1,505 @@
+{
+  "schema_version": 1,
+  "status": "partial",
+  "method": "Source-grounded initial review domains. Eligibility means the ontology warrants evaluation of the native item, not that any target is valid. Omitted families and ontologies remain unclassified; do not infer exhaustive denominators. Existing XML is sole mapping authority.",
+  "ontology_evidence": {
+    "OLiA": "https://github.com/acoli-repo/olia/tree/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6",
+    "OntoLex-Lemon": "https://www.w3.org/2016/05/ontolex/",
+    "LRMoo": "https://cidoc-crm.org/extensions/lrmoo/html/LRMoo_v1.1.1.html",
+    "CRMtex": "https://cidoc-crm.org/extensions/crmtex/html/CRMtex_v2.0.html",
+    "CIDOC CRM": "https://cidoc-crm.org/",
+    "SKOS": "https://www.w3.org/TR/skos-reference/",
+    "CRMinf": "https://cidoc-crm.org/extensions/crminf/html/CRMinf_v1.2.1.html"
+  },
+  "corpora": {
+    "bhsa": {
+      "revision": "4db00e2157915495e1a4d3d57e41223df24775da",
+      "catalog_version": "2021",
+      "source": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features",
+      "rationale": "R-005 BHSA feature reference: documented parts of speech, grammar, clause/phrase categories and dependency roles; lex nodes and source dictionary-entry features.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "sp",
+              "pdp",
+              "gn",
+              "prs_gn",
+              "nu",
+              "prs_nu",
+              "ps",
+              "prs_ps",
+              "st",
+              "vs",
+              "vt",
+              "ls",
+              "typ",
+              "function",
+              "det",
+              "rela",
+              "kind"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "phrase",
+              "clause",
+              "phrase_atom",
+              "clause_atom",
+              "sentence",
+              "sentence_atom",
+              "subphrase"
+            ]
+          }
+        ],
+        "OntoLex-Lemon": [
+          {
+            "kind": "node",
+            "nodes": [
+              "lex"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "lex",
+              "voc_lex",
+              "voc_lex_utf8",
+              "gloss"
+            ],
+            "nodes": [
+              "lex"
+            ]
+          }
+        ]
+      }
+    },
+    "extrabiblical": {
+      "revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
+      "catalog_version": "0.2",
+      "source": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2",
+      "rationale": "R-005 ETCBC feature inventory and actual scoped domains; linguistic feature meanings inherit the BHSA annotation conventions. No assumed lex node.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "sp",
+              "pdp",
+              "gn",
+              "prs_gn",
+              "nu",
+              "prs_nu",
+              "ps",
+              "prs_ps",
+              "st",
+              "vs",
+              "vt",
+              "ls",
+              "typ",
+              "function",
+              "det",
+              "rela",
+              "kind"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "phrase",
+              "clause",
+              "phrase_atom",
+              "clause_atom",
+              "sentence",
+              "sentence_atom",
+              "subphrase"
+            ]
+          }
+        ]
+      }
+    },
+    "cuc": {
+      "revision": "ad69400f5446e1c8217af01659c7c10ab00c015b",
+      "catalog_version": "0.2.8",
+      "source": "https://github.com/DT-UCPH/cuc/blob/ad69400f5446e1c8217af01659c7c10ab00c015b/README.md",
+      "rationale": "Pinned CUC source transcription structure, sign inventory, certainty and editorial emendation fields. CRMtex and CRMinf are relevant review areas; a recorded editorial flag is not an inference event, and a TF sign is not automatically a physical glyph.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "sign",
+              "usign"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "node",
+            "nodes": [
+              "line",
+              "column",
+              "sign"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "sign",
+              "usign"
+            ],
+            "nodes": [
+              "sign"
+            ]
+          }
+        ],
+        "CRMinf": [
+          {
+            "kind": "value",
+            "features": [
+              "cert",
+              "emen",
+              "trailer_emen"
+            ]
+          }
+        ]
+      }
+    },
+    "syriac": {
+      "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+      "catalog_version": "0.9",
+      "source": "https://github.com/ETCBC/syriac/tree/bb0eaa7e21b020a26b7566d2e495da9b1f84a919/tf/0.9",
+      "rationale": "R-005 metadata and pinned Syriac grammar feature inventory: categories of morphology and lexical sets.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "sp",
+              "vs",
+              "vt",
+              "vo",
+              "vpm",
+              "gn",
+              "nu",
+              "ps",
+              "st",
+              "ls"
+            ]
+          }
+        ]
+      }
+    },
+    "syrnt": {
+      "revision": "dae3eb6ff62b9b272fb503646796c25d248175ce",
+      "catalog_version": "0.1",
+      "source": "https://github.com/ETCBC/syrnt/tree/dae3eb6ff62b9b272fb503646796c25d248175ce/tf/0.1",
+      "rationale": "Pinned SyrNT feature metadata and transcription documentation: morphological classes and lexeme nodes.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "sp",
+              "gn",
+              "nu",
+              "ps",
+              "st",
+              "vt",
+              "vs",
+              "nmtyp",
+              "ntyp",
+              "prtyp",
+              "ptctyp",
+              "demcat",
+              "sfgn",
+              "sfnu",
+              "sfps"
+            ]
+          }
+        ],
+        "OntoLex-Lemon": [
+          {
+            "kind": "node",
+            "nodes": [
+              "lexeme"
+            ]
+          }
+        ]
+      }
+    },
+    "peshitta": {
+      "revision": "9850f5addade26f681334aa475570bef9b0b440a",
+      "catalog_version": "0.2",
+      "source": "https://github.com/ETCBC/peshitta/blob/9850f5addade26f681334aa475570bef9b0b440a/docs/transcription.md",
+      "rationale": "Pinned transcription documentation: textual book versions and witness designations; chapter/verse parts are review candidates, not independently whole Expressions. Witness labels are identifiers, so review the feature, not every A/B occurrence.",
+      "rules": {
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "book",
+              "chapter",
+              "verse"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "witness"
+            ]
+          }
+        ]
+      }
+    },
+    "pseudepigrapha": {
+      "revision": "7c4b757bb543a110ae9a252d1281835859136852",
+      "catalog_version": "1.0",
+      "source": "https://github.com/alexsosn/Pseudepigrapha-TF/tree/7c4b757bb543a110ae9a252d1281835859136852/docs",
+      "rationale": "Pinned OCP TF graph and apparatus/translation documentation: source/translated versions, explicit reading and witness structure, variant words; manuscript metadata does not establish a physical carrier.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "node",
+            "nodes": [
+              "variant_word"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "book",
+              "reading",
+              "manuscript",
+              "unit",
+              "version_metadata"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "version_kind",
+              "is_omission"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "translation_of",
+              "reading_of",
+              "witness",
+              "manuscript_of",
+              "translation_unit_of"
+            ]
+          }
+        ]
+      }
+    },
+    "tlhdig-tf": {
+      "revision": "e954600d9f9cc7f16570729813cf6bf3954b8f6d",
+      "catalog_version": "0.4.0",
+      "source": "https://github.com/alexsosn/TLHdig-TF/tree/e954600d9f9cc7f16570729813cf6bf3954b8f6d/docs/features",
+      "rationale": "Pinned generated data model, feature documentation, source catalogue and join apparatus: morphology, lexeme links, editorial graph, lines/signs, fragment identification and CTH classification. CRMtex/CRM/LRMoo/SKOS/CRMinf are relevant review domains; not claims of class equivalence, physical identity, or explicit inference.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "pos",
+              "agr",
+              "det",
+              "num"
+            ]
+          },
+          {
+            "kind": "node",
+            "nodes": [
+              "analysis"
+            ]
+          }
+        ],
+        "OntoLex-Lemon": [
+          {
+            "kind": "node",
+            "nodes": [
+              "lex"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "lexeme"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "node",
+            "nodes": [
+              "line",
+              "column",
+              "sign",
+              "cluster"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "type"
+            ],
+            "nodes": [
+              "sign",
+              "cluster"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "joinstmt",
+              "fragment"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "joined",
+              "witness"
+            ]
+          },
+          {
+            "kind": "edge_value",
+            "features": [
+              "joined",
+              "witness_resolution"
+            ]
+          }
+        ],
+        "CIDOC CRM": [
+          {
+            "kind": "feature",
+            "features": [
+              "invnr"
+            ],
+            "nodes": [
+              "fragment"
+            ]
+          }
+        ],
+        "SKOS": [
+          {
+            "kind": "feature",
+            "features": [
+              "cth"
+            ],
+            "nodes": [
+              "document"
+            ]
+          }
+        ],
+        "CRMinf": [
+          {
+            "kind": "node",
+            "nodes": [
+              "edit"
+            ]
+          },
+          {
+            "kind": "value",
+            "features": [
+              "kind"
+            ],
+            "nodes": [
+              "edit"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "edits"
+            ]
+          }
+        ]
+      }
+    },
+    "assyrian-royal-inscriptions": {
+      "revision": "60db4b724a687c0f425e78eae924fce89454e106",
+      "catalog_version": "1.0.0",
+      "source": "https://github.com/alexsosn/ORACC-TF/tree/60db4b724a687c0f425e78eae924fce89454e106/docs/reference",
+      "rationale": "Pinned generated feature and data-model documentation: POS, lexeme grouping, transcription structure and source-aligned translation ranges; no inference of physical glyph identity.",
+      "rules": {
+        "OLiA": [
+          {
+            "kind": "value",
+            "features": [
+              "pos",
+              "epos"
+            ]
+          }
+        ],
+        "OntoLex-Lemon": [
+          {
+            "kind": "node",
+            "nodes": [
+              "lex"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "word_lex"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "cf",
+              "gw"
+            ],
+            "nodes": [
+              "lex"
+            ]
+          }
+        ],
+        "CRMtex": [
+          {
+            "kind": "node",
+            "nodes": [
+              "sign",
+              "line",
+              "column"
+            ]
+          },
+          {
+            "kind": "feature",
+            "features": [
+              "form"
+            ],
+            "nodes": [
+              "word"
+            ]
+          }
+        ],
+        "LRMoo": [
+          {
+            "kind": "node",
+            "nodes": [
+              "translation_unit"
+            ]
+          },
+          {
+            "kind": "edge",
+            "features": [
+              "translation_line"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1727 @@
+{
+  "archive_sha256": null,
+  "catalog_version": "0.4.0",
+  "corpus_id": "tlhdig-tf",
+  "domain_policy": {
+    "edge_value_features": [
+      "joined",
+      "witness_resolution"
+    ],
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "limit_per_scope": 512,
+    "node_value_features": [
+      "add",
+      "agr",
+      "crossesline",
+      "cu_aligned",
+      "cu_unrendered",
+      "det",
+      "field4_kind",
+      "fragment_kind",
+      "from_close_marker",
+      "from_open_marker",
+      "join_encoding",
+      "join_kind",
+      "join_resolved",
+      "kind",
+      "laes",
+      "materlect_anomalous",
+      "missing",
+      "mrpsel_kind",
+      "nested",
+      "num",
+      "orphan",
+      "parse_ok",
+      "pos",
+      "quot",
+      "ras",
+      "ruling",
+      "sel_group",
+      "sgr",
+      "siglum_ambiguous",
+      "siglum_source",
+      "type"
+    ],
+    "observed_values_are_not_ontology_applicability": true
+  },
+  "edge_features": {
+    "analyses": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 1626939,
+          "from": "word",
+          "to": "analysis"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "edition": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 23884,
+          "from": "document",
+          "to": "docgroup"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "edits": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 170955,
+          "from": "edit",
+          "to": "document"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "endsAt": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 653006,
+          "from": "cluster",
+          "to": "sign"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "joinDocument": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 3603,
+          "from": "joinstmt",
+          "to": "document"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "joinLeft": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 3581,
+          "from": "joinstmt",
+          "to": "fragment"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "joinRight": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 3580,
+          "from": "joinstmt",
+          "to": "fragment"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "joined": {
+      "categorical_values_requested": true,
+      "pairs": [
+        {
+          "count": 3538,
+          "from": "fragment",
+          "to": "fragment",
+          "value_domain": "complete_observed",
+          "values": {
+            "direct": 2874,
+            "indirect": 664
+          }
+        }
+      ],
+      "value_type": "str",
+      "valued": true
+    },
+    "lexeme": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 1582460,
+          "from": "analysis",
+          "to": "lex"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "noteref": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 12152,
+          "from": "note",
+          "to": "sign"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "selected": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 461223,
+          "from": "word",
+          "to": "analysis"
+        }
+      ],
+      "value_type": "str",
+      "valued": true
+    },
+    "startsAt": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 638506,
+          "from": "cluster",
+          "to": "sign"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "witness": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 136046,
+          "from": "line",
+          "to": "fragment"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "witness_resolution": {
+      "categorical_values_requested": true,
+      "pairs": [
+        {
+          "count": 136046,
+          "from": "line",
+          "to": "fragment",
+          "value_domain": "complete_observed",
+          "values": {
+            "ambiguous": 11979,
+            "unique": 124067
+          }
+        }
+      ],
+      "value_type": "str",
+      "valued": true
+    }
+  },
+  "evidence_kind": "loaded_tf_scoped_artifact",
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "node_features": {
+    "add": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 905,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 905
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "after": {
+      "categorical_values_requested": false,
+      "empty_records": 1425712,
+      "scopes": {
+        "sign": {
+          "count": 1960642
+        }
+      },
+      "value_type": "str"
+    },
+    "agr": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 3365151,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 3142441,
+            "1": 222710
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "alt": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 839
+        }
+      },
+      "value_type": "str"
+    },
+    "anchor": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 21203
+        }
+      },
+      "value_type": "int"
+    },
+    "author": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 918
+        }
+      },
+      "value_type": "str"
+    },
+    "c": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "note": {
+          "count": 12152
+        }
+      },
+      "value_type": "str"
+    },
+    "clitic_det": {
+      "categorical_values_requested": false,
+      "empty_records": 309398,
+      "scopes": {
+        "analysis": {
+          "count": 79472
+        }
+      },
+      "value_type": "str"
+    },
+    "clitic_lemma": {
+      "categorical_values_requested": false,
+      "empty_records": 1928,
+      "scopes": {
+        "analysis": {
+          "count": 386942
+        }
+      },
+      "value_type": "str"
+    },
+    "clitic_morph": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 388870
+        }
+      },
+      "value_type": "str"
+    },
+    "clitic_stemclass": {
+      "categorical_values_requested": false,
+      "empty_records": 343792,
+      "scopes": {
+        "analysis": {
+          "count": 45078
+        }
+      },
+      "value_type": "str"
+    },
+    "collabel": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "column": {
+          "count": 43434
+        }
+      },
+      "value_type": "str"
+    },
+    "column": {
+      "categorical_values_requested": false,
+      "empty_records": 24700,
+      "scopes": {
+        "column": {
+          "count": 18734
+        }
+      },
+      "value_type": "str"
+    },
+    "corr": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 63521
+        }
+      },
+      "value_type": "str"
+    },
+    "crossesline": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 74890,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 74890
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "cth": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "cu": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 407950
+        }
+      },
+      "value_type": "str"
+    },
+    "cu_aligned": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 407950,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 42877,
+            "1": 192528,
+            "2": 111555,
+            "3": 60990
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "cu_broken": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 407950
+        }
+      },
+      "value_type": "int"
+    },
+    "cu_method": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 365073
+        }
+      },
+      "value_type": "str"
+    },
+    "cu_nsigns": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 76413
+        }
+      },
+      "value_type": "int"
+    },
+    "cu_pua": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 407950
+        }
+      },
+      "value_type": "int"
+    },
+    "cu_pua_unmapped": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 2383
+        }
+      },
+      "value_type": "int"
+    },
+    "cu_sign": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 3024320
+        }
+      },
+      "value_type": "str"
+    },
+    "cu_undecided": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 2652
+        }
+      },
+      "value_type": "int"
+    },
+    "cu_unrendered": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 2229,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 2229
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "cudirty": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 46
+        }
+      },
+      "value_type": "str"
+    },
+    "date": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 121938
+        }
+      },
+      "value_type": "str"
+    },
+    "det": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 3365151,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 3150717,
+            "1": 214434
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "det_hint": {
+      "categorical_values_requested": false,
+      "empty_records": 1356045,
+      "scopes": {
+        "analysis": {
+          "count": 270894
+        }
+      },
+      "value_type": "str"
+    },
+    "docid": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "docgroup": {
+          "count": 23734
+        },
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "docid_raw": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "docs": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 73
+        }
+      },
+      "value_type": "str"
+    },
+    "editor": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 75388
+        }
+      },
+      "value_type": "str"
+    },
+    "end_offset": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389
+        }
+      },
+      "value_type": "int"
+    },
+    "field4_kind": {
+      "categorical_values_requested": true,
+      "empty_records": 413,
+      "scopes": {
+        "analysis": {
+          "count": 1626526,
+          "value_domain": "complete_observed",
+          "values": {
+            "empty": 227118,
+            "morph": 20676,
+            "pos": 207608,
+            "stemclass": 1171124
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "frag": {
+      "categorical_values_requested": false,
+      "empty_records": 32015,
+      "scopes": {
+        "column": {
+          "count": 11419
+        },
+        "fragment": {
+          "count": 5153
+        }
+      },
+      "value_type": "str"
+    },
+    "frag_raw": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 5153
+        }
+      },
+      "value_type": "str"
+    },
+    "fragment_kind": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 28015,
+          "value_domain": "complete_observed",
+          "values": {
+            "invnr": 3061,
+            "plain": 17,
+            "txtpubl": 24937
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "fragment_label": {
+      "categorical_values_requested": false,
+      "empty_records": 10,
+      "scopes": {
+        "fragment": {
+          "count": 28005
+        }
+      },
+      "value_type": "str"
+    },
+    "fragment_order": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 28015
+        }
+      },
+      "value_type": "int"
+    },
+    "frgm": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 526
+        }
+      },
+      "value_type": "str"
+    },
+    "from_close_marker": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 113476,
+            "1": 542913
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "from_open_marker": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 64703,
+            "1": 591686
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "gloss": {
+      "categorical_values_requested": false,
+      "empty_records": 114117,
+      "scopes": {
+        "analysis": {
+          "count": 1512822
+        },
+        "lex": {
+          "count": 15601
+        }
+      },
+      "value_type": "str"
+    },
+    "id": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "colon": {
+          "count": 93879
+        }
+      },
+      "value_type": "str"
+    },
+    "index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 1626939
+        }
+      },
+      "value_type": "int"
+    },
+    "invnr": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 2770
+        },
+        "fragment": {
+          "count": 3061
+        }
+      },
+      "value_type": "str"
+    },
+    "join_context": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 22
+        }
+      },
+      "value_type": "str"
+    },
+    "join_encoding": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 3603,
+          "value_domain": "complete_observed",
+          "values": {
+            "textual": 2361,
+            "xml": 1242
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "join_kind": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 3603,
+          "value_domain": "complete_observed",
+          "values": {
+            "direct": 2902,
+            "direct-multi": 2,
+            "indirect": 691,
+            "indirect-multi": 1,
+            "malformed": 7
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "join_order": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 3603
+        }
+      },
+      "value_type": "int"
+    },
+    "join_raw": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 3603
+        }
+      },
+      "value_type": "str"
+    },
+    "join_reason": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 30
+        }
+      },
+      "value_type": "str"
+    },
+    "join_resolved": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "joinstmt": {
+          "count": 3603,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 30,
+            "1": 3573
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "kind": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 170955,
+          "value_domain": "complete_observed",
+          "values": {
+            "AOxml-creation": 23617,
+            "annot": 58728,
+            "aufheb": 192,
+            "aufloes": 66,
+            "author": 922,
+            "creation-date": 23896,
+            "cth": 839,
+            "format": 5839,
+            "join": 309,
+            "kolfot": 25,
+            "kolfot2": 249,
+            "kolon": 1112,
+            "koltaf": 92,
+            "kor": 7279,
+            "kor1kf": 7508,
+            "kor2": 30867,
+            "korof": 170,
+            "merge": 73,
+            "trlst": 1057,
+            "uebern": 7037,
+            "val": 1078
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "laes": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 212195,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 212195
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "lang": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "colon": {
+          "count": 4443
+        },
+        "document": {
+          "count": 19237
+        },
+        "line": {
+          "count": 412448
+        },
+        "sign": {
+          "count": 3364996
+        }
+      },
+      "value_type": "str"
+    },
+    "lang_raw": {
+      "categorical_values_requested": false,
+      "empty_records": 27,
+      "scopes": {
+        "document": {
+          "count": 23857
+        }
+      },
+      "value_type": "str"
+    },
+    "lemma": {
+      "categorical_values_requested": false,
+      "empty_records": 44479,
+      "scopes": {
+        "analysis": {
+          "count": 1582460
+        },
+        "lex": {
+          "count": 15847
+        }
+      },
+      "value_type": "str"
+    },
+    "linetail": {
+      "categorical_values_requested": false,
+      "empty_records": 393223,
+      "scopes": {
+        "line": {
+          "count": 19414
+        }
+      },
+      "value_type": "str"
+    },
+    "ln": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 404091
+        }
+      },
+      "value_type": "int"
+    },
+    "lnno": {
+      "categorical_values_requested": false,
+      "empty_records": 39,
+      "scopes": {
+        "line": {
+          "count": 412598
+        }
+      },
+      "value_type": "str"
+    },
+    "lnr": {
+      "categorical_values_requested": false,
+      "empty_records": 39,
+      "scopes": {
+        "line": {
+          "count": 412598
+        }
+      },
+      "value_type": "str"
+    },
+    "manuscript_block": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 28015
+        },
+        "joinstmt": {
+          "count": 3603
+        },
+        "line": {
+          "count": 412575
+        }
+      },
+      "value_type": "int"
+    },
+    "markers": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "layout": {
+          "count": 204561
+        }
+      },
+      "value_type": "str"
+    },
+    "materlect": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 308
+        }
+      },
+      "value_type": "str"
+    },
+    "materlect_anomalous": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 66,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 66
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "missing": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 1250014,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 1250014
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "morph": {
+      "categorical_values_requested": false,
+      "empty_records": 269935,
+      "scopes": {
+        "analysis": {
+          "count": 1357004
+        }
+      },
+      "value_type": "str"
+    },
+    "mrp_control": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 542678
+        }
+      },
+      "value_type": "str"
+    },
+    "mrpsel": {
+      "categorical_values_requested": false,
+      "empty_records": 494047,
+      "scopes": {
+        "word": {
+          "count": 740465
+        }
+      },
+      "value_type": "str"
+    },
+    "mrpsel_kind": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 1234512,
+          "value_domain": "complete_observed",
+          "values": {
+            "AKK": 42867,
+            "DEL": 196922,
+            "HAT": 6324,
+            "HURR": 18921,
+            "LUW": 2202,
+            "SUM": 2201,
+            "analysis": 452638,
+            "none": 494047,
+            "unknown": 18390
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "n": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "note": {
+          "count": 9976
+        }
+      },
+      "value_type": "str"
+    },
+    "nanalyses": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 1234512
+        }
+      },
+      "value_type": "int"
+    },
+    "nested": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 589,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 589
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "neu": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 839
+        }
+      },
+      "value_type": "str"
+    },
+    "noccs": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "lex": {
+          "count": 15847
+        }
+      },
+      "value_type": "int"
+    },
+    "nr": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "colon": {
+          "count": 52441
+        }
+      },
+      "value_type": "str"
+    },
+    "nrecords": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "docgroup": {
+          "count": 23734
+        }
+      },
+      "value_type": "int"
+    },
+    "nselected": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 1234512
+        }
+      },
+      "value_type": "int"
+    },
+    "num": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 3365151,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 3307033,
+            "1": 58118
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "order": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 170955
+        }
+      },
+      "value_type": "int"
+    },
+    "orphan": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389,
+          "value_domain": "complete_observed",
+          "values": {
+            "close": 64703,
+            "none": 478210,
+            "open": 113476
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "othertags": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 153
+        }
+      },
+      "value_type": "str"
+    },
+    "parse_ok": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 1626939,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 507,
+            "1": 1626432
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "part": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 1748
+        }
+      },
+      "value_type": "str"
+    },
+    "pos": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 207608,
+          "value_domain": "complete_observed",
+          "values": {
+            "ADV": 47955,
+            "ADV POSP PREV": 834,
+            "CNJ": 22474,
+            "DEMadv": 5517,
+            "INDCL": 2292,
+            "INDadv": 2961,
+            "INTJ": 313,
+            "INTadv": 4772,
+            "NEG": 1768,
+            "POSP": 37651,
+            "POSP ADV PREV": 20,
+            "PREV": 31416,
+            "QUANcar": 44411,
+            "QUANmul": 4708,
+            "QUANord": 516
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "prime": {
+      "categorical_values_requested": false,
+      "empty_records": 96177,
+      "scopes": {
+        "line": {
+          "count": 316460
+        }
+      },
+      "value_type": "str"
+    },
+    "project": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "quot": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 586,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 586
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "ras": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 11918,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 11918
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "raw": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 961688
+        }
+      },
+      "value_type": "str"
+    },
+    "ruling": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "paragraph": {
+          "count": 92456,
+          "value_domain": "complete_observed",
+          "values": {
+            "double": 2922,
+            "single": 89534
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "sel_base": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 160630
+        }
+      },
+      "value_type": "str"
+    },
+    "sel_clitic": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 1510
+        }
+      },
+      "value_type": "str"
+    },
+    "sel_group": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 2805,
+          "value_domain": "complete_observed",
+          "values": {
+            "all": 1385,
+            "pl": 382,
+            "sg": 1038
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "sep": {
+      "categorical_values_requested": false,
+      "empty_records": 1238063,
+      "scopes": {
+        "analysis": {
+          "count": 388876
+        }
+      },
+      "value_type": "str"
+    },
+    "sgr": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 3365151,
+          "value_domain": "complete_observed",
+          "values": {
+            "0": 2939344,
+            "1": 425807
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "siglum_ambiguous": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 333,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 333
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "siglum_raw_candidates": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 2
+        }
+      },
+      "value_type": "str"
+    },
+    "siglum_source": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "fragment": {
+          "count": 5153,
+          "value_domain": "complete_observed",
+          "values": {
+            "attr": 1901,
+            "element-text": 2584,
+            "plain-text": 2,
+            "tail": 666
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "source_stem": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "source_subdir": {
+      "categorical_values_requested": false,
+      "empty_records": 20259,
+      "scopes": {
+        "document": {
+          "count": 3625
+        }
+      },
+      "value_type": "str"
+    },
+    "space_count": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "layout": {
+          "count": 201818
+        },
+        "sign": {
+          "count": 167
+        }
+      },
+      "value_type": "int"
+    },
+    "src": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "edit": {
+          "count": 7029
+        }
+      },
+      "value_type": "str"
+    },
+    "src_file": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "srcln": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "line": {
+          "count": 412637
+        }
+      },
+      "value_type": "int"
+    },
+    "start_offset": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389
+        }
+      },
+      "value_type": "int"
+    },
+    "stemclass": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "analysis": {
+          "count": 1171124
+        }
+      },
+      "value_type": "str"
+    },
+    "stemclass_raw": {
+      "categorical_values_requested": false,
+      "empty_records": 227531,
+      "scopes": {
+        "analysis": {
+          "count": 1399408
+        }
+      },
+      "value_type": "str"
+    },
+    "subcorpus": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document": {
+          "count": 23884
+        }
+      },
+      "value_type": "str"
+    },
+    "subscr": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 5000
+        }
+      },
+      "value_type": "str"
+    },
+    "surface": {
+      "categorical_values_requested": false,
+      "empty_records": 15617,
+      "scopes": {
+        "surface": {
+          "count": 17292
+        }
+      },
+      "value_type": "str"
+    },
+    "surplus": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 71
+        }
+      },
+      "value_type": "str"
+    },
+    "sym": {
+      "categorical_values_requested": false,
+      "empty_records": 21203,
+      "scopes": {
+        "sign": {
+          "count": 3365151
+        }
+      },
+      "value_type": "str"
+    },
+    "symmark": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "sign": {
+          "count": 23252
+        }
+      },
+      "value_type": "str"
+    },
+    "trans": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 923398
+        }
+      },
+      "value_type": "str"
+    },
+    "txtid": {
+      "categorical_values_requested": false,
+      "empty_records": 226,
+      "scopes": {
+        "line": {
+          "count": 412411
+        }
+      },
+      "value_type": "str"
+    },
+    "txtpubl": {
+      "categorical_values_requested": false,
+      "empty_records": 10,
+      "scopes": {
+        "fragment": {
+          "count": 24927
+        }
+      },
+      "value_type": "str"
+    },
+    "type": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389,
+          "value_domain": "complete_observed",
+          "values": {
+            "add": 329,
+            "del": 506302,
+            "laes": 143502,
+            "quot": 74,
+            "ras": 6182
+          }
+        },
+        "sign": {
+          "count": 3386354,
+          "value_domain": "complete_observed",
+          "values": {
+            "ellipsis": 50925,
+            "empty": 21203,
+            "numeral": 58118,
+            "reading": 3054563,
+            "signname": 5539,
+            "unknown": 196006
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "width": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "cluster": {
+          "count": 656389
+        }
+      },
+      "value_type": "int"
+    }
+  },
+  "node_types": {
+    "analysis": 1626939,
+    "cluster": 656389,
+    "colon": 98008,
+    "column": 43434,
+    "docgroup": 23734,
+    "document": 23884,
+    "edit": 170955,
+    "fragment": 28015,
+    "joinstmt": 3603,
+    "layout": 407762,
+    "lex": 15847,
+    "line": 412637,
+    "note": 12152,
+    "paragraph": 108466,
+    "sign": 3386354,
+    "surface": 32909,
+    "word": 1234512
+  },
+  "repository": "alexsosn/TLHdig-TF",
+  "revision": "e954600d9f9cc7f16570729813cf6bf3954b8f6d",
+  "schema_version": 2,
+  "slot_type": "sign",
+  "tf_files_sha256": "18263afb3bc6e083c9b89e30118f9881ac3610e6fba93d7cfea4db99390c4f6b",
+  "tf_version": "0.4.0"
+}

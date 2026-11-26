@@ -1,0 +1,505 @@
+{
+  "archive_sha256": null,
+  "catalog_version": "0.9",
+  "corpus_id": "syriac",
+  "domain_policy": {
+    "edge_value_features": [],
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "limit_per_scope": 512,
+    "node_value_features": [
+      "emf",
+      "gn",
+      "ls",
+      "nme",
+      "nu",
+      "pfm",
+      "pfx",
+      "ps",
+      "sp",
+      "st",
+      "vbe",
+      "vbs",
+      "vo",
+      "vpm",
+      "vs",
+      "vt"
+    ],
+    "observed_values_are_not_ontology_applicability": true
+  },
+  "edge_features": {},
+  "evidence_kind": "loaded_tf_scoped_artifact",
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "node_features": {
+    "book": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 29
+        }
+      },
+      "value_type": "str"
+    },
+    "chapter": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 676
+        }
+      },
+      "value_type": "int"
+    },
+    "emf": {
+      "categorical_values_requested": true,
+      "empty_records": 307357,
+      "scopes": {
+        "word": {
+          "count": 52836,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 52836
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "g_cons": {
+      "categorical_values_requested": false,
+      "empty_records": 685,
+      "scopes": {
+        "word": {
+          "count": 359508
+        }
+      },
+      "value_type": "str"
+    },
+    "g_cons_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 359508
+        }
+      },
+      "value_type": "str"
+    },
+    "g_emf": {
+      "categorical_values_requested": false,
+      "empty_records": 307358,
+      "scopes": {
+        "word": {
+          "count": 52835
+        }
+      },
+      "value_type": "str"
+    },
+    "g_lex": {
+      "categorical_values_requested": false,
+      "empty_records": 685,
+      "scopes": {
+        "word": {
+          "count": 359508
+        }
+      },
+      "value_type": "str"
+    },
+    "g_nme": {
+      "categorical_values_requested": false,
+      "empty_records": 324707,
+      "scopes": {
+        "word": {
+          "count": 35486
+        }
+      },
+      "value_type": "str"
+    },
+    "g_pfm": {
+      "categorical_values_requested": false,
+      "empty_records": 340927,
+      "scopes": {
+        "word": {
+          "count": 19266
+        }
+      },
+      "value_type": "str"
+    },
+    "g_pfx": {
+      "categorical_values_requested": false,
+      "empty_records": 354498,
+      "scopes": {
+        "word": {
+          "count": 5695
+        }
+      },
+      "value_type": "str"
+    },
+    "g_vbe": {
+      "categorical_values_requested": false,
+      "empty_records": 343252,
+      "scopes": {
+        "word": {
+          "count": 16941
+        }
+      },
+      "value_type": "str"
+    },
+    "g_vbs": {
+      "categorical_values_requested": false,
+      "empty_records": 356698,
+      "scopes": {
+        "word": {
+          "count": 3495
+        }
+      },
+      "value_type": "str"
+    },
+    "gloss": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 360193
+        }
+      },
+      "value_type": "str"
+    },
+    "gn": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 215841,
+          "value_domain": "complete_observed",
+          "values": {
+            "f": 39650,
+            "m": 156702,
+            "unknown": 19489
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "lex": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 360193
+        }
+      },
+      "value_type": "str"
+    },
+    "ls": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 129879,
+          "value_domain": "complete_observed",
+          "values": {
+            "card": 4974,
+            "cjad": 1115,
+            "demo": 3575,
+            "focp": 953,
+            "gntl": 1168,
+            "nmex": 1189,
+            "ordn": 305,
+            "pcon": 35621,
+            "pers": 7583,
+            "pinr": 20,
+            "pint": 1709,
+            "ppre": 2996,
+            "prin": 1899,
+            "prop": 18748,
+            "quot": 4334,
+            "sffx": 39248,
+            "vbex": 4442
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "nme": {
+      "categorical_values_requested": true,
+      "empty_records": 315044,
+      "scopes": {
+        "word": {
+          "count": 45149,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 2597,
+            "J": 19904,
+            "J=": 145,
+            "J==": 18,
+            "JN": 5887,
+            "JN=": 322,
+            "N": 891,
+            "T": 10342,
+            "T=": 3990,
+            "TJ": 71,
+            "TJN": 241,
+            "W": 634,
+            "WT": 107
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "nu": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 220518,
+          "value_domain": "complete_observed",
+          "values": {
+            "du": 779,
+            "pl": 56838,
+            "sg": 162896,
+            "unknown": 5
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "pfm": {
+      "categorical_values_requested": true,
+      "empty_records": 340927,
+      "scopes": {
+        "word": {
+          "count": 19266,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 1756,
+            "M": 5777,
+            "N": 7549,
+            "N=": 425,
+            "T": 2855,
+            "T=": 904
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "pfx": {
+      "categorical_values_requested": true,
+      "empty_records": 354483,
+      "scopes": {
+        "word": {
+          "count": 5710,
+          "value_domain": "complete_observed",
+          "values": {
+            ">T": 5710
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "ps": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 87910,
+          "value_domain": "complete_observed",
+          "values": {
+            "first": 12574,
+            "second": 17515,
+            "third": 57820,
+            "unknown": 1
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "sp": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 360193,
+          "value_domain": "complete_observed",
+          "values": {
+            "adjv": 9001,
+            "advb": 5290,
+            "conj": 41791,
+            "inrg": 88,
+            "intj": 865,
+            "nega": 6547,
+            "prep": 81614,
+            "pron": 52305,
+            "subs": 105895,
+            "verb": 56797
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "st": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 130623,
+          "value_domain": "complete_observed",
+          "values": {
+            "abs": 25009,
+            "c": 13710,
+            "cst": 13690,
+            "emph": 52836,
+            "unknown": 25378
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "trailer": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 225272
+        }
+      },
+      "value_type": "str"
+    },
+    "vbe": {
+      "categorical_values_requested": true,
+      "empty_records": 343617,
+      "scopes": {
+        "word": {
+          "count": 16576,
+          "value_domain": "complete_observed",
+          "values": {
+            "J": 212,
+            "J=": 377,
+            "JN": 75,
+            "JN=": 22,
+            "N": 296,
+            "N=": 310,
+            "T": 2147,
+            "T=": 956,
+            "T==": 1825,
+            "TJ": 174,
+            "TJN": 13,
+            "TWN": 426,
+            "W": 6379,
+            "WN": 3364
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vbs": {
+      "categorical_values_requested": true,
+      "empty_records": 354048,
+      "scopes": {
+        "word": {
+          "count": 6145,
+          "value_domain": "complete_observed",
+          "values": {
+            ">": 5774,
+            "C": 320,
+            "S": 51
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "verse": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "verse": {
+          "count": 16072
+        }
+      },
+      "value_type": "int"
+    },
+    "vo": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 56797,
+          "value_domain": "complete_observed",
+          "values": {
+            "act": 47915,
+            "pas": 8882
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vpm": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 11408,
+          "value_domain": "complete_observed",
+          "values": {
+            "d": 8232,
+            "dp": 369,
+            "p": 2807
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vs": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 56797,
+          "value_domain": "complete_observed",
+          "values": {
+            "af": 6145,
+            "pa": 8601,
+            "pe": 42051
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "vt": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 56797,
+          "value_domain": "complete_observed",
+          "values": {
+            "imp": 3875,
+            "inf": 2114,
+            "ipf": 13489,
+            "pf": 23706,
+            "ptc": 13613
+          }
+        }
+      },
+      "value_type": "str"
+    }
+  },
+  "node_types": {
+    "book": 29,
+    "chapter": 676,
+    "verse": 16072,
+    "word": 360193
+  },
+  "repository": "ETCBC/syriac",
+  "revision": "bb0eaa7e21b020a26b7566d2e495da9b1f84a919",
+  "schema_version": 2,
+  "slot_type": "word",
+  "tf_files_sha256": "eca80cb23fc2cea0b55381d9cea0cc313eeccd42879a2d686e769145a8ada2eb",
+  "tf_version": "0.9"
+}

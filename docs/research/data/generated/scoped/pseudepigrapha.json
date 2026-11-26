@@ -1,0 +1,1306 @@
+{
+  "archive_sha256": "d2dfad7e643699617a9493b9f5d724868f8027dd5f2e88bd558451e3e7819b7a",
+  "catalog_version": "1.0",
+  "corpus_id": "pseudepigrapha",
+  "domain_policy": {
+    "edge_value_features": [],
+    "empty_string_and_none_records_are_not_domain_members": true,
+    "limit_per_scope": 512,
+    "node_value_features": [
+      "generation_marker",
+      "is_gap",
+      "is_metadata_only",
+      "is_missing_unit_id",
+      "is_omission",
+      "is_primary",
+      "is_source_anomaly",
+      "synthetic_witness",
+      "undefined_manuscript",
+      "version_kind"
+    ],
+    "observed_values_are_not_ontology_applicability": true
+  },
+  "edge_features": {
+    "manuscript_of": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 482,
+          "from": "manuscript",
+          "to": "book"
+        },
+        {
+          "count": 1,
+          "from": "manuscript",
+          "to": "version_metadata"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "parent": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 42742,
+          "from": "div",
+          "to": "div"
+        },
+        {
+          "count": 1,
+          "from": "ellipsis",
+          "to": "div"
+        },
+        {
+          "count": 9,
+          "from": "orphan_reading",
+          "to": "div"
+        },
+        {
+          "count": 81275,
+          "from": "unit",
+          "to": "div"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "reading_of": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 87811,
+          "from": "reading",
+          "to": "unit"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "translation_of": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 231,
+          "from": "book",
+          "to": "book"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "translation_unit_of": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 54143,
+          "from": "unit",
+          "to": "unit"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "variant_word_of": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 7701,
+          "from": "variant_word",
+          "to": "reading"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    },
+    "witness": {
+      "categorical_values_requested": false,
+      "pairs": [
+        {
+          "count": 56,
+          "from": "orphan_reading",
+          "to": "manuscript"
+        },
+        {
+          "count": 124222,
+          "from": "reading",
+          "to": "manuscript"
+        }
+      ],
+      "value_type": "str",
+      "valued": false
+    }
+  },
+  "evidence_kind": "loaded_tf_scoped_artifact",
+  "excluded_warp_features": {
+    "edge": [
+      "oslots"
+    ],
+    "node": [
+      "otype"
+    ]
+  },
+  "node_features": {
+    "author": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 330
+        }
+      },
+      "value_type": "str"
+    },
+    "bibliography": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 454
+        }
+      },
+      "value_type": "str"
+    },
+    "bibliography_xml": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 454
+        }
+      },
+      "value_type": "str"
+    },
+    "book": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        }
+      },
+      "value_type": "str"
+    },
+    "boundary_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 80966
+        }
+      },
+      "value_type": "str"
+    },
+    "chapter": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 3018
+        }
+      },
+      "value_type": "str"
+    },
+    "chapter_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 3018
+        }
+      },
+      "value_type": "int"
+    },
+    "div_fragment": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "div": {
+          "count": 69
+        }
+      },
+      "value_type": "str"
+    },
+    "div_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "div": {
+          "count": 46684
+        }
+      },
+      "value_type": "int"
+    },
+    "div_label": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "div": {
+          "count": 46684
+        }
+      },
+      "value_type": "str"
+    },
+    "div_level": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "div": {
+          "count": 46684
+        }
+      },
+      "value_type": "int"
+    },
+    "div_number": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "div": {
+          "count": 46684
+        }
+      },
+      "value_type": "str"
+    },
+    "div_path": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "div": {
+          "count": 46684
+        }
+      },
+      "value_type": "str"
+    },
+    "division_delimiters": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "division_labels": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "division_texts": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "ellipsis_text": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {},
+      "value_type": "str"
+    },
+    "g_word_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "variant_word": {
+          "count": 7701
+        },
+        "word": {
+          "count": 920460
+        }
+      },
+      "value_type": "str"
+    },
+    "generated_language": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 231
+        }
+      },
+      "value_type": "str"
+    },
+    "generation_marker": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 231,
+          "value_domain": "complete_observed",
+          "values": {
+            "OCP-Trans": 231
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "generation_method": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 231
+        }
+      },
+      "value_type": "str"
+    },
+    "generation_model": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 231
+        }
+      },
+      "value_type": "str"
+    },
+    "group": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "unit": {
+          "count": 81275
+        }
+      },
+      "value_type": "str"
+    },
+    "historical_biblical_figures_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "historical_genres_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "historical_ocp_doc_id": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "int"
+    },
+    "indent": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 213
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_bibliography_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_citation_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_copyright_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_corrections_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 10
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_introduction_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 9
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_label": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_manuscripts_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 10
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_provenance_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 9
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_sigla_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 11
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_status_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 31
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_themes_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 4
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_title_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "intro_version_json": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "document_metadata": {
+          "count": 32
+        }
+      },
+      "value_type": "str"
+    },
+    "is_gap": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "word": {
+          "count": 2462,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 2462
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "is_metadata_only": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 1,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 1
+          }
+        },
+        "version_metadata": {
+          "count": 1,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 1
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "is_missing_unit_id": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "unit": {
+          "count": 1,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 1
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "is_omission": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 3849,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 3849
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "is_primary": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 81275,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 81275
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "is_source_anomaly": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "orphan_reading": {
+          "count": 9,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 9
+          }
+        },
+        "unit": {
+          "count": 1,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 1
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "language": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 342
+        },
+        "variant_word": {
+          "count": 6313
+        },
+        "version_metadata": {
+          "count": 1
+        },
+        "word": {
+          "count": 884053
+        }
+      },
+      "value_type": "str"
+    },
+    "linebreak": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 1107
+        }
+      },
+      "value_type": "str"
+    },
+    "manuscript_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 454
+        }
+      },
+      "value_type": "int"
+    },
+    "ms_abbrev": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 483
+        }
+      },
+      "value_type": "str"
+    },
+    "ms_language": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 449
+        }
+      },
+      "value_type": "str"
+    },
+    "ms_name": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 418
+        }
+      },
+      "value_type": "str"
+    },
+    "ms_name_xml": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 418
+        }
+      },
+      "value_type": "str"
+    },
+    "ms_show": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 454
+        }
+      },
+      "value_type": "str"
+    },
+    "mss": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 87811
+        }
+      },
+      "value_type": "str"
+    },
+    "ocp_book": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "chapter": {
+          "count": 3018
+        },
+        "div": {
+          "count": 46684
+        },
+        "document_metadata": {
+          "count": 32
+        },
+        "ellipsis": {
+          "count": 1
+        },
+        "manuscript": {
+          "count": 483
+        },
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 87811
+        },
+        "unit": {
+          "count": 81275
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "verse": {
+          "count": 43366
+        },
+        "version_metadata": {
+          "count": 1
+        },
+        "word": {
+          "count": 922922
+        }
+      },
+      "value_type": "str"
+    },
+    "prefix_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {},
+      "value_type": "str"
+    },
+    "reading_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 87811
+        }
+      },
+      "value_type": "int"
+    },
+    "reading_option": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 87811
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "word": {
+          "count": 922922
+        }
+      },
+      "value_type": "int"
+    },
+    "reading_option_source": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 87811
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "word": {
+          "count": 922922
+        }
+      },
+      "value_type": "str"
+    },
+    "reading_text": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 83962
+        }
+      },
+      "value_type": "str"
+    },
+    "reading_xml": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 83962
+        }
+      },
+      "value_type": "str"
+    },
+    "resource_name": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {},
+      "value_type": "str"
+    },
+    "section_occurrence": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "verse": {
+          "count": 43366
+        }
+      },
+      "value_type": "int"
+    },
+    "source_child_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "ellipsis": {
+          "count": 1
+        },
+        "orphan_reading": {
+          "count": 9
+        }
+      },
+      "value_type": "int"
+    },
+    "source_file": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "document_metadata": {
+          "count": 32
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "source_ref": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 3012
+        },
+        "div": {
+          "count": 46684
+        },
+        "ellipsis": {
+          "count": 1
+        },
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 87811
+        },
+        "unit": {
+          "count": 81275
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "verse": {
+          "count": 43366
+        },
+        "word": {
+          "count": 922922
+        }
+      },
+      "value_type": "str"
+    },
+    "source_ref_parts": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "chapter": {
+          "count": 3012
+        },
+        "div": {
+          "count": 46684
+        },
+        "ellipsis": {
+          "count": 1
+        },
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 87811
+        },
+        "unit": {
+          "count": 81275
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "verse": {
+          "count": 43366
+        },
+        "word": {
+          "count": 922922
+        }
+      },
+      "value_type": "str"
+    },
+    "source_sha256": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "source_tag": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "ellipsis": {
+          "count": 1
+        },
+        "orphan_reading": {
+          "count": 9
+        }
+      },
+      "value_type": "str"
+    },
+    "synthetic_witness": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 231,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 231
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "text_structure": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 261
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "title": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "token_count": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 87811
+        }
+      },
+      "value_type": "int"
+    },
+    "trailer_utf8": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "variant_word": {
+          "count": 3133
+        },
+        "word": {
+          "count": 843275
+        }
+      },
+      "value_type": "str"
+    },
+    "undefined_manuscript": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "manuscript": {
+          "count": 29,
+          "value_domain": "complete_observed",
+          "values": {
+            "1": 29
+          }
+        }
+      },
+      "value_type": "int"
+    },
+    "unit_id": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "reading": {
+          "count": 87810
+        },
+        "unit": {
+          "count": 81274
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "word": {
+          "count": 922888
+        }
+      },
+      "value_type": "str"
+    },
+    "unit_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "unit": {
+          "count": 81275
+        }
+      },
+      "value_type": "int"
+    },
+    "unit_linebreak": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "unit": {
+          "count": 2
+        }
+      },
+      "value_type": "str"
+    },
+    "variant_position": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "variant_word": {
+          "count": 7701
+        }
+      },
+      "value_type": "int"
+    },
+    "verse": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "verse": {
+          "count": 43366
+        }
+      },
+      "value_type": "str"
+    },
+    "verse_index": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "verse": {
+          "count": 43366
+        }
+      },
+      "value_type": "int"
+    },
+    "version_fragment": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 234
+        }
+      },
+      "value_type": "str"
+    },
+    "version_id": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348
+        },
+        "chapter": {
+          "count": 3018
+        },
+        "div": {
+          "count": 46684
+        },
+        "ellipsis": {
+          "count": 1
+        },
+        "manuscript": {
+          "count": 483
+        },
+        "orphan_reading": {
+          "count": 9
+        },
+        "reading": {
+          "count": 87811
+        },
+        "unit": {
+          "count": 81275
+        },
+        "variant_word": {
+          "count": 7701
+        },
+        "verse": {
+          "count": 43366
+        },
+        "version_metadata": {
+          "count": 1
+        }
+      },
+      "value_type": "str"
+    },
+    "version_kind": {
+      "categorical_values_requested": true,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 348,
+          "value_domain": "complete_observed",
+          "values": {
+            "generated_translation": 231,
+            "source": 117
+          }
+        },
+        "unit": {
+          "count": 81275,
+          "value_domain": "complete_observed",
+          "values": {
+            "generated_translation": 54143,
+            "source": 27132
+          }
+        },
+        "version_metadata": {
+          "count": 1,
+          "value_domain": "complete_observed",
+          "values": {
+            "source": 1
+          }
+        }
+      },
+      "value_type": "str"
+    },
+    "version_title": {
+      "categorical_values_requested": false,
+      "empty_records": 0,
+      "scopes": {
+        "book": {
+          "count": 342
+        },
+        "chapter": {
+          "count": 2852
+        },
+        "div": {
+          "count": 44605
+        },
+        "ellipsis": {
+          "count": 1
+        },
+        "manuscript": {
+          "count": 436
+        },
+        "reading": {
+          "count": 80064
+        },
+        "unit": {
+          "count": 75100
+        },
+        "variant_word": {
+          "count": 6313
+        },
+        "verse": {
+          "count": 41453
+        },
+        "version_metadata": {
+          "count": 1
+        },
+        "word": {
+          "count": 884053
+        }
+      },
+      "value_type": "str"
+    }
+  },
+  "node_types": {
+    "book": 348,
+    "chapter": 3018,
+    "div": 46684,
+    "document_metadata": 32,
+    "ellipsis": 1,
+    "manuscript": 483,
+    "orphan_reading": 9,
+    "reading": 87811,
+    "unit": 81275,
+    "variant_word": 7701,
+    "verse": 43366,
+    "version_metadata": 1,
+    "word": 922922
+  },
+  "repository": "alexsosn/Pseudepigrapha-TF",
+  "revision": "7c4b757bb543a110ae9a252d1281835859136852",
+  "schema_version": 2,
+  "slot_type": "word",
+  "tf_files_sha256": "9b708add5b9f8ddbfdafa7dd61507956f7987ca6a70b2b9164342bd49003ec61",
+  "tf_version": "1.0"
+}
