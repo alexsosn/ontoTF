@@ -16,7 +16,7 @@
       "revision": "4db00e2157915495e1a4d3d57e41223df24775da",
       "catalog_version": "2021",
       "source": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/docs/features",
-      "rationale": "R-005 BHSA feature reference: documented parts of speech, grammar, clause/phrase categories and dependency roles; lex nodes and source dictionary-entry features. Expanded ETCBC dependency, morphology, morpheme-form, discourse and lexical representation families; section hierarchy warrants LRMoo review but not every verse is an independent expression. Source morph forms remain native encodings, aliases are not new linguistic concepts. Further distinction: lexical frequencies versus occurrence spelling frequencies, source-local sequence labels, actual dependency distance units, morpheme realization and text representation. Whole closed-category feature containers are assessed through their values; optional property maps remain possible. Undocumented suffix_* fields remain unclassified pending node-level alias/definition evidence.",
+      "rationale": "R-005 BHSA feature reference: documented parts of speech, grammar, clause/phrase categories and dependency roles; lex nodes and source dictionary-entry features. Expanded ETCBC dependency, morphology, morpheme-form, discourse and lexical representation families; section hierarchy warrants LRMoo review but not every verse is an independent expression. Source morph forms remain native encodings, aliases are not new linguistic concepts. Further distinction: lexical frequencies versus occurrence spelling frequencies, source-local sequence labels, actual dependency distance units, morpheme realization and text representation. Whole closed-category feature containers are assessed through their values; optional property maps remain possible. Direct Git blob comparison established identical complete suffix_*/prs_* payloads at the pinned versions; avoid a duplicate mapping obligation.",
       "rules": {
         "OLiA": [
           {
@@ -409,6 +409,32 @@
           ],
           "reason": "ISO-639 codes identify languages; assess the language property rather than each code as a separate grammatical class.",
           "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/languageISO.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/tf/2021"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/bhsa/tree/4db00e2157915495e1a4d3d57e41223df24775da/tf/2021"
         }
       ]
     },
@@ -416,7 +442,7 @@
       "revision": "9a56288e6777bad6328856acf055c780e65dd5d9",
       "catalog_version": "0.2",
       "source": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2",
-      "rationale": "R-005 ETCBC feature inventory and actual scoped domains; linguistic feature meanings inherit the BHSA annotation conventions. No assumed lex node. Expanded ETCBC dependency, morphology, morpheme-form, discourse and lexical representation families; section hierarchy warrants LRMoo review but not every verse is an independent expression. Source morph forms remain native encodings, aliases are not new linguistic concepts. Further distinction: lexical frequencies versus occurrence spelling frequencies, source-local sequence labels, actual dependency distance units, morpheme realization and text representation. Whole closed-category feature containers are assessed through their values; optional property maps remain possible. Undocumented suffix_* fields remain unclassified pending node-level alias/definition evidence.",
+      "rationale": "R-005 ETCBC feature inventory and actual scoped domains; linguistic feature meanings inherit the BHSA annotation conventions. No assumed lex node. Expanded ETCBC dependency, morphology, morpheme-form, discourse and lexical representation families; section hierarchy warrants LRMoo review but not every verse is an independent expression. Source morph forms remain native encodings, aliases are not new linguistic concepts. Further distinction: lexical frequencies versus occurrence spelling frequencies, source-local sequence labels, actual dependency distance units, morpheme realization and text representation. Whole closed-category feature containers are assessed through their values; optional property maps remain possible. Direct Git blob comparison established identical complete suffix_*/prs_* payloads at the pinned versions; avoid a duplicate mapping obligation.",
       "rules": {
         "OLiA": [
           {
@@ -682,6 +708,32 @@
           ],
           "reason": "Language names are source codes/labels for a language identity; assess the language feature, not each literal as a grammatical class.",
           "evidence": "https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/language.md"
+        },
+        {
+          "kind": "feature",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
+        },
+        {
+          "kind": "value",
+          "features": [
+            "suffix_gender",
+            "suffix_number",
+            "suffix_person"
+          ],
+          "nodes": [
+            "word"
+          ],
+          "reason": "At the pinned TF version the three full annotation payloads are byte-identical to prs_gn, prs_nu, prs_ps respectively; review canonical prs_* annotations and preserve original aliases. Does not assert identity at another version.",
+          "evidence": "https://github.com/ETCBC/extrabiblical/tree/9a56288e6777bad6328856acf055c780e65dd5d9/tf/0.2"
         }
       ]
     },
