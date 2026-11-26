@@ -94,6 +94,8 @@ class ProgressTrackerTests(unittest.TestCase):
         self.assertEqual(by_name["cuc"]["schema_total"], 21)
         self.assertEqual(by_name["peshitta"]["schema_total"], 13)
         self.assertEqual(by_name["assyrian-royal-inscriptions"]["schema_total"], 93)
+        self.assertEqual(by_name["assyrian-royal-inscriptions"]["version"], "1.0.0")
+        self.assertEqual(by_name["assyrian-royal-inscriptions"]["inventory"]["tf_version"], "0.4.0")
         self.assertEqual(by_name["tlhdig-tf"]["schema_total"], 153)
         self.assertEqual(report["totals"]["reviewed"], sum(c["reviewed"] for c in by_name.values()))
         html = render(report)
