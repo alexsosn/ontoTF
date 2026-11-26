@@ -7,10 +7,10 @@ on:
       - "docs/research/I-021-authority-identity-identifier-runtime.md"
       - "docs/research/data/generated/i021/reference-runtime-reconciliation.json"
       - ".github/workflows/i021-reference-research.yml"
-      - "src/tfont/semantic_ir.py"
-      - "src/tfont/semantic_digest_v2.py"
-      - "src/tfont/semantic_validation.py"
-      - "src/tfont/semantic_policy_validation.py"
+      - "src/ontotf/semantic_ir.py"
+      - "src/ontotf/semantic_digest_v2.py"
+      - "src/ontotf/semantic_validation.py"
+      - "src/ontotf/semantic_policy_validation.py"
       - "tests/i005/**"
   workflow_dispatch:
 
