@@ -8,13 +8,13 @@ on:
       - 'src/tfont/xml_mappings.py'
       - 'docs/research/data/**'
       - 'scripts/pages/**'
-      - 'tests/test_progress_tracker.py'
+      - 'tests/mapping_catalog/test_progress_tracker.py'
       - '.github/workflows/pages-progress.yml'
       - 'pyproject.toml'
   pull_request:
     paths:
       - 'scripts/pages/**'
-      - 'tests/test_progress_tracker.py'
+      - 'tests/mapping_catalog/test_progress_tracker.py'
       - '.github/workflows/pages-progress.yml'
   workflow_dispatch:
 
@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -e .
-      - run: python -m unittest tests.test_progress_tracker -v
+      - run: python -m unittest tests.mapping_catalog.test_progress_tracker -v
       - run: python -m scripts.pages.build_progress --out _site
       - uses: actions/upload-pages-artifact@v4
         with:
