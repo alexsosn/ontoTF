@@ -232,14 +232,26 @@ def build_report(root, commit):
                 # completion denominator. Several models may share candidates.
                 all_rules = [rule for rules in spec["rules"].values() for rule in rules]
                 items = list(observed_items(scoped))
-                classification = {label: {
-                    "candidates": sum(key[0] == kind for key, _ in items),
-                    "routed": sum(key[0] == kind and any(rule_matches(r, key) for r in all_rules)
-                                  for key, _ in items),
-                } for kind, label in KINDS.items()}
+                exclusions = spec.get("exclusions", [])
+                routed_keys = {key for key, _ in items if any(rule_matches(r, key) for r in all_rules)}
+                excluded_keys = {key for key, _ in items if any(rule_matches(r, key) for r in exclusions)}
+                if routed_keys & excluded_keys:
+                    raise ValueError(f"{corpus}: applicability and exclusion overlap")
+                classification = {}
+                for kind, label in KINDS.items():
+                    candidates = {key for key, _ in items if key[0] == kind}
+                    routed = candidates & routed_keys
+                    excluded = candidates & excluded_keys
+                    classification[label] = {
+                        "candidates": len(candidates), "routed": len(routed),
+                        "excluded": len(excluded),
+                        "unclassified": len(candidates - routed - excluded),
+                    }
                 stats["applicability"] = {"status": "partial", "ontologies": eligible,
                     "classification": classification, "source": spec["source"],
-                    "rationale": spec["rationale"]}
+                    "rationale": spec["rationale"], "exclusions": exclusions,
+                    "unclassified_items": [list(key) for key, _ in items
+                                           if key not in routed_keys and key not in excluded_keys]}
         stats.update(corpus=corpus, version=version, source=source)
         corpora.append(stats)
     comparable = [c for c in corpora if c["schema_total"] is not None]
@@ -386,10 +398,14 @@ def render(report):
                       "node_values": "Selected node values", "edge_pairs": "Edge pairs",
                       "edge_values": "Selected edge values"}
             classification = applicability["classification"]
-            routed = "; ".join(f"{labels[k]}: {v['routed']}/{v['candidates']}"
+            routed = "; ".join(f"{labels[k]}: {v['routed']} routed, {v['excluded']} excluded, {v['unclassified']} unclassified"
                               for k, v in classification.items() if v["candidates"])
             details = "<p>" + link(applicability["source"], "Applicability evidence") + " · " + h(applicability["rationale"]) + "</p>"
-            details += "<p>Observed units routed to at least one model (separate units, not an overall completion ratio): " + h(routed) + ".</p>"
+            details += "<p>Observed units by research status (separate units, not an overall completion ratio): " + h(routed) + ".</p>"
+            if applicability["exclusions"]:
+                details += "<ul>" + "".join("<li>" + h(", ".join(rule.get("features", rule.get("nodes", [])))) +
+                    " — " + h(rule["reason"]) + " (" + link(rule["evidence"], "source") + ")</li>"
+                    for rule in applicability["exclusions"]) + "</ul>"
             scoped_details[-1] = scoped_details[-1].removesuffix("</details>") + details + "</details>"
         inv = c["inventory"]
         source = "No matching inventory."
