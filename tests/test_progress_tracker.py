@@ -1,7 +1,6 @@
 """Progress page counts categories, not declarations or token occurrences."""
 import unittest
 from pathlib import Path
-from tempfile import TemporaryDirectory
 
 from scripts.pages.build_progress import build_report, render, summarize, ontology
 from tfont.xml_mappings import Mapping
@@ -51,7 +50,40 @@ class ProgressTrackerTests(unittest.TestCase):
     def test_ontology_namespace_and_unknown(self):
         self.assertEqual(ontology("http://www.w3.org/2004/02/skos/core#Concept"), "SKOS")
         self.assertEqual(ontology("http://iflastandards.info/ns/lrm/lrmoo/F2_Expression"), "LRMoo")
+        self.assertEqual(ontology("http://www.cidoc-crm.org/extensions/crmtex/TX1_Written_Text"), "CRMtex")
+        self.assertEqual(ontology("http://www.cidoc-crm.org/extensions/crminf/I1_Argumentation"), "CRMinf")
         self.assertEqual(ontology("https://example.org/olia#Noun"), "Other")
+        self.assertEqual(ontology("http://www.cidoc-crm.org/crmtex/TX1_Written_Text"), "Other")
+
+    def test_explicit_revision_mismatch_and_individual_candidates(self):
+        inv = dict(version="1", revision="a"*40, node_types=["word"],
+                   node_features=["pos"], edge_features=[], source="snapshot")
+        s = summarize([self.row(), self.row(kind="entity", target="https://example.org/id/1")],
+                      inv, "1", source_revision="b"*40)
+        self.assertEqual(s["declarations"], 2)
+        self.assertEqual(s["individual_declarations"], 1)
+        self.assertEqual(s["reviewed"], 1)
+        self.assertEqual(s["positive"], 1)
+        self.assertIsNone(s["schema_total"])
+        self.assertEqual(s["ontologies"]["Other"]["selectors"], 0)
+
+    def test_observed_value_domains_do_not_multiply_scopes_or_claim_open_domains(self):
+        inv = dict(version="1", node_types=["word", "lex"], node_features=["pos"], edge_features=[],
+                   source="snapshot", value_domains={"pos": {"values": ["N", "V", "A"],
+                                                              "scopes": ["word", "lex"]}})
+        rows = [self.row(), self.row(node="lex"), self.row(value="V", relation="native-only", target=None),
+                self.row(value="X"), self.row(value="A", corpus_version="0")]
+        s = summarize(rows, inv, "1")
+        self.assertEqual(s["schema_breakdown"]["feature"], {"total": 1, "reviewed": 1, "positive": 1})
+        domain, = s["value_domains"]
+        self.assertEqual(domain["total"], 3)
+        self.assertEqual(domain["positive"], 1)
+        self.assertEqual(domain["reviewed"], 2)
+        self.assertEqual(domain["unreviewed"], ["A"])
+        self.assertEqual(domain["outside_inventory"], ["X"])
+        self.assertEqual(domain["scopes"], ["word", "lex"])
+        self.assertEqual(domain["ontologies"]["OLiA"], 1)
+        self.assertEqual(summarize(rows, None, "1")["value_domains"], [])
 
     def test_real_repo_report_and_html(self):
         root = Path(__file__).resolve().parents[1]
