@@ -265,6 +265,17 @@ def inventory_scoped_api(
         collect = name in edge_value_features
         if collect and not valued:
             raise ValueError(f"Cannot inventory values of unvalued edge {name}")
+        # TF omap@old-new maps nodes across two different versions. Applying
+        # the current otype to old node IDs can fabricate endpoint types.
+        if name.startswith("omap@"):
+            if collect:
+                raise ValueError(f"Cannot inventory local values of cross-version edge {name}")
+            edge_features[name] = {
+                "valued": valued, "scope_status": "cross_version",
+                "edge_count": sum(len(targets) for _, targets in feature.items()),
+                "categorical_values_requested": False,
+            }
+            continue
         pairs = {}
         for source, targets in feature.items():
             source_type = node_type(source)
