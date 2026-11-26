@@ -10,6 +10,7 @@ import argparse
 from collections import Counter, defaultdict
 from html import escape
 import json
+import re
 from pathlib import Path
 import subprocess
 from urllib.parse import quote
@@ -32,9 +33,9 @@ PREFIXES = {
     "OntoLex-Lemon": ("http://www.w3.org/ns/lemon/ontolex#", "https://www.w3.org/ns/lemon/ontolex#"),
     "LRMoo": ("http://iflastandards.info/ns/lrm/lrmoo/", "https://iflastandards.info/ns/lrm/lrmoo/"),
     "CIDOC CRM": ("http://www.cidoc-crm.org/cidoc-crm/", "https://www.cidoc-crm.org/cidoc-crm/"),
-    "CRMtex": ("http://www.cidoc-crm.org/crmtex/", "https://www.cidoc-crm.org/crmtex/"),
+    "CRMtex": ("http://www.cidoc-crm.org/extensions/crmtex/", "https://www.cidoc-crm.org/extensions/crmtex/"),
     "SKOS": ("http://www.w3.org/2004/02/skos/core#", "https://www.w3.org/2004/02/skos/core#"),
-    "CRMinf": ("http://www.cidoc-crm.org/crminf/", "https://www.cidoc-crm.org/crminf/"),
+    "CRMinf": ("http://www.cidoc-crm.org/extensions/crminf/", "https://www.cidoc-crm.org/extensions/crminf/"),
 }
 WORKSTREAMS = ("C", "D", "E", "F", "G", "H")
 WORKSTREAM_NAMES = ("OLiA", "OntoLex + SKOS", "CRM + CRMtex", "LRMoo", "CRMinf", "Residual")
@@ -58,16 +59,52 @@ def schema_key(row):
     return None
 
 
-def summarize(rows, inventory, version):
+def observed_value_coverage(rows, inventory, version):
+    """Count complete observed value lists at feature granularity, not scope products.
+
+    Source censuses aggregate values across node types. A positive disposition
+    in one of those types is evidence of a reviewed value somewhere, not every
+    occurrence or every type. Only features already having value mappings are
+    shown; this is deliberately not a corpus-wide semantic denominator.
+    """
+    by_feature = defaultdict(list)
+    for row in rows:
+        if row.kind == "value" and row.corpus_version in (None, version):
+            by_feature[row.feature].append(row)
+    result = []
+    for feature, domain in sorted(inventory.get("value_domains", {}).items()):
+        if feature not in by_feature:
+            continue
+        observed = set(domain["values"])
+        scoped = [row for row in by_feature[feature] if row.node in domain["scopes"]]
+        reviewed = {row.value for row in scoped} & observed
+        positive = {row.value for row in scoped if row.relation in POSITIVE} & observed
+        result.append({
+            "feature": feature, "scopes": domain["scopes"],
+            "total": len(observed), "positive": len(positive), "reviewed": len(reviewed),
+            "unreviewed": sorted(observed - reviewed),
+            "outside_inventory": sorted({row.value for row in scoped} - observed),
+            "ontologies": {name: len({row.value for row in scoped
+                if row.relation in POSITIVE and ontology(row.target) == name} & observed)
+                for name in ONTOLOGIES},
+        })
+    return result
+
+
+def summarize(rows, inventory, version, source_revision=None):
+    rows = tuple(rows)
     groups = defaultdict(list)
     for row in rows:
+        if row.kind == "entity":
+            continue
         groups[(row.corpus_version, row.selector)].append(row)
     positive = {k for k, group in groups.items()
                 if any(r.relation in POSITIVE for r in group)}
     exact = {k for k, group in groups.items() if any(r.relation == "exact" for r in group)}
     # Keep inventories that cannot be compared visible but never use them as denominators.
     schema = None
-    if inventory is not None and version is not None and inventory["version"] == version:
+    if (inventory is not None and version is not None and inventory["version"] == version
+            and (source_revision is None or inventory.get("revision") == source_revision)):
         schema = {
             prefix + ":" + name
             for prefix, field in (("type", "node_types"), ("feature", "node_features"),
@@ -98,6 +135,7 @@ def summarize(rows, inventory, version):
                 entry["schema"].add(sk)
     return {
         "declarations": len(rows),
+        "individual_declarations": sum(row.kind == "entity" for row in rows),
         "reviewed": len(groups),
         "exact": len(exact),
         "qualified": len(positive - exact),
@@ -109,7 +147,15 @@ def summarize(rows, inventory, version):
         "schema_reviewed": None if schema is None else len(touched),
         "schema_unmapped": None if schema is None else sorted(schema - schema_positive),
         "schema_unreviewed": None if schema is None else sorted(schema - touched),
-        "ontology_targets": sorted({r.target for r in rows if r.relation in POSITIVE}),
+        "schema_breakdown": None if schema is None else {
+            prefix: {"total": sum(k.startswith(prefix + ":") for k in schema),
+                     "reviewed": sum(k.startswith(prefix + ":") for k in touched),
+                     "positive": sum(k.startswith(prefix + ":") for k in schema_positive)}
+            for prefix in ("type", "feature", "edge")
+        },
+        "value_domains": [] if schema is None else observed_value_coverage(rows, inventory, version),
+        "ontology_targets": sorted({r.target for r in rows
+                                    if r.kind != "entity" and r.relation in POSITIVE}),
         "ontologies": {name: {
             "selectors": len(entry["selectors"]),
             "schema": None if schema is None else len(entry["schema"]),
@@ -117,13 +163,24 @@ def summarize(rows, inventory, version):
         } for name, entry in by_ontology.items()},
         "inventory": None if inventory is None else {
             k: v for k, v in inventory.items() if k not in
-            {"node_types", "node_features", "edge_features"}
+            {"node_types", "node_features", "edge_features", "value_domains"}
         },
     }
 
 
 def read_json(root, path):
     return json.loads((root / path).read_text(encoding="utf-8"))
+
+
+def complete_value_domains(features):
+    return {name: {"values": sorted({str(v) for v in info["observed_values"]}),
+                   "scopes": sorted(info["applies_to"])}
+            for name, info in features.items()
+            if info.get("domain_observation") == "observed_small_domain"
+            and isinstance(info.get("observed_values"), list)
+            and info.get("applies_to")
+            and len({str(v) for v in info["observed_values"]}) == info.get("observed_unique_count")
+            and info["observed_values"]}
 
 
 def inventories(root):
@@ -135,12 +192,14 @@ def inventories(root):
         result[data["corpus_id"]] = {
             "version": data["tf_version"], "revision": data.get("revision"),
             "source": path.relative_to(root).as_posix(),
+            "value_domains": complete_value_domains(data["node_features"]),
             **{name: sorted(data[name]) for name in ("node_types", "node_features", "edge_features")},
         }
     data = read_json(root, PSEUD)
     result["pseudepigrapha"] = {
         "version": data["release"]["tf_version"], "revision": data["release"]["commit"],
         "source": PSEUD,
+        "value_domains": complete_value_domains(data["node_features"]),
         **{name: sorted(data[name]) for name in ("node_types", "node_features", "edge_features")},
     }
     # Latest available pinned schema-name evidence for these two converter versions.
@@ -157,12 +216,15 @@ def build_report(root, commit):
     for corpus in catalog.list_corpora():
         xml = ET.parse(catalog_path / (corpus + ".xml")).getroot()
         version = xml.get("corpusVersion")
-        stats = summarize(catalog.load(corpus), inv.get(corpus), version)
-        stats.update(corpus=corpus, version=version, source=xml.get("source"))
+        source = xml.get("source")
+        pin = re.search(r"@([a-f0-9]{40})(?::|$)", source)
+        stats = summarize(catalog.load(corpus), inv.get(corpus), version,
+                          source_revision=pin.group(1) if pin else None)
+        stats.update(corpus=corpus, version=version, source=source)
         corpora.append(stats)
     comparable = [c for c in corpora if c["schema_total"] is not None]
     totals = {key: sum(c[key] for c in corpora)
-              for key in ("declarations", "reviewed", "positive", "exact", "qualified", "nonpositive")}
+              for key in ("declarations", "individual_declarations", "reviewed", "positive", "exact", "qualified", "nonpositive")}
     totals.update({key: sum(c[key] for c in comparable)
                    for key in ("schema_total", "schema_positive", "schema_reviewed")})
     totals.update(corpora=len(corpora), comparable_corpora=len(comparable),
@@ -194,6 +256,14 @@ def rate(n, d):
     return f"{n:,} / {d:,} ({100*n/d:.1f}%)"
 
 
+def bar(n, d):
+    text = rate(n, d)
+    if n is None or d is None or not d:
+        return text
+    # The adjacent numeric text is the accessible label, so the visual bar is decorative.
+    return text + f'<meter min="0" max="{d}" value="{n}" aria-hidden="true"></meter>'
+
+
 def number(value):
     return "—" if value is None else f"{value:,}"
 
@@ -221,8 +291,8 @@ def render(report):
     for c in corpora:
         count_rows.append([mapping(c), h(c["version"] or "unpinned"),
                            number(c["exact"]), number(c["qualified"]), number(c["nonpositive"]),
-                           number(c["reviewed"]), rate(c["schema_positive"], c["schema_total"]),
-                           rate(c["schema_reviewed"], c["schema_total"])])
+                           rate(c["positive"], c["reviewed"]), bar(c["schema_positive"], c["schema_total"]),
+                           bar(c["schema_reviewed"], c["schema_total"])])
         cells = [mapping(c)]
         for name in ONTOLOGIES:
             stat = c["ontologies"][name]
@@ -243,21 +313,36 @@ def render(report):
             if inv.get("type_source"):
                 source += " · " + link(inv["type_source"], "Node type evidence")
             if c["schema_total"] is None:
-                source += " (not comparable to mapping version)"
+                source += " (not comparable to mapping version or explicit revision)"
         details = ""
         if c["schema_unmapped"] is not None:
+            details += '<p>Schema items with positive mappings: ' + " · ".join(
+                h(label) + " " + rate(c["schema_breakdown"][key]["positive"],
+                                       c["schema_breakdown"][key]["total"])
+                for key, label in (("type", "Node types"), ("feature", "Node features"), ("edge", "Edge features"))
+            ) + '</p>'
             details += '<p>Without positive mapping: ' + ", ".join(h(x) for x in c["schema_unmapped"]) + '</p>'
             details += '<p>Without any schema-linked disposition: ' + ", ".join(h(x) for x in c["schema_unreviewed"]) + '</p>'
         details += '<p>Selectors without a positive target: ' + (
             ", ".join(h(k) + " " + number(v) for k, v in c["nonpositive_status"].items()) or "none"
         ) + '</p>'
+        if c["value_domains"]:
+            domain_rows = [[h(d["feature"]), h(", ".join(d["scopes"])),
+                            rate(d["positive"], d["total"]), rate(d["reviewed"], d["total"]),
+                            number(len(d["outside_inventory"]))]
+                           for d in c["value_domains"]]
+            details += table(("Feature", "Observed scopes", "Positive values", "Reviewed values",
+                              "Declared outside list"), domain_rows,
+                             "Complete observed value lists for features with XML value dispositions; values pooled across scopes.")
+        else:
+            details += '<p>No complete comparable observed value lists for mapped features are available in this inventory.</p>'
         gaps.append('<details><summary>' + h(c["corpus"]) + ' · ' +
                     rate(c["schema_positive"], c["schema_total"]) +
                     '</summary><p>' + source + " · " + mapping(c) + '</p>' + details + '</details>')
     count_rows.append(["<strong>Total</strong>", "—", *[number(totals[k]) for k in
-                      ("exact", "qualified", "nonpositive", "reviewed")],
-                       rate(totals["schema_positive"], totals["schema_total"]),
-                       rate(totals["schema_reviewed"], totals["schema_total"])])
+                      ("exact", "qualified", "nonpositive")], rate(totals["positive"], totals["reviewed"]),
+                       bar(totals["schema_positive"], totals["schema_total"]),
+                       bar(totals["schema_reviewed"], totals["schema_total"])])
     matrix.append(["<strong>Total</strong>", *[
         number(totals["ontologies"][name]["selectors"]) + '<small>' +
         number(totals["ontologies"][name]["schema"]) + " / " + number(totals["schema_total"]) +
@@ -270,7 +355,7 @@ def render(report):
     cards = [
         ("Positive selectors", number(totals["positive"]), "of " + number(totals["reviewed"]) + " reviewed"),
         ("Schema coverage", rate(totals["schema_positive"], totals["schema_total"]),
-         "at least one positive mapping"),
+         "at least one positive mapping · " + number(totals["comparable_corpora"]) + " comparable corpora"),
         ("Exact selectors", number(totals["exact"]), "qualified: " + number(totals["qualified"])),
         ("Core ontologies", number(sum(totals["ontologies"][o]["selectors"] > 0 for o in ONTOLOGIES[:-1])) + " / 7",
          number(totals["corpora"]) + " corpora"),
@@ -300,20 +385,20 @@ th,td{padding:.75rem .8rem;border-bottom:1px solid var(--line);text-align:right;
 th:first-child{text-align:left}thead th{background:var(--bg);font-size:.8rem}tbody th{font-weight:500}
 tr:last-child td,tr:last-child th{border-bottom:0}tbody tr:last-child{background:var(--bg)}
 details{padding:.7rem 0;border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:600}details p{overflow-wrap:anywhere;font-size:.88rem}
-code{font-size:.85em}footer{margin-top:2rem;color:var(--muted);font-size:.85rem}
+meter{display:block;width:100%;height:.65rem;min-width:5rem;accent-color:var(--accent);margin-top:.2rem}code{font-size:.85em}footer{margin-top:2rem;color:var(--muted);font-size:.85rem}
 </style></head><body><main>
 <header><strong>ontoTF / TFont</strong><nav>""" + link(REPO, "GitHub") + """ · <a href="progress.json">Download data</a></nav></header>
 <h1>Mapping progress</h1><p class="muted">Current development XML catalog. Mapping counts describe native semantic categories, not individual corpus tokens, identity links, or released-wheel support.</p>
 <p class="muted">Source commit """ + link(REPO + "/commit/" + quote(commit, safe=""), commit[:12]) + """</p>
 <section class="metrics" aria-label="Summary">""" + cards_html + """</section>
-<h2>Corpus coverage</h2><p>Exact takes precedence over qualified when one selector has multiple positive targets. Native-only, ambiguous and unsupported selectors are reviewed dispositions without a positive target.</p>""" + table(
-        ("Corpus", "TF version", "Exact", "Qualified", "No positive target", "Reviewed selectors", "Schema positive", "Schema touched"),
-        count_rows, f"Schema totals cover {totals['comparable_corpora']} of {totals['corpora']} corpora with version-matching inventories.") + """
+<h2>Corpus coverage</h2><p>Exact takes precedence over qualified when one selector has multiple positive targets. Native-only, ambiguous and unsupported selectors are reviewed dispositions without a positive target. Selector counts include all declared versions; schema counts use only the comparable default version. Individual entity declarations are excluded.</p>""" + table(
+        ("Corpus", "Default TF version", "Exact", "Qualified", "No positive target", "Positive / reviewed", "Schema positive", "Schema touched"),
+        count_rows, f"Schema totals cover {totals['comparable_corpora']} of {totals['corpora']} corpora with compatible pinned inventories.") + """
 <h2>Corpus × ontology</h2><p>Each cell shows distinct positive versioned selectors; the smaller line is schema items with at least one positive mapping to that ontology / all comparable schema items in the corpus. Ontologies can overlap. The schema denominator is not an ontology-specific eligibility count.</p>""" + table(
         ("Corpus", *ONTOLOGIES, "Unique positive"), matrix,
         "Selectors and schema coverage, by ontology. A dash means no comparable inventory.") + """
-<h2>Schema gaps and evidence</h2><p>One schema item is a native node type, node feature or edge feature. A partially mapped feature counts once. TF warp/configuration and optional unloaded provenance features are excluded; other technical or native-only categories can remain in the denominator. A version match is not authentication of source bytes. The tracker does not assert that every schema item needs an ontology target.</p>""" + "".join(gaps) + """
-<h2>Historical semantic work plan</h2><p>The P-004 inventory groups ontology workstreams and includes selected feature values. Its 934-item baseline excludes later corpora and uses older revisions for some datasets. It is not the denominator for the XML selector totals above. Current ontology-specific eligibility and exhaustive node-scoped value denominators are not yet established.</p>""" + table(
+<h2>Schema gaps and evidence</h2><p>One schema item is a native node type, node feature or edge feature. A partially mapped feature counts once. TF warp/configuration and optional unloaded provenance features are excluded; other technical or native-only categories can remain in the denominator. A version match is not authentication of source bytes. Complete observed value lists are shown only for already mapped feature families where the inventory provides them; values are pooled across native scopes and may include technical categories. No corpus-wide value completion rate is inferred. The tracker does not assert that every schema item needs an ontology target.</p>""" + "".join(gaps) + """
+<h2>Historical semantic work plan</h2><p>The P-004 inventory groups ontology workstreams and includes selected feature values. Its """ + number(report["historical_total"]) + """-item baseline excludes later corpora and uses older revisions for some datasets. It is not the denominator for the XML selector totals above. Current ontology-specific eligibility and exhaustive node-scoped value denominators are not yet established.</p>""" + table(
         ("Corpus", *WORKSTREAM_NAMES, "Total"), old_rows,
         "Historical P-004 routed semantic items; planned workload, not current progress ratios.") + """
 <footer>Generated from the """ + link(REPO + "/tree/" + quote(commit, safe="") + "/src/tfont/mappings", "authoritative XML catalog") + " and " + link(blob + QUEUE, "historical work queue") + """. No corpus text is redistributed by this page. <a href="progress.json">Machine-readable statistics</a>.</footer>
