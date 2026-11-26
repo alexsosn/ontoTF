@@ -13,7 +13,7 @@ UPSTREAM = "7c4b757bb543a110ae9a252d1281835859136852"
 class PseudepigraphaExpressionMappingsTests(unittest.TestCase):
     def test_text_bearing_source_version_is_expression_category(self):
         c = MappingCatalog()
-        m = c.map_native("pseudepigrapha", kind="node", node="book")
+        m = c.map_native("pseudepigrapha", corpus_version="1.0", kind="node", node="book")
         self.assertEqual(len(m), 1)
         self.assertEqual(
             (m[0].relation, m[0].target, m[0].corpus_version),
@@ -47,7 +47,7 @@ class PseudepigraphaExpressionMappingsTests(unittest.TestCase):
     def test_source_pinned_translation_points_derivative_to_source_expression(self):
         c = MappingCatalog()
         r = c.map_native(
-            "pseudepigrapha", kind="edge",
+            "pseudepigrapha", corpus_version="1.0", kind="edge",
             feature="translation_of", from_node="book", to_node="book",
         )
         self.assertEqual(len(r), 1)
@@ -64,7 +64,7 @@ class PseudepigraphaExpressionMappingsTests(unittest.TestCase):
         # Pseudepigrapha's converter explicitly records translation -> source;
         # the inverse relation or a Work derivation must not be inferred.
         self.assertEqual(c.map_native(
-            "pseudepigrapha", kind="edge",
+            "pseudepigrapha", corpus_version="1.0", kind="edge",
             feature="translation_of", from_node="reading", to_node="book"
         ), ())
 
@@ -74,7 +74,7 @@ class PseudepigraphaExpressionMappingsTests(unittest.TestCase):
             with self.subTest(kind=kind):
                 self.assertEqual(
                     [(m.relation, m.target) for m in c.map_native(
-                        "pseudepigrapha", kind="node", node=kind
+                        "pseudepigrapha", corpus_version="1.0", kind="node", node=kind
                     )],
                     [("native-only", None)],
                 )

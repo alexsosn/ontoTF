@@ -54,15 +54,16 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
     def test_complete_pinned_observed_domain_with_source_specific_semantics(self):
         catalog = MappingCatalog()
         for corpus in ("syriac", "extrabiblical"):
+            version = "0.9" if corpus == "syriac" else "0.2"
             rows = [r for r in catalog.load(corpus)
                     if r.kind == "value" and r.node == "word"
-                    and r.feature == "ls"]
+                    and r.feature == "ls" and r.corpus_version == version]
             self.assertEqual(len(rows), len(OBSERVED[corpus]))
             self.assertEqual({r.value for r in rows}, OBSERVED[corpus])
             for value in OBSERVED[corpus]:
                 with self.subTest(corpus=corpus, code=value):
                     m = catalog.map_native(
-                        corpus, node="word", feature="ls", value=value
+                        corpus, node="word", feature="ls", value=value, corpus_version=version
                     )
                     self.assertEqual(len(m), 1)
                     self.assertIn(PIN[corpus], m[0].evidence)
@@ -81,7 +82,7 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
                 matching = catalog.find_correspondences(
                     "syriac", "extrabiblical",
                     node="word", feature="ls", value=code
-                )
+                , source_version="0.9")
                 self.assertEqual(len(matching), 1)
                 m = matching[0]
                 self.assertEqual(m.target, OLIA + cls)
@@ -92,7 +93,7 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
                 self.assertEqual(m.scope, "category")
                 self.assertEqual(m.relation, "exact")
         self.assertEqual(
-            catalog.map_native("syriac", kind="entity",
+            catalog.map_native("syriac", corpus_version="0.9", kind="entity",
                                node="word", feature="ls", value="card"),
             (),
         )
@@ -117,20 +118,20 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
                         OLIA + target, include_approximate=True,
                     ))
                     self.assertEqual(catalog.find_correspondences(
-                        corpus, "bhsa", node="word", feature="ls", value=code,
+                        corpus, "bhsa", node="word", feature="ls", value=code, source_version=version,
                     ), ())
                     with self.assertRaisesRegex(MappingError, "exact"):
                         resolve_nodes(object(), row, corpus_version=version)
         # 'demo' includes XDD> 'each other' (9 occurrences); never pretend
         # all 3,575 native demo annotations are demonstrative pronouns.
         row, = catalog.map_native(
-            "syriac", node="word", feature="ls", value="demo",
+            "syriac", corpus_version="0.9", node="word", feature="ls", value="demo",
         )
         self.assertNotEqual(row.target, OLIA + "DemonstrativePronoun")
         # OLiA explicitly distinguishes the broad personal/reflexive
         # category from its narrower irreflexive PersonalPronoun.
         pers, = catalog.map_native(
-            "syriac", node="word", feature="ls", value="pers",
+            "syriac", corpus_version="0.9", node="word", feature="ls", value="pers",
         )
         self.assertNotEqual(pers.target, OLIA + "PersonalPronoun")
 
@@ -142,8 +143,7 @@ class ETCBCObservedLexicalSetsTests(unittest.TestCase):
                     catalog.find_correspondences(
                         "syriac", "syrnt", node="word",
                         feature="ls", value=code,
-                        include_approximate=True,
-                    ),
+                        include_approximate=True, source_version="0.9"),
                     (),
                 )
         for code in ("mult", "padv", "ppre", "focp", "sffx"):
