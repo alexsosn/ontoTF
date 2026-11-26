@@ -29,10 +29,15 @@ class OraccCrmCatalogueTests(unittest.TestCase):
                                (CORPUS + ".json")).read_text())
         self.assertEqual(evidence["catalog_version"], VERSION)
         self.assertEqual(evidence["revision"], "60db4b724a687c0f425e78eae924fce89454e106")
+        from scripts.pages.scoped_progress import rule_matches
+        policy = json.loads((root / "docs/research/data/scoped-applicability.json").read_text())
+        rules = policy["corpora"][CORPUS]["rules"]["CIDOC CRM"]
         cat = MappingCatalog()
         for feature, (relation, name) in EXPECTED.items():
             with self.subTest(feature=feature):
                 self.assertGreater(evidence["node_features"][feature]["scopes"]["document"]["count"], 0)
+                self.assertTrue(any(rule_matches(rule, ("feature", "document", feature, None, None, None))
+                                    for rule in rules))
                 rows = cat.map_native(CORPUS, kind="feature", node="document",
                                       feature=feature, corpus_version=VERSION)
                 matches = [r for r in rows if r.target == CRM + name]
