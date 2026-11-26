@@ -1,5 +1,7 @@
 # TFont
 
+[Mapping progress dashboard](https://alexsosn.github.io/ontoTF/) (development XML catalog; available after Pages deployment). The tracker reports distinct versioned selectors, exact/qualified/nonpositive dispositions, corpus × ontology counts and schema denominators from pinned source inventories. Schema coverage means at least one positive mapping, not exhaustive value coverage. The historical P-004 work plan is displayed separately. See [tracker build and deployment](scripts/pages/README.md).
+
 > **Architecture migration (2026-10-12):** The [researcher-first XML contract](docs/architecture/researcher-first-xml-contract.xml) and [removal plan](docs/architecture/researcher-first-removal-plan.xml) supersede the earlier batch-release design. The published v0.1.1 wheel still uses legacy resources. The development source implements an auto-discovered XML catalog (the current corpus roster comes from the XML files, not a hard-coded list); that XML functionality has not yet shipped in a tagged wheel. New contributions edit only `src/tfont/mappings/<corpus>.xml`.
 
 
