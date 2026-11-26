@@ -22,9 +22,11 @@ property mapping. The corpus annotation itself is never removed.
 * [BHSA freq_lex](https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/freq_lex.md)
   and [rank_lex](https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/rank_lex.md)
   respect disambiguated lexemes. The word-level `lexeme_count` metadata
-  likewise denotes its lexeme occurrence count. These warrant lexical
-  statistics review; this is not a claim that core OntoLex defines an
-  exact frequency or rank property. Conversely
+  likewise denotes its lexeme occurrence count. The separate [OntoLex-FrAC module](https://ontolex.github.io/frequency-attestation-corpus-information/)
+  addresses corpus frequency and attestations; it complements core OntoLex
+  and is not included in the currently selected seven-model scope. Retain
+  these statistics outside the core category denominator, without ruling
+  out a future FrAC extension. Rank is not automatically a frequency. Conversely
   [freq_occ](https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/freq_occ.md)
   and [rank_occ](https://github.com/ETCBC/bhsa/blob/4db00e2157915495e1a4d3d57e41223df24775da/docs/features/rank_occ.md)
   count consonantal representations without accents, ignoring homonyms.
