@@ -70,7 +70,7 @@ def annotation_bar(stat):
     mapped = stat["positive_occurrences"]
     return (f'<div class="reading"><strong>{percent(mapped, total)}</strong>'
             f'<span>{mapped:,} / {total:,} annotations</span></div>'
-            + segments([("exact", mapped), ("remaining", total-mapped)], total))
+            + segments([("mapped", mapped), ("remaining", total-mapped)], total))
 
 
 def ontology_cell(stat):
@@ -87,11 +87,11 @@ def ontology_cell(stat):
             + segments([("exact", stat["exact"]), ("qualified", stat["qualified"]),
                         ("remaining", pending)], total)
             + f'<small>{mapped:,} / {total:,}</small>'
-              f'<small>{stat["exact"]:,} exact · {stat["qualified"]:,} qualified</small>'
+              f'<details><summary>Breakdown</summary><small>{stat["exact"]:,} exact · {stat["qualified"]:,} qualified</small>'
               f'<small>{stat["other_target"]:,} other ontology · '
               f'{stat["ambiguous"]:,} ambiguous · '
               f'{stat["global_nonpositive"]:,} global no-match · '
-              f'{stat["unreviewed"]:,} unreviewed</small>' + warning)
+              f'{stat["unreviewed"]:,} unreviewed</small></details>' + warning)
 
 
 def classification_bar(stat):
@@ -120,7 +120,8 @@ def domain_gaps(scoped):
         domains.sort(key=lambda d: (-(d["occurrences"]-d["reviewed_occurrences"]),
                                     -d["unreviewed"], d["feature"]))
         if not domains:
-            sections.append(f"<p>{title}: no unreviewed values in measured domains.</p>")
+            message = "no unreviewed values in measured domains" if scoped[key] else "no measured domains"
+            sections.append(f"<p>{title}: {message}.</p>")
             continue
         rows = []
         for d in domains:
@@ -175,7 +176,7 @@ small{display:block;font-size:.75rem;line-height:1.45;margin-top:.25rem}
 .snapshot div{flex:1 1 11rem}.snapshot strong{font-size:1.65rem;display:block;font-variant-numeric:tabular-nums}
 .legend{font-size:.8rem;margin:.8rem 0}.legend span{display:inline-flex;align-items:center;gap:.3rem}
 .legend i{width:.75rem;height:.75rem;border-radius:2px;display:inline-block}
-.exact{background:var(--exact)}.qualified{background:var(--qualified)}.reviewed{background:var(--reviewed)}.remaining{background:var(--remaining)}
+.mapped{background:var(--exact)}.exact{background:var(--exact)}.qualified{background:var(--qualified)}.reviewed{background:var(--reviewed)}.remaining{background:var(--remaining)}
 .track{display:flex;height:.65rem;background:var(--remaining);border-radius:3px;overflow:hidden;margin:.35rem 0}
 .track span{flex:none}.reading{justify-content:space-between;gap:.25rem .75rem;font-variant-numeric:tabular-nums}
 .reading strong{font-size:1.25rem}.reading span{font-size:.78rem;color:var(--muted)}
@@ -199,7 +200,6 @@ footer{border-top:1px solid var(--line);margin-top:2rem;padding-top:1rem;font-si
 
 def render(report):
     corpora = report["corpora"]
-    totals = report["totals"]
     commit = report["commit"]
     commit_url = REPO + "/commit/" + quote(commit, safe="")
     scoped_count = sum(c.get("scoped") is not None for c in corpora)
@@ -243,7 +243,7 @@ def render(report):
 <p>Each distinct observed node-scoped value or directed edge value is counted once. Exact and qualified (close, broader, narrower or related) mappings contribute to mapped coverage. Native-only, ambiguous and unsupported dispositions do not contribute. A whole-feature mapping does not cover its values. Annotation coverage weights selected node values by their frequency; it measures feature-value observations and may count multiple annotations of the same word. Guarded node mappings are excluded from unconditional node-type counts.</p>
 <p>Applicability classification measures research of observed units within each kind. Selected units may be relevant to several ontologies. Exclusions follow the current granularity policy. Unclassified units require further research. Unknown scopes and empty measured scopes have no percentage. Open or overflowing value domains are not extrapolated. The report tracks development mappings; release readiness and execution support require separate tests.</p>
 <p>Only one snapshot is available. Trend comparisons require comparable inventories over time.</p></details></section>
-<footer>Source revision <a href="""" + h(commit_url) + '">' + h(commit[:12]) + """</a> ·
+<footer>Source revision """ + '<a href="' + h(commit_url) + '">' + h(commit[:12]) + """</a> ·
 <a href="progress.json">Download underlying statistics</a> · <a href="https://github.com/alexsosn/ontoTF">Project repository</a></footer>
 </main></body></html>
 """
