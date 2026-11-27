@@ -7,6 +7,8 @@ on:
   pull_request:
     paths:
       - 'src/tfont/semantic_execution.py'
+      - 'src/tfont/xml_mappings.py'
+      - 'src/tfont/mappings/**'
       - 'src/tfont/__init__.py'
       - 'src/tfont/runtime_prerequisites.py'
       - 'src/tfont/runtime_tf_observation.py'
