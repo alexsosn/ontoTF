@@ -62,27 +62,41 @@ class I008ContextFabricIntegrationTests(unittest.TestCase):
             sp_values=("subs", "verb", "subs", "subs", "subs"),
             ls_values={1: "prop", 4: "prop"},
         )
+        # Discovery without a destination version returns separately labelled
+        # correspondences. The two corpus versions must not be deduplicated.
         matches = ontotf.find_correspondences(
             "bhsa", "syriac", node="word", feature="sp", value="nmpr",
+            source_version="2021",
         )
-        # ProperNoun is just one of BHSA nmpr's category projections:
-        # the broader Noun join must not be confused with proper names.
         proper = [row for row in matches if row.target.endswith("#ProperNoun")]
-        self.assertEqual(len(proper), 1)
-        link = proper[0]
-        self.assertEqual((link.destination.node, link.destination.feature,
-                          link.destination.value), ("word", "ls", "prop"))
-        self.assertEqual(link.scope, "category")
-        self.assertEqual(
-            ontotf.resolve_nodes(bhsa, link.source, corpus_version="2021"),
-            (1, 4),
-        )
-        self.assertEqual(
-            ontotf.resolve_nodes(syriac, link.destination, corpus_version="0.9"),
-            (1, 4),
-        )
-        with self.assertRaises(ontotf.MappingError):
-            ontotf.resolve_nodes(syriac, link.destination, corpus_version="wrong")
+        self.assertEqual(len(proper), 2)
+        self.assertEqual({row.destination.corpus_version for row in proper},
+                         {"0.9", "0.92"})
+        for version, other_version in (("0.9", "0.92"), ("0.92", "0.9")):
+            with self.subTest(version=version):
+                scoped = ontotf.find_correspondences(
+                    "bhsa", "syriac", node="word", feature="sp", value="nmpr",
+                    source_version="2021", target_version=version,
+                )
+                # The broader Noun projection is not a proper-name join.
+                link, = [row for row in scoped if row.target.endswith("#ProperNoun")]
+                self.assertEqual((link.destination.node, link.destination.feature,
+                                  link.destination.value), ("word", "ls", "prop"))
+                self.assertEqual(link.destination.corpus_version, version)
+                self.assertEqual(link.scope, "category")
+                self.assertEqual(
+                    ontotf.resolve_nodes(bhsa, link.source, corpus_version="2021"),
+                    (1, 4),
+                )
+                # This is a real CF API over the synthetic fixture, not a loaded
+                # upstream corpus; execution checks caller-supplied version.
+                self.assertEqual(
+                    ontotf.resolve_nodes(syriac, link.destination, corpus_version=version),
+                    (1, 4),
+                )
+                for wrong in (other_version, "wrong", None):
+                    with self.assertRaises(ontotf.MappingError):
+                        ontotf.resolve_nodes(syriac, link.destination, corpus_version=wrong)
 
     def test_public_executor_runs_against_real_loaded_context_fabric_api(self):
         if not hasattr(ontotf, "execute_exact_semantic"):
