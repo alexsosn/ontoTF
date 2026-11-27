@@ -17,7 +17,7 @@ Source parser check: each of the four lexical feature files has exactly 435,820 
 
 OntoLex Core original `ontolex/ontolex@d6f840f...` OWL: `LexicalEntry` has at least one `lexicalForm` pointing to `Form`; `Form` has `writtenRep` of `rdf:langString`. `canonicalForm` is a stricter functional subproperty of `lexicalForm`.
 
-**Derived, not native:** BHSA does not expose a TF `Form` node or `lexicalForm` edge. The 9,230 source lex nodes each have a source-attested vocalized lexical representation. A TFont **preview projection** can derive exactly one virtual `Form` identity per source lex-node ID, attached by `lexicalForm`, with `writtenRep` taken from `voc_lex_utf8`, language tag from `languageISO`. This is an explicit modelling decision, **not** an assertion that BHSA authors published OntoLex forms.
+**Derived, not native:** BHSA does not expose a TF `Form` node or `lexicalForm` edge. The 9,230 source lex nodes each have a source-attested vocalized lexical representation. A ontoTF **preview projection** can derive exactly one virtual `Form` identity per source lex-node ID, attached by `lexicalForm`, with `writtenRep` taken from `voc_lex_utf8`, language tag from `languageISO`. This is an explicit modelling decision, **not** an assertion that BHSA authors published OntoLex forms.
 
 - Synthetic entry/Form IRIs must include immutable source revision and exact lex node ID, never text; preserve collisions and cross-edition distinctions.
 - Distinguish language-tagged lexical representation from English gloss, token word form, and inferred sense/meaning. Do not make a `canonicalForm` assertion: lexeme vocalization is source lexical representation, not independently reviewed as a lexicographic canonical lemma Form.

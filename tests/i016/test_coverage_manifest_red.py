@@ -5,7 +5,7 @@ import json
 import unittest
 from importlib.resources import files
 
-from tfont import source_validation
+from ontotf import source_validation
 
 
 EXPECTED_COUNTS = {
@@ -79,9 +79,9 @@ class I016CoverageManifestRedTests(unittest.TestCase):
 
     def test_coverage_public_api_exists(self):
         try:
-            module = importlib.import_module("tfont.coverage")
+            module = importlib.import_module("ontotf.coverage")
         except ModuleNotFoundError as exc:
-            self.fail(f"RED: tfont.coverage does not exist: {exc}")
+            self.fail(f"RED: ontotf.coverage does not exist: {exc}")
         for name in (
             "CoverageError",
             "coverage_denominator_projection",
@@ -95,7 +95,7 @@ class I016CoverageManifestRedTests(unittest.TestCase):
                 self.assertTrue(hasattr(module, name), f"RED: missing coverage API {name}")
 
     def test_seven_baseline_resources_exist(self):
-        root = files("tfont").joinpath("resources", "coverage", "p004-r011-baseline-v1")
+        root = files("ontotf").joinpath("resources", "coverage", "p004-r011-baseline-v1")
         self.assertTrue(root.is_dir(), "RED: packaged P-004 baseline directory is absent")
         if not root.is_dir():
             return
@@ -106,7 +106,7 @@ class I016CoverageManifestRedTests(unittest.TestCase):
         )
 
     def test_baseline_reports_preserve_historical_and_production_counts(self):
-        module = importlib.import_module("tfont.coverage")
+        module = importlib.import_module("ontotf.coverage")
         manifests = module.load_p004_r011_baseline_manifests()
         self.assertEqual(set(manifests), set(EXPECTED_COUNTS))
 
@@ -135,7 +135,7 @@ class I016CoverageManifestRedTests(unittest.TestCase):
                 self.assertFalse(report.corpus_wide_completion_claim_eligible)
 
     def test_baseline_manifest_digests_validate(self):
-        module = importlib.import_module("tfont.coverage")
+        module = importlib.import_module("ontotf.coverage")
         for corpus, manifest in module.load_p004_r011_baseline_manifests().items():
             with self.subTest(corpus=corpus):
                 module.validate_coverage_manifest(manifest)

@@ -56,9 +56,9 @@ Repository snapshots inspected for this research:
 
 The production ontoTF tree currently contains only three shipped mapping files:
 
-- `src/tfont/resources/profiles/bhsa/0.1.0/mappings/noun.json`;
-- `src/tfont/resources/profiles/syriac/0.1.0/mappings/noun.json`;
-- `src/tfont/resources/profiles/extrabiblical/0.1.0/mappings/noun.json`.
+- `src/ontotf/resources/profiles/bhsa/0.1.0/mappings/noun.json`;
+- `src/ontotf/resources/profiles/syriac/0.1.0/mappings/noun.json`;
+- `src/ontotf/resources/profiles/extrabiblical/0.1.0/mappings/noun.json`.
 
 There is therefore no hidden production multi-binding mapping set to preserve.
 

@@ -69,7 +69,7 @@ The exact fingerprints frozen by I-020 research are regression anchors:
 
 ## Public resolver contracts
 
-Add to `src/tfont/semantic_resolver.py` and export from package root:
+Add to `src/ontotf/semantic_resolver.py` and export from package root:
 
 ```python
 APPROXIMATE_RESOLVER_CONTRACT = "tfont-approximate-semantic-resolver-v1"
@@ -494,7 +494,7 @@ constituent resolution fingerprints/loss records.
 
 ## Execution contracts
 
-Add to `src/tfont/semantic_execution.py` and export:
+Add to `src/ontotf/semantic_execution.py` and export:
 
 ```python
 APPROXIMATE_EXECUTION_CONTRACT = "tfont-approximate-execution-v1"
@@ -589,7 +589,7 @@ exact/approximation-neutral only if exact tests remain unchanged.
 
 ## No approximate aggregate API
 
-The current TFont runtime has no aggregate/statistics execution surface.
+The current ontoTF runtime has no aggregate/statistics execution surface.
 
 I-020 does not add one.
 
@@ -699,10 +699,10 @@ changes.
 
 Expected production files:
 
-- `src/tfont/semantic_ir.py` — additive reviewed projection semantic payload;
-- `src/tfont/semantic_resolver.py`;
-- `src/tfont/semantic_execution.py`;
-- `src/tfont/__init__.py`;
+- `src/ontotf/semantic_ir.py` — additive reviewed projection semantic payload;
+- `src/ontotf/semantic_resolver.py`;
+- `src/ontotf/semantic_execution.py`;
+- `src/ontotf/__init__.py`;
 - `tests/i020/**`;
 - `.github/workflows/i020-approximate-execution.yml`.
 

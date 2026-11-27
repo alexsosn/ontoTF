@@ -8,11 +8,11 @@
 
 Remove Python call-stack recursion from `directory_component_digest()` while preserving the accepted `tfont-directory-files-sha256-v1` identity contract exactly.
 
-Production scope is limited to recursive directory traversal internals in `src/tfont/parent_identity.py`. No schema, digest algorithm identifier, mapping/profile contract, TF payload behavior, parent-manifest behavior, or semantic/runtime behavior changes.
+Production scope is limited to recursive directory traversal internals in `src/ontotf/parent_identity.py`. No schema, digest algorithm identifier, mapping/profile contract, TF payload behavior, parent-manifest behavior, or semantic/runtime behavior changes.
 
 ## 2. Design decision
 
-Use an explicit iterative depth-first traversal with stack frames. Do **not** add a TFont directory-depth limit and do not read or modify Python's recursion limit in production.
+Use an explicit iterative depth-first traversal with stack frames. Do **not** add a ontoTF directory-depth limit and do not read or modify Python's recursion limit in production.
 
 Each frame records:
 

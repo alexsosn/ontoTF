@@ -9,7 +9,7 @@
 
 Replace free-form `profile.semantic_domains` with three controlled layers:
 
-1. **profile** — stable TFont interoperability domain;
+1. **profile** — stable ontoTF interoperability domain;
 2. **capability** — profile-scoped agent-discovery ability;
 3. **concept/projection** — exact reviewed semantic target/native binding.
 
@@ -41,7 +41,7 @@ Free strings cannot safely answer whether:
 - `lexical` means lemma lookup, entry identity, source senses, shared concepts, or dictionary structure;
 - `manuscript` means textual witness identity or physical carrier.
 
-Ontology namespaces are also the wrong discovery vocabulary. A TFont profile may compose several ontologies, and one ontology may participate in several profiles.
+Ontology namespaces are also the wrong discovery vocabulary. A ontoTF profile may compose several ontologies, and one ontology may participate in several profiles.
 
 ## 2. Profile catalog
 

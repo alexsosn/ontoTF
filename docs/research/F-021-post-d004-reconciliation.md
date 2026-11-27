@@ -79,7 +79,7 @@ A richer downstream-ownership scheme can be researched separately if needed, for
 
 ## Implementation shape
 
-The implementation should be repository tooling / CI infrastructure, not runtime TFont behavior.
+The implementation should be repository tooling / CI infrastructure, not runtime ontoTF behavior.
 
 Preferred properties:
 

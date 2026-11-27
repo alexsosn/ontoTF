@@ -24,7 +24,7 @@ The v0.1 executor does not accept an `ExactNativePlan` as execution authority. A
 
 ## Evidence inspected
 
-### TFont runtime chain
+### ontoTF runtime chain
 
 Current `main` now has the whole pre-execution chain:
 
@@ -85,9 +85,9 @@ The executor must first verify that the planned node feature is already loaded. 
 
 ## Dependency decision
 
-Do **not** add Context-Fabric as a required TFont dependency for I-008.
+Do **not** add Context-Fabric as a required ontoTF dependency for I-008.
 
-Current TFont supports Python `>=3.10`, while Context-Fabric 0.5.7 declares Python `>=3.13`. Making Context-Fabric a required dependency would unnecessarily drop TFont's supported Python 3.10-3.12 validator/compiler/resolver use cases.
+Current ontoTF supports Python `>=3.10`, while Context-Fabric 0.5.7 declares Python `>=3.13`. Making Context-Fabric a required dependency would unnecessarily drop ontoTF's supported Python 3.10-3.12 validator/compiler/resolver use cases.
 
 I-008 should use a small structural/duck-typed loaded-API protocol and no import from `cfabric` or `tf`. A real Context-Fabric integration smoke can run separately on Python 3.13. Release packaging may later add an optional execution extra if that improves installation UX, but the executor contract does not require one.
 
@@ -220,7 +220,7 @@ Rejected for the Noun slice. The reviewed plan is one exact node-feature value p
 
 ### Add `context-fabric` as a required dependency
 
-Rejected because Context-Fabric 0.5.7 currently requires Python >=3.13 while TFont intentionally supports >=3.10, and the needed loaded API can be expressed structurally without importing the package.
+Rejected because Context-Fabric 0.5.7 currently requires Python >=3.13 while ontoTF intentionally supports >=3.10, and the needed loaded API can be expressed structurally without importing the package.
 
 ### Implement all mapping-v2 native binding shapes now
 
@@ -246,7 +246,7 @@ The I-008 plan should freeze:
 
 ## Research conclusion
 
-I-008 can complete the first real TFont product slice without adding a query engine or coupling TFont core to Context-Fabric. The narrow safe implementation is:
+I-008 can complete the first real ontoTF product slice without adding a query engine or coupling ontoTF core to Context-Fabric. The narrow safe implementation is:
 
 ```text
 current trusted IR

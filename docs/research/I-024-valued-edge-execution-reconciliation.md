@@ -78,7 +78,7 @@ empty string, and rejects `None`. `value_type=int` accepts exact Python
 pinned TF empty-integer encoding; that case is preserved as
 `value_present=false, value=None`.
 
-TFont's existing RFC 8785/JCS boundary accepts integers only in the portable
+ontoTF's existing RFC 8785/JCS boundary accepts integers only in the portable
 safe range `[-(2^53)+1, 2^53-1]`. Because edge evidence is content-addressed
 through that canonicalizer, an integer outside this range must fail closed
 rather than be coerced to a decimal string or float. This applies to every

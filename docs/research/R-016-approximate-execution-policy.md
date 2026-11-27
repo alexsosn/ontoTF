@@ -28,7 +28,7 @@ The governing invariant is:
 
 ## 1. Direction semantics
 
-TFont assessment direction is fixed by R-002:
+ontoTF assessment direction is fixed by R-002:
 
 ```text
 native/source concept -> external/common target
@@ -265,7 +265,7 @@ Forbidden examples:
 - request a superclass and execute an arbitrary mapped subclass automatically;
 - follow SKOS broader links until some native mapping is found;
 - substitute a sibling/related class because labels look similar;
-- derive executable `broader`/`narrower` from ontology graph edges when the native→target TFont mapping was not reviewed;
+- derive executable `broader`/`narrower` from ontology graph edges when the native→target ontoTF mapping was not reviewed;
 - use ontology hierarchy to bypass R-015 bridge/version rules.
 
 Ontology structure can inform mapping research/validation/documentation. Runtime execution uses explicit reviewed mappings plus explicit policy only.

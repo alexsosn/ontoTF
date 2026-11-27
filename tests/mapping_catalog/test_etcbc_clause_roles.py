@@ -1,7 +1,7 @@
 """Clause constituent relations are roles, not phrase types or edges."""
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 OLIA = "http://purl.org/olia/olia.owl#"
 ROLES = {

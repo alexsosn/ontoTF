@@ -6,11 +6,11 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-from tfont.semantic_ir import NativeBindingIR, native_binding_identity
+from ontotf.semantic_ir import NativeBindingIR, native_binding_identity
 
 
 SCHEMA = json.loads(
-    Path("src/tfont/schemas/mapping.schema.json").read_text(encoding="utf-8")
+    Path("src/ontotf/schemas/mapping.schema.json").read_text(encoding="utf-8")
 )
 VALIDATOR = Draft202012Validator(
     {

@@ -13,8 +13,8 @@ from tests.i005._fixtures import (
 )
 from tests.i006._fixtures import _refresh_mapping, noun_semantic_key
 from tests.i008._fixtures import loaded_context
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 def membership_sources(
@@ -176,24 +176,24 @@ def membership_api(
     )
 
 
-def membership_context(tfont_module, ir, api=None):
+def membership_context(ontotf_module, ir, api=None):
     return loaded_context(
-        tfont_module,
+        ontotf_module,
         ir,
         "bhsa",
         api or membership_api(),
     )
 
 
-def membership_request(tfont_module):
-    return tfont_module.SemanticResolveRequest(
+def membership_request(ontotf_module):
+    return ontotf_module.SemanticResolveRequest(
         key=noun_semantic_key(),
         corpora=("bhsa",),
     )
 
 
-def approximate_membership_request(tfont_module, *, accept_losses=()):
-    return tfont_module.ApproximateSemanticResolveRequest(
+def approximate_membership_request(ontotf_module, *, accept_losses=()):
+    return ontotf_module.ApproximateSemanticResolveRequest(
         key=noun_semantic_key(),
         corpora=("bhsa",),
         semantic_mode="approximate",
@@ -255,8 +255,8 @@ def compiled_two_key_membership_ir():
     return compile_semantic_ir((validate_semantic_bundle(source_bundle(sources)),))
 
 
-def proper_noun_key(tfont_module):
-    return tfont_module.SemanticKey(
+def proper_noun_key(ontotf_module):
+    return ontotf_module.SemanticKey(
         profile_id="linguistic",
         capability_id="linguistic.part-of-speech",
         target="http://purl.org/olia/olia.owl#ProperNoun",

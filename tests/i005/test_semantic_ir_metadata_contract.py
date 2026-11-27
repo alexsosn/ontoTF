@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 
 OWL_CLASS = "http://www.w3.org/2002/07/owl#Class"

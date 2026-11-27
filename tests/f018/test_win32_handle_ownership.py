@@ -7,8 +7,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-import tfont.parent_identity as parent_identity
-from tfont.parent_identity import IdentityError, file_component_digest
+import ontotf.parent_identity as parent_identity
+from ontotf.parent_identity import IdentityError, file_component_digest
 
 
 @unittest.skipUnless(os.name == "nt", "Win32 trusted-handle contract")

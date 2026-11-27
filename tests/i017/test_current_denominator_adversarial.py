@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tfont import coverage
-from tfont.source_validation import SourceValidationError
+from ontotf import coverage
+from ontotf.source_validation import SourceValidationError
 
 
 ROOT = Path(__file__).resolve().parents[2]

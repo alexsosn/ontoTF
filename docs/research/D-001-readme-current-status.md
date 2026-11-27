@@ -19,11 +19,11 @@ What can the repository landing page truthfully present as implemented and usabl
 
 Those statements describe the pre-P-001 repository but are stale on the baseline. P-001 is merged, I-001 and I-002 are merged production code, and the package has an importable public API.
 
-The introductory semantic principles remain accurate: TFont is an experimental semantic interoperability layer for Text-Fabric / Context-Fabric corpora, corpus-native semantics remain authoritative, and the listed corpora are interoperability targets rather than claims of completed mappings.
+The introductory semantic principles remain accurate: ontoTF is an experimental semantic interoperability layer for Text-Fabric / Context-Fabric corpora, corpus-native semantics remain authoritative, and the listed corpora are interoperability targets rather than claims of completed mappings.
 
 ## Exact merged production surface
 
-`src/tfont/__init__.py` on the baseline exports these I-001 source-validation APIs:
+`src/ontotf/__init__.py` on the baseline exports these I-001 source-validation APIs:
 
 ```text
 SourceValidationError
@@ -58,7 +58,7 @@ profile_semantic_digest
 
 I-002 behavior implemented on main includes:
 
-- RFC 8785/JCS canonical JSON for the accepted TFont JSON domain;
+- RFC 8785/JCS canonical JSON for the accepted ontoTF JSON domain;
 - safe-number/non-finite/lone-surrogate failure behavior;
 - source BOM and line-ending normalization for source digests;
 - deterministic source-bundle digest;
@@ -74,7 +74,7 @@ The README must not imply that profile semantic digest assembles or validates a 
 `pyproject.toml` on the baseline states:
 
 ```text
-name = tfont
+name = ontotf
 version = 0.0.0
 requires-python = >=3.10
 ```
@@ -87,7 +87,7 @@ The repository CI installs the checkout with:
 python -m pip install -e .
 ```
 
-This is therefore a supported source/development installation example. There is no evidence in the baseline that a public PyPI release is part of the current contract, so the README must not say `pip install tfont` installs a published release.
+This is therefore a supported source/development installation example. There is no evidence in the baseline that a public PyPI release is part of the current contract, so the README must not say `pip install ontotf` installs a published release.
 
 ## Minimal usage examples grounded in merged APIs
 
@@ -96,7 +96,7 @@ This is therefore a supported source/development installation example. There is 
 The current public API supports:
 
 ```python
-from tfont import load_and_validate
+from ontotf import load_and_validate
 
 profile = load_and_validate("profiles/example/profile.yaml", "profile")
 ```
@@ -108,7 +108,7 @@ This is structurally correct as an API example, but the repository does not yet 
 A self-contained example can use:
 
 ```python
-from tfont import loads_source
+from ontotf import loads_source
 
 data = loads_source("schema_version: 1\nprofile_id: demo\n", format="yaml")
 ```
@@ -120,7 +120,7 @@ That demonstrates loading but not a complete schema-valid profile. It should not
 A fully self-contained implemented example is:
 
 ```python
-from tfont import canonical_json_bytes, source_file_digest
+from ontotf import canonical_json_bytes, source_file_digest
 
 canonical_json_bytes({"b": 2, "a": 1})
 source_file_digest(b"a: 1\r\n")

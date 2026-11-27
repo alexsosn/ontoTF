@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tfont.source_validation import MAX_SOURCE_NESTING, SourceValidationError, validate_source
+from ontotf.source_validation import MAX_SOURCE_NESTING, SourceValidationError, validate_source
 
 
 def normalized_evidence(reviewed_content):

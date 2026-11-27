@@ -4,7 +4,7 @@
 
 ## Empirical starting point
 
-Merged #299's `tfont.review_packets.build_review_packet` binds a source-validated Mapping v2 candidate, its **rationale**, source/ontology pins, exact intended coverage IDs and per-row `decision_digest` to a JCS `batch_digest`. `verify_review_packet` explicitly forbids self-declared approval and treats review requests as unauthoritative. The candidate compiler (#297) only supports reasoned word-level `sp` proposals from pinned source definitions and real OLiA target evidence; it does **not** claim mass coverage.
+Merged #299's `ontotf.review_packets.build_review_packet` binds a source-validated Mapping v2 candidate, its **rationale**, source/ontology pins, exact intended coverage IDs and per-row `decision_digest` to a JCS `batch_digest`. `verify_review_packet` explicitly forbids self-declared approval and treats review requests as unauthoritative. The candidate compiler (#297) only supports reasoned word-level `sp` proposals from pinned source definitions and real OLiA target evidence; it does **not** claim mass coverage.
 
 The missing authority is *who reviewed which exact bytes and what they decided*. `reviewed: true` in a PR file, a recalculated packet hash, GitHub comment text written by the PR author, or a synthesized JSON receipt is **not** evidence of independent review.
 

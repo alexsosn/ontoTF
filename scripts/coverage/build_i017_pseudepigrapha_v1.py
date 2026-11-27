@@ -19,18 +19,18 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.coverage import (  # noqa: E402
+from ontotf.coverage import (  # noqa: E402
     P004_PSEUDEPIGRAPHA_V1_RESOURCE,
     coverage_denominator_digest,
     validate_coverage_manifest,
 )
-from tfont.digests import canonical_json_bytes  # noqa: E402
+from ontotf.digests import canonical_json_bytes  # noqa: E402
 
 EVIDENCE = ROOT / "docs/research/data/generated/i017/pseudepigrapha-v1.0.0.json"
 POLICY = ROOT / "docs/research/data/i017/pseudepigrapha-denominator-policy.json"
 OUTPUT = (
     ROOT
-    / "src/tfont/resources/coverage"
+    / "src/ontotf/resources/coverage"
     / P004_PSEUDEPIGRAPHA_V1_RESOURCE
     / "pseudepigrapha.json"
 )

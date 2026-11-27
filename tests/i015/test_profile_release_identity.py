@@ -4,7 +4,7 @@ import hashlib
 import unittest
 from importlib.resources import files
 
-from tfont.production_bundles import (
+from ontotf.production_bundles import (
     load_production_linguistic_bundle,
     load_production_noun_bundle,
 )
@@ -34,7 +34,7 @@ def git_blob_sha(raw: bytes) -> str:
 
 class I015ProfileReleaseIdentityTests(unittest.TestCase):
     def test_all_historical_profile_010_bytes_are_unchanged(self):
-        root = files("tfont").joinpath("resources")
+        root = files("ontotf").joinpath("resources")
         for relative, expected in BASELINE_BLOBS.items():
             with self.subTest(relative=relative):
                 self.assertEqual(git_blob_sha(root.joinpath(*relative.split("/")).read_bytes()), expected)

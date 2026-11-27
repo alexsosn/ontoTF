@@ -50,14 +50,14 @@ Authoritative source:
 
 The accepted implementation also explicitly checks `stat.S_ISLNK` and Windows reparse attributes after `follow_symlinks=False`; F-010 should preserve that policy rather than switch to a higher-level walker whose error/link semantics would need to be re-derived.
 
-## Decision: iterative traversal, no TFont depth ceiling
+## Decision: iterative traversal, no ontoTF depth ceiling
 
 Prefer an explicit iterative depth-first traversal over adding a maximum directory depth.
 
 Reasons:
 
 1. **Depth has no semantic role in the v1 identity algorithm.** The digest is defined by sorted logical path + file-byte records, not by traversal call depth.
-2. **A fixed TFont ceiling would be new rejection semantics.** There is no research or corpus requirement for such a bound.
+2. **A fixed ontoTF ceiling would be new rejection semantics.** There is no research or corpus requirement for such a bound.
 3. **Interpreter-derived limits are non-deterministic.** Python says safe recursion depth is platform-dependent.
 4. **Iteration preserves the complete accepted domain.** It removes Python stack usage while letting real filesystem constraints surface through the same OS calls already translated to `filesystem_error`.
 5. **Digest bytes need not change.** The implementation already sorts completed file records by logical path before canonicalization, so traversal order cannot affect the successful digest.

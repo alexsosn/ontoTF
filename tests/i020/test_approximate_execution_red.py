@@ -5,8 +5,8 @@ import inspect
 import unittest
 from unittest.mock import patch
 
-import tfont
-from tfont.semantic_ir import compile_semantic_ir
+import ontotf
+from ontotf.semantic_ir import compile_semantic_ir
 
 from ._fixtures import (
     FakeLoadedApi,
@@ -33,12 +33,12 @@ EXECUTION_API = (
     "execute_approximate_semantic",
     "execute_approximate_conjunction",
 )
-HAS_APPROXIMATE_EXECUTION = all(hasattr(tfont, name) for name in EXECUTION_API)
+HAS_APPROXIMATE_EXECUTION = all(hasattr(ontotf, name) for name in EXECUTION_API)
 
 
 class I020ExecutionRedSentinelTests(unittest.TestCase):
     def test_public_approximate_execution_surface_exists(self):
-        missing = [name for name in EXECUTION_API if not hasattr(tfont, name)]
+        missing = [name for name in EXECUTION_API if not hasattr(ontotf, name)]
         self.assertEqual(
             missing,
             [],
@@ -53,11 +53,11 @@ class I020ExecutionRedSentinelTests(unittest.TestCase):
 class I020ApproximateExecutionTests(unittest.TestCase):
     def test_public_executors_do_not_accept_caller_supplied_plan(self):
         self.assertEqual(
-            tuple(inspect.signature(tfont.execute_approximate_semantic).parameters),
+            tuple(inspect.signature(ontotf.execute_approximate_semantic).parameters),
             ("ir", "request", "contexts"),
         )
         self.assertEqual(
-            tuple(inspect.signature(tfont.execute_approximate_conjunction).parameters),
+            tuple(inspect.signature(ontotf.execute_approximate_conjunction).parameters),
             ("ir", "request", "contexts"),
         )
 
@@ -70,24 +70,24 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             values={1: "subs", 2: "verb", 3: "subs"},
             node_types={1: "word", 2: "word", 3: "phrase"},
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        result = tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        result = ontotf.execute_approximate_semantic(
             ir,
             approximate_request(
-                tfont,
+                ontotf,
                 accept_losses=("undercoverage",),
             ),
             (context,),
         )
 
-        self.assertEqual(result.execution_contract, tfont.APPROXIMATE_EXECUTION_CONTRACT)
+        self.assertEqual(result.execution_contract, ontotf.APPROXIMATE_EXECUTION_CONTRACT)
         self.assertEqual(result.resolution.losses, ("undercoverage",))
         self.assertEqual(result.corpora[0].nodes, (1,))
         self.assertEqual(result.corpora[0].plan.assessment, "broader")
         self.assertEqual(result.corpora[0].plan.losses, ("undercoverage",))
         self.assertEqual(
             result.corpora[0].runtime_report.source_contract,
-            tfont.APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT,
+            ontotf.APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT,
         )
         self.assertEqual(api.F.sp.s_calls, 1)
         self.assertEqual(api.load_calls, 0)
@@ -101,11 +101,11 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             values={1: "subs", 2: "verb"},
             node_types={1: "word", 2: "word"},
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        result = tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        result = ontotf.execute_approximate_semantic(
             ir,
             approximate_request(
-                tfont,
+                ontotf,
                 accept_losses=("undercoverage", "overcoverage"),
             ),
             (context,),
@@ -124,10 +124,10 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             values={1: "subs", 2: "nmpr", 3: "verb", 4: "subs"},
             node_types={1: "word", 2: "word", 3: "word", 4: "phrase"},
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        result = tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        result = ontotf.execute_approximate_semantic(
             ir,
-            approximate_request(tfont, accept_losses=("undercoverage",)),
+            approximate_request(ontotf, accept_losses=("undercoverage",)),
             (context,),
         )
         self.assertEqual(result.corpora[0].nodes, (1, 2))
@@ -145,11 +145,11 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             values={1: "subs"},
             node_types={1: "word"},
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ApproximateExecutionError) as raised:
-            tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ApproximateExecutionError) as raised:
+            ontotf.execute_approximate_semantic(
                 ir,
-                approximate_request(tfont, accept_losses=("undercoverage",)),
+                approximate_request(ontotf, accept_losses=("undercoverage",)),
                 (context,),
             )
         self.assertEqual(
@@ -168,28 +168,28 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             node_types={1: "word"},
             raise_on_s=True,
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ApproximateExecutionError) as raised:
-            tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ApproximateExecutionError) as raised:
+            ontotf.execute_approximate_semantic(
                 ir,
-                approximate_request(tfont, accept_losses=("undercoverage",)),
+                approximate_request(ontotf, accept_losses=("undercoverage",)),
                 (context,),
             )
         problem = raised.exception.problem
         self.assertEqual(problem.category, "loaded_api_unavailable")
         self.assertEqual(problem.corpus_id, "bhsa")
         self.assertEqual(problem.component_id, "bhsa-tf")
-        self.assertNotIsInstance(raised.exception, tfont.ExactExecutionError)
+        self.assertNotIsInstance(raised.exception, ontotf.ExactExecutionError)
 
     def test_missing_context_uses_approximate_error_surface(self):
         ir = compiled_binding_ir(
             (("bhsa", "broader", ("undercoverage",), True),),
             executable=True,
         )
-        with self.assertRaises(tfont.ApproximateExecutionError) as raised:
-            tfont.execute_approximate_semantic(
+        with self.assertRaises(ontotf.ApproximateExecutionError) as raised:
+            ontotf.execute_approximate_semantic(
                 ir,
-                approximate_request(tfont, accept_losses=("undercoverage",)),
+                approximate_request(ontotf, accept_losses=("undercoverage",)),
                 (),
             )
         self.assertEqual(
@@ -206,11 +206,11 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             values={1: "verb"},
             node_types={1: "word"},
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.SemanticResolutionError):
-            tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.SemanticResolutionError):
+            ontotf.execute_approximate_semantic(
                 ir,
-                approximate_request(tfont, accept_losses=("undercoverage",)),
+                approximate_request(ontotf, accept_losses=("undercoverage",)),
                 (context,),
             )
         self.assertEqual(api.F.sp.s_calls, 0)
@@ -225,11 +225,11 @@ class I020ApproximateExecutionTests(unittest.TestCase):
             node_types={1: "word"},
             fall_sequence=(("otype", "sp"), ("otype",)),
         )
-        context = executable_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ApproximateExecutionError) as raised:
-            tfont.execute_approximate_semantic(
+        context = executable_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ApproximateExecutionError) as raised:
+            ontotf.execute_approximate_semantic(
                 ir,
-                approximate_request(tfont, accept_losses=("undercoverage",)),
+                approximate_request(ontotf, accept_losses=("undercoverage",)),
                 (context,),
             )
         self.assertEqual(raised.exception.problem.category, "feature_not_loaded")
@@ -250,10 +250,10 @@ class I020ApproximateConjunctionExecutionTests(unittest.TestCase):
             for corpus in ("bhsa", "syriac", "extrabiblical")
         }
         ir, contexts = mutated_production_conjunction(mutations)
-        result = tfont.execute_approximate_conjunction(
+        result = ontotf.execute_approximate_conjunction(
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Plural",
                 "Noun",
                 accept_losses=("undercoverage",),
@@ -262,7 +262,7 @@ class I020ApproximateConjunctionExecutionTests(unittest.TestCase):
         )
         self.assertEqual(
             result.execution_contract,
-            tfont.APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT,
+            ontotf.APPROXIMATE_CONJUNCTION_EXECUTION_CONTRACT,
         )
         self.assertEqual(result.resolution.losses, ("undercoverage",))
         self.assertEqual(
@@ -276,7 +276,7 @@ class I020ApproximateConjunctionExecutionTests(unittest.TestCase):
         self.assertTrue(
             all(
                 row.runtime_report.source_contract
-                == tfont.APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT
+                == ontotf.APPROXIMATE_EXECUTION_RUNTIME_SOURCE_CONTRACT
                 for row in result.corpora
             )
         )
@@ -290,10 +290,10 @@ class I020ApproximateConjunctionExecutionTests(unittest.TestCase):
             for corpus in ("bhsa", "syriac", "extrabiblical")
         }
         ir, contexts = mutated_production_conjunction(mutations)
-        result = tfont.execute_approximate_conjunction(
+        result = ontotf.execute_approximate_conjunction(
             ir,
             approximate_conjunction_request(
-                tfont,
+                ontotf,
                 "Noun",
                 "Plural",
                 accept_losses=("undercoverage", "overcoverage"),
@@ -318,13 +318,13 @@ class I020ApproximateConjunctionExecutionTests(unittest.TestCase):
         }
         ir, contexts = mutated_production_conjunction(mutations)
         request = approximate_conjunction_request(
-            tfont,
+            ontotf,
             "Noun",
             "Plural",
             corpora=("bhsa",),
             accept_losses=("undercoverage",),
         )
-        baseline = tfont.execute_approximate_conjunction(ir, request, contexts)
+        baseline = ontotf.execute_approximate_conjunction(ir, request, contexts)
         resolution = baseline.resolution
         first, second = resolution.resolutions
         original = second.plans[0]
@@ -343,12 +343,12 @@ class I020ApproximateConjunctionExecutionTests(unittest.TestCase):
         )
 
         with patch.object(
-            tfont.semantic_execution,
+            ontotf.semantic_execution,
             "semantic_resolve_approximate_conjunction",
             return_value=altered_resolution,
         ):
-            with self.assertRaises(tfont.ApproximateExecutionError) as raised:
-                tfont.execute_approximate_conjunction(ir, request, contexts)
+            with self.assertRaises(ontotf.ApproximateExecutionError) as raised:
+                ontotf.execute_approximate_conjunction(ir, request, contexts)
         self.assertEqual(
             raised.exception.problem.category,
             "incompatible_conjunction_node_domain",

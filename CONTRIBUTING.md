@@ -4,9 +4,9 @@ The target is a researcher-friendly XML mapping catalog. Read the [XML contract]
 
 ## Mapping contribution (current development workflow)
 
-Edit `src/tfont/mappings/<corpus>.xml`, or create it for a new corpus. Add or revise as many mappings as needed. Use the shared `src/tfont/mappings/schema.xsd` syntax; do not edit the schema for ordinary new values, nor write a registry entry or per-corpus Python adapter. Add an evidence URL and short note when the assertion needs explanation.
+Edit `src/ontotf/mappings/<corpus>.xml`, or create it for a new corpus. Add or revise as many mappings as needed. Use the shared `src/ontotf/mappings/schema.xsd` syntax; do not edit the schema for ordinary new values, nor write a registry entry or per-corpus Python adapter. Add an evidence URL and short note when the assertion needs explanation.
 
-For example, a new `src/tfont/mappings/example.xml` needs only this structure (replace the illustration with corpus-checked meanings before submitting):
+For example, a new `src/ontotf/mappings/example.xml` needs only this structure (replace the illustration with corpus-checked meanings before submitting):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

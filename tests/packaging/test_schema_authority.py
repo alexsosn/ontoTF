@@ -9,7 +9,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import SCHEMA_FILES  # noqa: E402
+from ontotf.source_validation import SCHEMA_FILES  # noqa: E402
 
 
 class SchemaAuthorityTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class SchemaAuthorityTests(unittest.TestCase):
             (ROOT / "schemas").exists(),
             "repository-root schemas/ would duplicate the packaged canonical schema tree",
         )
-        packaged = ROOT / "src" / "tfont" / "schemas"
+        packaged = ROOT / "src" / "ontotf" / "schemas"
         self.assertEqual(
             {path.name for path in packaged.glob("*.json")},
             set(SCHEMA_FILES.values()),

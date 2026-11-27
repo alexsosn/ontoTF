@@ -9,14 +9,14 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.batch_proposals import compile_candidate_batch, packaged_resource
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import evidence_record_digest
-from tfont.release_registry import load_profile
+from ontotf.batch_proposals import compile_candidate_batch, packaged_resource
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import evidence_record_digest
+from ontotf.release_registry import load_profile
 
 
 ROOT = Path(__file__).resolve().parents[2]
-LEDGER = ROOT / "src/tfont/resources/batch_pilots/i034f-extrabiblical-olia-pos.json"
+LEDGER = ROOT / "src/ontotf/resources/batch_pilots/i034f-extrabiblical-olia-pos.json"
 SOURCE = ROOT / "docs/research/data/batch_review/evidence/i034f-extrabiblical-pos.json"
 FROZEN = ROOT / "docs/research/data/i034f/extrabiblical-mql-pos-enum.json"
 INVENTORY = ROOT / "docs/research/data/generated/r005/extrabiblical.json"

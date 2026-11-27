@@ -6,7 +6,7 @@
 
 ## Question
 
-Can TFont mechanically prevent two distinct feature tickets from claiming the same `F-NNN` namespace without adding a permanently hand-maintained feature registry or a network-dependent GitHub lookup to ordinary CI?
+Can ontoTF mechanically prevent two distinct feature tickets from claiming the same `F-NNN` namespace without adding a permanently hand-maintained feature registry or a network-dependent GitHub lookup to ordinary CI?
 
 ## Trigger
 

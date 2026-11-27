@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.production_bundles import PRODUCTION_NOUN_CORPORA, load_production_noun_bundles
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.semantic_resolver import SemanticResolveRequest, SemanticResolutionError
-from tfont.semantic_execution import LoadedComponentContext, LoadedCorpusContext, execute_exact_semantic
+from ontotf.production_bundles import PRODUCTION_NOUN_CORPORA, load_production_noun_bundles
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_resolver import SemanticResolveRequest, SemanticResolutionError
+from ontotf.semantic_execution import LoadedComponentContext, LoadedCorpusContext, execute_exact_semantic
 from tests.i009.test_runtime_red import COMPONENT_DIGESTS, PARENT_DIGESTS, _api, _key
 
 

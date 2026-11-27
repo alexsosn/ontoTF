@@ -186,7 +186,7 @@ An owner carrier that is required because its namespace exists but is absent as 
 
 Recommended implementation architecture:
 
-1. **Extend `scripts/check_f_series_ownership.py` in place.** Keep it repository-local; do not add an installed/public TFont runtime API.
+1. **Extend `scripts/check_f_series_ownership.py` in place.** Keep it repository-local; do not add an installed/public ontoTF runtime API.
 2. Preserve the existing F-021 pure research checker behavior and tests.
 3. Refactor only enough private parsing/scanning code to let research and plan Markdown share the same bounded parser without changing F-021 diagnostics.
 4. Add downstream scanners/check functions for plans, workflows, and test packages.
@@ -196,7 +196,7 @@ Recommended implementation architecture:
 
 A separate `scripts/check_f_series_downstream_ownership.py` is rejected: it would either duplicate authority parsing or require users/CI to remember two commands for one repository invariant.
 
-A new package under `src/tfont` is also rejected: feature-ticket ownership is repository development metadata, not TFont runtime behavior.
+A new package under `src/ontotf` is also rejected: feature-ticket ownership is repository development metadata, not ontoTF runtime behavior.
 
 ## 9. CLI ergonomics
 
@@ -321,9 +321,9 @@ Rejected because it cannot detect the historical stale F-015/#90 artifact once l
 
 Rejected. The required property is fully representable in the migrated current tree. Network/history dependencies would add failure modes without strengthening the scoped guarantee.
 
-### Installed `tfont` runtime API
+### Installed `ontotf` runtime API
 
-Rejected. Repository ticket ownership has no semantic/runtime role in TFont corpus interoperability.
+Rejected. Repository ticket ownership has no semantic/runtime role in ontoTF corpus interoperability.
 
 ## 15. Research conclusion
 

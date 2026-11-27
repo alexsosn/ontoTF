@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-import tfont
+import ontotf
 from tests.i008._fixtures import compiled_executable_noun_ir, loaded_context, request
 
 try:
@@ -64,7 +64,7 @@ class I008ContextFabricIntegrationTests(unittest.TestCase):
         )
         # Discovery without a destination version returns separately labelled
         # correspondences. The two corpus versions must not be deduplicated.
-        matches = tfont.find_correspondences(
+        matches = ontotf.find_correspondences(
             "bhsa", "syriac", node="word", feature="sp", value="nmpr",
             source_version="2021",
         )
@@ -74,7 +74,7 @@ class I008ContextFabricIntegrationTests(unittest.TestCase):
                          {"0.9", "0.92"})
         for version, other_version in (("0.9", "0.92"), ("0.92", "0.9")):
             with self.subTest(version=version):
-                scoped = tfont.find_correspondences(
+                scoped = ontotf.find_correspondences(
                     "bhsa", "syriac", node="word", feature="sp", value="nmpr",
                     source_version="2021", target_version=version,
                 )
@@ -85,26 +85,26 @@ class I008ContextFabricIntegrationTests(unittest.TestCase):
                 self.assertEqual(link.destination.corpus_version, version)
                 self.assertEqual(link.scope, "category")
                 self.assertEqual(
-                    tfont.resolve_nodes(bhsa, link.source, corpus_version="2021"),
+                    ontotf.resolve_nodes(bhsa, link.source, corpus_version="2021"),
                     (1, 4),
                 )
                 # This is a real CF API over the synthetic fixture, not a loaded
                 # upstream corpus; execution checks caller-supplied version.
                 self.assertEqual(
-                    tfont.resolve_nodes(syriac, link.destination, corpus_version=version),
+                    ontotf.resolve_nodes(syriac, link.destination, corpus_version=version),
                     (1, 4),
                 )
                 for wrong in (other_version, "wrong", None):
-                    with self.assertRaises(tfont.MappingError):
-                        tfont.resolve_nodes(syriac, link.destination, corpus_version=wrong)
+                    with self.assertRaises(ontotf.MappingError):
+                        ontotf.resolve_nodes(syriac, link.destination, corpus_version=wrong)
 
     def test_public_executor_runs_against_real_loaded_context_fabric_api(self):
-        if not hasattr(tfont, "execute_exact_semantic"):
+        if not hasattr(ontotf, "execute_exact_semantic"):
             self.skipTest("RED: I-008 execution surface is not implemented yet")
         api = self.make_api()
         ir = compiled_executable_noun_ir(("bhsa",))
-        context = loaded_context(tfont, ir, "bhsa", api)
-        result = tfont.execute_exact_semantic(ir, request(tfont, ("bhsa",)), (context,))
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        result = ontotf.execute_exact_semantic(ir, request(ontotf, ("bhsa",)), (context,))
         self.assertEqual(result.corpora[0].nodes, (1, 3, 5))
 
 

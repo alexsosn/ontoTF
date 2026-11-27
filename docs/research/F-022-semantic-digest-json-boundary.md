@@ -6,24 +6,24 @@
 
 ## Question
 
-Do the I-004 semantic digest projection APIs preserve the deterministic TFont JSON-model boundary established by F-009, including cycle detection and `MAX_JSON_NESTING=128`, or can their own projection traversal fail before the canonicalization guard runs?
+Do the I-004 semantic digest projection APIs preserve the deterministic ontoTF JSON-model boundary established by F-009, including cycle detection and `MAX_JSON_NESTING=128`, or can their own projection traversal fail before the canonicalization guard runs?
 
 ## Accepted prior contract
 
 F-009 explicitly scoped its hardening to programmatic values passed to canonicalization **and semantic digest projections**. Its accepted contract is:
 
-- exact TFont JSON values only;
+- exact ontoTF JSON values only;
 - recursive list/dict aliases fail as `DigestError(category="non_json_value")` rather than raw interpreter exceptions;
 - container depth 128 is accepted and depth 129 is rejected deterministically;
-- the first over-limit path is reported by the TFont-owned JSON guard;
+- the first over-limit path is reported by the ontoTF-owned JSON guard;
 - raw downstream `RecursionError` is not part of the public digest API;
 - canonical bytes and digest algorithm identifiers for accepted values are unchanged.
 
-Current `src/tfont/digests.py` implements that contract in `_validate_json()` and `canonical_json_bytes()` using `MAX_JSON_NESTING = 128`, active-container identity tracking and a defensive `RecursionError` translation around RFC 8785 serialization.
+Current `src/ontotf/digests.py` implements that contract in `_validate_json()` and `canonical_json_bytes()` using `MAX_JSON_NESTING = 128`, active-container identity tracking and a defensive `RecursionError` translation around RFC 8785 serialization.
 
 ## Regression introduced after F-009
 
-I-004 later added `src/tfont/semantic_digest_v2.py`. Both public semantic projection families use the same recursive helper:
+I-004 later added `src/ontotf/semantic_digest_v2.py`. Both public semantic projection families use the same recursive helper:
 
 ```python
 def _project(value, *, top_level=False, field=None):
@@ -99,7 +99,7 @@ The semantic projection traversal should mirror the relevant F-009 JSON-model ru
 7. skip excluded audit-only keys without traversing or counting their subtrees;
 8. after projection, retain the existing `canonical_json_bytes()` call as the final JSON/canonicalization authority.
 
-The guard may reuse `MAX_JSON_NESTING` from `tfont.digests`; the numeric policy must not be duplicated independently.
+The guard may reuse `MAX_JSON_NESTING` from `ontotf.digests`; the numeric policy must not be duplicated independently.
 
 ## Error contract
 
@@ -108,7 +108,7 @@ Reuse F-009's existing public category rather than creating a semantic-v2-specif
 - cycle: `DigestError`, category `non_json_value`, message equivalent to the existing recursive list/object diagnosis, path at the included repeated container;
 - depth overflow: `DigestError`, category `non_json_value`, message `JSON nesting exceeds maximum depth 128`, path at the first included container that would be depth 129.
 
-There is no algorithm-version change: values newly rejected by this fix were already outside the accepted F-009 TFont JSON input domain. Accepted semantic projections and their canonical bytes must stay unchanged.
+There is no algorithm-version change: values newly rejected by this fix were already outside the accepted F-009 ontoTF JSON input domain. Accepted semantic projections and their canonical bytes must stay unchanged.
 
 ## Set-like sorting interaction
 
@@ -134,7 +134,7 @@ The cycle tests are the primary intended RED on current main. Depth-129 may alre
 
 ## Minimal implementation recommendation
 
-Change only `src/tfont/semantic_digest_v2.py`:
+Change only `src/ontotf/semantic_digest_v2.py`:
 
 - import `MAX_JSON_NESTING` and `DigestError`/`DigestProblem` support already used by the module;
 - extend `_project()` with `path`, `active`, and `depth` state;

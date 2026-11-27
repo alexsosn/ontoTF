@@ -18,7 +18,7 @@ Independent GitHub API readback on the baseline confirms:
 - release `v0.1.0` target: `dcab3a473f3a4347554194ec9a5e34238b7c0769`;
 - tag `refs/tags/v0.1.0` points to the same commit;
 - release is non-draft/non-prerelease;
-- wheel `tfont-0.1.0-py3-none-any.whl` digest is `sha256:4c85b6ce0aeddf226c105400472077014b7a6a9eb96005ea641776143c2a1560`;
+- wheel `ontotf-0.1.0-py3-none-any.whl` digest is `sha256:4c85b6ce0aeddf226c105400472077014b7a6a9eb96005ea641776143c2a1560`;
 - checked-in `docs/releases/v0.1.0.md` is byte-for-byte equal to the published release body;
 - current Git blob ID for the exact checked-in release-note bytes is `2dbd212d7f69081d21770aaa3736d8647fee6996`.
 

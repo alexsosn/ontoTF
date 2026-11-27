@@ -29,6 +29,36 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
+      - name: Guard project naming and preserve legacy format IDs
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import subprocess
+
+          # Wire identifiers in the historical JSON runtime are data, not branding.
+          # Keep the existing hashes reproducible while the XML architecture
+          # replaces that runtime. Reject old paths, imports, and display names.
+          old = b"tf" + b"ont"
+          allowed = re.compile(
+              rb"minimum_" + old + rb"_runtime|"
+              + old + rb"-(?:[a-z0-9-]+-v[0-9]+|bhsa|syriac|extrabiblical|test)(?![a-z0-9-])|"
+              + old + rb"-\{|"
+              + old + rb"\.dev/schema/|"
+              + old + rb":(?:resources/|schemas/|derived:)"
+          )
+          paths = subprocess.check_output(["git", "ls-files", "-z"]).split(b"\0")
+          stale = []
+          for p in paths:
+              if not p:
+                  continue
+              raw = pathlib.Path(p.decode()).read_bytes()
+              if old in p.lower() or old in allowed.sub(b"", raw).lower():
+                  stale.append(p.decode())
+          if stale:
+              raise SystemExit("Retired branding in:\n" + "\n".join(stale))
+          PY
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -41,7 +71,7 @@ jobs:
           python -m pip install build pytest
 
       - name: Fast Python syntax preflight
-        run: python -m compileall -q src/tfont tests
+        run: python -m compileall -q src/ontotf tests
 
       # Detect stale interpreter pins before the slower full regression suite.
       - name: Guard supported Python versions
@@ -99,10 +129,10 @@ jobs:
           from pathlib import Path
           from zipfile import ZipFile
 
-          dist = tuple(Path("dist").glob("tfont-*.whl"))
+          dist = tuple(Path("dist").glob("ontotf-*.whl"))
           if len(dist) != 1:
               raise SystemExit("expected exactly one built wheel")
-          prefix = "tfont/resources/coverage/p004-r011-baseline-v1/"
+          prefix = "ontotf/resources/coverage/p004-r011-baseline-v1/"
           expected = {
               prefix + name for name in (
                   "bhsa.json", "cuc.json", "syriac.json", "extrabiblical.json",
@@ -114,10 +144,10 @@ jobs:
           if present != expected:
               raise SystemExit("missing or unexpected frozen coverage resources in wheel")
           successors = {
-              "tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
-              "tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
-              "tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json",
-              "tfont/schemas/coverage-manifest.schema.json",
+              "ontotf/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
+              "ontotf/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
+              "ontotf/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json",
+              "ontotf/schemas/coverage-manifest.schema.json",
           }
           with ZipFile(dist[0]) as wheel:
               missing = successors - set(wheel.namelist())
@@ -137,28 +167,28 @@ jobs:
       - name: Smoke-test installed wheel on pinned real ExtraBiblical TF
         if: matrix.python-version == '3.12'
         env:
-          TFONT_SOURCE_PIN: 9a56288e6777bad6328856acf055c780e65dd5d9
+          ONTOTF_SOURCE_PIN: 9a56288e6777bad6328856acf055c780e65dd5d9
         run: |
           set -euo pipefail
-          VENV="$RUNNER_TEMP/tfont-real-acceptance-venv"
+          VENV="$RUNNER_TEMP/ontotf-real-acceptance-venv"
           python -m venv "$VENV"
-          WHEEL="$(find "$GITHUB_WORKSPACE/dist" -maxdepth 1 -type f -name 'tfont-*.whl' -print -quit)"
+          WHEEL="$(find "$GITHUB_WORKSPACE/dist" -maxdepth 1 -type f -name 'ontotf-*.whl' -print -quit)"
           test -n "$WHEEL"
           "$VENV/bin/python" -m pip install "$WHEEL" 'text-fabric==13.1.1'
 
-          SOURCE="$RUNNER_TEMP/tfont-real-extrabiblical-0.2"
+          SOURCE="$RUNNER_TEMP/ontotf-real-extrabiblical-0.2"
           mkdir -p "$SOURCE"
           for feature in otype oslots otext book chapter verse sp g_word \
             g_lex_utf8 g_suffix_utf8 lex_utf8 g_suffix g_word_utf8 g_cons; do
             curl --fail --location --silent --show-error --retry 3 \
               --output "$SOURCE/$feature.tf" \
-              "https://raw.githubusercontent.com/ETCBC/extrabiblical/$TFONT_SOURCE_PIN/tf/0.2/$feature.tf"
+              "https://raw.githubusercontent.com/ETCBC/extrabiblical/$ONTOTF_SOURCE_PIN/tf/0.2/$feature.tf"
           done
 
-          WORK="$RUNNER_TEMP/tfont-real-acceptance-work"
+          WORK="$RUNNER_TEMP/ontotf-real-acceptance-work"
           mkdir -p "$WORK"
           cp "$GITHUB_WORKSPACE/scripts/acceptance/real_extrabiblical.py" "$WORK/real_extrabiblical.py"
           cd "$WORK"
           unset PYTHONPATH PYTHONHOME
-          TFONT_ACCEPTANCE_FORBID_ROOT="$GITHUB_WORKSPACE" \
+          ONTOTF_ACCEPTANCE_FORBID_ROOT="$GITHUB_WORKSPACE" \
             "$VENV/bin/python" -I real_extrabiblical.py --tf-dir "$SOURCE"

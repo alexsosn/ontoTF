@@ -32,7 +32,7 @@ schemas/
   review.schema.json
   mapping.schema.json
   compatibility-report.schema.json
-src/tfont/
+src/ontotf/
   __init__.py
   source_validation.py
 tests/i001/
@@ -61,7 +61,7 @@ dependencies = [
 
 No Text-Fabric, RDF, HTTP, CLI-framework, or ontology dependencies enter this ticket.
 
-The package public surface exported by `tfont` is intentionally small:
+The package public surface exported by `ontotf` is intentionally small:
 
 ```python
 SourceValidationError
@@ -326,7 +326,7 @@ Confirm RED in CI on an exact commit before creating production code.
 
 ## 10. GREEN implementation order
 
-1. add `pyproject.toml` + `src/tfont/__init__.py`;
+1. add `pyproject.toml` + `src/ontotf/__init__.py`;
 2. add loader/error model with loader-focused tests;
 3. add seven schemas;
 4. add registry/validator;

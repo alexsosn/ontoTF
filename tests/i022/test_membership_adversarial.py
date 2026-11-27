@@ -5,8 +5,8 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-import tfont
-import tfont.semantic_execution as execution
+import ontotf
+import ontotf.semantic_execution as execution
 from tests.i020._fixtures import prerequisites_for
 from tests.i022._fixtures import (
     MembershipApi,
@@ -20,12 +20,12 @@ from tests.i022._fixtures import (
     approximate_membership_request,
     proper_noun_key,
 )
-from tfont.semantic_digest_v2 import (
+from ontotf.semantic_digest_v2 import (
     mapping_semantic_digest_v2,
     projection_semantic_digest_v1,
 )
-from tfont.semantic_ir import native_binding_identity
-from tfont.source_validation import validate_source
+from ontotf.semantic_ir import native_binding_identity
+from ontotf.source_validation import validate_source
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -37,13 +37,13 @@ def category(error: BaseException) -> str:
 
 def plan_and_component(api=None):
     ir = compiled_membership_ir()
-    resolution = tfont.semantic_resolve(
+    resolution = ontotf.semantic_resolve(
         ir,
-        membership_request(tfont),
-        prerequisites_for(tfont, ir),
+        membership_request(ontotf),
+        prerequisites_for(ontotf, ir),
     )
     plan = resolution.plans[0]
-    context = membership_context(tfont, ir, api or membership_api())
+    context = membership_context(ontotf, ir, api or membership_api())
     return plan, context.components[0]
 
 
@@ -52,10 +52,10 @@ class I022MembershipAdversarialTests(unittest.TestCase):
         ir = compiled_membership_ir()
         api = membership_api(selections=((),))
         with self.assertRaises(Exception):
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                membership_request(tfont),
-                (membership_context(tfont, ir, api),),
+                membership_request(ontotf),
+                (membership_context(ontotf, ir, api),),
             )
         self.assertEqual(api.F.otype.s_calls, 1)
 
@@ -66,10 +66,10 @@ class I022MembershipAdversarialTests(unittest.TestCase):
             node_types={4: "word"},
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                membership_request(tfont),
-                (membership_context(tfont, ir, api),),
+                membership_request(ontotf),
+                (membership_context(ontotf, ir, api),),
             )
         self.assertEqual(category(raised.exception), "invalid_result_nodes")
         self.assertEqual(api.F.otype.s_calls, 2)
@@ -166,10 +166,10 @@ class I022MembershipAdversarialTests(unittest.TestCase):
     def test_membership_never_touches_edges_oslots_or_autoload(self):
         ir = compiled_membership_ir()
         api = membership_api()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            membership_request(tfont),
-            (membership_context(tfont, ir, api),),
+            membership_request(ontotf),
+            (membership_context(ontotf, ir, api),),
         )
         self.assertEqual(result.corpora[0].nodes, (4, 2, 7))
         self.assertFalse(api.E.touched)
@@ -201,7 +201,7 @@ class I022MembershipAdversarialTests(unittest.TestCase):
         count = 0
         historical_count = 0
         shapes = set()
-        root = ROOT / "src/tfont/resources/profiles"
+        root = ROOT / "src/ontotf/resources/profiles"
         for path in sorted(root.glob("*/*/mappings/*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
             validate_source(data, "mapping", source_name=str(path))
@@ -237,10 +237,10 @@ class I022MembershipAdversarialTests(unittest.TestCase):
 
     def test_approximate_semantic_executes_exact_membership_without_loss(self):
         ir = compiled_membership_ir()
-        result = tfont.execute_approximate_semantic(
+        result = ontotf.execute_approximate_semantic(
             ir,
-            approximate_membership_request(tfont),
-            (membership_context(tfont, ir),),
+            approximate_membership_request(ontotf),
+            (membership_context(ontotf, ir),),
         )
         self.assertEqual(result.corpora[0].nodes, (4, 2, 7))
         self.assertEqual(result.resolution.losses, ())
@@ -250,13 +250,13 @@ class I022MembershipAdversarialTests(unittest.TestCase):
             assessment="broader",
             losses=("undercoverage",),
         )
-        result = tfont.execute_approximate_semantic(
+        result = ontotf.execute_approximate_semantic(
             ir,
             approximate_membership_request(
-                tfont,
+                ontotf,
                 accept_losses=("undercoverage",),
             ),
-            (membership_context(tfont, ir),),
+            (membership_context(ontotf, ir),),
         )
         self.assertEqual(result.corpora[0].nodes, (4, 2, 7))
         self.assertEqual(result.resolution.losses, ("undercoverage",))
@@ -264,26 +264,26 @@ class I022MembershipAdversarialTests(unittest.TestCase):
 
     def test_exact_and_approximate_conjunction_reuse_membership_domain_safety(self):
         ir = compiled_two_key_membership_ir()
-        keys = (membership_request(tfont).key, proper_noun_key(tfont))
-        exact = tfont.execute_exact_conjunction(
+        keys = (membership_request(ontotf).key, proper_noun_key(ontotf))
+        exact = ontotf.execute_exact_conjunction(
             ir,
-            tfont.SemanticConjunctionRequest(
+            ontotf.SemanticConjunctionRequest(
                 keys=keys,
                 corpora=("bhsa",),
             ),
-            (membership_context(tfont, ir),),
+            (membership_context(ontotf, ir),),
         )
         self.assertEqual(exact.corpora[0].nodes, (2, 4, 7))
 
-        approximate = tfont.execute_approximate_conjunction(
+        approximate = ontotf.execute_approximate_conjunction(
             ir,
-            tfont.ApproximateSemanticConjunctionRequest(
+            ontotf.ApproximateSemanticConjunctionRequest(
                 keys=keys,
                 corpora=("bhsa",),
                 semantic_mode="approximate",
                 accept_losses=(),
             ),
-            (membership_context(tfont, ir),),
+            (membership_context(ontotf, ir),),
         )
         self.assertEqual(approximate.corpora[0].nodes, (2, 4, 7))
         self.assertEqual(approximate.resolution.losses, ())
@@ -291,13 +291,13 @@ class I022MembershipAdversarialTests(unittest.TestCase):
     def test_authority_identity_and_identifier_execute_membership(self):
         authority_ir = compiled_authority_membership_ir()
         authority_key = authority_ir.authority_index[0][0]
-        authority = tfont.execute_exact_authority(
+        authority = ontotf.execute_exact_authority(
             authority_ir,
-            tfont.AuthorityResolveRequest(
+            ontotf.AuthorityResolveRequest(
                 key=authority_key,
                 corpora=("bhsa",),
             ),
-            (membership_context(tfont, authority_ir),),
+            (membership_context(ontotf, authority_ir),),
         )
         self.assertEqual(authority.corpora[0].nodes, (4, 2, 7))
 
@@ -306,39 +306,39 @@ class I022MembershipAdversarialTests(unittest.TestCase):
             losses=("undercoverage",),
         )
         approximate_key = approximate_ir.authority_index[0][0]
-        approximate = tfont.execute_approximate_authority(
+        approximate = ontotf.execute_approximate_authority(
             approximate_ir,
-            tfont.ApproximateAuthorityResolveRequest(
+            ontotf.ApproximateAuthorityResolveRequest(
                 key=approximate_key,
                 corpora=("bhsa",),
                 accept_losses=("undercoverage",),
             ),
-            (membership_context(tfont, approximate_ir),),
+            (membership_context(ontotf, approximate_ir),),
         )
         self.assertEqual(approximate.corpora[0].nodes, (4, 2, 7))
         self.assertEqual(approximate.resolution.losses, ("undercoverage",))
 
         refs_ir = compiled_reference_membership_ir()
         identity_key = refs_ir.identity_index[0][0]
-        identity = tfont.execute_identity(
+        identity = ontotf.execute_identity(
             refs_ir,
-            tfont.IdentityResolveRequest(
+            ontotf.IdentityResolveRequest(
                 authority_system=identity_key.authority_system,
                 external_entity_id=identity_key.external_entity_id,
                 corpora=("bhsa",),
             ),
-            (membership_context(tfont, refs_ir),),
+            (membership_context(ontotf, refs_ir),),
         )
         self.assertEqual(identity.corpora[0].nodes, (4, 2, 7))
 
         identifier_key = refs_ir.identifier_index[0][0]
-        identifier = tfont.execute_identifier(
+        identifier = ontotf.execute_identifier(
             refs_ir,
-            tfont.IdentifierResolveRequest(
+            ontotf.IdentifierResolveRequest(
                 key=identifier_key,
                 corpora=("bhsa",),
             ),
-            (membership_context(tfont, refs_ir),),
+            (membership_context(ontotf, refs_ir),),
         )
         self.assertEqual(identifier.corpora[0].nodes, (4, 2, 7))
 

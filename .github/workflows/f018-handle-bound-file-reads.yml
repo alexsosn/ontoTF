@@ -6,7 +6,7 @@ on:
     branches:
       - research/f-018-handle-bound-file-reads
     paths:
-      - src/tfont/parent_identity.py
+      - src/ontotf/parent_identity.py
       - tests/f018/**
       - tests/f012/**
       - tests/f014/**
@@ -16,7 +16,7 @@ on:
       - .github/workflows/f018-handle-bound-file-reads.yml
   pull_request:
     paths:
-      - src/tfont/parent_identity.py
+      - src/ontotf/parent_identity.py
       - tests/f018/**
       - tests/f012/**
       - tests/f014/**

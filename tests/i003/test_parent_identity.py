@@ -6,8 +6,8 @@ from pathlib import Path
 import tempfile
 import unittest
 
-import tfont.parent_identity as parent_identity
-from tfont.parent_identity import (
+import ontotf.parent_identity as parent_identity
+from ontotf.parent_identity import (
     DIRECTORY_FILES_ALGORITHM,
     FILE_BYTES_ALGORITHM,
     PARENT_COMPONENTS_ALGORITHM,

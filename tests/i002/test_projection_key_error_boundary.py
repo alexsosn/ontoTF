@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.digests import (
+from ontotf.digests import (
     DigestError,
     canonical_json_bytes,
     evidence_record_projection,

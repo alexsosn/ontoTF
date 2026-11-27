@@ -165,7 +165,7 @@ The I-017 research CI:
 4. runs the established R-005 exhaustive TF inventory machinery;
 5. compares the generated compact inventory to the committed I-017 evidence.
 
-TFont runtime remains network-free and does not acquire corpora.
+ontoTF runtime remains network-free and does not acquire corpora.
 
 ## Plan handoff
 
@@ -183,7 +183,7 @@ Required implementation properties:
 - preserve historical R-011 research accounting only when an old item identity
   matches exactly and without upgrading its authority;
 - require deterministic regeneration/checking from the committed compact
-  evidence, with no network access in TFont runtime;
+  evidence, with no network access in ontoTF runtime;
 - prove that finite observed values outside the explicit closed-family policy
   are not expanded;
 - retain the historical 40-item manifest unchanged for audit/history.

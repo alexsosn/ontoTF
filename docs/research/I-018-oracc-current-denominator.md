@@ -248,7 +248,7 @@ The I-018 research workflow:
 7. compares the regenerated compact projection against the committed I-018
    evidence.
 
-TFont runtime remains network-free and does not build/acquire ORACC.
+ontoTF runtime remains network-free and does not build/acquire ORACC.
 
 ## Plan handoff
 

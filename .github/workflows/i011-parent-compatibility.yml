@@ -7,19 +7,19 @@ on:
     paths:
       - 'tests/i011/**'
       - 'tests/i007/**'
-      - 'src/tfont/schemas/profile.schema.json'
-      - 'src/tfont/semantic_ir.py'
-      - 'src/tfont/semantic_resolver.py'
-      - 'src/tfont/runtime_prerequisites.py'
+      - 'src/ontotf/schemas/profile.schema.json'
+      - 'src/ontotf/semantic_ir.py'
+      - 'src/ontotf/semantic_resolver.py'
+      - 'src/ontotf/runtime_prerequisites.py'
       - '.github/workflows/i011-parent-compatibility.yml'
   pull_request:
     paths:
       - 'tests/i011/**'
       - 'tests/i007/**'
-      - 'src/tfont/schemas/profile.schema.json'
-      - 'src/tfont/semantic_ir.py'
-      - 'src/tfont/semantic_resolver.py'
-      - 'src/tfont/runtime_prerequisites.py'
+      - 'src/ontotf/schemas/profile.schema.json'
+      - 'src/ontotf/semantic_ir.py'
+      - 'src/ontotf/semantic_resolver.py'
+      - 'src/ontotf/runtime_prerequisites.py'
       - '.github/workflows/i011-parent-compatibility.yml'
 
 permissions:

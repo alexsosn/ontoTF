@@ -5,8 +5,8 @@ import json
 import unittest
 from pathlib import Path
 
-import tfont
-from tfont import coverage
+import ontotf
+from ontotf import coverage
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -94,7 +94,7 @@ class I019CurrentTLHdigRedTests(unittest.TestCase):
             "RED: current TLHdig coverage resource constant is absent",
         )
         self.assertEqual(
-            getattr(tfont, "P004_TLHDIG_0_4_0_RESOURCE", None),
+            getattr(ontotf, "P004_TLHDIG_0_4_0_RESOURCE", None),
             RESOURCE,
             "RED: current TLHdig coverage resource constant is not exported",
         )

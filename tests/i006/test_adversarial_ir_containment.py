@@ -4,12 +4,12 @@ import importlib
 import unittest
 from dataclasses import replace
 
-from tfont.semantic_ir import EdgeStepIR, native_binding_identity
+from ontotf.semantic_ir import EdgeStepIR, native_binding_identity
 from tests.i006._fixtures import compiled_noun_ir
 from tests.i006.test_semantic_resolver_contract import prerequisite_for, request_for
 
 
-RESOLVER = importlib.import_module("tfont.semantic_resolver")
+RESOLVER = importlib.import_module("ontotf.semantic_resolver")
 
 
 def assert_problem(testcase: unittest.TestCase, category: str, callable_, *args):

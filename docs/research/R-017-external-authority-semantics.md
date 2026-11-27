@@ -7,7 +7,7 @@
 
 ## Decision
 
-TFont must not treat every external URI, identifier, vocabulary record, catalogue number, DOI, or web link as a semantic-pivot target.
+ontoTF must not treat every external URI, identifier, vocabulary record, catalogue number, DOI, or web link as a semantic-pivot target.
 
 The first contract distinguishes six external-reference roles:
 
@@ -57,7 +57,7 @@ Primary sources:
 - <https://www.getty.edu/publications/vocabularies-editorial-guidelines/aat-guidelines/1_about_aat/1.1/>
 - <https://www.getty.edu/publications/vocabularies-editorial-guidelines/aat-guidelines/1_about_aat/1.3/>
 
-TFont role:
+ontoTF role:
 
 - AAT is an **authority-value system** for reviewed native values such as material, object type, or technique;
 - an AAT concept URI does not replace the CIDOC CRM class/property saying *what relation is being asserted*;
@@ -89,13 +89,13 @@ Primary sources:
 - <https://perio.do/>
 - <https://perio.do/technical-overview/>
 
-TFont role:
+ontoTF role:
 
 - a PeriodO ARK is an **authority-value reference** to one published scholarly period definition;
 - it is not a universal period class with one globally authoritative date interval;
 - two corpora using the same label can map to different PeriodO definitions;
 - time-range filtering and period-definition filtering are distinct operations;
-- PeriodO's own `sameAs` to a source vocabulary record is provenance/identity inside PeriodO and does not force TFont `owl:sameAs` publication for native corpus values.
+- PeriodO's own `sameAs` to a source vocabulary record is provenance/identity inside PeriodO and does not force ontoTF `owl:sameAs` publication for native corpus values.
 
 Example:
 
@@ -238,7 +238,7 @@ Do not reuse every semantic mapping assessment for every reference kind.
 
 ### Semantic pivot / authority value
 
-TFont's reviewed mapping assessment can be meaningful for native concept/value -> semantic/authority concept correspondence:
+ontoTF's reviewed mapping assessment can be meaningful for native concept/value -> semantic/authority concept correspondence:
 
 - `exact`, `close`, `broader`, `narrower`, `related`, `ambiguous`, `native-only`, `unsupported`.
 
@@ -265,7 +265,7 @@ R-017 keeps runtime review state separate from RDF publication predicates.
 
 ### SKOS
 
-AAT and PeriodO concepts may participate in SKOS mapping relations only where the published/native concept representation and mapping semantics justify it. TFont must not mechanically translate runtime `exact` -> `skos:exactMatch`.
+AAT and PeriodO concepts may participate in SKOS mapping relations only where the published/native concept representation and mapping semantics justify it. ontoTF must not mechanically translate runtime `exact` -> `skos:exactMatch`.
 
 A native literal `material="clay"` is not itself a SKOS Concept merely because it maps to an AAT concept.
 
@@ -293,7 +293,7 @@ Required provenance includes, depending on authority:
 - mapping evidence/review;
 - supersession/deprecation information if known.
 
-For Getty, persistent numeric IDs are designed to disambiguate vocabulary records, while data releases are updated regularly. TFont should prefer persistent concept identity plus locked/retrieval provenance rather than English labels.
+For Getty, persistent numeric IDs are designed to disambiguate vocabulary records, while data releases are updated regularly. ontoTF should prefer persistent concept identity plus locked/retrieval provenance rather than English labels.
 
 For PeriodO, stable ARKs identify exact scholarly period definitions; source authority identity remains part of explanation.
 
@@ -412,7 +412,7 @@ R-017 does not:
 A fresh logically-independent reviewer should challenge especially:
 
 1. whether the six reference kinds are minimal and non-overlapping enough;
-2. whether authority-value mappings should use TFont mapping assessments at all;
+2. whether authority-value mappings should use ontoTF mapping assessments at all;
 3. whether entity identity deserves its own strength vocabulary;
 4. whether AAT/PeriodO direct filtering is separated cleanly from semantic-pivot resolution;
 5. whether real ORACC/TLH/Pseudepigrapha examples are characterized correctly;

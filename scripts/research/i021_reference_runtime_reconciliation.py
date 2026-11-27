@@ -28,10 +28,10 @@ from tests.i005._fixtures import (
     validate_structural_sources,
 )
 from tests.i006._fixtures import _refresh_mapping
-from tfont.digests import canonical_json_bytes
-from tfont.semantic_digest_v2 import mapping_semantic_projection_v2
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.digests import canonical_json_bytes
+from ontotf.semantic_digest_v2 import mapping_semantic_projection_v2
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 BASELINE_MAIN = "45b4584f7a8ab8ce5d5c3920fa144819a88fdfbe"

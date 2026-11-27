@@ -53,7 +53,7 @@ class CandidateEvidenceResources:
                                  for p in name.split("/")), "unsafe candidate resource identity")
                 _require(name in set(native) | ontology,
                          "candidate resource is unused or attempts an ontology lock override")
-                _require(not files("tfont").joinpath(*name.split("/")).is_file(),
+                _require(not files("ontotf").joinpath(*name.split("/")).is_file(),
                          "candidate evidence cannot shadow installed resources")
                 validate_source(record, "evidence", source_name=name)
                 _require(record["evidence_id"] not in seen_ids, "duplicate candidate evidence identity")
@@ -189,7 +189,7 @@ class CandidateEvidenceResources:
                  and content.get("rdf_type") == "owl:Class"
                  and content.get("target") in lock["terms_used"],
                  "candidate ontology source, license, kind or trusted lock membership differs")
-        raw = files("tfont").joinpath(*lock["snapshot_artifact"].split("/")).read_bytes()
+        raw = files("ontotf").joinpath(*lock["snapshot_artifact"].split("/")).read_bytes()
         _require("sha256:" + hashlib.sha256(raw).hexdigest() == lock["content_digest"],
                  "protected ontology snapshot digest mismatch")
         blob = hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()

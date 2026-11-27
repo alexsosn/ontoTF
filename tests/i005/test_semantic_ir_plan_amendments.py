@@ -3,9 +3,9 @@ from __future__ import annotations
 import copy
 import unittest
 
-import tfont.semantic_ir as semantic_ir
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.semantic_validation import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
+import ontotf.semantic_ir as semantic_ir
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_validation import SemanticArtifact, SemanticSourceBundle, validate_semantic_bundle
 from tests.i005._fixtures import (
     catalogue_reference,
     entity_identity_reference,

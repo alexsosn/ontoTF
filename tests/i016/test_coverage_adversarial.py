@@ -3,14 +3,14 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.coverage import (
+from ontotf.coverage import (
     CoverageError,
     coverage_denominator_digest,
     coverage_report,
     load_p004_r011_baseline_manifests,
     validate_coverage_manifest,
 )
-from tfont.source_validation import SourceValidationError
+from ontotf.source_validation import SourceValidationError
 
 
 def _baseline(corpus: str = "bhsa"):

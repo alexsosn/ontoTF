@@ -6,8 +6,8 @@ from typing import Any, Iterable
 
 from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import DEFAULT_CORPORA, PARENT_CHARS, _refresh_mapping, noun_semantic_key
-from tfont.semantic_ir import CompiledSemanticIR, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import CompiledSemanticIR, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 def executable_noun_bundle(
@@ -163,13 +163,13 @@ def corpus_variant(ir: CompiledSemanticIR, corpus_id: str):
     return rows[0]
 
 
-def loaded_context(tfont_module, ir: CompiledSemanticIR, corpus_id: str, api: Any):
+def loaded_context(ontotf_module, ir: CompiledSemanticIR, corpus_id: str, api: Any):
     variant = corpus_variant(ir, corpus_id)
-    return tfont_module.LoadedCorpusContext(
+    return ontotf_module.LoadedCorpusContext(
         corpus_id=corpus_id,
         parent_manifest_digest=variant.key.expected_parent_manifest_digest,
         components=(
-            tfont_module.LoadedComponentContext(
+            ontotf_module.LoadedComponentContext(
                 component_id=f"{corpus_id}-tf",
                 content_digest="sha256:" + "e" * 64,
                 api=api,
@@ -178,8 +178,8 @@ def loaded_context(tfont_module, ir: CompiledSemanticIR, corpus_id: str, api: An
     )
 
 
-def request(tfont_module, corpora: tuple[str, ...]):
-    return tfont_module.SemanticResolveRequest(
+def request(ontotf_module, corpora: tuple[str, ...]):
+    return ontotf_module.SemanticResolveRequest(
         key=noun_semantic_key(),
         corpora=corpora,
     )

@@ -6,7 +6,7 @@
 
 ## Question
 
-Can TFont strengthen regular-file digesting so that the object which passes final no-follow/reparse/type inspection is exactly the open object from which digest bytes are read, across supported Python 3.10/3.12 on POSIX and Windows, without treating `(st_dev, st_ino)` equality as an unconditional temporal proof?
+Can ontoTF strengthen regular-file digesting so that the object which passes final no-follow/reparse/type inspection is exactly the open object from which digest bytes are read, across supported Python 3.10/3.12 on POSIX and Windows, without treating `(st_dev, st_ino)` equality as an unconditional temporal proof?
 
 ## Why this is a separate F-018 ticket
 
@@ -99,7 +99,7 @@ After the raw handle is accepted:
 
 The retained handle/descriptor—not file-ID equality—is the continuity primitive, so the primary guarantee is not dependent on Python 3.10 versus 3.12 `st_ino` width.
 
-## TFont call paths
+## ontoTF call paths
 
 The same helper boundary applies to all byte-bearing parent identity paths:
 

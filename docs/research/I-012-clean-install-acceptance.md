@@ -33,7 +33,7 @@ No new explanation/result type is required. `execute_exact_semantic()` returns `
 
 ## Public installed-wheel boundary
 
-The top-level `tfont` package already exports every API needed by an acceptance runner:
+The top-level `ontotf` package already exports every API needed by an acceptance runner:
 
 - `load_production_noun_bundles` / `PRODUCTION_NOUN_CORPORA`;
 - `validate_semantic_bundle` and `compile_semantic_ir`;
@@ -41,11 +41,11 @@ The top-level `tfont` package already exports every API needed by an acceptance 
 - `LoadedComponentContext` / `LoadedCorpusContext`;
 - `execute_exact_semantic` and the result/problem types.
 
-The acceptance runner should import only from installed `tfont`, not `tests.*`, source-tree modules by path, or editable-install state.
+The acceptance runner should import only from installed `ontotf`, not `tests.*`, source-tree modules by path, or editable-install state.
 
 ## Loaded-corpus simulation in ordinary CI
 
-Ordinary release CI should not download or bundle BHSA, Syriac or ExtraBiblical merely to test TFont's already-loaded API handoff. The semantic/native claims are independently reviewed and pinned in I-009 evidence. For the release acceptance runner, a tiny in-script loaded-TF API double is sufficient if it implements only the production executor's documented read surface:
+Ordinary release CI should not download or bundle BHSA, Syriac or ExtraBiblical merely to test ontoTF's already-loaded API handoff. The semantic/native claims are independently reviewed and pinned in I-009 evidence. For the release acceptance runner, a tiny in-script loaded-TF API double is sufficient if it implements only the production executor's documented read surface:
 
 - `Fall()` -> names of already-loaded features;
 - `F.sp.s(value)` -> selected nodes;
@@ -79,7 +79,7 @@ Recommended release gate:
 2. create a fresh virtual environment outside the checkout;
 3. install exactly that wheel into the venv;
 4. copy/run a repository acceptance runner from an outside-checkout working directory with isolated Python;
-5. runner imports only installed `tfont` and uses shipped production resources;
+5. runner imports only installed `ontotf` and uses shipped production resources;
 6. validate/compile all three bundles and compare their release identities to the frozen reviewed constants above;
 7. create three minimal already-loaded API contexts using the frozen release identities and local API doubles;
 8. execute one exact OLiA Noun request;
@@ -95,7 +95,7 @@ There is no justified production-code RED: current APIs already appear sufficien
 The TDD boundary should instead be the missing acceptance artifact itself:
 
 - tests-only/CI RED invokes `scripts/acceptance/v01_noun.py` from a freshly installed wheel environment; it fails because that acceptance runner is absent;
-- minimal GREEN adds only the runner (and, if necessary, narrow CI plumbing), not `src/tfont` behavior;
+- minimal GREEN adds only the runner (and, if necessary, narrow CI plumbing), not `src/ontotf` behavior;
 - if the runner exposes a genuine product defect, freeze that defect with a separate RED before touching production code.
 
 This preserves the requested RED/GREEN discipline without inventing product surface for testability.
@@ -147,4 +147,4 @@ Do not put a user-facing tutorial here; the release-polish ticket owns README/fi
 
 ## Conclusion
 
-The smallest correct I-012 is a **clean-wheel acceptance runner and CI gate over the existing public API**, not another TFont feature. It should compose the two I-009 boundaries, compare the installed release against independently frozen reviewed identities, assert the existing explanation/provenance envelope, and fail closed on parent drift. If this runner passes without `src/tfont` changes, that is the desired result: the remaining blocker was release-level integration evidence, not missing runtime functionality.
+The smallest correct I-012 is a **clean-wheel acceptance runner and CI gate over the existing public API**, not another ontoTF feature. It should compose the two I-009 boundaries, compare the installed release against independently frozen reviewed identities, assert the existing explanation/provenance envelope, and fail closed on parent drift. If this runner passes without `src/ontotf` changes, that is the desired result: the remaining blocker was release-level integration evidence, not missing runtime functionality.

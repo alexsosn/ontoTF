@@ -3,10 +3,10 @@ name: I-021 authority identity identifier resolution
 on:
   pull_request:
     paths:
-      - "src/tfont/semantic_ir.py"
-      - "src/tfont/semantic_resolver.py"
-      - "src/tfont/semantic_execution.py"
-      - "src/tfont/__init__.py"
+      - "src/ontotf/semantic_ir.py"
+      - "src/ontotf/semantic_resolver.py"
+      - "src/ontotf/semantic_execution.py"
+      - "src/ontotf/__init__.py"
       - "tests/i021/**"
       - "scripts/research/i021_reference_runtime_reconciliation.py"
       - "docs/research/data/generated/i021/reference-runtime-reconciliation.json"
@@ -55,13 +55,13 @@ jobs:
           import sys
           import tempfile
 
-          wheel = next(pathlib.Path("dist").glob("tfont-*.whl"))
+          wheel = next(pathlib.Path("dist").glob("ontotf-*.whl"))
           with tempfile.TemporaryDirectory() as tmp:
               subprocess.check_call(
                   [sys.executable, "-m", "pip", "install", "--target", tmp, str(wheel)]
               )
               code = """
-          import tfont
+          import ontotf
           required = (
               "AuthorityResolveRequest",
               "ApproximateAuthorityResolveRequest",
@@ -76,7 +76,7 @@ jobs:
               "execute_identity",
               "execute_identifier",
           )
-          missing = [name for name in required if not hasattr(tfont, name)]
+          missing = [name for name in required if not hasattr(ontotf, name)]
           if missing:
               raise SystemExit(f"missing I-021 wheel API: {missing}")
           """

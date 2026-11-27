@@ -11,8 +11,8 @@ from dataclasses import FrozenInstanceError
 from types import SimpleNamespace
 import unittest
 
-from tfont import BHSAWordLexemeLink, resolve_bhsa_word_lexeme
-from tfont.bhsa_lexical_preview import (
+from ontotf import BHSAWordLexemeLink, resolve_bhsa_word_lexeme
+from ontotf.bhsa_lexical_preview import (
     BHSA_SOURCE_REVISION, LexicalProjectionError,
 )
 

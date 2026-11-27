@@ -23,7 +23,7 @@ It does not decide compatibility, validate dependency closure, resolve profile r
 ## 2. Production layout
 
 ```text
-src/tfont/
+src/ontotf/
   parent_identity.py
   __init__.py               # export common public identity API
 
@@ -71,7 +71,7 @@ parent_manifest_projection(manifest: dict[str, JSONValue]) -> dict[str, JSONValu
 parent_manifest_digest(manifest: dict[str, JSONValue]) -> str
 ```
 
-Common functions/errors are exported from `tfont.__init__`. Algorithm constants remain available from `tfont.parent_identity`.
+Common functions/errors are exported from `ontotf.__init__`. Algorithm constants remain available from `ontotf.parent_identity`.
 
 ## 5. Stable error categories
 
@@ -279,7 +279,7 @@ oracc-sidecar sidecar    / tfont-directory-files-sha256-v1
 
 ## 13. Mandatory TDD regressions
 
-RED tests are committed before `src/tfont/parent_identity.py` exists and must fail for that missing-production reason.
+RED tests are committed before `src/ontotf/parent_identity.py` exists and must fail for that missing-production reason.
 
 The test suite pins:
 
@@ -311,7 +311,7 @@ The test suite pins:
 
 ```text
 pyproject.toml
-src/tfont/**
+src/ontotf/**
 tests/i003/**
 docs/research/I-003-parent-component-identity-research.md
 docs/plans/I-003-parent-component-identity-plan.md

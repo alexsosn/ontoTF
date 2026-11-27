@@ -7,16 +7,16 @@
 
 ## Decision
 
-TFont should use a **capability-gated heritage profile**, not an “ancient object = archaeology” rule.
+ontoTF should use a **capability-gated heritage profile**, not an “ancient object = archaeology” rule.
 
 The first contract is:
 
 1. **CIDOC CRM is the default material-culture backbone** for physical objects, parts, identifiers, materials, production/modification, actors, places, current/former location, ownership/custody and source provenance where native semantics warrant those assertions.
 2. **CRMarchaeo activates only for explicit excavation/stratigraphic evidence**: excavation processing, stratigraphic units/interfaces, embeddings/find contexts, archaeological encounter/find events and stratigraphic relations. A tablet, manuscript, fragment, museum number, provenience string or ancient date does not activate CRMarchaeo by itself.
 3. **CRMsci activates only for explicit observation, measurement, sampling, position determination or scientific-analysis processes/results.** A catalogue material label or editor's qualitative description does not become a scientific measurement.
-4. **Getty AAT is an external controlled-value authority**, especially for material/object/technique terminology, not a semantic replacement for CRM classes/properties. TFont binds the exact AAT record and reviewed Getty data snapshot/provenance.
+4. **Getty AAT is an external controlled-value authority**, especially for material/object/technique terminology, not a semantic replacement for CRM classes/properties. ontoTF binds the exact AAT record and reviewed Getty data snapshot/provenance.
 5. **PeriodO is an external scholarly-period authority**, not a universal fixed chronology. A PeriodO URI identifies one published definition of a period with source-specific temporal/spatial scope.
-6. **PROV-O remains optional publication/provenance infrastructure.** The canonical TFont evidence/review/parent-component provenance contract remains authoritative at runtime; PROV-O is used only where it adds an interoperable publication representation.
+6. **PROV-O remains optional publication/provenance infrastructure.** The canonical ontoTF evidence/review/parent-component provenance contract remains authoritative at runtime; PROV-O is used only where it adds an interoperable publication representation.
 7. **The first R-011 pilot should not advertise CRMarchaeo or CRMsci capability for ORACC-TF, TLHdig-TF, CUC, or linguistic controls unless pinned native evidence actually supplies the required excavation/scientific assertion shape.** Current inspected evidence does not.
 
 The governing invariant is:
@@ -47,7 +47,7 @@ ARCHAEOLOGICAL CONTEXT
     stratigraphic relation
               │
               └── depends on pinned old CRM/CRMsci releases; bridge required before
-                  composition with TFont's current CRM/CRMsci stack
+                  composition with ontoTF's current CRM/CRMsci stack
 
 SCIENTIFIC OBSERVATION
   CRMsci
@@ -60,7 +60,7 @@ SCHOLARLY PERIODIZATION
       └── reviewed authority link --> one PeriodO period definition
                                   (source + temporal approximation + geography)
 
-TFont evidence/review provenance
+ontoTF evidence/review provenance
   └── optional PROV-O publication view
 ```
 
@@ -80,7 +80,7 @@ Use it, where native semantics warrant, for:
 - ownership/custody/current location versus historical location/provenance assertions;
 - source records describing object history.
 
-TFont must preserve the distinction between **identifier** and **type/value**. A museum accession number is not an ontology class. A CDLI/Pleiades/Getty/PeriodO URI is not automatically a common semantic target merely because it is external and dereferenceable; R-017 owns the final authority-reference contract.
+ontoTF must preserve the distinction between **identifier** and **type/value**. A museum accession number is not an ontology class. A CDLI/Pleiades/Getty/PeriodO URI is not automatically a common semantic target merely because it is external and dereferenceable; R-017 owns the final authority-reference contract.
 
 ## 3. CRMarchaeo 2.1.1
 
@@ -113,7 +113,7 @@ CRMarchaeo 2.1.1 explicitly references:
 - CIDOC CRM **7.1.2**;
 - CRMsci **2.0**.
 
-TFont's accepted current basis otherwise uses:
+ontoTF's accepted current basis otherwise uses:
 
 - CIDOC CRM **7.1.3**;
 - CRMsci **3.2**.
@@ -131,12 +131,12 @@ Consequences:
 
 CRMarchaeo itself carefully distinguishes excavation observations from subsequent interpretation. Its `A1 Excavation Processing Unit` scope notes that excavation documentation should describe material state at excavation time and should be distinguished from later interpretation of causes.
 
-That matches TFont's provenance rule directly:
+That matches ontoTF's provenance rule directly:
 
 ```text
 recorded excavation/find state
     != later archaeological interpretation
-    != TFont semantic projection
+    != ontoTF semantic projection
 ```
 
 Where interpretation is explicitly modeled, CIDOC/CRMarchaeo attribute-assignment semantics and/or CRMinf may participate, but a flat excavation record must not be upgraded to a scholarly inference graph automatically.
@@ -168,13 +168,13 @@ Unsafe promotions include:
 - a catalogue coordinate → position-determination event, unless the source records that event/process;
 - a converter-derived Unicode/sign property → scientific observation.
 
-A source may state the **result** of a prior scientific analysis without exposing its process. TFont should preserve that source result and provenance; it must not fabricate a missing CRMsci activity graph merely to normalize the value.
+A source may state the **result** of a prior scientific analysis without exposing its process. ontoTF should preserve that source result and provenance; it must not fabricate a missing CRMsci activity graph merely to normalize the value.
 
 ## 5. Getty AAT policy
 
 Getty currently publishes AAT and related vocabularies openly under **ODC-By 1.0**, with individual linked-data records and regularly refreshed downloads.
 
-TFont should use AAT as an **external controlled vocabulary/authority**, consistent with R-002 and R-017.
+ontoTF should use AAT as an **external controlled vocabulary/authority**, consistent with R-002 and R-017.
 
 Good candidates include reviewed source values for:
 
@@ -215,7 +215,7 @@ Each period definition has:
 - a structured temporal approximation plus source wording;
 - stable resolvable ARK identity.
 
-This is exactly the right model for TFont's period problem: period labels are **scholarly definitions**, not universal date constants.
+This is exactly the right model for ontoTF's period problem: period labels are **scholarly definitions**, not universal date constants.
 
 Therefore:
 
@@ -242,7 +242,7 @@ Exact date-range filtering and period-concept filtering are different query oper
 
 ## 7. PROV-O role
 
-R-002 already accepts PROV-O as provenance infrastructure. R-010 does not replace TFont's native evidence/review/parent-component provenance contract with PROV-O.
+R-002 already accepts PROV-O as provenance infrastructure. R-010 does not replace ontoTF's native evidence/review/parent-component provenance contract with PROV-O.
 
 Use PROV-O only where it provides an interoperable publication view of:
 
@@ -253,11 +253,11 @@ Use PROV-O only where it provides an interoperable publication view of:
 
 Do not duplicate every CIDOC CRM object-history event as generic PROV activity/entity edges merely because PROV-O is available.
 
-Runtime truth remains the canonical TFont provenance/evidence contract; RDF/PROV export is derived.
+Runtime truth remains the canonical ontoTF provenance/evidence contract; RDF/PROV export is derived.
 
 ## 8. Place and provenance distinctions
 
-TFont must distinguish at least:
+ontoTF must distinguish at least:
 
 1. **findspot / excavation location** — where the object was archaeologically encountered, with CRMarchaeo only if the excavation/find process is actually represented;
 2. **source provenience** — catalogue/source claim about origin/find provenance, which may be imprecise, historical, inferred, or conventional;
@@ -274,11 +274,11 @@ A museum name is not automatically the current physical location: it can be a ke
 
 ### 9.1 ORACC-TF
 
-R-005's pinned ORACC-TF stress census records rich catalogue/object metadata including material, period, provenience, collection/object identifiers and external identifiers such as Pleiades/CDLI where present. ORACC-TF remains a conversion target rather than a finalized released TFont profile, so mappings remain prototype-level until the target schema is frozen.
+R-005's pinned ORACC-TF stress census records rich catalogue/object metadata including material, period, provenience, collection/object identifiers and external identifiers such as Pleiades/CDLI where present. ORACC-TF remains a conversion target rather than a finalized released ontoTF profile, so mappings remain prototype-level until the target schema is frozen.
 
 Recommended mapping pattern:
 
-| ORACC native evidence | first TFont treatment |
+| ORACC native evidence | first ontoTF treatment |
 |---|---|
 | object/document identity | CIDOC CRM physical-object candidate if catalogue semantics denote physical artefact |
 | museum/catalogue/inventory identifier | CRM identifier + native authority context; not ontology class |
@@ -391,7 +391,7 @@ IR must record whether a date/place/material/period is:
 - deterministic converter normalization;
 - reviewed authority mapping;
 - attributed scholarly inference;
-- TFont query/runtime derivation.
+- ontoTF query/runtime derivation.
 
 ### 11.4 Versioned authority binding
 
@@ -405,7 +405,7 @@ For AAT/PeriodO/external authority resources retain at least:
 - evidence/review identity;
 - parent corpus release.
 
-Updating an authority dataset does not silently mutate an existing TFont mapping release.
+Updating an authority dataset does not silently mutate an existing ontoTF mapping release.
 
 ### 11.5 Optional ontology dependencies
 
@@ -415,7 +415,7 @@ If CRMarchaeo is activated, the effective ontology bundle must include its versi
 
 ## 12. Period semantics and query policy
 
-TFont should support two distinct query families:
+ontoTF should support two distinct query families:
 
 ### 12.1 Period-concept query
 
@@ -502,7 +502,7 @@ P-003/R-011 should include:
 
 ## 15. Ontology/profile gaps
 
-Current evidence does **not** demonstrate a recurring semantic gap requiring new TFont archaeology ontology terms.
+Current evidence does **not** demonstrate a recurring semantic gap requiring new ontoTF archaeology ontology terms.
 
 The main gaps are contract/governance problems rather than missing concepts:
 
@@ -539,7 +539,7 @@ CRMarchaeo 2.1.1
   -> CIDOC CRM 7.1.2
   -> CRMsci 2.0
 
-TFont current optional/current stack
+ontoTF current optional/current stack
   -> CIDOC CRM 7.1.3
   -> CRMsci 3.2
 ```
@@ -559,7 +559,7 @@ P-003 should preserve:
 7. source date/provenience/material facts remain source assertions unless explicit inference/measurement semantics exist;
 8. authority snapshot/revision/digest and mapping review belong in canonical provenance;
 9. CRMarchaeo 2.1.1 dependency skew with current CRM/CRMsci must be represented by R-015 bundle semantics before activation;
-10. no local TFont archaeology vocabulary is justified by current evidence.
+10. no local ontoTF archaeology vocabulary is justified by current evidence.
 
 ## 19. Rejected alternatives
 
@@ -587,7 +587,7 @@ Rejected. A scientific activity/result model requires source evidence for observ
 
 Rejected. The upstream model explicitly references CRMsci 2.0 and CRM 7.1.2; current-version composition requires reviewed bridge semantics.
 
-### G. Mint TFont archaeology terms now
+### G. Mint ontoTF archaeology terms now
 
 Rejected. Current gaps are chiefly authority/provenance/version-contract gaps, not recurring missing archaeological concepts.
 
@@ -599,13 +599,13 @@ Rejected. Current gaps are chiefly authority/provenance/version-contract gaps, n
 - [x] Defines AAT/PeriodO authority-resource mapping and version/provenance requirements.
 - [x] Tests the mapping policy against actual ORACC-TF, TLHdig-TF and CUC semantic evidence plus a non-archaeological control.
 - [x] Separates source assertions from CRMinf scholarly inference and CRMsci observation/measurement activities.
-- [x] Identifies CRMarchaeo 2.1.1's CRM 7.1.2 / CRMsci 2.0 dependency mismatch with the current TFont stack and routes it into R-015.
+- [x] Identifies CRMarchaeo 2.1.1's CRM 7.1.2 / CRMsci 2.0 dependency mismatch with the current ontoTF stack and routes it into R-015.
 - [x] Produces implementable capability, IR, authority, provenance and negative-test requirements for P-003/R-011.
-- [x] Finds no evidence-based need for a local TFont archaeology ontology.
+- [x] Finds no evidence-based need for a local ontoTF archaeology ontology.
 
 ## 21. References
 
-### TFont research
+### ontoTF research
 
 - [R-002 ontology governance](R-002-ontology-governance.md)
 - [R-005 corpus semantic census](R-005-corpus-semantic-census.md)

@@ -1,7 +1,7 @@
 """R-020 denotational mapping-semantics research probe.
 
 Research only. This script reads shipped production OLiA mappings, exercises a
-small finite-set model for TFont's exact/approximate answer relations, and emits
+small finite-set model for ontoTF's exact/approximate answer relations, and emits
 deterministic evidence for docs/research/R-020-denotational-mapping-semantics.md.
 It changes no production behavior.
 """
@@ -28,7 +28,7 @@ def _profile_dependency_kinds() -> dict[str, list[str]]:
     for corpus in CORPORA:
         profile = _load(
             ROOT
-            / "src/tfont/resources/profiles"
+            / "src/ontotf/resources/profiles"
             / corpus
             / "0.2.0"
             / "profile.json"
@@ -42,7 +42,7 @@ def _profile_dependency_kinds() -> dict[str, list[str]]:
 def _projection_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for corpus in CORPORA:
-        base = ROOT / "src/tfont/resources/profiles" / corpus / "0.2.0" / "mappings"
+        base = ROOT / "src/ontotf/resources/profiles" / corpus / "0.2.0" / "mappings"
         for name in MAPPING_FILES:
             bundle = _load(base / name)
             for mapping in bundle["mappings"]:
@@ -193,7 +193,7 @@ def main() -> int:
             "represented_target_query_denotation": "T_rep_c(t) subseteq U_c",
             "hypothetical_truth_extension": "T_truth_c(t) subseteq U_c",
             "represented_target_is_not_materialized_independently": True,
-            "truth_extension_is_outside_current_tfont_authority": True,
+            "truth_extension_is_outside_current_ontotf_authority": True,
             "current_profiles_do_not_claim_total_annotation_completeness": True,
             "assessment_constraints": {
                 "exact": "N = T_rep",

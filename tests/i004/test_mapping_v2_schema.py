@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.source_validation import SourceValidationError, validate_source
+from ontotf.source_validation import SourceValidationError, validate_source
 from tests.i004.test_semantic_validation_phase1 import base_sources
 
 

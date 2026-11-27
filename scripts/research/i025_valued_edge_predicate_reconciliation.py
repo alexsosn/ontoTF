@@ -15,11 +15,11 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 from tf.core.edgefeature import EdgeFeature
 
-import tfont.runtime_prerequisites as runtime_prerequisites
-import tfont.runtime_tf_observation as runtime_tf_observation
-import tfont.semantic_digest_v2 as semantic_digest_v2
-import tfont.semantic_ir as semantic_ir
-from tfont.semantic_ir import EdgeStepIR
+import ontotf.runtime_prerequisites as runtime_prerequisites
+import ontotf.runtime_tf_observation as runtime_tf_observation
+import ontotf.semantic_digest_v2 as semantic_digest_v2
+import ontotf.semantic_ir as semantic_ir
+from ontotf.semantic_ir import EdgeStepIR
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -58,8 +58,8 @@ def main() -> int:
     if not BHSA.is_dir():
         raise SystemExit(f"missing pinned BHSA checkout: {BHSA}")
 
-    mapping_schema = load_json("src/tfont/schemas/mapping.schema.json")
-    profile_schema = load_json("src/tfont/schemas/profile.schema.json")
+    mapping_schema = load_json("src/ontotf/schemas/mapping.schema.json")
+    profile_schema = load_json("src/ontotf/schemas/profile.schema.json")
     bhsa_inventory = load_json("docs/research/data/generated/r005/bhsa.json")
     i024 = load_json(
         "docs/research/data/generated/i024/valued-edge-reconciliation.json"
@@ -108,7 +108,7 @@ def main() -> int:
     )
     profile_fingerprint_source = inspect.getsource(
         __import__(
-            "tfont.semantic_resolver",
+            "ontotf.semantic_resolver",
             fromlist=["_profile_release_projection"],
         )._profile_release_projection
     )
@@ -314,7 +314,7 @@ def main() -> int:
                 "recommended_i024_slice"
             ]["path_present_dependency_remains_edge_direction_only"],
             "edge_values_are_already_losslessly_preserved": i024[
-                "current_tfont_contract"
+                "current_ontotf_contract"
             ]["execution_results_have_edge_path_evidence"],
             "nested_evidence_contract": i024["recommended_i024_slice"][
                 "nested_evidence_contract"

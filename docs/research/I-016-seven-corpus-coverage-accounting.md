@@ -176,7 +176,7 @@ The semantic digest must bind at least:
 
 It must **not** include volatile audit timestamps.
 
-JCS/RFC 8785 + SHA-256 should be reused from TFont rather than inventing another canonicalization algorithm.
+JCS/RFC 8785 + SHA-256 should be reused from ontoTF rather than inventing another canonicalization algorithm.
 
 ## 5. Scope/freshness states
 

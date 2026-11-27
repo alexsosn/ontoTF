@@ -43,7 +43,7 @@ def _historical_evidence_unchanged(name: str, artifact: Any) -> bool:
         or artifact.data.get("evidence_id") != "evidence:syriac:word-sp-verb-code"
     ):
         return False
-    raw = files("tfont").joinpath(*name.split("/")).read_bytes()
+    raw = files("ontotf").joinpath(*name.split("/")).read_bytes()
     blob = hashlib.sha1(
         b"blob " + str(len(raw)).encode("ascii") + bytes((0,)) + raw
     ).hexdigest()
@@ -148,7 +148,7 @@ def _validate_catalogue(value: Any) -> dict[str, Any]:
 def _load_catalogue() -> dict[str, Any]:
     """Read only packaged local JSON; never fetch a remote default revision."""
     try:
-        source = files("tfont").joinpath(*_CATALOGUE)
+        source = files("ontotf").joinpath(*_CATALOGUE)
         decoded = loads_source(
             source.read_text(encoding="utf-8"),
             format="json", source_name="/".join(_CATALOGUE),

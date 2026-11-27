@@ -170,7 +170,7 @@ class I004RedContractTests(unittest.TestCase):
             self.assertNotIn(forbidden, serialized)
 
     def test_production_semantic_validation_api_exists(self):
-        module = importlib.import_module("tfont.semantic_validation")
+        module = importlib.import_module("ontotf.semantic_validation")
         for name in (
             "SemanticArtifact",
             "SemanticSourceBundle",

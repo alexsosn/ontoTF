@@ -17,14 +17,14 @@ from tests.i006._fixtures import (
     validated_two_binding_bundle,
     with_bundle_digest,
 )
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir, native_binding_identity
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir, native_binding_identity
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 try:
-    RESOLVER = importlib.import_module("tfont.semantic_resolver")
+    RESOLVER = importlib.import_module("ontotf.semantic_resolver")
 except ModuleNotFoundError as exc:
-    if exc.name != "tfont.semantic_resolver":
+    if exc.name != "ontotf.semantic_resolver":
         raise
     RESOLVER = None
 
@@ -99,7 +99,7 @@ class I006RedSentinelTests(unittest.TestCase):
     def test_public_resolver_module_exists(self):
         self.assertIsNotNone(
             RESOLVER,
-            "RED: tfont.semantic_resolver must not exist before the implementation gate",
+            "RED: ontotf.semantic_resolver must not exist before the implementation gate",
         )
 
 
@@ -784,7 +784,7 @@ class I006SemanticResolverContractTests(unittest.TestCase):
         with mock.patch.object(
             self.module,
             "EXACT_RESOLVER_CONTRACT",
-            "tfont-exact-semantic-resolver-v1-test-mutation",
+            "ontotf-exact-semantic-resolver-v1-test-mutation",
         ):
             changed = self.resolve(("bhsa",))
         self.assertNotEqual(baseline.plans[0].plan_fingerprint, changed.plans[0].plan_fingerprint)

@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 P001_RUNTIME_AMENDMENT = ROOT / "docs" / "plans" / "P-001-tf-native-runtime-boundary-amendment.md"
-PARENT_SCHEMA = ROOT / "src" / "tfont" / "schemas" / "parent-component-manifest.schema.json"
+PARENT_SCHEMA = ROOT / "src" / "ontotf" / "schemas" / "parent-component-manifest.schema.json"
 
 
 def _read(path: str) -> str:
@@ -32,7 +32,7 @@ def test_r007_supersession_rejects_generic_external_carrier():
     text = _read("docs/research/A-001-r007-external-carrier-supersession.md")
     assert "R-007 remains unchanged" in text
     assert "generic `sidecar/native-adapter` carrier is superseded" in text
-    assert "not a baseline TFont runtime carrier" in text
+    assert "not a baseline ontoTF runtime carrier" in text
     assert "Slot" in text
     assert "slotLink" in text
     assert "technicalAnchor" in text

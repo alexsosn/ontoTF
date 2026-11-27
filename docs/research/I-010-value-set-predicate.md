@@ -114,6 +114,6 @@ The plan/TDD gate must cover at least:
 
 ## Scope recommendation
 
-This is justified for v0.1 because it corrects a real false-equivalence in the intended release demo while adding the smallest executable primitive needed to express the reviewed semantics. Do not switch the release demo to `olia:Verb` merely to avoid the issue: doing so would leave the already-discovered Noun mapping bug in research fixtures and would make the first public interoperability example less representative of the semantic distinctions TFont is intended to preserve.
+This is justified for v0.1 because it corrects a real false-equivalence in the intended release demo while adding the smallest executable primitive needed to express the reviewed semantics. Do not switch the release demo to `olia:Verb` merely to avoid the issue: doing so would leave the already-discovered Noun mapping bug in research fixtures and would make the first public interoperability example less representative of the semantic distinctions ontoTF is intended to preserve.
 
 Proceed to plan only after a logically independent review challenges: OLiA breadth, the three corpus POS encodings, `values` vs `closed_values`, deterministic set identity, I-007 dependency reuse, and the R-018 boundary.

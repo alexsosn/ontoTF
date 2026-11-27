@@ -3,8 +3,8 @@ from __future__ import annotations
 import importlib
 import unittest
 
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 BASE = "http://purl.org/olia/olia.owl#"
 EXPECTED_TARGETS = {
@@ -20,7 +20,7 @@ EXPECTED_TARGETS = {
 
 class I015ProductionNounMorphologyRedTests(unittest.TestCase):
     def setUp(self):
-        self.module = importlib.import_module("tfont.production_bundles")
+        self.module = importlib.import_module("ontotf.production_bundles")
 
     def test_general_linguistic_loader_is_public(self):
         self.assertTrue(

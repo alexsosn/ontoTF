@@ -84,7 +84,7 @@ without promoting it semantically.
 Text-Fabric mechanics make exact native node-kind selection unambiguous:
 `F.otype.s(node_type)`.
 
-However, the TFont source contract does not currently require
+However, the ontoTF source contract does not currently require
 `component_id + node_type` for `execution_shape=membership`, nor does it
 forbid unrelated selector fields. Production execution would therefore accept
 under-specified reviewed source records unless the source contract is amended
@@ -99,7 +99,7 @@ similar label.
 Text-Fabric direction itself is unambiguous: outgoing is `E.<edge>.f`,
 incoming is `E.<edge>.t`.
 
-The TFont `edge-path` contract is not yet executable, because:
+The ontoTF `edge-path` contract is not yet executable, because:
 
 1. the schema does not require `component_id`, `steps`, or any start
    selector;
@@ -221,7 +221,7 @@ without removing `otype` or `oslots` from technical coverage exclusions.
 
 ### Runtime dependency boundary
 
-Do not add Text-Fabric to ordinary `tfont` dependencies. The current executor
+Do not add Text-Fabric to ordinary `ontotf` dependencies. The current executor
 works over already-loaded API objects supplied by the caller. I-022 should do
 the same; the pinned Text-Fabric install in research CI exists only to verify
 the upstream API contract.
@@ -269,7 +269,7 @@ Current state after implementation:
   shipped membership/edge-path bindings;
 - `edge-path` remains source-under-specified and runtime-unsupported, owned by
   I-023 #244;
-- TFont still does not declare Text-Fabric as an ordinary runtime dependency.
+- ontoTF still does not declare Text-Fabric as an ordinary runtime dependency.
 
 The earlier plan-handoff sentence saying empty membership should be a
 successful empty result is superseded by reviewed plan amendment #246. Fresh

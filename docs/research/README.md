@@ -1,6 +1,6 @@
 # Research index
 
-TFont begins with research-only tickets. Production mappings and runtime code are intentionally blocked until the foundational architecture questions are resolved.
+ontoTF begins with research-only tickets. Production mappings and runtime code are intentionally blocked until the foundational architecture questions are resolved.
 
 ## Required initial research
 

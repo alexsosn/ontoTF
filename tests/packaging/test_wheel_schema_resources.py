@@ -15,7 +15,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import SCHEMA_FILES  # noqa: E402
+from ontotf.source_validation import SCHEMA_FILES  # noqa: E402
 
 BUILD_AVAILABLE = importlib.util.find_spec("build") is not None
 
@@ -139,7 +139,7 @@ def minimal_valid_instances() -> dict[str, dict]:
         "review": review_record(),
         "mapping": {"schema_version": 2, "mappings": [exact_mapping()]},
         "compatibility-report": {
-            "compatibility_report_id": "tfont-compatibility-sha256-v1:test",
+            "compatibility_report_id": "ontotf-compatibility-sha256-v1:test",
             "report_digest": "sha256:report",
             "profile_id": "tfont-test",
             "profile_version": "0.1.0",
@@ -184,11 +184,11 @@ class WheelSchemaResourceTests(unittest.TestCase):
             self.assertEqual(len(wheels), 1, wheels)
             wheel = wheels[0]
 
-            expected_resources = {f"tfont/schemas/{filename}" for filename in SCHEMA_FILES.values()}
+            expected_resources = {f"ontotf/schemas/{filename}" for filename in SCHEMA_FILES.values()}
             expected_resources.update({
-                "tfont/resources/batch_pilots/i033a-olia-verb-and-stems.json",
-                "tfont/resources/batch_pilots/i033c-adj-adv-proposals.json",
-                "tfont/resources/batch_release_bases/v1.json",
+                "ontotf/resources/batch_pilots/i033a-olia-verb-and-stems.json",
+                "ontotf/resources/batch_pilots/i033c-adj-adv-proposals.json",
+                "ontotf/resources/batch_release_bases/v1.json",
             })
             with zipfile.ZipFile(wheel) as archive:
                 wheel_names = set(archive.namelist())
@@ -211,16 +211,16 @@ import json
 import sys
 from pathlib import Path
 
-import tfont
-from tfont.source_validation import validate_source
-from tfont.batch_proposals import load_ledger
-from tfont.overlay_handoff import _trusted_handoff_base
+import ontotf
+from ontotf.source_validation import validate_source
+from ontotf.batch_proposals import load_ledger
+from ontotf.overlay_handoff import _trusted_handoff_base
 
 target = Path(sys.argv[1]).resolve()
 fixtures = Path(sys.argv[2])
-package_file = Path(tfont.__file__).resolve()
+package_file = Path(ontotf.__file__).resolve()
 if not package_file.is_relative_to(target):
-    raise AssertionError(f"imported TFont outside wheel target: {package_file} not under {target}")
+    raise AssertionError(f"imported ontoTF outside wheel target: {package_file} not under {target}")
 
 for schema_name, instance in json.loads(fixtures.read_text(encoding="utf-8")).items():
     validate_source(instance, schema_name)

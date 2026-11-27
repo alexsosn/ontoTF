@@ -34,7 +34,7 @@ No runtime behavior may infer ontology meaning from the edge name, literal value
 
 ## Source schema contract
 
-Extend `$defs.edgeStep` in `src/tfont/schemas/mapping.schema.json`.
+Extend `$defs.edgeStep` in `src/ontotf/schemas/mapping.schema.json`.
 
 The common fields remain required:
 
@@ -96,7 +96,7 @@ No resolver plan fingerprint algorithm changes. The new step fields already part
 
 ## Evidence model
 
-Add immutable public evidence records in `semantic_execution.py` and export them from `tfont.__init__`:
+Add immutable public evidence records in `semantic_execution.py` and export them from `ontotf.__init__`:
 
 ```python
 @dataclass(frozen=True)
@@ -239,7 +239,7 @@ Validation order for every raw pair:
 
 1. validate pair shape exactly;
 2. validate/normalize the neighbor node using the existing positive exact-int rules;
-3. if the path contains any valued step, require every node ID that will enter evidence—including starts, sources, targets and finals—to fit TFont's JCS safe-integer domain `[-(2^53)+1, 2^53-1]`;
+3. if the path contains any valued step, require every node ID that will enter evidence—including starts, sources, targets and finals—to fit ontoTF's JCS safe-integer domain `[-(2^53)+1, 2^53-1]`;
 4. validate the value against the reviewed `value_type`;
 5. only then perform loaded `otype` lookup and reviewed `result_node_type` filtering.
 
@@ -253,7 +253,7 @@ Value rules:
 
 ### `value_type=int`
 
-- accept exact Python `int` inside TFont's safe-JCS domain;
+- accept exact Python `int` inside ontoTF's safe-JCS domain;
 - reject `bool`, int subclasses and oversized integers;
 - accept `None` only for the pinned TF empty-integer valued-edge representation and record `value_present=False, value=None`.
 
@@ -354,11 +354,11 @@ I-025 #253 remains responsible for any future dependency that authorizes accepte
 
 Minimal expected set:
 
-- `src/tfont/schemas/mapping.schema.json`;
-- `src/tfont/semantic_ir.py`;
-- `src/tfont/semantic_resolver.py`;
-- `src/tfont/semantic_execution.py`;
-- `src/tfont/__init__.py`;
+- `src/ontotf/schemas/mapping.schema.json`;
+- `src/ontotf/semantic_ir.py`;
+- `src/ontotf/semantic_resolver.py`;
+- `src/ontotf/semantic_execution.py`;
+- `src/ontotf/__init__.py`;
 - focused `tests/i024/` fixtures/tests;
 - `.github/workflows/i024-valued-edge-execution.yml`;
 - post-GREEN I-024 current-state/reconciliation evidence only if required to replace the research-only "not yet implemented" assertions.

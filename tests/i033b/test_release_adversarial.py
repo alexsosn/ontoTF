@@ -3,8 +3,8 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.production_bundles import ProductionBundleError
-from tfont.release_registry import (
+from ontotf.production_bundles import ProductionBundleError
+from ontotf.release_registry import (
     load_profile,
     list_profile_releases,
     _load_catalogue,
@@ -49,9 +49,9 @@ class GenericReleaseCatalogAdversarial(unittest.TestCase):
                 _load_from_catalogue(changed, "syriac", "0.4.0", ("olia",))
 
     def test_legacy_syriac_digest_exception_is_exact_blob_only(self):
-        from tfont.production_bundles import _artifact
-        from tfont.release_registry import _historical_evidence_unchanged
-        from tfont.semantic_validation import SemanticArtifact
+        from ontotf.production_bundles import _artifact
+        from ontotf.release_registry import _historical_evidence_unchanged
+        from ontotf.semantic_validation import SemanticArtifact
 
         path = "resources/profiles/syriac/0.3.0/evidence/native-verb-pos.json"
         historical = _artifact("evidence", "evidence", path)

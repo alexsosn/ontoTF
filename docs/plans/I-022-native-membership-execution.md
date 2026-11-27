@@ -8,7 +8,7 @@ Baseline: main `0995576c838503f93a7be30192e4072436c6251d`
 
 ## Exit condition
 
-TFont can execute a reviewed native binding whose execution shape is exactly
+ontoTF can execute a reviewed native binding whose execution shape is exactly
 `membership` against an already-loaded TF/Context-Fabric API.
 
 The first structural execution slice means one thing only:
@@ -475,10 +475,10 @@ Observe actual RED on the exact tests-only head before changing schema/runtime.
 
 Expected production changes:
 
-- `src/tfont/schemas/mapping.schema.json` — close membership shape only;
-- `src/tfont/semantic_validation.py` — require matching reviewed
+- `src/ontotf/schemas/mapping.schema.json` — close membership shape only;
+- `src/ontotf/semantic_validation.py` — require matching reviewed
   `node-type-present` dependency authority for every membership binding;
-- `src/tfont/semantic_execution.py` — private validator/API helper/executor
+- `src/ontotf/semantic_execution.py` — private validator/API helper/executor
   and membership dispatch only.
 
 Expected non-production changes:
@@ -510,7 +510,7 @@ Add `.github/workflows/i022-membership-execution.yml`.
 
 On Python 3.10 and 3.12:
 
-1. install TFont normally;
+1. install ontoTF normally;
 2. run all `tests/i022`;
 3. rerun source/schema controls relevant to native bindings;
 4. rerun I-005 compiler controls;

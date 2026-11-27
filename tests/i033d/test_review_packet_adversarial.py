@@ -4,8 +4,8 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.batch_proposals import BatchProposalError, load_ledger
-from tfont.review_packets import (
+from ontotf.batch_proposals import BatchProposalError, load_ledger
+from ontotf.review_packets import (
     BatchReviewPacketError, build_review_packet, verify_review_packet
 )
 
@@ -57,7 +57,7 @@ class BatchReviewPacketAdversarialTests(unittest.TestCase):
                 verify_review_packet(packet, self.ledger)
 
     def test_recomputed_batch_checksum_does_not_approve_forged_content(self):
-        from tfont.digests import canonical_json_bytes
+        from ontotf.digests import canonical_json_bytes
         import hashlib
         packet = copy.deepcopy(self.packet)
         packet["rows"][0]["rationale"] = "unreviewed substituted claim"

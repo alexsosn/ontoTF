@@ -6,9 +6,9 @@ on:
       - "scripts/research/i024_valued_edge_execution_reconciliation.py"
       - "docs/research/I-024-valued-edge-execution-reconciliation.md"
       - "docs/research/data/generated/i024/valued-edge-reconciliation.json"
-      - "src/tfont/schemas/mapping.schema.json"
-      - "src/tfont/semantic_ir.py"
-      - "src/tfont/semantic_execution.py"
+      - "src/ontotf/schemas/mapping.schema.json"
+      - "src/ontotf/semantic_ir.py"
+      - "src/ontotf/semantic_execution.py"
       - "docs/research/data/generated/r005/bhsa.json"
       - ".github/workflows/i024-valued-edge-research.yml"
   workflow_dispatch:

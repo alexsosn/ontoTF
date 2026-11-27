@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from tfont.batch_compiler import ROOT, load_pilot, parity_report, serialized
+from ontotf.batch_compiler import ROOT, load_pilot, parity_report, serialized
 
 OUTPUT = ROOT / "docs/research/data/generated/i033a/pos-pilot-summary.json"
 

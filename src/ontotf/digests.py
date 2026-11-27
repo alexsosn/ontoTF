@@ -72,7 +72,7 @@ def _validate_json(
     if value_type is list:
         identity = id(value)
         if identity in active:
-            _fail("non_json_value", "recursive list is outside the TFont JSON model", path)
+            _fail("non_json_value", "recursive list is outside the ontoTF JSON model", path)
         container_depth = depth + 1
         if container_depth > MAX_JSON_NESTING:
             _fail("non_json_value", f"JSON nesting exceeds maximum depth {MAX_JSON_NESTING}", path)
@@ -92,7 +92,7 @@ def _validate_json(
     if value_type is dict:
         identity = id(value)
         if identity in active:
-            _fail("non_json_value", "recursive object is outside the TFont JSON model", path)
+            _fail("non_json_value", "recursive object is outside the ontoTF JSON model", path)
         container_depth = depth + 1
         if container_depth > MAX_JSON_NESTING:
             _fail("non_json_value", f"JSON nesting exceeds maximum depth {MAX_JSON_NESTING}", path)
@@ -115,7 +115,7 @@ def _validate_json(
             active.remove(identity)
         return
 
-    _fail("non_json_value", f"unsupported TFont JSON value type: {value_type.__name__}", path)
+    _fail("non_json_value", f"unsupported ontoTF JSON value type: {value_type.__name__}", path)
 
 
 def canonical_json_bytes(value: Any) -> bytes:

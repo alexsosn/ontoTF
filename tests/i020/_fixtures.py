@@ -11,9 +11,9 @@ from tests.i015.test_exact_conjunction_behavior import (
     compiled_and_contexts as exact_conjunction_contexts,
     key as production_key,
 )
-from tfont.production_bundles import load_production_linguistic_bundle
-from tfont.semantic_ir import CompiledSemanticIR, SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.production_bundles import load_production_linguistic_bundle
+from ontotf.semantic_ir import CompiledSemanticIR, SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 PARENT_CHARS = {"bhsa": "a", "syriac": "b", "extrabiblical": "c"}

@@ -6,7 +6,7 @@
 
 ## Research: current repository code
 
-- `src/tfont/external_review_gate.py::parse_structured_review` accepts **only** `ontoTF-batch-review-v1\\n` followed by a JSON object with exact `packet_digest` and `rows`, each with `mapping_id`, `decision_digest`, `disposition` ∈ {accept,reject,needs-evidence}. Full 1–50 rows and unique IDs are mandatory. `evaluate_review_snapshot` binds the GitHub APPROVED review to an independently authenticated current contributor with write/maintain/admin permission and exact PR HEAD.
+- `src/ontotf/external_review_gate.py::parse_structured_review` accepts **only** `ontoTF-batch-review-v1\\n` followed by a JSON object with exact `packet_digest` and `rows`, each with `mapping_id`, `decision_digest`, `disposition` ∈ {accept,reject,needs-evidence}. Full 1–50 rows and unique IDs are mandatory. `evaluate_review_snapshot` binds the GitHub APPROVED review to an independently authenticated current contributor with write/maintain/admin permission and exact PR HEAD.
 - `scripts/mappings/check_external_review.py --from-pr-head` reads exact SHA data via GitHub API in `pull_request_target`/protected main; a local JSON body **cannot** grant approval.
 - `scripts/mappings/build_candidate_review_packet.py --check` already verifies a candidate packet against a manifest, ledger, locked corpus source and supplementary candidate evidence; it is the one reusable local authoring path.
 - The 10-item packet on PR #324 is ~16 KB JSON and presently requires writing a lengthy error-prone hand-authored GitHub review message with 10 exact row digests. Reviewers need a compact source/proposal dossier and a no-preapproval template for per-row dispositions.

@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 import unittest
 
-from tfont.digests import (
+from ontotf.digests import (
     EVIDENCE_PAYLOAD_ALGORITHM,
     EVIDENCE_RECORD_ALGORITHM,
     JCS_FORMAT,
@@ -87,7 +87,7 @@ class CanonicalJSONTests(DigestTestCase):
         self.assert_category("float_domain", canonical_json_bytes, math.inf)
         self.assert_category("float_domain", canonical_json_bytes, -math.inf)
 
-    def test_values_outside_tfont_json_model_are_not_coerced(self):
+    def test_values_outside_ontotf_json_model_are_not_coerced(self):
         self.assert_category("non_json_value", canonical_json_bytes, (1, 2))
         self.assert_category("non_json_value", canonical_json_bytes, {1: "value"})
 
@@ -232,8 +232,8 @@ class SemanticDigestTests(DigestTestCase):
 
     def test_evidence_payload_is_exact_bytes(self):
         self.assertEqual(
-            evidence_payload_digest(b"\x00TFont evidence\r\n\xff"),
-            "sha256:cc63f4469d92d52add4ddec1dfd42903171a50a63f39511228035a604b849870",
+            evidence_payload_digest(b"\x00sample evidence\r\n\xff"),
+            "sha256:7e0c1982541b12fb86ca54b8682770b4c6548344331179d43ae81532b5be3deb",
         )
 
     def test_evidence_record_fixed_vector_and_self_reference_exclusion(self):

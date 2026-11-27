@@ -2,11 +2,11 @@
 
 **Issue:** #95  
 **Research:** `docs/research/F-020-invalid-schema-root-filesystem-paths.md`  
-**Dependency:** F-019 must be merged/integrated before production changes because both touch `src/tfont/source_validation.py`.
+**Dependency:** F-019 must be merged/integrated before production changes because both touch `src/ontotf/source_validation.py`.
 
 ## 1. Goal
 
-Keep `validate_source(..., schema_root=...)` inside TFont's existing `invalid_schema` error family when a declared-valid `str | Path` schema root reaches the explicit schema-file read boundary but the native filesystem rejects the path spelling, notably an embedded NUL.
+Keep `validate_source(..., schema_root=...)` inside ontoTF's existing `invalid_schema` error family when a declared-valid `str | Path` schema root reaches the explicit schema-file read boundary but the native filesystem rejects the path spelling, notably an embedded NUL.
 
 Do not change schema semantics, source-document loading, package-resource loading, path normalization, or accepted input types.
 
@@ -40,7 +40,7 @@ An invalid explicit schema path therefore outranks malformed/non-JSON direct ins
 
 ## 4. Packaged-resource boundary
 
-When `schema_root is None`, keep the `importlib.resources.files("tfont").joinpath(...).read_bytes()` branch unchanged.
+When `schema_root is None`, keep the `importlib.resources.files("ontotf").joinpath(...).read_bytes()` branch unchanged.
 
 F-020 must not broaden its catch merely to make packaged and explicit branches syntactically identical. Existing packaging/schema-authority tests are controls.
 

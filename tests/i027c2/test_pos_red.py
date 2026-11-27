@@ -6,16 +6,16 @@ import json
 import unittest
 from pathlib import Path
 
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.production_bundles import load_production_verb_bundle
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.production_bundles import load_production_verb_bundle
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE="http://purl.org/olia/olia.owl#"
 
 class POSAdjectiveAdverbRed(unittest.TestCase):
     def new_bundle(self, corpus):
-        from tfont.production_bundles import load_production_adj_adv_bundle
+        from ontotf.production_bundles import load_production_adj_adv_bundle
         return load_production_adj_adv_bundle(corpus)
 
     def test_two_corpus_four_independent_positive_categories(self):
@@ -34,7 +34,7 @@ class POSAdjectiveAdverbRed(unittest.TestCase):
                                  ("word","sp",code,"value-predicate"))
 
     def test_histories_unchanged_and_no_extra_biblical_mapping(self):
-        from tfont.production_bundles import ProductionBundleError
+        from ontotf.production_bundles import ProductionBundleError
         with self.assertRaises(ProductionBundleError):
             self.new_bundle("extrabiblical")
         for corpus in ("bhsa","syriac"):
@@ -55,7 +55,7 @@ class POSAdjectiveAdverbRed(unittest.TestCase):
 
     def test_coverage_successor_two_items_each(self):
         for corpus,expected in (("bhsa",(219,37,10,27)),("syriac",(74,9,9,0))):
-            module=importlib.import_module("tfont.coverage")
+            module=importlib.import_module("ontotf.coverage")
             old=module.load_packaged_coverage_manifest(
                 "p004-i027b1-bhsa-verb-v1" if corpus=="bhsa" else "p004-i027b2-syriac-verb-v1",
                 corpus)

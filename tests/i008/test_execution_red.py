@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 import unittest
 
-import tfont
+import ontotf
 from tests.i006._fixtures import compiled_noun_ir
 from tests.i008._fixtures import (
     FakeLoadedApi,
@@ -16,14 +16,14 @@ from tests.i008._fixtures import (
 
 
 @unittest.skipUnless(
-    hasattr(tfont, "execute_exact_semantic"),
+    hasattr(ontotf, "execute_exact_semantic"),
     "RED: I-008 execution surface is not implemented yet",
 )
 class I008ExecutionBehaviorTests(unittest.TestCase):
     def execute_one(self, api, *, dependency_kind="native-value-present"):
         ir = compiled_executable_noun_ir(("bhsa",), dependency_kind=dependency_kind)
-        context = loaded_context(tfont, ir, "bhsa", api)
-        return tfont.execute_exact_semantic(ir, request(tfont, ("bhsa",)), (context,))
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        return ontotf.execute_exact_semantic(ir, request(ontotf, ("bhsa",)), (context,))
 
     def test_bhsa_exact_value_predicate_returns_word_nouns_only(self):
         api = FakeLoadedApi(
@@ -51,12 +51,12 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
             "extrabiblical": FakeLoadedApi(values={33: "subs"}, node_types={33: "word"}),
         }
         contexts = tuple(
-            loaded_context(tfont, ir, corpus, apis[corpus])
+            loaded_context(ontotf, ir, corpus, apis[corpus])
             for corpus in ("syriac", "extrabiblical", "bhsa")
         )
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            request(tfont, ("syriac", "bhsa", "extrabiblical")),
+            request(ontotf, ("syriac", "bhsa", "extrabiblical")),
             contexts,
         )
         self.assertEqual(
@@ -108,7 +108,7 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
                     node_types={1: "word", 7: "word"},
                     selected=selected,
                 )
-                with self.assertRaises(tfont.ExactExecutionError) as caught:
+                with self.assertRaises(ontotf.ExactExecutionError) as caught:
                     self.execute_one(api)
                 self.assertEqual(caught.exception.problem.category, "invalid_result_nodes")
 
@@ -118,7 +118,7 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
             node_types={1: "word"},
             fall_sequence=(("otype", "sp"), ("otype",)),
         )
-        with self.assertRaises(tfont.ExactExecutionError) as caught:
+        with self.assertRaises(ontotf.ExactExecutionError) as caught:
             self.execute_one(api)
         self.assertEqual(caught.exception.problem.category, "feature_not_loaded")
         self.assertEqual(api.F.sp.s_calls, 0)
@@ -136,7 +136,7 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
         )
         for api in cases:
             with self.subTest(api=api):
-                with self.assertRaises(tfont.ExactExecutionError) as caught:
+                with self.assertRaises(ontotf.ExactExecutionError) as caught:
                     self.execute_one(api)
                 self.assertEqual(caught.exception.problem.category, "loaded_api_unavailable")
                 self.assertEqual(api.load_calls, 0)
@@ -144,20 +144,20 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
     def test_old_exact_plan_without_explicit_execution_shape_is_not_executable(self):
         ir = compiled_noun_ir(("bhsa",))
         api = FakeLoadedApi(values={1: "subs"}, node_types={1: "word"})
-        context = loaded_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ExactExecutionError) as caught:
-            tfont.execute_exact_semantic(ir, request(tfont, ("bhsa",)), (context,))
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ExactExecutionError) as caught:
+            ontotf.execute_exact_semantic(ir, request(ontotf, ("bhsa",)), (context,))
         self.assertEqual(caught.exception.problem.category, "unsupported_native_binding")
         self.assertEqual(api.F.sp.s_calls, 0)
 
     def test_duplicate_contexts_fail_before_result_access(self):
         ir = compiled_executable_noun_ir(("bhsa",))
         api = FakeLoadedApi(values={1: "subs"}, node_types={1: "word"})
-        context = loaded_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ExactExecutionError) as caught:
-            tfont.execute_exact_semantic(
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ExactExecutionError) as caught:
+            ontotf.execute_exact_semantic(
                 ir,
-                request(tfont, ("bhsa",)),
+                request(ontotf, ("bhsa",)),
                 (context, context),
             )
         self.assertEqual(caught.exception.problem.category, "duplicate_execution_context")
@@ -165,17 +165,17 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
 
     def test_missing_context_fails_before_result_access(self):
         ir = compiled_executable_noun_ir(("bhsa",))
-        with self.assertRaises(tfont.ExactExecutionError) as caught:
-            tfont.execute_exact_semantic(ir, request(tfont, ("bhsa",)), ())
+        with self.assertRaises(ontotf.ExactExecutionError) as caught:
+            ontotf.execute_exact_semantic(ir, request(ontotf, ("bhsa",)), ())
         self.assertEqual(caught.exception.problem.category, "missing_execution_context")
 
     def test_duplicate_runtime_variant_fails_before_prerequisite_or_result_access(self):
         ir = compiled_executable_noun_ir(("bhsa",))
         forged = duplicate_variant_ir(ir)
         api = FakeLoadedApi(values={1: "subs"}, node_types={1: "word"})
-        context = loaded_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ExactExecutionError) as caught:
-            tfont.execute_exact_semantic(forged, request(tfont, ("bhsa",)), (context,))
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ExactExecutionError) as caught:
+            ontotf.execute_exact_semantic(forged, request(ontotf, ("bhsa",)), (context,))
         self.assertEqual(caught.exception.problem.category, "ambiguous_runtime_variant")
         self.assertEqual(api.fall_calls, 0)
         self.assertEqual(api.F.sp.s_calls, 0)
@@ -184,16 +184,16 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
         ir = compiled_executable_noun_ir(("bhsa",))
         forged = replace(ir, variants=("not-a-variant",))
         api = FakeLoadedApi(values={1: "subs"}, node_types={1: "word"})
-        context = loaded_context(tfont, ir, "bhsa", api)
-        with self.assertRaises(tfont.ExactExecutionError) as caught:
-            tfont.execute_exact_semantic(forged, request(tfont, ("bhsa",)), (context,))
+        context = loaded_context(ontotf, ir, "bhsa", api)
+        with self.assertRaises(ontotf.ExactExecutionError) as caught:
+            ontotf.execute_exact_semantic(forged, request(ontotf, ("bhsa",)), (context,))
         self.assertEqual(caught.exception.problem.category, "invalid_compiled_ir")
         self.assertEqual(api.fall_calls, 0)
         self.assertEqual(api.F.sp.s_calls, 0)
 
     def test_incompatible_runtime_state_blocks_result_selector(self):
         api = FakeLoadedApi(values={1: "verb"}, node_types={1: "word"})
-        with self.assertRaises(tfont.SemanticResolutionError):
+        with self.assertRaises(ontotf.SemanticResolutionError):
             self.execute_one(api)
         self.assertEqual(api.F.sp.s_calls, 0)
 
@@ -203,7 +203,7 @@ class I008ExecutionBehaviorTests(unittest.TestCase):
             node_types={1: "word"},
             raise_on_fall=True,
         )
-        with self.assertRaises(tfont.SemanticResolutionError):
+        with self.assertRaises(ontotf.SemanticResolutionError):
             self.execute_one(api)
         self.assertEqual(api.F.sp.s_calls, 0)
         self.assertEqual(api.load_calls, 0)

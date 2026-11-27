@@ -5,7 +5,7 @@ import re
 import pytest
 
 from scripts.research.r015_bundle_id import bridge_content_digest, bundle_digest
-from tfont.digests import canonical_json_bytes
+from ontotf.digests import canonical_json_bytes
 
 
 DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")

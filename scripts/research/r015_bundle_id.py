@@ -15,7 +15,7 @@ import re
 from datetime import datetime
 from typing import Any
 
-from tfont.digests import (
+from ontotf.digests import (
     _normalize_ontology_lock_identities,
     _normalize_unique_strings,
     canonical_json_bytes,

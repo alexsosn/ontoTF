@@ -123,10 +123,10 @@ Implement only enough production code to satisfy the RED contract.
 
 Likely touched files:
 
-- `src/tfont/schemas/mapping.schema.json`
-- `src/tfont/semantic_ir.py`
-- `src/tfont/semantic_resolver.py`
-- `src/tfont/semantic_execution.py`
+- `src/ontotf/schemas/mapping.schema.json`
+- `src/ontotf/semantic_ir.py`
+- `src/ontotf/semantic_resolver.py`
+- `src/ontotf/semantic_execution.py`
 - focused tests for schema/IR/resolver/execution
 
 Do not edit `runtime_prerequisites.py` or `runtime_tf_observation.py` unless a failing test demonstrates a real need; such a change requires a plan amendment explaining why existing `native-value-present` is insufficient.

@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from scripts.pages.build_progress import build_report, render, summarize, ontology
-from tfont.xml_mappings import Mapping
+from ontotf.xml_mappings import Mapping
 
 
 class ProgressTrackerTests(unittest.TestCase):
@@ -105,7 +105,7 @@ class ProgressTrackerTests(unittest.TestCase):
         self.assertNotIn("<script", html)
         self.assertNotRegex(html, r'href="[^"]+\.xml(?:[?#][^"]*)?"')
         self.assertNotIn("Historical semantic work plan", html)
-        self.assertNotIn("TFont", html)
+        self.assertNotIn("T" + "Font", html)
         self.assertIn("<details>", html)
         self.assertIn('aria-hidden="true"', html)
         report["corpora"][0]["corpus"] = "<img src=x onerror=alert(1)>"

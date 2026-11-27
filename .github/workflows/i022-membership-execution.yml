@@ -3,9 +3,9 @@ name: I-022 membership execution
 on:
   pull_request:
     paths:
-      - "src/tfont/schemas/mapping.schema.json"
-      - "src/tfont/semantic_validation.py"
-      - "src/tfont/semantic_execution.py"
+      - "src/ontotf/schemas/mapping.schema.json"
+      - "src/ontotf/semantic_validation.py"
+      - "src/ontotf/semantic_execution.py"
       - "tests/i022/**"
       - "scripts/research/i022_structural_execution_reconciliation.py"
       - "docs/research/data/generated/i022/structural-runtime-reconciliation.json"
@@ -63,7 +63,7 @@ jobs:
           import tempfile
           from zipfile import ZipFile
 
-          wheel = next(pathlib.Path("dist").glob("tfont-*.whl"))
+          wheel = next(pathlib.Path("dist").glob("ontotf-*.whl"))
           with ZipFile(wheel) as archive:
               metadata_name = next(
                   name for name in archive.namelist()
@@ -78,7 +78,7 @@ jobs:
                   [sys.executable, "-m", "pip", "install", "--target", tmp, str(wheel)]
               )
               code = """
-          import tfont
+          import ontotf
           required = (
               "execute_exact_semantic",
               "execute_approximate_semantic",
@@ -89,7 +89,7 @@ jobs:
               "execute_identity",
               "execute_identifier",
           )
-          missing = [name for name in required if not hasattr(tfont, name)]
+          missing = [name for name in required if not hasattr(ontotf, name)]
           if missing:
               raise SystemExit(f"missing runtime API after I-022 wheel build: {missing}")
           """

@@ -596,10 +596,10 @@ RED must be observed on an exact head before production implementation.
 
 Expected production files:
 
-- `src/tfont/semantic_ir.py`;
-- `src/tfont/semantic_resolver.py`;
-- `src/tfont/semantic_execution.py`;
-- `src/tfont/__init__.py`;
+- `src/ontotf/semantic_ir.py`;
+- `src/ontotf/semantic_resolver.py`;
+- `src/ontotf/semantic_execution.py`;
+- `src/ontotf/__init__.py`;
 - `tests/i021/**`;
 - `.github/workflows/i021-reference-resolution.yml`.
 

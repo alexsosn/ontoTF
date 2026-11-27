@@ -1,11 +1,11 @@
-# #157 — PEP 639 packaging metadata for mixed-license TFont distributions
+# #157 — PEP 639 packaging metadata for mixed-license ontoTF distributions
 
 Date: 2026-09-22. Research only; no runtime, packaging or published-release changes in this gate.
 
 ## Observed at `main` `dcab3a473f3a4347554194ec9a5e34238b7c0769`
 
 - `pyproject.toml`: `setuptools>=75`, `license = {file = "LICENSE"}` and `License :: OSI Approved :: MIT License` classifier. The existing v0.1 wheel's root `LICENSE` is MIT; setuptools 84 issued license-table/classifier deprecation warnings (#157).
-- The repository source paths `src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/{olia.owl,LICENSE.data,ATTRIBUTION.txt}` are bundled in the wheel at `tfont/resources/...` (without the repository's `src/` prefix). `LICENSE.data` is the full Creative Commons Attribution 3.0 Unported legal code. `ATTRIBUTION.txt` explicitly identifies pinned upstream OLiA revision, CC BY 3.0, and keeps ontoTF-authored mappings under MIT. Third-party TF/MQL corpus data are **not** bundled.
+- The repository source paths `src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/{olia.owl,LICENSE.data,ATTRIBUTION.txt}` are bundled in the wheel at `ontotf/resources/...` (without the repository's `src/` prefix). `LICENSE.data` is the full Creative Commons Attribution 3.0 Unported legal code. `ATTRIBUTION.txt` explicitly identifies pinned upstream OLiA revision, CC BY 3.0, and keeps ontoTF-authored mappings under MIT. Third-party TF/MQL corpus data are **not** bundled.
 - I-013 release CI verifies the root MIT `dist-info/licenses/LICENSE` and separate package-resource OLiA notices, but does not require the combined license expression or enumerate both licenses in `License-File` metadata. Its v0.1 release is already published: this migration must not rewrite/relabel that historical wheel or tag.
 
 ## Standards and independent evidence
@@ -24,7 +24,7 @@ Date: 2026-09-22. Research only; no runtime, packaging or published-release chan
 
 ## Proposed minimal implementation contract for subsequent plan/TDD
 
-- Bump only *build-time* minimum to `setuptools>=77.0.3` (runtime Python range unchanged), remove obsolete classifier; use `[project] license = "MIT AND CC-BY-3.0"` and `license-files = ["LICENSE", "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data", "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt"]`.
+- Bump only *build-time* minimum to `setuptools>=77.0.3` (runtime Python range unchanged), remove obsolete classifier; use `[project] license = "MIT AND CC-BY-3.0"` and `license-files = ["LICENSE", "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data", "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt"]`.
 - Build both wheel and sdist in isolation. Assert metadata `License-Expression: MIT AND CC-BY-3.0`, corresponding `License-File` rows, correct license-file bytes present under `.dist-info/licenses/`, original resource OLiA legal text/attribution still accessible via package loader, unchanged `0.1.0` version and no added TF/MQL corpus data. Ensure no setuptools deprecation warnings about `project.license` table/classifier/legacy `tool.setuptools.license-files`.
 - Test from clean outside-checkout installation and relevant existing I-009/I-012/full CI; no changes to semantic data or mapping digests. Do not republish v0.1.0 from a post-tag commit: this work is post-release maintenance and must not mutate the published release. No PyPI release or more automation.
 

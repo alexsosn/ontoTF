@@ -4,7 +4,7 @@
 
 ## Code/data findings
 
-Historical immutable manifests under `src/tfont/resources/coverage` copy complete denominator accounting documents to publish one or two additional POS reviewed decisions. Meanwhile `src/tfont/published_deltas.py` already proves **mapping-release** parity on installed historical sources but explicitly does not authorize unreviewed proposals. The missing complementary operation is a **sparse coverage diff** that references an installed source snapshot and adds only genuinely new production accounting on existing semantic item IDs.
+Historical immutable manifests under `src/ontotf/resources/coverage` copy complete denominator accounting documents to publish one or two additional POS reviewed decisions. Meanwhile `src/ontotf/published_deltas.py` already proves **mapping-release** parity on installed historical sources but explicitly does not authorize unreviewed proposals. The missing complementary operation is a **sparse coverage diff** that references an installed source snapshot and adds only genuinely new production accounting on existing semantic item IDs.
 
 Reviewed source families to use as real evidence:
 - BHSA `p004-i027a-bhsa-stems-v1` → `p004-i027b1-bhsa-verb-v1`: 27 `native-only` morphological stem decisions retained and one new `sp=verb` exact pivot.

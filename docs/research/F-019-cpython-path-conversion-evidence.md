@@ -18,7 +18,7 @@ Python's C-API filesystem-converter contract explicitly states that embedded nul
 - https://docs.python.org/3.10/c-api/unicode.html
 - https://docs.python.org/3.12/c-api/unicode.html
 
-The 3.10 `path_converter` implementation also explicitly raises `ValueError` for an embedded null character on the Windows path-conversion branch, demonstrating that `ValueError` is an established CPython filesystem-path rejection category rather than a TFont-specific assumption.
+The 3.10 `path_converter` implementation also explicitly raises `ValueError` for an embedded null character on the Windows path-conversion branch, demonstrating that `ValueError` is an established CPython filesystem-path rejection category rather than a ontoTF-specific assumption.
 
 Reference implementation snapshot:
 
@@ -28,11 +28,11 @@ Reference implementation snapshot:
 
 F-019 does **not** need to standardize CPython's exact exception message or claim that every filesystem API on every future Python release uses the same exception class. It only needs to contain the supported source-loading failure surface.
 
-For the currently supported Python 3.10/3.12 matrix, RED must execute real embedded-NUL `Path.read_bytes()` paths on Ubuntu and Windows and pin the TFont result:
+For the currently supported Python 3.10/3.12 matrix, RED must execute real embedded-NUL `Path.read_bytes()` paths on Ubuntu and Windows and pin the ontoTF result:
 
 - raw Python `ValueError` must not escape;
-- TFont category is `decode_error`;
+- ontoTF category is `decode_error`;
 - exact authored `source_name` is retained;
 - parser/schema validation is not reached.
 
-If a particular supported runner/version instead surfaces an `OSError`, the existing code path already translates it to the same `decode_error`; the public F-019 contract therefore remains stable. Tests should not assert the underlying CPython exception type or text, only containment at the TFont boundary.
+If a particular supported runner/version instead surfaces an `OSError`, the existing code path already translates it to the same `decode_error`; the public F-019 contract therefore remains stable. Tests should not assert the underlying CPython exception type or text, only containment at the ontoTF boundary.

@@ -19,7 +19,7 @@ Expected implementation files:
 2. `README.md`
    - describe v0.1.1 as the current package release;
    - retain that the supported semantic contract is the v0.1 OLiA Noun slice;
-   - install from GitHub `v0.1.1` and `tfont-0.1.1-py3-none-any.whl`;
+   - install from GitHub `v0.1.1` and `ontotf-0.1.1-py3-none-any.whl`;
    - state that v0.1.1 changes package metadata only and does not expand semantic/runtime support;
    - retain no-PyPI and no-corpus-bundling boundaries.
 
@@ -43,7 +43,7 @@ Expected implementation files:
    - keep historical v0.1.0 release-note assertions and semantic/docs truthfulness checks.
 
 7. `tests/docs/test_readme_status.py`
-   - current local-wheel installation assertion becomes `tfont-0.1.1-py3-none-any.whl`.
+   - current local-wheel installation assertion becomes `ontotf-0.1.1-py3-none-any.whl`.
 
 8. `.github/workflows/i013-release.yml`
    - retire `pull_request` trigger entirely;
@@ -93,7 +93,7 @@ The I-014 workflow builds wheel + sdist on 3.10/3.12.
 
 For the wheel require:
 
-- exactly one wheel named `tfont-0.1.1-py3-none-any.whl`;
+- exactly one wheel named `ontotf-0.1.1-py3-none-any.whl`;
 - `Version: 0.1.1`;
 - `License-Expression: MIT AND CC-BY-3.0`;
 - `License-File` entries for root LICENSE, OLiA `LICENSE.data`, OLiA `ATTRIBUTION.txt`;
@@ -107,7 +107,7 @@ For sdist, reuse the existing #157 PEP 639 contract under the bumped version.
 Fresh install:
 
 - install exact wheel into a new venv outside checkout;
-- `importlib.metadata.version("tfont") == "0.1.1"`;
+- `importlib.metadata.version("ontotf") == "0.1.1"`;
 - copy and execute `scripts/acceptance/v01_noun.py` with checkout forbidden;
 - no source checkout imports.
 
@@ -119,7 +119,7 @@ Use the wheel built in the 3.12 matrix as the publication artifact.
 
 Before upload, compute:
 
-`sha256sum tfont-0.1.1-py3-none-any.whl`
+`sha256sum ontotf-0.1.1-py3-none-any.whl`
 
 Persist the digest as a small text artifact or recompute after Actions artifact download and compare with the matrix-produced digest. The publish job must prove Actions upload/download did not alter bytes before GitHub release creation.
 

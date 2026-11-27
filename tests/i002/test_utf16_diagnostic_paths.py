@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import DigestError, mapping_semantic_digest, profile_semantic_digest
+from ontotf.digests import DigestError, mapping_semantic_digest, profile_semantic_digest
 
 SURROGATE = "\ud800"
 ASTRAL = "\U0001f600"

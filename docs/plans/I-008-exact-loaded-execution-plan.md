@@ -7,7 +7,7 @@
 
 ## 1. Public boundary
 
-Add `src/tfont/semantic_execution.py` and export only the request-oriented execution surface from `tfont`.
+Add `src/ontotf/semantic_execution.py` and export only the request-oriented execution surface from `ontotf`.
 
 ### Public values
 
@@ -224,7 +224,7 @@ No partial `ExactExecutionResult` is returned if any corpus execution fails.
 
 ## 9. TDD RED structure
 
-Create `tests/i008/` and focused workflow `.github/workflows/i008-exact-execution.yml` before `src/tfont/semantic_execution.py` exists.
+Create `tests/i008/` and focused workflow `.github/workflows/i008-exact-execution.yml` before `src/ontotf/semantic_execution.py` exists.
 
 ### Fixture controls
 
@@ -240,7 +240,7 @@ Control assertions before RED:
 
 ### Initial public-surface RED
 
-Tests import the intended names from `tfont` and fail because `semantic_execution` / exports do not exist. Existing I-007/I-006/I-005/I-004 controls remain green.
+Tests import the intended names from `ontotf` and fail because `semantic_execution` / exports do not exist. Existing I-007/I-006/I-005/I-004 controls remain green.
 
 ### Behavioral RED matrix
 
@@ -269,7 +269,7 @@ Before production implementation, tests must encode:
 
 Add a Python 3.13 integration test guarded by import availability. The I-008 workflow's integration job installs a reviewed compatible `context-fabric==0.5.7` and creates a tiny local TF fixture. It preloads `sp`, runs the public executor, and verifies result nodes and absence of hidden autoload behavior.
 
-This test may be added in the same tests-only RED commit. Its pre-GREEN expected failure is missing TFont executor surface, not a failing Context-Fabric fixture; fixture setup controls must prove Context-Fabric itself loads and exposes the expected feature API.
+This test may be added in the same tests-only RED commit. Its pre-GREEN expected failure is missing ontoTF executor surface, not a failing Context-Fabric fixture; fixture setup controls must prove Context-Fabric itself loads and exposes the expected feature API.
 
 ## 10. GREEN implementation order
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.digests import (
+from ontotf.digests import (
     MAX_JSON_NESTING,
     DigestError,
     mapping_semantic_digest_v2,
@@ -35,7 +35,7 @@ class SemanticDigestJsonBoundaryTests(unittest.TestCase):
         }
 
         exc = self.assert_non_json(mapping_semantic_digest_v2, mapping)
-        self.assertEqual(exc.problem.message, "recursive object is outside the TFont JSON model")
+        self.assertEqual(exc.problem.message, "recursive object is outside the ontoTF JSON model")
         self.assertEqual(exc.problem.path, ("included", "self"))
 
     def test_projection_included_recursive_list_uses_owned_digest_error(self):
@@ -47,7 +47,7 @@ class SemanticDigestJsonBoundaryTests(unittest.TestCase):
         }
 
         exc = self.assert_non_json(projection_semantic_digest_v1, projection)
-        self.assertEqual(exc.problem.message, "recursive list is outside the TFont JSON model")
+        self.assertEqual(exc.problem.message, "recursive list is outside the ontoTF JSON model")
         self.assertEqual(exc.problem.path, ("included", 0))
 
     def test_included_depth_128_remains_accepted(self):

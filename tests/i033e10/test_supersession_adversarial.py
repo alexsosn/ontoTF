@@ -4,9 +4,9 @@ import copy
 import unittest
 
 from tests.i033e10.fixtures import synthetic_transition
-from tfont.mapping_supersession import NativeSupersessionError, plan_native_only_supersession
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.digests import evidence_record_digest
+from ontotf.mapping_supersession import NativeSupersessionError, plan_native_only_supersession
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.digests import evidence_record_digest
 
 
 class NativeOnlyPromotionAdversarial(unittest.TestCase):

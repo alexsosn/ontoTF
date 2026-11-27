@@ -47,7 +47,7 @@ The current `SemanticIndexes` are **validation lookup indexes**, not the P-003 r
 
 ## Multi-bundle composition
 
-R-001's still-valid distribution result is central TFont source with independently versioned per-corpus semantic bundles; A-001 later removes the obsolete generic outside-TF sidecar/runtime assumption but does not change the per-corpus release boundary.
+R-001's still-valid distribution result is central ontoTF source with independently versioned per-corpus semantic bundles; A-001 later removes the obsolete generic outside-TF sidecar/runtime assumption but does not change the per-corpus release boundary.
 
 Therefore the compiler should:
 
@@ -347,7 +347,7 @@ The implementation plan should freeze:
 
 ## TDD implications
 
-RED should fail because `tfont.semantic_ir` / `compile_semantic_ir` does not exist while each source fixture passes current `validate_semantic_bundle()` independently.
+RED should fail because `ontotf.semantic_ir` / `compile_semantic_ir` does not exist while each source fixture passes current `validate_semantic_bundle()` independently.
 
 The strongest first RED should construct three valid I-004 noun bundles with the full OLiA Noun IRI and distinct `corpus_id`/expected-parent fingerprints, compile them together, and assert that one semantic key has three deterministic bindings. Controls then exercise native-only, unsupported, ambiguous, authority-value, identity, identifier, provenance and locator routing.
 

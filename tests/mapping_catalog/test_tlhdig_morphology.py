@@ -1,6 +1,6 @@
 """Source-observed HFR morphological tags on candidate analysis nodes."""
 import unittest
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 CORPUS = "tlhdig-tf"
 VERSION = "0.4.0"

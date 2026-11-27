@@ -9,11 +9,11 @@
 The existing canonical full suite checks out the exact PR head, runs all importable unittest suites on Python 3.10 and 3.12, executes separate pytest research contracts, and builds a wheel on both. Phase 1 proved this caught hidden tests and reduced simple architecture PR #304 to F-007 + F-011 + full-suite.
 
 The remaining redundant `pull_request.paths` source triggers include:
-- `i009-production-bundles.yml` broad `src/tfont/resources/**`: triggers 2 focused jobs + regression + dedicated isolated wheel job on **every** resource overlay/data edit.
-- `i016-coverage.yml` broad `src/tfont/resources/coverage/**`: triggers 2 jobs with baseline coverage generation and wheel resource smoke even for unrelated immutable successor manifests.
-- `i026-work-queue.yml` broad `src/tfont/resources/coverage/**`: triggers 2 jobs for a frozen historical queue on every successor manifest.
-- `i027b1-bhsa-verb.yml`, `i027b2-syriac-verb.yml`, `i027b4-extrabiblical-verb.yml`: immutable historical release validation spuriously triggered by generic `src/tfont/production_bundles.py` changes.
-- `i027c2-adj-adv.yml`: same for `src/tfont/production_bundles.py` and `src/tfont/__init__.py`.
+- `i009-production-bundles.yml` broad `src/ontotf/resources/**`: triggers 2 focused jobs + regression + dedicated isolated wheel job on **every** resource overlay/data edit.
+- `i016-coverage.yml` broad `src/ontotf/resources/coverage/**`: triggers 2 jobs with baseline coverage generation and wheel resource smoke even for unrelated immutable successor manifests.
+- `i026-work-queue.yml` broad `src/ontotf/resources/coverage/**`: triggers 2 jobs for a frozen historical queue on every successor manifest.
+- `i027b1-bhsa-verb.yml`, `i027b2-syriac-verb.yml`, `i027b4-extrabiblical-verb.yml`: immutable historical release validation spuriously triggered by generic `src/ontotf/production_bundles.py` changes.
+- `i027c2-adj-adv.yml`: same for `src/ontotf/production_bundles.py` and `src/ontotf/__init__.py`.
 
 ## Must-preserve unique tests
 

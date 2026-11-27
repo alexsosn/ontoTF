@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tfont.xml_mappings import (
+from ontotf.xml_mappings import (
     MappingCatalog, MappingError, find_correspondences, list_corpora,
     map_native, resolve_nodes,
 )
@@ -125,7 +125,7 @@ class XMLMappingContractTests(unittest.TestCase):
             )
 
     def test_all_corpora_mapping_joins_different_native_node_kinds(self):
-        from tfont import find_across_corpora
+        from ontotf import find_across_corpora
 
         # TLHdig has analysis-level POS; BHSA/Syriac/ExtraBiblical have
         # word-level POS. The join is about class, never token identity.
@@ -157,7 +157,7 @@ class XMLMappingContractTests(unittest.TestCase):
             )
 
     def test_all_corpora_lookup_without_source_target_false_identity(self):
-        from tfont.xml_mappings import MappingCatalog
+        from ontotf.xml_mappings import MappingCatalog
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -172,7 +172,7 @@ class XMLMappingContractTests(unittest.TestCase):
                                                      feature="pos", value="N"), ())
 
     def test_reverse_ontology_lookup_discovers_all_corpora(self):
-        from tfont import find_by_target
+        from ontotf import find_by_target
 
         rows = find_by_target(NOUN)
         self.assertTrue({"bhsa", "syriac", "extrabiblical", "syrnt"}
@@ -436,7 +436,7 @@ class XMLMappingContractTests(unittest.TestCase):
 
 
     def test_real_oracc_syrnt_ontolex_lexical_entry_node_correspondence(self):
-        from tfont.xml_mappings import MappingCatalog
+        from ontotf.xml_mappings import MappingCatalog
 
         catalog = MappingCatalog()
         iri = "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"
@@ -466,7 +466,7 @@ class XMLMappingContractTests(unittest.TestCase):
         )
 
     def test_tlhdig_lexical_entry_nodes_are_category_only(self):
-        from tfont.xml_mappings import MappingCatalog
+        from ontotf.xml_mappings import MappingCatalog
 
         catalog = MappingCatalog()
         target = "http://www.w3.org/ns/lemon/ontolex#LexicalEntry"

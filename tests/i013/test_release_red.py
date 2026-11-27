@@ -21,7 +21,7 @@ class I013ReleaseCandidateTests(unittest.TestCase):
         self.assertNotIn("does not compile semantic IR", readme)
         self.assertNotIn("remain later stages", readme)
         self.assertIn("https://github.com/alexsosn/ontoTF/issues", readme)
-        self.assertNotIn("https://github.com/alexsosn/TFont/issues", readme)
+        self.assertTrue(readme.startswith("# ontoTF\n"))
 
     def test_first_success_uses_real_local_tf_and_observed_identity(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")

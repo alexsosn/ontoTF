@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import unittest
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 PIN = "e954600d9f9cc7f16570729813cf6bf3954b8f6d"
 TOKEN = "http://purl.org/olia/olia.owl#Token"

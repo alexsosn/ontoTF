@@ -45,7 +45,7 @@ For this first slice the exact parent manifest contains one component per corpus
 
 This is intentionally narrower than the general R-001 parent model. I-008/I-010 execute these mappings through already-loaded TF/Context-Fabric node features only: `otype` establishes the selected node type and `sp` supplies the mapped value or finite selected set. No catalogue, zero-span sidecar, source MQL, documentation page, morphology grammar file, or native adapter outside the TF payload is read during semantic execution.
 
-The documentation and source artifacts below are therefore evidence for the mapping, not semantically addressable runtime parent components. Including them in the parent manifest would make a documentation-only edit invalidate exact corpus compatibility without changing any native value that TFont executes.
+The documentation and source artifacts below are therefore evidence for the mapping, not semantically addressable runtime parent components. Including them in the parent manifest would make a documentation-only edit invalidate exact corpus compatibility without changing any native value that ontoTF executes.
 
 If a later profile starts reading a native sidecar or catalogue, that artifact enters that profile's parent-component manifest under R-001/I-003. The v0.1 profile must not silently widen its runtime input set without a new reviewed profile version.
 
@@ -100,7 +100,7 @@ execution_shape=value-predicate
 
 That grammar artifact is scholarly/native semantic evidence; it is not part of the tested runtime parent component set. Production evidence must record both the exact supported Syriac corpus revision and the exact grammar evidence revision rather than infer meaning from a code shared with BHSA.
 
-`substantive` is the nominal POS category used here and is the reviewed native category proposed for exact projection to OLiA `Noun`. The production review must explicitly authorize that projection; TFont must not generalize all ETCBC `subs` labels automatically.
+`substantive` is the nominal POS category used here and is the reviewed native category proposed for exact projection to OLiA `Noun`. The production review must explicitly authorize that projection; ontoTF must not generalize all ETCBC `subs` labels automatically.
 
 ## 4. ExtraBiblical native semantics
 
@@ -144,11 +144,11 @@ The hosted research script parses the exact XML payload and fails unless the can
 
 The production lock should be one shared lock resource used by all three profile bundles. It must carry the accepted I-002/R-015 semantic lock fields, including the exact source revision, content digest and `terms_used=[http://purl.org/olia/olia.owl#Noun]`. The plan must freeze the remaining schema values such as release label and support tier from project conventions rather than inventing another lock dialect.
 
-Redistributing the exact ontology snapshot in the TFont wheel is permitted under CC-BY 3.0 provided attribution/license obligations are preserved. Corpus TF payloads are not redistributed by TFont.
+Redistributing the exact ontology snapshot in the ontoTF wheel is permitted under CC-BY 3.0 provided attribution/license obligations are preserved. Corpus TF payloads are not redistributed by ontoTF.
 
 ## 6. Corpus licences and redistribution boundary
 
-The supported Syriac and ExtraBiblical repositories document CC-BY-NC 4.0 data licences. TFont does not need to ship their TF data to ship this semantic layer. The production package should contain mapping/profile metadata, parent content digests, immutable evidence records and the redistributable OLiA snapshot; corpus acquisition remains outside TFont.
+The supported Syriac and ExtraBiblical repositories document CC-BY-NC 4.0 data licences. ontoTF does not need to ship their TF data to ship this semantic layer. The production package should contain mapping/profile metadata, parent content digests, immutable evidence records and the redistributable OLiA snapshot; corpus acquisition remains outside ontoTF.
 
 A content digest of a corpus payload and an immutable source citation are not a bundled copy of the corpus. Release documentation should still retain the upstream corpus attribution and licence reference so users can understand the dependency and acquisition constraints.
 
@@ -165,22 +165,22 @@ No signature, organization certificate, MAC or remote trust service is needed fo
 
 A production review record cannot be finalized before the production mapping/projection digest exists. The implementation plan should therefore create the mapping source first, compute its semantic digest, run a logically independent evidence review of that exact digest, and only then commit the review binding using the actual review source and reviewer identity. It must not manufacture a reviewer or backdate a review in order to make validation pass.
 
-For evidence that is a normalized scholarly conclusion rather than a byte-for-byte external document, use the existing `normalized-record` mode and bind its `content_digest` with the accepted TFont evidence digest primitive. External immutable source bytes may use `external-payload` where the production validator contract supports the intended binding.
+For evidence that is a normalized scholarly conclusion rather than a byte-for-byte external document, use the existing `normalized-record` mode and bind its `content_digest` with the accepted ontoTF evidence digest primitive. External immutable source bytes may use `external-payload` where the production validator contract supports the intended binding.
 
 ## 8. Distribution and package layout boundary
 
-R-001 already selected central TFont source with independently versioned per-corpus semantic sidecars. I-009 should implement the smallest in-package realization of that decision, not another package manager.
+R-001 already selected central ontoTF source with independently versioned per-corpus semantic sidecars. I-009 should implement the smallest in-package realization of that decision, not another package manager.
 
-The existing F-002 packaging solution already ships runtime JSON resources under `src/tfont/...` as setuptools package data and resolves them with `importlib.resources`. I-009 should reuse that mechanism for profile resources and add an isolated wheel-install regression, rather than access repository-relative paths.
+The existing F-002 packaging solution already ships runtime JSON resources under `src/ontotf/...` as setuptools package data and resolves them with `importlib.resources`. I-009 should reuse that mechanism for profile resources and add an isolated wheel-install regression, rather than access repository-relative paths.
 
 The minimal v0.1 distribution unit is therefore:
 
 - three separate corpus profile resource trees, each with its own profile ID/version, exact parent manifest, mapping and corpus-specific evidence;
 - one shared exact OLiA lock/snapshot/attribution resource;
 - one narrow loader API that locates these resources through `importlib.resources` and constructs the existing `SemanticSourceBundle` objects;
-- no registry, downloader, dependency solver, corpus materializer or Agora-specific protocol inside TFont.
+- no registry, downloader, dependency solver, corpus materializer or Agora-specific protocol inside ontoTF.
 
-The plan gate should freeze exact filenames and package-data globs. Profile independence must be preserved even if all three resources happen to ship inside the first `tfont` wheel.
+The plan gate should freeze exact filenames and package-data globs. Profile independence must be preserved even if all three resources happen to ship inside the first `ontotf` wheel.
 
 ## 9. Parent upgrades
 

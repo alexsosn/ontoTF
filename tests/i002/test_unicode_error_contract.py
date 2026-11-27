@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.digests import DigestError, profile_semantic_digest
+from ontotf.digests import DigestError, profile_semantic_digest
 
 
 class UnicodeProjectionErrorContractTests(unittest.TestCase):

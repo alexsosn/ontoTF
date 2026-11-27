@@ -180,7 +180,7 @@ Rules:
 - every member is exact `str` when `value_type=str`, exact `int` when
   `value_type=int`;
 - `bool` is not an integer value;
-- integers must fit TFont's portable JCS safe-integer domain;
+- integers must fit ontoTF's portable JCS safe-integer domain;
 - `None` is not a matchable value;
 - `""` is a real string value and may be matched if it is explicitly
   reviewed in the authorized closed domain;
@@ -194,7 +194,7 @@ singleton and multi-value filters.
 ### Exact integer typing at the source/semantic boundary
 
 JSON Schema Draft 2020-12 treats a numeric value such as `1.0` as satisfying
-`type: integer` because it has no fractional part. TFont's reviewed I-025
+`type: integer` because it has no fractional part. ontoTF's reviewed I-025
 contract is stricter: an integer edge literal is an **exact integer value**, not
 a float that happens to be mathematically integral.
 

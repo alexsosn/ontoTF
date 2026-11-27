@@ -5,8 +5,8 @@ import unittest
 
 from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import compiled_noun_ir, with_bundle_digest
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 class FakeObservation:
@@ -40,7 +40,7 @@ class FakeObservation:
 class I007RuntimePrerequisiteContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.runtime = importlib.import_module("tfont.runtime_prerequisites")
+        cls.runtime = importlib.import_module("ontotf.runtime_prerequisites")
 
     def _variant(self):
         return compiled_noun_ir(("bhsa",)).variants[0]
@@ -131,7 +131,7 @@ class I007RuntimePrerequisiteContractTests(unittest.TestCase):
         self.assertNotEqual(unavailable.report_fingerprint, verified.report_fingerprint)
 
     def test_report_projection_is_accepted_by_i006_resolver(self):
-        resolver = importlib.import_module("tfont.semantic_resolver")
+        resolver = importlib.import_module("ontotf.semantic_resolver")
         ir = compiled_noun_ir(("bhsa",))
         variant = ir.variants[0]
         report = self._evaluate(

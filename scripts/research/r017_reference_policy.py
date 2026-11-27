@@ -84,7 +84,7 @@ def validate(ref: ExternalReference) -> list[str]:
 
     if ref.kind in {"semantic-pivot", "authority-value"}:
         if ref.assessment not in SEMANTIC_ASSESSMENTS:
-            errors.append("semantic/authority reference requires TFont mapping assessment")
+            errors.append("semantic/authority reference requires ontoTF mapping assessment")
         if ref.assessment in NO_TARGET_ASSESSMENTS:
             errors.append(
                 f"{ref.assessment} is a no-target state and cannot be represented as an external semantic/authority reference"

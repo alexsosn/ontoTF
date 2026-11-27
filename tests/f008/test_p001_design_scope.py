@@ -37,7 +37,7 @@ class P001DesignScopeRegressionTests(unittest.TestCase):
         violations = self.contract.production_scope_violations(
             (
                 "docs/plans/P-001-foundation-poc-design.md",
-                "src/tfont/compiler.py",
+                "src/ontotf/compiler.py",
                 "schemas/profile.schema.json",
                 "profiles/demo/profile.yaml",
             )
@@ -47,7 +47,7 @@ class P001DesignScopeRegressionTests(unittest.TestCase):
             (
                 "profiles/demo/profile.yaml",
                 "schemas/profile.schema.json",
-                "src/tfont/compiler.py",
+                "src/ontotf/compiler.py",
             ),
         )
 
@@ -60,8 +60,8 @@ class P001DesignScopeRegressionTests(unittest.TestCase):
                 "docs/src-notes.md",
                 "schemas-notes.md",
                 "nested/profiles/example",
-                "src/tfont/compiler.py",
-                "src/tfont/compiler.py",
+                "src/ontotf/compiler.py",
+                "src/ontotf/compiler.py",
             )
         )
         self.assertEqual(
@@ -70,7 +70,7 @@ class P001DesignScopeRegressionTests(unittest.TestCase):
                 "profiles",
                 "schemas/mapping.schema.json",
                 "src",
-                "src/tfont/compiler.py",
+                "src/ontotf/compiler.py",
             ),
         )
 

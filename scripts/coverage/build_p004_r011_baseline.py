@@ -20,18 +20,18 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.coverage import (  # noqa: E402
+from ontotf.coverage import (  # noqa: E402
     COVERAGE_ASSESSMENTS,
     P004_R011_BASELINE_CORPORA,
     coverage_denominator_digest,
     validate_coverage_manifest,
 )
-from tfont.digests import canonical_json_bytes  # noqa: E402
+from ontotf.digests import canonical_json_bytes  # noqa: E402
 
 PILOTS = ROOT / "docs/research/data/r-011/pilots.json"
 OVERRIDES = ROOT / "docs/research/data/r-011/mapping-overrides.json"
 RAW_POLICY = ROOT / "docs/research/data/r-011/raw-schema-policy.json"
-OUTPUT = ROOT / "src/tfont/resources/coverage/p004-r011-baseline-v1"
+OUTPUT = ROOT / "src/ontotf/resources/coverage/p004-r011-baseline-v1"
 
 TARGET_REVISIONS = {
     "bhsa": "4db00e2157915495e1a4d3d57e41223df24775da",
@@ -45,8 +45,8 @@ TARGET_REVISIONS = {
 
 PRODUCTION_MAPPING_FILES = {
     corpus: (
-        ROOT / f"src/tfont/resources/profiles/{corpus}/0.2.0/mappings/noun.json",
-        ROOT / f"src/tfont/resources/profiles/{corpus}/0.2.0/mappings/noun-morphology.json",
+        ROOT / f"src/ontotf/resources/profiles/{corpus}/0.2.0/mappings/noun.json",
+        ROOT / f"src/ontotf/resources/profiles/{corpus}/0.2.0/mappings/noun-morphology.json",
     )
     for corpus in ("bhsa", "syriac", "extrabiblical")
 }

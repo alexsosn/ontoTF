@@ -7,7 +7,7 @@
 
 ## Decision
 
-The seven-model common semantic basis is **viable as TFont's interoperability pivot**, provided P-003 keeps native semantics, mapping assessment, capability state, authority references, and common ontology projections distinct.
+The seven-model common semantic basis is **viable as ontoTF's interoperability pivot**, provided P-003 keeps native semantics, mapping assessment, capability state, authority references, and common ontology projections distinct.
 
 The effective non-production pilot contains all seven required corpora, **52 reviewed mapping rows**, **108 agent-useful weight units**, and **67/108 = 62.0% weighted common-target coverage**. Mapping assessments are: 15 `exact`, 11 `close`, 3 `ambiguous`, 22 `native-only`, 1 `unsupported`, and zero `broader` / `narrower` / `related` in this deliberately conservative sample.
 
@@ -18,7 +18,7 @@ The effective non-production pilot contains all seven required corpora, **52 rev
 
 The 62.0% weighted figure is **not raw schema coverage**. Raw coverage is measured separately and retains unreviewed schema items as unreviewed rather than silently converting them to `native-only`.
 
-The result is a qualified **GO** for the common pivot and a **NO-GO** for minting a broad TFont ontology before R-013–R-017/P-003.
+The result is a qualified **GO** for the common pivot and a **NO-GO** for minting a broad ontoTF ontology before R-013–R-017/P-003.
 
 ## Reproducible artifacts
 
@@ -37,7 +37,7 @@ python scripts/research/r011_measure.py
 pytest tests/research/test_r011_measure.py
 ```
 
-Compact targets such as `olia:Noun`, `olia:First`, `crmtex:TX7`, and `crm:E22_Human-Made_Object` are research identifiers for reviewed ontology concepts. R-013 owns final target formal kinds/roles and production IRI handling. Mapping assessment remains a TFont runtime concept, not an RDF publication predicate.
+Compact targets such as `olia:Noun`, `olia:First`, `crmtex:TX7`, and `crm:E22_Human-Made_Object` are research identifiers for reviewed ontology concepts. R-013 owns final target formal kinds/roles and production IRI handling. Mapping assessment remains a ontoTF runtime concept, not an RDF publication predicate.
 
 ## Exact corpus evidence boundary
 
@@ -143,7 +143,7 @@ The current prototype records **5 recurrent gap query families** that have meani
 
 Additional single-corpus or deliberately unsupported controls include apparatus reading/witness attestation, material, period, provenience, archaeology, and source lexical sense/shared lexical concept cases.
 
-These are evidence for P-003 profile/capability design, not automatically evidence that TFont should mint local ontology classes.
+These are evidence for P-003 profile/capability design, not automatically evidence that ontoTF should mint local ontology classes.
 
 ## Mapping-strength and multiple-projection result
 
@@ -200,7 +200,7 @@ The resolver must never manufacture mappings from label similarity, shared TF fe
 
 **GO:** the common pivot shows real reuse across heterogeneous corpora: OLiA across three linguistic corpora, OntoLex lexical-entry semantics across five, CRMtex line semantics across three, CRM physical-object semantics across two, and an LRMoo textual-version candidate with source-level evidence.
 
-**NO-GO for a broad new TFont ontology:** the most important residual gaps remain profile/role/assertion-shape problems. Apparatus/witness-attestation is still represented fully by only Pseudepigrapha; structural navigation is intentionally native; material/period authority semantics await R-017. Keep these native/profile-local until recurrence and governance justify a shared target.
+**NO-GO for a broad new ontoTF ontology:** the most important residual gaps remain profile/role/assertion-shape problems. Apparatus/witness-attestation is still represented fully by only Pseudepigrapha; structural navigation is intentionally native; material/period authority semantics await R-017. Keep these native/profile-local until recurrence and governance justify a shared target.
 
 ## Exact-head validation
 

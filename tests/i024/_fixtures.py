@@ -16,8 +16,8 @@ from tests.i023._fixtures import (
     PathApi,
     edge_path_sources,
 )
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 VALUED_STR_STEPS = (
@@ -246,9 +246,9 @@ def empty_trailing_api():
     )
 
 
-def valued_context(tfont_module, ir, api=None):
+def valued_context(ontotf_module, ir, api=None):
     return loaded_context(
-        tfont_module,
+        ontotf_module,
         ir,
         "bhsa",
         api or selected_api(),

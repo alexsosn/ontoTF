@@ -12,7 +12,7 @@ No filesystem/network/corpus query inspection is performed by this ticket.
 
 ## 2. Public API
 
-Add `src/tfont/semantic_validation.py` with public types equivalent to:
+Add `src/ontotf/semantic_validation.py` with public types equivalent to:
 
 ```python
 @dataclass(frozen=True)
@@ -155,7 +155,7 @@ If JSON Schema cannot safely express this without changing source semantics, bum
 
 ## 4. Canonical vocabulary constants
 
-Add one production vocabulary module, e.g. `src/tfont/semantic_vocabulary.py`, exporting frozen sets/tuples for P-003 v1:
+Add one production vocabulary module, e.g. `src/ontotf/semantic_vocabulary.py`, exporting frozen sets/tuples for P-003 v1:
 
 - formal kinds;
 - semantic roles;
@@ -175,7 +175,7 @@ Unknown aliases/case variants fail closed.
 
 ## 5. Mapping-v2 semantic digests
 
-Add new versioned constants/functions in `tfont.digests`:
+Add new versioned constants/functions in `ontotf.digests`:
 
 ```text
 PROJECTION_SEMANTIC_ALGORITHM = tfont-projection-semantic-sha256-v1
@@ -352,7 +352,7 @@ Commit RED tests before production code.
 
 Tests assert that the intended v2 fixture shapes are structurally valid against **test-local provisional schemas/fixtures** or deliberately construct objects after I-001 setup so failures target missing I-004 API, not an accidental v1 schema rejection.
 
-Then import `tfont.semantic_validation`; RED must fail because module/API does not exist.
+Then import `ontotf.semantic_validation`; RED must fail because module/API does not exist.
 
 ### RED-B: valid bundle and deterministic index
 

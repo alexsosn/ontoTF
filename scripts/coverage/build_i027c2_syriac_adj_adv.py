@@ -8,20 +8,20 @@ import copy
 import json
 from pathlib import Path
 
-from tfont.coverage import (
+from ontotf.coverage import (
     coverage_denominator_digest, coverage_report, load_coverage_manifest,
     validate_coverage_manifest,
 )
-from tfont.digests import evidence_record_digest
-from tfont.semantic_digest_v2 import (
+from ontotf.digests import evidence_record_digest
+from ontotf.semantic_digest_v2 import (
     mapping_semantic_digest_v2, projection_semantic_digest_v1,
 )
 
 ROOT=Path(__file__).resolve().parents[2]
-SOURCE=ROOT/"src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json"
-OUTPUT=ROOT/"src/tfont/resources/coverage/p004-i027c2-syriac-adj-adv-v1/syriac.json"
-MAPPING=ROOT/"src/tfont/resources/profiles/syriac/0.4.0/mappings/adj-adv.json"
-EVIDENCE=ROOT/"src/tfont/resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json"
+SOURCE=ROOT/"src/ontotf/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json"
+OUTPUT=ROOT/"src/ontotf/resources/coverage/p004-i027c2-syriac-adj-adv-v1/syriac.json"
+MAPPING=ROOT/"src/ontotf/resources/profiles/syriac/0.4.0/mappings/adj-adv.json"
+EVIDENCE=ROOT/"src/ontotf/resources/profiles/syriac/0.4.0/evidence/native-adj-adv-pos.json"
 EXPECTED_CORPUS="syriac"
 SOURCE_MANIFEST="coverage:p004-i027b2-syriac-verb-v1:syriac"
 MANIFEST_ID="coverage:p004-i027c2-syriac-adj-adv-v1:syriac"

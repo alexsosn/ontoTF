@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 OLIA = "http://purl.org/olia/olia.owl#StatusConstructus"
 PIN = "9a56288e6777bad6328856acf055c780e65dd5d9"

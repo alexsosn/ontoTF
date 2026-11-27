@@ -18,7 +18,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
-VOCABULARY = ROOT / "src/tfont/semantic_vocabulary.py"
+VOCABULARY = ROOT / "src/ontotf/semantic_vocabulary.py"
 _VOCAB_SPEC = importlib.util.spec_from_file_location("i026_semantic_vocabulary", VOCABULARY)
 if _VOCAB_SPEC is None or _VOCAB_SPEC.loader is None:
     raise RuntimeError("cannot load controlled semantic vocabulary")

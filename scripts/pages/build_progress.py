@@ -14,7 +14,7 @@ from pathlib import Path
 import subprocess
 from xml.etree import ElementTree as ET
 
-from tfont.xml_mappings import MappingCatalog
+from ontotf.xml_mappings import MappingCatalog
 from scripts.pages.dashboard import render
 from scripts.pages.scoped_progress import (
     ONTOLOGIES, POSITIVE, ontology, KINDS, scoped_progress, eligible_progress,
@@ -197,7 +197,7 @@ def inventories(root):
 
 
 def build_report(root, commit):
-    catalog_path = root / "src/tfont/mappings"
+    catalog_path = root / "src/ontotf/mappings"
     catalog = MappingCatalog(catalog_path)
     inv = inventories(root)
     scoped_inventories = {}

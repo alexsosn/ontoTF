@@ -15,7 +15,7 @@ from tests.i005._fixtures import (
 
 
 def semantic_ir_module():
-    return importlib.import_module("tfont.semantic_ir")
+    return importlib.import_module("ontotf.semantic_ir")
 
 
 def problem_category(error: Exception) -> str:

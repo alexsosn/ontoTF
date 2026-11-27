@@ -22,10 +22,10 @@ from .semantic_digest_v2 import (
 from .source_validation import validate_source
 
 ROOT = Path(__file__).resolve().parents[2]
-LEDGER = ROOT / "src/tfont/resources/batch_pilots/i033a-olia-verb-and-stems.json"
+LEDGER = ROOT / "src/ontotf/resources/batch_pilots/i033a-olia-verb-and-stems.json"
 _OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 _OLIA_ROOT = (
-    ROOT / "src/tfont/resources/ontologies/olia" / _OLIA_REVISION
+    ROOT / "src/ontotf/resources/ontologies/olia" / _OLIA_REVISION
 )
 _OLIA_TERM = "http://purl.org/olia/olia.owl#Verb"
 _EXPECTED_CORPORA = frozenset(("bhsa", "syriac", "extrabiblical"))
@@ -65,7 +65,7 @@ def load_pilot() -> dict[str, Any]:
 
 def _native_evidence(corpus: str, entry: dict[str, Any]) -> dict[str, str]:
     path = (
-        ROOT / "src/tfont/resources/profiles"
+        ROOT / "src/ontotf/resources/profiles"
         / corpus / "0.3.0/evidence/native-verb-pos.json"
     )
     record = _load(path)
@@ -178,7 +178,7 @@ def _compile_positive(entry: dict[str, Any]) -> dict[str, Any]:
     # Import ONLY excluded audit-only fields from an independently published
     # reviewed mapping, after semantic digests have already been checked.
     original = _load(
-        ROOT / "src/tfont/resources/profiles"
+        ROOT / "src/ontotf/resources/profiles"
         / corpus / "0.3.0/mappings/verb.json"
     )
     validate_source(original, "mapping", source_name=f"published:{corpus}:verb")
@@ -215,7 +215,7 @@ def _compile_native_only(group: dict[str, Any]) -> list[dict[str, Any]]:
              and group["common_target"] is False,
              "native-only disposition may not be promoted")
     approved_path = (
-        "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json"
+        "src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json"
     )
     _require(group["coverage_manifest"] == approved_path,
              "native-only cohort must use reviewed coverage manifest")

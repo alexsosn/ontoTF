@@ -5,9 +5,9 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.batch_proposals import compile_candidate_batch
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.review_packets import build_review_packet, serialized, verify_review_packet
+from ontotf.batch_proposals import compile_candidate_batch
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.review_packets import build_review_packet, serialized, verify_review_packet
 
 ROOT=Path(__file__).resolve().parents[2]
 MANIFEST=ROOT/"docs/research/data/batch_review/i034a-inputs.json"

@@ -5,9 +5,9 @@ import json
 import unittest
 from pathlib import Path
 
-import tfont
-from tfont import coverage
-from tfont.coverage import CoverageError
+import ontotf
+from ontotf import coverage
+from ontotf.coverage import CoverageError
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -61,7 +61,7 @@ class I017CurrentPseudepigraphaRedTests(unittest.TestCase):
             "RED: generic packaged coverage loader is absent",
         )
         self.assertTrue(
-            hasattr(tfont, "load_packaged_coverage_manifest"),
+            hasattr(ontotf, "load_packaged_coverage_manifest"),
             "RED: generic packaged coverage loader is not exported",
         )
         self.assertEqual(

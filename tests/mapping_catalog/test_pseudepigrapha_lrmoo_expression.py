@@ -4,7 +4,7 @@ No Work, Manifestation, Item or physical witness instance is manufactured.
 """
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, resolve_nodes, MappingError
+from ontotf.xml_mappings import MappingCatalog, resolve_nodes, MappingError
 
 LRMOO = "http://iflastandards.info/ns/lrm/lrmoo/"
 UPSTREAM = "7c4b757bb543a110ae9a252d1281835859136852"

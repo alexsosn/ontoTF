@@ -7,7 +7,7 @@
 
 ## 1. Finding
 
-The accepted foundation research did not lose the original TFont objective. R-002 selected a common open semantic basis centered on **SKOS, OLiA, OntoLex-Lemon, CIDOC CRM, CRMtex, LRMoo, and CRMinf**, with optional domain profiles, provenance/validation/publication infrastructure, and external controlled vocabularies. R-003 likewise defined agent-facing cross-corpus semantic resolution as a primary use case.
+The accepted foundation research did not lose the original ontoTF objective. R-002 selected a common open semantic basis centered on **SKOS, OLiA, OntoLex-Lemon, CIDOC CRM, CRMtex, LRMoo, and CRMinf**, with optional domain profiles, provenance/validation/publication infrastructure, and external controlled vocabularies. R-003 likewise defined agent-facing cross-corpus semantic resolution as a primary use case.
 
 The loss occurred during reconciliation into P-001. P-001 correctly designed artifact integrity, ontology locking, evidence/review provenance, parent-corpus compatibility, deterministic compilation, and fail-closed runtime behavior, but reduced the semantic target model to a generic `external_target` plus `ontology_lock`. The implemented v1 schemas inherit that abstraction. They can establish that a reviewed URI is pinned; they do not establish that mappings from different corpora converge on a shared semantic profile that an agent can use as a compatibility pivot.
 
@@ -30,7 +30,7 @@ P-001 must **not** be treated as the final authority for the semantic target sha
 
 ## 3. Restored product invariant
 
-A TFont mapping or capability that claims a **shared semantic projection** is intended to act as a semantic compatibility adapter between a native Text-Fabric/Context-Fabric corpus and a reviewed common open ontology layer.
+A ontoTF mapping or capability that claims a **shared semantic projection** is intended to act as a semantic compatibility adapter between a native Text-Fabric/Context-Fabric corpus and a reviewed common open ontology layer.
 
 An arbitrary external URI, even when pinned and reviewed, is insufficient by itself. Shared projections must make it possible to answer both directions deterministically:
 
@@ -107,7 +107,7 @@ At minimum P-003 must decide:
 - preservation and runtime treatment of all eight accepted mapping assessments: `exact`, `close`, `broader`, `narrower`, `related`, `ambiguous`, `native-only`, and `unsupported`;
 - exact/approximate execution policy without making `native-only` or `unsupported` entries invalid profile content;
 - migration/versioning of v1 mapping/profile schemas and semantic digests;
-- the smallest necessary TFont-local vocabulary for recurrent gaps, if empirical research demonstrates one.
+- the smallest necessary ontoTF-local vocabulary for recurrent gaps, if empirical research demonstrates one.
 
 ## 7. Immediate implementation guardrail
 

@@ -4,13 +4,13 @@
   "underlying_policy_id": "p004-routing-v1",
   "underlying_policy_path": "docs/research/data/i026/p004-routing-policy.json",
   "selected_manifests": {
-    "bhsa": "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
-    "cuc": "src/tfont/resources/coverage/p004-r011-baseline-v1/cuc.json",
-    "syriac": "src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json",
-    "extrabiblical": "src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json",
-    "pseudepigrapha": "src/tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
-    "oracc": "src/tfont/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
-    "tlhdig": "src/tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json"
+    "bhsa": "src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
+    "cuc": "src/ontotf/resources/coverage/p004-r011-baseline-v1/cuc.json",
+    "syriac": "src/ontotf/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json",
+    "extrabiblical": "src/ontotf/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json",
+    "pseudepigrapha": "src/ontotf/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json",
+    "oracc": "src/ontotf/resources/coverage/p004-oracc-0.4.0-f6f189b-v1/oracc.json",
+    "tlhdig": "src/ontotf/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json"
   },
   "selected_blob_shas": {
     "bhsa": "d469f4893ef32a1226ecea6b56c84240da7f7e72",

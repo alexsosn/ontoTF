@@ -8,9 +8,9 @@ Where this amendment conflicts with the earlier R-002 draft, **this amendment su
 
 ## 1. Mapping strength and RDF relation are different layers
 
-The original R-002 draft used SKOS mapping names too broadly. TFont needs a stable, formalism-neutral **mapping assessment** for agents/humans and a separate, target-appropriate **publication relation**.
+The original R-002 draft used SKOS mapping names too broadly. ontoTF needs a stable, formalism-neutral **mapping assessment** for agents/humans and a separate, target-appropriate **publication relation**.
 
-Every TFont mapping is therefore a reified mapping assertion with at least:
+Every ontoTF mapping is therefore a reified mapping assertion with at least:
 
 ```yaml
 id: bhsa.word.sp.subs
@@ -23,7 +23,7 @@ formalization:
   status: asserted | not-asserted
 ```
 
-The `assessment.strength` vocabulary controls TFont query planning and UX. It **does not by itself entail** a particular RDF predicate.
+The `assessment.strength` vocabulary controls ontoTF query planning and UX. It **does not by itself entail** a particular RDF predicate.
 
 This allows R-003 to keep one comprehensible resolution vocabulary while R-002 remains faithful to the formal model of each target ontology.
 
@@ -33,20 +33,20 @@ This allows R-003 to keep one comprehensible resolution vocabulary while R-002 r
 
 OLiA's Reference Model uses OWL classes/properties and its Linking Models conventionally connect annotation models to reference terms with RDFS/OWL relations such as `rdfs:subClassOf` and `rdfs:subPropertyOf`.
 
-TFont must not emit `skos:exactMatch`, `skos:broadMatch`, etc. directly merely because the target is an OLiA class.
+ontoTF must not emit `skos:exactMatch`, `skos:broadMatch`, etc. directly merely because the target is an OLiA class.
 
 For an OWL class/property target:
 
-- use `rdfs:subClassOf` / `rdfs:subPropertyOf` when the native TFont-side modeled class/property is genuinely a specialization;
+- use `rdfs:subClassOf` / `rdfs:subPropertyOf` when the native ontoTF-side modeled class/property is genuinely a specialization;
 - use `owl:equivalentClass` / `owl:equivalentProperty` only when logical equivalence is justified in both directions, including relevant domain/range/extension assumptions;
-- otherwise keep the reified TFont mapping assertion and **do not emit a stronger OWL axiom** merely to mirror the UI strength;
+- otherwise keep the reified ontoTF mapping assertion and **do not emit a stronger OWL axiom** merely to mirror the UI strength;
 - mapping assessments such as `close` or `related` normally remain annotations/reified assertions rather than OWL subsumption axioms.
 
-A TFont `strength: exact` can therefore mean “reviewed as exact for semantic query substitution in this profile” without automatically claiming global `owl:equivalentClass`.
+A ontoTF `strength: exact` can therefore mean “reviewed as exact for semantic query substitution in this profile” without automatically claiming global `owl:equivalentClass`.
 
 ### 2.2 SKOS concept targets
 
-When both sides are legitimately `skos:Concept` resources in concept schemes, TFont may publish reviewed mappings using:
+When both sides are legitimately `skos:Concept` resources in concept schemes, ontoTF may publish reviewed mappings using:
 
 - `skos:exactMatch`;
 - `skos:closeMatch`;
@@ -54,7 +54,7 @@ When both sides are legitimately `skos:Concept` resources in concept schemes, TF
 - `skos:narrowMatch`;
 - `skos:relatedMatch`.
 
-Direction must be defined against TFont's source/target convention and tested. A human label such as “broader” is never sufficient to infer the RDF direction.
+Direction must be defined against ontoTF's source/target convention and tested. A human label such as “broader” is never sufficient to infer the RDF direction.
 
 ### 2.3 OntoLex lexical concepts
 
@@ -64,19 +64,19 @@ Lexical entries, forms, senses and lexical relations themselves use the relevant
 
 ### 2.4 CIDOC CRM and extensions
 
-CIDOC CRM, CRMtex, LRMoo, CRMinf, CRMarchaeo and CRMsci are class/property ontologies. Alignments to them follow OWL/RDFS-compatible rules or remain reified TFont mapping assertions when no safe logical axiom exists.
+CIDOC CRM, CRMtex, LRMoo, CRMinf, CRMarchaeo and CRMsci are class/property ontologies. Alignments to them follow OWL/RDFS-compatible rules or remain reified ontoTF mapping assertions when no safe logical axiom exists.
 
-TFont does not convert CRM classes into SKOS concepts for convenience.
+ontoTF does not convert CRM classes into SKOS concepts for convenience.
 
 ### 2.5 External authority vocabularies
 
-Getty AAT and PeriodO are used as controlled external concept authorities where applicable. Their native modeling/URI contracts are respected. TFont stores mapping assessment separately from whatever standards-conformant publication relation is appropriate.
+Getty AAT and PeriodO are used as controlled external concept authorities where applicable. Their native modeling/URI contracts are respected. ontoTF stores mapping assessment separately from whatever standards-conformant publication relation is appropriate.
 
 ## 3. Query semantics are governed by assessment, not RDF entailment
 
 The POC runtime should not require a reasoner to decide whether a mapping is executable.
 
-A reviewed mapping assertion contains a deterministic TFont assessment and applicability contract. R-003 may then implement:
+A reviewed mapping assertion contains a deterministic ontoTF assessment and applicability contract. R-003 may then implement:
 
 - `exact` as executable in exact mode;
 - `close`, `broader`, `narrower` only when the request explicitly permits the relevant approximation;
@@ -89,7 +89,7 @@ The generated RDF representation is publication/interchange evidence for the sam
 
 The authoritative Sharing Ancient Wisdoms ontology page establishes the SAWS ontology/version/PURL and its historical FRBRoo-oriented model, but the ontology page inspected for R-002 does not establish a clear reusable ontology license.
 
-Therefore TFont records SAWS as:
+Therefore ontoTF records SAWS as:
 
 ```text
 status: reference/prior-art only
@@ -99,28 +99,28 @@ reason: licensing ambiguity + legacy FRBRoo-era modeling + no need to make it no
 
 Do **not** state that the SAWS ontology itself is known to be CC BY-NC-SA unless an authoritative rights statement for the ontology artifact is later found and pinned.
 
-The consequence remains conservative: SAWS may inform terminology/research, but TFont must not copy/repackage its ontology terms as a normative dependency under an assumed license.
+The consequence remains conservative: SAWS may inform terminology/research, but ontoTF must not copy/repackage its ontology terms as a normative dependency under an assumed license.
 
 ## 5. Local apparatus vocabulary is deferred
 
-The earlier draft proposed TFont-local `VariationUnit`, `Reading`, `attestedBy`, and `explicitlyAbsentIn` terms. R-005 currently demonstrates those exact apparatus semantics robustly only in Pseudepigrapha-TF.
+The earlier draft proposed ontoTF-local `VariationUnit`, `Reading`, `attestedBy`, and `explicitlyAbsentIn` terms. R-005 currently demonstrates those exact apparatus semantics robustly only in Pseudepigrapha-TF.
 
 Peshitta `witness=A/B` and TLHdig-TF line-to-fragment `witness` are **related witness metadata**, not a second implementation of reading-at-locus attestation. They do not satisfy the draft's own recurrence criterion.
 
 Decision for the POC foundation phase:
 
-- do **not** mint apparatus-specific TFont domain terms yet;
+- do **not** mint apparatus-specific ontoTF domain terms yet;
 - keep Pseudepigrapha-TF apparatus concepts as native/profile-local mappings and document the external ontology gap;
 - continue evaluating CAO, SAWS and other textual-critical models as prior art/reference targets;
-- mint a TFont-local apparatus term only after either:
+- mint a ontoTF-local apparatus term only after either:
   1. a second independent corpus requires the same semantic gap, or
-  2. the term is demonstrably necessary for TFont's **mapping-contract infrastructure** rather than for one corpus domain.
+  2. the term is demonstrably necessary for ontoTF's **mapping-contract infrastructure** rather than for one corpus domain.
 
 This does not prevent the POC from querying Pseudepigrapha-TF native apparatus semantics. It only prevents premature standardization.
 
-## 6. TFont-local infrastructure vocabulary remains allowed
+## 6. ontoTF-local infrastructure vocabulary remains allowed
 
-The recurrence rule above applies to **domain concepts**. Some local terms may be unavoidable because they describe TFont itself rather than ancient-language scholarship, for example:
+The recurrence rule above applies to **domain concepts**. Some local terms may be unavoidable because they describe ontoTF itself rather than ancient-language scholarship, for example:
 
 - mapping assertion;
 - mapping assessment/strength;
@@ -129,7 +129,7 @@ The recurrence rule above applies to **domain concepts**. Some local terms may b
 - extent semantics such as `extent` vs technical `anchor` if no suitable external model expresses the TF distinction;
 - profile/dependency identity.
 
-Such terms may be minted when the design demonstrates that no existing open vocabulary expresses the required TFont contract cleanly. They do not need two independent corpora because their domain is the interoperability system itself.
+Such terms may be minted when the design demonstrates that no existing open vocabulary expresses the required ontoTF contract cleanly. They do not need two independent corpora because their domain is the interoperability system itself.
 
 ## 7. OntoLex Morph and FrAC status policy
 
@@ -152,7 +152,7 @@ This is a status-management decision, not a claim that either model is technical
 
 ## 8. Web Annotation moves out of the core
 
-W3C Web Annotation is useful for portable targeting/provenance of annotations, but R-005 does not require every TFont mapping to be serialized as a Web Annotation and the runtime is deliberately native-TF/Context-Fabric-first.
+W3C Web Annotation is useful for portable targeting/provenance of annotations, but R-005 does not require every ontoTF mapping to be serialized as a Web Annotation and the runtime is deliberately native-TF/Context-Fabric-first.
 
 Decision:
 
@@ -201,7 +201,7 @@ The supported set is **tiered and open-ended**, not a permanently closed whiteli
 
 ## 10. License/openness rule
 
-A normative/repackaged TFont dependency must have sufficiently clear rights for the way TFont uses/distributes it.
+A normative/repackaged ontoTF dependency must have sufficiently clear rights for the way ontoTF uses/distributes it.
 
 Classify every external resource independently as:
 
@@ -214,7 +214,7 @@ Classify every external resource independently as:
 
 ## 11. Version/deprecation rule retained and tightened
 
-For every used ontology term a TFont profile/release records:
+For every used ontology term a ontoTF profile/release records:
 
 - stable term URI;
 - ontology/model identifier;
@@ -223,7 +223,7 @@ For every used ontology term a TFont profile/release records:
 - license/reference classification;
 - deprecation/replacement status when known.
 
-Old profile releases remain reproducible against their recorded ontology lock. A newly deprecated term does not silently rewrite a historical mapping. A new TFont profile release may migrate the mapping with an explicit semantic diff and review.
+Old profile releases remain reproducible against their recorded ontology lock. A newly deprecated term does not silently rewrite a historical mapping. A new ontoTF profile release may migrate the mapping with an explicit semantic diff and review.
 
 ## 12. Acceptance trace for review findings
 

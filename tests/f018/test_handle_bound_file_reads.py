@@ -11,8 +11,8 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-import tfont.parent_identity as parent_identity
-from tfont.parent_identity import IdentityError, file_component_digest
+import ontotf.parent_identity as parent_identity
+from ontotf.parent_identity import IdentityError, file_component_digest
 
 
 FILE_ALPHA_DIGEST = "sha256:b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"

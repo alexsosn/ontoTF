@@ -28,13 +28,13 @@ Relevant normative constraints:
 
 Appendix B supplies number vectors and recommends the interoperability integer range `-(2**53)+1` through `2**53-1` for values intended as integers.
 
-### Consequence for TFont
+### Consequence for ontoTF
 
 A private serializer built from `json.dumps(sort_keys=True)` is insufficient:
 
 1. Python key sorting is not defined by RFC 8785's UTF-16-code-unit order for non-BMP/BMP edge cases.
 2. Python's native JSON/float formatting is not an explicit implementation of the ECMAScript algorithm required by JCS.
-3. default Python JSON APIs admit values/forms TFont has already excluded at the I-001 boundary unless they are guarded explicitly.
+3. default Python JSON APIs admit values/forms ontoTF has already excluded at the I-001 boundary unless they are guarded explicitly.
 
 ## 3. Candidate Python implementation: `rfc8785`
 
@@ -43,7 +43,7 @@ Source: https://github.com/trailofbits/rfc8785.py
 
 Observed release at research time: `0.1.4` (PyPI upload 2024-09-27), Python `>=3.8`, pure Python, no runtime dependencies, Apache-2.0.
 
-The current implementation source inspected at commit `02ecc03315ff17dd90fc892da4faa6998fa9314b`, `src/rfc8785/_impl.py`, directly implements the RFC-specific behavior relevant to TFont:
+The current implementation source inspected at commit `02ecc03315ff17dd90fc892da4faa6998fa9314b`, `src/rfc8785/_impl.py`, directly implements the RFC-specific behavior relevant to ontoTF:
 
 - `dumps()` emits UTF-8 `bytes`.
 - dictionary keys are sorted by `key.encode("utf-16be")`.
@@ -53,7 +53,7 @@ The current implementation source inspected at commit `02ecc03315ff17dd90fc892da
 - `-0.0` serializes as `0`.
 - the package implements the ECMAScript-compatible float formatting logic rather than delegating to ordinary `json.dumps`.
 
-One deliberate library behavior is **broader than TFont's data model**: `rfc8785` accepts both lists and tuples as JSON arrays. I-001 defines TFont JSON values as plain `list`, not tuple. Therefore TFont must validate the input recursively before delegating to the library rather than expose `rfc8785.dumps()` directly.
+One deliberate library behavior is **broader than ontoTF's data model**: `rfc8785` accepts both lists and tuples as JSON arrays. I-001 defines ontoTF JSON values as plain `list`, not tuple. Therefore ontoTF must validate the input recursively before delegating to the library rather than expose `rfc8785.dumps()` directly.
 
 ### Maintenance/risk assessment
 
@@ -63,9 +63,9 @@ The package is small, pure Python, no-dependency and purpose-specific. Depending
 rfc8785>=0.1.4,<0.2
 ```
 
-The TFont fixed-vector suite remains authoritative for compatibility, so a future package upgrade cannot silently move canonical bytes.
+The ontoTF fixed-vector suite remains authoritative for compatibility, so a future package upgrade cannot silently move canonical bytes.
 
-## 4. TFont canonical JSON input boundary
+## 4. ontoTF canonical JSON input boundary
 
 I-002 should reuse the I-001 accepted JSON model and narrow numeric behavior where JCS requires it:
 
@@ -82,7 +82,7 @@ Additional JCS guard:
 - Unicode is preserved without NFC/NFD normalization;
 - invalid/lone surrogate strings fail during canonical UTF-8 serialization.
 
-The wrapper should expose a TFont-owned stable error rather than make callers depend on third-party exception types.
+The wrapper should expose a ontoTF-owned stable error rather than make callers depend on third-party exception types.
 
 ## 5. Source digest is a separate byte-normalization contract
 
@@ -197,14 +197,14 @@ These names should be fixed in the I-002 plan and tests; changing an algorithm's
 Tests should combine three independent categories:
 
 1. **RFC vectors** — canonical primitive/object/key-order/number cases from RFC 8785, including UTF-16 key ordering and numeric edges.
-2. **TFont byte vectors** — literal expected UTF-8 canonical bytes and SHA-256 hex/digest strings calculated independently in test fixtures, not by calling the function under test to form the expectation.
+2. **ontoTF byte vectors** — literal expected UTF-8 canonical bytes and SHA-256 hex/digest strings calculated independently in test fixtures, not by calling the function under test to form the expectation.
 3. **metamorphic regressions** — reordered object keys give identical canonical bytes; array reorder changes bytes; `profile_version`/audit provenance changes do not affect semantic digest; evidence binding changes do.
 
 A dependency upgrade must pass all vectors before merge.
 
 ## 11. Decision
 
-Use `rfc8785>=0.1.4,<0.2` for JCS serialization behind a TFont-owned strict wrapper and fixed-vector suite.
+Use `rfc8785>=0.1.4,<0.2` for JCS serialization behind a ontoTF-owned strict wrapper and fixed-vector suite.
 
 Do **not** implement a bespoke ECMAScript float serializer in I-002.
 

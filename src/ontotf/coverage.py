@@ -438,7 +438,7 @@ def load_packaged_coverage_manifest(
 ) -> dict[str, Any]:
     resource_set = _validate_resource_component(resource_set, name="resource_set")
     corpus_id = _validate_resource_component(corpus_id, name="corpus_id")
-    resource = files("tfont").joinpath(
+    resource = files("ontotf").joinpath(
         "resources",
         "coverage",
         resource_set,

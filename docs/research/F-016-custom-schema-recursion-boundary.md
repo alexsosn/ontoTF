@@ -4,9 +4,9 @@
 
 ## Question
 
-`validate_source(..., schema_root=...)` accepts caller-supplied JSON Schema files. TFont currently translates ordinary schema decoding and `SchemaError` failures into `SourceValidationError(category="invalid_schema")`, but raw `RecursionError` can escape from schema JSON decoding, `Draft202012Validator.check_schema()`, or later recursive schema traversal.
+`validate_source(..., schema_root=...)` accepts caller-supplied JSON Schema files. ontoTF currently translates ordinary schema decoding and `SchemaError` failures into `SourceValidationError(category="invalid_schema")`, but raw `RecursionError` can escape from schema JSON decoding, `Draft202012Validator.check_schema()`, or later recursive schema traversal.
 
-This research asks whether TFont should impose a deterministic schema nesting limit, or instead preserve the JSON Schema language while translating recursion failures at the third-party boundary.
+This research asks whether ontoTF should impose a deterministic schema nesting limit, or instead preserve the JSON Schema language while translating recursion failures at the third-party boundary.
 
 ## Current boundary
 
@@ -24,13 +24,13 @@ A schema recursion failure is therefore not a source decoding failure and must n
 
 The current jsonschema API documentation still describes `check_schema`, `descend`, and `iter_errors`; it does not promise that arbitrarily deep or recursive schema graphs are converted to `SchemaError`.
 
-## Decision: no TFont schema-depth ceiling in this ticket
+## Decision: no ontoTF schema-depth ceiling in this ticket
 
 Do **not** reuse `MAX_SOURCE_NESTING` for schemas and do not introduce `MAX_SCHEMA_NESTING` without separate evidence.
 
 Reasons:
 
-1. F-006's 128 ceiling is a TFont source-model policy, not a JSON Schema language limit.
+1. F-006's 128 ceiling is a ontoTF source-model policy, not a JSON Schema language limit.
 2. JSON Schema composition depth is not semantically equivalent to instance/source nesting depth. Legitimate schemas may be generated or deeply composed.
 3. A fixed schema-depth preflight would reject schemas before the selected Draft 2020-12 validator evaluates their actual semantics, creating a new compatibility restriction unrelated to the observed error-boundary defect.
 4. Recursion can arise from reference/composition traversal rather than literal JSON container depth, so a container-depth check would not close the whole failure class anyway.

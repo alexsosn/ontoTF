@@ -1,4 +1,4 @@
-# A-001 plan: pin the TF-native TFont runtime boundary
+# A-001 plan: pin the TF-native ontoTF runtime boundary
 
 **Issue:** #65  
 **Research:** `docs/research/A-001-tf-native-runtime-boundary.md`  
@@ -6,15 +6,15 @@
 
 ## 1. Goal
 
-Prevent TFont from growing a generic external-storage/data-format runtime surface that no current pilot needs.
+Prevent ontoTF from growing a generic external-storage/data-format runtime surface that no current pilot needs.
 
 The baseline contract is:
 
 ```text
-source formats -> corpus-specific materializer -> TF/Context-Fabric -> TFont semantic adapter
+source formats -> corpus-specific materializer -> TF/Context-Fabric -> ontoTF semantic adapter
 ```
 
-TFont owns semantic interoperability over materialized corpus structure. It does not own generic ingestion/query adapters for arbitrary external records.
+ontoTF owns semantic interoperability over materialized corpus structure. It does not own generic ingestion/query adapters for arbitrary external records.
 
 ## 2. Normative scope
 
@@ -36,18 +36,18 @@ Issue contracts #37 and #44 are updated in GitHub so open downstream work cannot
 
 ## 3. Baseline architecture contract
 
-### 3.1 TFont runtime inputs
+### 3.1 ontoTF runtime inputs
 
-Baseline TFont may consume:
+Baseline ontoTF may consume:
 
 - TF/Context-Fabric nodes, slots, node features and edge features;
 - parent corpus/component identity;
-- TFont mapping/profile/ontology/bridge/provenance artifacts;
+- ontoTF mapping/profile/ontology/bridge/provenance artifacts;
 - external identifiers/URIs as reviewed values/references.
 
 ### 3.2 Baseline exclusions
 
-Baseline TFont must not define:
+Baseline ontoTF must not define:
 
 - `native-adapter` / `sidecar` as a generic runtime carrier;
 - arbitrary file/path/field selectors outside the materialized TF graph;
@@ -59,7 +59,7 @@ Baseline TFont must not define:
 
 Corpus-specific converters/materializers own ingestion of source representations and should materialize query-relevant corpus semantics into TF/Context-Fabric where appropriate.
 
-TFont does not need to know whether those semantics originated in JSON, XML, TEI, CSV, a database, PDF extraction, or another source representation.
+ontoTF does not need to know whether those semantics originated in JSON, XML, TEI, CSV, a database, PDF extraction, or another source representation.
 
 ## 4. TF structural contract retained from R-007
 
@@ -92,7 +92,7 @@ The R-007 amendment supersedes only these conclusions:
 - `sidecar/native-adapter` as an initial/native carrier dimension;
 - ORACC catalogue/object semantics as evidence for adapter-side runtime addressing;
 - P-003 requirements to preserve/add generic sidecar/native-adapter carrier mechanics;
-- RED cases that require sidecar entities to resolve through TFont runtime.
+- RED cases that require sidecar entities to resolve through ontoTF runtime.
 
 The R-007 conclusions that remain valid include neutral `oslots`, `Slot`, `slotLink`, TF-node extent/anchor interpretations, discontinuous slot-set preservation, native edge direction/value semantics, and the rule that stronger domain semantics cannot be inferred from TF structure alone.
 

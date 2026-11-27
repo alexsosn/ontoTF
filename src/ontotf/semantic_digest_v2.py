@@ -13,7 +13,7 @@ from .digests import (
 )
 
 # Compatibility alias for the internal implementation module. The public
-# contract uses PROJECTION_SEMANTIC_ALGORITHM from tfont.digests.
+# contract uses PROJECTION_SEMANTIC_ALGORITHM from ontotf.digests.
 PROJECTION_SEMANTIC_ALGORITHM_V1 = PROJECTION_SEMANTIC_ALGORITHM
 
 _AUDIT_ONLY_TOP_LEVEL = {
@@ -73,7 +73,7 @@ def _project(
         identity = id(value)
         if identity in active:
             _json_boundary_fail(
-                "recursive object is outside the TFont JSON model", path
+                "recursive object is outside the ontoTF JSON model", path
             )
         container_depth = depth + 1
         if container_depth > MAX_JSON_NESTING:
@@ -103,7 +103,7 @@ def _project(
         identity = id(value)
         if identity in active:
             _json_boundary_fail(
-                "recursive list is outside the TFont JSON model", path
+                "recursive list is outside the ontoTF JSON model", path
             )
         container_depth = depth + 1
         if container_depth > MAX_JSON_NESTING:

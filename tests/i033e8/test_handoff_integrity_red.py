@@ -10,7 +10,7 @@ import hashlib
 import unittest
 from unittest.mock import patch
 
-from tfont.digests import canonical_json_bytes
+from ontotf.digests import canonical_json_bytes
 from tests.i033e.test_overlay_handoff import cohort, assemble
 
 
@@ -32,7 +32,7 @@ class IntegrityRedTests(unittest.TestCase):
         )
 
     def validate(self, pack):
-        from tfont.overlay_handoff import verify_overlay_handoff_integrity
+        from ontotf.overlay_handoff import verify_overlay_handoff_integrity
         return verify_overlay_handoff_integrity(pack)
 
     def test_actual_ten_category_pilot_is_integrity_valid_but_not_approved(self):
@@ -129,7 +129,7 @@ class IntegrityRedTests(unittest.TestCase):
                 self.packet,self.ledger,self.read,
             )
         ),patch.object(cli,"evaluate_live_gate",return_value=report),patch(
-            "tfont.overlay_handoff.verify_overlay_handoff_integrity",
+            "ontotf.overlay_handoff.verify_overlay_handoff_integrity",
             side_effect=ValueError("structural gate rejected")
         ),patch("sys.argv",["gate","--from-pr-head","--publish-handoff"]),patch(
             "sys.stdout",new=io.StringIO()

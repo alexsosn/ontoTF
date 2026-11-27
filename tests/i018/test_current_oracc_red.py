@@ -4,8 +4,8 @@ import json
 import unittest
 from pathlib import Path
 
-import tfont
-from tfont import coverage
+import ontotf
+from ontotf import coverage
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -58,7 +58,7 @@ class I018CurrentOraccRedTests(unittest.TestCase):
             "RED: current ORACC coverage resource constant is absent",
         )
         self.assertEqual(
-            getattr(tfont, "P004_ORACC_0_4_0_RESOURCE", None),
+            getattr(ontotf, "P004_ORACC_0_4_0_RESOURCE", None),
             RESOURCE,
             "RED: current ORACC coverage resource constant is not exported",
         )

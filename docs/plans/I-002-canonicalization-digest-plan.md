@@ -17,7 +17,7 @@ It creates:
 - evidence payload and normalized-record digest helpers;
 - mapping semantic projection/digest helpers;
 - profile semantic projection/digest helpers;
-- stable algorithm identifiers and a TFont-owned digest/canonicalization error contract;
+- stable algorithm identifiers and a ontoTF-owned digest/canonicalization error contract;
 - independent fixed vectors and CI.
 
 It does **not** resolve IDs, inspect corpus bytes, compose parent component identities, verify evidence against external files, verify review equality, fetch ontology terms, calculate compatibility states/reports, compile semantic IR, generate runtime artifacts, or resolve queries.
@@ -30,12 +30,12 @@ Add one runtime dependency:
 rfc8785>=0.1.4,<0.2
 ```
 
-The package is used only behind `tfont.digests`; callers do not depend on its exception classes or permissive tuple handling.
+The package is used only behind `ontotf.digests`; callers do not depend on its exception classes or permissive tuple handling.
 
 ## 3. Production layout
 
 ```text
-src/tfont/
+src/ontotf/
   digests.py
   __init__.py        # exports stable public helpers/errors
 
@@ -88,7 +88,7 @@ class DigestError(ValueError):
 
 Stable categories:
 
-- `non_json_value` — TFont JSON-domain violation such as tuple, bytes, non-string key, custom object;
+- `non_json_value` — ontoTF JSON-domain violation such as tuple, bytes, non-string key, custom object;
 - `integer_domain` — integer outside JCS safe interoperability domain;
 - `float_domain` — NaN or infinity / non-representable JCS float;
 - `unicode_domain` — lone surrogate or otherwise non-UTF-8-serializable string;
@@ -96,7 +96,7 @@ Stable categories:
 - `duplicate_logical_path` — source bundle has two entries for the same logical path;
 - `projection_error` — required projection field missing, prohibited/unknown field present, or wrong local projection shape.
 
-Third-party exception strings are diagnostic only. Tests assert TFont category/path.
+Third-party exception strings are diagnostic only. Tests assert ontoTF category/path.
 
 ## 6. Strict JCS input guard
 
@@ -106,7 +106,7 @@ Third-party exception strings are diagnostic only. Tests assert TFont category/p
 canonical_json_bytes(value: JSONValue) -> bytes
 ```
 
-Before delegating to `rfc8785.dumps`, recursively accept only exact TFont JSON values:
+Before delegating to `rfc8785.dumps`, recursively accept only exact ontoTF JSON values:
 
 - `None`;
 - exact `bool`;
@@ -363,7 +363,7 @@ This helper does not invent or resolve those records; it only gives the assemble
 
 ## 14. Public exports
 
-`tfont.__init__` adds:
+`ontotf.__init__` adds:
 
 ```text
 DigestError
@@ -377,11 +377,11 @@ mapping_semantic_digest
 profile_semantic_digest
 ```
 
-Projection helpers and algorithm constants remain importable from `tfont.digests`; only the common end-user helpers are promoted at package root.
+Projection helpers and algorithm constants remain importable from `ontotf.digests`; only the common end-user helpers are promoted at package root.
 
 ## 15. RED sequence
 
-Before `src/tfont/digests.py` or the new dependency exists, add focused tests and workflow that import the missing module and fail for the intended missing-production reason.
+Before `src/ontotf/digests.py` or the new dependency exists, add focused tests and workflow that import the missing module and fail for the intended missing-production reason.
 
 RED tests must already contain literal independent expectations for:
 
@@ -406,7 +406,7 @@ Confirm exact-head RED in CI before production code.
 ## 16. GREEN implementation order
 
 1. update `pyproject.toml` dependency only after RED is recorded;
-2. add `src/tfont/digests.py` and public exports;
+2. add `src/ontotf/digests.py` and public exports;
 3. make RFC vectors green first;
 4. make source digest vectors green;
 5. make evidence/mapping/profile projection vectors green;
@@ -419,7 +419,7 @@ Confirm exact-head RED in CI before production code.
 `.github/workflows/i002-validation.yml` triggers on:
 
 - `pyproject.toml`;
-- `src/tfont/**`;
+- `src/ontotf/**`;
 - `tests/i002/**`;
 - I-002 research/plan;
 - the workflow itself.

@@ -85,7 +85,7 @@ class ProductionBundleError(ValueError):
 
 
 def _artifact(kind: str, schema_name: str, source_name: str) -> SemanticArtifact:
-    resource = files("tfont").joinpath(*source_name.split("/"))
+    resource = files("ontotf").joinpath(*source_name.split("/"))
     data = loads_source(
         resource.read_text(encoding="utf-8"),
         format="json",

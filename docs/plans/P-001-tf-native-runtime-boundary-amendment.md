@@ -28,7 +28,7 @@ Corpus-specific materializers own source-format ingestion. Storage location or s
 P-001 originally used one component vocabulary for two concerns that must now be separated:
 
 1. **parent/component identity compatibility** — identifying bytes or release artifacts that belonged to an older reviewed parent/profile contract;
-2. **executable/query carrier semantics** — identifying the native structures to which a TFont semantic request may compile.
+2. **executable/query carrier semantics** — identifying the native structures to which a ontoTF semantic request may compile.
 
 A component record can be retained while reading an old parent manifest without becoming an executable selector surface.
 
@@ -75,7 +75,7 @@ Still-valid TF-native dependency families include, subject to P-002/P-003 final 
 
 ## 4. v1 source compatibility and versioned migration
 
-A-001 is an architecture correction, not an unversioned rewrite of already-shipped v1 source acceptance. Therefore this PR does not mutate `src/tfont/schemas/parent-component-manifest.schema.json` in place.
+A-001 is an architecture correction, not an unversioned rewrite of already-shipped v1 source acceptance. Therefore this PR does not mutate `src/ontotf/schemas/parent-component-manifest.schema.json` in place.
 
 Until a reviewed migration lands:
 
@@ -88,11 +88,11 @@ Until a reviewed migration lands:
 
 Any I-004/P-003 resolver or validator work that would execute a legacy label before that migration is blocked.
 
-## 5. Generated TFont runtime artifacts are not native sidecars
+## 5. Generated ontoTF runtime artifacts are not native sidecars
 
-P-001 section 1 uses the phrase `runtime sidecar` for a **TFont-generated derivative** compiled from validated semantic IR. A-001 does not turn generated indexes/reference artifacts into corpus-native external query carriers.
+P-001 section 1 uses the phrase `runtime sidecar` for a **ontoTF-generated derivative** compiled from validated semantic IR. A-001 does not turn generated indexes/reference artifacts into corpus-native external query carriers.
 
-That generated-artifact concept remains valid, though P-003 may rename it to avoid confusion with the superseded native-sidecar terminology. It is deterministic TFont output, not an arbitrary external source store.
+That generated-artifact concept remains valid, though P-003 may rename it to avoid confusion with the superseded native-sidecar terminology. It is deterministic ontoTF output, not an arbitrary external source store.
 
 ## 6. Foundation contracts preserved
 

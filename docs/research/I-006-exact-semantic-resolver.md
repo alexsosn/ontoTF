@@ -54,7 +54,7 @@ I-006 still checks `assessment == exact`; I-005 intentionally indexes reviewed s
 
 ### 3.1 The old compatibility report is not P-003 runtime authority
 
-`src/tfont/schemas/compatibility-report.schema.json` is still the P-001/v1 shape. It binds:
+`src/ontotf/schemas/compatibility-report.schema.json` is still the P-001/v1 shape. It binds:
 
 - `profile_semantic_digest` from the superseded pre-P-003 profile identity model;
 - expected/observed parent manifest digests;

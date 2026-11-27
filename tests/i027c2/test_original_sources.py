@@ -7,8 +7,8 @@ import xml.etree.ElementTree as ET
 from importlib.resources import files
 from pathlib import Path
 
-from tfont.production_bundles import load_production_adj_adv_bundle
-from tfont.digests import evidence_record_digest
+from ontotf.production_bundles import load_production_adj_adv_bundle
+from ontotf.digests import evidence_record_digest
 
 ROOT=Path(__file__).resolve().parents[2]
 MATRIX=ROOT/"docs/research/data/generated/i027c1/native-pos-matrix.json"
@@ -44,7 +44,7 @@ class OriginalPOSReviewEvidence(unittest.TestCase):
                          "4db00e2157915495e1a4d3d57e41223df24775da")
 
     def test_olia_classes_exist_as_real_rdf_owl_class_declarations(self):
-        root=files("tfont").joinpath(
+        root=files("ontotf").joinpath(
             "resources","ontologies","olia",OLIA_REVISION,"olia.owl"
         )
         raw=root.read_bytes()

@@ -5,11 +5,11 @@ from dataclasses import replace
 import unittest
 from unittest.mock import patch
 
-from tfont.published_deltas import (
+from ontotf.published_deltas import (
     PublishedDeltaError, build_published_delta, load_published_delta,
 )
-from tfont.release_registry import load_profile
-from tfont.semantic_validation import SemanticArtifact, SemanticSourceBundle
+from ontotf.release_registry import load_profile
+from ontotf.semantic_validation import SemanticArtifact, SemanticSourceBundle
 
 
 class PublishedDeltaAdversarial(unittest.TestCase):
@@ -53,7 +53,7 @@ class PublishedDeltaAdversarial(unittest.TestCase):
             load_published_delta(altered)
 
     def test_compiler_rejects_edited_inherited_release_or_component_identity(self):
-        from tfont import published_deltas as core
+        from ontotf import published_deltas as core
         original=load_profile("bhsa","0.3.0")
         next_release=load_profile("bhsa","0.4.0")
         mutations=("inherited-review","parent","missing-evidence","source-revision")
@@ -78,7 +78,7 @@ class PublishedDeltaAdversarial(unittest.TestCase):
                     build_published_delta("bhsa","0.3.0","0.4.0")
 
     def test_dropped_inherited_review_is_not_a_valid_overlay(self):
-        from tfont import published_deltas as core
+        from ontotf import published_deltas as core
 
         base=load_profile("bhsa","0.3.0")
         source=load_profile("bhsa","0.4.0")

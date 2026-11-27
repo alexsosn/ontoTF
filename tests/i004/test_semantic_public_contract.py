@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import unittest
 
-import tfont
-import tfont.digests as digests
-import tfont.semantic_vocabulary as semantic_vocabulary
-from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
+import ontotf
+import ontotf.digests as digests
+import ontotf.semantic_vocabulary as semantic_vocabulary
+from ontotf.semantic_validation import SemanticValidationError, validate_semantic_bundle
 from tests.i004.test_semantic_validation_phase1 import base_sources, bundle as phase1_bundle
 from tests.i004.test_semantic_validation_phase3 import bundle, reviewed_sources
 
@@ -36,7 +36,7 @@ FROZEN_I004_CATEGORIES = frozenset(
 
 
 class I004PublicContractTests(unittest.TestCase):
-    def test_mapping_v2_digest_api_is_available_from_tfont_digests(self):
+    def test_mapping_v2_digest_api_is_available_from_ontotf_digests(self):
         self.assertEqual(
             getattr(digests, "MAPPING_SEMANTIC_ALGORITHM_V2", None),
             "tfont-mapping-semantic-sha256-v2",
@@ -60,7 +60,7 @@ class I004PublicContractTests(unittest.TestCase):
             "ValidatedSemanticBundle",
             "validate_semantic_bundle",
         ):
-            self.assertTrue(hasattr(tfont, name), name)
+            self.assertTrue(hasattr(ontotf, name), name)
 
     def test_production_exposes_exact_frozen_diagnostic_categories(self):
         self.assertEqual(

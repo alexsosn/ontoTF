@@ -56,13 +56,13 @@ jobs:
           cp "$GITHUB_WORKSPACE/scripts/acceptance/v01_noun.py" "$WORK/v01_noun.py"
           cd "$WORK"
           unset PYTHONPATH PYTHONHOME
-          OUTPUT="$(TFONT_ACCEPTANCE_FORBID_ROOT="$GITHUB_WORKSPACE" "$VENV/bin/python" -I v01_noun.py)"
+          OUTPUT="$(ONTOTF_ACCEPTANCE_FORBID_ROOT="$GITHUB_WORKSPACE" "$VENV/bin/python" -I v01_noun.py)"
           printf '%s\n' "$OUTPUT"
           FINAL="$(printf '%s\n' "$OUTPUT" | tail -n 1)"
           "$VENV/bin/python" -I -c '
           import json, sys
           row = json.loads(sys.argv[1])
-          assert row["contract"] == "tfont-v01-noun-acceptance-v1"
+          assert row["contract"] == "ontotf-v01-noun-acceptance-v1"
           assert row["status"] == "pass"
           assert row["corpora"] == {"bhsa": [1, 2], "extrabiblical": [21, 22], "syriac": [11, 12]}
           fingerprint = row["resolution_fingerprint"]

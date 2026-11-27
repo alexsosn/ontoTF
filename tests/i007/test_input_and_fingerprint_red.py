@@ -5,8 +5,8 @@ import unittest
 from dataclasses import replace
 
 from tests.i006._fixtures import compiled_noun_ir, with_bundle_digest
-from tfont.digests import canonical_json_bytes
-import tfont.runtime_prerequisites as runtime
+from ontotf.digests import canonical_json_bytes
+import ontotf.runtime_prerequisites as runtime
 
 
 class Observation:

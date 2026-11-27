@@ -64,7 +64,7 @@ def _path(name: str, prefix: str) -> str:
 def packaged_resource(name: str) -> dict[str, Any]:
     _path(name, "resources")
     try:
-        raw = files("tfont").joinpath(*name.split("/")).read_text(encoding="utf-8")
+        raw = files("ontotf").joinpath(*name.split("/")).read_text(encoding="utf-8")
         value = loads_source(raw, format="json", source_name=name)
     except (OSError, UnicodeError, ValueError) as exc:
         raise BatchProposalError(f"invalid packaged resource: {name}") from exc

@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 PIN = "ad69400f5446e1c8217af01659c7c10ab00c015b"
 CRM = "http://www.cidoc-crm.org/extensions/crmtex/"

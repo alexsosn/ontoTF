@@ -4,7 +4,7 @@ from pathlib import Path
 
 from scripts.pages.scoped_progress import scoped_progress, eligible_progress
 from scripts.pages.build_progress import build_report, render
-from tfont.xml_mappings import Mapping
+from ontotf.xml_mappings import Mapping
 
 
 def row(**kw):

@@ -5,16 +5,16 @@ import unittest
 
 from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import noun_semantic_key
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.semantic_execution import (
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_execution import (
     ExactExecutionError,
     LoadedComponentContext,
     LoadedCorpusContext,
     execute_exact_semantic,
 )
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_resolver import SemanticResolveRequest, SemanticResolutionError
-from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_resolver import SemanticResolveRequest, SemanticResolutionError
+from ontotf.semantic_validation import SemanticValidationError, validate_semantic_bundle
 
 
 def _refresh_mapping(mapping):

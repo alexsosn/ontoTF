@@ -11,16 +11,16 @@ import unittest
 from unittest.mock import patch
 
 from tests.i033e.test_overlay_handoff import assemble, cohort
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.coverage import (
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.coverage import (
     coverage_report, load_packaged_coverage_manifest, validate_coverage_manifest,
 )
-from tfont.coverage_overlay import (
+from ontotf.coverage_overlay import (
     CoverageOverlayError, apply_sparse_coverage_delta, build_sparse_coverage_delta,
 )
-from tfont.digests import canonical_json_bytes
-from tfont.overlay_handoff import build_overlay_handoff
-from tfont.review_packets import verify_review_packet
+from ontotf.digests import canonical_json_bytes
+from ontotf.overlay_handoff import build_overlay_handoff
+from ontotf.review_packets import verify_review_packet
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -170,7 +170,7 @@ class SparseCoverageOverlayTDD(unittest.TestCase):
         }
         def loader(resource, corpus):
             return tampered if corpus == "bhsa" else load_packaged_coverage_manifest(resource, corpus)
-        with patch("tfont.coverage_overlay.load_packaged_coverage_manifest", side_effect=loader):
+        with patch("ontotf.coverage_overlay.load_packaged_coverage_manifest", side_effect=loader):
             with self.assertRaises(CoverageOverlayError):
                 apply_sparse_coverage_delta(self.pack, delta)
 

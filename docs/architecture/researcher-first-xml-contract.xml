@@ -16,7 +16,7 @@
   <requirements>
     <requirement name="one-file-contribution">
       The sole editable source of active mappings for corpus X is
-      src/tfont/mappings/X.xml. A contributor edits that file, or creates it for
+      src/ontotf/mappings/X.xml. A contributor edits that file, or creates it for
       a new corpus. No manifest, Python switch, import list, version registry,
       review packet, generated JSON, code file or workflow needs editing.
       A second file is optional only for genuinely separate evidence supplied
@@ -88,8 +88,8 @@
   </requirements>
 
   <xml-format>
-    <location>src/tfont/mappings/{corpus}.xml</location>
-    <schema>src/tfont/mappings/schema.xsd</schema>
+    <location>src/ontotf/mappings/{corpus}.xml</location>
+    <schema>src/ontotf/mappings/schema.xsd</schema>
     <root>
       &lt;mappings corpus="..." source="..." corpusVersion="..."&gt;
       Optional corpusVersion identifies the actual native source release.

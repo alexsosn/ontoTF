@@ -6,22 +6,22 @@ on:
       - impl/i010-value-set-predicate
     paths:
       - 'tests/i010/**'
-      - 'src/tfont/schemas/mapping.schema.json'
-      - 'src/tfont/semantic_digest_v2.py'
-      - 'src/tfont/semantic_ir.py'
-      - 'src/tfont/semantic_child_validation.py'
-      - 'src/tfont/semantic_resolver.py'
-      - 'src/tfont/semantic_execution.py'
+      - 'src/ontotf/schemas/mapping.schema.json'
+      - 'src/ontotf/semantic_digest_v2.py'
+      - 'src/ontotf/semantic_ir.py'
+      - 'src/ontotf/semantic_child_validation.py'
+      - 'src/ontotf/semantic_resolver.py'
+      - 'src/ontotf/semantic_execution.py'
       - '.github/workflows/i010-value-set.yml'
   pull_request:
     paths:
       - 'tests/i010/**'
-      - 'src/tfont/schemas/mapping.schema.json'
-      - 'src/tfont/semantic_digest_v2.py'
-      - 'src/tfont/semantic_ir.py'
-      - 'src/tfont/semantic_child_validation.py'
-      - 'src/tfont/semantic_resolver.py'
-      - 'src/tfont/semantic_execution.py'
+      - 'src/ontotf/schemas/mapping.schema.json'
+      - 'src/ontotf/semantic_digest_v2.py'
+      - 'src/ontotf/semantic_ir.py'
+      - 'src/ontotf/semantic_child_validation.py'
+      - 'src/ontotf/semantic_resolver.py'
+      - 'src/ontotf/semantic_execution.py'
       - '.github/workflows/i010-value-set.yml'
 
 permissions:

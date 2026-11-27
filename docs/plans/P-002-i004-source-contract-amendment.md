@@ -15,7 +15,7 @@ External identifiers/URIs may remain reviewed identity, authority, semantic, evi
 
 ## 2. Production scope
 
-Production edits stay limited to `src/tfont/schemas/profile.schema.json` plus existing profile-v2 fixture updates. No runtime/compiler/resolver code and no `mapping.schema.json` change.
+Production edits stay limited to `src/ontotf/schemas/profile.schema.json` plus existing profile-v2 fixture updates. No runtime/compiler/resolver code and no `mapping.schema.json` change.
 
 Profile schema version is **2**. `dependency_contract_version` is exactly **1** (`const: 1`). Unknown future dependency-contract versions fail closed.
 

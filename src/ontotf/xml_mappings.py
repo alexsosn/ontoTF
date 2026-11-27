@@ -165,7 +165,7 @@ class MappingCatalog:
 
     def __init__(self, directory: Any = None) -> None:
         self.directory = (Path(directory) if directory is not None
-                          else files("tfont").joinpath("mappings"))
+                          else files("ontotf").joinpath("mappings"))
         self._loaded: dict[str, tuple[Mapping, ...]] = {}
 
     def list_corpora(self) -> tuple[str, ...]:

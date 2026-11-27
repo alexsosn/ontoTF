@@ -57,7 +57,7 @@
     "native_feature": "vs",
     "assessment": "native-only",
     "common_target": false,
-    "coverage_manifest": "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
+    "coverage_manifest": "src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
     "source_ids": [
       "i027a:bhsa-vs-pinned-source-review"
     ],

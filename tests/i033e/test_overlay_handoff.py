@@ -8,11 +8,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tfont.batch_proposals import load_ledger, packaged_resource
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import evidence_record_digest
-from tfont.review_packets import build_review_packet
-from tfont.external_review_gate import evaluate_review_snapshot
+from ontotf.batch_proposals import load_ledger, packaged_resource
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import evidence_record_digest
+from ontotf.review_packets import build_review_packet
+from ontotf.external_review_gate import evaluate_review_snapshot
 from tests.i033e import test_external_review_red as reviews
 from tests.i033e import test_protected_pr_batch_gate_red as transport
 
@@ -55,7 +55,7 @@ def cohort():
 
 
 def assemble(ledger, read, packet, report):
-    from tfont.overlay_handoff import build_overlay_handoff
+    from ontotf.overlay_handoff import build_overlay_handoff
     return build_overlay_handoff(packet, ledger, report, resource_loader=read)
 
 
@@ -128,7 +128,7 @@ class OverlayHandoffTests(unittest.TestCase):
         self.assertEqual(pack["review_observation"]["counts"], report["counts"])
 
     def test_inherited_native_only_coverage_remains_authoritative(self):
-        from tfont.coverage import load_packaged_coverage_manifest
+        from ontotf.coverage import load_packaged_coverage_manifest
         ledger, read, packet, report = cohort()
         real = load_packaged_coverage_manifest("p004-i027c2-bhsa-adj-adv-v1", "bhsa")
         native = next(item["accounting"]["production"] for item in real["semantic_items"]
@@ -136,7 +136,7 @@ class OverlayHandoffTests(unittest.TestCase):
         next(item for item in real["semantic_items"] if item["item_id"] == 'node_value:sp="art"')["accounting"]["production"] = copy.deepcopy(native)
         def coverage(name, corpus):
             return real if corpus == "bhsa" else load_packaged_coverage_manifest(name, corpus)
-        with patch("tfont.overlay_handoff.load_packaged_coverage_manifest", side_effect=coverage), self.assertRaisesRegex(ValueError, "reviewed coverage"):
+        with patch("ontotf.overlay_handoff.load_packaged_coverage_manifest", side_effect=coverage), self.assertRaisesRegex(ValueError, "reviewed coverage"):
             assemble(ledger, read, packet, report)
 
     def test_cli_final_revocation_no_write_and_exclusive_output(self):

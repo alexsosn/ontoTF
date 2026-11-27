@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tfont.source_validation import SourceValidationError, validate_source
+from ontotf.source_validation import SourceValidationError, validate_source
 from tests.i004.test_mapping_v2_schema import valid_mapping_document
 
 

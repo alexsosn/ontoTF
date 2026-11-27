@@ -19,8 +19,8 @@ The current interpretation is therefore:
 - semantic/source slots and synthetic/empty technical slots remain distinguishable;
 - ancestors reuse descendant anchors rather than receiving redundant synthetic slots;
 - no neighbouring real slot is borrowed and no visible sign content is fabricated;
-- TFont consumes the resulting materialized TF structure and does not need an ORACC-specific external-record adapter.
+- ontoTF consumes the resulting materialized TF structure and does not need an ORACC-specific external-record adapter.
 
 Current merged R-011 already reflects this newer state: its ORACC pilot pin was refreshed against the active ORACC-TF model after ADR-0001 and treats R-005 only as historical semantic-census input for the zero-span question.
 
-This amendment does not claim that arbitrary external files can never exist next to a corpus. It only removes the obsolete inference that ORACC zero-span behavior justifies a generic TFont `sidecar` / `native-adapter` runtime abstraction. Data genuinely outside a TF/Context-Fabric corpus remains outside baseline TFont unless a separately reviewed architecture extension establishes otherwise.
+This amendment does not claim that arbitrary external files can never exist next to a corpus. It only removes the obsolete inference that ORACC zero-span behavior justifies a generic ontoTF `sidecar` / `native-adapter` runtime abstraction. Data genuinely outside a TF/Context-Fabric corpus remains outside baseline ontoTF unless a separately reviewed architecture extension establishes otherwise.

@@ -15,7 +15,7 @@ Original BHSA source revision `ETCBC/bhsa@4db00e2157915495e1a4d3d57e41223df24775
 | `word.st` | `docs/features/st.md` lines 17–21 | a, c, e, NA | c construct; a absolute, e emphatic; original docs themselves warn state meanings require clarification |
 | `word.vt` | `docs/features/vt.md` lines 14, 20–27 | NA, perf, impf, wayq, impv, infa, infc, ptca, ptcp | Hebrew verbal aspect/tense names are not generally interchangeable with European tense classes |
 
-The frozen production denominator is `src/tfont/resources/coverage/p004-i027c2-bhsa-adj-adv-v1/bhsa.json` (219 items, source revision pinned). These 29 exact `node_value` identifiers are already present; none was production-reviewed in that manifest. Historical 0.4.0 masculine/feminine and singular/plural/double *host-feature* mappings exist and remain unchanged; **pronominal suffix features are different native selectors**.
+The frozen production denominator is `src/ontotf/resources/coverage/p004-i027c2-bhsa-adj-adv-v1/bhsa.json` (219 items, source revision pinned). These 29 exact `node_value` identifiers are already present; none was production-reviewed in that manifest. Historical 0.4.0 masculine/feminine and singular/plural/double *host-feature* mappings exist and remain unchanged; **pronominal suffix features are different native selectors**.
 
 The actual pinned OLiA `acoli-repo/olia@d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/owl/core/olia.owl` (installed SHA-256 `5983683f27ba524027ffa12a02aead4a115baf9c8933079eabbb4aa71be4e9fd`) has declaration lines:
 `First` **4986**, `Second` **4976**, `Third` **4963** (PersonFeature, **not** FirstPersonPronoun);

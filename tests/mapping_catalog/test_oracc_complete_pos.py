@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 CORPUS = "assyrian-royal-inscriptions"
 VERSION = "1.0.0"

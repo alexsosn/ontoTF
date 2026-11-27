@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import profile_semantic_digest, source_bundle_digest
+from ontotf.digests import profile_semantic_digest, source_bundle_digest
 
 
 def semantic_projection() -> dict:

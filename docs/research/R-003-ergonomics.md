@@ -6,7 +6,7 @@
 
 ## Decision
 
-TFont should expose a **hybrid semantic workflow** above native Context-Fabric:
+ontoTF should expose a **hybrid semantic workflow** above native Context-Fabric:
 
 1. `semantic_capabilities` — discover semantic profiles and concept support;
 2. `semantic_resolve` — build an inspectable corpus-specific native query plan without executing it;
@@ -37,11 +37,11 @@ The inspected Context-Fabric source is the current repository head at research t
 - `cfabric-mcp`: `0.1.7`;
 - Context-Fabric core at the same revision: `0.5.7`.
 
-The **current host implementation** is the pinned Context-Fabric MCP server above. Its package metadata declares `mcp>=1.0,<2`, and its server imports the v1 `FastMCP` API. That is evidence about the host implementation, not evidence that it already implements the newest protocol revision. Depending on the installed v1 SDK/client pair, the negotiated protocol may be a **handshake-era** revision. TFont therefore must not infer 2026 stateless-protocol capabilities merely from the fact that `cfabric-mcp 0.1.7` is current.
+The **current host implementation** is the pinned Context-Fabric MCP server above. Its package metadata declares `mcp>=1.0,<2`, and its server imports the v1 `FastMCP` API. That is evidence about the host implementation, not evidence that it already implements the newest protocol revision. Depending on the installed v1 SDK/client pair, the negotiated protocol may be a **handshake-era** revision. ontoTF therefore must not infer 2026 stateless-protocol capabilities merely from the fact that `cfabric-mcp 0.1.7` is current.
 
-The existing MCP surface already provides corpus discovery, feature inspection, search, continuation/export, passage lookup, and node-feature access. TFont should not duplicate that API. It should add only semantic planning and execution above it.
+The existing MCP surface already provides corpus discovery, feature inspection, search, continuation/export, passage lookup, and node-feature access. ontoTF should not duplicate that API. It should add only semantic planning and execution above it.
 
-The existing progressive-disclosure pattern is sound: inspect a corpus, inspect relevant features, then search. TFont compresses repeated semantic discovery when a reviewed mapping already exists.
+The existing progressive-disclosure pattern is sound: inspect a corpus, inspect relevant features, then search. ontoTF compresses repeated semantic discovery when a reviewed mapping already exists.
 
 ### 1.2 MCP protocol assumptions
 
@@ -57,7 +57,7 @@ The integration contract is therefore negotiation-aware rather than version-assu
 
 The portable invariant is: **legacy/handshake host and 2026 stateless host produce equivalent semantic resolution semantics** for the same corpus/profile/request, apart from protocol-specific transport metadata. A protocol upgrade is therefore not a semantic migration.
 
-TFont uses explicit resolution fingerprints rather than hidden session identity. On stateless `2026-07-28` transports this is mandatory; on handshake-era transports it remains the reproducible design. Read-only/idempotent annotations remain hints rather than correctness mechanisms, and model/server instructions never enforce semantic safety.
+ontoTF uses explicit resolution fingerprints rather than hidden session identity. On stateless `2026-07-28` transports this is mandatory; on handshake-era transports it remains the reproducible design. Read-only/idempotent annotations remain hints rather than correctness mechanisms, and model/server instructions never enforce semantic safety.
 
 ### 1.3 Accepted upstream contracts
 
@@ -140,9 +140,9 @@ R-005 `S/C/B/N/R/U/L` classifications remain research-stage evidence. They canno
 
 ### 3.1 Assessment versus publication relation
 
-The TFont **mapping assessment** controls runtime/query planning. An optional **publication relation** records a formal RDF/OWL/SKOS relation only when the target formalism justifies it.
+The ontoTF **mapping assessment** controls runtime/query planning. An optional **publication relation** records a formal RDF/OWL/SKOS relation only when the target formalism justifies it.
 
-The two fields are independent. An OLiA OWL class may have an approved TFont assessment while `publication_relation` remains absent because no OWL/RDFS relation has been independently justified.
+The two fields are independent. An OLiA OWL class may have an approved ontoTF assessment while `publication_relation` remains absent because no OWL/RDFS relation has been independently justified.
 
 SKOS mapping predicates are not the generic runtime assessment vocabulary.
 
@@ -150,7 +150,7 @@ SKOS mapping predicates are not the generic runtime assessment vocabulary.
 
 Direction is always native/source concept → external target.
 
-When an agent requests an external concept and TFont realizes it through a native concept:
+When an agent requests an external concept and ontoTF realizes it through a native concept:
 
 - `broader` can under-cover the external request because the native/source concept is narrower than the external target;
 - `narrower` can over-cover the external request because the native/source concept is broader than the external target;
@@ -191,7 +191,7 @@ The resolver, not the LLM, decides whether each requested semantic unit is suppo
 
 `semantic_capabilities` answers:
 
-- whether each corpus has a TFont profile;
+- whether each corpus has a ontoTF profile;
 - compatibility state and its component-aware evidence;
 - active ontology locks/profiles;
 - semantic domains covered;
@@ -204,7 +204,7 @@ Default output is compact and does not dump all mapping rows.
 Concept-level entries contain at least:
 
 - external target URI/label when one exists;
-- TFont mapping assessment;
+- ontoTF mapping assessment;
 - optional publication relation;
 - native node type and native feature/value or path;
 - applicability conditions;
@@ -285,7 +285,7 @@ Aggregate plan states are:
 
 ### 6.2 No silent relaxation
 
-If a request is `Noun AND Feminine AND Plural` and one corpus supports only noun and plural, TFont does not execute the surviving conjunction.
+If a request is `Noun AND Feminine AND Plural` and one corpus supports only noun and plural, ontoTF does not execute the surviving conjunction.
 
 An approximate/relaxed request must be submitted explicitly. The plan records which assessment or dropped condition the caller chose to permit.
 
@@ -316,7 +316,7 @@ Compact provenance includes:
 - parent component manifest;
 - component identities used by the profile;
 - compatibility state and dependency evidence;
-- TFont profile/mapping version;
+- ontoTF profile/mapping version;
 - mapping assertion ID;
 - external target URI when one exists;
 - ontology lock/release;
@@ -366,7 +366,7 @@ sources:
   - docs/features/gn.md
 ```
 
-`assessment` is TFont runtime governance. `publication_relation` is independent and may be null.
+`assessment` is ontoTF runtime governance. `publication_relation` is independent and may be null.
 
 ### 9.2 Generated formats
 
@@ -388,11 +388,11 @@ The POC has no bidirectional YAML↔RDF editing path.
 Later implementation should provide behavior equivalent to:
 
 ```text
-tfont validate
-tfont coverage bhsa
-tfont explain bhsa native:word.gn=m
-tfont explain bhsa ontology:http://purl.org/olia/...
-tfont diff --from tfont-bhsa@0.1.0 --to tfont-bhsa@0.2.0
+ontotf validate
+ontotf coverage bhsa
+ontotf explain bhsa native:word.gn=m
+ontotf explain bhsa ontology:http://purl.org/olia/...
+ontotf diff --from tfont-bhsa@0.1.0 --to tfont-bhsa@0.2.0
 ```
 
 `validate` checks schema, ontology locks, component-aware parent compatibility, mapping assessments, duplicate/conflicting IDs, ambiguities, and generated-artifact drift.
@@ -419,17 +419,17 @@ Suggested stable machine categories:
 
 | code | meaning | default behavior |
 |---|---|---|
-| `TFONT_PROFILE_NOT_FOUND` | corpus has no profile | tool error; suggest native discovery |
-| `TFONT_PARENT_UNVERIFIED` | exact identity absent and complete compatibility not established | diagnostic capability result; resolution non-executable |
-| `TFONT_PARENT_INCOMPATIBLE` | at least one required parent dependency failed | tool error; no semantic execution |
-| `TFONT_ONTOLOGY_LOCK_MISSING` | pinned ontology snapshot unavailable | tool error |
-| `TFONT_TERM_UNKNOWN` | requested external term unknown in active locks | tool error/capability miss |
-| `TFONT_UNSUPPORTED` | active profile cannot express required semantics | non-executable resolution; search tool error |
-| `TFONT_AMBIGUOUS` | no single reviewed target/assessment | non-executable resolution |
-| `TFONT_APPROXIMATION_REQUIRED` | exact mode would require approximate assessment | non-executable in exact mode |
-| `TFONT_UNSAFE_RELAXATION` | execution would drop or silently widen/narrow a required constraint | tool error |
-| `TFONT_NATIVE_QUERY_INVALID` | generated native query rejected | profile/internal defect |
-| `TFONT_INTERNAL_INCONSISTENCY` | search plan differs from resolver plan | hard error; never return results |
+| `ONTOTF_PROFILE_NOT_FOUND` | corpus has no profile | tool error; suggest native discovery |
+| `ONTOTF_PARENT_UNVERIFIED` | exact identity absent and complete compatibility not established | diagnostic capability result; resolution non-executable |
+| `ONTOTF_PARENT_INCOMPATIBLE` | at least one required parent dependency failed | tool error; no semantic execution |
+| `ONTOTF_ONTOLOGY_LOCK_MISSING` | pinned ontology snapshot unavailable | tool error |
+| `ONTOTF_TERM_UNKNOWN` | requested external term unknown in active locks | tool error/capability miss |
+| `ONTOTF_UNSUPPORTED` | active profile cannot express required semantics | non-executable resolution; search tool error |
+| `ONTOTF_AMBIGUOUS` | no single reviewed target/assessment | non-executable resolution |
+| `ONTOTF_APPROXIMATION_REQUIRED` | exact mode would require approximate assessment | non-executable in exact mode |
+| `ONTOTF_UNSAFE_RELAXATION` | execution would drop or silently widen/narrow a required constraint | tool error |
+| `ONTOTF_NATIVE_QUERY_INVALID` | generated native query rejected | profile/internal defect |
+| `ONTOTF_INTERNAL_INCONSISTENCY` | search plan differs from resolver plan | hard error; never return results |
 
 Expected semantic domain failures use MCP tool-error signaling. Protocol errors remain for malformed/unsupported MCP requests.
 
@@ -570,7 +570,7 @@ These are the canonical implementation-test seeds.
 13. Results include compact resolution provenance.
 14. Count/statistics/result modes preserve resolution identity.
 15. Pagination cannot switch profile, ontology lock, or parent component manifest.
-16. Native Context-Fabric `search()` remains unchanged by installing TFont.
+16. Native Context-Fabric `search()` remains unchanged by installing ontoTF.
 
 ### Compatibility and failure behavior
 
@@ -648,7 +648,7 @@ Rejected. R-001 requires component identities and complete dependency validation
 
 ### Assume the current host implements the newest protocol revision
 
-Rejected. Context-Fabric `cfabric-mcp 0.1.7` currently pins `mcp>=1.0,<2`, while the current protocol target is `2026-07-28`. TFont must work according to the actually negotiated protocol and keep semantic behavior independent of protocol-era session mechanics.
+Rejected. Context-Fabric `cfabric-mcp 0.1.7` currently pins `mcp>=1.0,<2`, while the current protocol target is `2026-07-28`. ontoTF must work according to the actually negotiated protocol and keep semantic behavior independent of protocol-era session mechanics.
 
 ## 18. Unresolved implementation questions
 

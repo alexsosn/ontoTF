@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from tfont.external_review_gate import ExternalReviewError
+from ontotf.external_review_gate import ExternalReviewError
 from tests.i033e.test_external_review_red import REPO, SHA, pr_data
 from tests.i033e.test_live_review_gate_adversarial import cli
 

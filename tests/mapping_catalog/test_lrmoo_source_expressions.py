@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes, resolve_edges
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes, resolve_edges
 
 LRMOO = "http://iflastandards.info/ns/lrm/lrmoo/"
 F2 = LRMOO + "F2_Expression"

@@ -39,7 +39,7 @@ Create:
 
 with exactly:
 
-`src/tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json`
+`src/ontotf/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json`
 
 Manifest ID:
 
@@ -123,7 +123,7 @@ Add:
 
 `docs/research/data/i019/tlhdig-denominator-policy.json`.
 
-It is repository/build input, not TFont runtime data. It contains no ontology
+It is repository/build input, not ontoTF runtime data. It contains no ontology
 targets.
 
 ### Technical identities
@@ -397,13 +397,13 @@ After RED is observed, implement the minimum contract and add tests for:
 
 Expected:
 
-- `src/tfont/schemas/coverage-manifest.schema.json`;
-- `src/tfont/coverage.py` — optional bounded-edge projection + resource
+- `src/ontotf/schemas/coverage-manifest.schema.json`;
+- `src/ontotf/coverage.py` — optional bounded-edge projection + resource
   constant only;
-- `src/tfont/__init__.py` — export only;
+- `src/ontotf/__init__.py` — export only;
 - `docs/research/data/i019/tlhdig-denominator-policy.json`;
 - `scripts/coverage/build_i019_tlhdig_current.py`;
-- `src/tfont/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json`;
+- `src/ontotf/resources/coverage/p004-tlhdig-0.4.0-bc4a206-v1/tlhdig.json`;
 - `tests/i019/**`;
 - `.github/workflows/i019-tlhdig-coverage.yml`.
 

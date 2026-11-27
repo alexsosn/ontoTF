@@ -9,7 +9,7 @@ from pathlib import Path
 import json
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 BASE = "http://purl.org/olia/olia.owl#"
 PINS = {

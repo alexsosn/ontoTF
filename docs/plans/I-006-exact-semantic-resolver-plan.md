@@ -9,7 +9,7 @@
 
 Implement one new module:
 
-`src/tfont/semantic_resolver.py`
+`src/ontotf/semantic_resolver.py`
 
 It consumes only:
 
@@ -176,7 +176,7 @@ Wrong top-level Python object types may use `TypeError`; semantic/runtime contra
 
 ## 4. Public callables
 
-Export from `tfont.__init__`:
+Export from `ontotf.__init__`:
 
 ```python
 profile_release_fingerprint(signature: ProfileReleaseSignature) -> str
@@ -507,7 +507,7 @@ Fixture controls must run without importing the new resolver module.
 
 ### Clean RED attribution
 
-Commit tests/workflow before `src/tfont/semantic_resolver.py` or new `tfont.__init__` exports.
+Commit tests/workflow before `src/ontotf/semantic_resolver.py` or new `ontotf.__init__` exports.
 
 RED workflow has two steps:
 

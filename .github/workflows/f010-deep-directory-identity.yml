@@ -6,7 +6,7 @@ on:
     branches:
       - stability/f-010-deep-directory-identity
     paths:
-      - src/tfont/parent_identity.py
+      - src/ontotf/parent_identity.py
       - tests/f010/**
       - tests/i003/**
       - docs/research/F-010-deep-directory-identity.md
@@ -14,7 +14,7 @@ on:
       - .github/workflows/f010-deep-directory-identity.yml
   pull_request:
     paths:
-      - src/tfont/parent_identity.py
+      - src/ontotf/parent_identity.py
       - tests/f010/**
       - tests/i003/**
       - docs/research/F-010-deep-directory-identity.md

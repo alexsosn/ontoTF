@@ -4,7 +4,7 @@
 
 ## Trigger
 
-Cross-platform F-012 CI exposed an existing I-003 portability defect. On Windows, `file_component_digest(<regular-file> + os.sep + ".")` can reach `os.lstat()` as the underlying regular file, while POSIX rejects the same conceptual spelling. TFont therefore currently lets host pathname normalization decide whether an exact-file component spelling is accepted.
+Cross-platform F-012 CI exposed an existing I-003 portability defect. On Windows, `file_component_digest(<regular-file> + os.sep + ".")` can reach `os.lstat()` as the underlying regular file, while POSIX rejects the same conceptual spelling. ontoTF therefore currently lets host pathname normalization decide whether an exact-file component spelling is accepted.
 
 The F-012 object-binding tests themselves pass on Windows. This research is independent of F-012 production code.
 
@@ -26,7 +26,7 @@ Primary evidence:
 
 The risk is not confined to the basename. An ancestor spelling such as `directory.\file.tf` can be normalized at the directory component before lookup reaches the final file. Checking only the last component leaves the same alias problem in an ancestor.
 
-TFont does not define a separate extended-namespace identity mode. Accepting these stored-name spellings on POSIX while ordinary Windows APIs can alias another object would make identity input platform-dependent.
+ontoTF does not define a separate extended-namespace identity mode. Accepting these stored-name spellings on POSIX while ordinary Windows APIs can alias another object would make identity input platform-dependent.
 
 ## Chosen contract
 
@@ -36,7 +36,7 @@ For `file_component_digest()` only, reject before filesystem inspection when:
 2. the **final** non-empty component is exactly `.`, preserving the existing `<file>/.` rejection; or
 3. any native path component other than the navigation tokens `.` and `..` ends in ASCII period (`.`) or ASCII space (` `).
 
-Rule 3 covers final and ancestor stored-name components. It is cross-platform on purpose: POSIX names ending in these characters are outside TFont's portable exact-file identity input domain because ordinary Win32 handling can reinterpret them.
+Rule 3 covers final and ancestor stored-name components. It is cross-platform on purpose: POSIX names ending in these characters are outside ontoTF's portable exact-file identity input domain because ordinary Win32 handling can reinterpret them.
 
 Nonterminal `.` and `..` navigation tokens remain accepted as before. Leading periods (`.hidden`) and internal periods (`a.b`) remain valid. Non-native separator characters retain existing host semantics. Extended Win32 `\\?\` namespace semantics are not introduced.
 

@@ -3,13 +3,13 @@ from __future__ import annotations
 import importlib
 import unittest
 
-from tfont.production_bundles import load_production_linguistic_bundles
-from tfont.semantic_execution import LoadedComponentContext, LoadedCorpusContext
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.production_bundles import load_production_linguistic_bundles
+from ontotf.semantic_execution import LoadedComponentContext, LoadedCorpusContext
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
-RESOLVER = importlib.import_module("tfont.semantic_resolver")
-EXECUTION = importlib.import_module("tfont.semantic_execution")
+RESOLVER = importlib.import_module("ontotf.semantic_resolver")
+EXECUTION = importlib.import_module("ontotf.semantic_execution")
 HAS_CONJUNCTION = hasattr(RESOLVER, "SemanticConjunctionRequest") and hasattr(
     EXECUTION, "execute_exact_conjunction"
 )

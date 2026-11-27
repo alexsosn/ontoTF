@@ -7,7 +7,7 @@
 
 ## 1. Decision
 
-The first TFont POC uses a **validated canonical source bundle** compiled deterministically into a **normalized semantic IR**. Runtime, reference and publication artifacts are generated derivatives; compatibility evidence additionally depends on the concrete parent artifact being validated and is never inferred from IR alone.
+The first ontoTF POC uses a **validated canonical source bundle** compiled deterministically into a **normalized semantic IR**. Runtime, reference and publication artifacts are generated derivatives; compatibility evidence additionally depends on the concrete parent artifact being validated and is never inferred from IR alone.
 
 The canonical source bundle contains:
 
@@ -278,9 +278,9 @@ Both report lifecycles use the **same report schema** and digest algorithm. Each
 
 Each dependency result records dependency ID, component ID, result (`pass | fail | unknown`), observed evidence digest/summary and evaluator rule version.
 
-The **report digest projection** `tfont-compatibility-sha256-v1` is RFC 8785 canonical JSON over all non-volatile report semantics listed above, including profile identity, expected/observed manifest digests, state, changed components, dependency results, evaluator version, incomplete reasons and failure reasons. It explicitly **excludes `compatibility_report_id` and `report_digest`**, generated timestamps, local file paths, transport/session metadata and display-only presentation fields. `report_digest` is SHA-256 of that projection.
+The **report digest projection** `ontotf-compatibility-sha256-v1` is RFC 8785 canonical JSON over all non-volatile report semantics listed above, including profile identity, expected/observed manifest digests, state, changed components, dependency results, evaluator version, incomplete reasons and failure reasons. It explicitly **excludes `compatibility_report_id` and `report_digest`**, generated timestamps, local file paths, transport/session metadata and display-only presentation fields. `report_digest` is SHA-256 of that projection.
 
-`compatibility_report_id` is deterministically **derived from `report_digest`** as `tfont-compatibility-sha256-v1:<report-digest-hex>`. There is no fixed-point or recursive hashing step.
+`compatibility_report_id` is deterministically **derived from `report_digest`** as `ontotf-compatibility-sha256-v1:<report-digest-hex>`. There is no fixed-point or recursive hashing step.
 
 ### 8.2 Report lifecycle
 
@@ -600,7 +600,7 @@ Cross-artifact validation fails on at least:
 - explicit semantic use of dense storage empty without native evidence;
 - contradictory selector/applicability metadata;
 - `reviewed_mapping_digest` mismatch;
-- profile data violating accepted normative TFont rules.
+- profile data violating accepted normative ontoTF rules.
 
 Release validation recomputes the exact tested parent component manifest and requires a `verified-exact` release-validation report for the release target.
 

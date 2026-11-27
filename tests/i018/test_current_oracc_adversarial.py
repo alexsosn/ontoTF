@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tfont import coverage
+from ontotf import coverage
 
 
 ROOT = Path(__file__).resolve().parents[2]

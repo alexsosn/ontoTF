@@ -3,16 +3,16 @@ from __future__ import annotations
 from dataclasses import replace
 import unittest
 
-import tfont
+import ontotf
 from tests.i005._fixtures import noun_sources, source_bundle, validate_structural_sources
 from tests.i006._fixtures import _refresh_mapping, noun_semantic_key
 from tests.i007.test_runtime_prerequisite_contract import FakeObservation
 from tests.i008._fixtures import FakeLoadedApi
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_resolver import SemanticResolveRequest, SemanticResolutionError, profile_release_fingerprint, semantic_resolve
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.source_validation import SourceValidationError
-from tfont.runtime_prerequisites import evaluate_runtime_prerequisites
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_resolver import SemanticResolveRequest, SemanticResolutionError, profile_release_fingerprint, semantic_resolve
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.source_validation import SourceValidationError
+from ontotf.runtime_prerequisites import evaluate_runtime_prerequisites
 
 
 def compiled(policy: str | None = None, *, executable: bool = False):
@@ -136,17 +136,17 @@ class I011ParentPolicyTests(unittest.TestCase):
     def test_loaded_executor_inherits_exact_only_without_caller_flag(self):
         ir = compiled("exact-only", executable=True)
         api = FakeLoadedApi(values={1: "subs", 2: "verb"}, node_types={1: "word", 2: "word"})
-        context = tfont.LoadedCorpusContext(
+        context = ontotf.LoadedCorpusContext(
             corpus_id="bhsa",
             parent_manifest_digest="sha256:" + "9" * 64,
-            components=(tfont.LoadedComponentContext(
+            components=(ontotf.LoadedComponentContext(
                 component_id="bhsa-tf",
                 content_digest="sha256:" + "e" * 64,
                 api=api,
             ),),
         )
         with self.assertRaises(SemanticResolutionError) as raised:
-            tfont.execute_exact_semantic(ir, request(), (context,))
+            ontotf.execute_exact_semantic(ir, request(), (context,))
         self.assertEqual(raised.exception.problem.category, "parent_incompatible")
         self.assertEqual(api.F.sp.s_calls, 0)
         self.assertEqual(api.load_calls, 0)

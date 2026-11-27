@@ -31,14 +31,14 @@ class R004AuthoritativeReportTests(unittest.TestCase):
         self.assertIn("scoped authority domains", text)
         self.assertIn("native corpus semantics", text)
         self.assertIn("external ontology semantics", text)
-        self.assertIn("tfont mapping assertions", text)
+        self.assertIn("ontotf mapping assertions", text)
         self.assertIn("profile identity and compatibility", text)
         self.assertIn("normative interpretation rules", text)
         self.assertIn("generated derivatives", text)
 
     def test_normative_rules_constrain_mapping_data(self):
         text = REPORT.read_text(encoding="utf-8").lower()
-        self.assertIn("mapping/profile data vs approved normative tfont rule", text)
+        self.assertIn("mapping/profile data vs approved normative ontotf rule", text)
         self.assertIn("invalid mapping/profile", text)
         self.assertIn("ci and profile activation fail", text)
         self.assertNotIn("prose never silently overrides the mapping", text)

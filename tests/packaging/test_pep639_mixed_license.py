@@ -18,10 +18,10 @@ ROOT = Path(__file__).resolve().parents[2]
 OLIA_REVISION = "d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6"
 LICENSE_FILES = (
     "LICENSE",
-    f"src/tfont/resources/ontologies/olia/{OLIA_REVISION}/LICENSE.data",
-    f"src/tfont/resources/ontologies/olia/{OLIA_REVISION}/ATTRIBUTION.txt",
+    f"src/ontotf/resources/ontologies/olia/{OLIA_REVISION}/LICENSE.data",
+    f"src/ontotf/resources/ontologies/olia/{OLIA_REVISION}/ATTRIBUTION.txt",
 )
-PACKAGE_OLIA_PREFIX = f"tfont/resources/ontologies/olia/{OLIA_REVISION}"
+PACKAGE_OLIA_PREFIX = f"ontotf/resources/ontologies/olia/{OLIA_REVISION}"
 LEGACY_CLASSIFIER = "License :: OSI Approved :: MIT License"
 
 
@@ -132,11 +132,11 @@ class Pep639BuiltDistributionTests(unittest.TestCase):
 
             package_resource_paths = {
                 f"{PACKAGE_OLIA_PREFIX}/LICENSE.data":
-                    ROOT / f"src/tfont/resources/ontologies/olia/{OLIA_REVISION}/LICENSE.data",
+                    ROOT / f"src/ontotf/resources/ontologies/olia/{OLIA_REVISION}/LICENSE.data",
                 f"{PACKAGE_OLIA_PREFIX}/ATTRIBUTION.txt":
-                    ROOT / f"src/tfont/resources/ontologies/olia/{OLIA_REVISION}/ATTRIBUTION.txt",
+                    ROOT / f"src/ontotf/resources/ontologies/olia/{OLIA_REVISION}/ATTRIBUTION.txt",
                 f"{PACKAGE_OLIA_PREFIX}/olia.owl":
-                    ROOT / f"src/tfont/resources/ontologies/olia/{OLIA_REVISION}/olia.owl",
+                    ROOT / f"src/ontotf/resources/ontologies/olia/{OLIA_REVISION}/olia.owl",
             }
             for archive_path, source_path in package_resource_paths.items():
                 with self.subTest(package_resource=archive_path):
@@ -193,7 +193,7 @@ class Pep639BuiltDistributionTests(unittest.TestCase):
 
         expected = {}
         for name in ("LICENSE.data", "ATTRIBUTION.txt"):
-            source = ROOT / f"src/tfont/resources/ontologies/olia/{OLIA_REVISION}/{name}"
+            source = ROOT / f"src/ontotf/resources/ontologies/olia/{OLIA_REVISION}/{name}"
             expected[name] = hashlib.sha256(source.read_bytes()).hexdigest()
 
         script = r"""
@@ -206,14 +206,14 @@ import sys
 target = os.environ["I157_INSTALLED_TARGET"]
 sys.path.insert(0, target)
 
-import tfont
+import ontotf
 
-root = importlib.resources.files("tfont")
+root = importlib.resources.files("ontotf")
 base = root.joinpath("resources", "ontologies", "olia", os.environ["I157_OLIA_REVISION"])
 payload = {}
 for name in ("LICENSE.data", "ATTRIBUTION.txt"):
     payload[name] = hashlib.sha256(base.joinpath(name).read_bytes()).hexdigest()
-payload["package_file"] = str(tfont.__file__)
+payload["package_file"] = str(ontotf.__file__)
 print(json.dumps(payload, sort_keys=True))
 """
         env = os.environ.copy()

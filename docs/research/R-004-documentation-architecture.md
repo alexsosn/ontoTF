@@ -6,9 +6,9 @@
 
 ## Decision
 
-TFont should use a **source-first, generated-reference documentation architecture**.
+ontoTF should use a **source-first, generated-reference documentation architecture**.
 
-Canonical machine-readable profile/mapping data, approved normative TFont rules, parent-corpus evidence, and external ontology definitions have different authority domains. They must be validated together; none is a universal precedence layer that can silently redefine the others.
+Canonical machine-readable profile/mapping data, approved normative ontoTF rules, parent-corpus evidence, and external ontology definitions have different authority domains. They must be validated together; none is a universal precedence layer that can silently redefine the others.
 
 The POC should expose three documentation surfaces from one repository:
 
@@ -34,7 +34,7 @@ R-004 treats those contracts as fixed dependencies unless a later reviewed chang
 
 ### 2.1 OLiA
 
-OLiA separates native annotation models, a reference model, and linking models. That pattern supports TFont's need to keep three distinct objects visible: native corpus semantics, external terminology, and the reviewed mapping between them.
+OLiA separates native annotation models, a reference model, and linking models. That pattern supports ontoTF's need to keep three distinct objects visible: native corpus semantics, external terminology, and the reviewed mapping between them.
 
 Useful documentation patterns:
 
@@ -50,17 +50,17 @@ Inspected sources:
 
 ### 2.2 CIDOC CRM
 
-CIDOC CRM publishes explicit version/status pages that distinguish official, stable, and draft releases. TFont should likewise display the exact ontology release/status against which a mapping/profile was reviewed. A convenient “latest” link must never replace immutable provenance.
+CIDOC CRM publishes explicit version/status pages that distinguish official, stable, and draft releases. ontoTF should likewise display the exact ontology release/status against which a mapping/profile was reviewed. A convenient “latest” link must never replace immutable provenance.
 
 R-002 remains authoritative for supported ontology releases; R-004 only defines how their status and locks are rendered.
 
 ### 2.3 OntoLex
 
-OntoLex documents a core plus optional modules. TFont should mirror this ergonomically: each profile page lists the semantic modules/locks it actually uses rather than presenting every ontology supported globally.
+OntoLex documents a core plus optional modules. ontoTF should mirror this ergonomically: each profile page lists the semantic modules/locks it actually uses rather than presenting every ontology supported globally.
 
 ### 2.4 Text-Fabric corpora
 
-BHSA and other TF corpora demonstrate the value of feature-specific native pages: feature description, applicable node types, value codes, and corpus-specific cautions. Those pages remain native evidence. TFont links to them and renders the TFont projection beside the pinned native selector/path rather than copying upstream prose as a new authority.
+BHSA and other TF corpora demonstrate the value of feature-specific native pages: feature description, applicable node types, value codes, and corpus-specific cautions. Those pages remain native evidence. ontoTF links to them and renders the ontoTF projection beside the pinned native selector/path rather than copying upstream prose as a new authority.
 
 ### 2.5 Context-Fabric MCP and R-003
 
@@ -79,7 +79,7 @@ Negotiated protocol and transport/session state **must not become part of semant
 
 ### 2.6 Agora
 
-Agora owns discovery/install/integration metadata. It should link to TFont profiles and reference pages but not host a fork of semantic mapping documentation. TFont owns mapping semantics; Context-Fabric owns native query/MCP host behavior; parent corpora own native semantics.
+Agora owns discovery/install/integration metadata. It should link to ontoTF profiles and reference pages but not host a fork of semantic mapping documentation. ontoTF owns mapping semantics; Context-Fabric owns native query/MCP host behavior; parent corpora own native semantics.
 
 ## 3. Information objects documentation must not collapse
 
@@ -93,15 +93,15 @@ Authority: exact parent corpus artifact plus authoritative native documentation/
 
 R-005 `S/C/B/N/R/U/L` classifications are **research candidate** evidence only. They can be linked from research/review pages but **cannot appear as an approved released mapping** unless an independently reviewed canonical mapping assertion exists.
 
-### 3.3 Approved TFont mapping assertions
+### 3.3 Approved ontoTF mapping assertions
 
-An **approved mapping** contains stable mapping ID, native selector/path, external target where applicable, TFont mapping assessment, applicability, review status, rationale/evidence, profile binding, and ontology lock.
+An **approved mapping** contains stable mapping ID, native selector/path, external target where applicable, ontoTF mapping assessment, applicability, review status, rationale/evidence, profile binding, and ontology lock.
 
-Authority: canonical mapping source, provided it validates against normative TFont rules and external/native evidence.
+Authority: canonical mapping source, provided it validates against normative ontoTF rules and external/native evidence.
 
 ### 3.4 Publication relations
 
-A **publication relation** is an optional RDF/OWL/SKOS formalization. It is independent of the TFont mapping assessment. An approved `exact` assessment to an OWL class does not automatically create `owl:equivalentClass`, `owl:sameAs`, or a SKOS mapping predicate.
+A **publication relation** is an optional RDF/OWL/SKOS formalization. It is independent of the ontoTF mapping assessment. An approved `exact` assessment to an OWL class does not automatically create `owl:equivalentClass`, `owl:sameAs`, or a SKOS mapping predicate.
 
 ### 3.5 Profile identity and compatibility
 
@@ -116,7 +116,7 @@ Authority: profile manifest plus the parent component manifest, component identi
 
 ### 3.6 Normative interpretation rules
 
-Approved TFont architecture/specifications define what mapping assessments mean, which states execute, how compatibility is proven, how dense empties are interpreted, and which publication formalizations are legal.
+Approved ontoTF architecture/specifications define what mapping assessments mean, which states execute, how compatibility is proven, how dense empties are interpreted, and which publication formalizations are legal.
 
 A canonical mapping file is not allowed to override those rules.
 
@@ -126,16 +126,16 @@ Research, tutorials, release narratives, and long scholarly notes explain decisi
 
 ## 4. Scoped authority domains
 
-TFont should use **scoped authority domains**, not a numeric precedence hierarchy.
+ontoTF should use **scoped authority domains**, not a numeric precedence hierarchy.
 
 | authority domain | authoritative artifact | responsibility |
 |---|---|---|
 | **native corpus semantics** | pinned parent corpus artifact + authoritative native docs/source | native node/edge/feature/value/path meaning |
 | **external ontology semantics** | pinned ontology release/specification | external term meaning and formal vocabulary |
-| **TFont mapping assertions** | canonical reviewed mapping source | native→external projection, assessment, applicability, rationale |
+| **ontoTF mapping assertions** | canonical reviewed mapping source | native→external projection, assessment, applicability, rationale |
 | **profile identity and compatibility** | profile manifest + R-001 compatibility evidence | profile release identity, parent component manifest, component identities, complete dependency closure |
 | **ontology lock identity** | ontology lock | exact tested ontology versions/snapshots/digests/status |
-| **normative interpretation rules** | approved TFont architecture/specification | legality and interpretation of mappings, compatibility, execution, provenance and publication |
+| **normative interpretation rules** | approved ontoTF architecture/specification | legality and interpretation of mappings, compatibility, execution, provenance and publication |
 | **generated derivatives** | deterministic build from validated sources | runtime index, RDF/JSON, generated Markdown/HTML/reference JSON |
 | **explanation/history** | guides, research, notes, release prose | rationale, pedagogy, historical context |
 
@@ -147,7 +147,7 @@ The domains constrain one another through validation rather than precedence.
 - **mapping source vs runtime index** → compiler/cache defect; released bundle invalid;
 - **mapping source vs native corpus evidence** → substantive mapping defect; mapping must be revised/reviewed;
 - **mapping source vs external ontology definition/lock** → mapping or lock defect; review/activation fails;
-- **mapping/profile data vs approved normative TFont rule** → **invalid mapping/profile**; **CI and profile activation fail**. The normative rule constrains the data rather than being overridden by it;
+- **mapping/profile data vs approved normative ontoTF rule** → **invalid mapping/profile**; **CI and profile activation fail**. The normative rule constrains the data rather than being overridden by it;
 - **profile manifest vs observed parent components** → recompute R-001 state from component identity/dependency evidence; no schema-name shortcut;
 - **guide/tutorial factual claim vs canonical validated mapping** → explanatory prose defect; fix the guide;
 - **generated reference vs canonical validated source** → generated output is stale/incorrect; never hand-edit the generated page to hide the conflict.
@@ -157,7 +157,7 @@ This preserves both machine-readable source-of-truth and the authority of normat
 ## 5. POC repository documentation layout
 
 ```text
-TFont/
+ontoTF/
 ├── AGENTS.md
 ├── CONTRIBUTING.md
 ├── profiles/
@@ -363,7 +363,7 @@ Generated compatibility and mapping pages use R-001 evidence rather than a repos
 Minimum profile provenance:
 
 ```text
-TFont profile:            <profile ID + immutable version>
+ontoTF profile:            <profile ID + immutable version>
 Compatibility:            verified-exact | verified-compatible | unverified | incompatible
 Parent component manifest:<manifest algorithm + digest>
 Component identities:     <identities for semantically addressed native components>
@@ -543,18 +543,18 @@ Required for agents/tooling so they do not scrape HTML. JSON and Markdown derive
 
 ## 16. Documentation ownership boundaries
 
-| information | authority/owner | TFont behavior |
+| information | authority/owner | ontoTF behavior |
 |---|---|---|
 | native feature/node/edge meaning | parent corpus | link exact selector/evidence; do not fork native authority |
 | external term definition | ontology project | link/pin lock metadata; do not copy as normative redefinition |
-| TFont native→external mapping | TFont canonical mapping | generated reference renders assessment/evidence/review |
-| TFont normative mapping/compatibility rules | TFont approved specs | constrain canonical data and generated output |
-| semantic resolver/query contract | TFont R-003/design/runtime | normative TFont docs + generated API/capability reference |
+| ontoTF native→external mapping | ontoTF canonical mapping | generated reference renders assessment/evidence/review |
+| ontoTF normative mapping/compatibility rules | ontoTF approved specs | constrain canonical data and generated output |
+| semantic resolver/query contract | ontoTF R-003/design/runtime | normative ontoTF docs + generated API/capability reference |
 | native query/MCP host implementation | Context-Fabric | link host/query docs; do not fork implementation manual |
 | MCP protocol specification | MCP project | link exact protocol revision; do not imply host support from protocol recency |
-| discovery/install coordinates | Agora/TFont distribution metadata | publish/link coordinates, not semantic mapping rules |
+| discovery/install coordinates | Agora/ontoTF distribution metadata | publish/link coordinates, not semantic mapping rules |
 
-R-004 may state compatibility assumptions needed by TFont, but mutable host/protocol implementation details remain owned upstream.
+R-004 may state compatibility assumptions needed by ontoTF, but mutable host/protocol implementation details remain owned upstream.
 
 ## 17. Canonical CI drift and release contract
 
@@ -563,7 +563,7 @@ A documentation build is semantic validation. The following is the **single cano
 1. validate **canonical mapping source against schema**;
 2. validate profile manifest and ontology lock;
 3. validate **parent component manifest**, required **component identities**, and **complete dependency closure**, producing one of the four R-001 compatibility states;
-4. validate canonical mapping/profile data against approved normative TFont rules; any conflict fails CI/profile activation;
+4. validate canonical mapping/profile data against approved normative ontoTF rules; any conflict fails CI/profile activation;
 5. enforce **research candidate** vs approved mapping separation so R-005 candidate evidence cannot leak into released mapping reference;
 6. validate **mapping assessment and publication relation** as independent fields and validate any formal publication relation against R-002 rules;
 7. exclude **storage-level empty** observations from semantic values/applicability unless explicitly defined meaningful by native source;
@@ -616,12 +616,12 @@ An **empty cell** is **forbidden** once a profile/concept combination has been e
 
 ## 20. Documentation versioning
 
-Generated semantic reference is versioned with the TFont profile release, not only the parent corpus release.
+Generated semantic reference is versioned with the ontoTF profile release, not only the parent corpus release.
 
 Each immutable profile reference identifies:
 
 ```text
-TFont profile/mapping source -> semantic assertions
+ontoTF profile/mapping source -> semantic assertions
 Parent component manifest     -> native evidence target
 Compatibility/dependency evidence -> executable state
 Ontology lock                 -> external terminology target
@@ -669,7 +669,7 @@ Rejected. Semantic facts can be generated; scholarly argument and pedagogy remai
 
 ### Put mapping documentation in parent corpora or Agora
 
-Rejected. TFont profiles release independently and Agora is a thin discovery/install layer. Link upstream native evidence rather than fork it.
+Rejected. ontoTF profiles release independently and Agora is a thin discovery/install layer. Link upstream native evidence rather than fork it.
 
 ### One giant JSON reference
 
@@ -690,7 +690,7 @@ Design work still needs to choose:
 1. exact canonical mapping/profile JSON Schemas and file granularity;
 2. whether generated reference Markdown is committed or release-built only;
 3. exact static-site generator/theme configuration;
-4. stable URI namespace for TFont-local mapping/concept identifiers;
+4. stable URI namespace for ontoTF-local mapping/concept identifiers;
 5. how much upstream feature metadata to cache versus link;
 6. exact `reference/index.json` / detail schemas;
 7. semantic-diff presentation in GitHub checks/release notes;
@@ -709,7 +709,7 @@ These choices do not reopen scoped authority, generated-reference derivation, co
 - Mapping assessment, uncertainty, negative states: §§9, 19.
 - Compatibility/provenance/licenses: §§10, 20.
 - Agent and scholar documentation: §§12–13.
-- TFont / parent / Context-Fabric / MCP / Agora ownership: §16.
+- ontoTF / parent / Context-Fabric / MCP / Agora ownership: §16.
 - Update/release/CI drift: one canonical 22-step contract in §17 plus semantic diff §18.
 - Required concrete examples: §14.
 - Stable URLs/anchors/versioning: §§8, 20.
@@ -726,9 +726,9 @@ Primary sources/evidence used by this research:
 - Context-Fabric MCP at `Context-Fabric/context-fabric@3a38ca80e617d872ce1664e0f0740486d0e7e8ac`;
 - MCP `2026-07-28` specification/release evidence as accepted by R-003;
 - Agora plugin-boundary architecture;
-- accepted TFont R-001 / PR #8;
-- accepted TFont R-002 / PR #9;
-- accepted TFont R-003 / PR #10;
-- accepted TFont R-005 / PR #7.
+- accepted ontoTF R-001 / PR #8;
+- accepted ontoTF R-002 / PR #9;
+- accepted ontoTF R-003 / PR #10;
+- accepted ontoTF R-005 / PR #7.
 
 Any future material change to those accepted contracts requires R-004 reconciliation and fresh exact-head review before release-documentation behavior changes.

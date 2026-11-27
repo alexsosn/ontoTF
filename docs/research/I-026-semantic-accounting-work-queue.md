@@ -182,7 +182,7 @@ I-026 should add:
 - focused tests under `tests/i026/`;
 - this research document and a reviewed implementation plan.
 
-No TFont runtime mapping, resolver, ontology lock or production profile behavior changes in I-026.
+No ontoTF runtime mapping, resolver, ontology lock or production profile behavior changes in I-026.
 
 ## 13. Decision
 

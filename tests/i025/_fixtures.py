@@ -13,8 +13,8 @@ from tests.i006._fixtures import _refresh_mapping
 from tests.i008._fixtures import loaded_context
 from tests.i023._fixtures import PathApi, edge_path_sources
 from tests.i024._fixtures import ValuedFakeEdgeFeature
-from tfont.semantic_ir import compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
+from ontotf.semantic_ir import compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
 
 
 SEMANTIC_STR_VALUES = ("ambiguous", "unique")
@@ -284,19 +284,19 @@ def predicate_api(
     )
 
 
-def predicate_context(tfont_module, ir, api=None, *, value_type: str = "str"):
+def predicate_context(ontotf_module, ir, api=None, *, value_type: str = "str"):
     return loaded_context(
-        tfont_module,
+        ontotf_module,
         ir,
         "bhsa",
         api or predicate_api(value_type=value_type),
     )
 
 
-def predicate_observation(tfont_module, ir, api=None, *, value_type: str = "str"):
+def predicate_observation(ontotf_module, ir, api=None, *, value_type: str = "str"):
     variant = ir.variants[0]
     loaded = api or predicate_api(value_type=value_type)
-    return tfont_module.LoadedTFObservation(
+    return ontotf_module.LoadedTFObservation(
         parent_manifest_digest=variant.key.expected_parent_manifest_digest,
         components={
             "bhsa-tf": (

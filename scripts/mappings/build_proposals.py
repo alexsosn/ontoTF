@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from tfont.batch_proposals import compile_candidate_batch, load_ledger, serialized
+from ontotf.batch_proposals import compile_candidate_batch, load_ledger, serialized
 
 
 ROOT = Path(__file__).resolve().parents[2]

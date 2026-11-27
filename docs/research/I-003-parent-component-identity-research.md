@@ -15,7 +15,7 @@ The implementation must distinguish three byte-addressing shapes:
 2. a recursive directory-like native component;
 3. a Text-Fabric payload directory, whose addressed file boundary is defined by the TF loader rather than by arbitrary repository recursion.
 
-## 2. Accepted TFont contract
+## 2. Accepted ontoTF contract
 
 ### R-001 component-aware exact identity
 
@@ -88,7 +88,7 @@ Merged I-002 at `67f55b52...` provides:
 - UTF-16 code-unit ordering for semantic string sets/IDs;
 - exact source/evidence/mapping/profile digest patterns.
 
-I-003 should reuse `tfont.digests.canonical_json_bytes` rather than add a second canonical JSON implementation.
+I-003 should reuse `ontotf.digests.canonical_json_bytes` rather than add a second canonical JSON implementation.
 
 The project currently supports Python `>=3.10`.
 
@@ -111,11 +111,11 @@ In `tf/core/fabric.py::_makeIndex`, for each selected `location/module`, TF:
 
 A TF directory with no direct `.tf` files cannot establish a TF payload identity and should fail closed rather than produce a plausible empty corpus identity.
 
-## 6. TF symlink mismatch and TFont policy
+## 6. TF symlink mismatch and ontoTF policy
 
 TF's `DirEntry.is_file()` default follows symlinks. If `feature.tf` is a symlink, the effective bytes can therefore depend on a host-specific target outside the module directory.
 
-TFont exact identity must be transport-independent, so I-003 should be stricter than the loader: a selected `.tf` entry that is a symlink/reparse-link must fail with a stable identity error rather than silently hashing the target.
+ontoTF exact identity must be transport-independent, so I-003 should be stricter than the loader: a selected `.tf` entry that is a symlink/reparse-link must fail with a stable identity error rather than silently hashing the target.
 
 Non-`.tf` entries are outside the TF payload boundary and are ignored by the TF-specific helper. A nested directory is also outside that direct TF payload boundary.
 
@@ -171,7 +171,7 @@ Primary references:
 
 ## 9. Root and filesystem failure policy
 
-All filesystem helpers should fail with stable TFont categories rather than leak host-specific `OSError` classes as their public contract.
+All filesystem helpers should fail with stable ontoTF categories rather than leak host-specific `OSError` classes as their public contract.
 
 Recommended categories:
 

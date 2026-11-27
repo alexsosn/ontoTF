@@ -6,7 +6,7 @@
 
 ## Question
 
-How should TFont preserve the identity of the user source being validated when structural JSON Schema validation fails, without changing the established I-001 error categories or conflating source-file failures with schema-file failures?
+How should ontoTF preserve the identity of the user source being validated when structural JSON Schema validation fails, without changing the established I-001 error categories or conflating source-file failures with schema-file failures?
 
 ## Current contract
 
@@ -29,7 +29,7 @@ Current `load_and_validate(path, schema_name)` performs two independent operatio
 
 Therefore the same invalid file has inconsistent diagnostic provenance depending on which gate rejects it. A malformed `/tmp/profile.yaml` names `/tmp/profile.yaml`; a well-formed but structurally invalid `/tmp/profile.yaml` names only `profile`.
 
-This is directly visible in `src/tfont/source_validation.py`: `validate_source()` has no source identity parameter, and the `schema_validation` branch constructs `source_name=schema_name`.
+This is directly visible in `src/ontotf/source_validation.py`: `validate_source()` has no source identity parameter, and the `schema_validation` branch constructs `source_name=schema_name`.
 
 ## Direct in-memory validation compatibility
 

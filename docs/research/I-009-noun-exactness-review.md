@@ -9,7 +9,7 @@
 
 The original I-009 research premise copied the R-011 pilot statement that OLiA `Noun` is exact in BHSA, Syriac and ExtraBiblical through the same native predicate `word.sp=subs`. Production evidence falsifies that simplification.
 
-R-002 defines TFont `assessment=exact` as semantic coextensiveness. Under that contract, the same string selector cannot be called exact in all three corpora.
+R-002 defines ontoTF `assessment=exact` as semantic coextensiveness. Under that contract, the same string selector cannot be called exact in all three corpora.
 
 ## 1. Exact OLiA hierarchy
 
@@ -118,7 +118,7 @@ The narrow corrected release request is still OLiA Noun, but the corpus-native s
 | Syriac | `word.sp=subs` |
 | ExtraBiblical | `word.sp in {subs,nmpr}` |
 
-This preserves the actual purpose of TFont: one semantic request may compile to different reviewed native plans.
+This preserves the actual purpose of ontoTF: one semantic request may compile to different reviewed native plans.
 
 Changing the release showcase to a different category merely to preserve an accidentally uniform selector would hide the interoperability problem rather than demonstrate it.
 

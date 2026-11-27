@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import tfont.source_validation as source_validation
-from tfont.source_validation import SCHEMA_FILES, SourceValidationError, validate_source
+import ontotf.source_validation as source_validation
+from ontotf.source_validation import SCHEMA_FILES, SourceValidationError, validate_source
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 SCHEMA_RECURSION_MESSAGE = "schema validation exceeded recursion capacity"

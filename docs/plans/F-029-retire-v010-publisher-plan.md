@@ -87,7 +87,7 @@ Then require GitHub API to still show:
 
 - release/tag target `dcab3a473f3a4347554194ec9a5e34238b7c0769`;
 - non-draft/non-prerelease;
-- asset `tfont-0.1.0-py3-none-any.whl`;
+- asset `ontotf-0.1.0-py3-none-any.whl`;
 - digest `sha256:4c85b6ce0aeddf226c105400472077014b7a6a9eb96005ea641776143c2a1560`.
 
 Only then close #192.

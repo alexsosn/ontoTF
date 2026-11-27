@@ -5,10 +5,10 @@ import copy
 import unittest
 from unittest.mock import patch
 
-from tfont import overlay_handoff
-from tfont.batch_proposals import packaged_resource
-from tfont.coverage import load_packaged_coverage_manifest
-from tfont.release_registry import load_profile
+from ontotf import overlay_handoff
+from ontotf.batch_proposals import packaged_resource
+from ontotf.coverage import load_packaged_coverage_manifest
+from ontotf.release_registry import load_profile
 from tests.i033e.test_overlay_handoff import cohort, assemble
 
 

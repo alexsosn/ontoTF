@@ -18,7 +18,7 @@ Those facts must not be silently rewritten, but neither may they remain an alter
 A-001 must distinguish two roles that P-001 previously conflated:
 
 1. **parent/component identity** — a compatibility manifest may identify an auxiliary corpus artifact whose bytes/version affect the reviewed parent identity or provenance;
-2. **executable native query carrier** — the objects/selectors against which a TFont semantic request compiles and executes.
+2. **executable native query carrier** — the objects/selectors against which a ontoTF semantic request compiles and executes.
 
 A non-TF artifact may remain represented for legacy/component identity without becoming a query carrier. Component identity does not authorize arbitrary file/record/field addressing, parsing, dereferencing, or adapter execution.
 

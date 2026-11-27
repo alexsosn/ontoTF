@@ -8,9 +8,9 @@ Where this amendment conflicts with the earlier R-001 draft, **this amendment su
 
 ## 1. Two different identities are required
 
-R-001 originally overloaded a schema fingerprint with too much responsibility. TFont needs two independent verification objects:
+R-001 originally overloaded a schema fingerprint with too much responsibility. ontoTF needs two independent verification objects:
 
-1. **parent artifact identity** — proves that the loaded parent TF bytes are the exact artifact TFont tested;
+1. **parent artifact identity** — proves that the loaded parent TF bytes are the exact artifact ontoTF tested;
 2. **profile dependency fingerprint** — proves that a different parent artifact still satisfies every native semantic dependency used by a profile.
 
 They answer different questions and must never be substituted for one another.
@@ -41,7 +41,7 @@ Git repository revision remains provenance and acquisition evidence. It is not, 
 
 ### 1.2 Exact-target verification
 
-A loaded corpus is `verified-exact` only when TFont recomputes or otherwise cryptographically verifies its parent artifact identity against an exact tested target in the profile manifest.
+A loaded corpus is `verified-exact` only when ontoTF recomputes or otherwise cryptographically verifies its parent artifact identity against an exact tested target in the profile manifest.
 
 Conceptual exact target:
 
@@ -113,7 +113,7 @@ The POC should use states with unambiguous evidence:
 - **`verified-exact`** — loaded parent artifact identity equals an exact tested target;
 - **`verified-compatible`** — artifact is not an exact target, but the current profile's complete declared dependency closure has been validated against it under the profile's compatibility rules;
 - **`incompatible`** — at least one required dependency differs, is absent, or cannot be validated;
-- **`unverified`** — TFont cannot prove exact identity or complete dependency compatibility.
+- **`unverified`** — ontoTF cannot prove exact identity or complete dependency compatibility.
 
 Do not call the second state `verified-schema`; the relevant object is broader than schema.
 
@@ -141,24 +141,24 @@ Distribution and identity stay separate.
 1. acquire the selected revision/artifact;
 2. verify provider/release digest when available;
 3. resolve the native TF semantic payload or its trusted content manifest;
-4. verify the same TFont parent artifact identity/dependency closure.
+4. verify the same ontoTF parent artifact identity/dependency closure.
 
-Precompiled `.cfm` bytes alone are not automatically equivalent evidence unless the Context-Fabric build supplies a trustworthy manifest binding them to the exact TF source identity TFont expects.
+Precompiled `.cfm` bytes alone are not automatically equivalent evidence unless the Context-Fabric build supplies a trustworthy manifest binding them to the exact TF source identity ontoTF expects.
 
 ### Agora materialization
 
-Agora may select/download the declared TFont profile and parent resource, but TFont verifies semantic compatibility itself. Agora registry metadata is useful acquisition evidence; it is not the semantic verifier.
+Agora may select/download the declared ontoTF profile and parent resource, but ontoTF verifies semantic compatibility itself. Agora registry metadata is useful acquisition evidence; it is not the semantic verifier.
 
 ### Local directory / archive
 
-No Git repository is required. TFont computes the native artifact identity directly from the loaded TF files and either reaches `verified-exact`, validates full dependencies for `verified-compatible`, or fails closed.
+No Git repository is required. ontoTF computes the native artifact identity directly from the loaded TF files and either reaches `verified-exact`, validates full dependencies for `verified-compatible`, or fails closed.
 
 ## 4. Canonical source versus runtime sidecar terminology
 
 The original draft used “sidecar” once for both semantic source and runtime contract. Use these terms consistently:
 
 - **profile source** — canonical human-reviewable declarative mapping + manifest/dependencies/tests;
-- **compiled runtime sidecar** — deterministic generated lookup/index consumed by TFont;
+- **compiled runtime sidecar** — deterministic generated lookup/index consumed by ontoTF;
 - **RDF/publication export** — deterministic generated standards-oriented representation;
 - **materialized TF module** — optional deterministic generated compatibility product.
 
@@ -166,7 +166,7 @@ Only the **profile source** is editable semantic source. Generated artifacts are
 
 ## 5. Optional materialized TF modules have a reserved boundary
 
-A generated TFont TF compatibility module must be semantics-preserving and collision-safe.
+A generated ontoTF TF compatibility module must be semantics-preserving and collision-safe.
 
 Default forbidden outputs:
 
@@ -176,9 +176,9 @@ Default forbidden outputs:
 - any existing native node/edge feature name;
 - any feature whose meaning depends on silently changing Text-Fabric traversal/rendering behavior.
 
-Ordinary generated convenience features must use a TFont namespace/prefix chosen by design and CI must fail on collisions.
+Ordinary generated convenience features must use a ontoTF namespace/prefix chosen by design and CI must fail on collisions.
 
-If a future product intentionally transforms the TF warp or text formats, it is **not** an ordinary TFont semantic module. It requires a separate architecture decision, explicit new corpus/artifact identity, and its own provenance.
+If a future product intentionally transforms the TF warp or text formats, it is **not** an ordinary ontoTF semantic module. It requires a separate architecture decision, explicit new corpus/artifact identity, and its own provenance.
 
 ## 6. Profile-release manifest consequences
 
@@ -243,7 +243,7 @@ A generic “feature names still exist” smoke check is insufficient.
 
 The overall R-001 decision does **not** change:
 
-- central TFont source repository during the POC;
+- central ontoTF source repository during the POC;
 - independently releasable per-corpus profile bundles;
 - profile source as the editable authority;
 - compiled sidecar for fast native Context-Fabric execution;

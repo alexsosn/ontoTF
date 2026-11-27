@@ -1,4 +1,4 @@
-# Product goals — ontoTF / TFont
+# Product goals — ontoTF / ontoTF
 
 ## Users and purpose
 

@@ -4,10 +4,10 @@ import unittest
 import importlib.util
 from pathlib import Path
 
-from tfont.coverage import coverage_denominator_digest, coverage_report, load_packaged_coverage_manifest
-from tfont.semantic_ir import SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import validate_semantic_bundle
-from tfont.production_bundles import load_production_linguistic_bundle
+from ontotf.coverage import coverage_denominator_digest, coverage_report, load_packaged_coverage_manifest
+from ontotf.semantic_ir import SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import validate_semantic_bundle
+from ontotf.production_bundles import load_production_linguistic_bundle
 
 
 TARGET = "http://purl.org/olia/olia.owl#Verb"
@@ -15,7 +15,7 @@ TARGET = "http://purl.org/olia/olia.owl#Verb"
 
 class SyriacVerbRedTests(unittest.TestCase):
     def test_separately_versioned_syriac_verb_loader(self):
-        from tfont.production_bundles import load_production_verb_bundle
+        from ontotf.production_bundles import load_production_verb_bundle
         bundle = load_production_verb_bundle("syriac")
         self.assertEqual(bundle.profile.data["profile_version"], "0.3.0")
         self.assertEqual(
@@ -40,7 +40,7 @@ class SyriacVerbRedTests(unittest.TestCase):
         self.assertEqual(native.execution_shape, "value-predicate")
 
     def test_syriac_verb_preserves_all_historical_reviewed_mappings(self):
-        from tfont.production_bundles import load_production_verb_bundle
+        from ontotf.production_bundles import load_production_verb_bundle
         old = validate_semantic_bundle(load_production_linguistic_bundle("syriac"))
         new = validate_semantic_bundle(load_production_verb_bundle("syriac"))
         a, b = dict(old.indexes.mappings), dict(new.indexes.mappings)
@@ -78,7 +78,7 @@ class SyriacVerbRedTests(unittest.TestCase):
         self.assertFalse(report.bounded_scope_complete)
 
     def test_no_syriac_stem_inferred_from_pos_verb(self):
-        from tfont.production_bundles import load_production_verb_bundle
+        from ontotf.production_bundles import load_production_verb_bundle
         m = next(
             item for item in load_production_verb_bundle("syriac").mappings.data["mappings"]
             if item["mapping_id"] == "mapping:syriac:olia-verb"

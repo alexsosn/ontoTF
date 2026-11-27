@@ -5,7 +5,7 @@ import json
 import unittest
 from pathlib import Path
 
-import tfont
+import ontotf
 from jsonschema import Draft202012Validator
 from tests.i022._fixtures import (
     compiled_membership_ir,
@@ -13,7 +13,7 @@ from tests.i022._fixtures import (
     membership_request,
     membership_sources,
 )
-from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
+from ontotf.semantic_validation import SemanticValidationError, validate_semantic_bundle
 from tests.i005._fixtures import (
     entity_identity_reference,
     noun_sources,
@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def binding_validator():
     schema = json.loads(
-        (ROOT / "src/tfont/schemas/mapping.schema.json").read_text(encoding="utf-8")
+        (ROOT / "src/ontotf/schemas/mapping.schema.json").read_text(encoding="utf-8")
     )
     return Draft202012Validator(
         {
@@ -143,10 +143,10 @@ class I022MembershipRedTests(unittest.TestCase):
 
     def test_exact_semantic_execution_runs_membership_in_selector_order(self):
         ir = compiled_membership_ir()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            membership_request(tfont),
-            (membership_context(tfont, ir),),
+            membership_request(ontotf),
+            (membership_context(ontotf, ir),),
         )
         self.assertEqual(result.corpora[0].nodes, (4, 2, 7))
         self.assertEqual(

@@ -3,15 +3,15 @@ requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tfont"
+name = "ontotf"
 version = "0.2.0rc1"
 description = "Ontological layer for Text-Fabric corpora"
 requires-python = ">=3.12"
 license = "MIT AND CC-BY-3.0"
 license-files = [
   "LICENSE",
-  "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
-  "src/tfont/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
+  "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/LICENSE.data",
+  "src/ontotf/resources/ontologies/olia/d3bd4f1aef9047b33186bfb2a1795401f3f1a4a6/ATTRIBUTION.txt",
 ]
 dependencies = [
   "jsonschema>=4.26,<5",
@@ -23,7 +23,7 @@ dependencies = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-tfont = [
+ontotf = [
   "schemas/*.json",
   "mappings/*.xml",
   "mappings/*.xsd",

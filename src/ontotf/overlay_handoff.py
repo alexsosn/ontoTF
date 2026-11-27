@@ -76,7 +76,7 @@ def _trusted_handoff_base(corpus: str) -> tuple[str, str]:
              and coverage["manifest_id"] == f"coverage:{resource}:{corpus}",
              "protected handoff coverage corpus/manifest mismatch")
     try:
-        raw = files("tfont").joinpath("resources", "coverage", resource, f"{corpus}.json").read_bytes()
+        raw = files("ontotf").joinpath("resources", "coverage", resource, f"{corpus}.json").read_bytes()
     except (OSError, ValueError) as exc:
         raise ValueError("protected handoff coverage source unavailable") from exc
     blob = hashlib.sha1(

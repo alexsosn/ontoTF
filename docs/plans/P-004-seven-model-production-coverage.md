@@ -98,9 +98,9 @@ Pseudepigrapha and ORACC must move beyond the old curated R-011 denominator wher
 
 ## 4. Coverage matrix
 
-The seven recurring TFont profiles and seven core models are related but not one-to-one:
+The seven recurring ontoTF profiles and seven core models are related but not one-to-one:
 
-| TFont profile | primary core model(s) |
+| ontoTF profile | primary core model(s) |
 | --- | --- |
 | structural | native TF/Context-Fabric semantics; no forced core ontology |
 | linguistic | OLiA |
@@ -311,7 +311,7 @@ Physical fragments and symbolic expression fragments remain distinct.
 
 Use it as the strongest first production textology case while preserving its apparatus graph exactly.
 
-Residual apparatus concepts without a defensible seven-model target remain native/profile-local. Do not mint a large TFont apparatus ontology merely to force common-target coverage.
+Residual apparatus concepts without a defensible seven-model target remain native/profile-local. Do not mint a large ontoTF apparatus ontology merely to force common-target coverage.
 
 ### Exit
 

@@ -221,7 +221,7 @@ def _read_schema_bytes(
 
     source_name = f"tfont:schemas/{filename}"
     try:
-        return files("tfont").joinpath("schemas", filename).read_bytes(), source_name
+        return files("ontotf").joinpath("schemas", filename).read_bytes(), source_name
     except OSError as exc:
         _raise("invalid_schema", str(exc), source_name)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate an empirical Text-Fabric feature/domain inventory for R-005.
 
-This is research tooling, not TFont runtime code. It consumes an already checked-out
+This is research tooling, not ontoTF runtime code. It consumes an already checked-out
 TF dataset and records what that exact artifact actually contains: node/edge feature
 metadata, applicable node types, observed value cardinalities, small observed domains,
 and edge source/target types.

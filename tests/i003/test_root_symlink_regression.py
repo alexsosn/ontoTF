@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tfont.parent_identity import IdentityError, directory_component_digest, tf_payload_digest
+from ontotf.parent_identity import IdentityError, directory_component_digest, tf_payload_digest
 
 
 class RootSymlinkRegressionTests(unittest.TestCase):

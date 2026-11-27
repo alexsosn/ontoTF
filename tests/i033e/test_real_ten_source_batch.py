@@ -7,10 +7,10 @@ import unittest
 from unittest.mock import patch
 
 from scripts.mappings import build_candidate_review_packet as packet_writer
-from tfont.batch_proposals import compile_candidate_batch
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import evidence_record_digest
-from tfont.review_packets import verify_review_packet
+from ontotf.batch_proposals import compile_candidate_batch
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import evidence_record_digest
+from ontotf.review_packets import verify_review_packet
 
 
 ROOT = Path(__file__).resolve().parents[2]

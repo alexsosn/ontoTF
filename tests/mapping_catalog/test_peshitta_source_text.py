@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 
 SOURCE = "9850f5addade26f681334aa475570bef9b0b440a"
 TOKEN = "http://purl.org/olia/olia.owl#Token"

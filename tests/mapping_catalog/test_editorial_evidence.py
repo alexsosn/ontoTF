@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.xml_mappings import MappingCatalog, MappingError, resolve_nodes
+from ontotf.xml_mappings import MappingCatalog, MappingError, resolve_nodes
 from scripts.pages.scoped_progress import rule_matches
 
 CRM = "http://www.cidoc-crm.org/cidoc-crm/"

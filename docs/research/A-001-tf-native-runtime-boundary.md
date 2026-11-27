@@ -6,13 +6,13 @@
 
 ## Question
 
-Does baseline TFont need a generic `sidecar` / `native-adapter` runtime abstraction for queryable corpus data, or should source-format ingestion remain entirely upstream in corpus-specific materializers?
+Does baseline ontoTF need a generic `sidecar` / `native-adapter` runtime abstraction for queryable corpus data, or should source-format ingestion remain entirely upstream in corpus-specific materializers?
 
 ## Conclusion
 
-Baseline TFont should be **TF-native**.
+Baseline ontoTF should be **TF-native**.
 
-TFont consumes already-materialized Text-Fabric / Context-Fabric corpus structures plus TFont semantic artifacts. It should not define a generic external-storage carrier, adapter capability, sidecar field/path selector, arbitrary source-record addressing API, or runtime fetch layer.
+ontoTF consumes already-materialized Text-Fabric / Context-Fabric corpus structures plus ontoTF semantic artifacts. It should not define a generic external-storage carrier, adapter capability, sidecar field/path selector, arbitrary source-record addressing API, or runtime fetch layer.
 
 No current seven-pilot evidence requires such a runtime abstraction. The only concrete rationale that had entered R-005/R-007/P-002 came from an older ORACC-TF zero-span/sidecar design, and that design has been explicitly superseded by ORACC-TF ADR-0001.
 
@@ -30,12 +30,12 @@ corpus-specific materializer / converter
         ↓
 materialized TF / Context-Fabric corpus
         ↓
-TFont semantic mapping/profile/ontology layer
+ontoTF semantic mapping/profile/ontology layer
         ↓
 Context-Fabric native query execution
 ```
 
-TFont should know the native TF graph semantics it resolves against. It should not know which source format, database, archive, or transport produced that graph.
+ontoTF should know the native TF graph semantics it resolves against. It should not know which source format, database, archive, or transport produced that graph.
 
 This is also a responsibility boundary: ORACC-TF owns ORACC ingestion, CUC conversion owns CUC source ingestion, and other materializers own their own source representations.
 
@@ -52,9 +52,9 @@ Accepted ORACC-TF `docs/reference/architecture/ADR-0001-empty-slots-not-sidecars
 
 ORACC-TF issue #37 likewise says the earlier sidecar-first treatment was replaced with explicit empty/synthetic slot anchoring.
 
-Therefore TFont must not cite ORACC zero-span mechanics as evidence for a generic external carrier.
+Therefore ontoTF must not cite ORACC zero-span mechanics as evidence for a generic external carrier.
 
-## 3. Current TFont pilot evidence is already TF-native
+## 3. Current ontoTF pilot evidence is already TF-native
 
 Merged R-011's current ORACC pilot pin explicitly records that it was refreshed against the active ORACC-TF contract after ADR-0001 and that R-005 is historical input rather than the current zero-span architecture.
 
@@ -68,9 +68,9 @@ The R-011 pilot mappings resolve through ordinary TF selectors/features/edges. R
 
 The ORACC pilot specifically models catalogue `material` and `period` as native TF node features, not external-record adapter lookups.
 
-R-011 therefore supplies no empirical requirement for TFont-side arbitrary JSON/XML/database/API addressing.
+R-011 therefore supplies no empirical requirement for ontoTF-side arbitrary JSON/XML/database/API addressing.
 
-## 4. Where the unsupported abstraction entered TFont
+## 4. Where the unsupported abstraction entered ontoTF
 
 ### R-005
 
@@ -101,7 +101,7 @@ The open P-002 research/plan goes further and would freeze the abstraction into 
 - carrier kind `tf-node | native-adapter`;
 - selector families for adapter-side `native-field` / `native-entity` addressing.
 
-These are not projection-neutral facts if baseline TFont does not own external storage. They create a new runtime/data-access surface without a demonstrated pilot requirement.
+These are not projection-neutral facts if baseline ontoTF does not own external storage. They create a new runtime/data-access surface without a demonstrated pilot requirement.
 
 P-002 should remove these kinds and keep only TF/materialized-corpus dependency mechanics.
 
@@ -109,7 +109,7 @@ P-002 should remove these kinds and keep only TF/materialized-corpus dependency 
 
 The useful distinction is not `TF vs sidecar`; it is semantic interpretation of materialized TF structure.
 
-For TF-native entities TFont may need to preserve reviewed distinctions such as:
+For TF-native entities ontoTF may need to preserve reviewed distinctions such as:
 
 - ordinary textual/inscriptional extent;
 - occurrence sets for abstract nodes such as corpus lexemes;
@@ -131,13 +131,13 @@ R-017-style identifiers remain legitimate:
 - authority URIs such as AAT/PeriodO where reviewed;
 - provenance/evidence URIs.
 
-Their presence does not authorize TFont to fetch or parse the referenced resource at runtime.
+Their presence does not authorize ontoTF to fetch or parse the referenced resource at runtime.
 
 A mapping can use an external URI as identity/provenance/semantic reference while execution still resolves entirely to native TF constraints.
 
 ## 7. Why generic adapter support is a poor baseline default
 
-Adding generic external-record support would require decisions unrelated to TFont's core semantic-compatibility mission:
+Adding generic external-record support would require decisions unrelated to ontoTF's core semantic-compatibility mission:
 
 - source protocols and transports;
 - JSON/XML/CSV/database parsing;
@@ -156,7 +156,7 @@ Introducing the abstraction pre-emptively would increase validation, IR, resolve
 
 ## 8. Extension threshold
 
-Baseline TFont should include no generic external-storage runtime abstraction.
+Baseline ontoTF should include no generic external-storage runtime abstraction.
 
 A future extension may be researched only when at least **two independent real corpus cases** demonstrate all of the following:
 
@@ -186,4 +186,4 @@ A-001 does not forbid:
 - publication/export artifacts outside TF;
 - a future evidence-backed external-data extension.
 
-It forbids treating those possibilities as a baseline TFont runtime responsibility without evidence.
+It forbids treating those possibilities as a baseline ontoTF runtime responsibility without evidence.

@@ -11,12 +11,12 @@ from tests.i005._fixtures import (
     validate_structural_sources,
     validated_noun_bundle,
 )
-from tfont.semantic_digest_v2 import (
+from ontotf.semantic_digest_v2 import (
     mapping_semantic_digest_v2,
     projection_semantic_digest_v1,
 )
-from tfont.semantic_ir import CompiledSemanticIR, SemanticKey, compile_semantic_ir
-from tfont.semantic_validation import ValidatedSemanticBundle, validate_semantic_bundle
+from ontotf.semantic_ir import CompiledSemanticIR, SemanticKey, compile_semantic_ir
+from ontotf.semantic_validation import ValidatedSemanticBundle, validate_semantic_bundle
 
 
 DEFAULT_CORPORA = ("bhsa", "syriac", "extrabiblical")

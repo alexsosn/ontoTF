@@ -13,7 +13,7 @@
 
 1. An always-discovered contract asserts that **every** Python test directory under `tests/` is importable. This closes a class of silent skip regressions; it does not just assert one expected test count.
 2. Put package markers in the seven historical directories and execute the newly discovered tests on both supported Python versions. Fix real failures rather than disabling new discovery.
-3. Only prune `src/tfont/**` from **legacy, redundant unittest-focused** pull-request filters: I-001, I-002, I-003, I-004, I-005, I-006, I-015 and F-002. Those workflows remain runnable when their own tests, workflow files or research/documentation/packaging contracts change. Every `src/**` change still triggers the exact-head full suite.
+3. Only prune `src/ontotf/**` from **legacy, redundant unittest-focused** pull-request filters: I-001, I-002, I-003, I-004, I-005, I-006, I-015 and F-002. Those workflows remain runnable when their own tests, workflow files or research/documentation/packaging contracts change. Every `src/**` change still triggers the exact-head full suite.
 4. Fold wheel-build verification into the full repository suite on both Python 3.10/3.12, so pruning F-002's broad source trigger does not remove wheel packaging from the final-head gate. Existing F-002 focused workflow still runs if packaging files change.
 5. Do not migrate workflows with unique original-source checkout, TF network tests, external runtime pinning, or standalone `--check` artifact generators until equivalent checks are explicitly included elsewhere. Do not remove historical workflow YAML files in phase 1.
 
@@ -21,7 +21,7 @@
 
 - New full suite discovers all test packages, including previously excluded historical suites.
 - Full wheel build completes in each matrix environment.
-- A PR changing only `src/tfont/release_registry.py` should no longer start redundant I-001/I-002/I-003/I-004/I-005/I-006/I-015/F-002 workflows; the full suite still runs.
+- A PR changing only `src/ontotf/release_registry.py` should no longer start redundant I-001/I-002/I-003/I-004/I-005/I-006/I-015/F-002 workflows; the full suite still runs.
 - No changed topic-specific test path loses its focused workflow trigger.
 - This is an incremental migration toward the single stable final-head gate described by #291, not a claim that all 83 files are consolidated.
 

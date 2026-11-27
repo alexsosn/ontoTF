@@ -36,7 +36,7 @@ Create a new resource set:
 
 with exactly:
 
-`src/tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json`
+`src/ontotf/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json`
 
 Manifest ID:
 
@@ -280,12 +280,12 @@ Add explicit regressions for:
 
 Expected:
 
-- `src/tfont/schemas/coverage-manifest.schema.json`;
-- `src/tfont/coverage.py`;
-- `src/tfont/__init__.py`;
+- `src/ontotf/schemas/coverage-manifest.schema.json`;
+- `src/ontotf/coverage.py`;
+- `src/ontotf/__init__.py`;
 - `docs/research/data/i017/pseudepigrapha-denominator-policy.json`;
 - `scripts/coverage/build_i017_pseudepigrapha_v1.py`;
-- `src/tfont/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json`;
+- `src/ontotf/resources/coverage/p004-pseudepigrapha-v1.0.0-v1/pseudepigrapha.json`;
 - `tests/i017/**`;
 - `.github/workflows/i017-pseudepigrapha-coverage.yml`;
 - `pyproject.toml` only if package-data coverage actually requires a change.
@@ -326,7 +326,7 @@ Fresh review of the implementation exact head must independently challenge:
 - no transfer of historical mapping authority;
 - package-resource path safety;
 - deterministic offline regeneration;
-- no network dependency in TFont runtime or production builder.
+- no network dependency in ontoTF runtime or production builder.
 
 Merge only with the reviewed exact head SHA. After merge, verify the new
 manifest from main and close #206 only after readback.

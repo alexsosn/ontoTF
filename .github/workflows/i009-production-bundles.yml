@@ -6,16 +6,16 @@ on:
       - impl/i009-production-noun-bundles
     paths:
       - 'tests/i009/**'
-      - 'src/tfont/production_bundles.py'
-      - 'src/tfont/resources/**'
-      - 'src/tfont/__init__.py'
+      - 'src/ontotf/production_bundles.py'
+      - 'src/ontotf/resources/**'
+      - 'src/ontotf/__init__.py'
       - 'pyproject.toml'
       - '.github/workflows/i009-production-bundles.yml'
   pull_request:
     paths:
       - 'tests/i009/**'
-      - 'src/tfont/production_bundles.py'
-      - 'src/tfont/__init__.py'
+      - 'src/ontotf/production_bundles.py'
+      - 'src/ontotf/__init__.py'
       - 'pyproject.toml'
       - '.github/workflows/i009-production-bundles.yml'
 

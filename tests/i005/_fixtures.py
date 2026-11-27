@@ -3,15 +3,15 @@ from __future__ import annotations
 import copy
 from typing import Any
 
-from tfont.digests import evidence_record_digest
-from tfont.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
-from tfont.semantic_validation import (
+from ontotf.digests import evidence_record_digest
+from ontotf.semantic_digest_v2 import mapping_semantic_digest_v2, projection_semantic_digest_v1
+from ontotf.semantic_validation import (
     SemanticArtifact,
     SemanticSourceBundle,
     ValidatedSemanticBundle,
     validate_semantic_bundle,
 )
-from tfont.source_validation import validate_source
+from ontotf.source_validation import validate_source
 
 OLIA_NOUN = "http://purl.org/olia/olia.owl#Noun"
 AUTHORITY_NOUN = "https://example.org/authority/noun"

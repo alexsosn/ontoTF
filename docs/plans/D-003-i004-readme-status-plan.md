@@ -91,7 +91,7 @@ Existing D-001/readme workflow and centralized full suite remain regression owne
 
 - focused docs tests green;
 - existing README/status tests are migrated, not skipped/xfail'd;
-- current public API names in README match `src/tfont/__init__.py`;
+- current public API names in README match `src/ontotf/__init__.py`;
 - no runtime/source changes;
 - exact-head PR CI/full suite green;
 - fresh logically-independent adversarial review confirms README neither understates I-004 nor overstates compatibility/runtime/corpus-mapping capabilities.

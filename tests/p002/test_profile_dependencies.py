@@ -10,9 +10,9 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import SourceValidationError, validate_source  # noqa: E402
+from ontotf.source_validation import SourceValidationError, validate_source  # noqa: E402
 
-SCHEMA_ROOT = ROOT / "src" / "tfont" / "schemas"
+SCHEMA_ROOT = ROOT / "src" / "ontotf" / "schemas"
 PROFILE_SCHEMA = SCHEMA_ROOT / "profile.schema.json"
 RESEARCH = ROOT / "docs" / "research" / "P-002-i004-source-contract-amendment.md"
 PLAN = ROOT / "docs" / "plans" / "P-002-i004-source-contract-amendment.md"

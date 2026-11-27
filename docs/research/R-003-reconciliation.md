@@ -28,7 +28,7 @@ The canonical report now requires:
 - exact identity over a parent component manifest covering every semantically addressable native component;
 - complete dependency-closure validation before a changed component set becomes `verified-compatible`;
 - non-executable `unverified` and `incompatible` states;
-- TFont mapping assessment separated from optional publication relation;
+- ontoTF mapping assessment separated from optional publication relation;
 - all eight R-002 assessment meanings preserved;
 - no automatic promotion from R-005 `S/C/B/N/R/U/L` evidence to executable mappings;
 - dense empty-string/`None` TF records excluded from semantic domains unless the source explicitly assigns them meaning;

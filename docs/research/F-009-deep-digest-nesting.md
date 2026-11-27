@@ -7,19 +7,19 @@
 
 ## Question
 
-How should TFont's I-002 canonicalization/digest API handle an acyclic programmatic JSON value whose nesting is deep enough to exhaust Python recursion, without changing RFC 8785 byte semantics for ordinary accepted values?
+How should ontoTF's I-002 canonicalization/digest API handle an acyclic programmatic JSON value whose nesting is deep enough to exhaust Python recursion, without changing RFC 8785 byte semantics for ordinary accepted values?
 
-## Existing TFont contract
+## Existing ontoTF contract
 
-Accepted I-002 deliberately wraps the third-party canonicalizer behind a TFont-owned error surface. `docs/plans/I-002-canonicalization-digest-plan.md` requires:
+Accepted I-002 deliberately wraps the third-party canonicalizer behind a ontoTF-owned error surface. `docs/plans/I-002-canonicalization-digest-plan.md` requires:
 
-- a strict recursive guard over the TFont JSON value model before `rfc8785.dumps`;
+- a strict recursive guard over the ontoTF JSON value model before `rfc8785.dumps`;
 - stable `DigestError` / `DigestProblem(category, message, path)` diagnostics;
 - callers not depending on third-party exception classes;
 - rejection of cyclic containers as `non_json_value`;
 - unchanged RFC 8785 canonical bytes and versioned digest algorithms for accepted values.
 
-Current `src/tfont/digests.py::_validate_json()` is recursive and already tracks active container identities for cycle detection, but has no nesting counter and no `RecursionError` translation. Therefore sufficiently deep *acyclic* lists/dicts can escape the public `DigestError` contract as a raw interpreter exception.
+Current `src/ontotf/digests.py::_validate_json()` is recursive and already tracks active container identities for cycle detection, but has no nesting counter and no `RecursionError` translation. Therefore sufficiently deep *acyclic* lists/dicts can escape the public `DigestError` contract as a raw interpreter exception.
 
 This is distinct from F-006 #32: F-006 owns parsing/plain-JSON source loading in `source_validation.py`; F-009 owns programmatic values passed directly into I-002 canonicalization and semantic digest projections.
 
@@ -31,7 +31,7 @@ RFC 8785 §3.2.3 requires object properties to be sorted recursively and arrays 
 
 Authoritative source: <https://www.rfc-editor.org/rfc/rfc8785.html>
 
-Consequence: a Python-specific recursion ceiling is an implementation concern that TFont must make deterministic if it is part of the public acceptance/error contract.
+Consequence: a Python-specific recursion ceiling is an implementation concern that ontoTF must make deterministic if it is part of the public acceptance/error contract.
 
 ### Python recursion depth is interpreter/platform policy, not a stable application contract
 
@@ -39,7 +39,7 @@ Python documents `sys.setrecursionlimit()` as protection against overflowing the
 
 Authoritative source: <https://docs.python.org/3/library/sys.html#sys.setrecursionlimit>
 
-Consequence: TFont must not define accepted digest input depth as `sys.getrecursionlimit() - N` or expose raw `RecursionError`; that would make the same logical input depend on interpreter/platform settings.
+Consequence: ontoTF must not define accepted digest input depth as `sys.getrecursionlimit() - N` or expose raw `RecursionError`; that would make the same logical input depend on interpreter/platform settings.
 
 ### The pinned RFC 8785 implementation is recursive too
 
@@ -47,7 +47,7 @@ Consequence: TFont must not define accepted digest input depth as `sys.getrecurs
 
 Upstream source: <https://github.com/trailofbits/rfc8785.py/blob/main/src/rfc8785/_impl.py>
 
-Consequence: guarding only TFont's own validator is necessary but should be paired with a defensive translation boundary around the dependency call. A TFont-owned maximum comfortably below normal interpreter limits prevents ordinary accepted inputs from reaching dependency recursion exhaustion.
+Consequence: guarding only ontoTF's own validator is necessary but should be paired with a defensive translation boundary around the dependency call. A ontoTF-owned maximum comfortably below normal interpreter limits prevents ordinary accepted inputs from reaching dependency recursion exhaustion.
 
 ## Threshold decision
 
@@ -87,9 +87,9 @@ path = path of the first container whose depth would be 129
 
 Rationale:
 
-- the value is generic JSON, but it is outside the accepted **TFont JSON model** after adding the deterministic depth constraint;
+- the value is generic JSON, but it is outside the accepted **ontoTF JSON model** after adding the deterministic depth constraint;
 - `projection_error` is reserved for local projection/source-object shape failures and would be misleading for direct `canonical_json_bytes(value)`;
-- adding a new stable category is unnecessary surface expansion when `non_json_value` already means TFont JSON-domain violation.
+- adding a new stable category is unnecessary surface expansion when `non_json_value` already means ontoTF JSON-domain violation.
 
 ## Cycle-vs-depth precedence
 
@@ -106,7 +106,7 @@ This preserves the strongest local diagnosis when the same container is revisite
 
 ## Defensive dependency boundary
 
-`canonical_json_bytes()` should still catch a `RecursionError` raised by `rfc8785.dumps()` after TFont validation and translate it to `DigestError(non_json_value)` rather than leaking the interpreter exception.
+`canonical_json_bytes()` should still catch a `RecursionError` raised by `rfc8785.dumps()` after ontoTF validation and translate it to `DigestError(non_json_value)` rather than leaking the interpreter exception.
 
 This catch is defensive, not the primary policy mechanism. Under the 128-depth contract it should not normally fire on supported Python versions. Do not raise the interpreter recursion limit.
 
@@ -115,7 +115,7 @@ This catch is defensive, not the primary policy mechanism. Under the 128-depth c
 No existing digest algorithm identifier needs to change if implementation obeys both rules:
 
 - every accepted value at depth <=128 produces exactly the same canonical bytes as before;
-- values deeper than 128 become explicitly outside the accepted TFont JSON input domain rather than receiving a different digest.
+- values deeper than 128 become explicitly outside the accepted ontoTF JSON input domain rather than receiving a different digest.
 
 This changes the fail-closed acceptance boundary, not the projection/serialization bytes associated with any still-accepted input.
 
@@ -136,13 +136,13 @@ Because current main has no maximum constant/guard, focused tests that import/re
 
 ## Implementation recommendation
 
-Minimal change in `src/tfont/digests.py`:
+Minimal change in `src/ontotf/digests.py`:
 
 1. add `MAX_JSON_NESTING = 128`;
 2. add `depth: int = 0` to `_validate_json()`;
 3. for exact list/dict, preserve cycle check first, then compute `container_depth = depth + 1` and fail if `> MAX_JSON_NESTING`;
 4. pass `depth=container_depth` to children;
-5. catch `RecursionError` around `rfc8785.dumps()` and translate to the same TFont-owned category without changing ordinary canonicalization handling.
+5. catch `RecursionError` around `rfc8785.dumps()` and translate to the same ontoTF-owned category without changing ordinary canonicalization handling.
 
 No iterative serializer, parser change, schema change, recursion-limit mutation, semantic projection redesign, or algorithm-version bump is justified by the evidence.
 
@@ -156,8 +156,8 @@ Independent review should challenge:
 - whether a hidden dependency/raw `RecursionError` path remains;
 - whether `non_json_value` is the least disruptive category;
 - whether any existing canonical bytes/digest vectors changed below the boundary;
-- whether tests accidentally encode `sys.getrecursionlimit()` instead of the TFont contract.
+- whether tests accidentally encode `sys.getrecursionlimit()` instead of the ontoTF contract.
 
 ## Conclusion
 
-F-009 should add a deterministic 128-container TFont JSON nesting boundary to I-002 canonicalization, preserve cycle diagnostics, and translate any downstream dependency recursion failure into `DigestError`. This keeps canonical byte semantics unchanged for accepted values while removing interpreter-dependent raw exceptions from the public API.
+F-009 should add a deterministic 128-container ontoTF JSON nesting boundary to I-002 canonicalization, preserve cycle diagnostics, and translate any downstream dependency recursion failure into `DigestError`. This keeps canonical byte semantics unchanged for accepted values while removing interpreter-dependent raw exceptions from the public API.

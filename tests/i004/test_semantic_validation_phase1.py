@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.semantic_validation import (
+from ontotf.semantic_validation import (
     SemanticArtifact,
     SemanticSourceBundle,
     SemanticValidationError,

@@ -5,7 +5,7 @@
 
 ## 1. Goal
 
-Keep `load_source(path: str | Path)` inside TFont's existing typed source-loading error boundary when an otherwise constructed source path is rejected during filesystem I/O with `ValueError`, notably embedded NUL paths.
+Keep `load_source(path: str | Path)` inside ontoTF's existing typed source-loading error boundary when an otherwise constructed source path is rejected during filesystem I/O with `ValueError`, notably embedded NUL paths.
 
 The change must preserve:
 

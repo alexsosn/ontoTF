@@ -17,7 +17,7 @@ from tf.core.edgefeature import EdgeFeature
 from tf.core.oslotsfeature import OslotsFeature
 from tf.core.otypefeature import OtypeFeature
 
-from tfont.semantic_ir import NativeBindingIR
+from ontotf.semantic_ir import NativeBindingIR
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -63,7 +63,7 @@ def production_mapping_shapes(*, historical_only: bool = False) -> dict:
     existed. Additive profile releases must not rewrite those snapshots.
     Always audit *all* releases separately for forbidden structural shapes.
     """
-    root = ROOT / "src/tfont/resources/profiles"
+    root = ROOT / "src/ontotf/resources/profiles"
     rows = []
     shapes = set()
     structural = []
@@ -113,7 +113,7 @@ def production_mapping_shapes(*, historical_only: bool = False) -> dict:
 
 
 def main() -> int:
-    schema = load_json("src/tfont/schemas/mapping.schema.json")
+    schema = load_json("src/ontotf/schemas/mapping.schema.json")
     validator = binding_validator(schema)
     execution_shapes = schema["$defs"]["nativeBinding"]["properties"][
         "execution_shape"
@@ -160,7 +160,7 @@ def main() -> int:
     }
 
     execution_source = (
-        ROOT / "src/tfont/semantic_execution.py"
+        ROOT / "src/ontotf/semantic_execution.py"
     ).read_text(encoding="utf-8")
     runtime_shapes = sorted(
         set(re.findall(r'binding\.execution_shape == "([^"]+)"', execution_source))
@@ -216,7 +216,7 @@ def main() -> int:
                 and is_valid(validator, examples["edge_path_typed_start"])
             ),
             "runtime_execution_shapes": runtime_shapes,
-            "tfont_declares_text_fabric_runtime_dependency": (
+            "ontotf_declares_text_fabric_runtime_dependency": (
                 '"text-fabric' in pyproject or "'text-fabric" in pyproject
             ),
             "packaged_production_mappings": production_shapes,
@@ -305,8 +305,8 @@ def main() -> int:
         raise SystemExit("typed unvalued edge-path must satisfy the closed I-023 source contract")
     if not result["current_contract"]["edge_path_has_closed_shape_rule"]:
         raise SystemExit("edge-path closed-shape reconciliation failed")
-    if result["current_contract"]["tfont_declares_text_fabric_runtime_dependency"]:
-        raise SystemExit("TFont runtime dependency boundary drifted")
+    if result["current_contract"]["ontotf_declares_text_fabric_runtime_dependency"]:
+        raise SystemExit("ontoTF runtime dependency boundary drifted")
     if production_shapes["execution_shapes"] != [
         "value-predicate",
         "value-set-predicate",

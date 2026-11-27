@@ -10,7 +10,7 @@ Where this amendment conflicts with the parent plan, this amendment is authorita
 
 The parent plan correctly allows one semantic profile release to coexist across several exact parent variants, keyed by `expected_parent_manifest_digest`. But allowing arbitrary semantic differences between those variants would weaken the accepted R-001 version-binding contract.
 
-R-001 explicitly permits **the same TFont profile release** to support more than one exact parent revision only after each parent has been validated. P-003 additionally makes mapping semantic identity, profile/catalog/dependency contract versions and active ontology-bundle identity part of compiled/runtime provenance.
+R-001 explicitly permits **the same ontoTF profile release** to support more than one exact parent revision only after each parent has been validated. P-003 additionally makes mapping semantic identity, profile/catalog/dependency contract versions and active ontology-bundle identity part of compiled/runtime provenance.
 
 Therefore two inputs with the same:
 
@@ -53,7 +53,7 @@ profile schema version
 profile catalog version
 dependency contract version
 mapping document schema version
-minimum TFont runtime
+minimum ontoTF runtime
 sorted controlled profile declarations
 sorted controlled capability declarations
 normalized dependency semantic records

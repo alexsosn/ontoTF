@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from tfont.coverage import (
+from ontotf.coverage import (
     coverage_denominator_digest, load_coverage_manifest, validate_coverage_manifest,
 )
 
@@ -25,15 +25,15 @@ EXPECTED_COUNTS = {"C":380, "D":67, "E":153, "F":161, "G":39, "H":134}
 EXPECTED_TOTALS = {"semantic_items":934, "technical_exclusions":15}
 CONTROLLED_RELEASES = {
     "bhsa": {
-        "manifest": "src/tfont/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
+        "manifest": "src/ontotf/resources/coverage/p004-i027b1-bhsa-verb-v1/bhsa.json",
         "increments": 28, "reviewed": 35, "shared": 8, "native_only": 27,
     },
     "syriac": {
-        "manifest": "src/tfont/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json",
+        "manifest": "src/ontotf/resources/coverage/p004-i027b2-syriac-verb-v1/syriac.json",
         "increments": 1, "reviewed": 7, "shared": 7, "native_only": 0,
     },
     "extrabiblical": {
-        "manifest": "src/tfont/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json",
+        "manifest": "src/ontotf/resources/coverage/p004-i027b4-extrabiblical-verb-v1/extrabiblical.json",
         "increments": 1, "reviewed": 8, "shared": 8, "native_only": 0,
     },
 }

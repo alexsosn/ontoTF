@@ -10,16 +10,16 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from tfont.batch_proposals import load_ledger
-from tfont.review_packets import build_review_packet
-from tfont.external_review_gate import ExternalReviewError
+from ontotf.batch_proposals import load_ledger
+from ontotf.review_packets import build_review_packet
+from ontotf.external_review_gate import ExternalReviewError
 from tests.i033e.test_live_review_gate_adversarial import cli
 from tests.i033e.test_external_review_red import REPO, SHA, pr_data
 
 ROOT=Path(__file__).resolve().parents[2]
 WORKFLOW=ROOT / ".github/workflows/i033e3-protected-batch-review.yml"
 MANIFEST="docs/research/data/batch_review/inputs.json"
-LEDGER="src/tfont/resources/batch_pilots/i033c-adj-adv-proposals.json"
+LEDGER="src/ontotf/resources/batch_pilots/i033c-adj-adv-proposals.json"
 PACKET="docs/research/data/generated/i033d/adj-adv-review-request.json"
 
 
@@ -84,10 +84,10 @@ class ProtectedBatchGateRED(unittest.TestCase):
     def test_reject_out_of_scope_manifest_paths_and_duplicate_fields(self):
         for changed in (
             {"packet":"../../.github/workflows/backdoor.yml"},
-            {"ledger":"src/tfont/resources/batch_pilots/../tools.py"},
+            {"ledger":"src/ontotf/resources/batch_pilots/../tools.py"},
             {"packet":"https://evil.com/review.json"},
-            {"ledger":"src/tfont/resources/batch_pilots/other.py"},
-            {"ledger":"src/tfont/resources/batch_pilots/nested\ninvalid.json"},
+            {"ledger":"src/ontotf/resources/batch_pilots/other.py"},
+            {"ledger":"src/ontotf/resources/batch_pilots/nested\ninvalid.json"},
             {"packet":"docs/research/data/generated/i033d/%2e%2e/approval.json"},
         ):
             payload=dict(self.manifest,**changed)

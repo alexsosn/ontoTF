@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from tfont.digests import DigestError, profile_semantic_digest
+from ontotf.digests import DigestError, profile_semantic_digest
 
 
 def lock_identity() -> dict:

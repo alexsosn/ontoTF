@@ -34,7 +34,7 @@ class R002AuthoritativeReportTests(unittest.TestCase):
             "`related` — the external target is semantically related but neither coextensive nor ordered as broader/narrower",
             "`ambiguous` — available evidence does not justify one unambiguous external-target assessment",
             "`native-only` — the native/source concept is intentionally supported without an external ontology target",
-            "`unsupported` — the active tfont profile does not provide a supported semantic projection for the native/source concept",
+            "`unsupported` — the active ontotf profile does not provide a supported semantic projection for the native/source concept",
         )
         for definition in required_definitions:
             self.assertIn(definition, text)
@@ -43,16 +43,16 @@ class R002AuthoritativeReportTests(unittest.TestCase):
 
     def test_skos_role_does_not_own_runtime_mapping_assessment(self):
         text = REPORT.read_text(encoding="utf-8")
-        self.assertNotIn("**Role in TFont:** mapping strength", text)
+        self.assertNotIn("**Role in ontoTF:** mapping strength", text)
         self.assertNotIn("SKOS for approximate mappings of corpus-specific grammatical concepts", text)
-        self.assertIn("**Role in TFont:** concept schemes and publication mapping relations", text)
-        self.assertIn("TFont mapping assessment", text)
+        self.assertIn("**Role in ontoTF:** concept schemes and publication mapping relations", text)
+        self.assertIn("ontoTF mapping assessment", text)
 
         data = json.loads(REGISTRY.read_text(encoding="utf-8"))
         skos = {item["id"]: item for item in data["candidates"]}["skos"]
         self.assertNotIn("mapping strength", skos["overlap"].lower())
         self.assertIn("publication", skos["overlap"].lower())
-        self.assertIn("tfont", skos["overlap"].lower())
+        self.assertIn("ontotf", skos["overlap"].lower())
         self.assertIn("assessment", skos["overlap"].lower())
 
     def test_owl_targets_are_not_shown_with_skos_mapping_predicates(self):
@@ -91,19 +91,19 @@ class R002AuthoritativeReportTests(unittest.TestCase):
     def test_apparatus_domain_vocabulary_is_deferred(self):
         text = REPORT.read_text(encoding="utf-8")
         self.assertNotIn(
-            "The R-005 evidence indicates one recurrent gap large enough to justify an initial small TFont vocabulary",
+            "The R-005 evidence indicates one recurrent gap large enough to justify an initial small ontoTF vocabulary",
             text,
         )
         self.assertNotIn("Proposed conceptual scope for the later design ticket:", text)
         self.assertNotIn(
-            "This is the strongest driver for the minimal TFont apparatus vocabulary.", text
+            "This is the strongest driver for the minimal ontoTF apparatus vocabulary.", text
         )
         self.assertNotIn(
-            "TFont local apparatus concepts for variation units, readings, attestation and explicit absence;",
+            "ontoTF local apparatus concepts for variation units, readings, attestation and explicit absence;",
             text,
         )
         self.assertNotIn(
-            "a deliberately small TFont apparatus vocabulary is justified", text
+            "a deliberately small ontoTF apparatus vocabulary is justified", text
         )
         self.assertIn("do not mint", text.lower())
         self.assertIn("pseudepigrapha-tf", text.lower())
@@ -140,7 +140,7 @@ class R002AuthoritativeReportTests(unittest.TestCase):
         self.assertNotIn("nc licensing", saws["overlap"].lower())
 
         cao = candidates["cao"]
-        self.assertNotIn("minimal tfont apparatus vocabulary", cao["overlap"].lower())
+        self.assertNotIn("minimal ontotf apparatus vocabulary", cao["overlap"].lower())
         self.assertIn("native/profile-local", cao["overlap"].lower())
         self.assertIn("second independent corpus", cao["overlap"].lower())
 

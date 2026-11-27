@@ -16,8 +16,8 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 from tf.core.edgefeature import EdgeFeature
 
-from tfont.runtime_tf_observation import LoadedTFObservation
-from tfont.semantic_ir import EdgeStepIR, NativeBindingIR
+from ontotf.runtime_tf_observation import LoadedTFObservation
+from ontotf.semantic_ir import EdgeStepIR, NativeBindingIR
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -50,7 +50,7 @@ def production_mapping_shapes(*, historical_only: bool = False) -> dict:
     existed. Additive profile releases must not rewrite those snapshots.
     Always audit *all* releases separately for forbidden structural shapes.
     """
-    root = ROOT / "src/tfont/resources/profiles"
+    root = ROOT / "src/ontotf/resources/profiles"
     rows = []
     shapes = set()
     structural = []
@@ -115,7 +115,7 @@ def edge_summary(inventory: dict, edge: str) -> dict:
 
 
 def main() -> int:
-    schema = load_json("src/tfont/schemas/mapping.schema.json")
+    schema = load_json("src/ontotf/schemas/mapping.schema.json")
     validator = binding_validator(schema)
 
     old_typed_start = {
@@ -164,7 +164,7 @@ def main() -> int:
     }
 
     execution_source = (
-        ROOT / "src/tfont/semantic_execution.py"
+        ROOT / "src/ontotf/semantic_execution.py"
     ).read_text(encoding="utf-8")
     runtime_shapes = sorted(
         set(re.findall(r'binding\.execution_shape == "([^"]+)"', execution_source))
@@ -238,7 +238,7 @@ def main() -> int:
             ),
             "runtime_execution_shapes": runtime_shapes,
             "schema_acceptance": acceptance,
-            "tfont_declares_text_fabric_runtime_dependency": (
+            "ontotf_declares_text_fabric_runtime_dependency": (
                 '"text-fabric' in pyproject or "'text-fabric" in pyproject
             ),
         },
@@ -343,8 +343,8 @@ def main() -> int:
         raise SystemExit("packaged production execution-shape inventory drifted")
     if production_shapes["structural_bindings"]:
         raise SystemExit("packaged production structural bindings appeared")
-    if result["current_contract"]["tfont_declares_text_fabric_runtime_dependency"]:
-        raise SystemExit("TFont runtime dependency boundary drifted")
+    if result["current_contract"]["ontotf_declares_text_fabric_runtime_dependency"]:
+        raise SystemExit("ontoTF runtime dependency boundary drifted")
     if not result["corpus_mechanics"]["oracc_word_to_column_path_is_unvalued"]:
         raise SystemExit("ORACC word->line->column mechanics drifted")
     if not tlhdig_valued:

@@ -4,10 +4,10 @@ import json
 import unittest
 from unittest.mock import patch
 
-from tfont.batch_proposals import load_ledger, packaged_resource
-from tfont.digests import evidence_record_digest
-from tfont.review_packets import build_review_packet, verify_review_packet
-from tfont.external_review_gate import ExternalReviewError
+from ontotf.batch_proposals import load_ledger, packaged_resource
+from ontotf.digests import evidence_record_digest
+from ontotf.review_packets import build_review_packet, verify_review_packet
+from ontotf.external_review_gate import ExternalReviewError
 from tests.i033e import test_protected_pr_batch_gate_red as transport
 from tests.i033e.test_protected_pr_batch_gate_red import blob, MANIFEST
 from tests.i033e.test_external_review_red import REPO, SHA, REVIEWER, pr_data, review
@@ -31,7 +31,7 @@ def cohort():
 
 
 def loader(ledger, evidence):
-    from tfont.candidate_evidence import CandidateEvidenceResources
+    from ontotf.candidate_evidence import CandidateEvidenceResources
     return CandidateEvidenceResources(ledger, evidence)
 
 

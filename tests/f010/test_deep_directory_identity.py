@@ -6,8 +6,8 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-import tfont.parent_identity as parent_identity
-from tfont.parent_identity import IdentityError, directory_component_digest
+import ontotf.parent_identity as parent_identity
+from ontotf.parent_identity import IdentityError, directory_component_digest
 
 
 EMPTY_DIRECTORY_DIGEST = "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"

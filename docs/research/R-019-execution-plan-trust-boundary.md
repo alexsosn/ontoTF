@@ -12,7 +12,7 @@ What must a future Context-Fabric executor trust before it executes an `ExactNat
 
 RFC 8785 defines JCS as a deterministic, hashable representation of JSON. It explicitly treats canonicalization as an input to cryptographic operations such as hashing and signing; when signatures are used, signature verification remains a separate step. Canonicalization therefore provides reproducible bytes, not producer authenticity by itself.
 
-NIST terminology draws the same boundary. A cryptographic hash value is the result of applying a hash function to data. By contrast, a MAC is keyed and can provide data-origin authentication plus integrity, while a digital signature can provide origin authenticity and integrity. A public unkeyed SHA-256 digest therefore cannot prove that TFont, I-006, I-007, an MCP server, or any particular process produced an object.
+NIST terminology draws the same boundary. A cryptographic hash value is the result of applying a hash function to data. By contrast, a MAC is keyed and can provide data-origin authentication plus integrity, while a digital signature can provide origin authenticity and integrity. A public unkeyed SHA-256 digest therefore cannot prove that ontoTF, I-006, I-007, an MCP server, or any particular process produced an object.
 
 Sources consulted:
 
@@ -27,7 +27,7 @@ The execution handoff must distinguish three environments.
 
 ### 1. Same-process trusted composition
 
-A caller invokes the trusted TFont compiler/resolver/runtime-evaluator in one process and passes the resulting immutable values directly to a trusted executor. The relevant threat is accidental stale/mismatched state or API misuse, not hostile object forgery inside the trusted process.
+A caller invokes the trusted ontoTF compiler/resolver/runtime-evaluator in one process and passes the resulting immutable values directly to a trusted executor. The relevant threat is accidental stale/mismatched state or API misuse, not hostile object forgery inside the trusted process.
 
 In this environment, signatures or MACs add no useful security boundary: code that can access the same process can generally construct Python objects and may also reach any in-process signing secret. The executor should instead revalidate the plan against the current trusted `CompiledSemanticIR` and trusted I-007 prerequisite attestation immediately before execution.
 
@@ -43,7 +43,7 @@ The safest v1 behavior is to re-resolve from the requested semantic key/corpus s
 
 If a future architecture requires an executor to accept a plan produced by another security principal without independently re-establishing its semantic/runtime state, public hashes are insufficient. That architecture needs an authenticated channel or an authenticated object mechanism such as a MAC/signature plus key/trust management and replay/freshness policy.
 
-No current TFont requirement establishes this need. Introducing keys now would add deployment, rotation, revocation, secret-storage, and cross-plugin trust complexity without solving the more immediate semantic freshness problem. Therefore signatures/MACs are not part of the recommended v1 handoff.
+No current ontoTF requirement establishes this need. Introducing keys now would add deployment, rotation, revocation, secret-storage, and cross-plugin trust complexity without solving the more immediate semantic freshness problem. Therefore signatures/MACs are not part of the recommended v1 handoff.
 
 ## What I-006 fingerprints do prove
 
@@ -63,7 +63,7 @@ They do **not** prove:
 - that the caller is authorized to execute it;
 - freshness or replay resistance.
 
-Documentation and API naming must never call these hashes signatures, attestations of producer identity, authorization tokens, or proof that an object came from TFont.
+Documentation and API naming must never call these hashes signatures, attestations of producer identity, authorization tokens, or proof that an object came from ontoTF.
 
 ## Recommended execution authorization path
 

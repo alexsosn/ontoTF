@@ -13,7 +13,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tfont.source_validation import SCHEMA_FILES  # noqa: E402
+from ontotf.source_validation import SCHEMA_FILES  # noqa: E402
 
 BUILD_AVAILABLE = importlib.util.find_spec("build") is not None
 
@@ -49,7 +49,7 @@ class SdistSchemaResourceTests(unittest.TestCase):
 
             missing = []
             for filename in SCHEMA_FILES.values():
-                suffix = f"/src/tfont/schemas/{filename}"
+                suffix = f"/src/ontotf/schemas/{filename}"
                 if not any(name.endswith(suffix) for name in names):
                     missing.append(filename)
             self.assertFalse(missing, f"missing sdist schema resources: {sorted(missing)}")

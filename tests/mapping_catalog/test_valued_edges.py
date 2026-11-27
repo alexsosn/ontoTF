@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
-from tfont import MappingCatalog, MappingError, resolve_nodes, resolve_edges
+from ontotf import MappingCatalog, MappingError, resolve_nodes, resolve_edges
 from scripts.pages.scoped_progress import scoped_progress, eligible_progress
 from tests.mapping_catalog.test_scoped_progress import inventory
 
@@ -101,7 +101,7 @@ class ValuedEdgesTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         import json
         observed = json.loads((root / "docs/research/data/generated/scoped/tlhdig-tf.json").read_text())
-        rows = MappingCatalog(root / "src/tfont/mappings").load("tlhdig-tf")
+        rows = MappingCatalog(root / "src/ontotf/mappings").load("tlhdig-tf")
         stats = scoped_progress(rows, observed, "alexsosn/TLHdig-TF", "0.4.0")
         self.assertEqual(stats["edge_values"]["total"], 4)
         # Later source-supported positive targets are allowed without editing

@@ -22,7 +22,7 @@ It does not change:
 
 ## 2. Affected production boundary
 
-Only `src/tfont/digests.py` changes.
+Only `src/ontotf/digests.py` changes.
 
 The private helper becomes conceptually:
 
@@ -136,7 +136,7 @@ python -m unittest discover -s tests -v
 
 RED exact head must fail in the focused F-005 step after install succeeds and before production is modified. GREEN exact head must pass focused F-005, full I-002, and full repository suites.
 
-Existing I-001/I-002/F-002/F-003/F-004 workflows may also trigger from `src/tfont/digests.py`; all triggered exact-head checks must be green before review.
+Existing I-001/I-002/F-002/F-003/F-004 workflows may also trigger from `src/ontotf/digests.py`; all triggered exact-head checks must be green before review.
 
 ## 8. Implementation gate
 

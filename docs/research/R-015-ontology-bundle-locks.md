@@ -7,7 +7,7 @@
 
 ## Decision
 
-TFont semantic composition should be a **content-addressed active bundle of full semantic ontology-lock identities plus explicit term-scoped reviewed bridge artifacts**. It is not one OWL import closure, not a bag of live namespace URLs, and not a composition keyed only by ontology payload hashes.
+ontoTF semantic composition should be a **content-addressed active bundle of full semantic ontology-lock identities plus explicit term-scoped reviewed bridge artifacts**. It is not one OWL import closure, not a bag of live namespace URLs, and not a composition keyed only by ontology payload hashes.
 
 The active bundle identity is derived from:
 
@@ -31,7 +31,7 @@ Inactive optional-profile diagnostics remain outside active execution and active
 P-001 introduced ontology locks, but accepted I-002 review later established an important distinction:
 
 - `content_digest` identifies the pinned ontology payload bytes;
-- `{lock_id, content_digest}` does **not** identify all semantic pinning choices of a TFont ontology lock.
+- `{lock_id, content_digest}` does **not** identify all semantic pinning choices of a ontoTF ontology lock.
 
 The normative I-002 ontology-lock semantic identity therefore includes:
 
@@ -65,11 +65,11 @@ The research validator directly reuses the accepted I-002 normalization implemen
 
 ## 2. Canonical bundle identity
 
-The prototype reuses `tfont.digests.canonical_json_bytes`, i.e. the accepted RFC 8785/JCS contract, rather than implementing another JSON canonicalizer.
+The prototype reuses `ontotf.digests.canonical_json_bytes`, i.e. the accepted RFC 8785/JCS contract, rather than implementing another JSON canonicalizer.
 
 Set-like profile-contract IDs use the same I-002 UTF-16 ordering/duplicate semantics. Ontology-lock records use the same I-002 semantic-lock normalizer, including set-like `terms_used`. Bridge and active-edge collections are ordered by their canonical JCS bytes.
 
-Digest representation is the accepted TFont form:
+Digest representation is the accepted ontoTF form:
 
 ```text
 sha256:<64 lowercase hexadecimal digits>
@@ -285,11 +285,11 @@ Primary declarations:
 
 ### CRMarchaeo 2.1.1
 
-Stable CRMarchaeo 2.1.1 references CIDOC CRM 7.1.2 and CRMsci 2.0, while the accepted current TFont heritage/science stack uses CIDOC CRM 7.1.3 and CRMsci 3.2.
+Stable CRMarchaeo 2.1.1 references CIDOC CRM 7.1.2 and CRMsci 2.0, while the accepted current ontoTF heritage/science stack uses CIDOC CRM 7.1.3 and CRMsci 3.2.
 
 Primary release/declaration source: <https://cidoc-crm.org/extensions/crmarchaeo/html/CRMarchaeo_v2.1.1.html>.
 
-This independently confirms that TFont cannot model the CIDOC-family composition as one globally current import closure.
+This independently confirms that ontoTF cannot model the CIDOC-family composition as one globally current import closure.
 
 ## 9. Composition examples
 
@@ -429,7 +429,7 @@ The suites cover at least:
 18. unreferenced/inactive-only bridge rejection;
 19. presentation/audit metadata kept outside semantic lock identity.
 
-The prototype does not perform ontology reasoning and does not prove that declared `terms_used` strings occur in the pinned ontology bytes. It validates an explicit reviewed TFont composition contract.
+The prototype does not perform ontology reasoning and does not prove that declared `terms_used` strings occur in the pinned ontology bytes. It validates an explicit reviewed ontoTF composition contract.
 
 ## 14. Non-goals
 

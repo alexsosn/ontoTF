@@ -1,10 +1,10 @@
 # D-002 research: README capability/status synchronization
 
 ## Question
-What should the public README say on current `main=fac75d5a251945653a7be585fa30eae34afd4693` so that users can distinguish shipped TFont capabilities from accepted architecture and still-unmerged implementation work?
+What should the public README say on current `main=fac75d5a251945653a7be585fa30eae34afd4693` so that users can distinguish shipped ontoTF capabilities from accepted architecture and still-unmerged implementation work?
 
 ## Current public implementation surface
-`src/tfont/__init__.py` exports three production families:
+`src/ontotf/__init__.py` exports three production families:
 
 1. source loading/structural validation: `loads_source`, `load_source`, `validate_source`, `load_and_validate`, `SourceValidationError`;
 2. canonicalization/digests: JCS canonicalization plus source/evidence/mapping/profile digest helpers and `DigestError`;

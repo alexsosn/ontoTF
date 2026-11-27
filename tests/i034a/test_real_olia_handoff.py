@@ -10,10 +10,10 @@ import json
 from pathlib import Path
 import unittest
 
-from tfont.candidate_evidence import CandidateEvidenceResources
-from tfont.digests import canonical_json_bytes
-from tfont.overlay_handoff import build_overlay_handoff, verify_overlay_handoff_integrity
-from tfont.review_packets import build_review_packet
+from ontotf.candidate_evidence import CandidateEvidenceResources
+from ontotf.digests import canonical_json_bytes
+from ontotf.overlay_handoff import build_overlay_handoff, verify_overlay_handoff_integrity
+from ontotf.review_packets import build_review_packet
 from tests.i033e.test_overlay_handoff import cohort
 
 
@@ -28,7 +28,7 @@ def pin_digest(pack):
 
 
 def real_pack():
-    ledger = json.loads((ROOT / "src/tfont/resources/batch_pilots/"
+    ledger = json.loads((ROOT / "src/ontotf/resources/batch_pilots/"
                               "i034a-olia-bhsa-syriac-pos-proposals.json").read_text())
     src = json.loads((ROOT/"docs/research/data/batch_review/evidence/"
                            "i033e3-bhsa-word-sp.json").read_text())
@@ -115,7 +115,7 @@ class ProtectedOLiAClassEvidenceTDD(unittest.TestCase):
         entry["record"]["reviewed_content"]["target"] = (
             "http://purl.org/olia/olia.owl#ForgedClass"
         )
-        from tfont.digests import evidence_record_digest
+        from ontotf.digests import evidence_record_digest
         entry["record"]["content_digest"] = evidence_record_digest(entry["record"])
         pin_digest(clone)
         with self.assertRaises(ValueError):

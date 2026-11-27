@@ -6,8 +6,8 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-import tfont
-import tfont.semantic_resolver as semantic_resolver
+import ontotf
+import ontotf.semantic_resolver as semantic_resolver
 from jsonschema import Draft202012Validator
 
 from tests.i005._fixtures import (
@@ -34,13 +34,13 @@ from tests.i023._fixtures import (
     semantic_request,
     approximate_request,
 )
-from tfont.semantic_digest_v2 import (
+from ontotf.semantic_digest_v2 import (
     mapping_semantic_digest_v2,
     projection_semantic_digest_v1,
 )
-from tfont.semantic_ir import native_binding_identity
-from tfont.semantic_validation import SemanticValidationError, validate_semantic_bundle
-from tfont.source_validation import validate_source
+from ontotf.semantic_ir import native_binding_identity
+from ontotf.semantic_validation import SemanticValidationError, validate_semantic_bundle
+from ontotf.source_validation import validate_source
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -52,7 +52,7 @@ def category(error: BaseException) -> str:
 
 def binding_validator():
     schema = json.loads(
-        (ROOT / "src/tfont/schemas/mapping.schema.json").read_text(encoding="utf-8")
+        (ROOT / "src/ontotf/schemas/mapping.schema.json").read_text(encoding="utf-8")
     )
     return Draft202012Validator(
         {
@@ -182,7 +182,7 @@ class I023EdgePathContractTests(unittest.TestCase):
                 self.assertEqual(category(raised.exception), "dependency_authority")
 
     def test_typed_steps_compile_and_public_two_argument_constructor_remains_compatible(self):
-        old = tfont.EdgeStepIR("mother", "outgoing")
+        old = ontotf.EdgeStepIR("mother", "outgoing")
         self.assertIsNone(old.result_node_type)
         self.assertIsNone(old.valued)
 
@@ -242,10 +242,10 @@ class I023EdgePathContractTests(unittest.TestCase):
     def test_exact_outgoing_execution_filters_polymorphic_neighbors_and_preserves_order(self):
         ir = compiled_edge_path_ir()
         api = path_api()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (edge_path_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (edge_path_context(ontotf, ir, api),),
         )
         self.assertEqual(result.corpora[0].nodes, (21, 20))
         self.assertEqual(api.E.word_line.f_calls, [1, 2])
@@ -259,10 +259,10 @@ class I023EdgePathContractTests(unittest.TestCase):
             steps=INCOMING_STEPS,
         )
         api = path_api()
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (edge_path_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (edge_path_context(ontotf, ir, api),),
         )
         self.assertEqual(result.corpora[0].nodes, (1, 2))
         self.assertTrue(api.E.line_column.t_calls)
@@ -277,10 +277,10 @@ class I023EdgePathContractTests(unittest.TestCase):
                 "line_column": FakeEdgeFeature({10: (20,), 11: (21,)}),
             }
         )
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (edge_path_context(tfont, ir, api),),
+            semantic_request(ontotf),
+            (edge_path_context(ontotf, ir, api),),
         )
         self.assertEqual(result.corpora[0].nodes, ())
 
@@ -290,10 +290,10 @@ class I023EdgePathContractTests(unittest.TestCase):
             }
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                semantic_request(tfont),
-                (edge_path_context(tfont, ir, drift_api),),
+                semantic_request(ontotf),
+                (edge_path_context(ontotf, ir, drift_api),),
             )
         self.assertEqual(category(raised.exception), "invalid_result_nodes")
 
@@ -306,10 +306,10 @@ class I023EdgePathContractTests(unittest.TestCase):
             }
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_exact_semantic(
+            ontotf.execute_exact_semantic(
                 ir,
-                semantic_request(tfont),
-                (edge_path_context(tfont, ir, api),),
+                semantic_request(ontotf),
+                (edge_path_context(ontotf, ir, api),),
             )
         self.assertEqual(category(raised.exception), "loaded_api_unavailable")
         self.assertEqual(api.E.line_column.f_calls, [])
@@ -329,86 +329,86 @@ class I023EdgePathContractTests(unittest.TestCase):
         for api in cases:
             with self.subTest(api=api):
                 with self.assertRaises(Exception):
-                    tfont.execute_exact_semantic(
+                    ontotf.execute_exact_semantic(
                         ir,
-                        semantic_request(tfont),
-                        (edge_path_context(tfont, ir, api),),
+                        semantic_request(ontotf),
+                        (edge_path_context(ontotf, ir, api),),
                     )
                 self.assertEqual(api.load_calls, 0)
 
     def test_exact_approximate_and_reference_surfaces_reuse_edge_path_execution(self):
         ir = compiled_edge_path_ir()
-        exact = tfont.execute_exact_semantic(
+        exact = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (edge_path_context(tfont, ir),),
+            semantic_request(ontotf),
+            (edge_path_context(ontotf, ir),),
         )
-        approximate = tfont.execute_approximate_semantic(
+        approximate = ontotf.execute_approximate_semantic(
             ir,
-            approximate_request(tfont),
-            (edge_path_context(tfont, ir),),
+            approximate_request(ontotf),
+            (edge_path_context(ontotf, ir),),
         )
         self.assertEqual(exact.corpora[0].nodes, (21, 20))
         self.assertEqual(approximate.corpora[0].nodes, (21, 20))
 
         authority_ir = compiled_authority_edge_path_ir()
         authority_key = authority_ir.authority_index[0][0]
-        authority = tfont.execute_exact_authority(
+        authority = ontotf.execute_exact_authority(
             authority_ir,
-            tfont.AuthorityResolveRequest(
+            ontotf.AuthorityResolveRequest(
                 key=authority_key,
                 corpora=("bhsa",),
             ),
-            (edge_path_context(tfont, authority_ir),),
+            (edge_path_context(ontotf, authority_ir),),
         )
         self.assertEqual(authority.corpora[0].nodes, (21, 20))
 
         refs_ir = compiled_reference_edge_path_ir()
         identity_key = refs_ir.identity_index[0][0]
-        identity = tfont.execute_identity(
+        identity = ontotf.execute_identity(
             refs_ir,
-            tfont.IdentityResolveRequest(
+            ontotf.IdentityResolveRequest(
                 authority_system=identity_key.authority_system,
                 external_entity_id=identity_key.external_entity_id,
                 corpora=("bhsa",),
             ),
-            (edge_path_context(tfont, refs_ir),),
+            (edge_path_context(ontotf, refs_ir),),
         )
         self.assertEqual(identity.corpora[0].nodes, (21, 20))
 
         identifier_key = refs_ir.identifier_index[0][0]
-        identifier = tfont.execute_identifier(
+        identifier = ontotf.execute_identifier(
             refs_ir,
-            tfont.IdentifierResolveRequest(
+            ontotf.IdentifierResolveRequest(
                 key=identifier_key,
                 corpora=("bhsa",),
             ),
-            (edge_path_context(tfont, refs_ir),),
+            (edge_path_context(ontotf, refs_ir),),
         )
         self.assertEqual(identifier.corpora[0].nodes, (21, 20))
 
     def test_conjunction_uses_final_typed_domain_not_start_domain(self):
         ir = compiled_two_path_ir()
-        keys = (semantic_request(tfont).key, proper_noun_key(tfont))
-        exact = tfont.execute_exact_conjunction(
+        keys = (semantic_request(ontotf).key, proper_noun_key(ontotf))
+        exact = ontotf.execute_exact_conjunction(
             ir,
-            tfont.SemanticConjunctionRequest(
+            ontotf.SemanticConjunctionRequest(
                 keys=keys,
                 corpora=("bhsa",),
             ),
-            (edge_path_context(tfont, ir),),
+            (edge_path_context(ontotf, ir),),
         )
         self.assertEqual(exact.corpora[0].nodes, (20, 21))
 
-        approximate = tfont.execute_approximate_conjunction(
+        approximate = ontotf.execute_approximate_conjunction(
             ir,
-            tfont.ApproximateSemanticConjunctionRequest(
+            ontotf.ApproximateSemanticConjunctionRequest(
                 keys=keys,
                 corpora=("bhsa",),
                 semantic_mode="approximate",
                 accept_losses=(),
             ),
-            (edge_path_context(tfont, ir),),
+            (edge_path_context(ontotf, ir),),
         )
         self.assertEqual(approximate.corpora[0].nodes, (20, 21))
 
@@ -428,10 +428,10 @@ class I023EdgePathContractTests(unittest.TestCase):
             },
         )
         ir = compiled_edge_path_ir(steps=steps)
-        result = tfont.execute_exact_semantic(
+        result = ontotf.execute_exact_semantic(
             ir,
-            semantic_request(tfont),
-            (edge_path_context(tfont, ir),),
+            semantic_request(ontotf),
+            (edge_path_context(ontotf, ir),),
         )
         self.assertEqual(result.corpora[0].nodes, (1, 2))
 
@@ -443,8 +443,8 @@ class I023EdgePathContractTests(unittest.TestCase):
             pass
 
         forged_steps = (
-            tfont.EdgeStepIR("word_line", "outgoing"),
-            tfont.EdgeStepIR(
+            ontotf.EdgeStepIR("word_line", "outgoing"),
+            ontotf.EdgeStepIR(
                 "word_line",
                 DirectionSubclass("outgoing"),
                 "line",
@@ -464,27 +464,27 @@ class I023EdgePathContractTests(unittest.TestCase):
             losses=("undercoverage",),
         )
         key = ir.authority_index[0][0]
-        refused = tfont.ApproximateAuthorityResolveRequest(
+        refused = ontotf.ApproximateAuthorityResolveRequest(
             key=key,
             corpora=("bhsa",),
         )
         with self.assertRaises(Exception) as raised:
-            tfont.execute_approximate_authority(
+            ontotf.execute_approximate_authority(
                 ir,
                 refused,
-                (edge_path_context(tfont, ir),),
+                (edge_path_context(ontotf, ir),),
             )
         self.assertEqual(category(raised.exception), "approximation_loss_not_accepted")
 
-        accepted = tfont.ApproximateAuthorityResolveRequest(
+        accepted = ontotf.ApproximateAuthorityResolveRequest(
             key=key,
             corpora=("bhsa",),
             accept_losses=("undercoverage",),
         )
-        result = tfont.execute_approximate_authority(
+        result = ontotf.execute_approximate_authority(
             ir,
             accepted,
-            (edge_path_context(tfont, ir),),
+            (edge_path_context(ontotf, ir),),
         )
         self.assertEqual(result.corpora[0].nodes, (21, 20))
         self.assertEqual(result.resolution.losses, ("undercoverage",))
@@ -551,10 +551,10 @@ class I023EdgePathContractTests(unittest.TestCase):
         for api, expected in cases:
             with self.subTest(expected=expected, api=api):
                 with self.assertRaises(Exception) as raised:
-                    tfont.execute_exact_semantic(
+                    ontotf.execute_exact_semantic(
                         ir,
-                        semantic_request(tfont),
-                        (edge_path_context(tfont, ir, api),),
+                        semantic_request(ontotf),
+                        (edge_path_context(ontotf, ir, api),),
                     )
                 self.assertEqual(category(raised.exception), expected)
                 self.assertEqual(api.load_calls, 0)
@@ -564,7 +564,7 @@ class I023EdgePathContractTests(unittest.TestCase):
         count = 0
         historical_count = 0
         shapes = set()
-        root = ROOT / "src/tfont/resources/profiles"
+        root = ROOT / "src/ontotf/resources/profiles"
         for path in sorted(root.glob("*/*/mappings/*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
             validate_source(data, "mapping", source_name=str(path))

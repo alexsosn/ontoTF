@@ -5,9 +5,9 @@
 
 ## Scope
 
-Make `validate_source(data, ...)` enforce the same TFont JSON-value and `MAX_SOURCE_NESTING=128` boundary as `loads_source()` before **instance** JSON Schema validation.
+Make `validate_source(data, ...)` enforce the same ontoTF JSON-value and `MAX_SOURCE_NESTING=128` boundary as `loads_source()` before **instance** JSON Schema validation.
 
-Production scope is limited to `src/tfont/source_validation.py`. No schema files, semantic validator, digests, compatibility, ontology, filesystem code, or public signatures change.
+Production scope is limited to `src/ontotf/source_validation.py`. No schema files, semantic validator, digests, compatibility, ontology, filesystem code, or public signatures change.
 
 ## Implementation
 
@@ -60,7 +60,7 @@ Do not add another generic full-repository discovery command; F-007 `full-suite.
 
 - direct depth 129 is rejected before instance jsonschema traversal;
 - depth 128 remains valid;
-- all direct non-JSON/alias cases use established TFont diagnostics;
+- all direct non-JSON/alias cases use established ontoTF diagnostics;
 - invalid schema authority retains existing precedence;
 - shallow schema diagnostics/provenance remain unchanged;
 - F-006/I-001 and authoritative full suite are green on the exact final head;
