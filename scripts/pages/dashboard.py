@@ -297,14 +297,22 @@ footer{border-top:1px solid var(--line);margin-top:2rem;padding-top:1rem;font-si
 def morphology_summary(scoped):
     if not scoped:
         return ""
-    domain = next((d for d in scoped["domains"]
-                   if d["node"] == "analysis" and d["feature"] == "morph"), None)
-    if domain is None:
-        return ""
-    return ('<div class="morph-summary"><h4>Morphological analysis tags</h4>'
-            '<p class="muted">Raw HFR tags, including alternatives. Frequencies count candidate analyses, not unique words or selected readings.</p>'
-            '<div class="detail-grid">' + labeled("Distinct tags", coverage_bar(domain))
-            + labeled("Candidate annotations", annotation_bar(domain)) + '</div></div>')
+    domains = {(d["node"], d["feature"]): d for d in scoped["domains"]}
+    panels = []
+    for feature, title, description in (
+        ("morph", "Morphological analysis tags",
+         "Raw HFR tags, including alternatives. Frequencies count candidate analyses, not unique words or selected readings."),
+        ("clitic_morph", "Enclitic morphology tags",
+         "Raw enclitic tags, including chains and alternatives. Frequencies count candidate-analysis annotations, not individual clitics or host categories."),
+    ):
+        domain = domains.get(("analysis", feature))
+        if domain is None:
+            continue
+        panels.append('<section><h4>' + h(title) + '</h4>'
+                      '<p class="muted">' + h(description) + '</p>'
+                      '<div class="detail-grid">' + labeled("Distinct tags", coverage_bar(domain))
+                      + labeled("Candidate annotations", annotation_bar(domain)) + '</div></section>')
+    return '<div class="morph-summary">' + "".join(panels) + '</div>' if panels else ""
 
 
 def render(report):
