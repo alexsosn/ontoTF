@@ -179,6 +179,10 @@ class PhraseFunctionMappingsTests(unittest.TestCase):
                      "narrower", "close")
                     for dest in subphrase_destinations
                 }
+                if code in ("Adju", "PrAd"):
+                    expected.add(("phrase", "rela", "PrAd", BASE + target,
+                                  "approximate-via-target", "category",
+                                  "narrower", "related"))
                 self.assertEqual(
                     {(x.destination.node, x.destination.feature,
                       x.destination.value, x.target, x.relation, x.scope,
