@@ -17,6 +17,15 @@ EXPECTED = {
         ("word", "g_lex"): ("writtenRep", 426579),
         ("word", "g_lex_utf8"): ("writtenRep", 420102),
     }),
+    "extrabiblical": ("0.2", {
+        ("word", "lex_utf8"): ("writtenRep", 38974),
+        ("word", "g_lex"): ("writtenRep", 39525),
+        ("word", "g_lex_utf8"): ("writtenRep", 39224),
+    }),
+    "syriac": ("0.92", {
+        ("word", "lex"): ("writtenRep", 407319),
+        ("word", "g_lex"): ("writtenRep", 406610),
+    }),
     "syrnt": ("0.1", {
         (node, feature): ("writtenRep", 3038 if node == "lexeme" else 109640)
         for node in ("lexeme", "word")
